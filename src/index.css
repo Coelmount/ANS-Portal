@@ -1,0 +1,16 @@
+@import '../node_modules/normalize.css/normalize.css';
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+  font-family: 'MTN';
+  src: url('source/MTN_Font/MTNBrighterSans-Regular.woff');
+}
+/* 
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
