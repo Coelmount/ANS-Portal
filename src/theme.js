@@ -18,7 +18,8 @@ const theme = createMuiTheme({
       main: red.A400
     },
     black: '#212529',
-    lightGrey: '#C4C4C4'
+    lightGrey: '#C4C4C4',
+    gray40: '#666666'
   },
   typography: {
     fontFamily: ['"Open Sans"', 'sans-serif'].join(',')

@@ -15,7 +15,8 @@ const useStyles = makeStyles(() => ({
     zIndex: '1',
     left: '24px',
     height: '20px',
-    width: '20px'
+    width: '20px',
+    textAlign: 'center'
   },
   input: {
     width: '392px',
