@@ -69,7 +69,7 @@ const CustomersTableBody = props => {
               <TableCell component='th' id={labelId} scope='row'>
                 <Link
                   className={linkStyles.link}
-                  to={`/customers/${row.tenantId}/subaccounts`}
+                  to={`/customers/${row.tenantId}/access-numbers`}
                 >
                   {row.tenantId}
                 </Link>

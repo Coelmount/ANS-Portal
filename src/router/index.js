@@ -6,7 +6,10 @@ import DefaultLayout from 'components/DefaultLayout'
 import Auth from 'ui/Auth'
 import Customers from 'ui/Customers'
 import Search from 'ui/Search'
+import AccessNumbers from 'ui/Customer/AccessNumbers'
 import Subaccounts from 'ui/Customer/Subaccounts/'
+import Administrators from 'ui/Customer/Administrators'
+import Details from 'ui/Customer/Details'
 
 import AuthStore from 'stores/Auth'
 
@@ -14,7 +17,10 @@ export const ROUTS = {
   auth: '/',
   customers: '/customers',
   search: '/search',
-  subaccounts: '/customers/:customerId/subaccounts'
+  accessNumbers: '/customers/:customerId/access-numbers',
+  subaccounts: '/customers/:customerId/subaccounts',
+  administrators: '/customers/:customerId/administrators',
+  details: '/customers/:customerId/details'
 }
 
 const RouteWithSubRoutes = ({ component: Component, ...route }) => {
@@ -43,8 +49,20 @@ const userRoutes = [
     component: Search
   },
   {
+    path: ROUTS.accessNumbers,
+    component: AccessNumbers
+  },
+  {
     path: ROUTS.subaccounts,
     component: Subaccounts
+  },
+  {
+    path: ROUTS.administrators,
+    component: Administrators
+  },
+  {
+    path: ROUTS.details,
+    component: Details
   }
 ]
 

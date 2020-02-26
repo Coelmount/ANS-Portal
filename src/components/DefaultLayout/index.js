@@ -1,6 +1,8 @@
 import React, { useContext, useState, Fragment } from 'react'
 import { observer } from 'mobx-react'
 import { NavLink, useParams } from 'react-router-dom'
+import i18n from 'i18n'
+import { withNamespaces } from 'react-i18next'
 
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
@@ -17,21 +19,19 @@ import LinkMaterial from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import SvgIcon from '@material-ui/core/SvgIcon'
 
 import MenuIcon from '@material-ui/icons/Menu'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'
 import ExpandMoreOutlinedIcon from '@material-ui/icons/ExpandMoreOutlined'
+import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 import AuthStore from 'stores/Auth'
 
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 import { LANGUAGES } from 'source/config'
-
-import i18n from 'i18n'
-import { withNamespaces } from 'react-i18next'
-
 import './styles.css'
 
 const drawerWidth = 240
@@ -94,6 +94,9 @@ const useStyles = makeStyles(theme => ({
       borderRadius: 20,
       background: theme.palette.active.main
     },
+    '& > div > svg': {
+      color: theme.palette.black
+    },
     '& .menu-text': {
       minWidth: 100,
       marginLeft: 5,
@@ -108,14 +111,18 @@ const useStyles = makeStyles(theme => ({
     '& .icon': {
       background: 'white'
     },
-    '& .sidebarIcon': {
-      color: theme.palette.primary.main
+    '& > div > svg': {
+      color: `${theme.palette.primary.main} !important`
     },
     '& .menu-text': {
       '& span': {
         fontWeight: 600
       }
     }
+  },
+  iconImg: {
+    width: 20,
+    height: 20
   },
   toolbar: theme.mixins.toolbar,
   header: {
@@ -187,6 +194,22 @@ const DefaultLayout = props => {
     i18n.changeLanguage(lng)
   }
 
+  const AdministratorsIcon = () => {
+    return (
+      <SvgIcon>
+        <path d='M5.83,10C5.42,8.83 4.31,8 3,8A3,3 0 0,0 0,11A3,3 0 0,0 3,14C4.31,14 5.42,13.17 5.83,12H8V14H10V12H11V10H5.83M3,12A1,1 0 0,1 2,11A1,1 0 0,1 3,10A1,1 0 0,1 4,11A1,1 0 0,1 3,12M16,4A4,4 0 0,0 12,8A4,4 0 0,0 16,12A4,4 0 0,0 20,8A4,4 0 0,0 16,4M16,10.1A2.1,2.1 0 0,1 13.9,8A2.1,2.1 0 0,1 16,5.9C17.16,5.9 18.1,6.84 18.1,8C18.1,9.16 17.16,10.1 16,10.1M16,13C13.33,13 8,14.33 8,17V20H24V17C24,14.33 18.67,13 16,13M22.1,18.1H9.9V17C9.9,16.36 13,14.9 16,14.9C18.97,14.9 22.1,16.36 22.1,17V18.1Z' />
+      </SvgIcon>
+    )
+  }
+
+  const DetailsIcon = () => {
+    return (
+      <SvgIcon>
+        <path d='M11 9C11 10.66 9.66 12 8 12C6.34 12 5 10.66 5 9C5 7.34 6.34 6 8 6C9.66 6 11 7.34 11 9M14 20H2V18C2 15.79 4.69 14 8 14C11.31 14 14 15.79 14 18M7 9C7 9.55 7.45 10 8 10C8.55 10 9 9.55 9 9C9 8.45 8.55 8 8 8C7.45 8 7 8.45 7 9M4 18H12C12 16.9 10.21 16 8 16C5.79 16 4 16.9 4 18M22 12V14H13V12M22 8V10H13V8M22 4V6H13V4Z' />
+      </SvgIcon>
+    )
+  }
+
   const adminNavLinks = [
     {
       link: '/customers',
@@ -202,9 +225,24 @@ const DefaultLayout = props => {
 
   const customerNavLinks = [
     {
+      link: `/customers/${match.customerId}/access-numbers`,
+      text: 'Access Numbers',
+      icon: PhoneOutlinedIcon
+    },
+    {
       link: `/customers/${match.customerId}/subaccounts`,
       text: 'Subaccaunts',
       icon: PeopleAltOutlinedIcon
+    },
+    {
+      link: `/customers/${match.customerId}/administrators`,
+      text: 'Administrators',
+      icon: AdministratorsIcon
+    },
+    {
+      link: `/customers/${match.customerId}/details`,
+      text: 'Details',
+      icon: DetailsIcon
     }
   ]
 
@@ -216,6 +254,7 @@ const DefaultLayout = props => {
       <List>
         {match.customerId
           ? customerNavLinks.map(navLink => {
+              console.log(navLink.icon)
               let iconComponent = React.createElement(navLink.icon, {
                 className: 'sidebarIcon'
               })
