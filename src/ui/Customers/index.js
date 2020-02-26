@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import Paper from '@material-ui/core/Paper'
 
 import CustomersStore from 'stores/Customers'
+import CreateCustomerStore from 'stores/CreateCustomer'
 import TitleBlock from './components/TitleBlock'
 import CustomersTableToolbar from './components/CustomersTableToolbar'
 import CustomersTableHead from './components/CustomersTableHead'
@@ -20,6 +21,7 @@ import useStyles from './styles'
 const CustomersTable = observer(({ t }) => {
   const classes = useStyles()
   const { rows, getCustomers, deleteCustomer } = useContext(CustomersStore)
+  const { setDefaultValues } = useContext(CreateCustomerStore)
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
@@ -76,6 +78,7 @@ const CustomersTable = observer(({ t }) => {
 
   const handleCloseCreateCustomer = () => {
     setIsOpenCreateCustomer(false)
+    setDefaultValues()
   }
 
   const handleOpenCreateCustomer = () => {

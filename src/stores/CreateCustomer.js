@@ -3,13 +3,21 @@ import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
 
-export class CreateCustomer {
+export class CreateCustomerStore {
   step = 1
+
+  changeStep = step => {
+    this.step = step
+  }
+
+  setDefaultValues = () => {
+    this.step = 1
+  }
 }
 
-decorate(CustomersStore, {
+decorate(CreateCustomerStore, {
   step: observable,
-  getCustomers: action
+  changeStep: action
 })
 
-export default createContext(new CreateCustomer())
+export default createContext(new CreateCustomerStore())
