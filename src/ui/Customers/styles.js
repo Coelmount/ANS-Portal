@@ -1,16 +1,16 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%'
+    width: '100%',
   },
   paper: {
     width: '100%',
     marginBottom: theme.spacing(2),
-    boxShadow: 'none'
+    boxShadow: 'none',
   },
   titleWrap: {
-    display: 'flex'
+    display: 'flex',
   },
   title: {
     flex: '1 1 100%',
@@ -20,11 +20,11 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500,
     fontSize: 30,
     letterSpacing: '0.02em',
-    color: theme.palette.black
+    color: theme.palette.black,
   },
   addCustomerWrap: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   addIconWrap: {
     width: 34,
@@ -37,11 +37,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: 14,
     marginRight: 8,
     '&:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   addIcon: {
-    color: theme.palette.black
+    color: theme.palette.black,
   },
   addCustomerTitle: {
     width: 115,
@@ -51,21 +51,18 @@ const useStyles = makeStyles(theme => ({
     marginTop: 25,
     fontFamily: 'MTN',
     fontStyle: 'normal',
-    fontWeight: 500
+    fontWeight: 500,
   },
-  modal: {
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    width: 646,
-    height: 350,
-    boxShadow: theme.shadows[5],
-    top: `50%`,
-    left: `50%`,
-    transform: `translate(-50%, -50%)`,
-    outline: 'none',
-    borderRadius: 3,
-    background: theme.palette.active.main
+  deleteModal: {
+    '& .MuiDialog-paperWidthSm': {
+      width: '646px',
+      display: 'flex',
+      flexDirection: 'column',
+      boxShadow: theme.shadows[5],
+      outline: 'none',
+      borderRadius: 3,
+      background: theme.palette.active.main,
+    },
   },
   deleteHeader: {
     display: 'flex',
@@ -74,25 +71,25 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 45,
     paddingRight: 40,
     height: 87,
-    background: 'white'
+    background: 'white',
   },
   deleteTitleBlock: {
-    display: 'flex'
+    display: 'flex',
   },
   deleteTitle: {
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: 24,
-    marginLeft: 14
+    marginLeft: 14,
   },
   closeIcon: {
     width: 26,
     height: 26,
     color: theme.palette.black,
     '&:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   deleteMain: {
     height: 263,
@@ -100,18 +97,18 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '55px 10px 23px 0px'
+    padding: '55px 10px 23px 0px',
   },
   deleteMainText: {
-    margin: '0px 50px 0px 50px'
+    margin: '0px 50px 0px 50px',
   },
   boldText: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   deleteButtonsBlock: {
     display: 'flex',
     width: '100%',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   deleteButtonWrap: {
     width: 140,
@@ -128,8 +125,8 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: '#FEDF63',
       boxShadow: '0px 6px 5px rgba(204,204,204,0.25)',
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   cancelButtonWrap: {
     width: 140,
@@ -145,13 +142,13 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500,
     marginRight: 30,
     '&:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   buttonTitle: {
     fontFamily: 'MTN',
     fontStyle: 'normal',
-    fontWeight: 500
+    fontWeight: 500,
   },
   table: {
     // minWidth: 750
@@ -165,86 +162,86 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     position: 'absolute',
     top: 20,
-    width: 1
+    width: 1,
   },
   bodyFirstCell: {
-    paddingLeft: '37px'
+    paddingLeft: '37px',
   },
   headCellTitle: {
     paddingBottom: '0px',
     '& span': {
       fontWeight: 600,
-      fontSize: 16
-    }
+      fontSize: 16,
+    },
   },
   tbody: {
     '& td, th': {
       border: 'none',
-      paddingRight: 33
-    }
+      paddingRight: 33,
+    },
   },
   thead: {
     backgroundColor: theme.palette.active.main,
     '& th': {
-      border: 'none'
-    }
+      border: 'none',
+    },
   },
   deleteCustomerIcon: {
     width: 20,
     height: 20,
     color: theme.palette.black,
     '&:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   tableRow: {
     borderLeft: '4px solid transparent',
     '& > td': {
-      padding: '10px 16px'
+      padding: '10px 16px',
     },
     '&:nth-child(2n)': {
       backgroundColor: theme.palette.active.main,
       '&:hover': {
         borderLeft: `4px solid ${theme.palette.primary.main}`,
-        backgroundColor: theme.palette.active.main
-      }
+        backgroundColor: theme.palette.active.main,
+      },
     },
     '&:nth-child(2n+1)': {
       backgroundColor: 'white',
       '&:hover': {
         borderLeft: `4px solid ${theme.palette.primary.main}`,
-        backgroundColor: 'white'
-      }
-    }
+        backgroundColor: 'white',
+      },
+    },
   },
   paginationWrap: {
     display: 'flex',
     background: theme.palette.active.main,
     alignItems: 'center',
     margin: '32px 34px 27px 0px',
-    float: 'right'
+    float: 'right',
   },
   paginationIconBlock: {
     width: 30,
     height: 27,
     background: 'white',
     position: 'relative',
-    margin: '0px 10px 0px 10px'
+    margin: '0px 10px 0px 10px',
   },
   paginationIcon: {
     height: 12,
     position: 'absolute',
     top: 9,
-    left: 7
+    left: 7,
   },
   paginationText: {
     fontWeight: 600,
-    fontSize: 14
+    fontSize: 14,
   },
   toolbarWrap: {
     display: 'flex',
     background: theme.palette.active.main,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   perPageWrap: {
     marginTop: 37,
@@ -252,14 +249,14 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     '& .MuiInput-underline:before': {
-      display: 'none'
+      display: 'none',
     },
     '& .MuiInput-underline:after': {
-      display: 'none'
+      display: 'none',
     },
     '& .MuiSelect-select:focus': {
-      background: 'none'
-    }
+      background: 'none',
+    },
   },
   perPageSelect: {
     width: 66,
@@ -270,23 +267,23 @@ const useStyles = makeStyles(theme => ({
       paddingLeft: 13,
       paddingTop: 13,
       width: 66,
-      height: 27
-    }
+      height: 27,
+    },
   },
   MuiTableCell: {
     root: {
-      padding: '10px 16px'
-    }
+      padding: '10px 16px',
+    },
   },
   deleteCell: {
-    paddingRight: '38px !important'
+    paddingRight: '38px !important',
   },
   searchInput: {
     width: 362,
     height: 50,
     padding: '0px 19px',
     marginLeft: '9.4%',
-    marginTop: 26
+    marginTop: 26,
   },
   headCellContainer: {
     display: 'flex',
@@ -298,10 +295,10 @@ const useStyles = makeStyles(theme => ({
       '& svg': {
         position: 'absolute',
         right: -30,
-        top: 16
-      }
-    }
-  }
-}))
+        top: 16,
+      },
+    },
+  },
+}));
 
-export default useStyles
+export default useStyles;
