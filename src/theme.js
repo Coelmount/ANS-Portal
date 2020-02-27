@@ -12,7 +12,7 @@ const theme = createMuiTheme({
     },
     active: {
       main: '#F9F9F9',
-      lightBlue: '#00678F'
+      blue: '#00678F'
     },
     error: {
       main: red.A400
@@ -22,7 +22,7 @@ const theme = createMuiTheme({
     gray40: '#666666'
   },
   typography: {
-    fontFamily: ['"Open Sans"', 'sans-serif'].join(',')
+    fontFamily: ['"Open Sans"'].join(',')
   },
   overrides: {
     MuiSvgIcon: {

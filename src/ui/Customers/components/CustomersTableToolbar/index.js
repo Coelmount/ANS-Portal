@@ -1,11 +1,12 @@
 import React from 'react'
+import { withNamespaces } from 'react-i18next'
 
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 
-import ExpandMoreOutlinedIcon from '@material-ui/icons/ExpandMoreOutlined'
-
-import { withNamespaces } from 'react-i18next'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import SearchIcon from '@material-ui/icons/Search'
+import { Typography } from '@material-ui/core'
 
 const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
 
@@ -18,16 +19,20 @@ const CustomersTableToolbar = props => {
   }
   return (
     <div className={classes.toolbarWrap}>
-      <input
-        className={classes.searchInput}
-        placeholder={t('search_input_placeholder')}
-        onChange={handleSearch}
-      ></input>
+      <div className={classes.searchWrap}>
+        <input
+          className={classes.searchInput}
+          placeholder={t('search_input_placeholder')}
+          onChange={handleSearch}
+        />
+        <SearchIcon className={classes.searchIcon} />
+      </div>
+
       <div className={classes.perPageWrap}>
         <Select
           value={rowsPerPage}
           onChange={e => setRowsPerPage(e.target.value)}
-          IconComponent={ExpandMoreOutlinedIcon}
+          IconComponent={ArrowDropDownIcon}
           className={classes.perPageSelect}
         >
           {rowsPerPageNumbers.map(number => (
@@ -36,7 +41,7 @@ const CustomersTableToolbar = props => {
             </MenuItem>
           ))}
         </Select>
-        <p>{t('per_page')}</p>
+        <Typography>{t('per_page')}</Typography>
       </div>
     </div>
   )

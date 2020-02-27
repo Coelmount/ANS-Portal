@@ -10,11 +10,14 @@ const useStyles = makeStyles(theme => ({
     boxShadow: 'none'
   },
   titleWrap: {
-    display: 'flex'
+    display: 'flex',
+    height: 91,
+    alignItems: 'center',
+    paddingLeft: 62,
+    paddingRight: 34
   },
   title: {
     flex: '1 1 100%',
-    margin: '24px 0px 31px 64px',
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500,
@@ -34,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 25,
+    // marginTop: 25,
     marginRight: 8,
     '&:hover': {
       cursor: 'pointer'
@@ -47,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     width: 115,
     fontSize: 14,
     marginRight: 34,
-    marginTop: 28,
+    // marginTop: 28,
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
@@ -194,21 +197,21 @@ const useStyles = makeStyles(theme => ({
     }
   },
   tableRow: {
-    borderLeft: '4px solid transparent',
+    borderLeft: '9px solid transparent',
     '& > td': {
       padding: '10px 16px'
     },
     '&:nth-child(2n)': {
       backgroundColor: theme.palette.active.main,
       '&:hover': {
-        borderLeft: `4px solid ${theme.palette.primary.main}`,
+        borderLeft: `9px solid ${theme.palette.primary.main}`,
         backgroundColor: theme.palette.active.main
       }
     },
     '&:nth-child(2n+1)': {
       backgroundColor: 'white',
       '&:hover': {
-        borderLeft: `4px solid ${theme.palette.primary.main}`,
+        borderLeft: `9px solid ${theme.palette.primary.main}`,
         backgroundColor: 'white'
       }
     }
@@ -234,17 +237,28 @@ const useStyles = makeStyles(theme => ({
     left: 7
   },
   paginationText: {
-    fontWeight: 600,
-    fontSize: 14
+    fontWeight: 600
   },
   toolbarWrap: {
     display: 'flex',
     background: theme.palette.active.main,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 98,
+    paddingLeft: '9.4%',
+    paddingRight: 41
+  },
+  searchWrap: {
+    position: 'relative',
+    marginRight: 20
+  },
+  searchIcon: {
+    position: 'absolute',
+    top: 15,
+    right: 20,
+    color: theme.palette.black
   },
   perPageWrap: {
-    marginTop: 37,
-    marginRight: 41,
     display: 'flex',
     alignItems: 'center',
     '& .MuiInput-underline:before': {
@@ -267,6 +281,9 @@ const useStyles = makeStyles(theme => ({
       paddingTop: 13,
       width: 66,
       height: 27
+    },
+    '& svg': {
+      color: theme.palette.active.blue
     }
   },
   MuiTableCell: {
@@ -281,8 +298,8 @@ const useStyles = makeStyles(theme => ({
     width: 362,
     height: 50,
     padding: '0px 19px',
-    marginLeft: '9.4%',
-    marginTop: 26
+    border: 'none',
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
   },
   headCellContainer: {
     display: 'flex',
