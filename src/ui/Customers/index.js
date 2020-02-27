@@ -17,10 +17,13 @@ import DeleteModal from './components/DeleteModal'
 import CreateCustomer from './components/CreateCustomerModal'
 
 import useStyles from './styles'
+import Loading from 'components/Loading'
 
 const CustomersTable = observer(({ t }) => {
   const classes = useStyles()
-  const { rows, getCustomers, deleteCustomer } = useContext(CustomersStore)
+  const { rows, getCustomers, deleteCustomer, isLoadingCustomers } = useContext(
+    CustomersStore
+  )
   const { setDefaultValues } = useContext(CreateCustomerStore)
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
@@ -98,35 +101,39 @@ const CustomersTable = observer(({ t }) => {
           setRowsPerPage={setRowsPerPage}
           setQuery={setQuery}
         />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby='tableTitle'
-            size={'medium'}
-            aria-label='enhanced table'
-          >
-            <CustomersTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-              rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
-              page={page}
-            />
-            <CustomersTableBody
-              classes={classes}
-              rowsPerPage={rowsPerPage}
-              rows={rows}
-              page={page}
-              order={order}
-              orderBy={orderBy}
-              list={list}
-              handleOpen={handleOpenDeleteModal}
-            />
-          </Table>
-        </TableContainer>
+        {isLoadingCustomers ? (
+          <Loading />
+        ) : (
+          <TableContainer>
+            <Table
+              className={classes.table}
+              aria-labelledby='tableTitle'
+              size={'medium'}
+              aria-label='enhanced table'
+            >
+              <CustomersTableHead
+                classes={classes}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                page={page}
+              />
+              <CustomersTableBody
+                classes={classes}
+                rowsPerPage={rowsPerPage}
+                rows={rows}
+                page={page}
+                order={order}
+                orderBy={orderBy}
+                list={list}
+                handleOpen={handleOpenDeleteModal}
+              />
+            </Table>
+          </TableContainer>
+        )}
         <Pagination
           classes={classes}
           page={page}

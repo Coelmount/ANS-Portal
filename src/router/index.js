@@ -2,6 +2,8 @@ import React, { useContext, useEffect, Fragment } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
+import Loading from 'components/Loading'
+
 import DefaultLayout from 'components/DefaultLayout'
 import Auth from 'ui/Auth'
 import Customers from 'ui/Customers'
@@ -12,6 +14,7 @@ import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
 
 import AuthStore from 'stores/Auth'
+import LanguagesStore from 'stores/Languages'
 
 export const ROUTS = {
   auth: '/',
@@ -72,8 +75,14 @@ const authRoutes = [
     component: Auth
   }
 ]
+
 const UserPages = () => {
-  return (
+  const { getLocale, isLoadingLang, lang } = useContext(LanguagesStore)
+  useEffect(() => {
+    console.log(123)
+    getLocale(localStorage.getItem('i18nextLng'))
+  }, [lang])
+  return !isLoadingLang ? (
     <Switch>
       <Fragment>
         <div style={{ paddingTop: 66 }}>
@@ -89,6 +98,8 @@ const UserPages = () => {
         </div>
       </Fragment>
     </Switch>
+  ) : (
+    <Loading />
   )
 }
 
@@ -104,10 +115,15 @@ const AuthPages = () => {
 
 const Router = () => {
   const { getLocal, isAuthorized } = useContext(AuthStore)
+  const { getLocale, isLoadingLang, lang } = useContext(LanguagesStore)
 
   useEffect(() => {
     getLocal()
   }, [getLocal])
+
+  useEffect(() => {
+    getLocale(localStorage.getItem('i18nextLng'))
+  }, [lang])
 
   return (
     <Switch>

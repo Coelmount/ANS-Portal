@@ -5,11 +5,14 @@ import axios from 'utils/axios'
 
 export class CustomersStore {
   rows = []
+  isLoadingCustomers = true
 
   getCustomers = () => {
+    this.isLoadingCustomers = true
     axios.get(`/tenants/`).then(res => {
       if (res.status === 200) {
         this.rows = res.data.tenants
+        this.isLoadingCustomers = false
       } else {
         console.log(res, 'error')
       }
@@ -23,6 +26,7 @@ export class CustomersStore {
 
 decorate(CustomersStore, {
   rows: observable,
+  isLoadingCustomers: observable,
   getCustomers: action,
   deleteCustomer: action
 })
