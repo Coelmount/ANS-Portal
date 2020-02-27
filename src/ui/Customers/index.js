@@ -24,6 +24,7 @@ const CustomersTable = observer(({ t }) => {
   const { rows, getCustomers, deleteCustomer, isLoadingCustomers } = useContext(
     CustomersStore
   )
+  console.log(isLoadingCustomers, 'isLoadingCustomers')
   const { setDefaultValues } = useContext(CreateCustomerStore)
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')

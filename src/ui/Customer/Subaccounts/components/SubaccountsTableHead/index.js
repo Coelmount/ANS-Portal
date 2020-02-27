@@ -1,35 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { withNamespaces } from 'react-i18next'
 
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 
-import { withNamespaces } from 'react-i18next'
-
-const CustomersTableHead = props => {
+const SubaccountsTableHead = props => {
   const { classes, order, orderBy, onRequestSort, t } = props
 
   const headCells = [
     { id: 'id', numeric: true, disablePadding: false, label: '' },
     {
-      id: 'tenantId',
+      id: 'groupId',
       numeric: false,
       disablePadding: false,
       label: 'ID'
     },
     {
-      id: 'name',
+      id: 'groupName',
       numeric: false,
       disablePadding: false,
       label: 'name'
-    },
-    {
-      id: 'status',
-      numeric: false,
-      disablePadding: false,
-      label: 'status'
     },
     {
       id: 'delete'
@@ -74,7 +67,7 @@ const CustomersTableHead = props => {
   )
 }
 
-CustomersTableHead.propTypes = {
+SubaccountsTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
@@ -82,4 +75,4 @@ CustomersTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired
 }
 
-export default withNamespaces()(CustomersTableHead)
+export default withNamespaces()(SubaccountsTableHead)

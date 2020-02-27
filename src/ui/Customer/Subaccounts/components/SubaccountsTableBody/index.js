@@ -45,8 +45,8 @@ const descendingComparator = (a, b, orderBy) => {
   return 0
 }
 
-const CustomersTableBody = props => {
-  const { classes, rowsPerPage, page, order, orderBy, list } = props
+const SubaccountsTableBody = props => {
+  let { classes, rowsPerPage, page, order, orderBy, list, handleOpen } = props
 
   const linkStyles = useStyles()
 
@@ -61,7 +61,7 @@ const CustomersTableBody = props => {
               hover
               className={classes.tableRow}
               tabIndex={-1}
-              key={row.name}
+              key={row.groupName}
             >
               <TableCell className={classes.bodyFirstCell}>
                 {index + 1}
@@ -69,19 +69,19 @@ const CustomersTableBody = props => {
               <TableCell component='th' id={labelId} scope='row'>
                 <Link
                   className={linkStyles.link}
-                  to={`/customers/${row.tenantId}/subaccounts`}
+                  to={`/customers/${row.tenantId}/access-numbers`}
                 >
-                  {row.tenantId}
+                  {row.groupId}
                 </Link>
               </TableCell>
               <TableCell component='th' id={labelId} scope='row'>
-                {row.name}
-              </TableCell>
-              <TableCell component='th' id={labelId} scope='row'>
-                {'active'}
+                {row.groupName}
               </TableCell>
               <TableCell className={classes.deleteCell} align='right'>
-                <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
+                <CloseOutlinedIcon
+                  onClick={() => handleOpen(row.tenantId, row.name)}
+                  className={classes.deleteCustomerIcon}
+                />
               </TableCell>
             </TableRow>
           )
@@ -90,4 +90,4 @@ const CustomersTableBody = props => {
   )
 }
 
-export default CustomersTableBody
+export default SubaccountsTableBody

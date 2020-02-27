@@ -17,8 +17,10 @@ const Pagination = props => {
           onClick={() => handleChangePage('decrease')}
         />
       </div>
-      <p className={classes.paginationText}>{`${page + 1} of ${totalPages +
-        1}`}</p>
+      <p>
+        <span className={classes.paginationText}>{`${page + 1}`}</span>
+        {` of ${totalPages + 1}`}
+      </p>
       <div className={classes.paginationIconBlock}>
         <ArrowForwardIosIcon
           className={classes.paginationIcon}

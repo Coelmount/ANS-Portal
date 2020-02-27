@@ -49,7 +49,6 @@ const useStyles = makeStyles(theme => ({
   addCustomerTitle: {
     width: 115,
     fontSize: 14,
-    marginRight: 34,
     // marginTop: 28,
     fontFamily: 'MTN',
     fontStyle: 'normal',
@@ -170,7 +169,8 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '37px'
   },
   headCellTitle: {
-    paddingBottom: '0px',
+    paddingBottom: 0,
+    paddingTop: 0,
     '& span': {
       fontWeight: 600,
       fontSize: 16
@@ -246,7 +246,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     height: 98,
     paddingLeft: '9.4%',
-    paddingRight: 41
+    paddingRight: 55
   },
   searchWrap: {
     position: 'relative',

@@ -257,7 +257,6 @@ const DefaultLayout = props => {
       <List>
         {match.customerId
           ? customerNavLinks.map(navLink => {
-              console.log(navLink.icon)
               let iconComponent = React.createElement(navLink.icon, {
                 className: 'sidebarIcon'
               })
