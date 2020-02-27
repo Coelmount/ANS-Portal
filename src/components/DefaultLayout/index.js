@@ -25,6 +25,7 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'
 import ExpandMoreOutlinedIcon from '@material-ui/icons/ExpandMoreOutlined'
 
 import AuthStore from 'stores/Auth'
+import LanguagesStore from 'stores/Languages'
 
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 import { LANGUAGES } from 'source/config'
@@ -178,12 +179,14 @@ const DefaultLayout = props => {
   const theme = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
   const { user, logOut } = useContext(AuthStore)
+  const { getLocale } = useContext(LanguagesStore)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
 
   const changeLanguage = lng => {
+    getLocale(lng)
     i18n.changeLanguage(lng)
   }
 
