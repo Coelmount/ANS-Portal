@@ -15,6 +15,14 @@ export class LanguagesStore {
     axios
       .get(`/configs/applications/ANS_portal/${lang}`)
       .then(res => {
+        try {
+          JSON.parse(res.data.data)
+        } catch (e) {
+          console.error(e)
+          localStorage.setItem('i18nextLng', 'en')
+          this.isLoadingLang = false
+          return
+        }
         i18n.addResourceBundle(
           lang,
           'translation',
