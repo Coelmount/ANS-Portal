@@ -22,7 +22,7 @@ const theme = createMuiTheme({
     gray40: '#666666'
   },
   typography: {
-    fontFamily: ['"Open Sans"'].join(',')
+    fontFamily: ['"Open Sans"', 'sans-serif'].join(',')
   },
   overrides: {
     MuiSvgIcon: {

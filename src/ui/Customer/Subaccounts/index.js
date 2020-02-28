@@ -14,7 +14,7 @@ import SubaccountsTableHead from './components/SubaccountsTableHead'
 import SubaccountsTableBody from './components/SubaccountsTableBody'
 import Pagination from './components/Pagination'
 import DeleteModal from './components/DeleteModal'
-import CreateCustomer from './components/CreateCustomerModal'
+// import CreateCustomer from './components/CreateCustomerModal'
 
 import useStyles from './styles'
 import Loading from 'components/Loading'
@@ -154,12 +154,12 @@ const CustomersTable = observer(props => {
             customerToDelete={customerToDelete}
           />
         )}
-        {isOpenCreateCustomer && (
+        {/* {isOpenCreateCustomer && (
           <CreateCustomer
             open={isOpenCreateCustomer}
             handleClose={handleCloseCreateCustomer}
           />
-        )}
+        )} */}
       </Paper>
     </div>
   )

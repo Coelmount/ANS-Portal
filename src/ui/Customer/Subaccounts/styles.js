@@ -191,27 +191,28 @@ const useStyles = makeStyles(theme => ({
   deleteCustomerIcon: {
     width: 20,
     height: 20,
+    marginTop: 7,
     color: theme.palette.black,
     '&:hover': {
       cursor: 'pointer'
     }
   },
   tableRow: {
-    borderLeft: '9px solid transparent',
+    borderLeft: '5px solid transparent',
     '& > td': {
       padding: '10px 16px'
     },
     '&:nth-child(2n)': {
       backgroundColor: theme.palette.active.main,
       '&:hover': {
-        borderLeft: `9px solid ${theme.palette.primary.main}`,
+        borderLeft: `5px solid ${theme.palette.primary.main}`,
         backgroundColor: theme.palette.active.main
       }
     },
     '&:nth-child(2n+1)': {
       backgroundColor: 'white',
       '&:hover': {
-        borderLeft: `9px solid ${theme.palette.primary.main}`,
+        borderLeft: `5px solid ${theme.palette.primary.main}`,
         backgroundColor: 'white'
       }
     }
@@ -271,19 +272,26 @@ const useStyles = makeStyles(theme => ({
       background: 'none'
     }
   },
+  perPageText: {
+    fontSize: 14
+  },
   perPageSelect: {
+    display: 'flex',
+    alignItems: 'center',
     width: 66,
     height: 40,
     background: 'white',
     marginRight: 7,
     '& div': {
-      paddingLeft: 13,
-      paddingTop: 13,
+      paddingLeft: 16,
+      paddingTop: 8,
       width: 66,
-      height: 27
+      fontSize: 14
     },
     '& svg': {
-      color: theme.palette.active.blue
+      color: theme.palette.active.blue,
+      top: 11,
+      right: 7
     }
   },
   MuiTableCell: {

@@ -41,7 +41,7 @@ const CustomersTableToolbar = props => {
             </MenuItem>
           ))}
         </Select>
-        <Typography>{t('per_page')}</Typography>
+        <Typography className={classes.perPageText}>{t('per_page')}</Typography>
       </div>
     </div>
   )
