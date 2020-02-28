@@ -20,7 +20,13 @@ export class CustomersStore {
   }
 
   deleteCustomer = id => {
-    axios.delete(`/tenants/${id}/`)
+    this.isLoadingCustomers = true
+    axios.delete(`/tenants/${id}/`).then(res => {
+      if (res.status === 200) {
+        this.getCustomers()
+        this.isLoadingCustomers = false
+      }
+    })
   }
 }
 

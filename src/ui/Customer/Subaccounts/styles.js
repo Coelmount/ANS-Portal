@@ -37,7 +37,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    // marginTop: 25,
     marginRight: 8,
     '&:hover': {
       cursor: 'pointer'
@@ -47,9 +46,8 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.black
   },
   addCustomerTitle: {
-    width: 115,
+    width: 165,
     fontSize: 14,
-    // marginTop: 28,
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
@@ -98,10 +96,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '55px 10px 23px 0px'
+    padding: '55px 0px 23px 0px'
   },
   deleteMainText: {
-    margin: '0px 50px 0px 50px'
+    width: 450,
+    marginLeft: 10
   },
   boldText: {
     fontWeight: 'bold'

@@ -20,7 +20,7 @@ const TitleBlock = ({ classes, t, handleOpen }) => {
           />
         </Box>
         <Typography className={classes.addCustomerTitle}>
-          Add subaccount
+          {t('add_subaccount')}
         </Typography>
       </Box>
     </Box>

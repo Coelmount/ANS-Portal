@@ -26,7 +26,8 @@ const CustomersTable = observer(props => {
     rows,
     getSubaccounts,
     deleteSubaccount,
-    isLoadingSubaccounts
+    isLoadingSubaccounts,
+    deleteModalOpen
   } = useContext(SubaccountsStore)
 
   const { setDefaultValues } = useContext(CreateCustomerStore)
@@ -37,7 +38,7 @@ const CustomersTable = observer(props => {
   const [totalPages, setTotalPages] = useState(0)
   const [query, setQuery] = useState('')
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [customerToDelete, setCustomerToDelete] = useState({})
+  const [subaccountToDelete, setSubaccountToDelete] = useState({})
   const [isOpenCreateCustomer, setIsOpenCreateCustomer] = useState(false)
 
   const list = query
@@ -53,13 +54,17 @@ const CustomersTable = observer(props => {
   }, [getSubaccounts, match.params.customerId])
 
   useEffect(() => {
-    const pages = Math.floor(list.length / rowsPerPage)
-    setTotalPages(pages)
+    const pages = Math.ceil(list.length / rowsPerPage)
+    setTotalPages(pages - 1)
   }, [list.length, rowsPerPage])
 
   useEffect(() => {
     if (page > totalPages) setPage(0)
   }, [totalPages, page])
+
+  // useEffect(() => {
+  //   getSubaccounts(match.params.customerId)
+  // }, [getSubaccounts, match.params.customerId, list.length])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -77,7 +82,7 @@ const CustomersTable = observer(props => {
 
   const handleOpenDeleteModal = (id, name) => {
     setIsDeleteModalOpen(true)
-    setCustomerToDelete({ id, name })
+    setSubaccountToDelete({ id, name })
   }
 
   const handleCloseDeleteModal = () => {
@@ -93,9 +98,16 @@ const CustomersTable = observer(props => {
     setIsOpenCreateCustomer(true)
   }
 
-  const handleDelete = id => {
-    deleteSubaccount(id)
+  const handleDelete = groupId => {
+    const payload = {
+      tenantId: match.params.customerId,
+      groupId,
+      callback: setIsDeleteModalOpen
+    }
+    deleteSubaccount(payload)
+    // setIsDeleteModalOpen(false)
   }
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -151,7 +163,7 @@ const CustomersTable = observer(props => {
             open={isDeleteModalOpen}
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
-            customerToDelete={customerToDelete}
+            subaccountToDelete={subaccountToDelete}
           />
         )}
         {/* {isOpenCreateCustomer && (

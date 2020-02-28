@@ -69,7 +69,7 @@ const SubaccountsTableBody = props => {
               <TableCell component='th' id={labelId} scope='row'>
                 <Link
                   className={linkStyles.link}
-                  to={`/customers/${row.tenantId}/access-numbers`}
+                  to={`/customers/${row.groupId}/access-numbers`}
                 >
                   {row.groupId}
                 </Link>
@@ -79,7 +79,7 @@ const SubaccountsTableBody = props => {
               </TableCell>
               <TableCell className={classes.deleteCell} align='right'>
                 <CloseOutlinedIcon
-                  onClick={() => handleOpen(row.tenantId, row.name)}
+                  onClick={() => handleOpen(row.groupId, row.groupName)}
                   className={classes.deleteCustomerIcon}
                 />
               </TableCell>

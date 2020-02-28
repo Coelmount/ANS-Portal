@@ -79,9 +79,8 @@ const authRoutes = [
 const UserPages = () => {
   const { getLocale, isLoadingLang, lang } = useContext(LanguagesStore)
   useEffect(() => {
-    console.log(123)
     getLocale(localStorage.getItem('i18nextLng'))
-  }, [lang])
+  }, [getLocale, lang])
   return !isLoadingLang ? (
     <Switch>
       <Fragment>
@@ -123,7 +122,7 @@ const Router = () => {
 
   useEffect(() => {
     getLocale(localStorage.getItem('i18nextLng'))
-  }, [lang])
+  }, [getLocale, lang])
 
   return (
     <Switch>

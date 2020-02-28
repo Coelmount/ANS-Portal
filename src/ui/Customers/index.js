@@ -24,7 +24,6 @@ const CustomersTable = observer(({ t }) => {
   const { rows, getCustomers, deleteCustomer, isLoadingCustomers } = useContext(
     CustomersStore
   )
-  console.log(isLoadingCustomers, 'isLoadingCustomers')
   const { setDefaultValues } = useContext(CreateCustomerStore)
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
@@ -91,6 +90,7 @@ const CustomersTable = observer(({ t }) => {
 
   const handleDelete = id => {
     deleteCustomer(id)
+    setIsDeleteModalOpen(false)
   }
   return (
     <div className={classes.root}>
@@ -162,3 +162,34 @@ const CustomersTable = observer(({ t }) => {
 })
 
 export default withNamespaces()(CustomersTable)
+
+// const a = [
+//   {
+//     b: 2,
+//     c: 4,
+//     d: 8
+//   },
+//   {
+//     b: 2,
+//     c: 4,
+//     d: 8
+//   }
+// ]
+
+// const columns = [
+//   {
+//     dataKey: 'b',
+//     caption: 'Caption b',
+//     transfromCellData: cellData => (
+//       <Link to={`/haha1/${cellData.path}`}>{cellData}</Link>
+//     )
+//   },
+//   {
+//     caption: '',
+//     transformCellData: (cellData, rowData) => 'X'
+//   }
+// ]
+
+// const getRowData = index => a[index]
+
+// ;<Table getRowData={getRowData} />

@@ -19,8 +19,17 @@ export class SubaccountsStore {
     })
   }
 
-  deleteSubaccount = id => {
-    axios.delete(`/tenants/${id}/groups`)
+  deleteSubaccount = ({ tenantId, groupId, callback }) => {
+    this.isLoadingSubaccounts = true
+    axios.delete(`/tenants/${tenantId}/groups/${groupId}/`).then(res => {
+      if (res.status === 200) {
+        this.getSubaccounts(tenantId)
+        callback()
+        this.isLoadingSubaccounts = false
+      } else {
+        console.log(res, 'error')
+      }
+    })
   }
 }
 
