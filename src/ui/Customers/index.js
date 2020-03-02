@@ -53,8 +53,9 @@ const CustomersTable = observer(({ t }) => {
   }, [getCustomers])
 
   useEffect(() => {
-    const pages = Math.floor(list.length / rowsPerPage)
-    setTotalPages(pages)
+    const pages = Math.ceil(list.length / rowsPerPage)
+    if (pages === 0) setTotalPages(0)
+    else setTotalPages(pages - 1)
   }, [list.length, rowsPerPage])
 
   useEffect(() => {

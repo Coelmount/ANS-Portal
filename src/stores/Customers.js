@@ -34,21 +34,19 @@ export class CustomersStore {
   }
   // test method ****
   // addCustomer = () => {
-  //   for (let i = 0; i < 1; i++) {
-  //     axios
-  //       .post(`/tenants/ent00001_admin/groups/`, {
-  //         groupId: `${i}foogroup_new`,
-  //         groupName: `${i}Foo Group New`,
-  //         userLimit: 25
-  //       })
-  //       .then(res => {
-  //         if (res.status === 200) {
-  //           console.log('added')
-  //         } else {
-  //           console.log(res, 'error')
-  //         }
-  //       })
-  //   }
+  //   axios
+  //     .post(`/tenants/ent00001_admin/groups/`, {
+  //       groupId: `testId6`,
+  //       groupName: `Foo Group New`,
+  //       userLimit: 25
+  //     })
+  //     .then(res => {
+  //       if (res.status === 200) {
+  //         console.log('added')
+  //       } else {
+  //         console.log(res, 'error')
+  //       }
+  //     })
   // }
 }
 decorate(CustomersStore, {

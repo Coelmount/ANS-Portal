@@ -60,7 +60,8 @@ const CustomersTable = observer(props => {
 
   useEffect(() => {
     const pages = Math.ceil(list.length / rowsPerPage)
-    setTotalPages(pages - 1)
+    if (pages === 0) setTotalPages(0)
+    else setTotalPages(pages - 1)
   }, [list.length, rowsPerPage])
 
   useEffect(() => {
