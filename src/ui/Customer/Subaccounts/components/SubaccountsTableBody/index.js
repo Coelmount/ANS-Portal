@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import { withNamespaces } from 'react-i18next'
 
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -47,7 +48,16 @@ const descendingComparator = (a, b, orderBy) => {
 }
 
 const SubaccountsTableBody = props => {
-  let { classes, rowsPerPage, page, order, orderBy, list, handleOpen } = props
+  let {
+    classes,
+    rowsPerPage,
+    page,
+    order,
+    orderBy,
+    list,
+    handleOpen,
+    t
+  } = props
   const linkStyles = useStyles()
 
   return (
@@ -91,11 +101,11 @@ const SubaccountsTableBody = props => {
         </TableBody>
       ) : (
         <Typography className={classes.tableMessage}>
-          No subaccounts yet
+          {t('no_subaccounts_yet')}
         </Typography>
       )}
     </Fragment>
   )
 }
 
-export default SubaccountsTableBody
+export default withNamespaces()(SubaccountsTableBody)

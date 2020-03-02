@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.black
   },
   addCustomerTitle: {
-    width: 115,
+    whiteSpace: 'nowrap',
     fontSize: 14,
     fontFamily: 'MTN',
     fontStyle: 'normal',

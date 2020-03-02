@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.black
   },
   addCustomerTitle: {
-    width: 165,
+    whiteSpace: 'nowrap',
     fontSize: 14,
     fontFamily: 'MTN',
     fontStyle: 'normal',
@@ -262,7 +262,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 98,
-    paddingLeft: '11.5%',
+    paddingLeft: '13%',
     paddingRight: 41
   },
   searchWrap: {
