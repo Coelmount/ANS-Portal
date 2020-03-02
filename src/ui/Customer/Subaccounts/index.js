@@ -136,7 +136,6 @@ const CustomersTable = observer(props => {
               <SubaccountsTableBody
                 classes={classes}
                 rowsPerPage={rowsPerPage}
-                rows={rows}
                 page={page}
                 order={order}
                 orderBy={orderBy}

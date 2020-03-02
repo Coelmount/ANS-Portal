@@ -182,6 +182,10 @@ const useStyles = makeStyles(theme => ({
       paddingRight: 33
     }
   },
+  tableMessage: {
+    paddingLeft: '24%',
+    fontSize: 14
+  },
   thead: {
     backgroundColor: theme.palette.active.main,
     '& th': {
