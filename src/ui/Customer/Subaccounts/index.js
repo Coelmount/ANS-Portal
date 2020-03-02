@@ -27,7 +27,7 @@ const CustomersTable = observer(props => {
     getSubaccounts,
     deleteSubaccount,
     isLoadingSubaccounts,
-    deleteModalOpen
+    isDeletingSubaccount
   } = useContext(SubaccountsStore)
 
   const { setDefaultValues } = useContext(CreateCustomerStore)
@@ -61,10 +61,6 @@ const CustomersTable = observer(props => {
   useEffect(() => {
     if (page > totalPages) setPage(0)
   }, [totalPages, page])
-
-  // useEffect(() => {
-  //   getSubaccounts(match.params.customerId)
-  // }, [getSubaccounts, match.params.customerId, list.length])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -105,7 +101,6 @@ const CustomersTable = observer(props => {
       callback: setIsDeleteModalOpen
     }
     deleteSubaccount(payload)
-    // setIsDeleteModalOpen(false)
   }
 
   return (
@@ -164,6 +159,7 @@ const CustomersTable = observer(props => {
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
             subaccountToDelete={subaccountToDelete}
+            isDeletingSubaccount={isDeletingSubaccount}
           />
         )}
         {/* {isOpenCreateCustomer && (

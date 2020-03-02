@@ -6,6 +6,7 @@ import axios from 'utils/axios'
 export class SubaccountsStore {
   rows = []
   isLoadingSubaccounts = true
+  isDeletingSubaccount = false
 
   getSubaccounts = id => {
     this.isLoadingSubaccounts = true
@@ -20,12 +21,12 @@ export class SubaccountsStore {
   }
 
   deleteSubaccount = ({ tenantId, groupId, callback }) => {
-    this.isLoadingSubaccounts = true
+    this.isDeletingSubaccount = true
     axios.delete(`/tenants/${tenantId}/groups/${groupId}/`).then(res => {
       if (res.status === 200) {
         this.getSubaccounts(tenantId)
         callback()
-        this.isLoadingSubaccounts = false
+        this.isDeletingSubaccount = false
       } else {
         console.log(res, 'error')
       }
@@ -36,6 +37,7 @@ export class SubaccountsStore {
 decorate(SubaccountsStore, {
   rows: observable,
   isLoadingSubaccounts: observable,
+  isDeletingSubaccount: observable,
   getSubaccounts: action,
   deleteSubaccount: action
 })

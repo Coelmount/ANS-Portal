@@ -21,9 +21,13 @@ import Loading from 'components/Loading'
 
 const CustomersTable = observer(({ t }) => {
   const classes = useStyles()
-  const { rows, getCustomers, deleteCustomer, isLoadingCustomers } = useContext(
-    CustomersStore
-  )
+  const {
+    rows,
+    getCustomers,
+    deleteCustomer,
+    isLoadingCustomers,
+    isDeletingCustomer
+  } = useContext(CustomersStore)
   const { setDefaultValues } = useContext(CreateCustomerStore)
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
@@ -89,9 +93,13 @@ const CustomersTable = observer(({ t }) => {
   }
 
   const handleDelete = id => {
-    deleteCustomer(id)
-    setIsDeleteModalOpen(false)
+    const payload = {
+      id,
+      callback: setIsDeleteModalOpen
+    }
+    deleteCustomer(payload)
   }
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -148,6 +156,7 @@ const CustomersTable = observer(({ t }) => {
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
             customerToDelete={customerToDelete}
+            isDeletingCustomer={isDeletingCustomer}
           />
         )}
         {isOpenCreateCustomer && (

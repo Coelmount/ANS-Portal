@@ -6,6 +6,7 @@ import axios from 'utils/axios'
 export class CustomersStore {
   rows = []
   isLoadingCustomers = true
+  isDeletingCustomer = false
 
   getCustomers = () => {
     this.isLoadingCustomers = true
@@ -19,12 +20,15 @@ export class CustomersStore {
     })
   }
 
-  deleteCustomer = id => {
-    this.isLoadingCustomers = true
+  deleteCustomer = ({ id, callback }) => {
+    this.isDeletingCustomer = true
     axios.delete(`/tenants/${id}/`).then(res => {
       if (res.status === 200) {
         this.getCustomers()
-        this.isLoadingCustomers = false
+        callback()
+        this.isDeletingCustomer = false
+      } else {
+        console.log(res, 'error')
       }
     })
   }
@@ -33,6 +37,7 @@ export class CustomersStore {
 decorate(CustomersStore, {
   rows: observable,
   isLoadingCustomers: observable,
+  isDeletingCustomer: observable,
   getCustomers: action,
   deleteCustomer: action
 })

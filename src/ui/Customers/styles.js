@@ -54,7 +54,8 @@ const useStyles = makeStyles(theme => ({
   },
   deleteModal: {
     '& .MuiDialog-paperWidthSm': {
-      width: '646px',
+      width: 646,
+      minHeight: 350,
       display: 'flex',
       flexDirection: 'column',
       boxShadow: theme.shadows[5],
