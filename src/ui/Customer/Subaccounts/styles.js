@@ -9,6 +9,18 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
     boxShadow: 'none'
   },
+  breadcrumbsWrap: {
+    paddingLeft: 62,
+    paddingTop: 24,
+    color: theme.palette.gray40
+  },
+  link: {
+    color: theme.palette.secondary.main,
+    textDecoration: 'none',
+    '&:focus': {
+      color: '#598597'
+    }
+  },
   titleWrap: {
     display: 'flex',
     height: 91,
@@ -250,7 +262,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 98,
-    paddingLeft: '9.4%',
+    paddingLeft: '11.5%',
     paddingRight: 41
   },
   searchWrap: {

@@ -104,7 +104,6 @@ const CustomersTable = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <button onClick={addCustomer}>add</button>
         <TitleBlock classes={classes} handleOpen={handleOpenCreateCustomer} />
         <CustomersTableToolbar
           classes={classes}

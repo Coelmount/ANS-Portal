@@ -21,7 +21,7 @@ const DeleteModal = props => {
     t
   } = props
   const { name, id } = subaccountToDelete
-  console.log(isDeletingSubaccount, 'isDeletingSubaccount')
+
   return (
     <Dialog
       className={classes.deleteModal}
