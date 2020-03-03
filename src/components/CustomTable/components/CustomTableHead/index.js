@@ -7,27 +7,8 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 
-const SubaccountsTableHead = props => {
-  const { classes, order, orderBy, onRequestSort, t } = props
-
-  const headCells = [
-    { id: 'id', numeric: true, disablePadding: false, label: '' },
-    {
-      id: 'groupId',
-      numeric: false,
-      disablePadding: false,
-      label: 'ID'
-    },
-    {
-      id: 'groupName',
-      numeric: false,
-      disablePadding: false,
-      label: 'name'
-    },
-    {
-      id: 'delete'
-    }
-  ]
+const CustomersTableHead = props => {
+  const { classes, order, orderBy, onRequestSort, columns, t } = props
 
   const createSortHandler = property => event => {
     onRequestSort(event, property)
@@ -36,15 +17,17 @@ const SubaccountsTableHead = props => {
   return (
     <TableHead className={classes.thead}>
       <TableRow>
-        {headCells.map(headCell => (
-          <TableCell
-            key={headCell.id}
-            align={'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-            className={classes.headCellTitle}
-          >
-            {headCell.id !== 'id' && (
+        <TableCell></TableCell>
+        {columns.map(headCell => {
+          const extraHeadProps = headCell.extraHeadProps
+          return (
+            <TableCell
+              key={headCell.id}
+              align={'left'}
+              sortDirection={orderBy === headCell.id ? order : false}
+              className={classes.headCellTitle}
+              {...extraHeadProps}
+            >
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
@@ -59,15 +42,15 @@ const SubaccountsTableHead = props => {
                   </p>
                 ) : null}
               </TableSortLabel>
-            )}
-          </TableCell>
-        ))}
+            </TableCell>
+          )
+        })}
       </TableRow>
     </TableHead>
   )
 }
 
-SubaccountsTableHead.propTypes = {
+CustomersTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
@@ -75,4 +58,4 @@ SubaccountsTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired
 }
 
-export default withNamespaces()(SubaccountsTableHead)
+export default withNamespaces()(CustomersTableHead)

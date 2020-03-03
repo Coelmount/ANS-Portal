@@ -182,6 +182,13 @@ const useStyles = makeStyles(theme => ({
       paddingRight: 33
     }
   },
+  link: {
+    color: theme.palette.secondary.main,
+    textDecoration: 'none',
+    '&:focus': {
+      color: '#598597'
+    }
+  },
   tableMessage: {
     paddingLeft: '24%',
     fontSize: 14

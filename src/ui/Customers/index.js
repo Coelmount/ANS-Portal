@@ -1,81 +1,87 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
-import Table from '@material-ui/core/Table'
-import TableContainer from '@material-ui/core/TableContainer'
 import Paper from '@material-ui/core/Paper'
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
 import TitleBlock from './components/TitleBlock'
-// import CustomersTableToolbar from './components/CustomersTableToolbar'
-// import CustomersTableHead from './components/CustomersTableHead'
-// import CustomersTableBody from './components/CustomersTableBody'
-// import Pagination from './components/Pagination'
 import DeleteModal from './components/DeleteModal'
-import CreateCustomer from './components/CreateCustomerModal'
+// import CreateCustomer from './components/CreateCustomerModal'
 import CustomTable from 'components/CustomTable'
 
 import useStyles from './styles'
-import Loading from 'components/Loading'
 
-const CustomersTable = observer(({ t }) => {
+const CustomersTable = observer(() => {
   const classes = useStyles()
   const {
     rows,
     getCustomers,
     deleteCustomer,
     isLoadingCustomers,
-    isDeletingCustomer,
-    addCustomer
+    isDeletingCustomer
+    // addCustomer
   } = useContext(CustomersStore)
+
   const { setDefaultValues } = useContext(CreateCustomerStore)
-  // const [order, setOrder] = useState('asc')
-  // const [orderBy, setOrderBy] = useState('id')
-  // const [page, setPage] = useState(0)
-  // const [rowsPerPage, setRowsPerPage] = useState(5)
-  // const [totalPages, setTotalPages] = useState(0)
-  const [query, setQuery] = useState('')
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [customerToDelete, setCustomerToDelete] = useState({})
   const [isOpenCreateCustomer, setIsOpenCreateCustomer] = useState(false)
-
-  // const list = query
-  //   ? rows.filter(
-  //       row =>
-  //         row.tenantId.toLowerCase().includes(query) ||
-  //         row.name.toLowerCase().includes(query)
-  //     )
-  //   : rows
 
   useEffect(() => {
     getCustomers()
   }, [getCustomers])
 
-  // useEffect(() => {
-  //   const pages = Math.ceil(list.length / rowsPerPage)
-  //   if (pages === 0) setTotalPages(0)
-  //   else setTotalPages(pages - 1)
-  // }, [list.length])
-
-  // useEffect(() => {
-  //   if (page > totalPages) setPage(0)
-  // }, [])
-
-  // const handleRequestSort = (event, property) => {
-  //   const isAsc = orderBy === property && order === 'asc'
-  //   setOrder(isAsc ? 'desc' : 'asc')
-  //   setOrderBy(property)
-  // }
-
-  // const handleChangePage = action => {
-  //   if (action === 'increase' && page < totalPages) {
-  //     setPage(page + 1)
-  //   } else if (action === 'decrease' && page > 0) {
-  //     setPage(page - 1)
-  //   }
-  // }
+  const columns = [
+    {
+      id: 'tenantId',
+      numeric: false,
+      extraProps: {
+        scope: 'row'
+      },
+      label: 'ID',
+      getCellData: row => (
+        <Link
+          to={`/customers/${row.tenantId}/access-numbers`}
+          className={classes.link}
+        >
+          {row.tenantId}
+        </Link>
+      )
+    },
+    {
+      id: 'name',
+      numeric: false,
+      label: 'name',
+      extraProps: {
+        scope: 'row'
+      }
+    },
+    {
+      id: 'status',
+      numeric: false,
+      label: 'status',
+      extraProps: {
+        scope: 'row'
+      }
+    },
+    {
+      id: 'delete',
+      extraProps: {
+        className: classes.deleteCell,
+        align: 'right'
+      },
+      getCellData: row => (
+        <CloseOutlinedIcon
+          onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
+          className={classes.deleteCustomerIcon}
+        />
+      )
+    }
+  ]
 
   const handleOpenDeleteModal = (id, name) => {
     setIsDeleteModalOpen(true)
@@ -106,11 +112,13 @@ const CustomersTable = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
+        {/* <button onClick={addCustomer}>add</button> */}
         <TitleBlock classes={classes} handleOpen={handleOpenCreateCustomer} />
         <CustomTable
           classes={classes}
           rows={rows}
-          isLoadingCustomers={isLoadingCustomers}
+          isLoadingData={isLoadingCustomers}
+          columns={columns}
         />
         {isDeleteModalOpen && (
           <DeleteModal
@@ -122,46 +130,15 @@ const CustomersTable = observer(({ t }) => {
             isDeletingCustomer={isDeletingCustomer}
           />
         )}
-        {isOpenCreateCustomer && (
+        {/* {isOpenCreateCustomer && (
           <CreateCustomer
             open={isOpenCreateCustomer}
             handleClose={handleCloseCreateCustomer}
           />
-        )}
+        )} */}
       </Paper>
     </div>
   )
 })
 
 export default withNamespaces()(CustomersTable)
-
-// const a = [
-//   {
-//     b: 2,
-//     c: 4,
-//     d: 8
-//   },
-//   {
-//     b: 2,
-//     c: 4,
-//     d: 8
-//   }
-// ]
-
-// const columns = [
-//   {
-//     dataKey: 'b',
-//     caption: 'Caption b',
-//     transfromCellData: cellData => (
-//       <Link to={`/haha1/${cellData.path}`}>{cellData}</Link>
-//     )
-//   },
-//   {
-//     caption: '',
-//     transformCellData: (cellData, rowData) => 'X'
-//   }
-// ]
-
-// const getRowData = index => a[index]
-
-// ;<Table getRowData={getRowData} />

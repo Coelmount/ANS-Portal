@@ -1,25 +1,10 @@
 import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
-
-import { makeStyles } from '@material-ui/core/styles'
-
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-
-const useStyles = makeStyles(theme => ({
-  link: {
-    color: theme.palette.secondary.main,
-    textDecoration: 'none',
-    '&:focus': {
-      color: '#598597'
-    }
-  }
-}))
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'
@@ -48,18 +33,7 @@ const descendingComparator = (a, b, orderBy) => {
 }
 
 const CustomersTableBody = props => {
-  const {
-    classes,
-    rowsPerPage,
-    page,
-    order,
-    orderBy,
-    list,
-    handleOpen,
-    t
-  } = props
-
-  const linkStyles = useStyles()
+  const { classes, rowsPerPage, page, order, orderBy, list, columns, t } = props
 
   return (
     <Fragment>
@@ -79,26 +53,21 @@ const CustomersTableBody = props => {
                   <TableCell className={classes.bodyFirstCell}>
                     {index + 1}
                   </TableCell>
-                  <TableCell component='th' id={labelId} scope='row'>
-                    <Link
-                      className={linkStyles.link}
-                      to={`/customers/${row.tenantId}/access-numbers`}
-                    >
-                      {row.tenantId}
-                    </Link>
-                  </TableCell>
-                  <TableCell component='th' id={labelId} scope='row'>
-                    {row.name}
-                  </TableCell>
-                  <TableCell component='th' id={labelId} scope='row'>
-                    {'active'}
-                  </TableCell>
-                  <TableCell className={classes.deleteCell} align='right'>
-                    <CloseOutlinedIcon
-                      onClick={() => handleOpen(row.tenantId, row.name)}
-                      className={classes.deleteCustomerIcon}
-                    />
-                  </TableCell>
+                  {columns.map(column => {
+                    const extraProps = column.extraProps
+                    return (
+                      <TableCell
+                        {...extraProps}
+                        component='th'
+                        id={labelId}
+                        scope='row'
+                        key={column.id}
+                      >
+                        {(column.getCellData && column.getCellData(row)) ||
+                          row[column.id]}
+                      </TableCell>
+                    )
+                  })}
                 </TableRow>
               )
             })}

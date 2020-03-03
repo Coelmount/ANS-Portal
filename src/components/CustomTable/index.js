@@ -1,34 +1,24 @@
-import React, { useContext, useEffect, useState, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
+import React, { useEffect, useState, Fragment } from 'react'
 
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
-import Paper from '@material-ui/core/Paper'
 
-import CreateCustomerStore from 'stores/CreateCustomer'
-import TitleBlock from './components/TitleBlock'
-import CustomersTableToolbar from './components/CustomersTableToolbar'
-import CustomersTableHead from './components/CustomersTableHead'
-import CustomersTableBody from './components/CustomersTableBody'
+import CustomTableToolbar from './components/CustomTableToolbar'
+import CustomTableHead from './components/CustomTableHead'
+import CustomTableBody from './components/CustomTableBody'
 import Pagination from './components/Pagination'
-import DeleteModal from './components/DeleteModal'
-import CreateCustomer from './components/CreateCustomerModal'
 
 import Loading from 'components/Loading'
 
 const CustomTable = props => {
-  const { classes, rows, isLoadingCustomers } = props
+  const { classes, rows, isLoadingData, columns } = props
 
-  const { setDefaultValues } = useContext(CreateCustomerStore)
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [totalPages, setTotalPages] = useState(0)
   const [query, setQuery] = useState('')
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [customerToDelete, setCustomerToDelete] = useState({})
-  const [isOpenCreateCustomer, setIsOpenCreateCustomer] = useState(false)
 
   const list = query
     ? rows.filter(
@@ -62,41 +52,15 @@ const CustomTable = props => {
     }
   }
 
-  const handleOpenDeleteModal = (id, name) => {
-    setIsDeleteModalOpen(true)
-    setCustomerToDelete({ id, name })
-  }
-
-  const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false)
-  }
-
-  const handleCloseCreateCustomer = () => {
-    setIsOpenCreateCustomer(false)
-    setDefaultValues()
-  }
-
-  const handleOpenCreateCustomer = () => {
-    setIsOpenCreateCustomer(true)
-  }
-
-  // const handleDelete = id => {
-  //   const payload = {
-  //     id,
-  //     callback: setIsDeleteModalOpen
-  //   }
-  //   deleteCustomer(payload)
-  // }
-
   return (
     <Fragment>
-      <CustomersTableToolbar
+      <CustomTableToolbar
         classes={classes}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
         setQuery={setQuery}
       />
-      {isLoadingCustomers ? (
+      {isLoadingData ? (
         <Loading />
       ) : (
         <TableContainer>
@@ -106,7 +70,7 @@ const CustomTable = props => {
             size={'medium'}
             aria-label='enhanced table'
           >
-            <CustomersTableHead
+            <CustomTableHead
               classes={classes}
               order={order}
               orderBy={orderBy}
@@ -115,8 +79,9 @@ const CustomTable = props => {
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
               page={page}
+              columns={columns}
             />
-            <CustomersTableBody
+            <CustomTableBody
               classes={classes}
               rowsPerPage={rowsPerPage}
               rows={rows}
@@ -124,7 +89,7 @@ const CustomTable = props => {
               order={order}
               orderBy={orderBy}
               list={list}
-              handleOpen={handleOpenDeleteModal}
+              columns={columns}
             />
           </Table>
         </TableContainer>
@@ -140,34 +105,3 @@ const CustomTable = props => {
 }
 
 export default CustomTable
-
-// const a = [
-//   {
-//     b: 2,
-//     c: 4,
-//     d: 8
-//   },
-//   {
-//     b: 2,
-//     c: 4,
-//     d: 8
-//   }
-// ]
-
-// const columns = [
-//   {
-//     dataKey: 'b',
-//     caption: 'Caption b',
-//     transfromCellData: cellData => (
-//       <Link to={`/haha1/${cellData.path}`}>{cellData}</Link>
-//     )
-//   },
-//   {
-//     caption: '',
-//     transformCellData: (cellData, rowData) => 'X'
-//   }
-// ]
-
-// const getRowData = index => a[index]
-
-// ;<Table getRowData={getRowData} />

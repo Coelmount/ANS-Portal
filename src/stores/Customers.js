@@ -33,21 +33,21 @@ export class CustomersStore {
     })
   }
   // test method ****
-  // addCustomer = () => {
-  //   axios
-  //     .post(`/tenants/ent00001_admin/groups/`, {
-  //       groupId: `testId6`,
-  //       groupName: `Foo Group New`,
-  //       userLimit: 25
-  //     })
-  //     .then(res => {
-  //       if (res.status === 200) {
-  //         console.log('added')
-  //       } else {
-  //         console.log(res, 'error')
-  //       }
-  //     })
-  // }
+  addCustomer = () => {
+    axios
+      .post(`/tenants/`, {
+        tenantId: `my_tenant2`,
+        type: 'Enterprise',
+        defaultDomain: 'netaxis.be'
+      })
+      .then(res => {
+        if (res.status === 200) {
+          console.log('added')
+        } else {
+          console.log(res, 'error')
+        }
+      })
+  }
 }
 decorate(CustomersStore, {
   rows: observable,
