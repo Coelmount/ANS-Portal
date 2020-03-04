@@ -1,7 +1,9 @@
 {
   "dont_have_accaunt_message": "ou n'avez pas de compte? ",
   "general_terms_and_conditions": "Conditions Générales",
+  "go_back": "Revenir",
   "log_in": "S'identifier",
+  "not_found": "La page est introuvable ...",
   "password": "Mot de passe",
   "remember_me": "Souviens-toi de moi",
   "reset_password": "Réinitialiser le mot de passe",

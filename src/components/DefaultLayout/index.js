@@ -1,6 +1,6 @@
 import React, { useContext, useState, Fragment } from 'react'
 import { observer } from 'mobx-react'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useParams, useHistory } from 'react-router-dom'
 import i18n from 'i18n'
 import { withNamespaces } from 'react-i18next'
 
@@ -64,6 +64,7 @@ const useStyles = makeStyles(theme => ({
     borderRight: 'none',
     boxShadow: 'inset 0px 12px 24px rgba(196, 196, 196, 0.25)'
   },
+
   logo: {
     width: 77.4,
     height: 77.4,
@@ -182,6 +183,7 @@ const useStyles = makeStyles(theme => ({
 const DefaultLayout = props => {
   const { t } = props
   const match = useParams()
+  const history = useHistory()
   const classes = useStyles()
   const theme = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -254,6 +256,7 @@ const DefaultLayout = props => {
       <Box className='drawerHeader'>
         <img src={logo} className={classes.logo} alt='mtn-logo' />
       </Box>
+
       <List>
         {match.customerId
           ? customerNavLinks.map(navLink => {
@@ -301,22 +304,30 @@ const DefaultLayout = props => {
       </List>
     </Fragment>
   )
-
+  console.log(props)
   return (
     <Fragment>
       <AppBar position='fixed' className={classes.appBar}>
         <Toolbar>
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            edge='start'
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
+          {!props.notFoundPage ? (
+            <IconButton
+              color='inherit'
+              aria-label='open drawer'
+              edge='start'
+              onClick={handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
+          ) : null}
           <div className={classes.header}>
-            <LinkMaterial component='button' onClick={() => logOut()}>
+            <LinkMaterial
+              component='button'
+              onClick={() => {
+                logOut()
+                history.push('/')
+              }}
+            >
               <Box className={classes.headerBlock}>
                 <AccountCircleIcon className={classes.userIcon} />
                 <Typography className={classes.userName}>
@@ -350,37 +361,44 @@ const DefaultLayout = props => {
             </Box>
           </div>
         </Toolbar>
-      </AppBar>
-      <nav className={classes.drawer} aria-label='mailbox folders'>
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation='css'>
-          <Drawer
-            variant='temporary'
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            ModalProps={{
-              keepMounted: true // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation='css'>
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            variant='permanent'
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
+      </AppBar>{' '}
+      {props.notFoundPage ? (
+        <nav className={classes.drawer} aria-label='mailbox folders'>
+          <Box className='drawerHeader'>
+            <img src={logo} className={classes.logo} alt='mtn-logo' />
+          </Box>
+        </nav>
+      ) : (
+        <nav className={classes.drawer} aria-label='mailbox folders'>
+          <Hidden smUp implementation='css'>
+            <Drawer
+              variant='temporary'
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              ModalProps={{
+                keepMounted: true // Better open performance on mobile.
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation='css'>
+            <Drawer
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              variant='permanent'
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+        </nav>
+      )}
     </Fragment>
   )
 }

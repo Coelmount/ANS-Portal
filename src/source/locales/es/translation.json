@@ -1,7 +1,9 @@
 {
   "dont_have_accaunt_message": "o no tienes una cuenta? ",
   "general_terms_and_conditions": "Términos Generales y Condiciones",
+  "go_back": "Volver",
   "log_in": "Iniciar sesión",
+  "not_found": "La página no se encuentra ...",
   "password": "Contraseña",
   "remember_me": "Recuérdame",
   "reset_password": "Restablecer la contraseña",
