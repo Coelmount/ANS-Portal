@@ -1,8 +1,9 @@
 import React from 'react'
-import { withRouter } from 'react-router'
+import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import { withNamespaces } from 'react-i18next'
 
 import page404 from 'source/images/svg/404.svg'
 import DefaultLayout from 'components/DefaultLayout'
@@ -32,21 +33,22 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500
   }
 }))
-const NotFound = props => {
+const NotFound = ({ t }) => {
+  const history = useHistory()
   const classes = useStyles()
   return (
     <div className='notFoundPageWrapper'>
       <DefaultLayout notFoundPage />
       <div className='notFoundWrapper'>
         <img src={page404} alt='no-ava' />
-        <h2 className='notFoundTitle'>The page is not found...</h2>
+        <h2 className='notFoundTitle'>{t('not_found')}</h2>
 
         <Box className={classes.goBackButtonWrapper}>
           <Typography
-            onClick={props.history.goBack}
+            onClick={history.goBack}
             className={classes.goBackButtonTitle}
           >
-            Go Back
+            {t('go_back')}
           </Typography>
         </Box>
       </div>
@@ -54,4 +56,4 @@ const NotFound = props => {
   )
 }
 
-export default withRouter(NotFound)
+export default withNamespaces()(NotFound)
