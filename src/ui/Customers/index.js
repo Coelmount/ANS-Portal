@@ -8,7 +8,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
-import TitleBlock from './components/TitleBlock'
+import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 // import CreateCustomer from './components/CreateCustomerModal'
 import CustomTable from 'components/CustomTable'
@@ -83,6 +83,11 @@ const CustomersTable = observer(({ t }) => {
     }
   ]
 
+  const titleData = {
+    mainText: t('ans_customers'),
+    iconCapture: t('add_customer')
+  }
+
   const handleOpenDeleteModal = (id, name) => {
     setIsDeleteModalOpen(true)
     setCustomerToDelete({ id, name })
@@ -113,7 +118,11 @@ const CustomersTable = observer(({ t }) => {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <button onClick={addCustomer}>add</button>
-        <TitleBlock classes={classes} handleOpen={handleOpenCreateCustomer} />
+        <TitleBlock
+          titleData={titleData}
+          classes={classes}
+          handleOpen={handleOpenCreateCustomer}
+        />
         <CustomTable
           classes={classes}
           rows={rows}

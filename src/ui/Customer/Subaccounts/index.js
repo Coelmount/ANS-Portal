@@ -8,7 +8,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 
 import SubaccountsStore from 'stores/Subaccounts'
 import CreateCustomerStore from 'stores/CreateCustomer'
-import TitleBlock from './components/TitleBlock'
+import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import SubaccountBreadcrumbs from './components/SubaccountBreadcrumbs'
 import CustomTable from 'components/CustomTable'
@@ -75,6 +75,11 @@ const SubaccountsTable = observer(props => {
     }
   ]
 
+  const titleData = {
+    mainText: 'MTN ANS',
+    iconCapture: t('add_subaccount')
+  }
+
   const handleOpenDeleteModal = (id, name) => {
     setIsDeleteModalOpen(true)
     setSubaccountToDelete({ id, name })
@@ -106,7 +111,11 @@ const SubaccountsTable = observer(props => {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <SubaccountBreadcrumbs classes={classes} match={match} />
-        <TitleBlock classes={classes} handleOpen={handleOpenCreateCustomer} />
+        <TitleBlock
+          titleData={titleData}
+          classes={classes}
+          handleOpen={handleOpenCreateCustomer}
+        />
         <CustomTable
           classes={classes}
           rows={rows}
