@@ -1,0 +1,21 @@
+.notFoundPageWrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  width: 100%;
+  font-family: MTN;
+}
+.notFoundWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+  width: 100%;
+  margin-top: 150px;
+}
+.notFoundTitle {
+  margin-top: 30px;
+  margin-bottom: 40px;
+}

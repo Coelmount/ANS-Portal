@@ -16,7 +16,7 @@ const SubaccountBreadcrumbs = ({ classes, match }) => {
       <Link className={classes.link} to='/customers'>
         Customers
       </Link>
-      <Typography>{`${match.params.customerId}`}</Typography>
+      <Typography>{`${match.customerId}`}</Typography>
       <Typography>Subaccounts</Typography>
     </Breadcrumbs>
   )

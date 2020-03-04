@@ -15,6 +15,7 @@ import Details from 'ui/Customer/Details'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
+import NotFound from 'components/NotFound'
 
 export const ROUTS = {
   auth: '/',
@@ -26,55 +27,14 @@ export const ROUTS = {
   details: '/customers/:customerId/details'
 }
 
-const RouteWithSubRoutes = ({ component: Component, ...route }) => {
+const Page = props => {
   return (
-    <>
-      <Route
-        path={route.path}
-        render={props => <Component {...props} />}
-        exact
-      />
-      {route.routes &&
-        route.routes.map(cildRoute => (
-          <RouteWithSubRoutes key={cildRoute.path} {...cildRoute} />
-        ))}
-    </>
+    <div style={{ display: 'flex', paddingTop: 66 }}>
+      <DefaultLayout />
+      {props.diplayedComponent}
+    </div>
   )
 }
-
-const userRoutes = [
-  {
-    path: ROUTS.customers,
-    component: Customers
-  },
-  {
-    path: ROUTS.search,
-    component: Search
-  },
-  {
-    path: ROUTS.accessNumbers,
-    component: AccessNumbers
-  },
-  {
-    path: ROUTS.subaccounts,
-    component: Subaccounts
-  },
-  {
-    path: ROUTS.administrators,
-    component: Administrators
-  },
-  {
-    path: ROUTS.details,
-    component: Details
-  }
-]
-
-const authRoutes = [
-  {
-    path: '/',
-    component: Auth
-  }
-]
 
 const UserPages = () => {
   const { getLocale, isLoadingLang, lang } = useContext(LanguagesStore)
@@ -83,31 +43,36 @@ const UserPages = () => {
   }, [getLocale, lang])
   return !isLoadingLang ? (
     <Switch>
-      <Fragment>
-        <div style={{ paddingTop: 66 }}>
-          {userRoutes.map(route => (
-            <div key={route.path} style={{ display: 'flex' }}>
-              <Route component={DefaultLayout} path={route.path} />
-              <RouteWithSubRoutes {...route} />
-            </div>
-          ))}
-          <Route path='/' exact>
-            <Redirect to={ROUTS.customers} />
-          </Route>
-        </div>
-      </Fragment>
+      <Route path={ROUTS.customers} exact>
+        <Page diplayedComponent={<Customers />} />
+      </Route>
+      <Route path={ROUTS.search} exact>
+        <Page diplayedComponent={<Search />} />
+      </Route>
+      <Route path={ROUTS.accessNumbers} exact>
+        <Page diplayedComponent={<AccessNumbers />} />
+      </Route>
+      <Route path={ROUTS.subaccounts} exact>
+        <Page diplayedComponent={<Subaccounts />} />
+      </Route>
+      <Route path={ROUTS.administrators} exact>
+        <Page diplayedComponent={<Administrators />} />
+      </Route>
+      <Route path={ROUTS.details} exact>
+        <Page diplayedComponent={<Details />} />
+      </Route>
+      <Redirect path='/' to={ROUTS.customers} exact />
+      <Route path='*' component={NotFound} />
     </Switch>
   ) : (
     <Loading />
   )
 }
 
-const AuthPages = () => {
+const AuthPages = ({ match }) => {
   return (
     <Switch>
-      {authRoutes.map(route => (
-        <Route key={route.path} path={route.path} component={route.component} />
-      ))}
+      <Route path={`${match.url}`} component={Auth} exact />
     </Switch>
   )
 }
@@ -115,29 +80,21 @@ const AuthPages = () => {
 const Router = () => {
   const { getLocal, isAuthorized } = useContext(AuthStore)
   const { getLocale, isLoadingLang, lang } = useContext(LanguagesStore)
-
   useEffect(() => {
     getLocal()
   }, [getLocal])
-
   useEffect(() => {
     getLocale(localStorage.getItem('i18nextLng'))
   }, [getLocale, lang])
 
-  return (
+  return isAuthorized && localStorage.getItem('token') ? (
     <Switch>
-      {isAuthorized && localStorage.getItem('token') ? (
-        <Fragment>
-          <Route path='/' component={UserPages} />
-        </Fragment>
-      ) : (
-        <Fragment>
-          <Route path={ROUTS.auth} component={AuthPages} exact />
-          <Route path='/'>
-            <Redirect to={ROUTS.auth} />
-          </Route>
-        </Fragment>
-      )}
+      <Route path='/' component={UserPages} />
+    </Switch>
+  ) : (
+    <Switch>
+      <Route path={ROUTS.auth} component={AuthPages} exact />
+      <Route path='*' component={NotFound} />
     </Switch>
   )
 }

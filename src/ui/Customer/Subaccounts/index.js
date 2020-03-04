@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
@@ -16,7 +17,10 @@ import CustomTable from 'components/CustomTable'
 import useStyles from './styles'
 
 const SubaccountsTable = observer(props => {
-  const { match, t } = props
+  const { t } = props
+  const match = useParams()
+
+  console.log(match)
   const classes = useStyles()
   const {
     rows,
@@ -32,8 +36,8 @@ const SubaccountsTable = observer(props => {
   const [isOpenCreateCustomer, setIsOpenCreateCustomer] = useState(false)
 
   useEffect(() => {
-    getSubaccounts(match.params.customerId)
-  }, [getSubaccounts, match.params.customerId])
+    getSubaccounts(match.customerId)
+  }, [getSubaccounts, match.customerId])
 
   const columns = [
     {
@@ -100,7 +104,7 @@ const SubaccountsTable = observer(props => {
 
   const handleDelete = groupId => {
     const payload = {
-      tenantId: match.params.customerId,
+      tenantId: match.customerId,
       groupId,
       callback: setIsDeleteModalOpen
     }
