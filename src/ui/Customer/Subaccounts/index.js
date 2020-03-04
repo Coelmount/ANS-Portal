@@ -10,8 +10,8 @@ import SubaccountsStore from 'stores/Subaccounts'
 import CreateCustomerStore from 'stores/CreateCustomer'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
-import SubaccountBreadcrumbs from './components/SubaccountBreadcrumbs'
 import CustomTable from 'components/CustomTable'
+import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import useStyles from './styles'
 
@@ -74,6 +74,21 @@ const SubaccountsTable = observer(props => {
       )
     }
   ]
+  const breadcrumbs = [
+    {
+      link: () => (
+        <Link className={classes.link} to='/customers'>
+          {t('customers')}
+        </Link>
+      )
+    },
+    {
+      text: match.params.customerId
+    },
+    {
+      text: t('Subaccounts')
+    }
+  ]
 
   const titleData = {
     mainText: 'MTN ANS',
@@ -110,7 +125,7 @@ const SubaccountsTable = observer(props => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <SubaccountBreadcrumbs classes={classes} match={match} />
+        <CustomBreadcrumbs classes={classes} breadcrumbs={breadcrumbs} />
         <TitleBlock
           titleData={titleData}
           classes={classes}

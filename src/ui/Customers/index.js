@@ -10,8 +10,8 @@ import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
-// import CreateCustomer from './components/CreateCustomerModal'
 import CustomTable from 'components/CustomTable'
+// import CreateCustomer from './components/CreateCustomerModal'
 
 import useStyles from './styles'
 
