@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 
-const CustomersTableHead = props => {
+const CustomTableHead = props => {
   const { classes, order, orderBy, onRequestSort, columns, t } = props
 
   const createSortHandler = property => event => {
@@ -50,7 +50,7 @@ const CustomersTableHead = props => {
   )
 }
 
-CustomersTableHead.propTypes = {
+CustomTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
@@ -58,4 +58,4 @@ CustomersTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired
 }
 
-export default withNamespaces()(CustomersTableHead)
+export default withNamespaces()(CustomTableHead)

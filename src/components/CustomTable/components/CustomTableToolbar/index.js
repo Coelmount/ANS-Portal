@@ -10,7 +10,7 @@ import { Typography } from '@material-ui/core'
 
 const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
 
-const CustomersTableToolbar = props => {
+const CustomTableToolbar = props => {
   const { classes, rowsPerPage, setRowsPerPage, setQuery, t } = props
 
   const handleSearch = e => {
@@ -47,4 +47,4 @@ const CustomersTableToolbar = props => {
   )
 }
 
-export default withNamespaces()(CustomersTableToolbar)
+export default withNamespaces()(CustomTableToolbar)

@@ -9,21 +9,21 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
 import TitleBlock from './components/TitleBlock'
-import DeleteModal from './components/DeleteModal'
+import DeleteModal from 'components/DeleteModal'
 // import CreateCustomer from './components/CreateCustomerModal'
 import CustomTable from 'components/CustomTable'
 
 import useStyles from './styles'
 
-const CustomersTable = observer(() => {
+const CustomersTable = observer(({ t }) => {
   const classes = useStyles()
   const {
     rows,
     getCustomers,
     deleteCustomer,
     isLoadingCustomers,
-    isDeletingCustomer
-    // addCustomer
+    isDeletingCustomer,
+    addCustomer
   } = useContext(CustomersStore)
 
   const { setDefaultValues } = useContext(CreateCustomerStore)
@@ -112,7 +112,7 @@ const CustomersTable = observer(() => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {/* <button onClick={addCustomer}>add</button> */}
+        <button onClick={addCustomer}>add</button>
         <TitleBlock classes={classes} handleOpen={handleOpenCreateCustomer} />
         <CustomTable
           classes={classes}
@@ -126,8 +126,9 @@ const CustomersTable = observer(() => {
             open={isDeleteModalOpen}
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
-            customerToDelete={customerToDelete}
-            isDeletingCustomer={isDeletingCustomer}
+            deleteInfo={customerToDelete}
+            isDeleting={isDeletingCustomer}
+            deleteSubject={t('customer')}
           />
         )}
         {/* {isOpenCreateCustomer && (

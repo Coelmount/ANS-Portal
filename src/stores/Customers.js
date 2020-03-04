@@ -32,13 +32,30 @@ export class CustomersStore {
       }
     })
   }
-  // test method ****
+  // test methods ****
+  // addCustomer = () => {
+  //   axios
+  //     .post(`/tenants/`, {
+  //       tenantId: `my_tenant32`,
+  //       name: 'Name007',
+  //       type: 'Enterprise',
+  //       defaultDomain: 'netaxis.be'
+  //     })
+  //     .then(res => {
+  //       if (res.status === 200) {
+  //         console.log('added')
+  //       } else {
+  //         console.log(res, 'error')
+  //       }
+  //     })
+  // }
+
   addCustomer = () => {
     axios
-      .post(`/tenants/`, {
-        tenantId: `my_tenant2`,
-        type: 'Enterprise',
-        defaultDomain: 'netaxis.be'
+      .post(`/tenants/ent0003/groups/`, {
+        groupId: `my_grpup3212`,
+        groupName: 'Group007',
+        userLimit: 25
       })
       .then(res => {
         if (res.status === 200) {

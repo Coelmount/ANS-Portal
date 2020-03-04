@@ -16,11 +16,12 @@ const DeleteModal = props => {
     open,
     handleClose,
     handleDelete,
-    customerToDelete,
-    isDeletingCustomer,
+    deleteInfo,
+    isDeleting,
+    deleteSubject,
     t
   } = props
-  const { name, id } = customerToDelete
+  const { name, id } = deleteInfo
 
   return (
     <Dialog
@@ -29,7 +30,7 @@ const DeleteModal = props => {
       open={open}
       onClose={handleClose}
     >
-      {isDeletingCustomer ? (
+      {isDeleting ? (
         <Loading />
       ) : (
         <Fragment>
@@ -37,7 +38,8 @@ const DeleteModal = props => {
             <Box className={classes.deleteTitleBlock}>
               <img src={deleteIcon} alt='delete icon' />
               <Typography className={classes.deleteTitle}>
-                {t(`delete_customer`)}
+                {t(`delete`)}
+                {` ${deleteSubject}`}
               </Typography>
             </Box>
             <CloseOutlinedIcon
@@ -49,7 +51,7 @@ const DeleteModal = props => {
             <Typography className={classes.deleteMainText}>
               {t(`are_you_sure_you_want`)}
               <span className={classes.boldText}> {t('to_delete')}</span>
-              {t('customer')}:
+              {` ${deleteSubject}`}:
               <span className={classes.boldText}>{` ${name} (id: ${id})`}</span>
               ?
             </Typography>

@@ -32,7 +32,7 @@ const descendingComparator = (a, b, orderBy) => {
   return 0
 }
 
-const CustomersTableBody = props => {
+const CustomTableBody = props => {
   const { classes, rowsPerPage, page, order, orderBy, list, columns, t } = props
 
   return (
@@ -42,13 +42,14 @@ const CustomersTableBody = props => {
           {stableSort(list, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
+              console.log(row, 'row name')
               const labelId = `enhanced-table-checkbox-${index}`
               return (
                 <TableRow
                   hover
                   className={classes.tableRow}
                   tabIndex={-1}
-                  key={row.name}
+                  key={index}
                 >
                   <TableCell className={classes.bodyFirstCell}>
                     {index + 1}
@@ -81,4 +82,4 @@ const CustomersTableBody = props => {
   )
 }
 
-export default withNamespaces()(CustomersTableBody)
+export default withNamespaces()(CustomTableBody)

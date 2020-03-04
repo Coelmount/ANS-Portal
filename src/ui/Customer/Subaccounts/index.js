@@ -9,14 +9,14 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import SubaccountsStore from 'stores/Subaccounts'
 import CreateCustomerStore from 'stores/CreateCustomer'
 import TitleBlock from './components/TitleBlock'
-import DeleteModal from './components/DeleteModal'
+import DeleteModal from 'components/DeleteModal'
 import SubaccountBreadcrumbs from './components/SubaccountBreadcrumbs'
 import CustomTable from 'components/CustomTable'
 
 import useStyles from './styles'
 
 const SubaccountsTable = observer(props => {
-  const { match } = props
+  const { match, t } = props
   const classes = useStyles()
   const {
     rows,
@@ -119,8 +119,9 @@ const SubaccountsTable = observer(props => {
             open={isDeleteModalOpen}
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
-            subaccountToDelete={subaccountToDelete}
-            isDeletingSubaccount={isDeletingSubaccount}
+            deleteInfo={subaccountToDelete}
+            isDeleting={isDeletingSubaccount}
+            deleteSubject={t('subaccount')}
           />
         )}
         {/* {isOpenCreateCustomer && (
