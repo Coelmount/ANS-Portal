@@ -19,39 +19,15 @@ import NotFound from 'components/NotFound'
 
 import useStyles from './styles'
 
-const userComponents = [
-  {
-    path: '/customers',
-    component: <Customers />
-  },
-  {
-    path: '/search',
-    component: <Search />
-  },
-  {
-    path: '/customers/:customerId/access-numbers',
-    component: <AccessNumbers />
-  },
-  {
-    path: '/customers/:customerId/subaccounts',
-    component: <Subaccounts />
-  },
-  {
-    path: '/customers/:customerId/administrators',
-    component: <Administrators />
-  },
-  {
-    path: '/customers/:customerId/details',
-    component: <Details />
-  }
-]
-
-const authComponents = [
-  {
-    path: '/',
-    component: Auth
-  }
-]
+export const ROUTS = {
+  auth: '/',
+  customers: '/customers',
+  search: '/search',
+  accessNumbers: '/customers/:customerId/access-numbers',
+  subaccounts: '/customers/:customerId/subaccounts',
+  administrators: '/customers/:customerId/administrators',
+  details: '/customers/:customerId/details'
+}
 
 const Page = props => {
   const classes = useStyles()
@@ -70,12 +46,25 @@ const UserPages = () => {
   }, [getLocale, lang])
   return !isLoadingLang ? (
     <Switch>
-      {userComponents.map(el => (
-        <Route path={el.path} exact>
-          <Page diplayedComponent={el.component} />
-        </Route>
-      ))}
-      <Redirect path='/' to={'/customers'} exact />
+      <Route path={ROUTS.customers} exact>
+        <Page diplayedComponent={<Customers />} />
+      </Route>
+      <Route path={ROUTS.search} exact>
+        <Page diplayedComponent={<Search />} />
+      </Route>
+      <Route path={ROUTS.accessNumbers} exact>
+        <Page diplayedComponent={<AccessNumbers />} />
+      </Route>
+      <Route path={ROUTS.subaccounts} exact>
+        <Page diplayedComponent={<Subaccounts />} />
+      </Route>
+      <Route path={ROUTS.administrators} exact>
+        <Page diplayedComponent={<Administrators />} />
+      </Route>
+      <Route path={ROUTS.details} exact>
+        <Page diplayedComponent={<Details />} />
+      </Route>
+      <Redirect path='/' to={ROUTS.customers} exact />
       <Route path='*' component={NotFound} />
     </Switch>
   ) : (
@@ -86,9 +75,7 @@ const UserPages = () => {
 const AuthPages = ({ match }) => {
   return (
     <Switch>
-      {authComponents.map(el => (
-        <Route path={el.path} component={el.component} exact />
-      ))}
+      <Route path={`${match.url}`} component={Auth} exact />
     </Switch>
   )
 }
@@ -104,10 +91,12 @@ const Router = () => {
   }, [getLocale, lang])
 
   return isAuthorized && localStorage.getItem('token') ? (
-    <Route path='/' component={UserPages} />
+    <Switch>
+      <Route path='/' component={UserPages} />
+    </Switch>
   ) : (
     <Switch>
-      <Route path={'/'} component={AuthPages} exact />
+      <Route path={ROUTS.auth} component={AuthPages} exact />
       <Route path='*' component={NotFound} />
     </Switch>
   )
