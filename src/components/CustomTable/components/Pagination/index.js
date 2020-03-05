@@ -3,17 +3,16 @@ import React from 'react'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 
-const Pagination = props => {
-  const { classes, page, totalPages, handleChangePage } = props
+import useAdditionalStyles from './styles'
+
+const Pagination = ({ page, totalPages, handleChangePage, classes }) => {
+  const additionalClasses = useAdditionalStyles({ page, totalPages })
 
   return (
     <div className={classes.paginationWrap}>
       <div className={classes.paginationIconBlock}>
         <ArrowBackIosIcon
-          className={classes.paginationIcon}
-          style={{
-            color: page === 0 ? '#C4C4C4' : '#00678F'
-          }}
+          className={`${classes.paginationIcon} ${additionalClasses.prevPaginationIcon}`}
           onClick={() => handleChangePage('decrease')}
         />
       </div>
@@ -23,10 +22,7 @@ const Pagination = props => {
       </p>
       <div className={classes.paginationIconBlock}>
         <ArrowForwardIosIcon
-          className={classes.paginationIcon}
-          style={{
-            color: page === totalPages ? '#C4C4C4' : '#00678F'
-          }}
+          className={`${classes.paginationIcon} ${additionalClasses.nextPaginationIcon}`}
           onClick={() => handleChangePage('increase')}
         />
       </div>

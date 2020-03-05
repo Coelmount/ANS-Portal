@@ -17,7 +17,9 @@ import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
 import NotFound from 'components/NotFound'
 
-export const ROUTS = {
+import useStyles from './styles'
+
+export const ROUTES = {
   auth: '/',
   customers: '/customers',
   search: '/search',
@@ -28,8 +30,9 @@ export const ROUTS = {
 }
 
 const Page = props => {
+  const classes = useStyles()
   return (
-    <div style={{ display: 'flex', paddingTop: 66 }}>
+    <div className={classes.page}>
       <DefaultLayout />
       {props.diplayedComponent}
     </div>
@@ -43,25 +46,25 @@ const UserPages = () => {
   }, [getLocale, lang])
   return !isLoadingLang ? (
     <Switch>
-      <Route path={ROUTS.customers} exact>
+      <Route path={ROUTES.customers} exact>
         <Page diplayedComponent={<Customers />} />
       </Route>
-      <Route path={ROUTS.search} exact>
+      <Route path={ROUTES.search} exact>
         <Page diplayedComponent={<Search />} />
       </Route>
-      <Route path={ROUTS.accessNumbers} exact>
+      <Route path={ROUTES.accessNumbers} exact>
         <Page diplayedComponent={<AccessNumbers />} />
       </Route>
-      <Route path={ROUTS.subaccounts} exact>
+      <Route path={ROUTES.subaccounts} exact>
         <Page diplayedComponent={<Subaccounts />} />
       </Route>
-      <Route path={ROUTS.administrators} exact>
+      <Route path={ROUTES.administrators} exact>
         <Page diplayedComponent={<Administrators />} />
       </Route>
-      <Route path={ROUTS.details} exact>
+      <Route path={ROUTES.details} exact>
         <Page diplayedComponent={<Details />} />
       </Route>
-      <Redirect path='/' to={ROUTS.customers} exact />
+      <Redirect path='/' to={ROUTES.customers} exact />
       <Route path='*' component={NotFound} />
     </Switch>
   ) : (
@@ -93,7 +96,7 @@ const Router = () => {
     </Switch>
   ) : (
     <Switch>
-      <Route path={ROUTS.auth} component={AuthPages} exact />
+      <Route path={ROUTES.auth} component={AuthPages} exact />
       <Route path='*' component={NotFound} />
     </Switch>
   )

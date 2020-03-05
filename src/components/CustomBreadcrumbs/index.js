@@ -6,7 +6,10 @@ import Typography from '@material-ui/core/Typography'
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 
-const CustomBreadcrumbs = ({ classes, breadcrumbs }) => {
+import useStyles from './styles'
+
+const CustomBreadcrumbs = ({ breadcrumbs }) => {
+  const classes = useStyles()
   return (
     <Breadcrumbs
       separator={<NavigateNextIcon fontSize='small' />}
