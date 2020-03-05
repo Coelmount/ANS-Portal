@@ -19,10 +19,14 @@ const CustomBreadcrumbs = ({ breadcrumbs }) => {
       {breadcrumbs.map(
         breadcrumb =>
           (breadcrumb.url && (
-            <Link className={classes.link} to={breadcrumb.url}>
+            <Link
+              className={classes.link}
+              to={breadcrumb.url}
+              key={breadcrumb.url}
+            >
               {breadcrumb.text}
             </Link>
-          )) || <Typography>{breadcrumb.text}</Typography>
+          )) || <Typography key={breadcrumb.text}>{breadcrumb.text}</Typography>
       )}
     </Breadcrumbs>
   )
