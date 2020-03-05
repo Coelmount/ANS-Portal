@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Typography from '@material-ui/core/Typography'
@@ -14,9 +15,11 @@ const CustomBreadcrumbs = ({ classes, breadcrumbs }) => {
     >
       {breadcrumbs.map(
         breadcrumb =>
-          (breadcrumb.link && breadcrumb.link()) || (
-            <Typography>{breadcrumb.text}</Typography>
-          )
+          (breadcrumb.url && (
+            <Link className={classes.link} to={breadcrumb.url}>
+              {breadcrumb.text}
+            </Link>
+          )) || <Typography>{breadcrumb.text}</Typography>
       )}
     </Breadcrumbs>
   )

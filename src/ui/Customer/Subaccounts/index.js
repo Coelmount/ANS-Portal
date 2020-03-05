@@ -80,14 +80,11 @@ const SubaccountsTable = observer(props => {
   ]
   const breadcrumbs = [
     {
-      link: () => (
-        <Link className={classes.link} to='/customers'>
-          {t('customers')}
-        </Link>
-      )
+      url: '/customers',
+      text: t('customers')
     },
     {
-      text: match.params.customerId
+      text: match.customerId
     },
     {
       text: t('Subaccounts')
