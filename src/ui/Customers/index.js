@@ -5,6 +5,7 @@ import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
@@ -85,7 +86,8 @@ const CustomersTable = observer(({ t }) => {
 
   const titleData = {
     mainText: t('ans_customers'),
-    iconCapture: t('add_customer')
+    iconCapture: t('add_customer'),
+    Icon: <PersonAddOutlinedIcon />
   }
 
   const handleOpenDeleteModal = (id, name) => {

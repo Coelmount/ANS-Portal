@@ -296,7 +296,7 @@ const DefaultLayout = props => {
       </List>
     </Fragment>
   )
-  console.log(props)
+
   return (
     <Fragment>
       <AppBar position='fixed' className={classes.appBar}>

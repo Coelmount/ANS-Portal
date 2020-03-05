@@ -3,10 +3,11 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 
-import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
+import useStyles from './styles'
 
-const TitleBlock = ({ classes, handleOpen, titleData }) => {
-  const { mainText, iconCapture } = titleData
+const TitleBlock = ({ handleOpen, titleData }) => {
+  const classes = useStyles()
+  const { mainText, iconCapture, Icon } = titleData
 
   return (
     <Box className={classes.titleWrap}>
@@ -14,11 +15,8 @@ const TitleBlock = ({ classes, handleOpen, titleData }) => {
         {mainText}
       </Typography>
       <Box className={classes.addCustomerWrap}>
-        <Box className={classes.addIconWrap}>
-          <PersonAddOutlinedIcon
-            className={classes.addIcon}
-            onClick={handleOpen}
-          />
+        <Box className={classes.addIconWrap} onClick={handleOpen}>
+          {Icon}
         </Box>
         <Typography className={classes.addCustomerTitle}>
           {iconCapture}
