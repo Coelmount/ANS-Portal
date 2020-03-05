@@ -42,14 +42,25 @@ const NotFound = ({ t }) => {
       <div className='notFoundWrapper'>
         <img src={page404} alt='no-ava' />
         <h2 className='notFoundTitle'>{t('not_found')}</h2>
-
+        {console.log(history.length)}
         <Box className={classes.goBackButtonWrapper}>
-          <Typography
-            onClick={history.goBack}
-            className={classes.goBackButtonTitle}
-          >
-            {t('go_back')}
-          </Typography>
+          {history.length >= 2 ? (
+            <Typography
+              onClick={history.goBack}
+              className={classes.goBackButtonTitle}
+            >
+              {t('go_back')}
+            </Typography>
+          ) : (
+            <Typography
+              onClick={() => {
+                history.push('/')
+              }}
+              className={classes.goBackButtonTitle}
+            >
+              Go to main page
+            </Typography>
+          )}
         </Box>
       </div>
     </div>
