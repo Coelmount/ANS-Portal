@@ -259,45 +259,37 @@ const DefaultLayout = props => {
 
       <List>
         {match.customerId
-          ? customerNavLinks.map(navLink => {
-              let iconComponent = React.createElement(navLink.icon, {
-                className: 'sidebarIcon'
-              })
+          ? customerNavLinks.map(({ link, icon: Icon, text }) => {
               return (
                 <ListItem
-                  key={`${navLink.link}`}
+                  key={`${link}`}
                   activeClassName={classes.activeMenuItem}
                   component={NavLink}
-                  to={navLink.link}
+                  to={link}
                   className={classes.menuItem}
                   button
                 >
-                  <ListItemIcon className='icon'>{iconComponent}</ListItemIcon>
-                  <ListItemText
-                    primary={t(`${navLink.text}`)}
-                    className='menu-text'
-                  />
+                  <ListItemIcon className='icon'>
+                    <Icon className='sidebarIcon' />
+                  </ListItemIcon>
+                  <ListItemText primary={t(`${text}`)} className='menu-text' />
                 </ListItem>
               )
             })
-          : adminNavLinks.map(navLink => {
-              let iconComponent = React.createElement(navLink.icon, {
-                className: 'sidebarIcon'
-              })
+          : adminNavLinks.map(({ link, icon: Icon, text }) => {
               return (
                 <ListItem
-                  key={`${navLink.link}`}
+                  key={`${link}`}
                   activeClassName={classes.activeMenuItem}
                   component={NavLink}
-                  to={navLink.link}
+                  to={link}
                   className={classes.menuItem}
                   button
                 >
-                  <ListItemIcon className='icon'>{iconComponent}</ListItemIcon>
-                  <ListItemText
-                    primary={t(`${navLink.text}`)}
-                    className='menu-text'
-                  />
+                  <ListItemIcon className='icon'>
+                    <Icon className='sidebarIcon' />
+                  </ListItemIcon>
+                  <ListItemText primary={t(`${text}`)} className='menu-text' />
                 </ListItem>
               )
             })}
