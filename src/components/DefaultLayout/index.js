@@ -231,22 +231,22 @@ const DefaultLayout = props => {
   const customerNavLinks = [
     {
       link: `/customers/${match.customerId}/access-numbers`,
-      text: 'Access Numbers',
+      text: t('access_numbers'),
       icon: PhoneOutlinedIcon
     },
     {
       link: `/customers/${match.customerId}/subaccounts`,
-      text: 'Subaccaunts',
+      text: t('subaccounts'),
       icon: PeopleAltOutlinedIcon
     },
     {
       link: `/customers/${match.customerId}/administrators`,
-      text: 'Administrators',
+      text: t('administrators'),
       icon: AdministratorsIcon
     },
     {
       link: `/customers/${match.customerId}/details`,
-      text: 'Details',
+      text: t('details'),
       icon: DetailsIcon
     }
   ]

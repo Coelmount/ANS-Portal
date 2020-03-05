@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
@@ -16,11 +15,8 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import useStyles from './styles'
 
-const SubaccountsTable = observer(props => {
-  const { t } = props
+const SubaccountsTable = observer(({ t }) => {
   const match = useParams()
-
-  console.log(match)
   const classes = useStyles()
   const {
     rows,
@@ -87,7 +83,7 @@ const SubaccountsTable = observer(props => {
       text: match.customerId
     },
     {
-      text: t('Subaccounts')
+      text: t('subaccounts')
     }
   ]
 
@@ -126,7 +122,7 @@ const SubaccountsTable = observer(props => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <CustomBreadcrumbs classes={classes} breadcrumbs={breadcrumbs} />
+        <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
         <TitleBlock
           titleData={titleData}
           classes={classes}
