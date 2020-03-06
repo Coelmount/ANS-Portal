@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
 const NotFound = ({ t }) => {
   const history = useHistory()
   const classes = useStyles()
+  console.log('history', history)
   return (
     <div className='notFoundPageWrapper'>
       <DefaultLayout notFoundPage />
