@@ -4,9 +4,9 @@ const useStyles = makeStyles(theme => ({
   titleWrap: {
     display: 'flex',
     height: 91,
-    alignItems: 'center',
-    paddingLeft: 62,
-    paddingRight: 34
+    alignItems: 'center'
+    // paddingLeft: 62,
+    // paddingRight: 34
   },
   title: {
     flex: '1 1 100%',

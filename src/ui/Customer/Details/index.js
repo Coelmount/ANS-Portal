@@ -3,6 +3,8 @@ import { withRouter } from 'react-router'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
+import Container from '@material-ui/core/Container'
+
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 
@@ -33,8 +35,10 @@ const Details = ({ t }) => {
 
   return (
     <div className={classes.root}>
-      <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
-      <TitleBlock titleData={titleData} />
+      <Container>
+        <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
+        <TitleBlock titleData={titleData} />
+      </Container>
     </div>
   )
 }

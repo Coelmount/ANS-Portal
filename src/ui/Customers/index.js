@@ -4,6 +4,8 @@ import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
+import Container from '@material-ui/core/Container'
+
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
 
@@ -119,12 +121,14 @@ const CustomersTable = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <button onClick={addCustomer}>add</button>
-        <TitleBlock
-          titleData={titleData}
-          classes={classes}
-          handleOpen={handleOpenCreateCustomer}
-        />
+        <Container>
+          <button onClick={addCustomer}>add</button>
+          <TitleBlock
+            titleData={titleData}
+            classes={classes}
+            handleOpen={handleOpenCreateCustomer}
+          />
+        </Container>
         <CustomTable
           classes={classes}
           rows={rows}
