@@ -5,6 +5,7 @@ import axios from 'utils/axios'
 
 export class CustomersStore {
   rows = []
+  customer = {}
   isLoadingCustomers = true
   isDeletingCustomer = false
 
@@ -14,6 +15,17 @@ export class CustomersStore {
       if (res.status === 200) {
         this.rows = res.data.tenants
         this.isLoadingCustomers = false
+      } else {
+        console.log(res, 'error')
+      }
+    })
+  }
+
+  getCustomer = id => {
+    axios.get(`/tenants/${id}/`).then(res => {
+      if (res.status === 200) {
+        this.customer = res.data
+        // console.log(res.data, 'res')
       } else {
         console.log(res, 'error')
       }
@@ -32,45 +44,15 @@ export class CustomersStore {
       }
     })
   }
-  // test methods ****
-  addCustomer = () => {
-    axios
-      .post(`/tenants/`, {
-        tenantId: `my_tenant3212`,
-        name: 'Name0017',
-        type: 'Enterprise',
-        defaultDomain: 'netaxis.be'
-      })
-      .then(res => {
-        if (res.status === 200) {
-          console.log('added')
-        } else {
-          console.log(res, 'error')
-        }
-      })
-  }
-
-  // addCustomer = () => {
-  //   axios
-  //     .post(`/tenants/ent0003/groups/`, {
-  //       groupId: `my_grpup3212`,
-  //       groupName: 'Group007',
-  //       userLimit: 25
-  //     })
-  //     .then(res => {
-  //       if (res.status === 200) {
-  //         console.log('added')
-  //       } else {
-  //         console.log(res, 'error')
-  //       }
-  //     })
-  // }
 }
+
 decorate(CustomersStore, {
   rows: observable,
+  customer: observable,
   isLoadingCustomers: observable,
   isDeletingCustomer: observable,
   getCustomers: action,
+  getCustomer: action,
   deleteCustomer: action,
   addCustomer: action
 })

@@ -122,7 +122,7 @@ const CustomersTable = observer(({ t }) => {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Container>
-          <button onClick={addCustomer}>add</button>
+          {/* <button onClick={addCustomer}>add</button> */}
           <TitleBlock
             titleData={titleData}
             classes={classes}
