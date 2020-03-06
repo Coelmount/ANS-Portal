@@ -82,16 +82,17 @@ const FirstStep = props => {
             }
           />
         </Box>
+        <Box className={classes.paragraphBox}>
+          Address information (optional)
+        </Box>
         <Box className={classes.inputes}>
-          <Select
-            icon={<LanguageIcon />}
-            label={'Language'}
-            noneValue
-            options={[
-              { label: 'Ten', value: 10 },
-              { label: 'Twenty', value: 20 },
-              { label: 'Thirty', value: 30 }
-            ]}
+          <Input
+            label={'Street'}
+            variant='outlined'
+            value={customer.address.addressLine1}
+            onChange={e =>
+              changeCustomer('address.addressLine1', e.target.value)
+            }
           />
         </Box>
       </DialogContent>

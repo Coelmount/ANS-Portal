@@ -16,7 +16,7 @@ const TitleBlock = ({ handleOpen, titleData }) => {
       </Typography>
       <Box className={classes.addCustomerWrap}>
         <Box className={classes.addIconWrap} onClick={handleOpen}>
-          <PersonAddOutlinedIcon className={classes.addIcon} />
+          {Icon}
         </Box>
         <Typography className={classes.addCustomerTitle}>
           {iconCapture}
