@@ -4,7 +4,10 @@ import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
+import Container from '@material-ui/core/Container'
+
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import SubaccountsStore from 'stores/Subaccounts'
 import CreateCustomerStore from 'stores/CreateCustomer'
@@ -89,7 +92,8 @@ const SubaccountsTable = observer(({ t }) => {
 
   const titleData = {
     mainText: 'MTN ANS',
-    iconCapture: t('add_subaccount')
+    iconCapture: t('add_subaccount'),
+    Icon: <AddOutlinedIcon />
   }
 
   const handleOpenDeleteModal = (id, name) => {
@@ -122,12 +126,15 @@ const SubaccountsTable = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
-        <TitleBlock
-          titleData={titleData}
-          classes={classes}
-          handleOpen={handleOpenCreateCustomer}
-        />
+        <Container>
+          <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
+          <TitleBlock
+            titleData={titleData}
+            classes={classes}
+            handleOpen={handleOpenCreateCustomer}
+          />
+        </Container>
+
         <CustomTable
           classes={classes}
           rows={rows}

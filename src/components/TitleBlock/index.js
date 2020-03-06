@@ -3,10 +3,11 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 
-import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
+import useStyles from './styles'
 
-const TitleBlock = ({ classes, handleOpen, titleData }) => {
-  const { mainText, iconCapture } = titleData
+const TitleBlock = ({ handleOpen, titleData }) => {
+  const classes = useStyles()
+  const { mainText, iconCapture, Icon } = titleData
 
   return (
     <Box className={classes.titleWrap}>

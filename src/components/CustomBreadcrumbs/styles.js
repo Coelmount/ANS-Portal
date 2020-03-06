@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   breadcrumbsWrap: {
-    paddingLeft: 62,
     paddingTop: 24,
     color: theme.palette.gray40
   },
