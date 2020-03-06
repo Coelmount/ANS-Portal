@@ -59,12 +59,12 @@ const FirstStep = props => {
             icon={<PermIdentityOutlined />}
             label={'Customer name'}
             variant='outlined'
-            value={customer.contact.name}
+            value={customer.name}
             onChange={e => changeCustomer('name', e.target.value)}
           />
         </Box>
       </DialogContent>
-      <DialogActions className={classes.dialogActions}>
+      <DialogActions className={classes.dialogActionsFirst}>
         <Button
           variant='contained'
           color='primary'

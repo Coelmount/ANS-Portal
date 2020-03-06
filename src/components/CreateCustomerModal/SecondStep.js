@@ -19,6 +19,7 @@ import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import CallOutlined from '@material-ui/icons/CallOutlined'
 import EmailOutlined from '@material-ui/icons/EmailOutlined'
 import LanguageIcon from '@material-ui/icons/Language'
+import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
 import Input from 'components/Input'
 import Select from 'components/Select'
@@ -31,7 +32,7 @@ import color from '@material-ui/core/colors/lime'
 import useStyles from './styles'
 
 const FirstStep = props => {
-  const { changeStep, customer, changeCustomer } = useContext(
+  const { changeStep, customer, changeCustomer, createCustomer } = useContext(
     CreateCustomerStore
   )
   const classes = useStyles()
@@ -56,8 +57,10 @@ const FirstStep = props => {
             icon={<PermIdentityOutlined />}
             label={'Customer name'}
             variant='outlined'
-            value={customer.tenantId}
-            onChange={e => changeCustomer('contact.name', e.target.value)}
+            value={customer.contactInformation.name}
+            onChange={e =>
+              changeCustomer('contactInformation.name', e.target.value)
+            }
           />
         </Box>
         <Box className={classes.inputes}>
@@ -65,9 +68,9 @@ const FirstStep = props => {
             icon={<CallOutlined />}
             label={'Phone number'}
             variant='outlined'
-            value={customer.contact.phoneNumber}
+            value={customer.contactInformation.phoneNumber}
             onChange={e =>
-              changeCustomer('contact.phoneNumber', e.target.value)
+              changeCustomer('contactInformation.phoneNumber', e.target.value)
             }
           />
         </Box>
@@ -76,9 +79,9 @@ const FirstStep = props => {
             icon={<EmailOutlined />}
             label={'Email'}
             variant='outlined'
-            value={customer.contact.emailAddress}
+            value={customer.contactInformation.emailAddress}
             onChange={e =>
-              changeCustomer('contact.emailAddress', e.target.value)
+              changeCustomer('contactInformation.emailAddress', e.target.value)
             }
           />
         </Box>
@@ -89,21 +92,62 @@ const FirstStep = props => {
           <Input
             label={'Street'}
             variant='outlined'
-            value={customer.address.addressLine1}
+            value={customer.addressInformation.addressLine1}
             onChange={e =>
-              changeCustomer('address.addressLine1', e.target.value)
+              changeCustomer('addressInformation.addressLine1', e.target.value)
+            }
+          />
+        </Box>
+        <Box className={classes.zipCityRow}>
+          <Box className={classes.zip}>
+            <Input
+              label={'Postal code'}
+              variant='outlined'
+              value={customer.addressInformation.postalCode}
+              onChange={e =>
+                changeCustomer('addressInformation.postalCode', e.target.value)
+              }
+            />
+          </Box>
+          <Box className={classes.city}>
+            <Input
+              label={'City'}
+              variant='outlined'
+              value={customer.addressInformation.city}
+              onChange={e =>
+                changeCustomer('addressInformation.city', e.target.value)
+              }
+            />
+          </Box>
+        </Box>
+        <Box className={classes.inputes}>
+          <Input
+            label={'Country'}
+            variant='outlined'
+            value={customer.addressInformation.country}
+            onChange={e =>
+              changeCustomer('addressInformation.country', e.target.value)
             }
           />
         </Box>
       </DialogContent>
-      <DialogActions className={classes.dialogActions}>
+      <DialogActions className={classes.dialogActionsSecond}>
+        <Button
+          variant='outlined'
+          color='primary'
+          className={classes.backButton}
+          onClick={() => changeStep(1)}
+        >
+          <ChevronLeft />
+          Back
+        </Button>
         <Button
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(2)}
+          onClick={() => createCustomer().then(() => handleClose())}
         >
-          Next
+          Add
         </Button>
       </DialogActions>
     </React.Fragment>

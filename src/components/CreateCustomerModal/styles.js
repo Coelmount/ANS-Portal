@@ -42,8 +42,30 @@ const useStyles = makeStyles(theme => ({
     width: '160px',
     marginRight: '32px'
   },
-  dialogActions: {
+  backButton: {
+    width: '160px',
+    marginLeft: '32px',
+    color: theme.palette.black
+  },
+  dialogActionsFirst: {
     height: '110px'
+  },
+  dialogActionsSecond: {
+    height: '110px',
+    justifyContent: 'space-between'
+  },
+  zipCityRow: {
+    marginTop: '30px',
+    marginLeft: 'calc(104px - 24px)',
+    display: 'flex',
+    width: '392px'
+  },
+  zip: {
+    width: '33%',
+    marginRight: '16px'
+  },
+  city: {
+    width: 'calc(67% - 16px)'
   }
 }))
 
