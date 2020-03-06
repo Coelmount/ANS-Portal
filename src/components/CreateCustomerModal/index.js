@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import CreateCustomerStore from 'stores/CreateCustomer'
 
 import FirstStep from './FirstStep'
+import SecondStep from './SecondStep'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
       width: '651px'
     },
     '& .MuiDialog-paperScrollPaper': {
-      height: 'calc(100% - 64px)'
+      minHeight: '100%'
     }
   }
 }))
@@ -41,12 +42,11 @@ const CreateCustomer = props => {
 }
 
 const Steps = props => {
-  console.log(props)
   switch (props.step) {
     case 1:
       return <FirstStep handleClose={props.handleClose} />
     case 2:
-      return <Box>1231</Box>
+      return <SecondStep handleClose={props.handleClose} />
     default:
       return <FirstStep handleClose={props.handleClose} />
   }

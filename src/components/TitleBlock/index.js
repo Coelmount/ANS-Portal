@@ -14,11 +14,8 @@ const TitleBlock = ({ classes, handleOpen, titleData }) => {
         {mainText}
       </Typography>
       <Box className={classes.addCustomerWrap}>
-        <Box className={classes.addIconWrap}>
-          <PersonAddOutlinedIcon
-            className={classes.addIcon}
-            onClick={handleOpen}
-          />
+        <Box className={classes.addIconWrap} onClick={handleOpen}>
+          <PersonAddOutlinedIcon className={classes.addIcon} />
         </Box>
         <Typography className={classes.addCustomerTitle}>
           {iconCapture}
