@@ -22,52 +22,14 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import { makeStyles } from '@material-ui/core/styles'
 import color from '@material-ui/core/colors/lime'
 
-const useStyles = makeStyles(theme => ({
-  sharpIcon: {
-    textAlign: 'center'
-  },
-  title: {
-    '& > *': {
-      fontFamily: 'MTN',
-      fontWeight: 500,
-      fontSize: '30px',
-      color: theme.palette.black
-    }
-  },
-  closeButton: {
-    position: 'absolute',
-    right: '10px'
-  },
-  stepStyles: {
-    marginTop: '32px',
-    marginLeft: 'calc(40px - 24px)',
-    fontFamily: 'MTN',
-    fontWeight: 500,
-    fontSize: '16px',
-    color: theme.palette.gray40
-  },
-  paragraphBox: {
-    marginTop: '19px',
-    marginLeft: 'calc(88px - 24px)',
-    fontFamily: 'MTN',
-    fontWeight: 500,
-    fontSize: '18px',
-    color: theme.palette.black
-  },
-  inputes: {
-    marginTop: '30px',
-    marginLeft: 'calc(104px - 24px)'
-  },
-  nextButton: {
-    width: '160px'
-  }
-}))
+import useStyles from './styles'
 
 const FirstStep = props => {
-  const { changeStep } = useContext(CreateCustomerStore)
+  const { changeStep, customer, changeCustomer } = useContext(
+    CreateCustomerStore
+  )
   const classes = useStyles()
   const { handleClose } = props
-
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -88,6 +50,8 @@ const FirstStep = props => {
             icon={<img src={sharp} />}
             label={'Customer ID'}
             variant='outlined'
+            value={customer.tenantId}
+            onChange={e => changeCustomer('tenantId', e.target.value)}
           />
         </Box>
         <Box className={classes.inputes}>
@@ -95,10 +59,12 @@ const FirstStep = props => {
             icon={<PermIdentityOutlined />}
             label={'Customer name'}
             variant='outlined'
+            value={customer.name}
+            onChange={e => changeCustomer('name', e.target.value)}
           />
         </Box>
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={classes.dialogActionsFirst}>
         <Button
           variant='contained'
           color='primary'

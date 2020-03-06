@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     width: '20px',
     textAlign: 'center'
   },
-  input: {
+  inputIcon: {
     width: '392px',
     '& .MuiInputLabel-outlined': {
       left: '49px'
@@ -30,6 +30,16 @@ const useStyles = makeStyles(() => ({
     '& .MuiOutlinedInput-input': {
       padding: '18.5px 14px 18.5px 49px'
     }
+  },
+  input: {
+    width: '392px',
+    '& .MuiInputLabel-outlined': {
+      left: '24px'
+    },
+    '& .MuiInputLabel-shrink': {
+      transform: 'translate(-10px, -11px) scale(0.75)',
+      color: '#666666'
+    }
   }
 }))
 
@@ -39,7 +49,11 @@ const Input = props => {
   return (
     <Box className={classes.root}>
       {!!props.icon && <Box className={classes.icon}>{props.icon}</Box>}
-      <TextField className={classes.input} variant='outlined' {...props} />
+      <TextField
+        className={props.icon ? classes.inputIcon : classes.input}
+        variant='outlined'
+        {...props}
+      />
     </Box>
   )
 }

@@ -14,7 +14,7 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
-// import CreateCustomer from './components/CreateCustomerModal'
+import CreateCustomer from 'components/CreateCustomerModal'
 
 import useStyles from './styles'
 
@@ -146,12 +146,12 @@ const CustomersTable = observer(({ t }) => {
             deleteSubject={t('customer')}
           />
         )}
-        {/* {isOpenCreateCustomer && (
+        {isOpenCreateCustomer && (
           <CreateCustomer
             open={isOpenCreateCustomer}
             handleClose={handleCloseCreateCustomer}
           />
-        )} */}
+        )}
       </Paper>
     </div>
   )
