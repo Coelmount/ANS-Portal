@@ -19,7 +19,8 @@ const theme = createMuiTheme({
     },
     black: '#212529',
     lightGrey: '#C4C4C4',
-    gray40: '#666666'
+    gray40: '#666666',
+    greyE8: '#E8E8E8'
   },
   typography: {
     fontFamily: ['"Open Sans"', 'sans-serif'].join(',')
@@ -79,6 +80,9 @@ const theme = createMuiTheme({
     MuiPaper: {
       elevation8: {
         boxShadow: '0px 4px 8px rgba(196, 196, 196, 0.25)'
+      },
+      elevation1: {
+        boxShadow: 'none'
       }
     },
     MuiPopover: {

@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { withRouter } from 'react-router'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
 
 import Container from '@material-ui/core/Container'
 
@@ -13,12 +14,13 @@ import CustomersStore from 'stores/Customers'
 
 import editSvg from 'source/images/svg/edit.svg'
 import useStyles from './styles'
-import { useEffect } from 'react'
 
-const Details = ({ t }) => {
+const Details = observer(({ t }) => {
   const match = useParams()
   const classes = useStyles()
-  const { customer, getCustomer } = useContext(CustomersStore)
+  const { customer, getCustomer, isLoadingCustomer } = useContext(
+    CustomersStore
+  )
 
   useEffect(() => {
     getCustomer(match.customerId)
@@ -44,13 +46,13 @@ const Details = ({ t }) => {
 
   return (
     <div className={classes.root}>
-      <Container>
+      <Container className={classes.container}>
         <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
         <TitleBlock titleData={titleData} />
-        <DetailsTemplate data={customer} />
       </Container>
+      <DetailsTemplate data={customer} isLoading={isLoadingCustomer} />
     </div>
   )
-}
+})
 
 export default withNamespaces()(withRouter(Details))

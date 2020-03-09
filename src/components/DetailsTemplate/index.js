@@ -1,125 +1,134 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, Fragment } from 'react'
+import { withNamespaces } from 'react-i18next'
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import Paper from '@material-ui/core/Paper'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined'
 
-const DetailsTemplate = ({ data }) => {
-  console.log(data.addressInformation, 'data')
-  console.log(data.addressInformation.addressLine1, 'line')
-  // const adressInfo = data.addressInformation
-  // const { addressLine1, city, postalCode, country } = adressInfo
-  const [expanded, setExpanded] = useState(false)
+import Loading from 'components/Loading'
+import DetailsBlock from './components/DetailsBlock'
+
+import useStyles from './styles'
+
+const DetailsTemplate = ({ data, isLoading, t }) => {
+  const classes = useStyles()
+  const [isContactExpanded, setIsContactExpanded] = useState(true)
+  const [isAddressExpanded, setIsAddressExpanded] = useState(true)
+
+  const { addressLine1, city, country, postalCode } = data.addressInformation
+  const { name, phoneNumber, emailAddress } = data.contactInformation
 
   const expansionBlocks = [
     {
-      title: 'Contact information',
+      title: t('contact_information'),
       name: 'contact',
       fields: [
         {
           icon: <PermIdentityOutlinedIcon />,
-          name: 'Name:'
+          name: t('name'),
+          value: name
         },
         {
           icon: <PhoneOutlinedIcon />,
-          name: 'Phone Number:'
+          name: t('phone_number'),
+          value: phoneNumber
         },
         {
           icon: <MailOutlineOutlinedIcon />,
-          name: 'Email:'
+          name: t('email'),
+          value: emailAddress
         }
       ]
     },
     {
-      title: 'Adress information',
-      name: 'adress',
+      title: t('address_information'),
+      name: 'address',
       fields: [
         {
-          name: 'Street:'
-          // value: addressLine1
+          name: t('street'),
+          value: addressLine1
         },
         {
-          name: 'City:'
-          // value: adressInfo.city
+          name: t('city'),
+          value: city
         },
         {
-          name: 'Country:'
-          // value: adressInfo.country
+          name: t('country'),
+          value: country
         },
         {
-          name: 'Postal Code:'
-          // value: adressInfo.postalCode
+          name: t('postal_code'),
+          value: postalCode
         }
       ]
     }
   ]
 
-  const handleChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
+  const handleChange = panel => () => {
+    if (panel === 'contact') {
+      setIsContactExpanded(!isContactExpanded)
+    } else {
+      setIsAddressExpanded(!isAddressExpanded)
+    }
   }
+  const styledExpandMoreIcon = (
+    <Box className={classes.expandMoreIconWrap}>
+      <ExpandMoreIcon className={classes.expandMoreIcon} />
+    </Box>
+  )
 
   return (
-    <div>
-      <div>first block</div>
-      {expansionBlocks.map(expansionBlock => (
-        <ExpansionPanel
-          expanded={expanded === expansionBlock.name}
-          onChange={handleChange(expansionBlock.name)}
-        >
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1bh-content'
-            id='panel1bh-header'
-          >
-            <Typography>{expansionBlock.title}</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails
-            style={{ display: 'flex', flexDirection: 'column' }}
-          >
-            {expansionBlock.fields.map(field => (
-              <Box style={{ paddingLeft: 50 }}>
-                <Box>
-                  {field.icon ? field.icon : null}
-                  {field.name ? field.name : null}
-                </Box>
-              </Box>
-            ))}
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      ))}
-
-      {/* <ExpansionPanel
-        expanded={expanded === 'contact'}
-        onChange={handleChange('contact')}
-      >
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1bh-content'
-          id='panel1bh-header'
-        >
-          <Typography>Contact Information</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails style={{ display: 'flex' }}>
-          <Box style={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography>Name:</Typography>
-            <Typography>Phone Number:</Typography>
-          </Box>
-
-          <Box style={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography>Alex Microsoft</Typography>
-            <Typography>0007</Typography>
-          </Box>
-        </ExpansionPanelDetails>
-      </ExpansionPanel> */}
+    <div className={classes.root}>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Fragment>
+          <DetailsBlock classes={classes} data={data} />
+          {expansionBlocks.map(expansionBlock => (
+            <ExpansionPanel
+              expanded={
+                (expansionBlock.name === 'contact' && isContactExpanded) ||
+                (expansionBlock.name === 'address' && isAddressExpanded)
+              }
+              onChange={handleChange(expansionBlock.name)}
+              className={classes.expansionPannel}
+              key={expansionBlock.name}
+            >
+              <ExpansionPanelSummary
+                expandIcon={styledExpandMoreIcon}
+                className={classes.panelSummary}
+              >
+                <Typography className={classes.blockTitle}>
+                  {expansionBlock.title}
+                </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                {expansionBlock.fields.map(field => (
+                  <Box className={classes.detailsFieldsWrap} key={field.name}>
+                    <Box className={classes.fieldTitleBlock}>
+                      {field.icon ? field.icon : null}
+                      <Typography>{`${field.name}:`}</Typography>
+                    </Box>
+                    <Typography> {field.value}</Typography>
+                  </Box>
+                ))}
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          ))}
+        </Fragment>
+      )}
     </div>
   )
 }
 
-export default DetailsTemplate
+export default withNamespaces()(DetailsTemplate)
