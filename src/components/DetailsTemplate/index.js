@@ -1,12 +1,12 @@
-import React, { useState, useContext, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
+import has from 'lodash/has'
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-import Paper from '@material-ui/core/Paper'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined'
@@ -23,8 +23,11 @@ const DetailsTemplate = ({ data, isLoading, t }) => {
   const [isContactExpanded, setIsContactExpanded] = useState(true)
   const [isAddressExpanded, setIsAddressExpanded] = useState(true)
 
-  const { addressLine1, city, country, postalCode } = data.addressInformation
-  const { name, phoneNumber, emailAddress } = data.contactInformation
+  const { addressLine1, city, country, postalCode } =
+    data && has(data, 'addressInformation')
+
+  const { name, phoneNumber, emailAddress } =
+    data && has(data, 'contactInformation')
 
   const expansionBlocks = [
     {
