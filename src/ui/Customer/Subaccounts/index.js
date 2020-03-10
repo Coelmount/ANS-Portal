@@ -20,6 +20,7 @@ import useStyles from './styles'
 
 const SubaccountsTable = observer(({ t }) => {
   const match = useParams()
+  console.log(match, 'cust match')
   const classes = useStyles()
   const {
     rows,
@@ -47,7 +48,10 @@ const SubaccountsTable = observer(({ t }) => {
       },
       label: 'ID',
       getCellData: row => (
-        <Link to={`/customers/`} className={classes.link}>
+        <Link
+          to={`/customers/${match.customerId}/subaccounts/${row.groupId}/my_ans_instances/basic`}
+          className={classes.link}
+        >
           {row.groupId}
         </Link>
       ),

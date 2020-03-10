@@ -42,6 +42,7 @@ const CustomTableBody = props => {
           {stableSort(list, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
+              console.log(row, 'row')
               const labelId = `enhanced-table-checkbox-${index}`
               return (
                 <TableRow
