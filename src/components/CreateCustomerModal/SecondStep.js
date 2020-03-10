@@ -5,29 +5,19 @@ import { observer } from 'mobx-react'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
-import SvgIcon from '@material-ui/core/SvgIcon'
 import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
 
-import sharp from 'source/images/svg/sharp.svg'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import CallOutlined from '@material-ui/icons/CallOutlined'
 import EmailOutlined from '@material-ui/icons/EmailOutlined'
-import LanguageIcon from '@material-ui/icons/Language'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
 import Input from 'components/Input'
-import Select from 'components/Select'
 
 import CreateCustomerStore from 'stores/CreateCustomer'
-
-import { makeStyles } from '@material-ui/core/styles'
-import color from '@material-ui/core/colors/lime'
 
 import useStyles from './styles'
 
@@ -145,7 +135,7 @@ const FirstStep = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => createCustomer().then(() => handleClose())}
+          onClick={() => createCustomer().then(() => changeStep(3))}
         >
           Add
         </Button>
