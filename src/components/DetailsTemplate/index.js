@@ -110,9 +110,7 @@ const DetailsTemplate = ({ data, isLoading, t }) => {
                   {expansionBlock.title}
                 </Typography>
               </ExpansionPanelSummary>
-              <ExpansionPanelDetails
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
+              <ExpansionPanelDetails className={classes.panelDetails}>
                 {expansionBlock.fields.map(field => (
                   <Box className={classes.detailsFieldsWrap} key={field.name}>
                     <Box className={classes.fieldTitleBlock}>

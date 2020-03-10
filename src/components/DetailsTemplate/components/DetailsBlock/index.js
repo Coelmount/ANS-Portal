@@ -17,7 +17,10 @@ const DetailsBlock = ({ classes, data, t }) => {
         Customer Details
       </Typography>
       {detailsFields.map(detailsField => (
-        <Box className={classes.detailsFieldsWrap} key={detailsField.name}>
+        <Box
+          className={`${classes.detailsFieldsWrap} ${classes.firstBlockFields}`}
+          key={detailsField.name}
+        >
           <Typography className={classes.fieldTitleBlock}>
             {`${detailsField.name}:`}
           </Typography>

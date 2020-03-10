@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       paddingLeft: '50px !important'
     },
-    [theme.breakpoints.down(735)]: {
+    [theme.breakpoints.down(700)]: {
       paddingLeft: '34px !important'
     },
     [theme.breakpoints.between(600, 675)]: {

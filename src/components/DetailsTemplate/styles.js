@@ -9,28 +9,20 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       paddingLeft: '26px !important'
     },
-    [theme.breakpoints.down(735)]: {
+    [theme.breakpoints.down(700)]: {
       paddingLeft: '10px !important'
     },
     [theme.breakpoints.between(600, 675)]: {
-      paddingLeft: '0px !important'
+      paddingLeft: '10px !important'
     }
   },
   detailsBlock: {
-    paddingLeft: 24,
     marginBottom: 20
   },
   detailsFieldsWrap: {
     display: 'flex',
-    paddingLeft: 42,
     alignItems: 'center',
-    whiteSpace: 'nowrap',
-    [theme.breakpoints.down(735)]: {
-      paddingLeft: 5
-    },
-    [theme.breakpoints.down('xm')]: {
-      paddingLeft: 5
-    }
+    whiteSpace: 'nowrap'
   },
   fieldTitleBlock: {
     display: 'flex',
@@ -47,6 +39,30 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.between(600, 675)]: {
       minWidth: 180
+    },
+    [theme.breakpoints.down(435)]: {
+      paddingLeft: 5,
+      minWidth: 180
+    }
+  },
+  firstBlockFields: {
+    paddingLeft: 66,
+    [theme.breakpoints.between(600, 675)]: {
+      paddingLeft: 0
+    },
+    [theme.breakpoints.down(435)]: {
+      paddingLeft: 15
+    }
+  },
+  panelDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: 62,
+    [theme.breakpoints.between(600, 675)]: {
+      paddingLeft: 0
+    },
+    [theme.breakpoints.down(435)]: {
+      paddingLeft: 10
     }
   },
   expansionBlockRow: {
@@ -59,10 +75,17 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap'
   },
   detailsBlockTitle: {
-    marginBottom: 20,
+    marginBottom: 24,
     fontFamily: 'MTN',
     fontSize: 18,
-    fontWeight: 600
+    fontWeight: 600,
+    padding: '0 24px 0 24px',
+    [theme.breakpoints.between(600, 675)]: {
+      paddingLeft: 0
+    },
+    [theme.breakpoints.down(435)]: {
+      paddingLeft: 15
+    }
   },
   expandMoreIconWrap: {
     width: 30,
@@ -76,8 +99,17 @@ const useStyles = makeStyles(theme => ({
   },
   expansionPannel: {
     background: theme.palette.active.main,
-    width: '60%',
-    borderTop: `1px solid ${theme.palette.greyE8}`
+    width: '50%',
+    borderTop: `1px solid ${theme.palette.greyE8}`,
+    [theme.breakpoints.down(1250)]: {
+      width: '70%'
+    },
+    [theme.breakpoints.down(890)]: {
+      width: '90%'
+    },
+    [theme.breakpoints.down(740)]: {
+      width: '100%'
+    }
   }
 }))
 
