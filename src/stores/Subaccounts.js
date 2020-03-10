@@ -5,6 +5,10 @@ import axios from 'utils/axios'
 
 export class SubaccountsStore {
   rows = []
+  subaccount = {
+    addressInformation: {},
+    contactInformation: {}
+  }
   isLoadingSubaccounts = true
   isDeletingSubaccount = false
 
@@ -13,6 +17,18 @@ export class SubaccountsStore {
     axios.get(`/tenants/${id}/groups`).then(res => {
       if (res.status === 200) {
         this.rows = res.data.groups
+        this.isLoadingSubaccounts = false
+      } else {
+        console.log(res, 'error')
+      }
+    })
+  }
+
+  getSubaccount = (customerId, groupId) => {
+    this.isLoadingSubaccounts = true
+    axios.get(`/tenants/${customerId}/groups/${groupId}`).then(res => {
+      if (res.status === 200) {
+        this.subaccount = res.data
         this.isLoadingSubaccounts = false
       } else {
         console.log(res, 'error')
@@ -36,9 +52,11 @@ export class SubaccountsStore {
 
 decorate(SubaccountsStore, {
   rows: observable,
+  subaccount: observable,
   isLoadingSubaccounts: observable,
   isDeletingSubaccount: observable,
   getSubaccounts: action,
+  getSubaccount: action,
   deleteSubaccount: action
 })
 
