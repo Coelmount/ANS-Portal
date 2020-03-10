@@ -103,11 +103,16 @@ const CustomersTable = observer(({ t }) => {
 
   const handleCloseCreateCustomer = () => {
     setIsOpenCreateCustomer(false)
-    setDefaultValues()
   }
 
   const handleOpenCreateCustomer = () => {
+    setDefaultValues()
     setIsOpenCreateCustomer(true)
+  }
+
+  const handleCloseCreateCustomerSuccess = () => {
+    setIsOpenCreateCustomer(false)
+    getCustomers()
   }
 
   const handleDelete = id => {
@@ -149,6 +154,7 @@ const CustomersTable = observer(({ t }) => {
           <CreateCustomer
             open={isOpenCreateCustomer}
             handleClose={handleCloseCreateCustomer}
+            successClose={handleCloseCreateCustomerSuccess}
           />
         )}
       </Paper>

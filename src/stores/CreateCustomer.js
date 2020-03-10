@@ -3,7 +3,6 @@ import { decorate, observable, action } from 'mobx'
 import { set } from 'lodash'
 
 import axios from 'utils/axios'
-import { jsxClosingFragment } from '@babel/types'
 
 export class CreateCustomerStore {
   step = 1
@@ -27,12 +26,31 @@ export class CreateCustomerStore {
     }
   }
 
+  createdCustomer = {}
+
   changeStep = step => {
     this.step = step
   }
 
   setDefaultValues = () => {
     this.step = 1
+    this.customer = {
+      type: 'Enterprise',
+      tenantId: '',
+      name: '',
+      contactInformation: {
+        name: '',
+        phoneNumber: '',
+        emailAddress: ''
+      },
+      useTenantLanguage: '',
+      addressInformation: {
+        addressLine1: '',
+        postalCode: '',
+        city: '',
+        country: ''
+      }
+    }
   }
 
   changeCustomer = (variable, value) => {
@@ -40,7 +58,9 @@ export class CreateCustomerStore {
   }
 
   createCustomer = () => {
-    return axios.post(`/tenants/`, this.customer)
+    return axios
+      .post(`/tenants/`, this.customer)
+      .then(res => (this.createdCustomer = res.data))
   }
 }
 
@@ -48,6 +68,7 @@ decorate(CreateCustomerStore, {
   step: observable,
   customer: observable,
   closeModal: observable,
+  createdCustomer: observable,
   changeStep: action,
   changeCustomer: action
 })
