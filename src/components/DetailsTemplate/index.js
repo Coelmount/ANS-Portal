@@ -1,12 +1,12 @@
-import React, { useState, useContext, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
+import has from 'lodash/has'
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-import Paper from '@material-ui/core/Paper'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined'
@@ -23,8 +23,11 @@ const DetailsTemplate = ({ data, isLoading, t }) => {
   const [isContactExpanded, setIsContactExpanded] = useState(true)
   const [isAddressExpanded, setIsAddressExpanded] = useState(true)
 
-  const { addressLine1, city, country, postalCode } = data.addressInformation
-  const { name, phoneNumber, emailAddress } = data.contactInformation
+  const { addressLine1, city, country, postalCode } =
+    has(data, 'addressInformation') && data.addressInformation
+
+  const { name, phoneNumber, emailAddress } =
+    has(data, 'contactInformation') && data.contactInformation
 
   const expansionBlocks = [
     {
@@ -34,17 +37,17 @@ const DetailsTemplate = ({ data, isLoading, t }) => {
         {
           icon: <PermIdentityOutlinedIcon />,
           name: t('name'),
-          value: name
+          value: name ? name : 'none'
         },
         {
           icon: <PhoneOutlinedIcon />,
           name: t('phone_number'),
-          value: phoneNumber
+          value: phoneNumber ? phoneNumber : 'none'
         },
         {
           icon: <MailOutlineOutlinedIcon />,
           name: t('email'),
-          value: emailAddress
+          value: emailAddress ? emailAddress : 'none'
         }
       ]
     },
@@ -54,19 +57,19 @@ const DetailsTemplate = ({ data, isLoading, t }) => {
       fields: [
         {
           name: t('street'),
-          value: addressLine1
+          value: addressLine1 ? addressLine1 : 'none'
         },
         {
           name: t('city'),
-          value: city
+          value: city ? city : 'none'
         },
         {
           name: t('country'),
-          value: country
+          value: country ? country : 'none'
         },
         {
           name: t('postal_code'),
-          value: postalCode
+          value: postalCode ? postalCode : 'none'
         }
       ]
     }
