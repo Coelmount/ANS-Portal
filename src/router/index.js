@@ -12,6 +12,8 @@ import AccessNumbers from 'ui/Customer/AccessNumbers'
 import Subaccounts from 'ui/Customer/Subaccounts/'
 import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
+import Basic from 'ui/Subaccount/MyAnsInstances/Basic'
+import SubaccountDetails from 'ui/Subaccount/Details'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
@@ -26,7 +28,9 @@ export const ROUTS = {
   accessNumbers: '/customers/:customerId/access-numbers',
   subaccounts: '/customers/:customerId/subaccounts',
   administrators: '/customers/:customerId/administrators',
-  details: '/customers/:customerId/details'
+  details: '/customers/:customerId/details',
+  basic: '/customers/:customerId/subaccounts/:groupId/my_ans_instances/basic',
+  subaccountDetails: '/customers/:customerId/subaccounts/:groupId/details'
 }
 
 const Page = props => {
@@ -63,6 +67,12 @@ const UserPages = () => {
       </Route>
       <Route path={ROUTS.details} exact>
         <Page diplayedComponent={<Details />} />
+      </Route>
+      <Route path={ROUTS.basic} exact>
+        <Page diplayedComponent={<Basic />} />
+      </Route>
+      <Route path={ROUTS.subaccountDetails} exact>
+        <Page diplayedComponent={<SubaccountDetails />} />
       </Route>
       <Redirect path='/' to={ROUTS.customers} exact />
       <Route path='*' component={NotFound} />
