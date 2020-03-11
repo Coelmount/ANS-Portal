@@ -6,8 +6,8 @@ import Box from '@material-ui/core/Box'
 
 const DetailsBlock = ({ classes, data, t }) => {
   const detailsFields = [
-    { name: 'ID', value: data.tenantId },
-    { name: t('name'), value: data.name },
+    { name: 'ID', value: data.tenantId || data.groupId || 'none' },
+    { name: t('name'), value: data.name || data.groupName },
     { name: t('status'), value: 'active' }
   ]
 

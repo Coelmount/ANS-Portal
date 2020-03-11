@@ -1,185 +1,25 @@
-import React, { useContext, useState, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { observer } from 'mobx-react'
-import { NavLink, useParams, useHistory } from 'react-router-dom'
-import i18n from 'i18n'
-import { withNamespaces } from 'react-i18next'
-import has from 'lodash/has'
+import { useParams } from 'react-router-dom'
 
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { withNamespaces } from 'react-i18next'
+
+import { useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 import Box from '@material-ui/core/Box'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import LinkMaterial from '@material-ui/core/Link'
-import Typography from '@material-ui/core/Typography'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import SvgIcon from '@material-ui/core/SvgIcon'
 
-import MenuIcon from '@material-ui/icons/Menu'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import SvgIcon from '@material-ui/core/SvgIcon'
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'
-import ExpandMoreOutlinedIcon from '@material-ui/icons/ExpandMoreOutlined'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
-import AuthStore from 'stores/Auth'
-import LanguagesStore from 'stores/Languages'
+import CustomDrawer from './components/CustomDrawer'
+import CustomAppBar from './components/CustomAppBar'
 
 import logo from 'source/images/svg/mtn-logo-nav.svg'
-import { LANGUAGES } from 'source/config'
 import './styles.css'
-
-const drawerWidth = 240
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex'
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0
-    }
-  },
-  appBar: {
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth
-    },
-    boxShadow: 'none'
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none'
-    }
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    borderRight: 'none',
-    boxShadow: 'inset 0px 12px 24px rgba(196, 196, 196, 0.25)'
-  },
-
-  logo: {
-    width: 77.4,
-    height: 77.4,
-    position: 'absolute',
-    top: 80,
-    left: '50%',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -40%)',
-    zIndex: 2
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3)
-  },
-  menuItem: {
-    display: 'flex',
-    justifyContent: 'center',
-    paddingLeft: 22,
-    paddingTop: 14,
-    paddingBottom: 14,
-    '& .icon': {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexShrink: 1,
-      minWidth: 0,
-      width: 27,
-      height: 27,
-      borderRadius: 20,
-      background: theme.palette.active.main
-    },
-    '& > div > svg': {
-      color: theme.palette.black
-    },
-    '& .menu-text': {
-      minWidth: 100,
-      marginLeft: 5,
-      '& span': {
-        fontFamily: 'MTN',
-        fontSize: 16
-      }
-    }
-  },
-  activeMenuItem: {
-    background: theme.palette.active.main,
-    '& .icon': {
-      background: 'white'
-    },
-    '& > div > svg': {
-      color: `${theme.palette.primary.main} !important`
-    },
-    '& .menu-text': {
-      '& span': {
-        fontWeight: 600
-      }
-    }
-  },
-  iconImg: {
-    width: 20,
-    height: 20
-  },
-  toolbar: theme.mixins.toolbar,
-  header: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    height: '66px',
-    width: '100%',
-    background: theme.palette.primary.main
-  },
-  headerBlock: {
-    display: 'flex',
-    marginLeft: 30,
-    '& .MuiInput-underline:before': {
-      display: 'none'
-    },
-    alignItems: 'center'
-  },
-  userIcon: {
-    width: 22,
-    height: 22,
-    color: theme.palette.black
-  },
-  userName: {
-    marginLeft: 8,
-    color: theme.palette.black
-  },
-  expandMoreIcon: {
-    color: theme.palette.black,
-    marginLeft: 8
-  },
-  langBlock: {
-    '& > div': {
-      display: 'flex',
-      alignItems: 'flex-end'
-    },
-    '& > svg': {
-      top: 7,
-      color: theme.palette.black
-    },
-    '& .MuiList-padding': {
-      padding: 0
-    }
-  },
-  langIcon: {
-    marginRight: 6
-  },
-  listItem: {
-    '& > MuiList-padding': {
-      padding: 0
-    },
-    borderBottom: '1px solid #F9F9F9'
-  }
-}))
+import useStyles from './style'
 
 const AdministratorsIcon = () => {
   return (
@@ -198,32 +38,20 @@ const DetailsIcon = () => {
 }
 const AnsInstancesIcon = () => {
   return (
-    <SvgIcon>
-      <path
-        d='M12 0C11.0717 0 10.1815 0.368749 9.52513 1.02513C8.86875 1.6815 8.5 2.57174 8.5 3.5C8.5 4.42826 8.86875 5.3185 9.52513 5.97487C10.1815 6.63125 11.0717 7 12 7C12.9283 7 13.8185 6.63125 14.4749 5.97487C15.1313 5.3185 15.5 4.42826 15.5 3.5C15.5 2.57174 15.1313 1.6815 14.4749 1.02513C13.8185 0.368749 12.9283 0 12 0ZM12 2C12.3978 2 12.7794 2.15804 13.0607 2.43934C13.342 2.72064 13.5 3.10218 13.5 3.5C13.5 3.89782 13.342 4.27936 13.0607 4.56066C12.7794 4.84196 12.3978 5 12 5C11.6022 5 11.2206 4.84196 10.9393 4.56066C10.658 4.27936 10.5 3.89782 10.5 3.5C10.5 3.10218 10.658 2.72064 10.9393 2.43934C11.2206 2.15804 11.6022 2 12 2ZM5.5 3C4.83696 3 4.20107 3.26339 3.73223 3.73223C3.26339 4.20107 3 4.83696 3 5.5C3 6.44 3.53 7.25 4.29 7.68C4.65 7.88 5.06 8 5.5 8C5.94 8 6.35 7.88 6.71 7.68C7.08 7.47 7.39 7.17 7.62 6.81C6.89 5.86 6.5 4.7 6.5 3.5C6.5 3.41 6.5 3.31 6.5 3.22C6.2 3.08 5.86 3 5.5 3ZM18.5 3C18.14 3 17.8 3.08 17.5 3.22C17.5 3.31 17.5 3.41 17.5 3.5C17.5 4.7 17.11 5.86 16.38 6.81C16.5 7 16.63 7.15 16.78 7.3C16.94 7.45 17.1 7.58 17.29 7.68C17.65 7.88 18.06 8 18.5 8C18.94 8 19.35 7.88 19.71 7.68C20.47 7.25 21 6.44 21 5.5C21 4.83696 20.7366 4.20107 20.2678 3.73223C19.7989 3.26339 19.163 3 18.5 3ZM12 9C9.66 9 5 10.17 5 12.5V14H19V12.5C19 10.17 14.34 9 12 9ZM4.71 9.55C2.78 9.78 0 10.76 0 12.5V14H3V12.07C3 11.06 3.69 10.22 4.71 9.55ZM19.29 9.55C20.31 10.22 21 11.06 21 12.07V14H24V12.5C24 10.76 21.22 9.78 19.29 9.55ZM12 11C13.53 11 15.24 11.5 16.23 12H7.77C8.76 11.5 10.47 11 12 11Z'
-        fill='#666666'
-      />
+    <SvgIcon className='instancesIcon'>
+      <path d='M12 0C11.0717 0 10.1815 0.368749 9.52513 1.02513C8.86875 1.6815 8.5 2.57174 8.5 3.5C8.5 4.42826 8.86875 5.3185 9.52513 5.97487C10.1815 6.63125 11.0717 7 12 7C12.9283 7 13.8185 6.63125 14.4749 5.97487C15.1313 5.3185 15.5 4.42826 15.5 3.5C15.5 2.57174 15.1313 1.6815 14.4749 1.02513C13.8185 0.368749 12.9283 0 12 0ZM12 2C12.3978 2 12.7794 2.15804 13.0607 2.43934C13.342 2.72064 13.5 3.10218 13.5 3.5C13.5 3.89782 13.342 4.27936 13.0607 4.56066C12.7794 4.84196 12.3978 5 12 5C11.6022 5 11.2206 4.84196 10.9393 4.56066C10.658 4.27936 10.5 3.89782 10.5 3.5C10.5 3.10218 10.658 2.72064 10.9393 2.43934C11.2206 2.15804 11.6022 2 12 2ZM5.5 3C4.83696 3 4.20107 3.26339 3.73223 3.73223C3.26339 4.20107 3 4.83696 3 5.5C3 6.44 3.53 7.25 4.29 7.68C4.65 7.88 5.06 8 5.5 8C5.94 8 6.35 7.88 6.71 7.68C7.08 7.47 7.39 7.17 7.62 6.81C6.89 5.86 6.5 4.7 6.5 3.5C6.5 3.41 6.5 3.31 6.5 3.22C6.2 3.08 5.86 3 5.5 3ZM18.5 3C18.14 3 17.8 3.08 17.5 3.22C17.5 3.31 17.5 3.41 17.5 3.5C17.5 4.7 17.11 5.86 16.38 6.81C16.5 7 16.63 7.15 16.78 7.3C16.94 7.45 17.1 7.58 17.29 7.68C17.65 7.88 18.06 8 18.5 8C18.94 8 19.35 7.88 19.71 7.68C20.47 7.25 21 6.44 21 5.5C21 4.83696 20.7366 4.20107 20.2678 3.73223C19.7989 3.26339 19.163 3 18.5 3ZM12 9C9.66 9 5 10.17 5 12.5V14H19V12.5C19 10.17 14.34 9 12 9ZM4.71 9.55C2.78 9.78 0 10.76 0 12.5V14H3V12.07C3 11.06 3.69 10.22 4.71 9.55ZM19.29 9.55C20.31 10.22 21 11.06 21 12.07V14H24V12.5C24 10.76 21.22 9.78 19.29 9.55ZM12 11C13.53 11 15.24 11.5 16.23 12H7.77C8.76 11.5 10.47 11 12 11Z' />
     </SvgIcon>
   )
 }
 
-const DefaultLayout = props => {
-  const { t } = props
-  const match = useParams()
-  const history = useHistory()
+const DefaultLayout = ({ t, notFoundPage }) => {
   const classes = useStyles()
+  const match = useParams()
   const theme = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const { user, logOut } = useContext(AuthStore)
-  const { getLocale } = useContext(LanguagesStore)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
-  }
-
-  const changeLanguage = lng => {
-    getLocale(lng)
-    i18n.changeLanguage(lng)
   }
 
   const adminNavLinks = [
@@ -266,6 +94,7 @@ const DefaultLayout = props => {
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances`,
       text: 'My ANS instances',
+      name: 'ans_instances',
       icon: AnsInstancesIcon,
       childLinks: [
         {
@@ -293,16 +122,19 @@ const DefaultLayout = props => {
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/phone_numbers`,
       text: 'Phone numbers',
+      name: 'phone_numbers',
       icon: PhoneOutlinedIcon
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/administrators`,
       text: t('administrators'),
+      name: 'administrators',
       icon: AdministratorsIcon
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/details`,
       text: t('details'),
+      name: 'details',
       icon: DetailsIcon
     }
   ]
@@ -317,107 +149,14 @@ const DefaultLayout = props => {
     }
   }
 
-  const drawer = (
-    <Fragment>
-      <Box className='drawerHeader'>
-        <img src={logo} className={classes.logo} alt='mtn-logo' />
-      </Box>
-
-      <List>
-        {getCurrentLevel().map(navLink => {
-          const { link, icon: Icon, text } = navLink
-          // const { childLinks } =
-          //   has(navLink, 'childLinks') && navLink.childLinks
-
-          // console.log(childLinks, 'childLinks')
-          return (
-            <ListItem
-              key={`${link}`}
-              activeClassName={classes.activeMenuItem}
-              component={NavLink}
-              to={link}
-              className={classes.menuItem}
-              button
-            >
-              <ListItemIcon className='icon'>
-                <Icon className='sidebarIcon' />
-              </ListItemIcon>
-              <ListItemText primary={t(`${text}`)} className='menu-text' />
-              <List>
-                {navLink.childLinks &&
-                  navLink.childLinks.map(childLink => {
-                    return (
-                      <ListItem to={childLink.link}>
-                        <ListItemText primary={childLink.text}></ListItemText>
-                      </ListItem>
-                    )
-                  })}
-              </List>
-            </ListItem>
-          )
-        })}
-      </List>
-    </Fragment>
-  )
-
   return (
     <Fragment>
-      <AppBar position='fixed' className={classes.appBar}>
-        <Toolbar>
-          {!props.notFoundPage ? (
-            <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              edge='start'
-              onClick={handleDrawerToggle}
-              className={classes.menuButton}
-            >
-              <MenuIcon />
-            </IconButton>
-          ) : null}
-          <div className={classes.header}>
-            <LinkMaterial
-              component='button'
-              onClick={() => {
-                logOut()
-                history.push('/')
-              }}
-            >
-              <Box className={classes.headerBlock}>
-                <AccountCircleIcon className={classes.userIcon} />
-                <Typography className={classes.userName}>
-                  {user.username}
-                </Typography>
-                <ExpandMoreOutlinedIcon className={classes.expandMoreIcon} />
-              </Box>
-            </LinkMaterial>
-            <Box className={classes.headerBlock}>
-              <Select
-                className={classes.langBlock}
-                value={localStorage.getItem('i18nextLng')}
-                onChange={e => changeLanguage(e.target.value)}
-                IconComponent={ExpandMoreOutlinedIcon}
-              >
-                {LANGUAGES.map((lang, index) => (
-                  <MenuItem
-                    value={lang.value}
-                    key={`${index}`}
-                    className={classes.listItem}
-                  >
-                    <img
-                      className={classes.langIcon}
-                      src={lang.img}
-                      alt='language icon'
-                    />
-                    {` ${lang.lable}`}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Box>
-          </div>
-        </Toolbar>
-      </AppBar>{' '}
-      {props.notFoundPage ? (
+      <CustomAppBar
+        classes={classes}
+        notFoundPage={notFoundPage}
+        handleDrawerToggle={handleDrawerToggle}
+      />
+      {notFoundPage ? (
         <nav className={classes.drawer} aria-label='mailbox folders'>
           <Box className='drawerHeader'>
             <img src={logo} className={classes.logo} alt='mtn-logo' />
@@ -438,7 +177,10 @@ const DefaultLayout = props => {
                 keepMounted: true // Better open performance on mobile.
               }}
             >
-              {drawer}
+              <CustomDrawer
+                classes={classes}
+                getCurrentLevel={getCurrentLevel}
+              />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation='css'>
@@ -449,7 +191,10 @@ const DefaultLayout = props => {
               variant='permanent'
               open
             >
-              {drawer}
+              <CustomDrawer
+                classes={classes}
+                getCurrentLevel={getCurrentLevel}
+              />
             </Drawer>
           </Hidden>
         </nav>

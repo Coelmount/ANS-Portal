@@ -11,6 +11,7 @@ export class SubaccountsStore {
   }
   isLoadingSubaccounts = true
   isDeletingSubaccount = false
+  isLoadingSubaccount = true
 
   getSubaccounts = id => {
     this.isLoadingSubaccounts = true
@@ -25,11 +26,11 @@ export class SubaccountsStore {
   }
 
   getSubaccount = (customerId, groupId) => {
-    this.isLoadingSubaccounts = true
+    this.isLoadingSubaccount = true
     axios.get(`/tenants/${customerId}/groups/${groupId}`).then(res => {
       if (res.status === 200) {
         this.subaccount = res.data
-        this.isLoadingSubaccounts = false
+        this.isLoadingSubaccount = false
       } else {
         console.log(res, 'error')
       }
@@ -55,6 +56,7 @@ decorate(SubaccountsStore, {
   subaccount: observable,
   isLoadingSubaccounts: observable,
   isDeletingSubaccount: observable,
+  isLoadingSubaccount: observable,
   getSubaccounts: action,
   getSubaccount: action,
   deleteSubaccount: action
