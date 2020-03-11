@@ -61,7 +61,9 @@ const CustomSelect = props => {
             </MenuItem>
           )}
           {props.options.map(opt => (
-            <MenuItem value={opt.value}>{opt.label}</MenuItem>
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

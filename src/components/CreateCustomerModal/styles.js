@@ -101,6 +101,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '28px'
   },
   successTitle: {
+    whiteSpace: 'nowrap',
     fontFamily: 'MTN',
     fontSize: '24px',
     textAlign: 'center',
@@ -114,6 +115,61 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: '10px',
     top: '10px'
+  },
+  girdTitle: {
+    marginTop: '36px',
+    marginBottom: '12px',
+    fontWeight: 600,
+    fontSize: '16px'
+  },
+  entitlementsHeader: {
+    height: '50px',
+    backgroundColor: '#fff',
+    alignItems: 'center'
+  },
+  entitlementsHeaderNumber: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingRight: '14px',
+    fontSize: '14px'
+  },
+  entitlementsHeaderName: {
+    display: 'flex',
+    alignItems: 'center',
+    fontFamily: 'MTN',
+    fontSize: '18px',
+    cursor: 'pointer'
+  },
+  entitlementsHeaderTotal: {
+    fontSize: '16px'
+  },
+  entitlementsItemTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '8px 0 8px 0',
+    borderBottom: '0.5px solid #E8E8E8',
+    height: '66px',
+    fontSize: '16px'
+  },
+  entitlementsItemTotal: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '8px 0 8px 0',
+    width: '50px',
+    borderBottom: '0.5px solid #E8E8E8',
+    height: '66px'
+  },
+  entitlementsItemInput: {
+    width: '50px',
+    '& .MuiOutlinedInput-root': {
+      height: '50px'
+    }
+  },
+  entitlementsGrid: {
+    marginBottom: '24px'
+  },
+  entitlementsDialogContent: {
+    padding: '8px 0'
   }
 }))
 

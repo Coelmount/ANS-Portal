@@ -41,11 +41,10 @@ const SuccesPage = props => {
             <img src={accountCheck} alt='' />
           </Box>
           <Box className={classes.successTitle}>
-            Customer added successfully!
+            Entitlements added successfully!
           </Box>
           <Box className={classes.successInfo}>
-            You can go into the customer account or continue setting customer
-            entitlements
+            You can go into the customer account or continue adding a subaccount
           </Box>
         </Box>
         <Box className={classes.boxOfButtons}>
@@ -61,9 +60,8 @@ const SuccesPage = props => {
             variant='contained'
             color='primary'
             className={classes.rigthButtonFromSP}
-            onClick={() => changeStep(4)}
           >
-            Set entitlements
+            Add subaccount
           </Button>
         </Box>
       </DialogContent>

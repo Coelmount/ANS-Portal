@@ -11,6 +11,8 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import SuccessPage from './SuccessPage'
+import SetEntitlements from './SetEntitlements'
+import SuccessEntitlements from './SuccessEntitlements'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,13 +42,17 @@ const CreateCustomer = props => {
 }
 
 const Steps = props => {
-  switch (props.step) {
+  switch (5) {
     case 1:
       return <FirstStep handleClose={props.handleClose} />
     case 2:
       return <SecondStep handleClose={props.handleClose} />
     case 3:
       return <SuccessPage handleClose={props.successClose} />
+    case 4:
+      return <SetEntitlements handleClose={props.successClose} />
+    case 5:
+      return <SuccessEntitlements handleClose={props.successClose} />
     default:
       return <FirstStep handleClose={props.handleClose} />
   }
