@@ -26,7 +26,7 @@ const DetailsTemplate = ({ data, isLoading, t }) => {
   const { addressLine1, city, country, postalCode } =
     has(data, 'addressInformation') && data.addressInformation
 
-  const { name, phoneNumber, emailAddress } =
+  const { name, groupName, phoneNumber, emailAddress } =
     has(data, 'contactInformation') && data.contactInformation
 
   const expansionBlocks = [
@@ -37,7 +37,7 @@ const DetailsTemplate = ({ data, isLoading, t }) => {
         {
           icon: <PermIdentityOutlinedIcon />,
           name: t('name'),
-          value: name ? name : 'none'
+          value: name || groupName || 'none'
         },
         {
           icon: <PhoneOutlinedIcon />,
