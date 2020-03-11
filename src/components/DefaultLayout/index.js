@@ -7,11 +7,9 @@ import { withNamespaces } from 'react-i18next'
 import { useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
-
 import Box from '@material-ui/core/Box'
 
 import SvgIcon from '@material-ui/core/SvgIcon'
-
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
@@ -96,6 +94,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances`,
       text: 'My ANS instances',
+      name: 'ans_instances',
       icon: AnsInstancesIcon,
       childLinks: [
         {
@@ -123,16 +122,19 @@ const DefaultLayout = ({ t, notFoundPage }) => {
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/phone_numbers`,
       text: 'Phone numbers',
+      name: 'phone_numbers',
       icon: PhoneOutlinedIcon
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/administrators`,
       text: t('administrators'),
+      name: 'administrators',
       icon: AdministratorsIcon
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/details`,
       text: t('details'),
+      name: 'details',
       icon: DetailsIcon
     }
   ]

@@ -47,7 +47,9 @@ const useStyles = makeStyles(theme => ({
   },
   menuItem: {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     paddingLeft: 22,
     paddingTop: 14,
     paddingBottom: 14,
@@ -62,12 +64,12 @@ const useStyles = makeStyles(theme => ({
       borderRadius: 20,
       background: theme.palette.active.main
     },
-    '& > div > svg': {
+    '& svg': {
       color: theme.palette.black
     },
     '& .menu-text': {
       minWidth: 100,
-      marginLeft: 5,
+      // marginLeft: 5,
       '& span': {
         fontFamily: 'MTN',
         fontSize: 16
@@ -79,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     '& .icon': {
       background: 'white'
     },
-    '& > div > svg': {
+    '& .icon > svg': {
       color: `${theme.palette.primary.main} !important`
     },
     '& .menu-text': {
@@ -87,6 +89,18 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 600
       }
     }
+  },
+  topLevelTitle: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center'
+  },
+  sidebarExpandMoreIcon: {
+    color: `${theme.palette.active.blue} !important`
+  },
+  activeSidebarExpandMoreIcon: {
+    color: `${theme.palette.active.blue} !important`,
+    transform: 'rotate(180deg)'
   },
   iconImg: {
     width: 20,
