@@ -20,7 +20,6 @@ import useStyles from './styles'
 
 const SubaccountsTable = observer(({ t }) => {
   const match = useParams()
-  console.log(match, 'cust match')
   const classes = useStyles()
   const {
     rows,
