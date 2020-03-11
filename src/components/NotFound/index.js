@@ -36,14 +36,14 @@ const useStyles = makeStyles(theme => ({
 const NotFound = ({ t }) => {
   const history = useHistory()
   const classes = useStyles()
-  console.log('history', history)
+
   return (
     <div className='notFoundPageWrapper'>
       <DefaultLayout notFoundPage />
       <div className='notFoundWrapper'>
         <img src={page404} alt='no-ava' />
         <h2 className='notFoundTitle'>{t('not_found')}</h2>
-        {console.log(history.length)}
+
         <Box className={classes.goBackButtonWrapper}>
           {history.length >= 2 ? (
             <Typography

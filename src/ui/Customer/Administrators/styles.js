@@ -107,8 +107,9 @@ const useStyles = makeStyles(theme => ({
     width: '40%',
     marginBottom: 15
   },
-  accountNameIcon: { marginTop: 3 },
+  accountNameIcon: { width: 20, height: 20 },
   accountName: {
+    width: '60%',
     marginLeft: 15,
     fontFamily: 'Open Sans',
     fontStyle: 'normal',
@@ -119,7 +120,7 @@ const useStyles = makeStyles(theme => ({
     alignSelf: 'flex-end',
     display: 'flex',
     justifyContent: 'space-between',
-    width: '15%',
+    width: '18%',
     marginBottom: 16,
     marginRight: 10
   },
@@ -156,6 +157,116 @@ const useStyles = makeStyles(theme => ({
   },
   languageIcon: {
     marginTop: 3
+  },
+  deleteModal: {
+    '& .MuiDialog-paperWidthSm': {
+      width: 646,
+      minHeight: 350,
+      display: 'flex',
+      flexDirection: 'column',
+      boxShadow: theme.shadows[5],
+      outline: 'none',
+      borderRadius: 3,
+      background: theme.palette.active.main
+    }
+  },
+  deleteHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 45,
+    paddingRight: 40,
+    height: 87,
+    background: 'white'
+  },
+  deleteTitleBlock: {
+    display: 'flex'
+  },
+  deleteTitle: {
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    fontSize: 24,
+    marginLeft: 14
+  },
+  closeIcon: {
+    width: 26,
+    height: 26,
+    color: theme.palette.black,
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  deleteMain: {
+    height: 263,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '55px 0px 23px 0px'
+  },
+  deleteMainText: {
+    width: 450,
+    marginLeft: 10
+  },
+  boldText: {
+    fontWeight: 'bold'
+  },
+  deleteButtonsBlock: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'flex-end'
+  },
+  deleteButtonWrap: {
+    width: 140,
+    height: 50,
+    background: theme.palette.primary.main,
+    borderRadius: 30,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    marginRight: 30,
+    '&:hover': {
+      backgroundColor: '#FEDF63',
+      boxShadow: '0px 6px 5px rgba(204,204,204,0.25)',
+      cursor: 'pointer'
+    }
+  },
+  cancelButtonWrap: {
+    width: 140,
+    height: 50,
+    background: 'white',
+    borderRadius: 30,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: `1px solid ${theme.palette.primary.main}`,
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    marginRight: 30,
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  buttonTitle: {
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500
+  },
+  iconWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 1,
+    minWidth: 0,
+    width: 27,
+    height: 27,
+    borderRadius: 20,
+    background: theme.palette.active.main
   }
 }))
 

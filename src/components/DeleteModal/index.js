@@ -52,7 +52,14 @@ const DeleteModal = props => {
               {t(`are_you_sure_you_want`)}
               <span className={classes.boldText}> {t('to_delete')}</span>
               {` ${deleteSubject}`}:
-              <span className={classes.boldText}>{` ${name} (id: ${id})`}</span>
+              {name ? (
+                <span
+                  className={classes.boldText}
+                >{` ${name} (id: ${id})`}</span>
+              ) : (
+                <span className={classes.boldText}>{`${id}`}</span>
+              )}
+              {/* <span className={classes.boldText}>{` ${name} (id: ${id})`}</span> */}
               ?
             </Typography>
             <Box className={classes.deleteButtonsBlock}>
