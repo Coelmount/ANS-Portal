@@ -159,7 +159,7 @@ const SetEntitlements = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          //onClick={}
+          onClick={() => changeStep(5)}
         >
           {t('save')}
         </Button>
