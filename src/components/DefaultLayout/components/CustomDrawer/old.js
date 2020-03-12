@@ -18,21 +18,26 @@ const Drawer = ({
   classes,
   getCurrentLevel,
   t,
-  isAnsInstancesOpen,
-  setIsAnsInstancesOpen,
-  isAdvancedOpen,
-  setIsAdvancedOpen
+  activeMainLevel,
+  setActiveMainLevel,
+  activeSecondLevel,
+  setActiveSecondLevel
 }) => {
   // const [isAnsInstancesOpen, setIsAnsInstancesOpen] = useState(false)
+  // console.log(isAnsInstancesOpen, 'isAnsInstancesOpen')
   // const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
+  // const [activeSublevel, setActiveSublevel] = useState(null)
 
-  const handleOpenAnsInstances = name => {
-    name === 'ans_instances' && setIsAnsInstancesOpen(!isAnsInstancesOpen)
-  }
+  // console.log(isAnsInstancesOpen, 'isAdvancedOpen')
 
-  const handleOpenAdvanced = name => {
-    name === 'advanced' && setIsAdvancedOpen(!isAdvancedOpen)
-  }
+  // const handleOpenAnsInstances = name => {
+  //   name === 'ans_instances' && setIsAnsInstancesOpen(!isAnsInstancesOpen)
+  // }
+
+  useEffect(() => {}, [])
+  // const handleOpenAdvanced = name => {
+  //   name === 'advanced' && setIsAdvancedOpen(!isAdvancedOpen)
+  // }
 
   return (
     <Fragment>
@@ -54,7 +59,7 @@ const Drawer = ({
                 button
               >
                 <Box
-                  onClick={() => handleOpenAnsInstances(name)}
+                  onClick={() => setActiveMainLevel(name)}
                   className={classes.topLevelTitle}
                 >
                   <ListItemIcon className='icon'>
@@ -75,7 +80,7 @@ const Drawer = ({
 
               <Collapse
                 // activeClassName={classes.activeMenuItem}
-                in={isAnsInstancesOpen}
+                // in={isAnsInstancesOpen}
                 timeout='auto'
                 unmountOnExit
               >
@@ -91,7 +96,7 @@ const Drawer = ({
                             button
                           >
                             <Box
-                              onClick={() => handleOpenAdvanced(childLink.name)}
+                              // onClick={() => setActiveSublevel(childLink.name)}
                               className={classes.secondLevelTitle}
                             >
                               <ListItemText
@@ -114,7 +119,7 @@ const Drawer = ({
                             </Box>
                           </ListItem>
                           <Collapse
-                            in={childLink.name === 'advanced' && isAdvancedOpen}
+                            // in={childLink.name === activeSublevel}
                             timeout='auto'
                             unmountOnExit
                           >

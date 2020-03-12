@@ -49,6 +49,8 @@ const DefaultLayout = ({ t, notFoundPage }) => {
   const match = useParams()
   const theme = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [isAnsInstancesOpen, setIsAnsInstancesOpen] = useState(false)
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -93,29 +95,39 @@ const DefaultLayout = ({ t, notFoundPage }) => {
   const subaccountNavLinks = [
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances`,
-      text: 'My ANS instances',
+      text: 'ANS instances',
       name: 'ans_instances',
       icon: AnsInstancesIcon,
       childLinks: [
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic`,
-          text: 'Basic'
+          text: 'Basic',
+          basic: 'basic'
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced`,
-          text: 'Advanced'
-        },
-        {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/1_level_ivr`,
-          text: '1-level IVR'
-        },
-        {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/multi_level_ivr`,
-          text: 'Multi-level IVR'
+          text: 'Advanced',
+          name: 'advanced',
+          childLinks: [
+            {
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destinations`,
+              text: 'Destinations'
+            },
+            {
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destination_groups`,
+              text: 'Destination Groups'
+            }
+          ]
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/time_based_routing`,
-          text: 'Time based routing'
+          text: 'Time based routing',
+          name: 'time_based_routing'
+        },
+        {
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/ivr`,
+          text: 'IVR',
+          name: 'ivr'
         }
       ]
     },
@@ -194,6 +206,10 @@ const DefaultLayout = ({ t, notFoundPage }) => {
               <CustomDrawer
                 classes={classes}
                 getCurrentLevel={getCurrentLevel}
+                isAnsInstancesOpen={isAnsInstancesOpen}
+                setIsAnsInstancesOpen={setIsAnsInstancesOpen}
+                isAdvancedOpen={isAdvancedOpen}
+                setIsAdvancedOpen={setIsAdvancedOpen}
               />
             </Drawer>
           </Hidden>
