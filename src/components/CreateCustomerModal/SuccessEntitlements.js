@@ -19,7 +19,7 @@ const SuccesPage = props => {
   const { changeStep, createdCustomer } = useContext(CreateCustomerStore)
   const history = useHistory()
   const classes = useStyles()
-  const { handleClose } = props
+  const { handleClose, t } = props
 
   const goToCustomer = () => {
     history.push(`/customers/${createdCustomer.tenantId}/access-numbers`)
@@ -41,10 +41,10 @@ const SuccesPage = props => {
             <img src={accountCheck} alt='' />
           </Box>
           <Box className={classes.successTitle}>
-            Entitlements added successfully!
+            {t('entitlements_added_success')}
           </Box>
           <Box className={classes.successInfo}>
-            You can go into the customer account or continue adding a subaccount
+            {t('entitlements_added_success_info')}
           </Box>
         </Box>
         <Box className={classes.boxOfButtons}>
@@ -54,14 +54,14 @@ const SuccesPage = props => {
             className={classes.leftButtonFromSP}
             onClick={() => goToCustomer()}
           >
-            Go into account
+            {t('go_into_account')}
           </Button>
           <Button
             variant='contained'
             color='primary'
             className={classes.rigthButtonFromSP}
           >
-            Add subaccount
+            {t('add_subaccount')}
           </Button>
         </Box>
       </DialogContent>

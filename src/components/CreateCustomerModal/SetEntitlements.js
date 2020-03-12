@@ -70,7 +70,7 @@ const SetEntitlements = props => {
   )
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
   const classes = useStyles()
-  const { handleClose } = props
+  const { handleClose, t } = props
 
   const showHideEntitlements = i => {
     const newEntitlemtents = [...entitlements]
@@ -86,7 +86,7 @@ const SetEntitlements = props => {
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        Set entitlements
+        {t('set_entitlements')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -99,10 +99,10 @@ const SetEntitlements = props => {
         <Grid container className={classes.girdTitle}>
           <Grid item xs={2}></Grid>
           <Grid item xs={6}>
-            Entitlement
+            {t('entitlement')}
           </Grid>
           <Grid item xs={4}>
-            Total
+            {t('total')}
           </Grid>
         </Grid>
         {entitlements.map((el, i) => (
@@ -153,7 +153,7 @@ const SetEntitlements = props => {
           className={classes.backButton}
           onClick={handleClose}
         >
-          Cancel
+          {t('cancel')}
         </Button>
         <Button
           variant='contained'
@@ -161,7 +161,7 @@ const SetEntitlements = props => {
           className={classes.nextButton}
           //onClick={}
         >
-          Save
+          {t('save')}
         </Button>
       </DialogActions>
     </React.Fragment>

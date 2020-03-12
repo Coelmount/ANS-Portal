@@ -26,11 +26,11 @@ const FirstStep = props => {
     CreateCustomerStore
   )
   const classes = useStyles()
-  const { handleClose } = props
+  const { handleClose, t } = props
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        Add customer
+        {t('add_customer')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -40,12 +40,12 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Box className={classes.stepStyles}>STEP 2/2</Box>
-        <Box className={classes.paragraphBox}>Contact information</Box>
+        <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
+        <Box className={classes.paragraphBox}>{t('contact_information')}</Box>
         <Box className={classes.inputes}>
           <Input
             icon={<PermIdentityOutlined />}
-            label={'Customer name'}
+            label={t('customer_name')}
             variant='outlined'
             value={customer.contactInformation.name}
             onChange={e =>
@@ -56,7 +56,7 @@ const FirstStep = props => {
         <Box className={classes.inputes}>
           <Input
             icon={<CallOutlined />}
-            label={'Phone number'}
+            label={t('phone_number')}
             variant='outlined'
             value={customer.contactInformation.phoneNumber}
             onChange={e =>
@@ -67,7 +67,7 @@ const FirstStep = props => {
         <Box className={classes.inputes}>
           <Input
             icon={<EmailOutlined />}
-            label={'Email'}
+            label={t('email')}
             variant='outlined'
             value={customer.contactInformation.emailAddress}
             onChange={e =>
@@ -76,11 +76,11 @@ const FirstStep = props => {
           />
         </Box>
         <Box className={classes.paragraphBox}>
-          Address information (optional)
+          {t('address_information_opt')}
         </Box>
         <Box className={classes.inputes}>
           <Input
-            label={'Street'}
+            label={t('street')}
             variant='outlined'
             value={customer.addressInformation.addressLine1}
             onChange={e =>
@@ -91,7 +91,7 @@ const FirstStep = props => {
         <Box className={classes.zipCityRow}>
           <Box className={classes.zip}>
             <Input
-              label={'Postal code'}
+              label={t('postal_code')}
               variant='outlined'
               value={customer.addressInformation.postalCode}
               onChange={e =>
@@ -101,7 +101,7 @@ const FirstStep = props => {
           </Box>
           <Box className={classes.city}>
             <Input
-              label={'City'}
+              label={t('city')}
               variant='outlined'
               value={customer.addressInformation.city}
               onChange={e =>
@@ -112,7 +112,7 @@ const FirstStep = props => {
         </Box>
         <Box className={classes.inputes}>
           <Input
-            label={'Country'}
+            label={t('country')}
             variant='outlined'
             value={customer.addressInformation.country}
             onChange={e =>
@@ -129,7 +129,7 @@ const FirstStep = props => {
           onClick={() => changeStep(1)}
         >
           <ChevronLeft />
-          Back
+          {t('back')}
         </Button>
         <Button
           variant='contained'
@@ -137,7 +137,7 @@ const FirstStep = props => {
           className={classes.nextButton}
           onClick={() => createCustomer().then(() => changeStep(3))}
         >
-          Add
+          {t('add')}
         </Button>
       </DialogActions>
     </React.Fragment>

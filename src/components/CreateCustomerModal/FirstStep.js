@@ -24,11 +24,11 @@ const FirstStep = props => {
     CreateCustomerStore
   )
   const classes = useStyles()
-  const { handleClose } = props
+  const { handleClose, t } = props
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        Add customer
+        {t('add_customer')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -38,12 +38,12 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Box className={classes.stepStyles}>STEP 1/2</Box>
-        <Box className={classes.paragraphBox}>Customer details</Box>
+        <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
+        <Box className={classes.paragraphBox}>{t('customer_details')}</Box>
         <Box className={classes.inputes}>
           <Input
             icon={<img src={sharp} alt='' />}
-            label={'Customer ID'}
+            label={t('customer_id')}
             variant='outlined'
             value={customer.tenantId}
             onChange={e => changeCustomer('tenantId', e.target.value)}
@@ -52,7 +52,7 @@ const FirstStep = props => {
         <Box className={classes.inputes}>
           <Input
             icon={<PermIdentityOutlined />}
-            label={'Customer name'}
+            label={t('customer_name')}
             variant='outlined'
             value={customer.name}
             onChange={e => changeCustomer('name', e.target.value)}
@@ -67,7 +67,7 @@ const FirstStep = props => {
           onClick={() => changeStep(2)}
           disabled={!customer.tenantId}
         >
-          Next
+          {t('next')}
         </Button>
       </DialogActions>
     </React.Fragment>

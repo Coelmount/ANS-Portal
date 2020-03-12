@@ -42,7 +42,7 @@ const CreateCustomer = props => {
 }
 
 const Steps = props => {
-  switch (5) {
+  switch (props.step) {
     case 1:
       return <FirstStep handleClose={props.handleClose} />
     case 2:
