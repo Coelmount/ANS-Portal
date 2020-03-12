@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, Fragment } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
@@ -13,34 +13,47 @@ import Subaccounts from 'ui/Customer/Subaccounts/'
 import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
 
-import MyAnsInstances from 'ui/Subaccount/MyAnsInstances'
-import Basic from 'ui/Subaccount/MyAnsInstances/Basic'
-import SubaccountDetails from 'ui/Subaccount/Details'
-
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
 import NotFound from 'components/NotFound'
 
-import useStyles from './styles'
+const userComponents = [
+  {
+    path: '/customers',
+    component: <Customers />
+  },
+  {
+    path: '/search',
+    component: <Search />
+  },
+  {
+    path: '/customers/:customerId/access-numbers',
+    component: <AccessNumbers />
+  },
+  {
+    path: '/customers/:customerId/subaccounts',
+    component: <Subaccounts />
+  },
+  {
+    path: '/customers/:customerId/administrators',
+    component: <Administrators />
+  },
+  {
+    path: '/customers/:customerId/details',
+    component: <Details />
+  }
+]
 
-export const ROUTS = {
-  auth: '/',
-  customers: '/customers',
-  search: '/search',
-  accessNumbers: '/customers/:customerId/access-numbers',
-  subaccounts: '/customers/:customerId/subaccounts',
-  administrators: '/customers/:customerId/administrators',
-  details: '/customers/:customerId/details',
-  myAnsInstances:
-    '/customers/:customerId/subaccounts/:groupId/my_ans_instances',
-  basic: '/customers/:customerId/subaccounts/:groupId/my_ans_instances/basic',
-  subaccountDetails: '/customers/:customerId/subaccounts/:groupId/details'
-}
+const authComponents = [
+  {
+    path: '/',
+    component: Auth
+  }
+]
 
 const Page = props => {
-  const classes = useStyles()
   return (
-    <div className={classes.page}>
+    <div style={{ display: 'flex', paddingTop: 66 }}>
       <DefaultLayout />
       {props.diplayedComponent}
     </div>
@@ -54,34 +67,12 @@ const UserPages = () => {
   }, [getLocale, lang])
   return !isLoadingLang ? (
     <Switch>
-      <Route path={ROUTS.customers} exact>
-        <Page diplayedComponent={<Customers />} />
-      </Route>
-      <Route path={ROUTS.search} exact>
-        <Page diplayedComponent={<Search />} />
-      </Route>
-      <Route path={ROUTS.accessNumbers} exact>
-        <Page diplayedComponent={<AccessNumbers />} />
-      </Route>
-      <Route path={ROUTS.subaccounts} exact>
-        <Page diplayedComponent={<Subaccounts />} />
-      </Route>
-      <Route path={ROUTS.administrators} exact>
-        <Page diplayedComponent={<Administrators />} />
-      </Route>
-      <Route path={ROUTS.details} exact>
-        <Page diplayedComponent={<Details />} />
-      </Route>
-      <Route path={ROUTS.myAnsInstances} exact>
-        <Page diplayedComponent={<MyAnsInstances />} />
-      </Route>
-      <Route path={ROUTS.basic} exact>
-        <Page diplayedComponent={<Basic />} />
-      </Route>
-      <Route path={ROUTS.subaccountDetails} exact>
-        <Page diplayedComponent={<SubaccountDetails />} />
-      </Route>
-      <Redirect path='/' to={ROUTS.customers} exact />
+      {userComponents.map(el => (
+        <Route path={el.path} exact>
+          <Page diplayedComponent={el.component} />
+        </Route>
+      ))}
+      <Redirect path='/' to={'/customers'} exact />
       <Route path='*' component={NotFound} />
     </Switch>
   ) : (
@@ -92,7 +83,9 @@ const UserPages = () => {
 const AuthPages = ({ match }) => {
   return (
     <Switch>
-      <Route path={`${match.url}`} component={Auth} exact />
+      {authComponents.map(el => (
+        <Route path={el.path} component={el.component} exact />
+      ))}
     </Switch>
   )
 }
@@ -108,12 +101,10 @@ const Router = () => {
   }, [getLocale, lang])
 
   return isAuthorized && localStorage.getItem('token') ? (
-    <Switch>
-      <Route path='/' component={UserPages} />
-    </Switch>
+    <Route path='/' component={UserPages} />
   ) : (
     <Switch>
-      <Route path={ROUTS.auth} component={AuthPages} exact />
+      <Route path={'/'} component={AuthPages} exact />
       <Route path='*' component={NotFound} />
     </Switch>
   )
