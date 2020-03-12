@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
@@ -49,6 +49,7 @@ const Auth = ({ t }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  const history = useHistory()
   const classes = useStyles()
 
   const handleLoginChange = e => {
@@ -61,7 +62,7 @@ const Auth = ({ t }) => {
 
   const loginSubmit = e => {
     e.preventDefault()
-    postLogin({ username, password })
+    postLogin({ username, password }, history)
   }
 
   return (
