@@ -12,6 +12,9 @@ import AccessNumbers from 'ui/Customer/AccessNumbers'
 import Subaccounts from 'ui/Customer/Subaccounts/'
 import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
+import MyAnsInstances from 'ui/Subaccount/MyAnsInstances'
+import Basic from 'ui/Subaccount/MyAnsInstances/Basic'
+import SubaccountDetails from 'ui/Subaccount/Details'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
@@ -41,6 +44,18 @@ const userComponents = [
   {
     path: '/customers/:customerId/details',
     component: <Details />
+  },
+  {
+    path: '/customers/:customerId/subaccounts/:groupId/my_ans_instances',
+    component: <MyAnsInstances />
+  },
+  {
+    path: '/customers/:customerId/subaccounts/:groupId/my_ans_instances/basic',
+    component: <Basic />
+  },
+  {
+    path: '/customers/:customerId/subaccounts/:groupId/details',
+    component: <SubaccountDetails />
   }
 ]
 
@@ -68,7 +83,7 @@ const UserPages = () => {
   return !isLoadingLang ? (
     <Switch>
       {userComponents.map(el => (
-        <Route path={el.path} exact>
+        <Route path={el.path} key={el.path} exact>
           <Page diplayedComponent={el.component} />
         </Route>
       ))}
