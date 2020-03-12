@@ -164,7 +164,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
         </nav>
       ) : (
         <nav className={classes.drawer} aria-label='mailbox folders'>
-          <Hidden smUp implementation='css'>
+          <Hidden mdUp implementation='css'>
             <Drawer
               variant='temporary'
               anchor={theme.direction === 'rtl' ? 'right' : 'left'}
@@ -183,7 +183,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
               />
             </Drawer>
           </Hidden>
-          <Hidden xsDown implementation='css'>
+          <Hidden smDown implementation='css'>
             <Drawer
               classes={{
                 paper: classes.drawerPaper
