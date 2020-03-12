@@ -10,12 +10,20 @@ export class AuthStore {
     ? !!localStorage.getItem('isAuthorized', true)
     : false
 
-  postLogin = data => {
+  postLogin = (data, history) => {
     axios.post(`${BASE_URL}/auth/login`, data).then(res => {
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token)
         this.token = res.data.token
         this.getLocal()
+        if (res.data.ids) {
+          if (res.data.ids.group_id) {
+            history.push(
+              `/customers/${res.data.ids.tenant_id}/subaccounts/${res.data.ids.group_id}/my_ans_instances`
+            )
+          }
+          history.push(`/customers/${res.data.ids.tenant_id}/access-numbers`)
+        }
       }
     })
   }

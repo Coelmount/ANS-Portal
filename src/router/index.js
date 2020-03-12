@@ -100,6 +100,16 @@ const UserPages = () => {
         </Route>
       ))}
       <Redirect path='/' to={'/customers'} exact />
+      <Redirect
+        path='/customers/:customerId/'
+        to={'/customers/:customerId/access-numbers'}
+        exact
+      />
+      <Redirect
+        path='/customers/:customerId/subaccounts/:groupId/'
+        to={'/customers/:customerId/subaccounts/:groupId/my_ans_instances'}
+        exact
+      />
       <Route path='*' component={NotFound} />
     </Switch>
   ) : (
@@ -111,7 +121,7 @@ const AuthPages = ({ match }) => {
   return (
     <Switch>
       {authComponents.map(el => (
-        <Route path={el.path} component={el.component} exact />
+        <Route key={el.path} path={el.path} component={el.component} exact />
       ))}
     </Switch>
   )
@@ -132,7 +142,7 @@ const Router = () => {
   ) : (
     <Switch>
       <Route path={'/'} component={AuthPages} exact />
-      <Route path='*' component={NotFound} />
+      {isAuthorized && <Route path='*' component={NotFound} />}
     </Switch>
   )
 }
