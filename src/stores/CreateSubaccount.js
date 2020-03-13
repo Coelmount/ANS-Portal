@@ -24,7 +24,7 @@ export class CreateSubaccountStore {
     }
   }
 
-  createdCustomer = {}
+  createdCustomerStore = {}
 
   changeStep = step => {
     this.step = step
@@ -56,7 +56,7 @@ export class CreateSubaccountStore {
   createCustomer = customerId => {
     return axios
       .post(`/tenants/${customerId}/groups/`, this.customer)
-      .then(res => (this.createdCustomer = res.data))
+      .then(res => (this.createdCustomerStore = res.data))
   }
 }
 

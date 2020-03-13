@@ -40,8 +40,6 @@ const FirstStep = props => {
     changeCustomer('name', value)
   }
 
-  console.log(customer)
-
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>

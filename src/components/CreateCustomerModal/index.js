@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -26,10 +26,18 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCustomer = props => {
-  const { open, handleClose, successClose, isCreateSubaccount, store } = props
+  const {
+    open,
+    handleClose,
+    successClose,
+    isCreateSubaccount,
+    store,
+    createSubaccount
+  } = props
   const { step } = useContext(store)
   const classes = useStyles()
 
+  console.log(createSubaccount)
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <Steps
@@ -38,6 +46,7 @@ const CreateCustomer = props => {
         successClose={successClose}
         isCreateSubaccount={isCreateSubaccount}
         store={store}
+        createSubaccount={createSubaccount}
       />
     </Dialog>
   )
@@ -83,6 +92,7 @@ const Steps = props => {
           handleClose={props.successClose}
           store={props.store}
           isCreateSubaccount={props.isCreateSubaccount}
+          createSubaccount={props.createSubaccount}
         />
       )
     default:

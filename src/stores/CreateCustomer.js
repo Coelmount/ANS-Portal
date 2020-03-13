@@ -26,7 +26,7 @@ export class CreateCustomerStore {
     }
   }
 
-  createdCustomer = {}
+  createdCustomerStore = {}
 
   changeStep = step => {
     this.step = step
@@ -60,7 +60,7 @@ export class CreateCustomerStore {
   createCustomer = () => {
     return axios
       .post(`/tenants/`, this.customer)
-      .then(res => (this.createdCustomer = res.data))
+      .then(res => (this.createdCustomerStore = res.data))
   }
 }
 

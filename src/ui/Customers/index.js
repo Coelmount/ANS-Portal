@@ -11,6 +11,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
+import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
@@ -32,6 +33,7 @@ const CustomersTable = observer(({ t }) => {
   const { setDefaultValues } = useContext(CreateCustomerStore)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [customerToDelete, setCustomerToDelete] = useState({})
+  const [creationType, setCreationType] = useState('')
   const [isOpenCreateCustomer, setIsOpenCreateCustomer] = useState(false)
 
   useEffect(() => {
@@ -107,12 +109,17 @@ const CustomersTable = observer(({ t }) => {
 
   const handleOpenCreateCustomer = () => {
     setDefaultValues()
+    setCreationType('customer')
     setIsOpenCreateCustomer(true)
   }
 
   const handleCloseCreateCustomerSuccess = () => {
     setIsOpenCreateCustomer(false)
     getCustomers()
+  }
+
+  const createSubaccount = () => {
+    setCreationType('subaccount')
   }
 
   const handleDelete = id => {
@@ -155,7 +162,13 @@ const CustomersTable = observer(({ t }) => {
             open={isOpenCreateCustomer}
             handleClose={handleCloseCreateCustomer}
             successClose={handleCloseCreateCustomerSuccess}
-            store={CreateCustomerStore}
+            store={
+              creationType === 'subaccount'
+                ? CreateSubaccountStore
+                : CreateCustomerStore
+            }
+            createSubaccount={createSubaccount}
+            isCreateSubaccount={creationType === 'subaccount'}
           />
         )}
       </Paper>

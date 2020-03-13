@@ -27,12 +27,16 @@ const SecondStep = props => {
   const { changeStep, customer, changeCustomer, createCustomer } = useContext(
     store
   )
+  const { createdCustomerStore } = useContext(CreateCustomerStore)
   const classes = useStyles()
   const match = useParams()
 
+  console.log(createdCustomerStore)
   const handleCreate = () => {
     if (isCreateSubaccount) {
-      createCustomer(match.customerId).then(() => changeStep(3))
+      createCustomer(createdCustomerStore.tenantId || match.customerId).then(
+        () => changeStep(3)
+      )
       return
     }
     createCustomer().then(() => changeStep(3))
