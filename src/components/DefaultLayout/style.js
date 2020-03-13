@@ -140,6 +140,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   activeThirdLevelItemText: {
+    marginTop: 0,
     marginLeft: 43,
     '& span': {
       fontFamily: 'MTN',

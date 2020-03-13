@@ -41,12 +41,10 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                 component={NavLink}
                 to={link}
                 className={classes.menuItem}
+                onClick={() => handleActiveParentNav(name)}
                 button
               >
-                <Box
-                  onClick={() => handleActiveParentNav(name)}
-                  className={classes.topLevelTitle}
-                >
+                <Box className={classes.topLevelTitle}>
                   <ListItemIcon className='icon'>
                     <Icon className='sidebarIcon' />
                   </ListItemIcon>
@@ -79,14 +77,10 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                             className={classes.subMenuItem}
                             activeClassName={classes.activeSubMenuItem}
                             to={childLink.link}
+                            onClick={() => handleActiveChildNav(childLink.name)}
                             button
                           >
-                            <Box
-                              onClick={() =>
-                                handleActiveChildNav(childLink.name)
-                              }
-                              className={classes.secondLevelTitle}
-                            >
+                            <Box className={classes.secondLevelTitle}>
                               <ListItemText
                                 className={
                                   activeChildNav === childLink.name
@@ -120,14 +114,12 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                                         className={classes.activeSubMenuItem}
                                         component={NavLink}
                                         to={subChild.link}
+                                        onClick={() =>
+                                          handleActiveSubChildNav(subChild.name)
+                                        }
                                         button
                                       >
                                         <ListItemText
-                                          onClick={() =>
-                                            handleActiveSubChildNav(
-                                              subChild.name
-                                            )
-                                          }
                                           className={
                                             activeSubChild === subChild.name
                                               ? classes.activeThirdLevelItemText
