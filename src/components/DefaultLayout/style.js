@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
     borderRight: 'none',
     boxShadow: 'inset 0px 12px 24px rgba(196, 196, 196, 0.25)'
   },
-
   logo: {
     width: 77.4,
     height: 77.4,
@@ -46,6 +45,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3)
   },
   menuItem: {
+    // background: theme.palette.active.main,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -68,6 +68,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     '& .menu-text': {
+      // background: theme.palette.active.main,
       minWidth: 100,
       // marginLeft: 5,
       '& span': {
@@ -90,17 +91,43 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
+  activeSubMenuItem: {
+    background: theme.palette.active.secondary
+  },
   topLevelTitle: {
     display: 'flex',
     width: '100%',
     alignItems: 'center'
   },
-  sidebarExpandMoreIcon: {
+  secondLevelTitle: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center'
+  },
+  expandIcon: {
     color: `${theme.palette.active.blue} !important`
   },
-  activeSidebarExpandMoreIcon: {
+  activeExpandIcon: {
     color: `${theme.palette.active.blue} !important`,
     transform: 'rotate(180deg)'
+  },
+  secondLevelItemText: {
+    marginLeft: 43,
+    '& span': {
+      fontFamily: 'MTN'
+      // fontSize: 16
+    }
+  },
+  thirdLevelItemText: {
+    marginLeft: 43,
+    '& span': {
+      fontFamily: 'MTN',
+      fontSize: 14
+    }
+  },
+  activeSecondLevelItemText: {
+    marginLeft: 43,
+    color: theme.palette.active.blue
   },
   iconImg: {
     width: 20,
