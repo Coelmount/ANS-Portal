@@ -63,14 +63,14 @@ const CustomersTable = observer(({ t }) => {
         scope: 'row'
       }
     },
-    {
-      id: 'status',
-      numeric: false,
-      label: 'status',
-      extraProps: {
-        scope: 'row'
-      }
-    },
+    // {
+    //   id: 'status',
+    //   numeric: false,
+    //   label: 'status',
+    //   extraProps: {
+    //     scope: 'row'
+    //   }
+    // },
     {
       id: 'delete',
       extraProps: {
