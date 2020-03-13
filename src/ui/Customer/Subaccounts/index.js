@@ -10,11 +10,12 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import SubaccountsStore from 'stores/Subaccounts'
-import CreateCustomerStore from 'stores/CreateCustomer'
+import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
+import CreateCustomer from 'components/CreateCustomerModal'
 
 import useStyles from './styles'
 
@@ -29,10 +30,10 @@ const SubaccountsTable = observer(({ t }) => {
     isDeletingSubaccount
   } = useContext(SubaccountsStore)
 
-  const { setDefaultValues } = useContext(CreateCustomerStore)
+  const { setDefaultValues } = useContext(CreateSubaccountStore)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [subaccountToDelete, setSubaccountToDelete] = useState({})
-  const [isOpenCreateCustomer, setIsOpenCreateCustomer] = useState(false)
+  const [isOpenCreateSubaccount, setIsOpenCreateSubaccount] = useState(false)
 
   useEffect(() => {
     getSubaccounts(match.customerId)
@@ -108,13 +109,18 @@ const SubaccountsTable = observer(({ t }) => {
     setIsDeleteModalOpen(false)
   }
 
-  const handleCloseCreateCustomer = () => {
-    setIsOpenCreateCustomer(false)
-    setDefaultValues()
+  const handleCloseCreateSubaccount = () => {
+    setIsOpenCreateSubaccount(false)
   }
 
-  const handleOpenCreateCustomer = () => {
-    setIsOpenCreateCustomer(true)
+  const handleOpenCreateSubaccount = () => {
+    setDefaultValues()
+    setIsOpenCreateSubaccount(true)
+  }
+
+  const handleCloseCreateSubaccountSuccess = () => {
+    setIsOpenCreateSubaccount(false)
+    getSubaccounts(match.customerId)
   }
 
   const handleDelete = groupId => {
@@ -134,7 +140,7 @@ const SubaccountsTable = observer(({ t }) => {
           <TitleBlock
             titleData={titleData}
             classes={classes}
-            handleOpen={handleOpenCreateCustomer}
+            handleOpen={handleOpenCreateSubaccount}
           />
         </Container>
 
@@ -155,12 +161,15 @@ const SubaccountsTable = observer(({ t }) => {
             deleteSubject={t('subaccount')}
           />
         )}
-        {/* {isOpenCreateCustomer && (
+        {isOpenCreateSubaccount && (
           <CreateCustomer
-            open={isOpenCreateCustomer}
-            handleClose={handleCloseCreateCustomer}
+            open={isOpenCreateSubaccount}
+            handleClose={handleCloseCreateSubaccount}
+            successClose={handleCloseCreateSubaccountSuccess}
+            isCreateSubaccount
+            store={CreateSubaccountStore}
           />
-        )} */}
+        )}
       </Paper>
     </div>
   )

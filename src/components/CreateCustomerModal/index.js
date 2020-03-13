@@ -26,9 +26,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCustomer = props => {
-  const { step } = useContext(CreateCustomerStore)
+  const { open, handleClose, successClose, isCreateSubaccount, store } = props
+  const { step } = useContext(store)
   const classes = useStyles()
-  const { open, handleClose, successClose } = props
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
@@ -36,6 +36,8 @@ const CreateCustomer = props => {
         step={step}
         handleClose={handleClose}
         successClose={successClose}
+        isCreateSubaccount={isCreateSubaccount}
+        store={store}
       />
     </Dialog>
   )
@@ -44,17 +46,53 @@ const CreateCustomer = props => {
 const Steps = props => {
   switch (props.step) {
     case 1:
-      return <FirstStep handleClose={props.handleClose} />
+      return (
+        <FirstStep
+          handleClose={props.handleClose}
+          isCreateSubaccount={props.isCreateSubaccount}
+          store={props.store}
+        />
+      )
     case 2:
-      return <SecondStep handleClose={props.handleClose} />
+      return (
+        <SecondStep
+          handleClose={props.handleClose}
+          isCreateSubaccount={props.isCreateSubaccount}
+          store={props.store}
+        />
+      )
     case 3:
-      return <SuccessPage handleClose={props.successClose} />
+      return (
+        <SuccessPage
+          handleClose={props.successClose}
+          isCreateSubaccount={props.isCreateSubaccount}
+          store={props.store}
+        />
+      )
     case 4:
-      return <SetEntitlements handleClose={props.successClose} />
+      return (
+        <SetEntitlements
+          handleClose={props.successClose}
+          store={props.store}
+          isCreateSubaccount={props.isCreateSubaccount}
+        />
+      )
     case 5:
-      return <SuccessEntitlements handleClose={props.successClose} />
+      return (
+        <SuccessEntitlements
+          handleClose={props.successClose}
+          store={props.store}
+          isCreateSubaccount={props.isCreateSubaccount}
+        />
+      )
     default:
-      return <FirstStep handleClose={props.handleClose} />
+      return (
+        <FirstStep
+          handleClose={props.handleClose}
+          store={props.store}
+          isCreateSubaccount={props.isCreateSubaccount}
+        />
+      )
   }
 }
 

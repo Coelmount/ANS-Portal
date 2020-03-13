@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useHistory, useParams } from 'react-router-dom'
 
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
@@ -11,18 +12,24 @@ import Button from '@material-ui/core/Button'
 import accountCheck from 'source/images/svg/account-check.svg'
 
 import CreateCustomerStore from 'stores/CreateCustomer'
-import { useHistory } from 'react-router-dom'
 
 import useStyles from './styles'
 
 const SuccesPage = props => {
-  const { changeStep, createdCustomer } = useContext(CreateCustomerStore)
+  const { handleClose, t, store, isCreateSubaccount } = props
+  const { changeStep, createdCustomer } = useContext(store)
   const history = useHistory()
+  const match = useParams()
   const classes = useStyles()
-  const { handleClose, t } = props
 
   const goToCustomer = () => {
-    history.push(`/customers/${createdCustomer.tenantId}/access-numbers`)
+    if (isCreateSubaccount) {
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${createdCustomer.groupId}/my_ans_instances/basic`
+      )
+      return
+    }
+    history.push(`/customer/${createdCustomer.tenantId}/access-numbers`)
   }
 
   return (
@@ -41,10 +48,14 @@ const SuccesPage = props => {
             <img src={accountCheck} alt='' />
           </Box>
           <Box className={classes.successTitle}>
-            {t('customer_added_success')}
+            {isCreateSubaccount
+              ? t('subaccount_added_success')
+              : t('customer_added_success')}
           </Box>
           <Box className={classes.successInfo}>
-            {t('customer_added_success_info')}
+            {isCreateSubaccount
+              ? t('subaccount_added_success_info')
+              : t('customer_added_success_info')}
           </Box>
         </Box>
         <Box className={classes.boxOfButtons}>

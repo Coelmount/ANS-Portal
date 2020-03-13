@@ -20,15 +20,32 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import useStyles from './styles'
 
 const FirstStep = props => {
-  const { changeStep, customer, changeCustomer } = useContext(
-    CreateCustomerStore
-  )
+  const { handleClose, t, isCreateSubaccount, store } = props
+  const { changeStep, customer, changeCustomer } = useContext(store)
   const classes = useStyles()
-  const { handleClose, t } = props
+
+  const changeId = value => {
+    if (isCreateSubaccount) {
+      changeCustomer('groupId', value)
+      return
+    }
+    changeCustomer('tenantId', value)
+  }
+
+  const changeName = value => {
+    if (isCreateSubaccount) {
+      changeCustomer('groupName', value)
+      return
+    }
+    changeCustomer('name', value)
+  }
+
+  console.log(customer)
+
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        {t('add_customer')}
+        {isCreateSubaccount ? t('add_subaccount') : t('add_customer')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -39,33 +56,45 @@ const FirstStep = props => {
       </DialogTitle>
       <DialogContent>
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
-        <Box className={classes.paragraphBox}>{t('customer_details')}</Box>
+        <Box className={classes.paragraphBox}>
+          {isCreateSubaccount ? t('subaccount_details') : t('customer_details')}
+        </Box>
         <Box className={classes.inputes}>
           <Input
             icon={<img src={sharp} alt='' />}
-            label={t('customer_id')}
+            label={isCreateSubaccount ? t('subaccount_id') : t('customer_id')}
             variant='outlined'
-            value={customer.tenantId}
-            onChange={e => changeCustomer('tenantId', e.target.value)}
+            value={customer.tenantId || customer.groupId}
+            onChange={e => changeId(e.target.value)}
           />
         </Box>
         <Box className={classes.inputes}>
           <Input
             icon={<PermIdentityOutlined />}
-            label={t('customer_name')}
+            label={
+              isCreateSubaccount ? t('subaccount_name') : t('customer_name')
+            }
             variant='outlined'
-            value={customer.name}
-            onChange={e => changeCustomer('name', e.target.value)}
+            value={customer.name || customer.groupName}
+            onChange={e => changeName(e.target.value)}
           />
         </Box>
       </DialogContent>
-      <DialogActions className={classes.dialogActionsFirst}>
+      <DialogActions className={classes.dialogActionsSecond}>
+        <Button
+          variant='outlined'
+          color='primary'
+          className={classes.backButton}
+          onClick={() => handleClose()}
+        >
+          {t('cancel')}
+        </Button>
         <Button
           variant='contained'
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
-          disabled={!customer.tenantId}
+          disabled={!customer.tenantId && !customer.groupId}
         >
           {t('next')}
         </Button>

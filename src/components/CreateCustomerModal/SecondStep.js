@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useParams } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -21,12 +22,21 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 
 import useStyles from './styles'
 
-const FirstStep = props => {
+const SecondStep = props => {
+  const { handleClose, t, store, isCreateSubaccount } = props
   const { changeStep, customer, changeCustomer, createCustomer } = useContext(
-    CreateCustomerStore
+    store
   )
   const classes = useStyles()
-  const { handleClose, t } = props
+  const match = useParams()
+
+  const handleCreate = () => {
+    if (isCreateSubaccount) {
+      createCustomer(match.customerId).then(() => changeStep(3))
+      return
+    }
+    createCustomer().then(() => changeStep(3))
+  }
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -45,7 +55,9 @@ const FirstStep = props => {
         <Box className={classes.inputes}>
           <Input
             icon={<PermIdentityOutlined />}
-            label={t('customer_name')}
+            label={
+              isCreateSubaccount ? t('subaccount_name') : t('customer_name')
+            }
             variant='outlined'
             value={customer.contactInformation.name}
             onChange={e =>
@@ -135,7 +147,7 @@ const FirstStep = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => createCustomer().then(() => changeStep(3))}
+          onClick={handleCreate}
         >
           {t('add')}
         </Button>
@@ -144,4 +156,4 @@ const FirstStep = props => {
   )
 }
 
-export default withNamespaces()(observer(FirstStep))
+export default withNamespaces()(observer(SecondStep))

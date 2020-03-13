@@ -155,6 +155,7 @@ const CustomersTable = observer(({ t }) => {
             open={isOpenCreateCustomer}
             handleClose={handleCloseCreateCustomer}
             successClose={handleCloseCreateCustomerSuccess}
+            store={CreateCustomerStore}
           />
         )}
       </Paper>
