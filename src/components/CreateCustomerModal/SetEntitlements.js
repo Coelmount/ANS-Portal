@@ -65,12 +65,10 @@ const ENTITLEMENTS = [
 ]
 
 const SetEntitlements = props => {
-  const { changeStep, customer, changeCustomer } = useContext(
-    CreateCustomerStore
-  )
+  const { handleClose, t, store } = props
+  const { changeStep, customer, changeCustomer } = useContext(store)
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
   const classes = useStyles()
-  const { handleClose, t } = props
 
   const showHideEntitlements = i => {
     const newEntitlemtents = [...entitlements]
@@ -136,9 +134,6 @@ const SetEntitlements = props => {
                       variant='outlined'
                       defaultValue={ent.total}
                       className={classes.entitlementsItemInput}
-                      // onChange={e =>
-                      //   changeCustomer('addressInformation.addressLine1', e.target.value)
-                      // }
                     />
                   </Grid>
                 </Grid>

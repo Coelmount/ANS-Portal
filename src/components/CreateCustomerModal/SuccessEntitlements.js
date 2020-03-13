@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useHistory, useParams } from 'react-router-dom'
 
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
@@ -11,18 +12,33 @@ import Button from '@material-ui/core/Button'
 import accountCheck from 'source/images/svg/account-check.svg'
 
 import CreateCustomerStore from 'stores/CreateCustomer'
-import { useHistory } from 'react-router-dom'
+import CreateSubaccountStore from 'stores/CreateSubaccount'
 
 import useStyles from './styles'
 
 const SuccesPage = props => {
-  const { changeStep, createdCustomer } = useContext(CreateCustomerStore)
+  const { handleClose, t, store, isCreateSubaccount, createSubaccount } = props
+  const { changeStep, createdCustomerStore } = useContext(store)
+  const { createdCustomerStore: createdCustomer } = useContext(
+    CreateCustomerStore
+  )
+  const [isOpenCreateSubaccount, setIsOpenCreateSubaccount] = useState('')
+
   const history = useHistory()
+  const match = useParams()
   const classes = useStyles()
-  const { handleClose, t } = props
 
   const goToCustomer = () => {
-    history.push(`/customers/${createdCustomer.tenantId}/access-numbers`)
+    if (isCreateSubaccount) {
+      history.push(
+        `/customers/${createdCustomer.tenantId ||
+          match.customerId}/subaccounts/${
+          createdCustomerStore.groupId
+        }/my_ans_instances/basic`
+      )
+      return
+    }
+    history.push(`/customer/${createdCustomerStore.tenantId}/access-numbers`)
   }
 
   return (
@@ -56,13 +72,16 @@ const SuccesPage = props => {
           >
             {t('go_into_account')}
           </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.rigthButtonFromSP}
-          >
-            {t('add_subaccount')}
-          </Button>
+          {!isCreateSubaccount && (
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.rigthButtonFromSP}
+              onClick={createSubaccount}
+            >
+              {t('add_subaccount')}
+            </Button>
+          )}
         </Box>
       </DialogContent>
     </React.Fragment>

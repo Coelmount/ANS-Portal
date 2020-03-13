@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -26,16 +26,27 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCustomer = props => {
-  const { step } = useContext(CreateCustomerStore)
+  const {
+    open,
+    handleClose,
+    successClose,
+    isCreateSubaccount,
+    store,
+    createSubaccount
+  } = props
+  const { step } = useContext(store)
   const classes = useStyles()
-  const { open, handleClose, successClose } = props
 
+  console.log(createSubaccount)
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <Steps
         step={step}
         handleClose={handleClose}
         successClose={successClose}
+        isCreateSubaccount={isCreateSubaccount}
+        store={store}
+        createSubaccount={createSubaccount}
       />
     </Dialog>
   )
@@ -44,17 +55,54 @@ const CreateCustomer = props => {
 const Steps = props => {
   switch (props.step) {
     case 1:
-      return <FirstStep handleClose={props.handleClose} />
+      return (
+        <FirstStep
+          handleClose={props.handleClose}
+          isCreateSubaccount={props.isCreateSubaccount}
+          store={props.store}
+        />
+      )
     case 2:
-      return <SecondStep handleClose={props.handleClose} />
+      return (
+        <SecondStep
+          handleClose={props.handleClose}
+          isCreateSubaccount={props.isCreateSubaccount}
+          store={props.store}
+        />
+      )
     case 3:
-      return <SuccessPage handleClose={props.successClose} />
+      return (
+        <SuccessPage
+          handleClose={props.successClose}
+          isCreateSubaccount={props.isCreateSubaccount}
+          store={props.store}
+        />
+      )
     case 4:
-      return <SetEntitlements handleClose={props.successClose} />
+      return (
+        <SetEntitlements
+          handleClose={props.successClose}
+          store={props.store}
+          isCreateSubaccount={props.isCreateSubaccount}
+        />
+      )
     case 5:
-      return <SuccessEntitlements handleClose={props.successClose} />
+      return (
+        <SuccessEntitlements
+          handleClose={props.successClose}
+          store={props.store}
+          isCreateSubaccount={props.isCreateSubaccount}
+          createSubaccount={props.createSubaccount}
+        />
+      )
     default:
-      return <FirstStep handleClose={props.handleClose} />
+      return (
+        <FirstStep
+          handleClose={props.handleClose}
+          store={props.store}
+          isCreateSubaccount={props.isCreateSubaccount}
+        />
+      )
   }
 }
 

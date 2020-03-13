@@ -4,20 +4,18 @@ import { set } from 'lodash'
 
 import axios from 'utils/axios'
 
-export class CreateCustomerStore {
+export class CreateSubaccountStore {
   step = 1
   closeModal = false
 
   customer = {
-    type: 'Enterprise',
-    tenantId: '',
-    name: '',
+    groupId: '',
+    groupName: '',
     contactInformation: {
       name: '',
       phoneNumber: '',
       emailAddress: ''
     },
-    useTenantLanguage: '',
     addressInformation: {
       addressLine1: '',
       postalCode: '',
@@ -35,15 +33,13 @@ export class CreateCustomerStore {
   setDefaultValues = () => {
     this.step = 1
     this.customer = {
-      type: 'Enterprise',
-      tenantId: '',
-      name: '',
+      groupId: '',
+      groupName: '',
       contactInformation: {
         name: '',
         phoneNumber: '',
         emailAddress: ''
       },
-      useTenantLanguage: '',
       addressInformation: {
         addressLine1: '',
         postalCode: '',
@@ -57,14 +53,14 @@ export class CreateCustomerStore {
     set(this.customer, variable, value)
   }
 
-  createCustomer = () => {
+  createCustomer = customerId => {
     return axios
-      .post(`/tenants/`, this.customer)
+      .post(`/tenants/${customerId}/groups/`, this.customer)
       .then(res => (this.createdCustomerStore = res.data))
   }
 }
 
-decorate(CreateCustomerStore, {
+decorate(CreateSubaccountStore, {
   step: observable,
   customer: observable,
   closeModal: observable,
@@ -73,4 +69,4 @@ decorate(CreateCustomerStore, {
   changeCustomer: action
 })
 
-export default createContext(new CreateCustomerStore())
+export default createContext(new CreateSubaccountStore())
