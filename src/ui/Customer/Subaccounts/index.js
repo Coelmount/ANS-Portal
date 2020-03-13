@@ -48,7 +48,7 @@ const SubaccountsTable = observer(({ t }) => {
       label: 'ID',
       getCellData: row => (
         <Link
-          to={`/customers/${match.customerId}/subaccounts/${row.groupId}/my_ans_instances/basic`}
+          to={`/customers/${match.customerId}/subaccounts/${row.groupId}/my_ans_instances`}
           className={classes.link}
         >
           {row.groupId}

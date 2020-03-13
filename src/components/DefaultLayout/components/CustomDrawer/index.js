@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 
@@ -11,29 +11,19 @@ import Collapse from '@material-ui/core/Collapse'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+import DefaultLayoutStore from 'stores/DefaultLayout'
+
 import logo from 'source/images/svg/mtn-logo-nav.svg'
-import { useEffect } from 'react'
 
-const Drawer = ({
-  classes,
-  getCurrentLevel,
-  t,
-  isAnsInstancesOpen,
-  setIsAnsInstancesOpen,
-  isAdvancedOpen,
-  setIsAdvancedOpen
-}) => {
-  // const [isAnsInstancesOpen, setIsAnsInstancesOpen] = useState(false)
-  // const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
-
-  const handleOpenAnsInstances = name => {
-    name === 'ans_instances' && setIsAnsInstancesOpen(!isAnsInstancesOpen)
-  }
-
-  const handleOpenAdvanced = name => {
-    name === 'advanced' && setIsAdvancedOpen(!isAdvancedOpen)
-  }
-
+const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
+  const {
+    activeParentNav,
+    activeChildNav,
+    activeSubChild,
+    handleActiveParentNav,
+    handleActiveChildNav,
+    handleActiveSubChildNav
+  } = useContext(DefaultLayoutStore)
   return (
     <Fragment>
       <Box className='drawerHeader'>
@@ -44,7 +34,7 @@ const Drawer = ({
         {getCurrentLevel().map(navLink => {
           const { link, icon: Icon, text, name } = navLink
           return (
-            <Box>
+            <Box className={activeParentNav === name && classes.mainActive}>
               <ListItem
                 key={`${link}`}
                 activeClassName={classes.activeMenuItem}
@@ -54,7 +44,7 @@ const Drawer = ({
                 button
               >
                 <Box
-                  onClick={() => handleOpenAnsInstances(name)}
+                  onClick={() => handleActiveParentNav(name)}
                   className={classes.topLevelTitle}
                 >
                   <ListItemIcon className='icon'>
@@ -63,11 +53,11 @@ const Drawer = ({
                   <ListItemText primary={t(`${text}`)} className='menu-text' />
                   {navLink.childLinks && (
                     <ExpandMoreIcon
-                    // className={
-                    //   isAnsInstancesOpen
-                    //     ? classes.activeExpandIcon
-                    //     : classes.expandIcon
-                    // }
+                      className={
+                        activeParentNav === name
+                          ? classes.activeExpandIcon
+                          : classes.expandIcon
+                      }
                     />
                   )}
                 </Box>
@@ -75,7 +65,7 @@ const Drawer = ({
 
               <Collapse
                 // activeClassName={classes.activeMenuItem}
-                in={isAnsInstancesOpen}
+                in={activeParentNav === name}
                 timeout='auto'
                 unmountOnExit
               >
@@ -86,52 +76,64 @@ const Drawer = ({
                         <Box>
                           <ListItem
                             component={NavLink}
+                            className={classes.subMenuItem}
                             activeClassName={classes.activeSubMenuItem}
                             to={childLink.link}
                             button
                           >
                             <Box
-                              onClick={() => handleOpenAdvanced(childLink.name)}
+                              onClick={() =>
+                                handleActiveChildNav(childLink.name)
+                              }
                               className={classes.secondLevelTitle}
                             >
                               <ListItemText
-                                // className={
-                                //   childLink.name === activeSublevel
-                                //     ? classes.activeSecondLevelItemText
-                                //     : classes.secondLevelItemText
-                                // }
+                                className={
+                                  activeChildNav === childLink.name
+                                    ? classes.activeSecondLevelItemText
+                                    : classes.secondLevelItemText
+                                }
                                 primary={childLink.text}
                               />
                               {childLink.childLinks && (
                                 <ExpandMoreIcon
-                                // className={
-                                //   childLink.name === activeSublevel
-                                //     ? classes.activeExpandIcon
-                                //     : classes.expandIcon
-                                // }
+                                  className={
+                                    activeChildNav === childLink.name
+                                      ? classes.activeExpandIcon
+                                      : classes.expandIcon
+                                  }
                                 />
                               )}
                             </Box>
                           </ListItem>
                           <Collapse
-                            in={childLink.name === 'advanced' && isAdvancedOpen}
+                            in={activeChildNav === childLink.name}
                             timeout='auto'
                             unmountOnExit
                           >
                             <List className={classes.collapse}>
                               {childLink.childLinks &&
-                                childLink.childLinks.map(childLink => {
+                                childLink.childLinks.map(subChild => {
                                   return (
                                     <Box>
                                       <ListItem
                                         className={classes.activeSubMenuItem}
                                         component={NavLink}
-                                        to={childLink.link}
+                                        to={subChild.link}
                                         button
                                       >
                                         <ListItemText
-                                          className={classes.thirdLevelItemText}
-                                          primary={childLink.text}
+                                          onClick={() =>
+                                            handleActiveSubChildNav(
+                                              subChild.name
+                                            )
+                                          }
+                                          className={
+                                            activeSubChild === subChild.name
+                                              ? classes.activeThirdLevelItemText
+                                              : classes.thirdLevelItemText
+                                          }
+                                          primary={subChild.text}
                                         />
                                       </ListItem>
                                     </Box>
@@ -152,4 +154,4 @@ const Drawer = ({
   )
 }
 
-export default withNamespaces()(Drawer)
+export default withNamespaces()(CustomDrawer)

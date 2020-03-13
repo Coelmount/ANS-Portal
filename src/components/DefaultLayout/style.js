@@ -77,6 +77,9 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
+  mainActive: {
+    background: theme.palette.active.main
+  },
   activeMenuItem: {
     background: theme.palette.active.main,
     '& .icon': {
@@ -88,6 +91,13 @@ const useStyles = makeStyles(theme => ({
     '& .menu-text': {
       '& span': {
         fontWeight: 600
+      }
+    }
+  },
+  subMenuItem: {
+    MuiListItem: {
+      root: {
+        paddingTop: 4
       }
     }
   },
@@ -115,19 +125,27 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 43,
     '& span': {
       fontFamily: 'MTN'
-      // fontSize: 16
     }
   },
+  activeSecondLevelItemText: {
+    marginLeft: 43,
+    color: theme.palette.active.blue
+  },
   thirdLevelItemText: {
+    marginTop: 0,
     marginLeft: 43,
     '& span': {
       fontFamily: 'MTN',
       fontSize: 14
     }
   },
-  activeSecondLevelItemText: {
+  activeThirdLevelItemText: {
     marginLeft: 43,
-    color: theme.palette.active.blue
+    '& span': {
+      fontFamily: 'MTN',
+      fontSize: 14,
+      fontWeight: 'bold'
+    }
   },
   iconImg: {
     width: 20,
