@@ -30,13 +30,15 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
         <img src={logo} className={classes.logo} alt='mtn-logo' />
       </Box>
 
-      <List style={{ fontFamily: 'MTN', fontSize: 16 }}>
+      <List className={classes.wrapper}>
         {getCurrentLevel().map(navLink => {
           const { link, icon: Icon, text, name } = navLink
           return (
-            <Box className={activeParentNav === name && classes.mainActive}>
+            <Box
+              className={activeParentNav === name ? classes.mainActive : null}
+              key={`${link}`}
+            >
               <ListItem
-                key={`${link}`}
                 activeClassName={classes.activeMenuItem}
                 component={NavLink}
                 to={link}
@@ -62,7 +64,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
               </ListItem>
 
               <Collapse
-                // activeClassName={classes.activeMenuItem}
                 in={activeParentNav === name}
                 timeout='auto'
                 unmountOnExit
@@ -71,7 +72,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                   {navLink.childLinks &&
                     navLink.childLinks.map(childLink => {
                       return (
-                        <Box>
+                        <Box key={`${childLink.link}`}>
                           <ListItem
                             component={NavLink}
                             className={classes.subMenuItem}
@@ -109,7 +110,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                               {childLink.childLinks &&
                                 childLink.childLinks.map(subChild => {
                                   return (
-                                    <Box>
+                                    <Box key={`${subChild.link}`}>
                                       <ListItem
                                         className={classes.activeSubMenuItem}
                                         component={NavLink}

@@ -44,8 +44,11 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3)
   },
+  wrapper: {
+    fontFamily: 'MTN',
+    fontSize: 16
+  },
   menuItem: {
-    // background: theme.palette.active.main,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -68,9 +71,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     '& .menu-text': {
-      // background: theme.palette.active.main,
       minWidth: 100,
-      // marginLeft: 5,
       '& span': {
         fontFamily: 'MTN',
         fontSize: 16

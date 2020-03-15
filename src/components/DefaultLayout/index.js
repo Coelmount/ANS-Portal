@@ -100,7 +100,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic`,
           text: 'Basic',
-          basic: 'basic'
+          name: 'basic'
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destinations`,
@@ -154,7 +154,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
   const getCurrentLevel = () => {
     if (match.groupId && match.customerId) {
       return subaccountNavLinks
-    } else if (match.customerId && !match.groupId) {
+    } else if (match.customerId) {
       return customerNavLinks
     } else {
       return adminNavLinks
