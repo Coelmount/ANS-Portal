@@ -17,23 +17,27 @@ const CustomTable = ({ classes, rows, isLoadingData, columns }) => {
   const [totalPages, setTotalPages] = useState(0)
   const [query, setQuery] = useState('')
 
-  const list = query
-    ? rows.filter(
+  const memoizedList = useMemo(
+    () =>
+      rows.filter(
         row =>
           row.tenantId.toLowerCase().includes(query) ||
           row.name.toLowerCase().includes(query)
-      )
-    : rows
+      ),
+    [query]
+  )
 
-  useEffect(() => {
+  const list = query ? memoizedList : rows
+
+  useMemo(() => {
     const pages = Math.ceil(list.length / rowsPerPage)
     if (pages === 0) setTotalPages(0)
     else setTotalPages(pages - 1)
   }, [list.length, rowsPerPage])
 
-  useEffect(() => {
+  useMemo(() => {
     if (page > totalPages) setPage(0)
-  }, [totalPages, page])
+  }, [totalPages])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -42,8 +46,8 @@ const CustomTable = ({ classes, rows, isLoadingData, columns }) => {
   }
 
   const handleChangePage = action => {
-    action === 'increase' && page < totalPages && setPage(page + 1)
-    action === 'decrease' && page > 0 && setPage(page - 1)
+    action === 'increase' && page < totalPages && setPage(page => page + 1)
+    action === 'decrease' && page > 0 && setPage(page => page - 1)
   }
 
   return (
