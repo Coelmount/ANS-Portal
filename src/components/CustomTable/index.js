@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState, useMemo, Fragment } from 'react'
 
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
@@ -7,12 +7,9 @@ import CustomTableToolbar from './components/CustomTableToolbar'
 import CustomTableHead from './components/CustomTableHead'
 import CustomTableBody from './components/CustomTableBody'
 import Pagination from './components/Pagination'
-
 import Loading from 'components/Loading'
 
-const CustomTable = props => {
-  const { classes, rows, isLoadingData, columns } = props
-
+const CustomTable = ({ classes, rows, isLoadingData, columns }) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
@@ -45,11 +42,8 @@ const CustomTable = props => {
   }
 
   const handleChangePage = action => {
-    if (action === 'increase' && page < totalPages) {
-      setPage(page + 1)
-    } else if (action === 'decrease' && page > 0) {
-      setPage(page - 1)
-    }
+    action === 'increase' && page < totalPages && setPage(page + 1)
+    action === 'decrease' && page > 0 && setPage(page - 1)
   }
 
   return (
