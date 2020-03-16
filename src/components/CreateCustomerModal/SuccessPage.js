@@ -16,7 +16,7 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import useStyles from './styles'
 
 const SuccesPage = props => {
-  const { handleClose, t, store, isCreateSubaccount } = props
+  const { handleClose, t, store, isCreateSubaccount, createSubaccount } = props
   const { changeStep, createdCustomerStore } = useContext(store)
   const history = useHistory()
   const match = useParams()
@@ -67,14 +67,25 @@ const SuccesPage = props => {
           >
             {t('go_into_account')}
           </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.rigthButtonFromSP}
-            onClick={() => changeStep(4)}
-          >
-            {t('set_entitlements')}
-          </Button>
+          {!isCreateSubaccount ? (
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.rigthButtonFromSP}
+              onClick={createSubaccount}
+            >
+              {t('add_subaccount')}
+            </Button>
+          ) : (
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.rigthButtonFromSP}
+              onClick={() => changeStep(4)}
+            >
+              {t('set_entitlements')}
+            </Button>
+          )}
         </Box>
       </DialogContent>
     </React.Fragment>

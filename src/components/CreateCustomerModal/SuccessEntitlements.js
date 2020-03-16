@@ -72,7 +72,7 @@ const SuccesPage = props => {
           >
             {t('go_into_account')}
           </Button>
-          {!isCreateSubaccount && (
+          {/* {!isCreateSubaccount && (
             <Button
               variant='contained'
               color='primary'
@@ -81,7 +81,7 @@ const SuccesPage = props => {
             >
               {t('add_subaccount')}
             </Button>
-          )}
+          )} */}
         </Box>
       </DialogContent>
     </React.Fragment>
