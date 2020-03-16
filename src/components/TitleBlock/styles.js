@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   addIconWrap: {
-    width: 34,
-    height: 34,
+    width: 30,
+    height: 30,
     background: theme.palette.primary.main,
     borderRadius: 100,
     display: 'flex',
