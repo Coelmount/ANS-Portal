@@ -44,8 +44,11 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3)
   },
+  wrapper: {
+    fontFamily: 'MTN',
+    fontSize: 16
+  },
   menuItem: {
-    // background: theme.palette.active.main,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -68,14 +71,15 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     '& .menu-text': {
-      // background: theme.palette.active.main,
       minWidth: 100,
-      // marginLeft: 5,
       '& span': {
         fontFamily: 'MTN',
         fontSize: 16
       }
     }
+  },
+  mainActive: {
+    background: theme.palette.active.main
   },
   activeMenuItem: {
     background: theme.palette.active.main,
@@ -88,6 +92,13 @@ const useStyles = makeStyles(theme => ({
     '& .menu-text': {
       '& span': {
         fontWeight: 600
+      }
+    }
+  },
+  subMenuItem: {
+    MuiListItem: {
+      root: {
+        paddingTop: 4
       }
     }
   },
@@ -115,19 +126,28 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 43,
     '& span': {
       fontFamily: 'MTN'
-      // fontSize: 16
     }
   },
+  activeSecondLevelItemText: {
+    marginLeft: 43,
+    color: theme.palette.active.blue
+  },
   thirdLevelItemText: {
+    marginTop: 0,
     marginLeft: 43,
     '& span': {
       fontFamily: 'MTN',
       fontSize: 14
     }
   },
-  activeSecondLevelItemText: {
+  activeThirdLevelItemText: {
+    marginTop: 0,
     marginLeft: 43,
-    color: theme.palette.active.blue
+    '& span': {
+      fontFamily: 'MTN',
+      fontSize: 14,
+      fontWeight: 'bold'
+    }
   },
   iconImg: {
     width: 20,

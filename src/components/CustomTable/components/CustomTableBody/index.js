@@ -32,9 +32,16 @@ const descendingComparator = (a, b, orderBy) => {
   return 0
 }
 
-const CustomTableBody = props => {
-  const { classes, rowsPerPage, page, order, orderBy, list, columns, t } = props
-
+const CustomTableBody = ({
+  classes,
+  rowsPerPage,
+  page,
+  order,
+  orderBy,
+  list,
+  columns,
+  t
+}) => {
   return (
     <Fragment>
       {list && list.length > 0 ? (

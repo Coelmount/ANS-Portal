@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
@@ -30,4 +30,4 @@ const Pagination = ({ page, totalPages, handleChangePage, classes }) => {
   )
 }
 
-export default Pagination
+export default memo(Pagination)

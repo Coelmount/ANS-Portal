@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback
+} from 'react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
@@ -40,64 +46,10 @@ const CustomersTable = observer(({ t }) => {
     getCustomers()
   }, [getCustomers])
 
-  const columns = [
-    {
-      id: 'tenantId',
-      numeric: false,
-      extraProps: {
-        scope: 'row'
-      },
-      label: 'ID',
-      getCellData: row => (
-        <Link
-          to={`/customers/${row.tenantId}/access-numbers`}
-          className={classes.link}
-        >
-          {row.tenantId}
-        </Link>
-      )
-    },
-    {
-      id: 'name',
-      numeric: false,
-      label: 'name',
-      extraProps: {
-        scope: 'row'
-      }
-    },
-    // {
-    //   id: 'status',
-    //   numeric: false,
-    //   label: 'status',
-    //   extraProps: {
-    //     scope: 'row'
-    //   }
-    // },
-    {
-      id: 'delete',
-      extraProps: {
-        className: classes.deleteCell,
-        align: 'right'
-      },
-      getCellData: row => (
-        <CloseOutlinedIcon
-          onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
-          className={classes.deleteCustomerIcon}
-        />
-      )
-    }
-  ]
-
-  const titleData = {
-    mainText: t('ans_customers'),
-    iconCapture: t('add_customer'),
-    Icon: <PersonAddOutlinedIcon />
-  }
-
-  const handleOpenDeleteModal = (id, name) => {
+  const handleOpenDeleteModal = useCallback((id, name) => {
     setIsDeleteModalOpen(true)
     setCustomerToDelete({ id, name })
-  }
+  }, [])
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
@@ -128,6 +80,55 @@ const CustomersTable = observer(({ t }) => {
       callback: setIsDeleteModalOpen
     }
     deleteCustomer(payload)
+  }
+
+  const columns = useMemo(
+    () => [
+      {
+        id: 'tenantId',
+        numeric: false,
+        extraProps: {
+          scope: 'row'
+        },
+        label: 'ID',
+        getCellData: row => (
+          <Link
+            to={`/customers/${row.tenantId}/access-numbers`}
+            className={classes.link}
+          >
+            {row.tenantId}
+          </Link>
+        )
+      },
+      {
+        id: 'name',
+        numeric: false,
+        label: 'name',
+        extraProps: {
+          scope: 'row'
+        }
+      },
+      {
+        id: 'delete',
+        extraProps: {
+          className: classes.deleteCell,
+          align: 'right'
+        },
+        getCellData: row => (
+          <CloseOutlinedIcon
+            onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
+            className={classes.deleteCustomerIcon}
+          />
+        )
+      }
+    ],
+    [handleOpenDeleteModal]
+  )
+
+  const titleData = {
+    mainText: t('ans_customers'),
+    iconCapture: t('add_customer'),
+    Icon: <PersonAddOutlinedIcon />
   }
 
   return (

@@ -49,8 +49,6 @@ const DefaultLayout = ({ t, notFoundPage }) => {
   const match = useParams()
   const theme = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [isAnsInstancesOpen, setIsAnsInstancesOpen] = useState(false)
-  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -102,20 +100,22 @@ const DefaultLayout = ({ t, notFoundPage }) => {
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic`,
           text: 'Basic',
-          basic: 'basic'
+          name: 'basic'
         },
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced`,
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destinations`,
           text: 'Advanced',
           name: 'advanced',
           childLinks: [
             {
               link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destinations`,
-              text: 'Destinations'
+              text: 'Destinations',
+              name: 'destinations'
             },
             {
               link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destination_groups`,
-              text: 'Destination Groups'
+              text: 'Destination Groups',
+              name: 'destination_groups'
             }
           ]
         },
@@ -152,7 +152,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
   ]
 
   const getCurrentLevel = () => {
-    if (match.groupId) {
+    if (match.groupId && match.customerId) {
       return subaccountNavLinks
     } else if (match.customerId) {
       return customerNavLinks
@@ -206,10 +206,6 @@ const DefaultLayout = ({ t, notFoundPage }) => {
               <CustomDrawer
                 classes={classes}
                 getCurrentLevel={getCurrentLevel}
-                isAnsInstancesOpen={isAnsInstancesOpen}
-                setIsAnsInstancesOpen={setIsAnsInstancesOpen}
-                isAdvancedOpen={isAdvancedOpen}
-                setIsAdvancedOpen={setIsAdvancedOpen}
               />
             </Drawer>
           </Hidden>

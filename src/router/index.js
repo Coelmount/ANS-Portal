@@ -14,8 +14,8 @@ import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
 import MyAnsInstances from 'ui/Subaccount/MyAnsInstances'
 import Basic from 'ui/Subaccount/MyAnsInstances/Basic'
-import Advanced from 'ui/Subaccount/MyAnsInstances/Advanced'
 import Destinations from 'ui/Subaccount/MyAnsInstances/Advanced/Destinations'
+import DestinationGroups from 'ui/Subaccount/MyAnsInstances/Advanced/DestinationGroups'
 import SubaccountDetails from 'ui/Subaccount/Details'
 
 import AuthStore from 'stores/Auth'
@@ -57,13 +57,13 @@ const userComponents = [
   },
   {
     path:
-      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/advanced',
-    component: <Advanced />
+      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/advanced/destinations',
+    component: <Destinations />
   },
   {
     path:
-      '/customers/:customerId/subaccounts/:groupdId/my_ans_instances/advanced/destinations',
-    component: <Destinations />
+      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/advanced/destination_groups',
+    component: <DestinationGroups />
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/details',

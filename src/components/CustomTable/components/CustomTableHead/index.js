@@ -34,13 +34,13 @@ const CustomTableHead = props => {
                 onClick={createSortHandler(headCell.id)}
               >
                 <p>{t(headCell.label)}</p>
-                {orderBy === headCell.id ? (
+                {orderBy === headCell.id && (
                   <p className={classes.visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
                       : 'sorted ascending'}
                   </p>
-                ) : null}
+                )}
               </TableSortLabel>
             </TableCell>
           )
