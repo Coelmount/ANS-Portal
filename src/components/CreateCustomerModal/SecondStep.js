@@ -31,7 +31,6 @@ const SecondStep = props => {
   const classes = useStyles()
   const match = useParams()
 
-  console.log(createdCustomerStore)
   const handleCreate = () => {
     if (isCreateSubaccount) {
       createCustomer(createdCustomerStore.tenantId || match.customerId).then(

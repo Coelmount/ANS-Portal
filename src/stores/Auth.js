@@ -6,6 +6,7 @@ import { BASE_URL } from 'utils/axios'
 export class AuthStore {
   token = localStorage.getItem('token')
   user = {}
+  userLogin = {}
   isAuthorized = localStorage.getItem('isAuthorized', true)
     ? !!localStorage.getItem('isAuthorized', true)
     : false
@@ -15,6 +16,7 @@ export class AuthStore {
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token)
         this.token = res.data.token
+        this.userLogin = res.data
         this.getLocal()
         if (res.data.ids) {
           if (res.data.ids.group_id) {
@@ -55,6 +57,7 @@ export class AuthStore {
 }
 
 decorate(AuthStore, {
+  userLogin: observable,
   token: observable,
   user: observable,
   isAuthorized: observable,

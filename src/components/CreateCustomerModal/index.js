@@ -37,7 +37,6 @@ const CreateCustomer = props => {
   const { step } = useContext(store)
   const classes = useStyles()
 
-  console.log(createSubaccount)
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <Steps
@@ -76,6 +75,7 @@ const Steps = props => {
           handleClose={props.successClose}
           isCreateSubaccount={props.isCreateSubaccount}
           store={props.store}
+          createSubaccount={props.createSubaccount}
         />
       )
     case 4:
@@ -92,7 +92,6 @@ const Steps = props => {
           handleClose={props.successClose}
           store={props.store}
           isCreateSubaccount={props.isCreateSubaccount}
-          createSubaccount={props.createSubaccount}
         />
       )
     default:
