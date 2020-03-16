@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { withRouter } from 'react-router'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -11,6 +11,7 @@ import TitleBlock from 'components/TitleBlock'
 import DetailsTemplate from 'components/DetailsTemplate'
 
 import CustomersStore from 'stores/Customers'
+import CreateCustomer from 'components/CreateCustomerModal'
 
 import editSvg from 'source/images/svg/edit.svg'
 import useStyles from './styles'
@@ -21,6 +22,7 @@ const Details = observer(({ t }) => {
   const { customer, getCustomer, isLoadingCustomer } = useContext(
     CustomersStore
   )
+  const [showEdit, setShowEdit] = useState(false)
 
   useEffect(() => {
     getCustomer(match.customerId)
@@ -44,13 +46,31 @@ const Details = observer(({ t }) => {
     Icon: <img src={editSvg} alt='edit icon' />
   }
 
+  const handleOpenEdit = () => {
+    setShowEdit(true)
+  }
+
+  const handleCloseEdit = () => {
+    setShowEdit(false)
+    getCustomer(match.customerId)
+  }
+
   return (
     <div className={classes.root}>
       <Container className={classes.container}>
         <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
-        <TitleBlock titleData={titleData} />
+        <TitleBlock titleData={titleData} handleOpen={handleOpenEdit} />
       </Container>
       <DetailsTemplate data={customer} isLoading={isLoadingCustomer} />
+      {showEdit && (
+        <CreateCustomer
+          open={showEdit}
+          handleClose={handleCloseEdit}
+          successClose={handleCloseEdit}
+          store={CustomersStore}
+          isEditCustomer
+        />
+      )}
     </div>
   )
 })

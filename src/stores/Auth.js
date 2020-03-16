@@ -23,6 +23,7 @@ export class AuthStore {
             history.push(
               `/customers/${res.data.ids.tenant_id}/subaccounts/${res.data.ids.group_id}/my_ans_instances`
             )
+            return
           }
           history.push(`/customers/${res.data.ids.tenant_id}/access-numbers`)
         }

@@ -23,15 +23,23 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import useStyles from './styles'
 
 const SecondStep = props => {
-  const { handleClose, t, store, isCreateSubaccount } = props
-  const { changeStep, customer, changeCustomer, createCustomer } = useContext(
-    store
-  )
+  const { handleClose, t, store, isCreateSubaccount, isEditCustomer } = props
+  const {
+    changeStep,
+    customer,
+    changeCustomer,
+    createCustomer,
+    updateCustomer
+  } = useContext(store)
   const { createdCustomerStore } = useContext(CreateCustomerStore)
   const classes = useStyles()
   const match = useParams()
 
   const handleCreate = () => {
+    if (isEditCustomer) {
+      updateCustomer(match.customerId).then(() => handleClose())
+      return
+    }
     if (isCreateSubaccount) {
       createCustomer(createdCustomerStore.tenantId || match.customerId).then(
         () => changeStep(3)
@@ -43,7 +51,11 @@ const SecondStep = props => {
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        {t('add_customer')}
+        {isEditCustomer
+          ? 'Edit customer'
+          : isCreateSubaccount
+          ? t('add_subaccount')
+          : t('add_customer')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -53,7 +65,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
+        <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
         <Box className={classes.paragraphBox}>{t('contact_information')}</Box>
         <Box className={classes.inputes}>
           <Input
@@ -152,7 +164,7 @@ const SecondStep = props => {
           className={classes.nextButton}
           onClick={handleCreate}
         >
-          {t('add')}
+          {isEditCustomer ? t('save') : t('add')}
         </Button>
       </DialogActions>
     </React.Fragment>
