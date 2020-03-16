@@ -58,13 +58,8 @@ const Details = observer(({ t }) => {
     <div className={classes.root}>
       <CustomContainer>
         <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
-<<<<<<< HEAD
-        <TitleBlock titleData={titleData} />
-      </CustomContainer>
-=======
         <TitleBlock titleData={titleData} handleOpen={handleOpenEdit} />
-      </Container>
->>>>>>> 53973f79e51aad0608265e5f3a4df60fd8e01d98
+      </CustomContainer>
       <DetailsTemplate data={customer} isLoading={isLoadingCustomer} />
       {showEdit && (
         <CreateCustomer

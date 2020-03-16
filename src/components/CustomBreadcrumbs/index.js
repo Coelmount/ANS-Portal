@@ -11,13 +11,12 @@ import AuthStore from 'stores/Auth'
 import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ breadcrumbs }) => {
-  console.log(breadcrumbs, 'in start')
-  const { user } = useContext(AuthStore)
-  console.log(user.ui_profile, 'user')
-  if (user.ui_profile === 'user') {
+  const { userLogin } = useContext(AuthStore)
+  if (userLogin.profile.user_type === 'tenant_admin') {
     breadcrumbs.splice(0, 1)
+  } else if (userLogin.profile.user_type === 'no_userType') {
+    breadcrumbs.splice(0, 3)
   }
-  console.log(breadcrumbs, 'to render')
 
   const classes = useStyles()
   return (
