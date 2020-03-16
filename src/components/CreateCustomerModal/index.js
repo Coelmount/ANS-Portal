@@ -37,7 +37,6 @@ const CreateCustomer = props => {
   const { step } = useContext(store)
   const classes = useStyles()
 
-  console.log(createSubaccount)
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <Steps
