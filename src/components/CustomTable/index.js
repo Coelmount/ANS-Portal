@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, Fragment } from 'react'
+import React, { useState, useMemo, Fragment } from 'react'
 
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
@@ -24,7 +24,7 @@ const CustomTable = ({ classes, rows, isLoadingData, columns }) => {
           row.tenantId.toLowerCase().includes(query) ||
           row.name.toLowerCase().includes(query)
       ),
-    [query]
+    [query, rows]
   )
 
   const list = query ? memoizedList : rows
@@ -37,7 +37,7 @@ const CustomTable = ({ classes, rows, isLoadingData, columns }) => {
 
   useMemo(() => {
     if (page > totalPages) setPage(0)
-  }, [totalPages])
+  }, [page, totalPages])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'

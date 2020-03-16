@@ -5,6 +5,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
+import IdCell from 'utils/IdCell'
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'
@@ -14,6 +15,7 @@ const getComparator = (order, orderBy) => {
 
 const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index])
+
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0])
     if (order !== 0) return order
@@ -42,11 +44,12 @@ const CustomTableBody = ({
   columns,
   t
 }) => {
+  const sortedList = stableSort(list, getComparator(order, orderBy))
   return (
     <Fragment>
       {list && list.length > 0 ? (
         <TableBody className={classes.tbody}>
-          {stableSort(list, getComparator(order, orderBy))
+          {sortedList
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
               const labelId = `enhanced-table-checkbox-${index}`
@@ -57,9 +60,7 @@ const CustomTableBody = ({
                   tabIndex={-1}
                   key={index}
                 >
-                  <TableCell className={classes.bodyFirstCell}>
-                    {index + 1}
-                  </TableCell>
+                  <IdCell cellValue={page * rowsPerPage + index + 1} />
                   {columns.map(column => {
                     const extraProps = column.extraProps
                     return (

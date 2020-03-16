@@ -122,7 +122,12 @@ const CustomersTable = observer(({ t }) => {
         )
       }
     ],
-    [handleOpenDeleteModal]
+    [
+      classes.deleteCell,
+      classes.deleteCustomerIcon,
+      classes.link,
+      handleOpenDeleteModal
+    ]
   )
 
   const titleData = {
