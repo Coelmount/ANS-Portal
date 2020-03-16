@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
@@ -6,9 +6,19 @@ import Typography from '@material-ui/core/Typography'
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 
+import AuthStore from 'stores/Auth'
+
 import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ breadcrumbs }) => {
+  console.log(breadcrumbs, 'in start')
+  const { user } = useContext(AuthStore)
+  console.log(user.ui_profile, 'user')
+  if (user.ui_profile === 'user') {
+    breadcrumbs.splice(0, 1)
+  }
+  console.log(breadcrumbs, 'to render')
+
   const classes = useStyles()
   return (
     <Breadcrumbs

@@ -32,7 +32,8 @@ const CreateCustomer = props => {
     successClose,
     isCreateSubaccount,
     store,
-    createSubaccount
+    createSubaccount,
+    isEditCustomer
   } = props
   const { step } = useContext(store)
   const classes = useStyles()
@@ -46,6 +47,7 @@ const CreateCustomer = props => {
         isCreateSubaccount={isCreateSubaccount}
         store={store}
         createSubaccount={createSubaccount}
+        isEditCustomer
       />
     </Dialog>
   )
@@ -59,6 +61,7 @@ const Steps = props => {
           handleClose={props.handleClose}
           isCreateSubaccount={props.isCreateSubaccount}
           store={props.store}
+          isEditCustomer={props.isEditCustomer}
         />
       )
     case 2:
@@ -67,6 +70,7 @@ const Steps = props => {
           handleClose={props.handleClose}
           isCreateSubaccount={props.isCreateSubaccount}
           store={props.store}
+          isEditCustomer={props.isEditCustomer}
         />
       )
     case 3:

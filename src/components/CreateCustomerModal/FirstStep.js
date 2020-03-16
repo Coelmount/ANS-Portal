@@ -20,7 +20,7 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import useStyles from './styles'
 
 const FirstStep = props => {
-  const { handleClose, t, isCreateSubaccount, store } = props
+  const { handleClose, t, isCreateSubaccount, store, isEditCustomer } = props
   const { changeStep, customer, changeCustomer } = useContext(store)
   const classes = useStyles()
 
@@ -43,7 +43,11 @@ const FirstStep = props => {
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        {isCreateSubaccount ? t('add_subaccount') : t('add_customer')}
+        {isEditCustomer
+          ? t('edit_customer')
+          : isCreateSubaccount
+          ? t('add_subaccount')
+          : t('add_customer')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -62,6 +66,7 @@ const FirstStep = props => {
             icon={<img src={sharp} alt='' />}
             label={isCreateSubaccount ? t('subaccount_id') : t('customer_id')}
             variant='outlined'
+            disabled={isEditCustomer}
             value={customer.tenantId || customer.groupId}
             onChange={e => changeId(e.target.value)}
           />

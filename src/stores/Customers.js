@@ -2,12 +2,26 @@ import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
+import set from 'lodash/set'
 
 export class CustomersStore {
   rows = []
+  step = 1
   customer = {
-    addressInformation: {},
-    contactInformation: {}
+    tenantId: '',
+    name: '',
+    contactInformation: {
+      name: '',
+      phoneNumber: '',
+      emailAddress: ''
+    },
+    useTenantLanguage: '',
+    addressInformation: {
+      addressLine1: '',
+      postalCode: '',
+      city: '',
+      country: ''
+    }
   }
   isLoadingCustomers = true
   isLoadingCustomer = true
@@ -39,19 +53,43 @@ export class CustomersStore {
 
   deleteCustomer = ({ id, callback }) => {
     this.isDeletingCustomer = true
-    axios.delete(`/tenants/${id}/`).then(res => {
+    axios
+      .delete(`/tenants/${id}/`)
+      .then(res => {
+        if (res.status === 200) {
+          this.getCustomers()
+          callback()
+          this.isDeletingCustomer = false
+        } else {
+          console.log(res, 'error')
+        }
+      })
+      .catch(e => {
+        if (e.response.status === 400) {
+          this.isDeletingCustomer = false
+        }
+      })
+  }
+
+  updateCustomer = tenantId => {
+    return axios.put(`/tenants/${tenantId}`, this.customer).then(res => {
       if (res.status === 200) {
-        this.getCustomers()
-        callback()
-        this.isDeletingCustomer = false
-      } else {
-        console.log(res, 'error')
+        this.customer = res.data
       }
     })
+  }
+
+  changeStep = step => {
+    this.step = step
+  }
+
+  changeCustomer = (variable, value) => {
+    set(this.customer, variable, value)
   }
 }
 
 decorate(CustomersStore, {
+  step: observable,
   rows: observable,
   customer: observable,
   isLoadingCustomers: observable,
@@ -60,7 +98,9 @@ decorate(CustomersStore, {
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,
-  addCustomer: action
+  addCustomer: action,
+  changeStep: action,
+  changeCustomer: action
 })
 
 export default createContext(new CustomersStore())

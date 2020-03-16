@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
-import { set } from 'lodash'
+import set from 'lodash/set'
 
 import axios from 'utils/axios'
 
