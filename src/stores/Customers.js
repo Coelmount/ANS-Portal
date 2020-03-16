@@ -53,15 +53,22 @@ export class CustomersStore {
 
   deleteCustomer = ({ id, callback }) => {
     this.isDeletingCustomer = true
-    axios.delete(`/tenants/${id}/`).then(res => {
-      if (res.status === 200) {
-        this.getCustomers()
-        callback()
-        this.isDeletingCustomer = false
-      } else {
-        console.log(res, 'error')
-      }
-    })
+    axios
+      .delete(`/tenants/${id}/`)
+      .then(res => {
+        if (res.status === 200) {
+          this.getCustomers()
+          callback()
+          this.isDeletingCustomer = false
+        } else {
+          console.log(res, 'error')
+        }
+      })
+      .catch(e => {
+        if (e.response.status === 400) {
+          this.isDeletingCustomer = false
+        }
+      })
   }
 
   updateCustomer = tenantId => {
