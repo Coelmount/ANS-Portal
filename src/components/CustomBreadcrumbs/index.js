@@ -12,9 +12,12 @@ import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ breadcrumbs }) => {
   const { userLogin } = useContext(AuthStore)
-  if (userLogin.profile.user_type === 'tenant_admin') {
+  if (userLogin.profile && userLogin.profile.user_type === 'tenant_admin') {
     breadcrumbs.splice(0, 1)
-  } else if (userLogin.profile.user_type === 'no_userType') {
+  } else if (
+    userLogin.profile &&
+    userLogin.profile.user_type === 'no_userType'
+  ) {
     breadcrumbs.splice(0, 3)
   }
 
