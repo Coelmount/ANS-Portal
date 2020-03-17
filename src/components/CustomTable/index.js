@@ -9,7 +9,7 @@ import CustomTableBody from './components/CustomTableBody'
 import Pagination from './components/Pagination'
 import Loading from 'components/Loading'
 
-const CustomTable = ({ classes, rows, isLoadingData, columns }) => {
+const CustomTable = ({ classes, rows, isLoadingData, columns, id, name }) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
@@ -21,10 +21,10 @@ const CustomTable = ({ classes, rows, isLoadingData, columns }) => {
     () =>
       rows.filter(
         row =>
-          row.groupId.toLowerCase().includes(query) ||
-          row.groupName.toLowerCase().includes(query)
+          row[id].toLowerCase().includes(query) ||
+          row[name].toLowerCase().includes(query)
       ),
-    [query, rows]
+    [id, name, query, rows]
   )
 
   const list = query ? memoizedList : rows

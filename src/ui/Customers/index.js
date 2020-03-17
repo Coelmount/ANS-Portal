@@ -151,6 +151,8 @@ const CustomersTable = observer(({ t }) => {
           rows={rows}
           isLoadingData={isLoadingCustomers}
           columns={columns}
+          id='tenantId'
+          name='name'
         />
         {isDeleteModalOpen && (
           <DeleteModal
