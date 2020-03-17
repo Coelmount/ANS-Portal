@@ -4,12 +4,11 @@ import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 
-import Container from '@material-ui/core/Container'
-
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import DetailsTemplate from 'components/DetailsTemplate'
 
+import CustomContainer from 'components/CustomContainer'
 import CustomersStore from 'stores/Customers'
 import CreateCustomer from 'components/CreateCustomerModal'
 
@@ -57,10 +56,10 @@ const Details = observer(({ t }) => {
 
   return (
     <div className={classes.root}>
-      <Container className={classes.container}>
+      <CustomContainer>
         <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
         <TitleBlock titleData={titleData} handleOpen={handleOpenEdit} />
-      </Container>
+      </CustomContainer>
       <DetailsTemplate data={customer} isLoading={isLoadingCustomer} />
       {showEdit && (
         <CreateCustomer

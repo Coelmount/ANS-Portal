@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
@@ -6,9 +6,21 @@ import Typography from '@material-ui/core/Typography'
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 
+import AuthStore from 'stores/Auth'
+
 import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ breadcrumbs }) => {
+  const { userLogin } = useContext(AuthStore)
+  if (userLogin.profile && userLogin.profile.user_type === 'tenant_admin') {
+    breadcrumbs.splice(0, 1)
+  } else if (
+    userLogin.profile &&
+    userLogin.profile.user_type === 'no_userType'
+  ) {
+    breadcrumbs.splice(0, 3)
+  }
+
   const classes = useStyles()
   return (
     <Breadcrumbs

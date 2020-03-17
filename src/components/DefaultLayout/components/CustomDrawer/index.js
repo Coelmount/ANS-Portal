@@ -1,5 +1,6 @@
 import React, { Fragment, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 
 import Box from '@material-ui/core/Box'
@@ -27,7 +28,9 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
   return (
     <Fragment>
       <Box className='drawerHeader'>
-        <img src={logo} className={classes.logo} alt='mtn-logo' />
+        <Link to={'/customers'}>
+          <img src={logo} className={classes.logo} alt='mtn-logo' />
+        </Link>
       </Box>
 
       <List className={classes.wrapper}>

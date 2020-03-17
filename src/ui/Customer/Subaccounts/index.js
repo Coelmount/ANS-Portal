@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
-import Container from '@material-ui/core/Container'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
@@ -16,6 +15,7 @@ import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CreateCustomer from 'components/CreateCustomerModal'
+import CustomContainer from 'components/CustomContainer'
 
 import useStyles from './styles'
 
@@ -135,14 +135,14 @@ const SubaccountsTable = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Container>
+        <CustomContainer>
           <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
           <TitleBlock
             titleData={titleData}
             classes={classes}
             handleOpen={handleOpenCreateSubaccount}
           />
-        </Container>
+        </CustomContainer>
 
         <CustomTable
           classes={classes}

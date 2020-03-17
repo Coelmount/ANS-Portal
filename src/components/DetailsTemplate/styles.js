@@ -3,17 +3,11 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    padding: '33px 0px 0px 100px',
+    padding: '33px 0px 0px 42px',
     maxWidth: '1600px',
     background: theme.palette.active.main,
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: '26px !important'
-    },
-    [theme.breakpoints.down(700)]: {
-      paddingLeft: '10px !important'
-    },
-    [theme.breakpoints.between(600, 675)]: {
-      paddingLeft: '10px !important'
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: 2
     }
   },
   detailsBlock: {
@@ -34,36 +28,17 @@ const useStyles = makeStyles(theme => ({
     '& > svg': {
       marginRight: 14
     },
-    [theme.breakpoints.down(735)]: {
-      marginRight: 10
-    },
-    [theme.breakpoints.between(600, 675)]: {
-      minWidth: 180
-    },
-    [theme.breakpoints.down(435)]: {
-      paddingLeft: 5,
-      minWidth: 180
+    [theme.breakpoints.down('xs')]: {
+      minWidth: 160
     }
   },
   firstBlockFields: {
-    paddingLeft: 66,
-    [theme.breakpoints.between(600, 675)]: {
-      paddingLeft: 0
-    },
-    [theme.breakpoints.down(435)]: {
-      paddingLeft: 15
-    }
+    paddingLeft: 42
   },
   panelDetails: {
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: 62,
-    [theme.breakpoints.between(600, 675)]: {
-      paddingLeft: 0
-    },
-    [theme.breakpoints.down(435)]: {
-      paddingLeft: 10
-    }
+    paddingLeft: 42
   },
   expansionBlockRow: {
     display: 'flex'
@@ -79,13 +54,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'MTN',
     fontSize: 18,
     fontWeight: 600,
-    padding: '0 24px 0 24px',
-    [theme.breakpoints.between(600, 675)]: {
-      paddingLeft: 0
-    },
-    [theme.breakpoints.down(435)]: {
-      paddingLeft: 15
-    }
+    padding: '0 24px 0 24px'
   },
   expandMoreIconWrap: {
     width: 30,

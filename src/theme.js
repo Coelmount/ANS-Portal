@@ -119,12 +119,6 @@ const theme = createMuiTheme({
       root: {
         backgroundColor: '#F9F9F9'
       }
-    },
-    MuiContainer: {
-      root: {
-        padding: '0px 33px 0px 68px !important',
-        maxWidth: '1600px !important'
-      }
     }
   }
 })

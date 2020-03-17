@@ -10,7 +10,6 @@ import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
-import Container from '@material-ui/core/Container'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
@@ -22,6 +21,7 @@ import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
+import CustomContainer from 'components/CustomContainer'
 
 import useStyles from './styles'
 
@@ -122,7 +122,12 @@ const CustomersTable = observer(({ t }) => {
         )
       }
     ],
-    [handleOpenDeleteModal]
+    [
+      classes.deleteCell,
+      classes.deleteCustomerIcon,
+      classes.link,
+      handleOpenDeleteModal
+    ]
   )
 
   const titleData = {
@@ -134,13 +139,13 @@ const CustomersTable = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Container>
+        <CustomContainer>
           <TitleBlock
             titleData={titleData}
             classes={classes}
             handleOpen={handleOpenCreateCustomer}
           />
-        </Container>
+        </CustomContainer>
         <CustomTable
           classes={classes}
           rows={rows}

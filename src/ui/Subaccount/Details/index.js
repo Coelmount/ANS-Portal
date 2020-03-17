@@ -4,13 +4,12 @@ import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 
-import Container from '@material-ui/core/Container'
-
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import DetailsTemplate from 'components/DetailsTemplate'
 
 import SubaccountsStore from 'stores/Subaccounts'
+import CustomContainer from 'components/CustomContainer'
 
 import editSvg from 'source/images/svg/edit.svg'
 import useStyles from './styles'
@@ -46,10 +45,10 @@ const Details = observer(({ t }) => {
 
   return (
     <div className={classes.root}>
-      <Container className={classes.container}>
+      <CustomContainer>
         <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
         <TitleBlock titleData={titleData} />
-      </Container>
+      </CustomContainer>
       <DetailsTemplate data={subaccount} isLoading={isLoadingSubaccount} />
     </div>
   )
