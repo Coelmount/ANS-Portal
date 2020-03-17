@@ -21,8 +21,8 @@ const CustomTable = ({ classes, rows, isLoadingData, columns }) => {
     () =>
       rows.filter(
         row =>
-          row.tenantId.toLowerCase().includes(query) ||
-          row.name.toLowerCase().includes(query)
+          row.groupId.toLowerCase().includes(query) ||
+          row.groupName.toLowerCase().includes(query)
       ),
     [query, rows]
   )
