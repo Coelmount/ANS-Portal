@@ -123,6 +123,7 @@ const AuthPages = ({ match }) => {
       {authComponents.map(el => (
         <Route key={el.path} path={el.path} component={el.component} exact />
       ))}
+      <Route path='*' component={NotFound} />
     </Switch>
   )
 }
@@ -141,8 +142,7 @@ const Router = () => {
     <Route path='/' component={UserPages} />
   ) : (
     <Switch>
-      <Route path={'/'} component={AuthPages} exact />
-      {isAuthorized && <Route path='*' component={NotFound} />}
+      <Route path='/' component={AuthPages} />
     </Switch>
   )
 }
