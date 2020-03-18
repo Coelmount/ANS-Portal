@@ -47,7 +47,7 @@ const CustomTableBody = ({
   const sortedList = stableSort(list, getComparator(order, orderBy))
   return (
     <Fragment>
-      {list && list.length > 0 ? (
+      {list && list.length ? (
         <TableBody className={classes.tbody}>
           {sortedList
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

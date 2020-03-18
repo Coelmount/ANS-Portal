@@ -67,9 +67,6 @@ const useStyles = makeStyles(theme => ({
       borderRadius: 20,
       background: theme.palette.active.main
     },
-    '& svg': {
-      color: theme.palette.black
-    },
     '& .menu-text': {
       minWidth: 100,
       '& span': {
