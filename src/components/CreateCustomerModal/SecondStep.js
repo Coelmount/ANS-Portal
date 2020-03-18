@@ -48,6 +48,8 @@ const SecondStep = props => {
     }
     createCustomer().then(() => changeStep(3))
   }
+
+  console.log(JSON.parse(JSON.stringify(customer)))
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>

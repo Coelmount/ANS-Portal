@@ -75,7 +75,7 @@ export class CustomersStore {
   updateCustomer = tenantId => {
     return axios.put(`/tenants/${tenantId}`, this.customer).then(res => {
       if (res.status === 200) {
-        this.customer = res.data
+        merge(this.customer, res.data)
       }
     })
   }
