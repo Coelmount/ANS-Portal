@@ -1,5 +1,6 @@
 import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
+import merge from 'lodash/merge'
 
 import axios from 'utils/axios'
 import set from 'lodash/set'
@@ -43,7 +44,7 @@ export class CustomersStore {
     this.isLoadingCustomer = true
     axios.get(`/tenants/${id}/`).then(res => {
       if (res.status === 200) {
-        this.customer = res.data
+        merge(this.customer, res.data)
         this.isLoadingCustomer = false
       } else {
         console.log(res, 'error')

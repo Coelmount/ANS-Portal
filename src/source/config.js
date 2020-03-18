@@ -9,3 +9,10 @@ export const LANGUAGES = [
   { value: 'fr', lable: 'FR', img: fr },
   { value: 'pt', lable: 'PT', img: pt }
 ]
+
+export const SELECTLANGUAGE = [
+  { label: 'english', value: 'English' },
+  { label: 'french', value: 'French' },
+  { label: 'spanish', value: 'Spanish' },
+  { label: 'portuguese', value: 'Portuguese' }
+]
