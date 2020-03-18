@@ -34,13 +34,10 @@ const useStyles = makeStyles(theme => ({
 
     [theme.breakpoints.down('sm')]: {
       width: '80%'
-<<<<<<< HEAD
     },
 
     [theme.breakpoints.down('xs')]: {
       width: '100%'
-=======
->>>>>>> 9a69ab0fe20c7d496aa25379ea5453bbc7ab3ebc
     }
   },
 
@@ -58,17 +55,12 @@ const useStyles = makeStyles(theme => ({
   accountNameWrapper: {
     display: 'flex',
     marginLeft: 10,
-<<<<<<< HEAD
     width: '75%',
     marginBottom: 15,
     zIndex: 20,
     [theme.breakpoints.down('xs')]: {
       marginLeft: 0
     }
-=======
-    width: '40%',
-    marginBottom: 15
->>>>>>> 9a69ab0fe20c7d496aa25379ea5453bbc7ab3ebc
   },
   accountNameIcon: { width: 20, height: 20 },
   accountName: {
@@ -77,49 +69,32 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'Open Sans',
     fontStyle: 'normal',
     fontWeight: 600,
-<<<<<<< HEAD
     fontSize: 18,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     '&:hover': {
       overflow: 'visible'
     }
-=======
-    fontSize: 18
->>>>>>> 9a69ab0fe20c7d496aa25379ea5453bbc7ab3ebc
   },
   editDeleteButtonWrapper: {
     alignSelf: 'flex-end',
     display: 'flex',
-<<<<<<< HEAD
     width: '18%',
     marginBottom: 16,
     marginRight: 10,
     zIndex: 10
-=======
-    justifyContent: 'space-between',
-    width: '18%',
-    marginBottom: 16,
-    marginRight: 10
->>>>>>> 9a69ab0fe20c7d496aa25379ea5453bbc7ab3ebc
   },
   icon: {
     color: ' #00678F'
   },
   adminFullNameWrapper: {
     display: 'flex',
-<<<<<<< HEAD
     marginLeft: 56,
     marginBottom: 10,
     alignItems: 'center',
     [theme.breakpoints.down('xs')]: {
       marginLeft: 46
     }
-=======
-    marginLeft: 46,
-    marginBottom: 10,
-    alingItems: 'center'
->>>>>>> 9a69ab0fe20c7d496aa25379ea5453bbc7ab3ebc
   },
   adminFullName: {
     marginLeft: 5,
@@ -128,7 +103,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'normal',
     fontSize: 16
   },
-<<<<<<< HEAD
   languageWrapper: {
     display: 'flex',
     marginLeft: 56,
@@ -136,15 +110,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       marginLeft: 46
     }
-=======
-  adminFullNameIcon: {
-    marginTop: 3
-  },
-  languageWrapper: {
-    display: 'flex',
-    marginLeft: 46,
-    alingItems: 'center'
->>>>>>> 9a69ab0fe20c7d496aa25379ea5453bbc7ab3ebc
   },
   language: {
     marginLeft: 5,
@@ -153,12 +118,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'normal',
     fontSize: 16
   },
-<<<<<<< HEAD
-=======
-  languageIcon: {
-    marginTop: 3
-  },
->>>>>>> 9a69ab0fe20c7d496aa25379ea5453bbc7ab3ebc
   deleteModal: {
     '& .MuiDialog-paperWidthSm': {
       width: 646,
@@ -267,12 +226,8 @@ const useStyles = makeStyles(theme => ({
     width: 27,
     height: 27,
     borderRadius: 20,
-<<<<<<< HEAD
     background: theme.palette.active.main,
     marginRight: 8
-=======
-    background: theme.palette.active.main
->>>>>>> 9a69ab0fe20c7d496aa25379ea5453bbc7ab3ebc
   }
 }))
 
