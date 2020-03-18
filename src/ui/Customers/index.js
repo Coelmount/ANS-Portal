@@ -46,11 +46,7 @@ const CustomersTable = observer(({ t }) => {
     getCustomers()
   }, [getCustomers])
 
-  const handleOpenDeleteModal = useCallback((id, name) => {
-    setIsDeleteModalOpen(true)
-    setCustomerToDelete({ id, name })
-  }, [])
-
+  
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
   }
@@ -83,7 +79,12 @@ const CustomersTable = observer(({ t }) => {
   }
 
   const columns = useMemo(
-    () => [
+    () => {
+      const handleOpenDeleteModal = (id, name) => {
+        setIsDeleteModalOpen(true)
+        setCustomerToDelete({ id, name })
+      }
+      return [
       {
         id: 'tenantId',
         numeric: false,
@@ -121,12 +122,11 @@ const CustomersTable = observer(({ t }) => {
           />
         )
       }
-    ],
+    ]},
     [
       classes.deleteCell,
       classes.deleteCustomerIcon,
       classes.link,
-      handleOpenDeleteModal
     ]
   )
 

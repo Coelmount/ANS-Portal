@@ -18,23 +18,21 @@ const CustomTableHead = props => {
     <TableHead className={classes.thead}>
       <TableRow>
         <TableCell></TableCell>
-        {columns.map(headCell => {
-          const extraHeadProps = headCell.extraHeadProps
-          return (
+        {columns.map(({id, label, extraHeadProps}) => (
             <TableCell
-              key={headCell.id}
+              key={id}
               align={'left'}
-              sortDirection={orderBy === headCell.id ? order : false}
+              sortDirection={orderBy === id ? order : false}
               className={classes.headCellTitle}
               {...extraHeadProps}
             >
               <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : 'asc'}
-                onClick={createSortHandler(headCell.id)}
+                active={orderBy === id}
+                direction={orderBy === id ? order : 'asc'}
+                onClick={createSortHandler(id)}
               >
-                <p>{t(headCell.label)}</p>
-                {orderBy === headCell.id && (
+                <p>{t(label)}</p>
+                {orderBy === id && (
                   <p className={classes.visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
@@ -43,8 +41,7 @@ const CustomTableHead = props => {
                 )}
               </TableSortLabel>
             </TableCell>
-          )
-        })}
+        ))}
       </TableRow>
     </TableHead>
   )

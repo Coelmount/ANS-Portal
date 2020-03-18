@@ -2,6 +2,9 @@ import React, { useState, useMemo, Fragment } from 'react'
 
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
+import clamp from 'lodash/clamp'
+
+import Typography from '@material-ui/core/Typography'
 
 import CustomTableToolbar from './components/CustomTableToolbar'
 import CustomTableHead from './components/CustomTableHead'
@@ -9,35 +12,57 @@ import CustomTableBody from './components/CustomTableBody'
 import Pagination from './components/Pagination'
 import Loading from 'components/Loading'
 
+const getComparator = (order, orderBy) => {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy)
+}
+
+const stableSort = (array, comparator) => {
+  const stabilizedThis = array.map((el, index) => [el, index])
+
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0])
+    if (order !== 0) return order
+    return a[1] - b[1]
+  })
+  return stabilizedThis.map(el => el[0])
+}
+
+const descendingComparator = (a, b, orderBy) => {
+  if (b[orderBy] < a[orderBy]) {
+    return -1
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1
+  }
+  return 0
+}
+
 const CustomTable = ({ classes, rows, isLoadingData, columns, id, name }) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
-  const [totalPages, setTotalPages] = useState(0)
   const [query, setQuery] = useState('')
 
-  const memoizedList = useMemo(
-    () =>
-      rows.filter(
-        row =>
-          row[id].toLowerCase().includes(query) ||
-          row[name].toLowerCase().includes(query)
-      ),
-    [id, name, query, rows]
+  
+  const list = useMemo(
+    () => {
+      if (!rows) return []
+      const filteredRows = query ? rows.filter(
+          row =>
+            row[id].toLowerCase().includes(query) ||
+            row[name].toLowerCase().includes(query)
+        ) : rows
+       return stableSort(filteredRows, getComparator(order, orderBy))
+    },[id, name, query, rows, order, orderBy]
   )
 
-  const list = query ? memoizedList : rows
-
-  useMemo(() => {
+  const totalPages = useMemo(() => {
     const pages = Math.ceil(list.length / rowsPerPage)
-    if (pages === 0) setTotalPages(0)
-    else setTotalPages(pages - 1)
+    return pages ? pages - 1 : pages
   }, [list.length, rowsPerPage])
-
-  useMemo(() => {
-    if (page > totalPages) setPage(0)
-  }, [page, totalPages])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -45,9 +70,10 @@ const CustomTable = ({ classes, rows, isLoadingData, columns, id, name }) => {
     setOrderBy(property)
   }
 
-  const handleChangePage = action => {
-    action === 'increase' && page < totalPages && setPage(page => page + 1)
-    action === 'decrease' && page > 0 && setPage(page => page - 1)
+  const clampedPage = clamp(page, 0, totalPages)
+
+  const rewindPage = step => {
+    setPage(clampedPage + step)
   }
 
   return (
@@ -76,19 +102,19 @@ const CustomTable = ({ classes, rows, isLoadingData, columns, id, name }) => {
               rowCount={rows.length}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
-              page={page}
+              page={clampedPage}
               columns={columns}
             />
-            <CustomTableBody
+            {list && list.length ? (            <CustomTableBody
               classes={classes}
               rowsPerPage={rowsPerPage}
               rows={rows}
-              page={page}
-              order={order}
-              orderBy={orderBy}
+              page={clampedPage}
               list={list}
               columns={columns}
-            />
+            />) : (<Typography className={classes.tableMessage}>
+          {'no_customers_yet'} 
+        </Typography>)}
           </Table>
         </TableContainer>
       )}
@@ -96,7 +122,7 @@ const CustomTable = ({ classes, rows, isLoadingData, columns, id, name }) => {
         classes={classes}
         page={page}
         totalPages={totalPages}
-        handleChangePage={handleChangePage}
+        rewindPage={rewindPage}
       />
     </Fragment>
   )
