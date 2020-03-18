@@ -9,7 +9,7 @@ export class CreateCustomerStore {
   closeModal = false
 
   customer = {
-    type: 'Enterprise',
+    type: 'ServiceProvider',
     tenantId: '',
     name: '',
     contactInformation: {
