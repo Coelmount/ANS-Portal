@@ -5,25 +5,41 @@ import { observer } from 'mobx-react'
 
 import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
-import Box from '@material-ui/core/Box'
 
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
+
+import EditDeleteAdminStore from 'stores/EditDeleteAdministrator'
 
 import Loading from 'components/Loading'
 import CustomerAdministrators from 'stores/CustomerAdministrators'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
-import AddCustomerAdministratorModal from './components/AddCustomerAdministratorModal'
-import AdminCard from './components/AdminCard'
-
+import AddCustomerAdministratorModal from 'components/AdministratorsTemplate/components/AddCustomerAdministratorModal'
+import AdminCard from 'components/AdministratorsTemplate/components/AdminCard'
+import AdministratorsTemplate from 'components/AdministratorsTemplate'
 import useStyles from './styles'
 
 const Administrators = props => {
   const [isOpened, setIsOpened] = useState(false)
-  const { rows, getCustomerAdmins, isLoading } = useContext(
-    CustomerAdministrators
-  )
-  console.log('isLoading', isLoading)
+  const {
+    admins,
+    getCustomerAdmins,
+    isLoading,
+    admin,
+    setAdminInfo,
+    addCustomerAdmin
+  } = useContext(CustomerAdministrators)
+
+  const {
+    updatedAdmin,
+    getAdminInfo,
+    updateAdminInfo,
+    deleteAdmin,
+    isLoadingData,
+    updateCustomerAdmin,
+    isDeletingAdmin
+  } = useContext(EditDeleteAdminStore)
+
   const { t } = props
   const match = useParams()
   const classes = useStyles()
@@ -32,9 +48,6 @@ const Administrators = props => {
     getCustomerAdmins(match.customerId)
   }, [getCustomerAdmins, match.customerId])
 
-  useEffect(() => {
-    getCustomerAdmins(match.customerId)
-  }, [getCustomerAdmins, match.customerId])
   const breadcrumbs = [
     {
       url: '/customers',
@@ -59,7 +72,36 @@ const Administrators = props => {
   const hideModal = () => {
     setIsOpened(false)
   }
+  const addAdmin = () => {
+    addCustomerAdmin({
+      id: match.customerId,
+      closeModal: hideModal,
+      getUsers: getCustomerAdmins
+    })
+  }
+  const handleDelete = adminId => {
+    deleteAdmin({
+      id: match.customerId,
+      closeModal: hideModal,
+      userId: adminId,
+      getUsers: getCustomerAdmins
+    })
+  }
+  const handleUpdate = adminId => {
+    updateCustomerAdmin({
+      id: match.customerId,
+      closeModal: hideModal,
+      userId: adminId,
+      getUsers: getCustomerAdmins
+    })
+  }
 
+  const getAdminInfoHandle = adminId => {
+    getAdminInfo({
+      id: match.customerId,
+      userId: adminId
+    })
+  }
   return (
     <div className={classes.root}>
       {isLoading ? (
@@ -74,22 +116,26 @@ const Administrators = props => {
               handleOpen={showModal}
             />
           </Container>
-          <Box className={classes.adminsWrapper}>
-            {rows.map(admin => (
-              <AdminCard
-                classes={classes}
-                admin={admin}
-                key={admin.userId}
-                handleOpen={showModal}
-                handleClose={hideModal}
-                getCustomerAdmins={getCustomerAdmins}
-              />
-            ))}
-          </Box>
+          <AdministratorsTemplate
+            data={admins}
+            admin={admin}
+            updatedUser={updatedAdmin}
+            getAdminInfo={getAdminInfoHandle}
+            updateInfo={updateAdminInfo}
+            isLoadingData={isLoadingData}
+            isDeleting={isDeletingAdmin}
+            handleDelete={handleDelete}
+            handleUpdate={handleUpdate}
+            subject={t('customer_administrator')}
+          />
 
           <AddCustomerAdministratorModal
             show={isOpened}
             handleClose={hideModal}
+            user={admin}
+            setUserInfo={setAdminInfo}
+            addAdmin={addAdmin}
+            subject={t('customer_administrator')}
           />
         </Paper>
       )}

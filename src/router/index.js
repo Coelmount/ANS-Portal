@@ -17,6 +17,7 @@ import Basic from 'ui/Subaccount/MyAnsInstances/Basic'
 import Destinations from 'ui/Subaccount/MyAnsInstances/Advanced/Destinations'
 import DestinationGroups from 'ui/Subaccount/MyAnsInstances/Advanced/DestinationGroups'
 import SubaccountDetails from 'ui/Subaccount/Details'
+import SubaccountAdmins from 'ui/Subaccount/Administrators'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
@@ -68,6 +69,10 @@ const userComponents = [
   {
     path: '/customers/:customerId/subaccounts/:groupId/details',
     component: <SubaccountDetails />
+  },
+  {
+    path: '/customers/:customerId/subaccounts/:groupId/administrators',
+    component: <SubaccountAdmins />
   }
 ]
 
@@ -117,15 +122,17 @@ const UserPages = () => {
   )
 }
 
-const AuthPages = ({ match }) => {
+const AuthPages = observer(() => {
+  const { isAuthorized } = useContext(AuthStore)
   return (
     <Switch>
       {authComponents.map(el => (
         <Route key={el.path} path={el.path} component={el.component} exact />
       ))}
+      {isAuthorized && <Route path='*' component={NotFound} />}
     </Switch>
   )
-}
+})
 
 const Router = () => {
   const { getLocal, isAuthorized } = useContext(AuthStore)
@@ -141,8 +148,7 @@ const Router = () => {
     <Route path='/' component={UserPages} />
   ) : (
     <Switch>
-      <Route path={'/'} component={AuthPages} exact />
-      {isAuthorized && <Route path='*' component={NotFound} />}
+      <Route path='/' component={AuthPages} />
     </Switch>
   )
 }

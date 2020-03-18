@@ -18,7 +18,7 @@ import useStyles from './styles'
 const Details = observer(({ t }) => {
   const match = useParams()
   const classes = useStyles()
-  const { customer, getCustomer, isLoadingCustomer } = useContext(
+  const { customer, getCustomer, isLoadingCustomer, changeStep } = useContext(
     CustomersStore
   )
   const [showEdit, setShowEdit] = useState(false)
@@ -46,6 +46,7 @@ const Details = observer(({ t }) => {
   }
 
   const handleOpenEdit = () => {
+    changeStep(1)
     setShowEdit(true)
   }
 

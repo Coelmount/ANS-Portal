@@ -1,11 +1,12 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
-  editInfo: {
+  createAdminModal: {
     '& .MuiDialog-paperWidthSm': {
       width: 646,
       minHeight: '100%',
       display: 'flex',
+      margin: '0 auto 50px',
       flexDirection: 'column',
       boxShadow: theme.shadows[5],
       outline: 'none',
@@ -13,19 +14,23 @@ const useStyles = makeStyles(theme => ({
       background: theme.palette.active.main
     }
   },
-  editInfoHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: 45,
-    paddingRight: 40,
-    height: 87,
-    background: 'white'
+  addAdminHeader: {
+    width: '100%',
+    padding: '16px 0 0 0',
+    '& .MuiTypography-h6': {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingLeft: 45,
+      paddingRight: 40,
+      height: 87,
+      background: 'white'
+    }
   },
-  editInfoTitleWrapper: {
+  addAdminTitleWrapper: {
     display: 'flex'
   },
-  editInfoTitle: {
+  addAdminTitle: {
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500,
@@ -50,7 +55,8 @@ const useStyles = makeStyles(theme => ({
     fontSize: 18
   },
   inputsWrapper: {
-    flex: 1
+    flex: 1,
+    paddingBottom: 90
   },
   inputes: {
     marginTop: '30px',
@@ -63,8 +69,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 45,
     paddingRight: 40,
     height: 87,
-    background: 'white',
-    width: '100%'
+    background: 'white'
   },
   cancelButtonWrap: {
     width: 140,
@@ -83,7 +88,7 @@ const useStyles = makeStyles(theme => ({
       cursor: 'pointer'
     }
   },
-  editButtonWrap: {
+  addButtonWrap: {
     width: 140,
     height: 50,
     background: theme.palette.primary.main,
@@ -101,10 +106,38 @@ const useStyles = makeStyles(theme => ({
       cursor: 'pointer'
     }
   },
-  editButtonTitle: {
+  addButtonTitle: {
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
+  },
+  addButtonDisablesWrap: {
+    opacity: 0.5,
+    width: 140,
+    height: 50,
+    background: theme.palette.primary.main,
+    borderRadius: 30,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    marginRight: 30
+  },
+  dialogActionsSecond: {
+    height: '110px',
+    justifyContent: 'space-between',
+    backgroundColor: 'white'
+  },
+  backButton: {
+    width: '160px',
+    marginLeft: '32px',
+    color: theme.palette.black
+  },
+  nextButton: {
+    width: '160px',
+    marginRight: '32px'
   }
 }))
 export default useStyles

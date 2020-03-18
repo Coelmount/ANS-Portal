@@ -1,13 +1,25 @@
 import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
+import merge from 'lodash/merge'
 
 import axios from 'utils/axios'
 
 export class SubaccountsStore {
   rows = []
   subaccount = {
-    addressInformation: {},
-    contactInformation: {}
+    groupId: '',
+    groupName: '',
+    contactInformation: {
+      name: '',
+      phoneNumber: '',
+      emailAddress: ''
+    },
+    addressInformation: {
+      addressLine1: '',
+      postalCode: '',
+      city: '',
+      country: ''
+    }
   }
   isLoadingSubaccounts = true
   isDeletingSubaccount = false
@@ -29,7 +41,7 @@ export class SubaccountsStore {
     this.isLoadingSubaccount = true
     axios.get(`/tenants/${customerId}/groups/${groupId}`).then(res => {
       if (res.status === 200) {
-        this.subaccount = res.data
+        merge(this.subaccount, res.data)
         this.isLoadingSubaccount = false
       } else {
         console.log(res, 'error')
