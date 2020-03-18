@@ -47,7 +47,7 @@ const CreateCustomer = props => {
         isCreateSubaccount={isCreateSubaccount}
         store={store}
         createSubaccount={createSubaccount}
-        isEditCustomer
+        isEditCustomer={isEditCustomer}
       />
     </Dialog>
   )
