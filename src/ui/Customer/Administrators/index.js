@@ -4,19 +4,19 @@ import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
 import Paper from '@material-ui/core/Paper'
-import Container from '@material-ui/core/Container'
 
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
 
 import EditDeleteAdminStore from 'stores/EditDeleteAdministrator'
+import CustomerAdministrators from 'stores/CustomerAdministrators'
 
 import Loading from 'components/Loading'
-import CustomerAdministrators from 'stores/CustomerAdministrators'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import AddCustomerAdministratorModal from 'components/AdministratorsTemplate/components/AddCustomerAdministratorModal'
-import AdminCard from 'components/AdministratorsTemplate/components/AdminCard'
+import CustomContainer from 'components/CustomContainer'
 import AdministratorsTemplate from 'components/AdministratorsTemplate'
+
 import useStyles from './styles'
 
 const Administrators = props => {
@@ -108,14 +108,14 @@ const Administrators = props => {
         <Loading />
       ) : (
         <Paper className={classes.paper}>
-          <Container>
+          <CustomContainer>
             <CustomBreadcrumbs classes={classes} breadcrumbs={breadcrumbs} />
             <TitleBlock
               titleData={titleData}
               classes={classes}
               handleOpen={showModal}
             />
-          </Container>
+          </CustomContainer>
           <AdministratorsTemplate
             data={admins}
             admin={admin}

@@ -113,10 +113,9 @@ const UpdateAdminInfo = ({
                 {t('cancel')}
               </Typography>
             </Box>
-            <Box className={classes.editButtonWrap}>
+            <Box onClick={() => handleUpdate(userId)} className={classes.editButtonWrap}>
               <Typography
                 className={classes.editButtonTitle}
-                onClick={() => handleUpdate(userId)}
               >
                 {t('save')}
               </Typography>
