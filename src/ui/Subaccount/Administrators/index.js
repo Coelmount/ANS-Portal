@@ -11,11 +11,11 @@ import SubaccountAdminsStore from 'stores/SubaccountAdmins'
 import EditDeleteSubaccountAdminStore from 'stores/EditDeleteSubaccountsAdmin'
 
 import Loading from 'components/Loading'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import AddCustomerAdministratorModal from 'components/AdministratorsTemplate/components/AddCustomerAdministratorModal'
 import AdministratorsTemplate from 'components/AdministratorsTemplate'
+import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import useStyles from './styles'
 
@@ -47,23 +47,6 @@ const SubaccountAdministrators = props => {
   useEffect(() => {
     getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
   }, [getSubaccountAdmins, match.customerId, match.groupId])
-
-  const breadcrumbs = [
-    {
-      url: '/customers',
-      text: t('customers')
-    },
-    {
-      url: `/customers/${match.customerId}/access-numbers`,
-      text: match.customerId
-    },
-    {
-      text: match.groupId
-    },
-    {
-      text: t('administrators')
-    }
-  ]
 
   const titleData = {
     mainText: 'MTN ANS',
@@ -123,7 +106,7 @@ const SubaccountAdministrators = props => {
       ) : (
         <Paper className={classes.paper}>
           <CustomContainer>
-            <CustomBreadcrumbs classes={classes} breadcrumbs={breadcrumbs} />
+            <CustomBreadcrumbs />
             <TitleBlock
               titleData={titleData}
               classes={classes}

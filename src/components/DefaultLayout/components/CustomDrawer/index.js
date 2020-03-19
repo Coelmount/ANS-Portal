@@ -28,7 +28,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
   return (
     <Fragment>
       <Box className='drawerHeader'>
-        <Link to={'/customers'}>
+        <Link to={'/'}>
           <img src={logo} className={classes.logo} alt='mtn-logo' />
         </Link>
       </Box>

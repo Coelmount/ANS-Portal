@@ -23,6 +23,8 @@ import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
 import NotFound from 'components/NotFound'
 
+import useStyles from './styles'
+
 const userComponents = [
   {
     path: '/customers',
@@ -84,8 +86,9 @@ const authComponents = [
 ]
 
 const Page = props => {
+  const classes = useStyles()
   return (
-    <div style={{ display: 'flex', paddingTop: 66 }}>
+    <div className={classes.page}>
       <DefaultLayout />
       {props.diplayedComponent}
     </div>

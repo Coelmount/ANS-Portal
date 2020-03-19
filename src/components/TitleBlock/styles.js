@@ -5,8 +5,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     height: 91,
     alignItems: 'center'
-    // paddingLeft: 62,
-    // paddingRight: 34
   },
   title: {
     flex: '1 1 100%',

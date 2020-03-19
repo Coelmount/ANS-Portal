@@ -13,9 +13,9 @@ import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
+import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import useStyles from './styles'
 
@@ -81,18 +81,6 @@ const SubaccountsTable = observer(({ t }) => {
       )
     }
   ]
-  const breadcrumbs = [
-    {
-      url: '/customers',
-      text: t('customers')
-    },
-    {
-      text: match.customerId
-    },
-    {
-      text: t('subaccounts')
-    }
-  ]
 
   const titleData = {
     mainText: 'MTN ANS',
@@ -136,7 +124,7 @@ const SubaccountsTable = observer(({ t }) => {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <CustomContainer>
-          <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
+          <CustomBreadcrumbs />
           <TitleBlock
             titleData={titleData}
             classes={classes}

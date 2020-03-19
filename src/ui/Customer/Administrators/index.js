@@ -11,11 +11,11 @@ import EditDeleteAdminStore from 'stores/EditDeleteAdministrator'
 import CustomerAdministrators from 'stores/CustomerAdministrators'
 
 import Loading from 'components/Loading'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import AddCustomerAdministratorModal from 'components/AdministratorsTemplate/components/AddCustomerAdministratorModal'
 import CustomContainer from 'components/CustomContainer'
 import AdministratorsTemplate from 'components/AdministratorsTemplate'
+import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import useStyles from './styles'
 
@@ -48,18 +48,6 @@ const Administrators = props => {
     getCustomerAdmins(match.customerId)
   }, [getCustomerAdmins, match.customerId])
 
-  const breadcrumbs = [
-    {
-      url: '/customers',
-      text: t('customers')
-    },
-    {
-      text: match.customerId
-    },
-    {
-      text: t('administrators')
-    }
-  ]
   const titleData = {
     mainText: 'MTN ANS',
     iconCapture: t('add'),
@@ -109,7 +97,7 @@ const Administrators = props => {
       ) : (
         <Paper className={classes.paper}>
           <CustomContainer>
-            <CustomBreadcrumbs classes={classes} breadcrumbs={breadcrumbs} />
+            <CustomBreadcrumbs />
             <TitleBlock
               titleData={titleData}
               classes={classes}

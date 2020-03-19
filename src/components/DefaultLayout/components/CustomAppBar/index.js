@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, Fragment } from 'react'
 import { useHistory } from 'react-router-dom'
 import i18n from 'i18n'
 
@@ -31,61 +31,63 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
   }
 
   return (
-    <AppBar position='fixed' className={classes.appBar}>
-      <Toolbar>
-        {!notFoundPage && (
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            edge='start'
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
-        <Box className={classes.header}>
-          <LinkMaterial
-            component='button'
-            onClick={() => {
-              logOut()
-              history.push('/')
-            }}
-          >
-            <Box className={classes.headerBlock}>
-              <AccountCircleIcon className={classes.userIcon} />
-              <Typography className={classes.userName}>
-                {user.username}
-              </Typography>
-              <ExpandMoreOutlinedIcon className={classes.expandMoreIcon} />
-            </Box>
-          </LinkMaterial>
-          <Box className={classes.headerBlock}>
-            <Select
-              className={classes.langBlock}
-              value={localStorage.getItem('i18nextLng')}
-              onChange={e => changeLanguage(e.target.value)}
-              IconComponent={ExpandMoreOutlinedIcon}
+    <Fragment>
+      <AppBar position='fixed' className={classes.appBar}>
+        <Toolbar>
+          {!notFoundPage && (
+            <IconButton
+              color='inherit'
+              aria-label='open drawer'
+              edge='start'
+              onClick={handleDrawerToggle}
+              className={classes.menuButton}
             >
-              {LANGUAGES.map((lang, index) => (
-                <MenuItem
-                  value={lang.value}
-                  key={`${index}`}
-                  className={classes.listItem}
-                >
-                  <img
-                    className={classes.langIcon}
-                    src={lang.img}
-                    alt='language icon'
-                  />
-                  {` ${lang.lable}`}
-                </MenuItem>
-              ))}
-            </Select>
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Box className={classes.header}>
+            <LinkMaterial
+              component='button'
+              onClick={() => {
+                logOut()
+                history.push('/')
+              }}
+            >
+              <Box className={classes.headerBlock}>
+                <AccountCircleIcon className={classes.userIcon} />
+                <Typography className={classes.userName}>
+                  {user.username}
+                </Typography>
+                <ExpandMoreOutlinedIcon className={classes.expandMoreIcon} />
+              </Box>
+            </LinkMaterial>
+            <Box className={classes.headerBlock}>
+              <Select
+                className={classes.langBlock}
+                value={localStorage.getItem('i18nextLng')}
+                onChange={e => changeLanguage(e.target.value)}
+                IconComponent={ExpandMoreOutlinedIcon}
+              >
+                {LANGUAGES.map((lang, index) => (
+                  <MenuItem
+                    value={lang.value}
+                    key={`${index}`}
+                    className={classes.listItem}
+                  >
+                    <img
+                      className={classes.langIcon}
+                      src={lang.img}
+                      alt='language icon'
+                    />
+                    {` ${lang.lable}`}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
           </Box>
-        </Box>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+    </Fragment>
   )
 }
 

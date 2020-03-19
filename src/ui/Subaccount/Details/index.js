@@ -4,12 +4,12 @@ import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import DetailsTemplate from 'components/DetailsTemplate'
+import CustomContainer from 'components/CustomContainer'
+import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import SubaccountsStore from 'stores/Subaccounts'
-import CustomContainer from 'components/CustomContainer'
 
 import editSvg from 'source/images/svg/edit.svg'
 import useStyles from './styles'
@@ -25,22 +25,6 @@ const Details = observer(({ t }) => {
     getSubaccount(match.customerId, match.groupId)
   }, [getSubaccount, match.customerId, match.groupId])
 
-  const breadcrumbs = [
-    {
-      url: '/customers',
-      text: t('customers')
-    },
-    {
-      url: `/customers/${match.customerId}/access-numbers`,
-      text: match.customerId
-    },
-    {
-      text: match.groupId
-    },
-    {
-      text: t('details')
-    }
-  ]
   const titleData = {
     mainText: 'MTN ANS',
     iconCapture: t('edit'),
@@ -50,7 +34,7 @@ const Details = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <CustomContainer>
-        <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
+        <CustomBreadcrumbs />
         <TitleBlock titleData={titleData} />
       </CustomContainer>
       <DetailsTemplate data={subaccount} isLoading={isLoadingSubaccount} />

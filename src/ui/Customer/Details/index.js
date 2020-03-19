@@ -4,13 +4,13 @@ import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import DetailsTemplate from 'components/DetailsTemplate'
-
+import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CustomContainer from 'components/CustomContainer'
-import CustomersStore from 'stores/Customers'
 import CreateCustomer from 'components/CreateCustomerModal'
+
+import CustomersStore from 'stores/Customers'
 
 import editSvg from 'source/images/svg/edit.svg'
 import useStyles from './styles'
@@ -27,18 +27,6 @@ const Details = observer(({ t }) => {
     getCustomer(match.customerId)
   }, [getCustomer, match.customerId])
 
-  const breadcrumbs = [
-    {
-      url: '/customers',
-      text: t('customers')
-    },
-    {
-      text: match.customerId
-    },
-    {
-      text: t('details')
-    }
-  ]
   const titleData = {
     mainText: 'MTN ANS',
     iconCapture: t('edit'),
@@ -58,7 +46,7 @@ const Details = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <CustomContainer>
-        <CustomBreadcrumbs breadcrumbs={breadcrumbs} />
+        <CustomBreadcrumbs />
         <TitleBlock titleData={titleData} handleOpen={handleOpenEdit} />
       </CustomContainer>
       <DetailsTemplate data={customer} isLoading={isLoadingCustomer} />
