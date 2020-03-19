@@ -31,7 +31,11 @@ const Details = observer(({ t }) => {
       text: t('customers')
     },
     {
+      url: `/customers/${match.customerId}/access-numbers`,
       text: match.customerId
+    },
+    {
+      text: match.groupId
     },
     {
       text: t('details')

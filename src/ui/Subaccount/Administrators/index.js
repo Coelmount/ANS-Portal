@@ -47,12 +47,14 @@ const SubaccountAdministrators = props => {
   useEffect(() => {
     getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
   }, [getSubaccountAdmins, match.customerId, match.groupId])
+
   const breadcrumbs = [
     {
       url: '/customers',
       text: t('customers')
     },
     {
+      url: `/customers/${match.customerId}/access-numbers`,
       text: match.customerId
     },
     {

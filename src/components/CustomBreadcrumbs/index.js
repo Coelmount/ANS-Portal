@@ -18,7 +18,7 @@ const CustomBreadcrumbs = ({ breadcrumbs }) => {
     userLogin.profile &&
     userLogin.profile.user_type === 'no_userType'
   ) {
-    breadcrumbs.splice(0, 3)
+    breadcrumbs.splice(0, 2)
   }
 
   const classes = useStyles()
