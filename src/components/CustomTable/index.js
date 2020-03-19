@@ -1,9 +1,9 @@
 import React, { useState, useMemo, Fragment } from 'react'
+import { withNamespaces } from 'react-i18next'
+import clamp from 'lodash/clamp'
 
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
-import clamp from 'lodash/clamp'
-
 import Typography from '@material-ui/core/Typography'
 
 import CustomTableToolbar from './components/CustomTableToolbar'
@@ -39,25 +39,32 @@ const descendingComparator = (a, b, orderBy) => {
   return 0
 }
 
-const CustomTable = ({ classes, rows, isLoadingData, columns, id, name }) => {
+const CustomTable = ({
+  classes,
+  rows,
+  isLoadingData,
+  columns,
+  id,
+  name,
+  t
+}) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
 
-  
-  const list = useMemo(
-    () => {
-      if (!rows) return []
-      const filteredRows = query ? rows.filter(
+  const list = useMemo(() => {
+    if (!rows) return []
+    const filteredRows = query
+      ? rows.filter(
           row =>
             row[id].toLowerCase().includes(query) ||
             row[name].toLowerCase().includes(query)
-        ) : rows
-       return stableSort(filteredRows, getComparator(order, orderBy))
-    },[id, name, query, rows, order, orderBy]
-  )
+        )
+      : rows
+    return stableSort(filteredRows, getComparator(order, orderBy))
+  }, [id, name, query, rows, order, orderBy])
 
   const totalPages = useMemo(() => {
     const pages = Math.ceil(list.length / rowsPerPage)
@@ -99,22 +106,21 @@ const CustomTable = ({ classes, rows, isLoadingData, columns, id, name }) => {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-              rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
-              page={clampedPage}
               columns={columns}
             />
-            {list && list.length ? (            <CustomTableBody
-              classes={classes}
-              rowsPerPage={rowsPerPage}
-              rows={rows}
-              page={clampedPage}
-              list={list}
-              columns={columns}
-            />) : (<Typography className={classes.tableMessage}>
-          {'no_customers_yet'} 
-        </Typography>)}
+            {list && list.length ? (
+              <CustomTableBody
+                classes={classes}
+                rowsPerPage={rowsPerPage}
+                page={clampedPage}
+                list={list}
+                columns={columns}
+              />
+            ) : (
+              <Typography className={classes.tableMessage}>
+                {t('no_customers_yet')}
+              </Typography>
+            )}
           </Table>
         </TableContainer>
       )}
@@ -128,4 +134,4 @@ const CustomTable = ({ classes, rows, isLoadingData, columns, id, name }) => {
   )
 }
 
-export default CustomTable
+export default withNamespaces()(CustomTable)
