@@ -16,18 +16,76 @@ const CustomBreadcrumbs = ({ match, t }) => {
   console.log(match, 'match')
   const { userLogin } = useContext(AuthStore)
   const classes = useStyles()
-  const { url, path } = match
-  const breadcrumbsArr = url.split('/')
+  const { url } = match
 
-  if (userLogin.profile && userLogin.profile.user_type === 'tenant_admin') {
+  const isCustomerActive =
+    userLogin.profile && userLogin.profile.user_type === 'tenant_admin'
+  const isSubaccountActive =
+    userLogin.profile && userLogin.profile.user_type === 'no_userType'
+
+  const breadcrumbsArr = url.split('/')
+  if (isCustomerActive) {
     breadcrumbsArr.splice(0, 2)
-  } else if (
-    userLogin.profile &&
-    userLogin.profile.user_type === 'no_userType'
-  ) {
+  } else if (isSubaccountActive) {
     breadcrumbsArr.splice(0, 4)
   } else {
     breadcrumbsArr.splice(0, 1)
+  }
+
+  const systemLevel = (breadcrumb, index) => {
+    if (breadcrumbsArr.length > 2 && index === 0) {
+      return (
+        <Link to={`/${breadcrumb}`} className={classes.link}>
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (breadcrumbsArr.length > 4 && index === 1) {
+      return (
+        <Link
+          to={`/customers/${breadcrumb}/access-numbers`}
+          className={classes.link}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (breadcrumbsArr.length > 4 && index === 2) {
+      console.log(match, 'match id in index 2')
+      return (
+        <Link
+          to={`/customers/${match.params.customerId}/subaccounts`}
+          className={classes.link}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    return <Typography>{t(breadcrumb)}</Typography>
+  }
+
+  const customerLevel = (breadcrumb, index) => {
+    if (index === 0) {
+      return (
+        <Link
+          to={`/customers/${match.params.customerId}/access-numbers`}
+          className={classes.link}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (index === 1 && breadcrumbsArr.length > 2) {
+      return (
+        <Link
+          to={`/customers/${match.params.customerId}/subaccounts`}
+          className={classes.link}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    return <Typography>{t(breadcrumb)}</Typography>
   }
 
   return (
@@ -39,35 +97,8 @@ const CustomBreadcrumbs = ({ match, t }) => {
       {breadcrumbsArr.length > 1 &&
         breadcrumbsArr.map((breadcrumb, index) => {
           console.log(breadcrumb, index)
-          if (breadcrumbsArr.length > 2 && index === 0) {
-            return (
-              <Link to={`/${breadcrumb}`} className={classes.link}>
-                {t(breadcrumb)}
-              </Link>
-            )
-          }
-          if (breadcrumbsArr.length > 4 && index === 1) {
-            return (
-              <Link
-                to={`/customers/${breadcrumb}/access-numbers`}
-                className={classes.link}
-              >
-                {t(breadcrumb)}
-              </Link>
-            )
-          }
-          if (breadcrumbsArr.length > 4 && index === 2) {
-            console.log(match, 'match id in index 2')
-            return (
-              <Link
-                to={`/customers/${match.params.customerId}/subaccounts`}
-                className={classes.link}
-              >
-                {t(breadcrumb)}
-              </Link>
-            )
-          }
-          return <Typography>{t(breadcrumb)}</Typography>
+          if (isCustomerActive) return customerLevel(breadcrumb, index)
+          else return systemLevel(breadcrumb, index)
         })}
       }
     </Breadcrumbs>
