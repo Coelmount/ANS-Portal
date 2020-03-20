@@ -3,9 +3,9 @@ import { withNamespaces } from 'react-i18next'
 
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import SearchIcon from '@material-ui/icons/Search'
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import SearchIcon from '@material-ui/icons/Search'
 import { Typography } from '@material-ui/core'
 
 const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
