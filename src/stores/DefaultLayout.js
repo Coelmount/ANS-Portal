@@ -16,6 +16,8 @@ export class DefaultLayoutStore {
     }
   }
 
+  handleCloseNav = () => (this.activeParentNav = null)
+
   handleActiveChildNav = child => {
     if (
       this.activeAdvancedSubChild === 'destination_groups' &&
@@ -52,7 +54,8 @@ decorate(DefaultLayoutStore, {
   activeAdvancedSubChild: observable,
   handleActiveParentNav: action,
   handleActiveChildNav: action,
-  handleActiveSubChildNav: action
+  handleActiveSubChildNav: action,
+  handleCloseNav: action
 })
 
 export default createContext(new DefaultLayoutStore())

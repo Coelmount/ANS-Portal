@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useMemo,
-  useCallback
-} from 'react'
+import React, { useContext, useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
@@ -46,7 +40,6 @@ const CustomersTable = observer(({ t }) => {
     getCustomers()
   }, [getCustomers])
 
-  
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
   }
@@ -78,13 +71,12 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer(payload)
   }
 
-  const columns = useMemo(
-    () => {
-      const handleOpenDeleteModal = (id, name) => {
-        setIsDeleteModalOpen(true)
-        setCustomerToDelete({ id, name })
-      }
-      return [
+  const columns = useMemo(() => {
+    const handleOpenDeleteModal = (id, name) => {
+      setIsDeleteModalOpen(true)
+      setCustomerToDelete({ id, name })
+    }
+    return [
       {
         id: 'tenantId',
         numeric: false,
@@ -122,13 +114,8 @@ const CustomersTable = observer(({ t }) => {
           />
         )
       }
-    ]},
-    [
-      classes.deleteCell,
-      classes.deleteCustomerIcon,
-      classes.link,
     ]
-  )
+  }, [classes.deleteCell, classes.deleteCustomerIcon, classes.link])
 
   const titleData = {
     mainText: t('ans_customers'),

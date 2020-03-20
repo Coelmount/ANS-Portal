@@ -21,7 +21,7 @@ export class AuthStore {
         if (res.data.ids) {
           if (res.data.ids.group_id) {
             history.push(
-              `/customers/${res.data.ids.tenant_id}/subaccounts/${res.data.ids.group_id}/my_ans_instances`
+              `/customers/${res.data.ids.tenant_id}/subaccounts/${res.data.ids.group_id}/ans_instances`
             )
             return
           }

@@ -26,8 +26,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
     handleActiveChildNav,
     handleActiveSubChildNav
   } = useContext(DefaultLayoutStore)
-  // console.log(activeBasicSubChild, 'activeBasicSubChild')
-  // console.log(activeAdvancedSubChild, 'activeAdvancedSubChild')
 
   return (
     <Fragment>

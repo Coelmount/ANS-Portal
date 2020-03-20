@@ -34,7 +34,7 @@ const SuccesPage = props => {
         `/customers/${createdCustomer.tenantId ||
           match.customerId}/subaccounts/${
           createdCustomerStore.groupId
-        }/my_ans_instances/basic`
+        }/ans_instances/basic`
       )
       return
     }

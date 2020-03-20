@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, Fragment } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
@@ -12,7 +12,8 @@ import AccessNumbers from 'ui/Customer/AccessNumbers'
 import Subaccounts from 'ui/Customer/Subaccounts/'
 import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
-import MyAnsInstances from 'ui/Subaccount/MyAnsInstances'
+import AnsInstances from 'ui/Subaccount/AnsInstances'
+import IVR from 'ui/Subaccount/MyAnsInstances/IVR'
 import Translations from 'ui/Subaccount/MyAnsInstances/Basic/Translations'
 import BulkJobs from 'ui/Subaccount/MyAnsInstances/Basic/BulkJobs'
 import Destinations from 'ui/Subaccount/MyAnsInstances/Advanced/Destinations'
@@ -53,28 +54,32 @@ const userComponents = [
     component: <Details />
   },
   {
-    path: '/customers/:customerId/subaccounts/:groupId/my_ans_instances',
-    component: <MyAnsInstances />
+    path: '/customers/:customerId/subaccounts/:groupId/ans_instances',
+    component: <AnsInstances />
   },
   {
     path:
-      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/basic/translations',
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/translations',
     component: <Translations />
   },
   {
     path:
-      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/basic/bulk_jobs',
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/bulk_jobs',
     component: <BulkJobs />
   },
   {
     path:
-      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/advanced/destinations',
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced/destinations',
     component: <Destinations />
   },
   {
     path:
-      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/advanced/destination_groups',
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced/destination_groups',
     component: <DestinationGroups />
+  },
+  {
+    path: '/customers/:customerId/subaccounts/:groupId/ans_instances/ivr',
+    component: <IVR />
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/schedules',
@@ -127,7 +132,7 @@ const UserPages = () => {
       />
       <Redirect
         path='/customers/:customerId/subaccounts/:groupId/'
-        to={'/customers/:customerId/subaccounts/:groupId/my_ans_instances'}
+        to={'/customers/:customerId/subaccounts/:groupId/ans_instances'}
         exact
       />
       <Route path='*' component={NotFound} />

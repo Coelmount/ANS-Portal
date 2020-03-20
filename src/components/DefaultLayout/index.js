@@ -100,52 +100,52 @@ const DefaultLayout = ({ t, notFoundPage }) => {
 
   const subaccountNavLinks = [
     {
-      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances`,
+      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances`,
       text: 'ANS instances',
       name: 'ans_instances',
       icon: AnsInstancesIcon,
       childLinks: [
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic/translations`,
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`,
           text: 'Basic',
           name: 'basic',
           childLinks: [
             {
-              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic/translations`,
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`,
               text: 'Translations',
               name: 'translations'
             },
             {
-              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic/bulk_jobs`,
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/bulk_jobs`,
               text: 'Bulk Jobs',
               name: 'bulk_jobs'
             }
           ]
         },
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destinations`,
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`,
           text: 'Advanced',
           name: 'advanced',
           childLinks: [
             {
-              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destinations`,
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`,
               text: 'Destinations',
               name: 'destinations'
             },
             {
-              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destination_groups`,
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destination_groups`,
               text: 'Destination Groups',
               name: 'destination_groups'
             }
           ]
         },
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/time_based_routing`,
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/time_based_routing`,
           text: 'Time based routing',
           name: 'time_based_routing'
         },
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/ivr`,
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/ivr`,
           text: 'IVR',
           name: 'ivr'
         }
