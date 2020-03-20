@@ -9,18 +9,20 @@ import { Typography } from '@material-ui/core'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 
 import AuthStore from 'stores/Auth'
+import DefaultLayoutStore from 'stores/DefaultLayout'
 
 import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ match, t }) => {
   const { userLogin } = useContext(AuthStore)
+  const { handleCloseNav } = useContext(DefaultLayoutStore)
   const classes = useStyles()
   const { url } = match
 
   const isCustomerActive =
-    userLogin.profile && userLogin.profile.user_type === 'tenant_admin'
+    userLogin.ids && userLogin.ids.tenant_id && !userLogin.ids.group_id
   const isSubaccountActive =
-    userLogin.profile && userLogin.profile.user_type === 'no_userType'
+    userLogin.ids && userLogin.ids.tenant_id && userLogin.ids.group_id
 
   const breadcrumbsArr = url.split('/')
   if (isCustomerActive) {
@@ -34,16 +36,17 @@ const CustomBreadcrumbs = ({ match, t }) => {
   const systemLevel = (breadcrumb, index) => {
     if (breadcrumbsArr.length > 2 && index === 0) {
       return (
-        <Link to={`/${breadcrumb}`} className={classes.link}>
+        <Link to={`/${breadcrumb}`} className={classes.link} key={breadcrumb}>
           {t(breadcrumb)}
         </Link>
       )
     }
-    if (breadcrumbsArr.length > 4 && index === 1) {
+    if (index === 1) {
       return (
         <Link
           to={`/customers/${breadcrumb}/access-numbers`}
           className={classes.link}
+          key={breadcrumb}
         >
           {t(breadcrumb)}
         </Link>
@@ -54,12 +57,24 @@ const CustomBreadcrumbs = ({ match, t }) => {
         <Link
           to={`/customers/${match.params.customerId}/subaccounts`}
           className={classes.link}
+          key={breadcrumb}
         >
           {t(breadcrumb)}
         </Link>
       )
     }
-    return <Typography>{t(breadcrumb)}</Typography>
+    if (breadcrumbsArr.length > 4 && index === 3) {
+      return (
+        <Link
+          to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
+          className={classes.link}
+          key={breadcrumb}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    return <Typography key={breadcrumb}>{t(breadcrumb)}</Typography>
   }
 
   const customerLevel = (breadcrumb, index) => {
@@ -68,6 +83,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
         <Link
           to={`/customers/${match.params.customerId}/access-numbers`}
           className={classes.link}
+          key={breadcrumb}
         >
           {t(breadcrumb)}
         </Link>
@@ -78,12 +94,40 @@ const CustomBreadcrumbs = ({ match, t }) => {
         <Link
           to={`/customers/${match.params.customerId}/subaccounts`}
           className={classes.link}
+          key={breadcrumb}
         >
           {t(breadcrumb)}
         </Link>
       )
     }
-    return <Typography>{t(breadcrumb)}</Typography>
+    if (index === 2 && breadcrumbsArr.length > 3) {
+      return (
+        <Link
+          to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
+          className={classes.link}
+          key={breadcrumb}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    return <Typography key={breadcrumb}>{t(breadcrumb)}</Typography>
+  }
+
+  const subaccountLevel = (breadcrumb, index) => {
+    if (index === 0) {
+      return (
+        <Link
+          to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    return <Typography key={breadcrumb}>{t(breadcrumb)}</Typography>
   }
 
   return (
@@ -95,6 +139,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
       {breadcrumbsArr.length > 1 &&
         breadcrumbsArr.map((breadcrumb, index) => {
           if (isCustomerActive) return customerLevel(breadcrumb, index)
+          else if (isSubaccountActive) return subaccountLevel(breadcrumb, index)
           else return systemLevel(breadcrumb, index)
         })}
       }
