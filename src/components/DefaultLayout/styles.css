@@ -17,3 +17,9 @@
 .instancesIcon {
   margin-top: 5px;
 }
+.scheduleIcon {
+  margin-top: 8px;
+  margin-left: 10px;
+  width: 30px !important;
+  height: 25px !important;
+}

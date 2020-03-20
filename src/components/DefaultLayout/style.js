@@ -110,7 +110,8 @@ const useStyles = makeStyles(theme => ({
   secondLevelTitle: {
     display: 'flex',
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingLeft: 34
   },
   expandIcon: {
     color: `${theme.palette.active.blue} !important`
@@ -120,13 +121,11 @@ const useStyles = makeStyles(theme => ({
     transform: 'rotate(180deg)'
   },
   secondLevelItemText: {
-    marginLeft: 43,
     '& span': {
       fontFamily: 'MTN'
     }
   },
   activeSecondLevelItemText: {
-    marginLeft: 43,
     color: theme.palette.active.blue
   },
   thirdLevelItemText: {
@@ -201,9 +200,6 @@ const useStyles = makeStyles(theme => ({
       padding: 0
     },
     borderBottom: '1px solid #F9F9F9'
-  },
-  instancesIcon: {
-    marginTop: 5
   }
 }))
 

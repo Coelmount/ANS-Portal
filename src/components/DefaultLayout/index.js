@@ -44,6 +44,14 @@ const AnsInstancesIcon = () => {
   )
 }
 
+const SchedulesIcon = () => {
+  return (
+    <SvgIcon className='scheduleIcon'>
+      <path d='M3.11111 8H4.66667V9.6H3.11111V8ZM14 3.2V14.4C14 14.8243 13.8361 15.2313 13.5444 15.5314C13.2527 15.8314 12.857 16 12.4444 16H1.55556C0.692222 16 0 15.28 0 14.4V3.2C0 2.77565 0.163888 2.36869 0.455612 2.06863C0.747335 1.76857 1.143 1.6 1.55556 1.6H2.33333V0H3.88889V1.6H10.1111V0H11.6667V1.6H12.4444C12.857 1.6 13.2527 1.76857 13.5444 2.06863C13.8361 2.36869 14 2.77565 14 3.2ZM1.55556 4.8H12.4444V3.2H1.55556V4.8ZM12.4444 14.4V6.4H1.55556V14.4H12.4444ZM9.33333 9.6V8H10.8889V9.6H9.33333ZM6.22222 9.6V8H7.77778V9.6H6.22222ZM3.11111 11.2H4.66667V12.8H3.11111V11.2ZM9.33333 12.8V11.2H10.8889V12.8H9.33333ZM6.22222 12.8V11.2H7.77778V12.8H6.22222Z' />
+    </SvgIcon>
+  )
+}
+
 const DefaultLayout = ({ t, notFoundPage }) => {
   const classes = useStyles()
   const match = useParams()
@@ -98,9 +106,21 @@ const DefaultLayout = ({ t, notFoundPage }) => {
       icon: AnsInstancesIcon,
       childLinks: [
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic`,
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic/translations`,
           text: 'Basic',
-          name: 'basic'
+          name: 'basic',
+          childLinks: [
+            {
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic/translations`,
+              text: 'Translations',
+              name: 'translations'
+            },
+            {
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/basic/bulk_jobs`,
+              text: 'Bulk Jobs',
+              name: 'bulk_jobs'
+            }
+          ]
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/my_ans_instances/advanced/destinations`,
@@ -136,6 +156,12 @@ const DefaultLayout = ({ t, notFoundPage }) => {
       text: 'Phone numbers',
       name: 'phone_numbers',
       icon: PhoneOutlinedIcon
+    },
+    {
+      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules`,
+      text: 'Schedules',
+      name: 'schedules',
+      icon: SchedulesIcon
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/administrators`,

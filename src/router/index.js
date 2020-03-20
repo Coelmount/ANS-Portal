@@ -13,11 +13,13 @@ import Subaccounts from 'ui/Customer/Subaccounts/'
 import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
 import MyAnsInstances from 'ui/Subaccount/MyAnsInstances'
-import Basic from 'ui/Subaccount/MyAnsInstances/Basic'
+import Translations from 'ui/Subaccount/MyAnsInstances/Basic/Translations'
+import BulkJobs from 'ui/Subaccount/MyAnsInstances/Basic/BulkJobs'
 import Destinations from 'ui/Subaccount/MyAnsInstances/Advanced/Destinations'
 import DestinationGroups from 'ui/Subaccount/MyAnsInstances/Advanced/DestinationGroups'
-import SubaccountDetails from 'ui/Subaccount/Details'
 import SubaccountAdmins from 'ui/Subaccount/Administrators'
+import SubaccountDetails from 'ui/Subaccount/Details'
+import Schedules from 'ui/Subaccount/Schedules'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
@@ -55,8 +57,14 @@ const userComponents = [
     component: <MyAnsInstances />
   },
   {
-    path: '/customers/:customerId/subaccounts/:groupId/my_ans_instances/basic',
-    component: <Basic />
+    path:
+      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/basic/translations',
+    component: <Translations />
+  },
+  {
+    path:
+      '/customers/:customerId/subaccounts/:groupId/my_ans_instances/basic/bulk_jobs',
+    component: <BulkJobs />
   },
   {
     path:
@@ -69,12 +77,16 @@ const userComponents = [
     component: <DestinationGroups />
   },
   {
-    path: '/customers/:customerId/subaccounts/:groupId/details',
-    component: <SubaccountDetails />
+    path: '/customers/:customerId/subaccounts/:groupId/schedules',
+    component: <Schedules />
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/administrators',
     component: <SubaccountAdmins />
+  },
+  {
+    path: '/customers/:customerId/subaccounts/:groupId/details',
+    component: <SubaccountDetails />
   }
 ]
 

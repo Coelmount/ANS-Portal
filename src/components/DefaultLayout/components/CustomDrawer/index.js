@@ -20,11 +20,15 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
   const {
     activeParentNav,
     activeChildNav,
-    activeSubChild,
+    activeBasicSubChild,
+    activeAdvancedSubChild,
     handleActiveParentNav,
     handleActiveChildNav,
     handleActiveSubChildNav
   } = useContext(DefaultLayoutStore)
+  // console.log(activeBasicSubChild, 'activeBasicSubChild')
+  // console.log(activeAdvancedSubChild, 'activeAdvancedSubChild')
+
   return (
     <Fragment>
       <Box className='drawerHeader'>
@@ -50,10 +54,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                 button
               >
                 <Box className={classes.topLevelTitle}>
-                  <ListItemIcon className='icon'>
-                    <Icon className='sidebarIcon' />
-                  </ListItemIcon>
-                  <ListItemText primary={t(`${text}`)} className='menu-text' />
                   {navLink.childLinks && (
                     <ExpandMoreIcon
                       className={
@@ -63,6 +63,10 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                       }
                     />
                   )}
+                  <ListItemIcon className='icon'>
+                    <Icon className='sidebarIcon' />
+                  </ListItemIcon>
+                  <ListItemText primary={t(`${text}`)} className='menu-text' />
                 </Box>
               </ListItem>
 
@@ -85,14 +89,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                             button
                           >
                             <Box className={classes.secondLevelTitle}>
-                              <ListItemText
-                                className={
-                                  activeChildNav === childLink.name
-                                    ? classes.activeSecondLevelItemText
-                                    : classes.secondLevelItemText
-                                }
-                                primary={childLink.text}
-                              />
                               {childLink.childLinks && (
                                 <ExpandMoreIcon
                                   className={
@@ -102,6 +98,14 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                                   }
                                 />
                               )}
+                              <ListItemText
+                                className={
+                                  activeChildNav === childLink.name
+                                    ? classes.activeSecondLevelItemText
+                                    : classes.secondLevelItemText
+                                }
+                                primary={childLink.text}
+                              />
                             </Box>
                           </ListItem>
                           <Collapse
@@ -112,6 +116,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                             <List className={classes.collapse}>
                               {childLink.childLinks &&
                                 childLink.childLinks.map(subChild => {
+                                  // console.log(subChild, '')
                                   return (
                                     <Box key={`${subChild.link}`}>
                                       <ListItem
@@ -119,13 +124,19 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                                         component={NavLink}
                                         to={subChild.link}
                                         onClick={() =>
-                                          handleActiveSubChildNav(subChild.name)
+                                          handleActiveSubChildNav(
+                                            subChild.name,
+                                            childLink.name
+                                          )
                                         }
                                         button
                                       >
                                         <ListItemText
                                           className={
-                                            activeSubChild === subChild.name
+                                            activeBasicSubChild ===
+                                              subChild.name ||
+                                            activeAdvancedSubChild ===
+                                              subChild.name
                                               ? classes.activeThirdLevelItemText
                                               : classes.thirdLevelItemText
                                           }
