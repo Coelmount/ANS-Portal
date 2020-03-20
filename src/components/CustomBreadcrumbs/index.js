@@ -13,7 +13,6 @@ import AuthStore from 'stores/Auth'
 import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ match, t }) => {
-  console.log(match, 'match')
   const { userLogin } = useContext(AuthStore)
   const classes = useStyles()
   const { url } = match
@@ -51,7 +50,6 @@ const CustomBreadcrumbs = ({ match, t }) => {
       )
     }
     if (breadcrumbsArr.length > 4 && index === 2) {
-      console.log(match, 'match id in index 2')
       return (
         <Link
           to={`/customers/${match.params.customerId}/subaccounts`}
@@ -96,7 +94,6 @@ const CustomBreadcrumbs = ({ match, t }) => {
     >
       {breadcrumbsArr.length > 1 &&
         breadcrumbsArr.map((breadcrumb, index) => {
-          console.log(breadcrumb, index)
           if (isCustomerActive) return customerLevel(breadcrumb, index)
           else return systemLevel(breadcrumb, index)
         })}
