@@ -2,6 +2,7 @@ import React, { Fragment, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
+import { withRouter } from 'react-router'
 
 import Box from '@material-ui/core/Box'
 import List from '@material-ui/core/List'
@@ -16,7 +17,7 @@ import DefaultLayoutStore from 'stores/DefaultLayout'
 
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 
-const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
+const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   const {
     activeParentNav,
     activeChildNav,
@@ -24,9 +25,11 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
     activeAdvancedSubChild,
     handleActiveParentNav,
     handleActiveChildNav,
-    handleActiveSubChildNav
+    handleActiveSubChildNav,
+    getActiveNavsAfterUpdate
   } = useContext(DefaultLayoutStore)
 
+  getActiveNavsAfterUpdate(match.url)
   return (
     <Fragment>
       <Box className='drawerHeader'>
@@ -114,7 +117,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                             <List className={classes.collapse}>
                               {childLink.childLinks &&
                                 childLink.childLinks.map(subChild => {
-                                  // console.log(subChild, '')
                                   return (
                                     <Box key={`${subChild.link}`}>
                                       <ListItem
@@ -159,4 +161,4 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
   )
 }
 
-export default withNamespaces()(CustomDrawer)
+export default withNamespaces()(withRouter(CustomDrawer))

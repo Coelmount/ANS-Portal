@@ -58,6 +58,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
           to={`/customers/${match.params.customerId}/subaccounts`}
           className={classes.link}
           key={breadcrumb}
+          onClick={handleCloseNav}
         >
           {t(breadcrumb)}
         </Link>
@@ -69,6 +70,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
           to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
           className={classes.link}
           key={breadcrumb}
+          onClick={handleCloseNav}
         >
           {t(breadcrumb)}
         </Link>

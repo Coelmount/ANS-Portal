@@ -111,7 +111,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     alignItems: 'center',
-    paddingLeft: 34
+    paddingLeft: 34,
+    '& > svg': {
+      marginLeft: -3
+    }
   },
   expandIcon: {
     color: `${theme.palette.active.blue} !important`

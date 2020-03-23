@@ -4,8 +4,9 @@ import { decorate, observable, action } from 'mobx'
 export class DefaultLayoutStore {
   activeParentNav = null
   activeChildNav = null
-  activeBasicSubChild = 'translations'
-  activeAdvancedSubChild = 'destinations'
+  activeBasicSubChild = null
+  activeAdvancedSubChild = null
+  isChildNavClosed = false
 
   handleActiveParentNav = parent => {
     if (this.activeParentNav === parent) {
@@ -30,6 +31,7 @@ export class DefaultLayoutStore {
       this.activeBasicSubChild = 'translations'
     } else if (this.activeChildNav === child) {
       this.activeChildNav = null
+      this.isChildNavClosed = true
     } else {
       this.activeChildNav = child
       this.activeAdvancedSubChild = 'destinations'
@@ -40,9 +42,39 @@ export class DefaultLayoutStore {
   handleActiveSubChildNav = (subChild, child) => {
     if (child === 'basic') {
       this.activeBasicSubChild = subChild
-      console.log('basic', subChild)
     } else if (child === 'advanced') {
       this.activeAdvancedSubChild = subChild
+    }
+  }
+
+  getActiveNavsAfterUpdate = url => {
+    const urlArr = url.split('/')
+    if (urlArr[7] === 'translations') {
+      this.activeParentNav = 'ans_instances'
+      if (this.isChildNavClosed === false) {
+        this.activeChildNav = 'basic'
+        this.activeBasicSubChild = 'translations'
+      }
+    } else if (urlArr[7] === 'bulk_jobs') {
+      this.activeParentNav = 'ans_instances'
+      this.activeChildNav = 'basic'
+      this.activeBasicSubChild = 'bulk_jobs'
+    } else if (urlArr[7] === 'destinations') {
+      this.activeParentNav = 'ans_instances'
+      if (this.isChildNavClosed === false) {
+        this.activeChildNav = 'advanced'
+        this.activeAdvancedSubChild = 'destinations'
+      }
+    } else if (urlArr[7] === 'destination_groups') {
+      this.activeParentNav = 'ans_instances'
+      this.activeChildNav = 'advanced'
+      this.activeAdvancedSubChild = 'destination_groups'
+    } else if (urlArr[6] === 'ivr') {
+      this.activeParentNav = 'ans_instances'
+      this.activeChildNav = 'ivr'
+    } else if (urlArr[6] === 'time_based_routing') {
+      this.activeParentNav = 'ans_instances'
+      this.activeChildNav = 'time_based_routing'
     }
   }
 }
@@ -55,7 +87,8 @@ decorate(DefaultLayoutStore, {
   handleActiveParentNav: action,
   handleActiveChildNav: action,
   handleActiveSubChildNav: action,
-  handleCloseNav: action
+  handleCloseNav: action,
+  getActiveNavsAfterUpdate: action
 })
 
 export default createContext(new DefaultLayoutStore())

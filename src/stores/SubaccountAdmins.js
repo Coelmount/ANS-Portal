@@ -46,7 +46,6 @@ export class SubaccountAdminsStore {
       )
       .then(res => {
         if (res.status === 201) {
-          console.log('added')
           this.isLoading = false
           getUsers({ id: id, groupId: groupId })
           this.subaccountAdmin = {
