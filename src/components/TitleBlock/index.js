@@ -14,14 +14,16 @@ const TitleBlock = ({ handleOpen, titleData }) => {
       <Typography className={classes.title} id='tableTitle'>
         {mainText}
       </Typography>
-      <Box className={classes.addCustomerWrap}>
-        <Box className={classes.addIconWrap} onClick={handleOpen}>
-          {Icon}
+      {Icon && iconCapture && (
+        <Box className={classes.addCustomerWrap}>
+          <Box className={classes.addIconWrap} onClick={handleOpen}>
+            {Icon}
+          </Box>
+          <Typography className={classes.addCustomerTitle}>
+            {iconCapture}
+          </Typography>
         </Box>
-        <Typography className={classes.addCustomerTitle}>
-          {iconCapture}
-        </Typography>
-      </Box>
+      )}
     </Box>
   )
 }
