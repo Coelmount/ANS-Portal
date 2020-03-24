@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
-    color: theme.palette.gray40
+    color: theme.palette.grey40
   },
   paragraphBox: {
     marginTop: '19px',

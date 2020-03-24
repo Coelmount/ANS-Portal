@@ -60,33 +60,47 @@ const Search = observer(({ t }) => {
               </Box>
             </Box>
           </Box>
-          <Typography>Please use the whole phone number for search</Typography>
+          <Typography className={classes.alertMessage}>
+            Please use the whole phone number for search +27871234540
+          </Typography>
         </Box>
         {isLoading ? (
           <Loading />
         ) : (
           <Fragment>
             {searchResult && emptyResult === null && (
-              <TableContainer>
+              <TableContainer className={classes.tableContainer}>
                 <Table>
                   <TableHead>
                     <TableRow>
                       {columnsArr.map(column => (
-                        <TableCell key={column}>{column}</TableCell>
+                        <TableCell key={column} className={classes.headCell}>
+                          {column}
+                        </TableCell>
                       ))}
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow>
-                      <TableCell>{searchResult.tenantId}</TableCell>
-                      <TableCell>{searchResult.groupId}</TableCell>
-                      <TableCell>{searchQuery}</TableCell>
+                    <TableRow className={classes.bodyRow}>
+                      <TableCell className={classes.bodyCell}>
+                        {searchResult.tenantId}
+                      </TableCell>
+                      <TableCell className={classes.bodyCell}>
+                        {searchResult.groupId}
+                      </TableCell>
+                      <TableCell className={classes.bodyCell}>
+                        {searchQuery}
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
             )}
-            {emptyResult && <Typography>No search result</Typography>}
+            {emptyResult && (
+              <Typography className={classes.noResultMessage}>
+                No search result
+              </Typography>
+            )}
           </Fragment>
         )}
       </Paper>

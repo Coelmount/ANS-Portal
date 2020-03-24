@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   breadcrumbsWrap: {
     paddingLeft: 62,
     paddingTop: 24,
-    color: theme.palette.gray40
+    color: theme.palette.grey40
   },
   link: {
     color: theme.palette.secondary.main,

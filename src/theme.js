@@ -23,7 +23,7 @@ const theme = createMuiTheme({
     },
     black: '#212529',
     lightGrey: '#C4C4C4',
-    gray40: '#666666',
+    grey40: '#666666',
     greyE8: '#E8E8E8'
   },
   typography: {

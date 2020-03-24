@@ -32,14 +32,18 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     background: theme.palette.active.main,
-    // alignItems: 'center',
     height: 98,
-    paddingLeft: '9.4%',
+    paddingLeft: 121,
     paddingRight: 55,
-    paddingTop: 45
+    paddingTop: 45,
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: 50
+    },
+    [theme.breakpoints.down(470)]: {
+      paddingLeft: 20
+    }
   },
   searchWrap: {
-    paddingLeft: 121,
     background: theme.palette.active.main
   },
   searchContent: {
@@ -67,11 +71,62 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   searchIcon: {
-    // top: 15,
-    // right: 20,
     width: 25,
     height: 25,
     color: theme.palette.black
+  },
+  alertMessage: {
+    color: theme.palette.grey40,
+    fontSize: 12,
+    marginTop: 7
+  },
+  noResultMessage: {
+    background: theme.palette.active.main,
+    paddingTop: 50,
+    paddingLeft: 121,
+    fontWeight: 600,
+    fontSize: 16,
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: 50
+    },
+    [theme.breakpoints.down(470)]: {
+      paddingLeft: 20
+    }
+  },
+  tableContainer: {
+    background: theme.palette.active.main,
+    paddingTop: 60
+  },
+  headCell: {
+    width: 200,
+    fontWeight: 600,
+    fontSize: 16,
+    borderBottom: 'none',
+    '&:first-child': {
+      paddingLeft: 140,
+      [theme.breakpoints.down('xs')]: {
+        paddingLeft: 60
+      },
+      [theme.breakpoints.down(470)]: {
+        paddingLeft: 30
+      }
+    }
+  },
+  bodyRow: {
+    background: 'white'
+  },
+  bodyCell: {
+    width: 200,
+    borderBottom: 'none',
+    '&:first-child': {
+      paddingLeft: 140,
+      [theme.breakpoints.down('xs')]: {
+        paddingLeft: 60
+      },
+      [theme.breakpoints.down(470)]: {
+        paddingLeft: 30
+      }
+    }
   }
 }))
 
