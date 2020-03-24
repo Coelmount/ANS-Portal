@@ -101,65 +101,65 @@ const DefaultLayout = ({ t, notFoundPage }) => {
   const subaccountNavLinks = [
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances`,
-      text: 'ANS instances',
+      text: t('ans_instances'),
       name: 'ans_instances',
       icon: AnsInstancesIcon,
       childLinks: [
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`,
-          text: 'Basic',
+          text: t('basic'),
           name: 'basic',
           childLinks: [
             {
               link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`,
-              text: 'Translations',
+              text: t('translations'),
               name: 'translations'
             },
             {
               link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/bulk_jobs`,
-              text: 'Bulk Jobs',
+              text: t('bulk_jobs'),
               name: 'bulk_jobs'
             }
           ]
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`,
-          text: 'Advanced',
+          text: t('advanced'),
           name: 'advanced',
           childLinks: [
             {
               link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`,
-              text: 'Destinations',
+              text: t('destinations'),
               name: 'destinations'
             },
             {
               link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destination_groups`,
-              text: 'Destination Groups',
+              text: t('destination_groups'),
               name: 'destination_groups'
             }
           ]
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/time_based_routing`,
-          text: 'Time based routing',
+          text: t('time_based_routing'),
           name: 'time_based_routing'
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/ivr`,
-          text: 'IVR',
+          text: t('ivr'),
           name: 'ivr'
         }
       ]
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/phone_numbers`,
-      text: 'Phone numbers',
+      text: t('phone_numbers'),
       name: 'phone_numbers',
       icon: PhoneOutlinedIcon
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules`,
-      text: 'Schedules',
+      text: t('schedules'),
       name: 'schedules',
       icon: SchedulesIcon
     },
