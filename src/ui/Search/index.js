@@ -61,7 +61,7 @@ const Search = observer(({ t }) => {
             </Box>
           </Box>
           <Typography className={classes.alertMessage}>
-            Please use the whole phone number for search +27871234540
+            Please use the whole phone number for search
           </Typography>
         </Box>
         {isLoading ? (
@@ -85,7 +85,7 @@ const Search = observer(({ t }) => {
                       <TableCell className={classes.bodyCell}>
                         {searchResult.tenantId}
                       </TableCell>
-                      <TableCell className={classes.bodyCell}>
+                      <TableCell align='left' className={classes.bodyCell}>
                         {searchResult.groupId}
                       </TableCell>
                       <TableCell className={classes.bodyCell}>
