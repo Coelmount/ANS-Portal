@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   accountNameWrapper: {
     display: 'flex',
-    marginLeft: 10,
+    marginLeft: 14,
     width: '75%',
     marginBottom: 15,
     zIndex: 20,
@@ -79,13 +79,17 @@ const useStyles = makeStyles(theme => ({
   editDeleteButtonWrapper: {
     alignSelf: 'flex-end',
     display: 'flex',
-    width: '18%',
+    width: '23%',
     marginBottom: 16,
-    marginRight: 10,
     zIndex: 10
   },
   icon: {
-    color: ' #00678F'
+    color: `${theme.palette.active.blue} !important`
+  },
+  editIcon: {
+    color: theme.palette.active.blue,
+    marginTop: 5,
+    marginLeft: 5
   },
   adminFullNameWrapper: {
     display: 'flex',
@@ -228,6 +232,32 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     background: theme.palette.active.main,
     marginRight: 8
+  },
+  buttonIconsWrapper: {
+    boxShadow: '0px 2px 4px rgba(196, 196, 196, 0.25)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 1,
+    minWidth: 0,
+    width: 27,
+    height: 27,
+    borderRadius: 20,
+    marginRight: 8,
+    paddingLeft: 1
+  },
+  closeButtonIconWrapper: {
+    boxShadow: '0px 2px 4px rgba(196, 196, 196, 0.25)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 1,
+    minWidth: 0,
+    width: 27,
+    height: 27,
+    borderRadius: 20,
+    marginLeft: 10,
+    paddingLeft: 1
   }
 }))
 

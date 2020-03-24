@@ -279,7 +279,8 @@ const useStyles = makeStyles(theme => ({
     height: 50,
     padding: '0px 19px',
     border: 'none',
-    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
+    borderRadius: 3
   },
   headCellContainer: {
     display: 'flex',

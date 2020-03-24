@@ -22,11 +22,16 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     minWidth: 205,
-    fontWeight: 500,
     marginRight: 15,
     whiteSpace: 'nowrap',
+    marginBottom: 5,
+    color: theme.palette.grey40,
+    fontWeight: 600,
     '& > svg': {
       marginRight: 14
+    },
+    '& > p': {
+      fontWeight: 600
     },
     [theme.breakpoints.down('xs')]: {
       minWidth: 160

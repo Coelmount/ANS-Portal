@@ -111,7 +111,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     alignItems: 'center',
-    paddingLeft: 34,
+    paddingLeft: 36,
     '& > svg': {
       marginLeft: -3
     }
@@ -129,11 +129,14 @@ const useStyles = makeStyles(theme => ({
     }
   },
   activeSecondLevelItemText: {
-    color: theme.palette.active.blue
+    color: theme.palette.active.blue,
+    '& span': {
+      fontFamily: 'MTN'
+    }
   },
   thirdLevelItemText: {
     marginTop: 0,
-    marginLeft: 43,
+    marginLeft: 37,
     '& span': {
       fontFamily: 'MTN',
       fontSize: 14
@@ -141,7 +144,7 @@ const useStyles = makeStyles(theme => ({
   },
   activeThirdLevelItemText: {
     marginTop: 0,
-    marginLeft: 43,
+    marginLeft: 37,
     '& span': {
       fontFamily: 'MTN',
       fontSize: 14,
