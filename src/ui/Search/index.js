@@ -20,15 +20,18 @@ import Loading from 'components/Loading'
 
 import useStyles from './styles'
 
-const columnsArr = ['Customer ID', 'Subaccount ID', 'ANS instance']
+const columnsArr = ['customer_id', 'subaccount_id', 'ans_instance']
 
 const Search = observer(({ t }) => {
   const classes = useStyles()
-  const { getSearchResult, searchResult, emptyResult, isLoading } = useContext(
-    SearchStore
-  )
+  const {
+    getSearchResult,
+    searchResult,
+    emptyResult,
+    ansInstance,
+    isLoading
+  } = useContext(SearchStore)
   const [searchQuery, setSearchQuery] = useState('')
-  console.log(searchResult, 'searchResult in comp')
 
   const handleSearchClick = () => {
     getSearchResult(searchQuery)
@@ -61,7 +64,7 @@ const Search = observer(({ t }) => {
             </Box>
           </Box>
           <Typography className={classes.alertMessage}>
-            Please use the whole phone number for search
+            {t('please_use_the_whole_phone_number_for_search')}
           </Typography>
         </Box>
         {isLoading ? (
@@ -75,7 +78,7 @@ const Search = observer(({ t }) => {
                     <TableRow>
                       {columnsArr.map(column => (
                         <TableCell key={column} className={classes.headCell}>
-                          {column}
+                          {t(column)}
                         </TableCell>
                       ))}
                     </TableRow>
@@ -85,11 +88,11 @@ const Search = observer(({ t }) => {
                       <TableCell className={classes.bodyCell}>
                         {searchResult.tenantId}
                       </TableCell>
-                      <TableCell align='left' className={classes.bodyCell}>
+                      <TableCell className={classes.bodyCell}>
                         {searchResult.groupId}
                       </TableCell>
                       <TableCell className={classes.bodyCell}>
-                        {searchQuery}
+                        {ansInstance}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -98,7 +101,7 @@ const Search = observer(({ t }) => {
             )}
             {emptyResult && (
               <Typography className={classes.noResultMessage}>
-                No search result
+                {t('no_search_result')}
               </Typography>
             )}
           </Fragment>

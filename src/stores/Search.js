@@ -7,15 +7,20 @@ export class SearchStore {
   searchResult = null
   emptyResult = null
   isLoading = false
+  ansInstance = null
 
   getSearchResult = phoneNumber => {
     this.isLoading = true
     axios
       .get(`/search/numbers/usages/${phoneNumber}/`)
       .then(res => {
-        if (res.status === 200) {
+        if (res.status === 200 && res.data.numbers === undefined) {
           this.searchResult = res.data
           this.emptyResult = null
+          this.ansInstance = phoneNumber
+          this.isLoading = false
+        } else {
+          this.emptyResult = true
           this.isLoading = false
         }
       })
@@ -29,6 +34,7 @@ export class SearchStore {
 decorate(SearchStore, {
   searchResult: observable,
   emptyResult: observable,
+  ansInstance: observable,
   isLoading: observable,
   getSearchResult: action
 })
