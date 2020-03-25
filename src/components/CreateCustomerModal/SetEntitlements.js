@@ -7,21 +7,12 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import Checkbox from '@material-ui/core/Checkbox'
-import TablePagination from '@material-ui/core/TablePagination'
-import TableRow from '@material-ui/core/TableRow'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import CustomTable from './components/CustomTable'
 
 import Input from 'components/Input'
 
@@ -31,88 +22,65 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import setWith from 'lodash/setWith'
 
 import useStyles from './styles'
-import TableHeadWithCheckbox from './components/TableHeadWithCheckbox'
-import TableBodyWithCheckbox from './components/TableBodyWithCheckbox'
 
 const ENTITLEMENTS = [
   {
-    id: 1,
-    name: 'Angola - GEO - basic',
-    total: 80
+    country: 'Angola (+24)',
+    total: 120,
+    showEntitlements: false,
+    entitlements: [
+      {
+        name: 'GEO - ANS Basic',
+        total: 80
+      },
+      {
+        name: 'GEO - ANS Advanced',
+        total: 20
+      },
+      {
+        name: 'Mobile - ANS Advanced',
+        total: 5
+      }
+    ]
   },
   {
-    id: 2,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10
-  },
-  {
-    id: 3,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3
-  },
-  {
-    id: 4,
-    name: 'Angola - GEO - basic',
-    total: 80
-  },
-  {
-    id: 5,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10
-  },
-  {
-    id: 6,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3
-  }
-]
-
-const columns = [
-  {
-    id: 'name',
-    label: 'Entitlement'
+    country: 'South Africa (+27)',
+    total: 13,
+    showEntitlements: false,
+    entitlements: [
+      {
+        name: 'GEO - ANS Basic',
+        total: 5
+      },
+      {
+        name: 'GEO - ANS Advanced',
+        total: 5
+      },
+      {
+        name: 'Mobile - ANS Advanced',
+        total: 3
+      }
+    ]
   }
 ]
 
 const SetEntitlements = props => {
   const { handleClose, t, store } = props
-  const classes = useStyles()
   const { changeStep, customer, changeCustomer } = useContext(store)
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
-  const [selected, setSelected] = React.useState([])
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
-  const [page, setPage] = React.useState(0)
+  const classes = useStyles()
 
-  const isSelected = name => selected.indexOf(name) !== -1
-
-  const handleSelectAllClick = event => {
-    if (event.target.checked) {
-      const newSelecteds = ENTITLEMENTS.map(n => n.name)
-      setSelected(newSelecteds)
-      return
-    }
-    setSelected([])
-  }
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name)
-    let newSelected = []
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name)
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+  const showHideEntitlements = i => {
+    const newEntitlemtents = [...entitlements]
+    setEntitlements(
+      setWith(
+        newEntitlemtents,
+        `[${i}][showEntitlements]`,
+        !entitlements[i].showEntitlements
       )
-    }
-
-    setSelected(newSelected)
+    )
   }
+
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -126,29 +94,52 @@ const SetEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        {/* <TableContainer>
-          <Table>
-            <TableHeadWithCheckbox
-              columns={columns}
-              onSelectAllClick={handleSelectAllClick}
-            />
-            <TableBodyWithCheckbox
-              rows={ENTITLEMENTS}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              handleClick={handleClick}
-              isSelected={isSelected}
-            />
-          </Table>
-        </TableContainer> */}
-        <CustomTable
-          classes={classes}
-          rows={entitlements}
-          // isLoadingData={isLoadingCustomers}
-          columns={columns}
-          id='tenantId'
-          name='name'
-        />
+        <Grid container className={classes.girdTitle}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={6}>
+            {t('entitlement')}
+          </Grid>
+          <Grid item xs={4}>
+            {t('total')}
+          </Grid>
+        </Grid>
+        {entitlements.map((el, i) => (
+          <React.Fragment key={i}>
+            <Grid container className={classes.entitlementsHeader}>
+              <Grid item xs={2} className={classes.entitlementsHeaderNumber}>
+                {i + 1}
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                className={classes.entitlementsHeaderName}
+                onClick={() => showHideEntitlements(i)}
+              >
+                {el.country}
+                <ExpandMoreIcon />
+              </Grid>
+              <Grid item xs={4} className={classes.entitlementsHeaderTotal}>
+                {el.total}
+              </Grid>
+            </Grid>
+            {el.showEntitlements &&
+              el.entitlements.map((ent, j) => (
+                <Grid container key={j} className={classes.entitlementsGrid}>
+                  <Grid item xs={2}></Grid>
+                  <Grid item xs={6} className={classes.entitlementsItemTitle}>
+                    {ent.name}
+                  </Grid>
+                  <Grid item className={classes.entitlementsItemTotal}>
+                    <Input
+                      variant='outlined'
+                      defaultValue={ent.total}
+                      className={classes.entitlementsItemInput}
+                    />
+                  </Grid>
+                </Grid>
+              ))}
+          </React.Fragment>
+        ))}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
