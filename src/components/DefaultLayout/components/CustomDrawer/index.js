@@ -1,8 +1,9 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useContext, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 import { withRouter } from 'react-router'
+import { observer } from 'mobx-react-lite'
 
 import Box from '@material-ui/core/Box'
 import List from '@material-ui/core/List'
@@ -36,8 +37,10 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
     handleActiveSubChildNav,
     getActiveNavsAfterUpdate
   } = useContext(DefaultLayoutStore)
-
-  getActiveNavsAfterUpdate(match.url)
+  console.log(activeParentNav, activeChildNav, activeBasicSubChild)
+  useEffect(() => {
+    getActiveNavsAfterUpdate(match.url)
+  }, [getActiveNavsAfterUpdate, match.url])
   return (
     <Fragment>
       <Box className='drawerHeader'>
@@ -180,4 +183,4 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   )
 }
 
-export default withNamespaces()(withRouter(CustomDrawer))
+export default withNamespaces()(withRouter(observer(CustomDrawer)))

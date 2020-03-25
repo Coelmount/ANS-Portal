@@ -1,4 +1,5 @@
 import React, { useContext, useState, Fragment } from 'react'
+import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -31,6 +32,7 @@ const Search = observer(({ t }) => {
     ansInstance,
     isLoading
   } = useContext(SearchStore)
+
   const [searchQuery, setSearchQuery] = useState('')
 
   const handleSearchClick = () => {
@@ -86,13 +88,28 @@ const Search = observer(({ t }) => {
                   <TableBody>
                     <TableRow className={classes.bodyRow}>
                       <TableCell className={classes.bodyCell}>
-                        {searchResult.tenantId}
+                        <Link
+                          to={`/customers/${searchResult.tenantId}/access-numbers`}
+                          className={classes.link}
+                        >
+                          {searchResult.tenantId}
+                        </Link>
                       </TableCell>
                       <TableCell className={classes.bodyCell}>
-                        {searchResult.groupId}
+                        <Link
+                          to={`/customers/${searchResult.tenantId}/subaccounts/${searchResult.groupId}/ans_instances`}
+                          className={classes.link}
+                        >
+                          {searchResult.groupId}
+                        </Link>
                       </TableCell>
                       <TableCell className={classes.bodyCell}>
-                        {ansInstance}
+                        <Link
+                          to={`/customers/${searchResult.tenantId}/subaccounts/${searchResult.groupId}/ans_instances/basic/translations`}
+                          className={classes.link}
+                        >
+                          {ansInstance}
+                        </Link>
                       </TableCell>
                     </TableRow>
                   </TableBody>

@@ -128,6 +128,13 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: 30
       }
     }
+  },
+  link: {
+    color: theme.palette.secondary.main,
+    textDecoration: 'none',
+    '&:focus': {
+      color: '#598597'
+    }
   }
 }))
 
