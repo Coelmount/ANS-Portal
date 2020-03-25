@@ -12,20 +12,20 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
 import SvgIcon from '@material-ui/core/SvgIcon'
 
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import DefaultLayoutStore from 'stores/DefaultLayout'
 
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 
 const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
-  const ExpandMoreIcon = () => {
-    return (
-      <SvgIcon>
-        <path d='M0 0L4 4L8 0L0 0Z' fill='#00678F' />
-      </SvgIcon>
-    )
-  }
+  // const ExpandMoreIcon = () => {
+  //   return (
+  //     <SvgIcon>
+  //       <path d='M0 0L4 4L8 0L0 0Z' fill='#00678F' />
+  //     </SvgIcon>
+  //   )
+  // }
   const {
     activeParentNav,
     activeChildNav,
@@ -58,7 +58,11 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
                 activeClassName={classes.activeMenuItem}
                 component={NavLink}
                 to={link}
-                className={classes.menuItem}
+                className={
+                  name === 'ans_instances'
+                    ? classes.menuItemAnsInstances
+                    : classes.menuItem
+                }
                 onClick={() => handleActiveParentNav(name)}
                 button
               >
@@ -97,7 +101,14 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
                             onClick={() => handleActiveChildNav(childLink.name)}
                             button
                           >
-                            <Box className={classes.secondLevelTitle}>
+                            <Box
+                              className={
+                                childLink.name === 'basic' ||
+                                childLink.name === 'advanced'
+                                  ? classes.secondLevelTitleWithIcon
+                                  : classes.secondLevelTitle
+                              }
+                            >
                               {childLink.childLinks && (
                                 <ExpandMoreIcon
                                   className={

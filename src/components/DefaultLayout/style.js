@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const drawerWidth = 240
+const drawerWidth = 260
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,9 +53,40 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingLeft: 22,
+    paddingLeft: 32,
     paddingTop: 14,
     paddingBottom: 14,
+    // '&:first-child': {
+    //   paddingLeft: 15
+    // },
+    '& .icon': {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexShrink: 1,
+      minWidth: 0,
+      width: 27,
+      height: 27,
+      borderRadius: 20,
+      background: theme.palette.active.main
+    },
+    '& .menu-text': {
+      minWidth: 100,
+      '& span': {
+        fontFamily: 'MTN',
+        fontSize: 16
+      }
+    }
+  },
+  menuItemAnsInstances: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // paddingLeft: 32,
+    paddingTop: 14,
+    paddingBottom: 14,
+    paddingLeft: 15,
     '& .icon': {
       display: 'flex',
       justifyContent: 'center',
@@ -111,9 +142,27 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     alignItems: 'center',
-    paddingLeft: 36,
+    paddingLeft: 55,
     '& > svg': {
-      marginLeft: -3
+      marginLeft: -3,
+      marginRight: 8
+    }
+    // '&:first-child': {
+    //   paddingLeft: 30
+    // },
+    // '&:second-child': {
+    //   paddingLeft: 30
+    // }
+  },
+  secondLevelTitleWithIcon: {
+    paddingLeft: 30,
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+    // paddingLeft: 55,
+    '& > svg': {
+      marginLeft: -3,
+      marginRight: 8
     }
   },
   expandIcon: {
@@ -136,7 +185,7 @@ const useStyles = makeStyles(theme => ({
   },
   thirdLevelItemText: {
     marginTop: 0,
-    marginLeft: 37,
+    marginLeft: 54,
     '& span': {
       fontFamily: 'MTN',
       fontSize: 14
@@ -144,7 +193,7 @@ const useStyles = makeStyles(theme => ({
   },
   activeThirdLevelItemText: {
     marginTop: 0,
-    marginLeft: 37,
+    marginLeft: 54,
     '& span': {
       fontFamily: 'MTN',
       fontSize: 14,
