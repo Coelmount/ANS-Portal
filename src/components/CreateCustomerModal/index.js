@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -32,8 +32,8 @@ const CreateCustomer = props => {
     createSubaccount,
     isEditCustomer
   } = props
-  // const { step } = useContext(store)
-  const step = 4
+  const { step } = useContext(store)
+  // const step = 4
   const classes = useStyles()
 
   return (
