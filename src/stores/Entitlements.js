@@ -62,6 +62,18 @@ export class Entitlements {
       .post(`/tenants/`, this.customer)
       .then(res => (this.createdCustomerStore = res.data))
   }
+
+  getEntitlements = () => {
+    // this.isLoadingCustomer = true
+    axios.get(`/entitlement_types/`).then(res => {
+      if (res.status === 200) {
+        console.log(res, 'res')
+        // this.isLoadingCustomer = false
+      } else {
+        console.log(res, 'error')
+      }
+    })
+  }
 }
 
 decorate(Entitlements, {
@@ -70,7 +82,8 @@ decorate(Entitlements, {
   closeModal: observable,
   createdCustomer: observable,
   changeStep: action,
-  changeCustomer: action
+  changeCustomer: action,
+  getEntitlements: action
 })
 
 export default createContext(new Entitlements())

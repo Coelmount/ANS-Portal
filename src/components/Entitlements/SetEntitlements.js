@@ -8,16 +8,13 @@ import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
 import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
-import Input from 'components/Input'
-import Entitlements from 'stores/Entitlements'
-
-import setWith from 'lodash/setWith'
+import CustomTable from './CustomTable'
+import EntitlementsStore from 'stores/Entitlements'
 
 import useStyles from './styles'
-import CustomTable from './CustomTable'
 
 const ENTITLEMENTS = [
   {
@@ -60,9 +57,8 @@ const columns = [
 ]
 
 const SetEntitlements = props => {
-  const { handleClose, t, store } = props
-  console.log(store, 'store')
-  const { changeStep } = useContext(store)
+  const { handleClose, t } = props
+  const { changeStep } = useContext(EntitlementsStore)
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
   const classes = useStyles()
 
@@ -79,7 +75,12 @@ const SetEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
+        <Box>
+          <Typography className={classes.stepStyles}>{`${t(
+            'step'
+          )} 1/2`}</Typography>
+          <Typography>{t('set_entitlements')}</Typography>
+        </Box>
         <CustomTable
           withSearch={true}
           classes={classes}
@@ -101,7 +102,7 @@ const SetEntitlements = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(5)}
+          onClick={() => changeStep(2)}
         >
           {t('save')}
         </Button>

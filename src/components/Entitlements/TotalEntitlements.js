@@ -8,62 +8,52 @@ import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
 import Box from '@material-ui/core/Box'
 
 import Input from 'components/Input'
-import Entitlements from 'stores/Entitlements'
+import CustomTable from './CustomTable'
+import EntitlementsStore from 'stores/Entitlements'
 
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
-import setWith from 'lodash/setWith'
-
 import useStyles from './styles'
-import CustomTable from './CustomTable'
-import { Typography } from '@material-ui/core'
 
 const ENTITLEMENTS = [
   {
     id: 1,
     name: 'fafa',
-    total: 5,
-    assigned: 2
+    total: 5
   },
   {
     id: 2,
     name: 'South Africa - GEO - ANS basic',
-    total: 10,
-    assigned: 2
+    total: 10
   },
   {
     id: 3,
     name: 'South Africa - GEO - ANS advanced',
-    total: 3,
-    assigned: 2
+    total: 3
   },
   {
     id: 4,
     name: 'Angola - GEO - basic',
-    total: 80,
-    assigned: 2
+    total: 80
   },
   {
     id: 5,
     name: 'South Africa - GEO - ANS basic',
-    total: 10,
-    assigned: 2
+    total: 10
   },
   {
     id: 6,
     name: 'South Africa - GEO - ANS advanced',
-    total: 3,
-    assigned: 2
+    total: 3
   }
 ]
 
-const EditEntitlements = props => {
-  const { handleClose, t, store } = props
-  const { changeStep } = useContext(store)
+const TotalEntitlements = props => {
+  const { handleClose, t } = props
+  const { changeStep } = useContext(EntitlementsStore)
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
   const classes = useStyles()
 
@@ -73,22 +63,11 @@ const EditEntitlements = props => {
       label: 'entitlement'
     },
     {
-      id: 'assigned',
-      label: 'assigned',
-      getCellData: row => (
-        <Typography style={{ color: 'blue' }}>{row.assigned}</Typography>
-      )
-    },
-    {
       id: 'total',
       label: 'total',
-      getCellData: row => (
+      getCellData: () => (
         <Box>
-          <Input
-            value={row.total}
-            className={classes.totalInput}
-            variant='outlined'
-          />
+          <Input className={classes.totalInput} variant='outlined' />
         </Box>
       )
     }
@@ -97,7 +76,7 @@ const EditEntitlements = props => {
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        {t('edit_entitlements')}
+        {t('add_entitlements')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -107,6 +86,7 @@ const EditEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
+        <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
         <CustomTable
           isFullVersion={false}
           classes={classes}
@@ -119,15 +99,16 @@ const EditEntitlements = props => {
           variant='outlined'
           color='primary'
           className={classes.backButton}
-          onClick={handleClose}
+          onClick={() => changeStep(1)}
         >
-          {t('cancel')}
+          <ChevronLeft />
+          {t('back')}
         </Button>
         <Button
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(5)}
+          onClick={() => changeStep(3)}
         >
           {t('save')}
         </Button>
@@ -136,4 +117,4 @@ const EditEntitlements = props => {
   )
 }
 
-export default withNamespaces()(observer(EditEntitlements))
+export default withNamespaces()(observer(TotalEntitlements))
