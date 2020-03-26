@@ -6,6 +6,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
+import Checkbox from 'components/Checkbox'
 
 const CustomTableHead = ({
   classes,
@@ -13,6 +14,8 @@ const CustomTableHead = ({
   orderBy,
   onRequestSort,
   columns,
+  handleSelectAllClick,
+  isFullVersion,
   t
 }) => {
   const createSortHandler = property => event => {
@@ -22,7 +25,15 @@ const CustomTableHead = ({
   return (
     <TableHead className={classes.thead}>
       <TableRow>
-        <TableCell></TableCell>
+        <TableCell>
+          {isFullVersion && (
+            <Checkbox
+              // indeterminate={numSelected > 0 && numSelected < rowCount}
+              // checked={rowCount > 0 && numSelected === rowCount}
+              onChange={handleSelectAllClick}
+            />
+          )}
+        </TableCell>
         {columns.map(({ id, label, extraHeadProps }) => (
           <TableCell
             key={id}

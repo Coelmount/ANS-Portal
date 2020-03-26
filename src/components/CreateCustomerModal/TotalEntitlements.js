@@ -14,6 +14,8 @@ import Box from '@material-ui/core/Box'
 import Input from 'components/Input'
 import Entitlements from 'stores/Entitlements'
 
+import ChevronLeft from '@material-ui/icons/ChevronLeft'
+
 import setWith from 'lodash/setWith'
 
 import useStyles from './styles'
@@ -52,19 +54,27 @@ const ENTITLEMENTS = [
   }
 ]
 
-const columns = [
-  {
-    id: 'name',
-    label: 'entitlement'
-  }
-]
-
-const SetEntitlements = props => {
+const TotalEntitlements = props => {
   const { handleClose, t, store } = props
-  console.log(store, 'store')
   const { changeStep } = useContext(store)
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
   const classes = useStyles()
+
+  const columns = [
+    {
+      id: 'name',
+      label: 'entitlement'
+    },
+    {
+      id: 'total',
+      label: 'total',
+      getCellData: () => (
+        <Box>
+          <Input className={classes.totalInput} variant='outlined' />
+        </Box>
+      )
+    }
+  ]
 
   return (
     <React.Fragment>
@@ -79,13 +89,12 @@ const SetEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
+        <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
         <CustomTable
-          withSearch={true}
+          isFullVersion={false}
           classes={classes}
           columns={columns}
           rows={entitlements}
-          isFullVersion={true}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -93,9 +102,10 @@ const SetEntitlements = props => {
           variant='outlined'
           color='primary'
           className={classes.backButton}
-          onClick={handleClose}
+          onClick={() => changeStep(4)}
         >
-          {t('cancel')}
+          <ChevronLeft />
+          {t('back')}
         </Button>
         <Button
           variant='contained'
@@ -110,4 +120,4 @@ const SetEntitlements = props => {
   )
 }
 
-export default withNamespaces()(observer(SetEntitlements))
+export default withNamespaces()(observer(TotalEntitlements))

@@ -461,6 +461,9 @@ const useStyles = makeStyles(theme => ({
         top: 16
       }
     }
+  },
+  totalInput: {
+    width: 50
   }
 }))
 

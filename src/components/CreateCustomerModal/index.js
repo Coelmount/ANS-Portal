@@ -12,7 +12,8 @@ import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import SuccessPage from './SuccessPage'
 import SetEntitlements from './SetEntitlements'
-import SuccessEntitlements from './SuccessEntitlements'
+import TotalEntitlements from './TotalEntitlements'
+import EditEntitlements from './EditEntitlements'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,7 +37,7 @@ const CreateCustomer = props => {
     isEditCustomer
   } = props
   // const { step } = useContext(store)
-  const step = 4
+  const step = 5
   const classes = useStyles()
 
   return (
@@ -93,7 +94,15 @@ const Steps = props => {
       )
     case 5:
       return (
-        <SuccessEntitlements
+        <TotalEntitlements
+          handleClose={props.successClose}
+          store={props.store}
+          isCreateSubaccount={props.isCreateSubaccount}
+        />
+      )
+    case 6:
+      return (
+        <EditEntitlements
           handleClose={props.successClose}
           store={props.store}
           isCreateSubaccount={props.isCreateSubaccount}

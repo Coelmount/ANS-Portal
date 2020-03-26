@@ -11,7 +11,6 @@ import CustomTableHead from './components/CustomTableHead'
 import CustomTableBody from './components/CustomTableBody'
 import Pagination from './components/Pagination'
 import Loading from 'components/Loading'
-import { SentimentSatisfied } from 'material-ui-icons'
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'
@@ -40,33 +39,39 @@ const descendingComparator = (a, b, orderBy) => {
   return 0
 }
 
-const CustomTable = ({ classes, rows, isLoadingData, columns, t }) => {
-  console.log('rows', rows)
+const CustomTable = ({
+  classes,
+  rows,
+  isLoadingData,
+  columns,
+  isFullVersion,
+  t
+}) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState([])
-  console.log(selected, 'selected')
-  const handleClick = selectedIndex => {
-    // const selectedIndex = selected.indexOf(name)
-    let newSelected = []
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, selectedIndex)
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      )
+  const handleClick = selectedRow => {
+    if (selected.indexOf(selectedRow) === -1) {
+      setSelected(selected.concat(selectedRow))
+    } else {
+      const newArr = selected.filter(item => {
+        return item !== selectedRow
+      })
+      setSelected(newArr)
     }
+  }
 
-    setSelected(newSelected)
+  const handleSelectAllClick = event => {
+    if (event.target.checked) {
+      const newSelecteds = rows.map((row, index) => index)
+      setSelected(newSelecteds)
+      return
+    }
+    setSelected([])
   }
 
   const list = useMemo(() => {
@@ -101,6 +106,7 @@ const CustomTable = ({ classes, rows, isLoadingData, columns, t }) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
         setQuery={setQuery}
+        isFullVersion={isFullVersion}
       />
       {isLoadingData ? (
         <Loading />
@@ -118,6 +124,8 @@ const CustomTable = ({ classes, rows, isLoadingData, columns, t }) => {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               columns={columns}
+              handleSelectAllClick={handleSelectAllClick}
+              isFullVersion={isFullVersion}
             />
             {list && list.length ? (
               <CustomTableBody
@@ -126,6 +134,9 @@ const CustomTable = ({ classes, rows, isLoadingData, columns, t }) => {
                 page={clampedPage}
                 list={list}
                 columns={columns}
+                handleClick={handleClick}
+                selected={selected}
+                isFullVersion={isFullVersion}
               />
             ) : (
               <Typography className={classes.tableMessage}>
