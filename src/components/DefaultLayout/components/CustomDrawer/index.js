@@ -11,7 +11,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
-import SvgIcon from '@material-ui/core/SvgIcon'
+// import SvgIcon from '@material-ui/core/SvgIcon'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 

@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
+import Checkbox from '@material-ui/core/Checkbox'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
@@ -93,6 +94,7 @@ const SetEntitlements = props => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
+      <Checkbox />
       <DialogContent className={classes.entitlementsDialogContent}>
         <Grid container className={classes.girdTitle}>
           <Grid item xs={2}></Grid>
