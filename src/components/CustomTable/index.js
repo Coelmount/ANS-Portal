@@ -53,6 +53,7 @@ const CustomTable = ({
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
+  console.log(page, 'page')
 
   const list = useMemo(() => {
     if (!rows) return []
@@ -80,7 +81,8 @@ const CustomTable = ({
   const clampedPage = clamp(page, 0, totalPages)
 
   const rewindPage = step => {
-    setPage(clampedPage + step)
+    if (clampedPage + step >= 0 && clampedPage + step <= totalPages)
+      setPage(clampedPage + step)
   }
 
   return (

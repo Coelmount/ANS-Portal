@@ -98,7 +98,8 @@ const CustomTable = ({
   const clampedPage = clamp(page, 0, totalPages)
 
   const rewindPage = step => {
-    setPage(clampedPage + step)
+    if (clampedPage + step >= 0 && clampedPage + step <= totalPages)
+      setPage(clampedPage + step)
   }
 
   return (
