@@ -11,7 +11,6 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
-// import SvgIcon from '@material-ui/core/SvgIcon'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
@@ -20,13 +19,6 @@ import DefaultLayoutStore from 'stores/DefaultLayout'
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 
 const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
-  // const ExpandMoreIcon = () => {
-  //   return (
-  //     <SvgIcon>
-  //       <path d='M0 0L4 4L8 0L0 0Z' fill='#00678F' />
-  //     </SvgIcon>
-  //   )
-  // }
   const {
     activeParentNav,
     activeChildNav,
@@ -37,7 +29,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
     handleActiveSubChildNav,
     getActiveNavsAfterUpdate
   } = useContext(DefaultLayoutStore)
-  console.log(activeParentNav, activeChildNav, activeBasicSubChild)
   useEffect(() => {
     getActiveNavsAfterUpdate(match.url)
   }, [getActiveNavsAfterUpdate, match.url])
