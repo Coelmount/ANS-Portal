@@ -15,6 +15,7 @@ import CustomTable from './CustomTable'
 import EntitlementsStore from 'stores/Entitlements'
 
 import useStyles from './styles'
+import { useEffect } from 'react'
 
 const ENTITLEMENTS = [
   {
@@ -58,9 +59,13 @@ const columns = [
 
 const SetEntitlements = props => {
   const { handleClose, t } = props
-  const { changeStep } = useContext(EntitlementsStore)
+  const { changeStep, getEntitlements } = useContext(EntitlementsStore)
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
   const classes = useStyles()
+
+  useEffect(() => {
+    getEntitlements()
+  }, [getEntitlements])
 
   return (
     <React.Fragment>
@@ -80,15 +85,16 @@ const SetEntitlements = props => {
             'step'
           )} 1/2`}</Typography>
           <Typography className={classes.setEntitlementsTitle}>
-            {t('set_entitlements')}
+            {t('select_entitlement')}
           </Typography>
         </Box>
         <CustomTable
-          withSearch={true}
+          isFullVersion={true}
+          rowsColor={true}
+          withFilters={true}
           classes={classes}
           columns={columns}
           rows={entitlements}
-          isFullVersion={true}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -106,7 +112,7 @@ const SetEntitlements = props => {
           className={classes.nextButton}
           onClick={() => changeStep(2)}
         >
-          {t('save')}
+          {t('next')}
         </Button>
       </DialogActions>
     </React.Fragment>

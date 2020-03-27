@@ -10,11 +10,9 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { Typography } from '@material-ui/core'
 
-import SearchIcon from '@material-ui/icons/Search'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 import Checkbox from 'components/Checkbox'
-import Pagination from '../Pagination'
 
 const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
 
@@ -28,6 +26,7 @@ const CustomTableHead = ({
   isFullVersion,
   rowsPerPage,
   setRowsPerPage,
+  withFilters,
   t
 }) => {
   const createSortHandler = property => event => {
@@ -50,7 +49,6 @@ const CustomTableHead = ({
         {columns.map(({ id, label, extraHeadProps }) => (
           <TableCell
             key={id}
-            // align={'left'}
             sortDirection={orderBy === id ? order : false}
             className={classes.headCellTitle}
             {...extraHeadProps}

@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
 import Input from 'components/Input'
 import CustomTable from './CustomTable'
@@ -51,8 +52,7 @@ const ENTITLEMENTS = [
   }
 ]
 
-const TotalEntitlements = props => {
-  const { handleClose, t } = props
+const TotalEntitlements = ({ handleClose, t }) => {
   const { changeStep } = useContext(EntitlementsStore)
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
   const classes = useStyles()
@@ -86,9 +86,18 @@ const TotalEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
+        <Box className={classes.secondStepSubtitle}>
+          <Typography className={classes.stepStyles}>{`${t(
+            'step'
+          )} 2/2`}</Typography>
+          <Typography className={classes.setEntitlementsTitle}>
+            {t('set_entitlements_limit')}
+          </Typography>
+        </Box>
         <CustomTable
           isFullVersion={false}
+          rowsColor={false}
+          withFilters={false}
           classes={classes}
           columns={columns}
           rows={entitlements}
@@ -110,7 +119,7 @@ const TotalEntitlements = props => {
           className={classes.nextButton}
           onClick={() => changeStep(3)}
         >
-          {t('save')}
+          {t('add')}
         </Button>
       </DialogActions>
     </React.Fragment>

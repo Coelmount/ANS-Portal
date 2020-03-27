@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   stepStyles: {
     marginRight: 24,
+    paddingLeft: 44,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
@@ -75,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   leftButtonFromSP: {
-    width: '180px',
+    width: 224,
     color: theme.palette.black
   },
   rigthButtonFromSP: {
@@ -383,6 +384,17 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
+  tableRowWithoutBackground: {
+    height: 76,
+    borderLeft: '5px solid transparent',
+    '&:first-child': {
+      borderTop: `2px solid ${theme.palette.primary.main}`
+    },
+    '& > td': {
+      padding: '10px 16px',
+      paddingLeft: 44
+    }
+  },
   paginationWrap: {
     display: 'flex',
     background: theme.palette.active.main,
@@ -498,7 +510,12 @@ const useStyles = makeStyles(theme => ({
   subtitle: {
     display: 'flex',
     marginTop: 29,
-    marginLeft: 44,
+    alignItems: 'center'
+  },
+  secondStepSubtitle: {
+    display: 'flex',
+    marginTop: 29,
+    marginBottom: 29,
     alignItems: 'center'
   },
   setEntitlementsTitle: {
@@ -518,9 +535,19 @@ const useStyles = makeStyles(theme => ({
     padding: 0
   },
   checkboxCell: {
-    // background: 'red',
     padding: 0,
     marginLeft: 6
+  },
+  nextButtonEntitlements: {
+    width: 240
+  },
+  boxOfButtonsSuccess: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    justifyContent: 'space-between',
+    width: '100%',
+    display: 'flex',
+    marginBottom: 40
   }
 }))
 

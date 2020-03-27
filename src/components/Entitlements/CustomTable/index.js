@@ -45,6 +45,8 @@ const CustomTable = ({
   isLoadingData,
   columns,
   isFullVersion,
+  rowsColor,
+  withFilters,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -101,13 +103,13 @@ const CustomTable = ({
 
   return (
     <Fragment>
-      <CustomTableToolbar
-        classes={classes}
-        // rowsPerPage={rowsPerPage}
-        // setRowsPerPage={setRowsPerPage}
-        setQuery={setQuery}
-        isFullVersion={isFullVersion}
-      />
+      {isFullVersion && (
+        <CustomTableToolbar
+          classes={classes}
+          setQuery={setQuery}
+          isFullVersion={isFullVersion}
+        />
+      )}
       {isLoadingData ? (
         <Loading />
       ) : (
@@ -128,6 +130,7 @@ const CustomTable = ({
               isFullVersion={isFullVersion}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
+              withFilters={withFilters}
             />
             {list && list.length ? (
               <CustomTableBody
@@ -139,10 +142,11 @@ const CustomTable = ({
                 handleClick={handleClick}
                 selected={selected}
                 isFullVersion={isFullVersion}
+                rowsColor={rowsColor}
               />
             ) : (
               <Typography className={classes.tableMessage}>
-                {t('no_customers_yet')}
+                {t('no_search_result')}
               </Typography>
             )}
           </Table>

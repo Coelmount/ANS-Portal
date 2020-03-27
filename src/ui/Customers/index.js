@@ -10,6 +10,8 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
+import EntitlementsStore from 'stores/Entitlements'
+
 import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
@@ -34,6 +36,7 @@ const CustomersTable = observer(({ t }) => {
     CreateSubaccountStore
   )
   const { setDefaultValues } = useContext(CreateCustomerStore)
+  const { setDefaultEntitlementsValues } = useContext(EntitlementsStore)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [customerToDelete, setCustomerToDelete] = useState({})
   const [creationType, setCreationType] = useState('')
@@ -53,6 +56,7 @@ const CustomersTable = observer(({ t }) => {
 
   const handleOpenCreateCustomer = () => {
     setDefaultValuesSubaccaunt()
+    setDefaultEntitlementsValues()
     setDefaultValues()
     setCreationType('customer')
     setIsOpenCreateCustomer(true)

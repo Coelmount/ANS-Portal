@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const BASE_URL = 'https://196.30.50.142/api/v01'
-// export const BASE_URL = 'https://yaoh1.bxl.netaxis.be/api/v01'
+// export const BASE_URL = 'https://yaoh1.bxl.netaxis.be/api/v01/custom/ans'
 
 const PROXY = '/p1'
 

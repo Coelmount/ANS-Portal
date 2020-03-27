@@ -9,36 +9,27 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
-import accountCheck from 'source/images/svg/account-check.svg'
+import successIcon from 'source/images/svg/icon-entitlements-added.svg'
 
 import CreateCustomerStore from 'stores/CreateCustomer'
-import CreateSubaccountStore from 'stores/CreateSubaccount'
 
 import useStyles from './styles'
 
 const SuccesPage = props => {
-  const { handleClose, t, store, isCreateSubaccount, createSubaccount } = props
-  const { changeStep, createdCustomerStore } = useContext(store)
+  const { handleClose, t } = props
   const { createdCustomerStore: createdCustomer } = useContext(
     CreateCustomerStore
   )
-  const [isOpenCreateSubaccount, setIsOpenCreateSubaccount] = useState('')
-
   const history = useHistory()
   const match = useParams()
   const classes = useStyles()
 
-  const goToCustomer = () => {
-    if (isCreateSubaccount) {
-      history.push(
-        `/customers/${createdCustomer.tenantId ||
-          match.customerId}/subaccounts/${
-          createdCustomerStore.groupId
-        }/ans_instances/basic`
-      )
-      return
-    }
-    history.push(`/customer/${createdCustomerStore.tenantId}/access-numbers`)
+  const goIntoCustomerAccount = () => {
+    history.push(`/customers/${createdCustomer.tenantId}/access-numbers`)
+  }
+
+  const goToCustomerList = () => {
+    handleClose()
   }
 
   return (
@@ -54,7 +45,7 @@ const SuccesPage = props => {
       <DialogContent className={classes.successDialog}>
         <Box className={classes.successBox}>
           <Box className={classes.successIconBox}>
-            <img src={accountCheck} alt='' />
+            <img src={successIcon} alt='' />
           </Box>
           <Box className={classes.successTitle}>
             {t('entitlements_added_success')}
@@ -63,25 +54,23 @@ const SuccesPage = props => {
             {t('entitlements_added_success_info')}
           </Box>
         </Box>
-        <Box className={classes.boxOfButtons}>
+        <Box className={classes.boxOfButtonsSuccess}>
           <Button
             variant='outlined'
             color='primary'
             className={classes.leftButtonFromSP}
-            onClick={() => goToCustomer()}
+            onClick={() => goToCustomerList()}
           >
-            {t('go_into_account')}
+            {t('go_to_the_customer_list')}
           </Button>
-          {/* {!isCreateSubaccount && (
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.rigthButtonFromSP}
-              onClick={createSubaccount}
-            >
-              {t('add_subaccount')}
-            </Button>
-          )} */}
+          <Button
+            variant='contained'
+            color='primary'
+            className={classes.nextButtonEntitlements}
+            onClick={() => goIntoCustomerAccount()}
+          >
+            {t('go_into_customer_account')}
+          </Button>
         </Box>
       </DialogContent>
     </React.Fragment>

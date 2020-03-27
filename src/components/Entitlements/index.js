@@ -10,7 +10,7 @@ import EntitlementsStore from 'stores/Entitlements'
 
 import SetEntitlements from './SetEntitlements'
 import TotalEntitlements from './TotalEntitlements'
-import EditEntitlements from './EditEntitlements'
+import SuccessEntitlements from './SuccessEntitlements'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,7 +34,7 @@ const Entitlements = props => {
     isEditCustomer
   } = props
   const { step } = useContext(EntitlementsStore)
-  // const step = 1
+  // const step = 2
   const classes = useStyles()
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
@@ -71,7 +71,7 @@ const Steps = props => {
       )
     case 3:
       return (
-        <EditEntitlements
+        <SuccessEntitlements
           handleClose={props.handleClose}
           store={props.store}
           isCreateSubaccount={props.isCreateSubaccount}

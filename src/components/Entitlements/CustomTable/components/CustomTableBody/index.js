@@ -14,7 +14,8 @@ const CustomTableBody = ({
   columns,
   handleClick,
   selected,
-  isFullVersion
+  isFullVersion,
+  rowsColor
 }) => {
   console.log(selected, 'selected')
   const rows = []
@@ -30,7 +31,9 @@ const CustomTableBody = ({
     rows.push(
       <TableRow
         hover
-        className={classes.tableRow}
+        className={
+          rowsColor ? classes.tableRow : classes.tableRowWithoutBackground
+        }
         tabIndex={-1}
         key={i}
         onClick={() => handleClick(i)}
