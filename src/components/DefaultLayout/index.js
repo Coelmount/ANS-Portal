@@ -77,7 +77,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
 
   const customerNavLinks = [
     {
-      link: `/customers/${match.customerId}/access-numbers`,
+      link: `/customers/${match.customerId}/access_numbers`,
       text: t('access_numbers'),
       icon: PhoneOutlinedIcon
     },

@@ -25,7 +25,7 @@ const SuccesPage = props => {
   const classes = useStyles()
 
   const goIntoCustomerAccount = () => {
-    history.push(`/customers/${createdCustomer.tenantId}/access-numbers`)
+    history.push(`/customers/${createdCustomer.tenantId}/access_numbers`)
   }
 
   const goToCustomerList = () => {

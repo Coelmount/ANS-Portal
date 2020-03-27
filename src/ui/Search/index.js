@@ -89,7 +89,7 @@ const Search = observer(({ t }) => {
                     <TableRow className={classes.bodyRow}>
                       <TableCell className={classes.bodyCell}>
                         <Link
-                          to={`/customers/${searchResult.tenantId}/access-numbers`}
+                          to={`/customers/${searchResult.tenantId}/access_numbers`}
                           className={classes.link}
                         >
                           {searchResult.tenantId}

@@ -44,7 +44,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
     if (index === 1) {
       return (
         <Link
-          to={`/customers/${breadcrumb}/access-numbers`}
+          to={`/customers/${breadcrumb}/access_numbers`}
           className={classes.link}
           key={breadcrumb}
         >
@@ -83,7 +83,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
     if (index === 0) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/access-numbers`}
+          to={`/customers/${match.params.customerId}/access_numbers`}
           className={classes.link}
           key={breadcrumb}
         >

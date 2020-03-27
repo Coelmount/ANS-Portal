@@ -29,7 +29,7 @@ const SuccesPage = props => {
       )
       return
     }
-    history.push(`/customers/${createdCustomerStore.tenantId}/access-numbers`)
+    history.push(`/customers/${createdCustomerStore.tenantId}/access_numbers`)
   }
 
   return (

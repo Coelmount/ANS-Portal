@@ -25,7 +25,7 @@ export class AuthStore {
             )
             return
           }
-          history.push(`/customers/${res.data.ids.tenant_id}/access-numbers`)
+          history.push(`/customers/${res.data.ids.tenant_id}/access_numbers`)
         }
       }
     })
