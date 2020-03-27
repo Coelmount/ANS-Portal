@@ -6,7 +6,17 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import { Typography } from '@material-ui/core'
+
+import SearchIcon from '@material-ui/icons/Search'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+
 import Checkbox from 'components/Checkbox'
+import Pagination from '../Pagination'
+
+const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
 
 const CustomTableHead = ({
   classes,
@@ -16,6 +26,8 @@ const CustomTableHead = ({
   columns,
   handleSelectAllClick,
   isFullVersion,
+  rowsPerPage,
+  setRowsPerPage,
   t
 }) => {
   const createSortHandler = property => event => {
@@ -25,19 +37,20 @@ const CustomTableHead = ({
   return (
     <TableHead className={classes.thead}>
       <TableRow>
-        <TableCell>
+        <TableCell className={classes.checkboxHead}>
           {isFullVersion && (
             <Checkbox
               // indeterminate={numSelected > 0 && numSelected < rowCount}
               // checked={rowCount > 0 && numSelected === rowCount}
               onChange={handleSelectAllClick}
+              className={classes.checkbox}
             />
           )}
         </TableCell>
         {columns.map(({ id, label, extraHeadProps }) => (
           <TableCell
             key={id}
-            align={'left'}
+            // align={'left'}
             sortDirection={orderBy === id ? order : false}
             className={classes.headCellTitle}
             {...extraHeadProps}
@@ -46,6 +59,7 @@ const CustomTableHead = ({
               active={orderBy === id}
               direction={orderBy === id ? order : 'asc'}
               onClick={createSortHandler(id)}
+              className={classes.sortLabel}
             >
               <p>{t(label)}</p>
               {orderBy === id && (
@@ -56,6 +70,25 @@ const CustomTableHead = ({
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell className={classes.paginationHeadCell}>
+          <div className={classes.perPageWrap}>
+            <Select
+              value={rowsPerPage}
+              onChange={e => setRowsPerPage(e.target.value)}
+              IconComponent={ArrowDropDownIcon}
+              className={classes.perPageSelect}
+            >
+              {rowsPerPageNumbers.map(number => (
+                <MenuItem value={number} key={`${number}`}>
+                  {number}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography className={classes.perPageText}>
+              {t('per_page')}
+            </Typography>
+          </div>
+        </TableCell>
       </TableRow>
     </TableHead>
   )

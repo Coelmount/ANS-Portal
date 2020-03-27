@@ -37,7 +37,7 @@ const CustomTableBody = ({
       >
         {isFullVersion && selected && selected.includes(i) ? (
           <TableCell>
-            <Checkbox checked />
+            <Checkbox className={classes.checkboxCell} checked />
           </TableCell>
         ) : (
           <IdCell cellValue={i} />
@@ -51,12 +51,14 @@ const CustomTableBody = ({
               id={labelId}
               scope='row'
               key={column.id}
+              className={classes.dataCells}
             >
               {(column.getCellData && column.getCellData(row)) ||
                 row[column.id]}
             </TableCell>
           )
         })}
+        <TableCell></TableCell>
       </TableRow>
     )
   }

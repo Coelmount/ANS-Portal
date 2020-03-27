@@ -12,15 +12,14 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 24px'
+    padding: '25px 44px'
   },
   closeButton: {
     position: 'absolute',
     right: '10px'
   },
   stepStyles: {
-    marginTop: '32px',
-    marginLeft: 'calc(40px - 24px)',
+    marginRight: 24,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
@@ -295,12 +294,36 @@ const useStyles = makeStyles(theme => ({
   bodyFirstCell: {
     paddingLeft: '37px'
   },
-  headCellTitle: {
+  checkboxHead: {
     paddingBottom: 0,
     paddingTop: 0,
+    paddingLeft: 44
+  },
+  headCellTitle: {
+    padding: 0,
     '& span': {
       fontWeight: 600,
-      fontSize: 16
+      fontSize: 16,
+      '& > p': {
+        height: 11
+      },
+      '& < svg': {
+        marginTop: 11
+      }
+    }
+  },
+  paginationHeadCell: {
+    padding: 0,
+    paddingBottom: 8,
+    '& span': {
+      fontWeight: 600,
+      fontSize: 16,
+      '& > p': {
+        height: 11
+      },
+      '& < svg': {
+        marginTop: 11
+      }
     }
   },
   tbody: {
@@ -336,9 +359,14 @@ const useStyles = makeStyles(theme => ({
     }
   },
   tableRow: {
+    height: 44,
     borderLeft: '5px solid transparent',
+    '&:first-child': {
+      borderTop: `2px solid ${theme.palette.primary.main}`
+    },
     '& > td': {
-      padding: '10px 16px'
+      padding: '10px 16px',
+      paddingLeft: 44
     },
     '&:nth-child(2n)': {
       backgroundColor: theme.palette.active.main,
@@ -359,8 +387,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     background: theme.palette.active.main,
     alignItems: 'center',
-    margin: '32px 34px 27px 0px',
-    float: 'right'
+    justifyContent: ' center',
+    marginTop: 40
   },
   paginationIconBlock: {
     width: 30,
@@ -381,7 +409,7 @@ const useStyles = makeStyles(theme => ({
   toolbarWrap: {
     display: 'flex',
     background: theme.palette.active.main,
-    justifyContent: 'space-between',
+    // justifyContent: 'center',
     alignItems: 'center',
     height: 98,
     paddingLeft: '9.4%',
@@ -389,7 +417,8 @@ const useStyles = makeStyles(theme => ({
   },
   searchWrap: {
     position: 'relative',
-    marginRight: 20
+    marginRight: 20,
+    marginLeft: 70
   },
   searchIcon: {
     position: 'absolute',
@@ -400,6 +429,7 @@ const useStyles = makeStyles(theme => ({
   perPageWrap: {
     display: 'flex',
     alignItems: 'center',
+    marginRight: 10,
     '& .MuiInput-underline:before': {
       display: 'none'
     },
@@ -464,6 +494,33 @@ const useStyles = makeStyles(theme => ({
   },
   totalInput: {
     width: 50
+  },
+  subtitle: {
+    display: 'flex',
+    marginTop: 29,
+    marginLeft: 44,
+    alignItems: 'center'
+  },
+  setEntitlementsTitle: {
+    fontSize: 18,
+    fontWeight: 500,
+    fontFamily: 'MTN'
+  },
+  checkbox: {
+    paddingBottom: 0
+  },
+  sortLabel: {
+    '& svg': {
+      marginTop: 10
+    }
+  },
+  dataCells: {
+    padding: 0
+  },
+  checkboxCell: {
+    // background: 'red',
+    padding: 0,
+    marginLeft: 6
   }
 }))
 

@@ -36,22 +36,6 @@ const CustomTableToolbar = props => {
           <SearchIcon className={classes.searchIcon} />
         </div>
       )}
-
-      <div className={classes.perPageWrap}>
-        <Select
-          value={rowsPerPage}
-          onChange={e => setRowsPerPage(e.target.value)}
-          IconComponent={ArrowDropDownIcon}
-          className={classes.perPageSelect}
-        >
-          {rowsPerPageNumbers.map(number => (
-            <MenuItem value={number} key={`${number}`}>
-              {number}
-            </MenuItem>
-          ))}
-        </Select>
-        <Typography className={classes.perPageText}>{t('per_page')}</Typography>
-      </div>
     </div>
   )
 }

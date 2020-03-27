@@ -103,8 +103,8 @@ const CustomTable = ({
     <Fragment>
       <CustomTableToolbar
         classes={classes}
-        rowsPerPage={rowsPerPage}
-        setRowsPerPage={setRowsPerPage}
+        // rowsPerPage={rowsPerPage}
+        // setRowsPerPage={setRowsPerPage}
         setQuery={setQuery}
         isFullVersion={isFullVersion}
       />
@@ -126,6 +126,8 @@ const CustomTable = ({
               columns={columns}
               handleSelectAllClick={handleSelectAllClick}
               isFullVersion={isFullVersion}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
             />
             {list && list.length ? (
               <CustomTableBody

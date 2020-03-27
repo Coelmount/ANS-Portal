@@ -75,11 +75,13 @@ const SetEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <Box>
+        <Box className={classes.subtitle}>
           <Typography className={classes.stepStyles}>{`${t(
             'step'
           )} 1/2`}</Typography>
-          <Typography>{t('set_entitlements')}</Typography>
+          <Typography className={classes.setEntitlementsTitle}>
+            {t('set_entitlements')}
+          </Typography>
         </Box>
         <CustomTable
           withSearch={true}
