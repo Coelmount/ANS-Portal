@@ -38,7 +38,7 @@ const userComponents = [
     component: <Search />
   },
   {
-    path: '/customers/:customerId/access-numbers',
+    path: '/customers/:customerId/access_numbers',
     component: <AccessNumbers />
   },
   {
@@ -127,7 +127,7 @@ const UserPages = () => {
       <Redirect path='/' to={'/customers'} exact />
       <Redirect
         path='/customers/:customerId/'
-        to={'/customers/:customerId/access-numbers'}
+        to={'/customers/:customerId/access_numbers'}
         exact
       />
       <Redirect
