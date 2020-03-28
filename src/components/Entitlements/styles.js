@@ -7,8 +7,8 @@ const useStyles = makeStyles(theme => ({
   title: {
     '& > *': {
       fontFamily: 'MTN',
-      fontWeight: 500,
-      fontSize: '30px',
+      fontWeight: 600,
+      fontSize: '24px',
       color: theme.palette.black
     },
     height: '90px',
@@ -366,6 +366,7 @@ const useStyles = makeStyles(theme => ({
       borderTop: `2px solid ${theme.palette.primary.main}`
     },
     '& > td': {
+      width: 50,
       padding: '10px 16px',
       paddingLeft: 44
     },
@@ -391,7 +392,7 @@ const useStyles = makeStyles(theme => ({
       borderTop: `2px solid ${theme.palette.primary.main}`
     },
     '& > td': {
-      padding: '10px 16px',
+      padding: '10px 42px',
       paddingLeft: 44
     }
   },
@@ -424,13 +425,13 @@ const useStyles = makeStyles(theme => ({
     // justifyContent: 'center',
     alignItems: 'center',
     height: 98,
-    paddingLeft: '9.4%',
-    paddingRight: 55
+    paddingLeft: 68,
+    paddingRight: 33
   },
   searchWrap: {
     position: 'relative',
     marginRight: 20,
-    marginLeft: 70
+    marginLeft: 38.4
   },
   searchIcon: {
     position: 'absolute',
@@ -441,7 +442,7 @@ const useStyles = makeStyles(theme => ({
   perPageWrap: {
     display: 'flex',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 40,
     '& .MuiInput-underline:before': {
       display: 'none'
     },
@@ -453,7 +454,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   perPageText: {
-    fontSize: 14
+    fontSize: 14,
+    whiteSpace: 'nowrap'
   },
   perPageSelect: {
     display: 'flex',
@@ -488,7 +490,10 @@ const useStyles = makeStyles(theme => ({
     padding: '0px 19px',
     border: 'none',
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
-    borderRadius: 3
+    borderRadius: 3,
+    '&:focus': {
+      outline: `2px solid ${theme.palette.primary.main}`
+    }
   },
   headCellContainer: {
     display: 'flex',

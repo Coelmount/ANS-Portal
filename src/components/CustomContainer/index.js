@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(theme => ({
   wrap: {
     background: 'white',
-    padding: '0px 33px 0px 66px',
+    padding: '0px 33px 0px 68px',
     maxWidth: '1600px',
     [theme.breakpoints.down('xs')]: {
       paddingLeft: 26

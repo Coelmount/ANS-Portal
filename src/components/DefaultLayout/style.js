@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
     // paddingLeft: 32,
     paddingTop: 14,
     paddingBottom: 14,
-    paddingLeft: 15,
+    paddingLeft: 13,
     '& .icon': {
       display: 'flex',
       justifyContent: 'center',
@@ -142,7 +142,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     alignItems: 'center',
-    paddingLeft: 55,
+    paddingLeft: 53,
     '& > svg': {
       marginLeft: -3,
       marginRight: 8
@@ -155,7 +155,7 @@ const useStyles = makeStyles(theme => ({
     // }
   },
   secondLevelTitleWithIcon: {
-    paddingLeft: 30,
+    paddingLeft: 28,
     display: 'flex',
     width: '100%',
     alignItems: 'center',
@@ -185,7 +185,7 @@ const useStyles = makeStyles(theme => ({
   },
   thirdLevelItemText: {
     marginTop: 0,
-    marginLeft: 54,
+    marginLeft: 53,
     '& span': {
       fontFamily: 'MTN',
       fontSize: 14
@@ -193,7 +193,7 @@ const useStyles = makeStyles(theme => ({
   },
   activeThirdLevelItemText: {
     marginTop: 0,
-    marginLeft: 54,
+    marginLeft: 53,
     '& span': {
       fontFamily: 'MTN',
       fontSize: 14,

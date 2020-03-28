@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
     flex: '1 1 100%',
     fontFamily: 'MTN',
     fontStyle: 'normal',
-    fontWeight: 500,
-    fontSize: 30,
+    fontWeight: 600,
+    fontSize: 24,
     letterSpacing: '0.02em',
     color: theme.palette.black
   },
@@ -56,7 +56,10 @@ const useStyles = makeStyles(theme => ({
     padding: '0px 19px',
     border: 'none',
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
-    borderRadius: 3
+    borderRadius: 3,
+    '&:focus': {
+      outline: `2px solid ${theme.palette.primary.main}`
+    }
   },
   searchIconWrap: {
     position: 'absolute',

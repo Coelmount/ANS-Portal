@@ -193,7 +193,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     background: theme.palette.active.main,
     alignItems: 'center',
-    margin: '32px 34px 27px 0px',
+    margin: '32px 23px 27px 0px',
     float: 'right'
   },
   paginationIconBlock: {
@@ -218,8 +218,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 98,
-    paddingLeft: '13%',
-    paddingRight: 41
+    paddingLeft: 68,
+    paddingRight: 33
   },
   searchWrap: {
     position: 'relative',
@@ -280,7 +280,10 @@ const useStyles = makeStyles(theme => ({
     padding: '0px 19px',
     border: 'none',
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
-    borderRadius: 3
+    borderRadius: 3,
+    '&:focus': {
+      outline: `2px solid ${theme.palette.primary.main}`
+    }
   },
   headCellContainer: {
     display: 'flex',

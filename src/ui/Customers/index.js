@@ -126,7 +126,7 @@ const CustomersTable = observer(({ t }) => {
   }, [classes.deleteCell, classes.deleteCustomerIcon, classes.link])
 
   const titleData = {
-    mainText: t('ans_customers'),
+    mainText: t('customers'),
     iconCapture: t('add_customer'),
     Icon: <PersonAddOutlinedIcon />
   }
