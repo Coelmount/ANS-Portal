@@ -1,4 +1,4 @@
-import React, { useContext, useState, Fragment } from 'react'
+import React, { useContext, useState, Fragment, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
@@ -23,7 +23,7 @@ import useStyles from './styles'
 
 const columnsArr = ['customer_id', 'subaccount_id', 'ans_instance']
 
-const Search = observer(({ t }) => {
+const Search = ({ t }) => {
   const classes = useStyles()
   const {
     getSearchResult,
@@ -33,11 +33,17 @@ const Search = observer(({ t }) => {
     isLoading
   } = useContext(SearchStore)
 
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState(null)
+  const [searchRes, setSearchRes] = useState(null)
 
   const handleSearchClick = () => {
     getSearchResult(searchQuery)
   }
+
+  useEffect(() => {
+    return () => getSearchResult(null)
+  }, [])
+
   return (
     <Box className={classes.root}>
       <Paper className={classes.paper}>
@@ -126,6 +132,6 @@ const Search = observer(({ t }) => {
       </Paper>
     </Box>
   )
-})
+}
 
-export default withNamespaces()(Search)
+export default withNamespaces()(observer(Search))
