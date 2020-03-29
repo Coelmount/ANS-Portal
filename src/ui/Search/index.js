@@ -34,7 +34,6 @@ const Search = ({ t }) => {
   } = useContext(SearchStore)
 
   const [searchQuery, setSearchQuery] = useState(null)
-  const [searchRes, setSearchRes] = useState(null)
 
   const handleSearchClick = () => {
     getSearchResult(searchQuery)
