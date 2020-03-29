@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     flex: '1 1 100%',
     fontFamily: 'MTN',
     fontStyle: 'normal',
-    fontWeight: 600,
+    fontWeight: 700,
     fontSize: 24,
     letterSpacing: '0.02em',
     color: theme.palette.black

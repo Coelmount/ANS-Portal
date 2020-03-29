@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
   title: {
     '& > *': {
       fontFamily: 'MTN',
-      fontWeight: 600,
+      fontWeight: 700,
       fontSize: '24px',
       color: theme.palette.black
     },
