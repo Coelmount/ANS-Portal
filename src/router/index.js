@@ -117,7 +117,7 @@ const UserPages = () => {
   useEffect(() => {
     getLocale(localStorage.getItem('i18nextLng'))
   }, [getLocale, lang])
-  return !isLoadingLang ? (
+  return (
     <Switch>
       {userComponents.map(el => (
         <Route path={el.path} key={el.path} exact>
@@ -137,8 +137,6 @@ const UserPages = () => {
       />
       <Route path='*' component={NotFound} />
     </Switch>
-  ) : (
-    <Loading />
   )
 }
 

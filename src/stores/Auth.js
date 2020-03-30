@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 import axios from 'axios'
-import { BASE_URL } from 'utils/axios'
+import { LOGIN_URL } from 'utils/axios'
 
 export class AuthStore {
   token = localStorage.getItem('token')
@@ -12,7 +12,7 @@ export class AuthStore {
     : false
 
   postLogin = (data, history) => {
-    axios.post(`${BASE_URL}/auth/login`, data).then(res => {
+    axios.post(`${LOGIN_URL}/auth/login`, data).then(res => {
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token)
         this.token = res.data.token
@@ -33,7 +33,7 @@ export class AuthStore {
 
   getLocal = () => {
     axios
-      .get(`${BASE_URL}/system/users/local`, {
+      .get(`${LOGIN_URL}/system/users/local`, {
         headers: { Authorization: `Bearer ${this.token}` }
       })
       .then(res => {

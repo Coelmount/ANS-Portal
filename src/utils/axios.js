@@ -1,12 +1,13 @@
 import axios from 'axios'
 
-export const BASE_URL = 'https://196.30.50.142/api/v01'
-// export const BASE_URL = 'https://yaoh1.bxl.netaxis.be/api/v01/custom/ans'
-
-const PROXY = '/p1'
+// export const BASE_URL = 'https://196.30.50.142/api/v01'
+export const BASE_URL = 'https://yaoh1.bxl.netaxis.be/api/v01'
+export const LOGIN_URL = 'https://yaoh1.bxl.netaxis.be/api/v01'
+// const PROXY = '/p1'
+// const PROXY = '/custom/ans'
 
 const instance = axios.create({
-  baseURL: `${BASE_URL}${PROXY}`,
+  baseURL: `${BASE_URL}`,
   headers: { Authorization: `Bearer *token*` }
 })
 

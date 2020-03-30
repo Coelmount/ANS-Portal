@@ -30,7 +30,7 @@ export class CustomersStore {
 
   getCustomers = () => {
     this.isLoadingCustomers = true
-    axios.get(`/tenants/`).then(res => {
+    axios.get(`/p1/tenants`).then(res => {
       if (res.status === 200) {
         this.rows = res.data.tenants
         this.isLoadingCustomers = false
@@ -42,7 +42,7 @@ export class CustomersStore {
 
   getCustomer = id => {
     this.isLoadingCustomer = true
-    axios.get(`/tenants/${id}/`).then(res => {
+    axios.get(`/p1/tenants/${id}/`).then(res => {
       if (res.status === 200) {
         merge(this.customer, res.data)
         this.isLoadingCustomer = false
