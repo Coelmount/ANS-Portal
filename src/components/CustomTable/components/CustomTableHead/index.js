@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { withNamespaces } from 'react-i18next'
 
@@ -6,6 +6,8 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
+import Box from '@material-ui/core/Box'
+import { Typography } from '@material-ui/core'
 
 const CustomTableHead = ({
   classes,
@@ -23,28 +25,52 @@ const CustomTableHead = ({
     <TableHead className={classes.thead}>
       <TableRow>
         <TableCell></TableCell>
-        {columns.map(({ id, label, extraHeadProps }) => (
-          <TableCell
-            key={id}
-            align={'left'}
-            sortDirection={orderBy === id ? order : false}
-            className={classes.headCellTitle}
-            {...extraHeadProps}
-          >
-            <TableSortLabel
-              active={orderBy === id}
-              direction={orderBy === id ? order : 'asc'}
-              onClick={createSortHandler(id)}
-            >
-              <p>{t(label)}</p>
-              {orderBy === id && (
-                <p className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </p>
-              )}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+        {columns.map(
+          ({ id, label, extraHeadProps, isSortAvailable, headIcon }) => {
+            console.log(headIcon, 'headIcon')
+            return (
+              <TableCell
+                key={id}
+                align={'left'}
+                sortDirection={orderBy === id ? order : false}
+                className={classes.headCellTitle}
+                // component={'th'}
+                {...extraHeadProps}
+              >
+                {headIcon ? (
+                  <Box className={classes.headCellWithCustomButtons}>
+                    <Typography>{t(`${label}`)}</Typography>
+                    <Box className={classes.customHeadIconWrap}>
+                      {headIcon()}
+                    </Box>
+                  </Box>
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === id && isSortAvailable !== false}
+                    direction={orderBy === id ? order : 'asc'}
+                    onClick={createSortHandler(id)}
+                    className={isSortAvailable === false && classes.displayNone}
+                  >
+                    <p>{t(label)}</p>
+                    {orderBy === id && (
+                      <p
+                        className={
+                          isSortAvailable === false
+                            ? classes.displayNone
+                            : classes.visuallyHidden
+                        }
+                      >
+                        {order === 'desc'
+                          ? 'sorted descending'
+                          : 'sorted ascending'}
+                      </p>
+                    )}
+                  </TableSortLabel>
+                )}
+              </TableCell>
+            )
+          }
+        )}
       </TableRow>
     </TableHead>
   )

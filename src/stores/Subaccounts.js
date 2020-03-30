@@ -27,7 +27,7 @@ export class SubaccountsStore {
 
   getSubaccounts = id => {
     this.isLoadingSubaccounts = true
-    axios.get(`/tenants/${id}/groups`).then(res => {
+    axios.get(`/p1/tenants/${id}/groups`).then(res => {
       if (res.status === 200) {
         this.rows = res.data.groups
         this.isLoadingSubaccounts = false

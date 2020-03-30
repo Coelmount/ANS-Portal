@@ -73,6 +73,7 @@ const SubaccountsTable = observer(({ t }) => {
         className: classes.deleteCell,
         align: 'right'
       },
+      isSortAvailable: false,
       getCellData: row => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.groupId, row.groupName)}

@@ -122,6 +122,9 @@ const useStyles = makeStyles(theme => ({
     top: 20,
     width: 1
   },
+  displayNone: {
+    display: 'none'
+  },
   bodyFirstCell: {
     paddingLeft: '37px'
   },
@@ -294,6 +297,24 @@ const useStyles = makeStyles(theme => ({
         top: 16
       }
     }
+  },
+  headCellWithCustomButtons: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  assignedDoneIcon: {
+    color: theme.palette.active.blue
+  },
+  customHeadIconWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
+    height: 30,
+    marginLeft: 11,
+    background: 'white',
+    borderRadius: 100,
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)'
   }
 }))
 

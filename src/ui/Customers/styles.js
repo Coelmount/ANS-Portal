@@ -122,6 +122,9 @@ const useStyles = makeStyles(theme => ({
     top: 20,
     width: 1
   },
+  displayNone: {
+    display: 'none'
+  },
   bodyFirstCell: {
     paddingLeft: '37px'
   },

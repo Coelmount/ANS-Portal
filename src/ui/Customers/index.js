@@ -115,6 +115,7 @@ const CustomersTable = observer(({ t }) => {
           className: classes.deleteCell,
           align: 'right'
         },
+        isSortAvailable: false,
         getCellData: row => (
           <CloseOutlinedIcon
             onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
