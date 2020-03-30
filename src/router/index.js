@@ -9,6 +9,7 @@ import Auth from 'ui/Auth'
 import Customers from 'ui/Customers'
 import Search from 'ui/Search'
 import AccessNumbers from 'ui/Customer/AccessNumbers'
+import AccessNumbersItem from 'ui/Customer/AccessNumbersItem'
 import Subaccounts from 'ui/Customer/Subaccounts/'
 import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
@@ -40,6 +41,10 @@ const userComponents = [
   {
     path: '/customers/:customerId/access_numbers',
     component: <AccessNumbers />
+  },
+  {
+    path: '/customers/:customerId/access_numbers/:numbersId',
+    component: <AccessNumbersItem />
   },
   {
     path: '/customers/:customerId/subaccounts',

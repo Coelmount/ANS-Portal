@@ -19,7 +19,8 @@ import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
-import CustomTable from 'components/CustomTable'
+// import CustomTable from 'components/CustomTable'
+import CustomTable from 'components/Entitlements/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
@@ -30,61 +31,50 @@ import { useEffect } from 'react'
 
 const rows = [
   {
-    country: 'Angola',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70'
+    phone_numbers: '+24440300011',
+    subaccount_id: '10440_01',
+    status: 'in use'
   },
   {
-    country: 'South Africa',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70'
+    phone_numbers: '+24440300012',
+    subaccount_id: '10440_01',
+    status: 'in use'
   },
   {
-    country: 'Angola',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70'
+    phone_numbers: '+24440300013',
+    subaccount_id: '10440_01',
+    status: 'in use'
   },
   {
-    country: 'South Africa',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70'
+    phone_numbers: '+24440300014',
+    subaccount_id: '10440_01',
+    status: 'in use'
   },
   {
-    country: 'Angola',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70'
+    phone_numbers: '+24440300015',
+    subaccount_id: '10440_01',
+    status: 'available'
   },
   {
-    country: 'South Africa',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70'
+    phone_numbers: '+24440300016',
+    subaccount_id: '10440_01',
+    status: 'available'
   }
 ]
 
-const AccessNumbers = ({ t }) => {
+const AccessNumbersItem = ({ t }) => {
   const match = useParams()
+  console.log(match, 'match')
   const classes = useStyles()
 
-  const { getEntitlements, postEntitlements, entitlements } = useContext(
-    EntitlementsStore
-  )
+  // const { getEntitlements, postEntitlements, entitlements } = useContext(
+  //   EntitlementsStore
+  // )
 
   useEffect(() => {
     // postEntitlements()
-    getEntitlements()
-  }, [getEntitlements, postEntitlements])
+    // getEntitlements()
+  }, [])
 
   const handleOpenDeleteModal = (id, name) => {
     console.log('delete')
@@ -93,49 +83,23 @@ const AccessNumbers = ({ t }) => {
   }
 
   const titleData = {
-    mainText: t('access_numbers'),
-    iconCapture: t('add_entitlements'),
+    mainText: match.numbersId,
+    iconCapture: t('add_numbers'),
     Icon: <AddOutlinedIcon />
   }
 
   const columns = [
     {
-      id: 'name',
-      label: 'country',
-      getCellData: row => <Typography>{row.name.split('-')[0]}</Typography>
+      id: 'phone_numbers',
+      label: 'phone_numbers'
     },
     {
-      id: 'number_type',
-      label: 'type'
+      id: 'subaccount_id',
+      label: 'subaccount_id'
     },
     {
-      id: 'service_capabilities',
-      label: 'service'
-    },
-    {
-      id: 'assigned',
-      label: 'assigned',
-      headIcon: () => <DoneOutlinedIcon className={classes.assignedDoneIcon} />
-    },
-    {
-      id: 'entitled',
-      label: 'entitled',
-      headIcon: () => <img src={editSvg} alt='edit icon' />
-    },
-    {
-      id: 'see_numbers',
-      isSortAvailable: false,
-      getCellData: row => (
-        <Link
-          to={`/customers/${match.customerId}/access_numbers/${row.name.replace(
-            /\s/g,
-            ''
-          )}`}
-          className={classes.link}
-        >
-          {t('see_numbers')}
-        </Link>
-      )
+      id: 'status',
+      label: 'status'
     },
     {
       id: 'delete',
@@ -165,13 +129,21 @@ const AccessNumbers = ({ t }) => {
           />
         </CustomContainer>
         <CustomTable
+          isFullVersion={true}
+          rowsColor={true}
+          withFilters={true}
           classes={classes}
-          rows={entitlements}
+          columns={columns}
+          rows={rows}
+        />
+        {/* <CustomTable
+          classes={classes}
+          rows={rows}
           // isLoadingData={isLoadingCustomers}
           columns={columns}
           id='tenantId'
           name='name'
-        />
+        /> */}
         {/* {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}
@@ -202,4 +174,4 @@ const AccessNumbers = ({ t }) => {
   )
 }
 
-export default withNamespaces()(observer(AccessNumbers))
+export default withNamespaces()(observer(AccessNumbersItem))
