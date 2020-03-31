@@ -46,6 +46,7 @@ const CustomTable = ({
   columns,
   id,
   name,
+  showSearchBar,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -91,6 +92,7 @@ const CustomTable = ({
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
         setQuery={setQuery}
+        showSearchBar={showSearchBar}
       />
       {isLoadingData ? (
         <Loading />

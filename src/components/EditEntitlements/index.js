@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
+import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -12,7 +13,7 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import Input from 'components/Input'
-import CustomTable from './CustomTable'
+import CustomTable from 'components/CustomTable'
 
 import useStyles from './styles'
 
@@ -56,45 +57,55 @@ const ENTITLEMENTS = [
 ]
 
 const EditEntitlements = props => {
-  const { handleClose, t, store } = props
-  const { changeStep } = useContext(store)
+  const { t } = props
+  //const { changeStep } = useContext(store)
   const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
   const classes = useStyles()
 
   const columns = [
     {
       id: 'name',
-      label: 'entitlement'
+      label: 'entitlement',
+      isSortAvailable: false
     },
     {
       id: 'assigned',
       label: 'assigned',
       getCellData: row => (
         <Typography style={{ color: 'blue' }}>{row.assigned}</Typography>
-      )
+      ),
+      isSortAvailable: false,
+      titleClass: classes.totalHeader
     },
     {
       id: 'total',
       label: 'total',
+      titleClass: classes.totalHeader,
       getCellData: row => (
         <Box>
           <Input
+            type='number'
             value={row.total}
             className={classes.totalInput}
             variant='outlined'
           />
         </Box>
-      )
+      ),
+      isSortAvailable: false
     }
   ]
 
   return (
-    <React.Fragment>
+    <Dialog
+      open={props.open}
+      onClose={props.handleClose}
+      className={classes.modalDialog}
+    >
       <DialogTitle className={classes.title}>
         {t('edit_entitlements')}
         <IconButton
           aria-label='close'
-          onClick={handleClose}
+          onClick={props.handleClose}
           className={classes.closeButton}
         >
           <CloseIcon />
@@ -102,6 +113,7 @@ const EditEntitlements = props => {
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
         <CustomTable
+          showSearchBar={false}
           isFullVersion={false}
           classes={classes}
           columns={columns}
@@ -113,7 +125,7 @@ const EditEntitlements = props => {
           variant='outlined'
           color='primary'
           className={classes.backButton}
-          onClick={handleClose}
+          onClick={props.handleClose}
         >
           {t('cancel')}
         </Button>
@@ -121,12 +133,11 @@ const EditEntitlements = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(5)}
         >
           {t('save')}
         </Button>
       </DialogActions>
-    </React.Fragment>
+    </Dialog>
   )
 }
 
