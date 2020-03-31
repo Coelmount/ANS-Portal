@@ -169,8 +169,8 @@ const AccessNumbers = ({ t }) => {
           rows={entitlements}
           // isLoadingData={isLoadingCustomers}
           columns={columns}
-          id='tenantId'
-          name='name'
+          id='name'
+          name='number_type'
         />
         {/* {isDeleteModalOpen && (
           <DeleteModal
