@@ -53,10 +53,14 @@ const ENTITLEMENTS = [
 ]
 
 const TotalEntitlements = ({ handleClose, t }) => {
-  const { changeStep } = useContext(EntitlementsStore)
-  const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
+  const {
+    changeStep,
+    selectedEntitlements,
+    updateTotalEntitlements,
+    totalEntitlements
+  } = useContext(EntitlementsStore)
+  console.log(totalEntitlements, 'totalEntitlements111')
   const classes = useStyles()
-
   const columns = [
     {
       id: 'name',
@@ -65,13 +69,20 @@ const TotalEntitlements = ({ handleClose, t }) => {
     {
       id: 'total',
       label: 'total',
-      getCellData: () => (
+      getCellData: row => (
         <Box>
-          <Input className={classes.totalInput} variant='outlined' />
+          <Input
+            onChange={e => updateTotalEntitlements(e.target.value, row.id)}
+            className={classes.totalInput}
+            variant='outlined'
+          />
         </Box>
       )
     }
   ]
+  const handleAddButton = () => {
+    // changeStep(3)
+  }
 
   return (
     <React.Fragment>
@@ -100,7 +111,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
           withFilters={false}
           classes={classes}
           columns={columns}
-          rows={entitlements}
+          rows={selectedEntitlements}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -117,7 +128,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(3)}
+          onClick={handleAddButton}
         >
           {t('add')}
         </Button>

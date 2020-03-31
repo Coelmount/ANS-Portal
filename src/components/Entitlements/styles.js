@@ -386,7 +386,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   tableRowWithoutBackground: {
-    height: 76,
+    height: 68,
     borderLeft: '5px solid transparent',
     '&:first-child': {
       borderTop: `2px solid ${theme.palette.primary.main}`
@@ -510,7 +510,10 @@ const useStyles = makeStyles(theme => ({
     }
   },
   totalInput: {
-    width: 50
+    width: 50,
+    '& > div': {
+      height: 50
+    }
   },
   subtitle: {
     display: 'flex',

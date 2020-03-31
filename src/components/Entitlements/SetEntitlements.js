@@ -17,38 +17,38 @@ import EntitlementsStore from 'stores/Entitlements'
 import useStyles from './styles'
 import { useEffect } from 'react'
 
-const ENTITLEMENTS = [
-  {
-    id: 1,
-    name: 'fafa',
-    total: 5
-  },
-  {
-    id: 2,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10
-  },
-  {
-    id: 3,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3
-  },
-  {
-    id: 4,
-    name: 'Angola - GEO - basic',
-    total: 80
-  },
-  {
-    id: 5,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10
-  },
-  {
-    id: 6,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3
-  }
-]
+// const ENTITLEMENTS = [
+//   {
+//     id: 1,
+//     name: 'fafa',
+//     total: 5
+//   },
+//   {
+//     id: 2,
+//     name: 'South Africa - GEO - ANS basic',
+//     total: 10
+//   },
+//   {
+//     id: 3,
+//     name: 'South Africa - GEO - ANS advanced',
+//     total: 3
+//   },
+//   {
+//     id: 4,
+//     name: 'Angola - GEO - basic',
+//     total: 80
+//   },
+//   {
+//     id: 5,
+//     name: 'South Africa - GEO - ANS basic',
+//     total: 10
+//   },
+//   {
+//     id: 6,
+//     name: 'South Africa - GEO - ANS advanced',
+//     total: 3
+//   }
+// ]
 
 const columns = [
   {
@@ -59,8 +59,12 @@ const columns = [
 
 const SetEntitlements = props => {
   const { handleClose, t } = props
-  const { changeStep, getEntitlements } = useContext(EntitlementsStore)
-  const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
+  const {
+    changeStep,
+    getEntitlements,
+    entitlements,
+    isLoadingEntitlements
+  } = useContext(EntitlementsStore)
   const classes = useStyles()
 
   useEffect(() => {
@@ -95,6 +99,7 @@ const SetEntitlements = props => {
           classes={classes}
           columns={columns}
           rows={entitlements}
+          isLoadingData={isLoadingEntitlements}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>

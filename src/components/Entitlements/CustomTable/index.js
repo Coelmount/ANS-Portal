@@ -1,10 +1,18 @@
-import React, { useState, useMemo, Fragment } from 'react'
+import React, {
+  useState,
+  useMemo,
+  Fragment,
+  useEffect,
+  useContext
+} from 'react'
 import { withNamespaces } from 'react-i18next'
 import clamp from 'lodash/clamp'
 
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
 import Typography from '@material-ui/core/Typography'
+
+import EntitlementsStore from 'stores/Entitlements'
 
 import CustomTableToolbar from './components/CustomTableToolbar'
 import CustomTableHead from './components/CustomTableHead'
@@ -55,6 +63,12 @@ const CustomTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState([])
+
+  const { updateSelectedArr } = useContext(EntitlementsStore)
+
+  useEffect(() => {
+    updateSelectedArr(selected)
+  }, [selected, selected.length, updateSelectedArr])
 
   const handleClick = selectedRow => {
     if (selected.indexOf(selectedRow) === -1) {
