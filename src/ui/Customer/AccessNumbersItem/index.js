@@ -41,13 +41,13 @@ const rows = [
     status: 'in use'
   },
   {
-    phone_numbers: '+24440300013',
+    phone_numbers: '+24440300044',
     subaccount_id: '10440_01',
     status: 'in use'
   },
   {
     phone_numbers: '+24440300014',
-    subaccount_id: '10440_01',
+    subaccount_id: '10440abs1',
     status: 'in use'
   },
   {
@@ -135,6 +135,8 @@ const AccessNumbersItem = ({ t }) => {
           classes={classes}
           columns={columns}
           rows={rows}
+          id='phone_numbers'
+          name='subaccount_id'
         />
         {/* <CustomTable
           classes={classes}

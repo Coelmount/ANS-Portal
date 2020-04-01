@@ -47,6 +47,8 @@ const CustomTable = ({
   isFullVersion,
   rowsColor,
   withFilters,
+  id,
+  name,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -79,10 +81,14 @@ const CustomTable = ({
   const list = useMemo(() => {
     if (!rows) return []
     const filteredRows = query
-      ? rows.filter(row => row.name.toLowerCase().includes(query))
+      ? rows.filter(
+          row =>
+            row[id].toLowerCase().includes(query) ||
+            row[name].toLowerCase().includes(query)
+        )
       : rows
     return stableSort(filteredRows, getComparator(order, orderBy))
-  }, [query, rows, order, orderBy])
+  }, [rows, query, order, orderBy, id, name])
 
   const totalPages = useMemo(() => {
     const pages = Math.ceil(list.length / rowsPerPage)
