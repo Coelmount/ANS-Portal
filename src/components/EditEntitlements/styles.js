@@ -412,7 +412,8 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 22,
     position: 'absolute',
     left: '50%',
-    transform: 'translate(-50%, 0)'
+    transform: 'translate(-50%, 0)',
+    bottom: 110
   },
   paginationIconBlock: {
     width: 30,
