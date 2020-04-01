@@ -71,9 +71,7 @@ const EditEntitlements = props => {
     {
       id: 'assigned',
       label: 'assigned',
-      getCellData: row => (
-        <Typography style={{ color: 'blue' }}>{row.assigned}</Typography>
-      ),
+      getCellData: row => <Typography>{row.assigned}</Typography>,
       isSortAvailable: false,
       extraProps: {
         className: classes.textCenter

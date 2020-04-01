@@ -7,6 +7,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   textCenter: {
+    color: theme.palette.active.blue,
     textAlign: 'center'
   },
   title: {
