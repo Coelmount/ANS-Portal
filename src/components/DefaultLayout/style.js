@@ -38,7 +38,8 @@ const useStyles = makeStyles(theme => ({
     left: '50%',
     marginRight: '-50%',
     transform: 'translate(-50%, -40%)',
-    zIndex: 2
+    zIndex: 2,
+    cursor: 'pointer'
   },
   content: {
     flexGrow: 1,

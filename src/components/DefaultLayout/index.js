@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react'
 import { observer } from 'mobx-react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import { withNamespaces } from 'react-i18next'
 
@@ -57,6 +57,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
   const match = useParams()
   const theme = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const history = useHistory()
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -197,7 +198,12 @@ const DefaultLayout = ({ t, notFoundPage }) => {
       {notFoundPage ? (
         <nav className={classes.drawer} aria-label='mailbox folders'>
           <Box className='drawerHeader'>
-            <img src={logo} className={classes.logo} alt='mtn-logo' />
+            <img
+              src={logo}
+              className={classes.logo}
+              alt='mtn-logo'
+              onClick={() => history.push('/customers')}
+            />
           </Box>
         </nav>
       ) : (
