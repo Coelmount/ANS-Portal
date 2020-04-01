@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { withRouter } from 'react-router'
 import { Link, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
@@ -23,6 +23,7 @@ import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
+import EditEntitlements from 'components/EditEntitlements'
 
 import useStyles from './styles'
 import editSvg from 'source/images/svg/edit-blue.svg'
@@ -76,6 +77,7 @@ const rows = [
 const AccessNumbers = ({ t }) => {
   const match = useParams()
   const classes = useStyles()
+  const [showEditEntitlements, setShowEditEntitlements] = useState(true)
 
   const { getEntitlements, postEntitlements, entitlements } = useContext(
     EntitlementsStore
@@ -120,7 +122,8 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'entitled',
       label: 'entitled',
-      headIcon: () => <img src={editSvg} alt='edit icon' />
+      headIcon: () => <img src={editSvg} alt='edit icon' />,
+      onIconClick: () => setShowEditEntitlements(true)
     },
     {
       id: 'see_numbers',
@@ -172,6 +175,13 @@ const AccessNumbers = ({ t }) => {
           id='name'
           name='number_type'
         />
+        {showEditEntitlements && (
+          <EditEntitlements
+            handleClose={() => setShowEditEntitlements(false)}
+            open={showEditEntitlements}
+          />
+        )}
+
         {/* {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}

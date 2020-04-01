@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { withNamespaces } from 'react-i18next'
 
 import Select from '@material-ui/core/Select'
@@ -11,7 +12,14 @@ import { Typography } from '@material-ui/core'
 const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
 
 const CustomTableToolbar = props => {
-  const { classes, rowsPerPage, setRowsPerPage, setQuery, t } = props
+  const {
+    classes,
+    rowsPerPage,
+    setRowsPerPage,
+    setQuery,
+    t,
+    showSearchBar
+  } = props
 
   const handleSearch = e => {
     const value = e.target.value.toLowerCase()
@@ -19,14 +27,16 @@ const CustomTableToolbar = props => {
   }
   return (
     <div className={classes.toolbarWrap}>
-      <div className={classes.searchWrap}>
-        <input
-          className={classes.searchInput}
-          placeholder={t('search_input_placeholder')}
-          onChange={handleSearch}
-        />
-        <SearchIcon className={classes.searchIcon} />
-      </div>
+      {showSearchBar && (
+        <div className={classes.searchWrap}>
+          <input
+            className={classes.searchInput}
+            placeholder={t('search_input_placeholder')}
+            onChange={handleSearch}
+          />
+          <SearchIcon className={classes.searchIcon} />
+        </div>
+      )}
 
       <div className={classes.perPageWrap}>
         <Select
@@ -45,6 +55,14 @@ const CustomTableToolbar = props => {
       </div>
     </div>
   )
+}
+
+CustomTableToolbar.propTypes = {
+  showSearchBar: PropTypes.bool
+}
+
+CustomTableToolbar.defaultProps = {
+  showSearchBar: true
 }
 
 export default withNamespaces()(CustomTableToolbar)

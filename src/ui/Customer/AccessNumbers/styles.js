@@ -314,7 +314,8 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 11,
     background: 'white',
     borderRadius: 100,
-    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)'
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    cursor: 'pointer'
   }
 }))
 

@@ -26,8 +26,14 @@ const CustomTableHead = ({
       <TableRow>
         <TableCell></TableCell>
         {columns.map(
-          ({ id, label, extraHeadProps, isSortAvailable, headIcon }) => {
-            console.log(headIcon, 'headIcon')
+          ({
+            id,
+            label,
+            extraHeadProps,
+            isSortAvailable,
+            headIcon,
+            onIconClick
+          }) => {
             return (
               <TableCell
                 key={id}
@@ -40,7 +46,10 @@ const CustomTableHead = ({
                 {headIcon ? (
                   <Box className={classes.headCellWithCustomButtons}>
                     <Typography>{t(`${label}`)}</Typography>
-                    <Box className={classes.customHeadIconWrap}>
+                    <Box
+                      className={classes.customHeadIconWrap}
+                      onClick={onIconClick}
+                    >
                       {headIcon()}
                     </Box>
                   </Box>
@@ -48,8 +57,15 @@ const CustomTableHead = ({
                   <TableSortLabel
                     active={orderBy === id && isSortAvailable !== false}
                     direction={orderBy === id ? order : 'asc'}
-                    onClick={createSortHandler(id)}
+                    onClick={
+                      isSortAvailable === false
+                        ? () => {
+                            return
+                          }
+                        : createSortHandler(id)
+                    }
                     className={isSortAvailable === false && classes.displayNone}
+                    hideSortIcon={isSortAvailable === false}
                   >
                     <p>{t(label)}</p>
                     {orderBy === id && (
