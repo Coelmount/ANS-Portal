@@ -1,4 +1,3 @@
-import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
@@ -10,24 +9,29 @@ export class SearchStore {
   ansInstance = null
 
   getSearchResult = phoneNumber => {
-    this.isLoading = true
-    axios
-      .get(`/search/numbers/usages/${phoneNumber}/`)
-      .then(res => {
-        if (res.status === 200 && res.data.numbers === undefined) {
+    if (!phoneNumber) {
+      this.clearSearchResult()
+    } else {
+      this.isLoading = true
+
+      axios
+        .get(`/search/numbers/usages/${phoneNumber}/`)
+        .then(res => {
           this.searchResult = res.data
           this.emptyResult = null
           this.ansInstance = phoneNumber
-          this.isLoading = false
-        } else {
+        })
+        .catch(error => {
           this.emptyResult = true
+        })
+        .finally(() => {
           this.isLoading = false
-        }
-      })
-      .catch(error => {
-        this.emptyResult = true
-        this.isLoading = false
-      })
+        })
+    }
+  }
+
+  clearSearchResult = () => {
+    this.searchResult = null
   }
 }
 
@@ -36,7 +40,8 @@ decorate(SearchStore, {
   emptyResult: observable,
   ansInstance: observable,
   isLoading: observable,
-  getSearchResult: action
+  getSearchResult: action,
+  clearSearchResult: action
 })
 
-export default createContext(new SearchStore())
+export default new SearchStore()
