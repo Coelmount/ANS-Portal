@@ -63,14 +63,32 @@ const SetEntitlements = props => {
     changeStep,
     getEntitlements,
     entitlements,
-    isLoadingEntitlements
+    isLoadingEntitlements,
+    selectedEntitlements,
+    updateSelectedArr
   } = useContext(EntitlementsStore)
   const classes = useStyles()
+  const [selected, setSelected] = useState([])
+
+  useEffect(() => {
+    updateSelectedArr(selected)
+  }, [selected, selected.length, updateSelectedArr])
 
   useEffect(() => {
     getEntitlements()
   }, [getEntitlements])
+  console.log(selected, 'selected here')
 
+  const handleClick = selectedRow => {
+    if (selected.indexOf(selectedRow) === -1) {
+      setSelected(selected.concat(selectedRow))
+    } else {
+      const newArr = selected.filter(item => {
+        return item !== selectedRow
+      })
+      setSelected(newArr)
+    }
+  }
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -100,6 +118,9 @@ const SetEntitlements = props => {
           columns={columns}
           rows={entitlements}
           isLoadingData={isLoadingEntitlements}
+          setSelected={setSelected}
+          handleClick={handleClick}
+          selected={selected}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -116,6 +137,7 @@ const SetEntitlements = props => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
+          disabled={selected.length <= 0}
         >
           {t('next')}
         </Button>

@@ -1,5 +1,6 @@
 import { createContext } from 'react'
 import { decorate, observable, action, values } from 'mobx'
+import TotalNumbers from './TotalNumbers'
 
 import axios from 'utils/axios'
 
@@ -10,6 +11,9 @@ export class Entitlements {
   step = 1
   closeModal = false
   isLoadingEntitlements = true
+  isSending = false
+  newTotalNumbers = new TotalNumbers()
+  isTotalEmpty = true
 
   changeStep = step => {
     this.step = step
@@ -26,21 +30,38 @@ export class Entitlements {
   }
 
   updateTotalEntitlements = (value, entitlementId) => {
-    if (this.totalEntitlements.length > 0) {
-      this.totalEntitlements.forEach((entitlement, index) => {
-        if (entitlement.id === entitlementId) {
-          entitlement.total = value
-        } else if (
-          entitlement.id !== entitlementId &&
-          index === this.totalEntitlements.length - 1
-        ) {
-          this.totalEntitlements.push({ total: value, id: entitlementId })
-        }
-      })
-    } else this.totalEntitlements.push({ total: value, id: entitlementId })
-    console.log(this.totalEntitlements, 'arr mobx')
+    this.newTotalNumbers.add(value, entitlementId)
+    console.log(this.newTotalNumbers.arr, 'arr')
+    console.log(this.isTotalEmpty, 'this.isTotalEmpty')
+    if (this.newTotalNumbers.arr.length > 0) this.isTotalEmpty = false
+    // if (this.totalEntitlements.length > 0) {
+    //   this.totalEntitlements.forEach((entitlement, index) => {
+    //     if (entitlement.id === entitlementId) {
+    //       entitlement.total = value
+    //     } else if (
+    //       entitlement.id !== entitlementId &&
+    //       index === this.totalEntitlements.length - 1
+    //     ) {
+    //       this.totalEntitlements.push({ total: value, id: entitlementId })
+    //     }
+    //   })
+    // } else this.totalEntitlements.push({ total: value, id: entitlementId })
+    // console.log(this.totalEntitlements, 'arr mobx')
   }
 
+  postEntitlements = callback => {
+    console.log(this.newTotalNumbers.arr, 'post it')
+    this.isSending = true
+    axios.get(`/custom/ans/entitlement_types`).then(res => {
+      //mock request
+      if (res.status === 200) {
+        this.isSending = false
+        callback(3)
+      } else {
+        console.log(res, 'error')
+      }
+    })
+  }
   // postEntitlements = () => {
   //   // this.isLoadingCustomer = true
   //   axios
@@ -79,6 +100,8 @@ decorate(Entitlements, {
   entitlements: observable,
   isLoadingEntitlements: observable,
   totalEntitlements: observable,
+  isSending: observable,
+  isTotalEmpty: observable,
   changeStep: action,
   setDefaultEntitlementsValues: action,
   getEntitlements: action,

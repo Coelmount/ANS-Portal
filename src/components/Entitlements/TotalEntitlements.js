@@ -13,9 +13,11 @@ import Typography from '@material-ui/core/Typography'
 
 import Input from 'components/Input'
 import CustomTable from './CustomTable'
+import Loading from 'components/Loading'
 import EntitlementsStore from 'stores/Entitlements'
 
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
+// import TotalNumbers from 'stores/Entitlements/TotalNumbers'
 
 import useStyles from './styles'
 
@@ -57,9 +59,16 @@ const TotalEntitlements = ({ handleClose, t }) => {
     changeStep,
     selectedEntitlements,
     updateTotalEntitlements,
-    totalEntitlements
+    totalEntitlements,
+    postEntitlements,
+    isSending,
+    isTotalEmpty
   } = useContext(EntitlementsStore)
-  console.log(totalEntitlements, 'totalEntitlements111')
+  const [emptyFieldsCounter, setEmptyFieldsCounter] = useState(2)
+
+  const handleClick = () => {
+    console.log('11')
+  }
   const classes = useStyles()
   const columns = [
     {
@@ -69,70 +78,92 @@ const TotalEntitlements = ({ handleClose, t }) => {
     {
       id: 'total',
       label: 'total',
-      getCellData: row => (
-        <Box>
-          <Input
-            onChange={e => updateTotalEntitlements(e.target.value, row.id)}
-            className={classes.totalInput}
-            variant='outlined'
-          />
-        </Box>
-      )
+      getCellData: row => {
+        return (
+          <Box>
+            <Input
+              onChange={e => {
+                console.log(row, 'row')
+                updateTotalEntitlements(e.target.value, row.id)
+                if (e.target.value === '')
+                  setEmptyFieldsCounter(emptyFieldsCounter + 1)
+                else if (
+                  e.target.value.length === 1 &&
+                  emptyFieldsCounter >= e.target.value.length
+                )
+                  setEmptyFieldsCounter(emptyFieldsCounter - 1)
+              }}
+              className={classes.totalInput}
+              variant='outlined'
+            />
+          </Box>
+        )
+      }
     }
   ]
   const handleAddButton = () => {
     // changeStep(3)
+    postEntitlements(changeStep)
   }
 
   return (
     <React.Fragment>
-      <DialogTitle className={classes.title}>
-        {t('add_entitlements')}
-        <IconButton
-          aria-label='close'
-          onClick={handleClose}
-          className={classes.closeButton}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent className={classes.entitlementsDialogContent}>
-        <Box className={classes.secondStepSubtitle}>
-          <Typography className={classes.stepStyles}>{`${t(
-            'step'
-          )} 2/2`}</Typography>
-          <Typography className={classes.setEntitlementsTitle}>
-            {t('set_entitlements_limit')}
-          </Typography>
-        </Box>
-        <CustomTable
-          isFullVersion={false}
-          rowsColor={false}
-          withFilters={false}
-          classes={classes}
-          columns={columns}
-          rows={selectedEntitlements}
-        />
-      </DialogContent>
-      <DialogActions className={classes.dialogActionsSecond}>
-        <Button
-          variant='outlined'
-          color='primary'
-          className={classes.backButton}
-          onClick={() => changeStep(1)}
-        >
-          <ChevronLeft />
-          {t('back')}
-        </Button>
-        <Button
-          variant='contained'
-          color='primary'
-          className={classes.nextButton}
-          onClick={handleAddButton}
-        >
-          {t('add')}
-        </Button>
-      </DialogActions>
+      {isSending ? (
+        <Loading />
+      ) : (
+        <React.Fragment>
+          <DialogTitle className={classes.title}>
+            {t('add_entitlements')}
+            <IconButton
+              aria-label='close'
+              onClick={handleClose}
+              className={classes.closeButton}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent className={classes.entitlementsDialogContent}>
+            <Box className={classes.secondStepSubtitle}>
+              <Typography className={classes.stepStyles}>{`${t(
+                'step'
+              )} 2/2`}</Typography>
+              <Typography className={classes.setEntitlementsTitle}>
+                {t('set_entitlements_limit')}
+              </Typography>
+            </Box>
+            <CustomTable
+              isFullVersion={false}
+              rowsColor={false}
+              withFilters={false}
+              classes={classes}
+              columns={columns}
+              rows={selectedEntitlements}
+              // isLoadingData={isSending}
+              handleClick={handleClick}
+            />
+          </DialogContent>
+          <DialogActions className={classes.dialogActionsSecond}>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.backButton}
+              onClick={() => changeStep(1)}
+            >
+              <ChevronLeft />
+              {t('back')}
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.nextButton}
+              onClick={handleAddButton}
+              disabled={emptyFieldsCounter > 0}
+            >
+              {t('add')}
+            </Button>
+          </DialogActions>
+        </React.Fragment>
+      )}
     </React.Fragment>
   )
 }

@@ -55,6 +55,9 @@ const CustomTable = ({
   isFullVersion,
   rowsColor,
   withFilters,
+  setSelected,
+  handleClick,
+  selected,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -62,24 +65,24 @@ const CustomTable = ({
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
-  const [selected, setSelected] = useState([])
+  // const [selected, setSelected] = useState([])
 
-  const { updateSelectedArr } = useContext(EntitlementsStore)
+  // const { updateSelectedArr } = useContext(EntitlementsStore)
 
-  useEffect(() => {
-    updateSelectedArr(selected)
-  }, [selected, selected.length, updateSelectedArr])
+  // useEffect(() => {
+  //   updateSelectedArr(selected)
+  // }, [selected, selected.length, updateSelectedArr])
 
-  const handleClick = selectedRow => {
-    if (selected.indexOf(selectedRow) === -1) {
-      setSelected(selected.concat(selectedRow))
-    } else {
-      const newArr = selected.filter(item => {
-        return item !== selectedRow
-      })
-      setSelected(newArr)
-    }
-  }
+  // const handleClick = selectedRow => {
+  //   if (selected.indexOf(selectedRow) === -1) {
+  //     setSelected(selected.concat(selectedRow))
+  //   } else {
+  //     const newArr = selected.filter(item => {
+  //       return item !== selectedRow
+  //     })
+  //     setSelected(newArr)
+  //   }
+  // }
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
