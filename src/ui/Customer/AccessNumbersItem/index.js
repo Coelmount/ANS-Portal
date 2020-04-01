@@ -148,6 +148,8 @@ const AccessNumbersItem = ({ t }) => {
         /> */}
         {/* {isDeleteModalOpen && (
           <DeleteModal
+            action={t('to_delete')}
+            titleAction={t(`delete`)}
             classes={classes}
             open={isDeleteModalOpen}
             handleClose={handleCloseDeleteModal}

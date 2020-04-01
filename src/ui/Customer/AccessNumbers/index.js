@@ -31,46 +31,58 @@ import { useEffect } from 'react'
 
 const rows = [
   {
+    id: 1,
     country: 'Angola',
     type: 'geographic',
     service: 'basic',
     assigned: '10',
-    entitled: '70'
+    entitled: '70',
+    name: 'Angola - GEO - ANS basic'
   },
   {
+    id: 2,
     country: 'South Africa',
     type: 'geographic',
     service: 'basic',
     assigned: '10',
-    entitled: '70'
+    entitled: '70',
+    name: 'South Africa - GEO - ANS basic'
   },
   {
+    id: 3,
     country: 'Angola',
     type: 'geographic',
     service: 'basic',
     assigned: '10',
-    entitled: '70'
+    entitled: '70',
+    name: 'Angola - GEO - ANS basic'
   },
   {
+    id: 4,
     country: 'South Africa',
     type: 'geographic',
     service: 'basic',
     assigned: '10',
-    entitled: '70'
+    entitled: '70',
+    name: 'South Africa - GEO - ANS basic'
   },
   {
+    id: 5,
     country: 'Angola',
     type: 'geographic',
     service: 'basic',
     assigned: '10',
-    entitled: '70'
+    entitled: '70',
+    name: 'Angola - GEO - ANS basic'
   },
   {
+    id: 6,
     country: 'South Africa',
     type: 'geographic',
     service: 'basic',
     assigned: '10',
-    entitled: '70'
+    entitled: '70',
+    name: 'South Africa - GEO - ANS basic'
   }
 ]
 
@@ -83,15 +95,17 @@ const AccessNumbers = ({ t }) => {
     EntitlementsStore
   )
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [accessNumberToDelete, setAccessNumberToDelete] = useState({})
+
   useEffect(() => {
     // postEntitlements()
     getEntitlements()
   }, [getEntitlements, postEntitlements])
 
   const handleOpenDeleteModal = (id, name) => {
-    console.log('delete')
-    // setIsDeleteModalOpen(true)
-    // setSubaccountToDelete({ id, name })
+    setIsDeleteModalOpen(true)
+    setAccessNumberToDelete({ name })
   }
 
   const titleData = {
@@ -149,7 +163,7 @@ const AccessNumbers = ({ t }) => {
       isSortAvailable: false,
       getCellData: row => (
         <CloseOutlinedIcon
-          onClick={() => handleOpenDeleteModal(row.country)}
+          onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}
         />
       )
@@ -182,17 +196,19 @@ const AccessNumbers = ({ t }) => {
           />
         )}
 
-        {/* {isDeleteModalOpen && (
+        {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}
             open={isDeleteModalOpen}
-            handleClose={handleCloseDeleteModal}
-            handleDelete={handleDelete}
-            deleteInfo={customerToDelete}
-            isDeleting={isDeletingCustomer}
-            deleteSubject={t('customer')}
+            handleClose={() => setIsDeleteModalOpen(false)}
+            //handleDelete={handleDelete}
+            deleteInfo={accessNumberToDelete}
+            //isDeleting={isDeletingCustomer}
+            deleteSubject={t('entitlement')}
+            action={t('to_remove')}
+            titleAction={t(`remove`)}
           />
-        )} */}
+        )}
         {/* {isOpenCreateCustomer && (
           <CreateCustomer
             open={isOpenCreateCustomer}

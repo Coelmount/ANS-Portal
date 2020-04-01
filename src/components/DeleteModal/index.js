@@ -19,7 +19,9 @@ const DeleteModal = props => {
     deleteInfo,
     isDeleting,
     deleteSubject,
-    t
+    t,
+    action,
+    titleAction
   } = props
   const { name, id } = deleteInfo
 
@@ -38,8 +40,7 @@ const DeleteModal = props => {
             <Box className={classes.deleteTitleBlock}>
               <img src={deleteIcon} alt='delete icon' />
               <Typography className={classes.deleteTitle}>
-                {t(`delete`)}
-                {` ${deleteSubject}`}
+                {`${titleAction} ${deleteSubject}`}
               </Typography>
             </Box>
             <CloseOutlinedIcon
@@ -50,17 +51,11 @@ const DeleteModal = props => {
           <Box className={classes.deleteMain}>
             <Typography className={classes.deleteMainText}>
               {t(`are_you_sure_you_want`)}
-              <span className={classes.boldText}> {t('to_delete')}</span>
-              {` ${deleteSubject}`}:
-              {name ? (
-                <span
-                  className={classes.boldText}
-                >{` ${name} (id: ${id})`}</span>
-              ) : (
-                <span className={classes.boldText}>{`${id}`}</span>
-              )}
-              {/* <span className={classes.boldText}>{` ${name} (id: ${id})`}</span> */}
-              ?
+              <span className={classes.boldText}> {action}</span>
+              {` ${deleteSubject}:`}
+              <span className={classes.boldText}>
+                {` ${name ? name : ''}${id ? ` id: ${id}` : ''}?`}
+              </span>
             </Typography>
             <Box className={classes.deleteButtonsBlock}>
               <Box onClick={handleClose} className={classes.cancelButtonWrap}>
@@ -69,7 +64,7 @@ const DeleteModal = props => {
                 </Typography>
               </Box>
               <Box
-                onClick={() => handleDelete(id)}
+                onClick={() => handleDelete && handleDelete(id)}
                 className={classes.deleteButtonWrap}
               >
                 <Typography className={classes.buttonTitle}>

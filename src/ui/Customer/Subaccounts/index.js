@@ -150,6 +150,8 @@ const SubaccountsTable = observer(({ t }) => {
             deleteInfo={subaccountToDelete}
             isDeleting={isDeletingSubaccount}
             deleteSubject={t('subaccount')}
+            action={t('to_delete')}
+            titleAction={t(`delete`)}
           />
         )}
         {isOpenCreateSubaccount && (
