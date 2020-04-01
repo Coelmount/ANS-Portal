@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -17,7 +17,6 @@ import Loading from 'components/Loading'
 import EntitlementsStore from 'stores/Entitlements'
 
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
-// import TotalNumbers from 'stores/Entitlements/TotalNumbers'
 
 import useStyles from './styles'
 
@@ -62,13 +61,25 @@ const TotalEntitlements = ({ handleClose, t }) => {
     totalEntitlements,
     postEntitlements,
     isSending,
-    isTotalEmpty
+    arrTotals,
+    objTotals
   } = useContext(EntitlementsStore)
   const [emptyFieldsCounter, setEmptyFieldsCounter] = useState(2)
+  const [isNextButtonActive, setIsNextButtonActive] = useState(false)
 
   const handleClick = () => {
     console.log('11')
   }
+
+  useEffect(() => {
+    if (
+      !Object.values(objTotals).includes('') &&
+      Object.keys(objTotals).length === selectedEntitlements.length
+    )
+      setIsNextButtonActive(true)
+    else setIsNextButtonActive(false)
+  }, [objTotals, selectedEntitlements.length])
+
   const classes = useStyles()
   const columns = [
     {
@@ -138,7 +149,6 @@ const TotalEntitlements = ({ handleClose, t }) => {
               classes={classes}
               columns={columns}
               rows={selectedEntitlements}
-              // isLoadingData={isSending}
               handleClick={handleClick}
             />
           </DialogContent>
@@ -157,7 +167,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
               color='primary'
               className={classes.nextButton}
               onClick={handleAddButton}
-              disabled={emptyFieldsCounter > 0}
+              disabled={!isNextButtonActive}
             >
               {t('add')}
             </Button>

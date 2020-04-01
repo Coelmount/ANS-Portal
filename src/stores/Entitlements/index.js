@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { decorate, observable, action, values } from 'mobx'
+import { decorate, observable, action, values, toJS } from 'mobx'
 import TotalNumbers from './TotalNumbers'
 
 import axios from 'utils/axios'
@@ -14,6 +14,8 @@ export class Entitlements {
   isSending = false
   newTotalNumbers = new TotalNumbers()
   isTotalEmpty = true
+  arrTotals = []
+  objTotals = {}
 
   changeStep = step => {
     this.step = step
@@ -31,26 +33,18 @@ export class Entitlements {
 
   updateTotalEntitlements = (value, entitlementId) => {
     this.newTotalNumbers.add(value, entitlementId)
-    console.log(this.newTotalNumbers.arr, 'arr')
-    console.log(this.isTotalEmpty, 'this.isTotalEmpty')
+    this.arrTotals = [...this.newTotalNumbers.arr]
+    this.objTotals = this.arrTotals.reduce(
+      (prev, { id, value }) => ({
+        ...prev,
+        [id]: value
+      }),
+      {}
+    )
     if (this.newTotalNumbers.arr.length > 0) this.isTotalEmpty = false
-    // if (this.totalEntitlements.length > 0) {
-    //   this.totalEntitlements.forEach((entitlement, index) => {
-    //     if (entitlement.id === entitlementId) {
-    //       entitlement.total = value
-    //     } else if (
-    //       entitlement.id !== entitlementId &&
-    //       index === this.totalEntitlements.length - 1
-    //     ) {
-    //       this.totalEntitlements.push({ total: value, id: entitlementId })
-    //     }
-    //   })
-    // } else this.totalEntitlements.push({ total: value, id: entitlementId })
-    // console.log(this.totalEntitlements, 'arr mobx')
   }
 
   postEntitlements = callback => {
-    console.log(this.newTotalNumbers.arr, 'post it')
     this.isSending = true
     axios.get(`/custom/ans/entitlement_types`).then(res => {
       //mock request
@@ -62,6 +56,7 @@ export class Entitlements {
       }
     })
   }
+
   // postEntitlements = () => {
   //   // this.isLoadingCustomer = true
   //   axios
@@ -102,6 +97,8 @@ decorate(Entitlements, {
   totalEntitlements: observable,
   isSending: observable,
   isTotalEmpty: observable,
+  arrTotals: observable,
+  objTotals: observable,
   changeStep: action,
   setDefaultEntitlementsValues: action,
   getEntitlements: action,

@@ -1,6 +1,3 @@
-// import { observable } from 'mobx'
-
-// import { decorate } from 'mobx'
 class TotalNumbers {
   arr = []
   map = new Map()
@@ -18,7 +15,4 @@ class TotalNumbers {
   }
 }
 
-// decorate(TotalNumbers, {
-//   arr: observable
-// })
 export default TotalNumbers
