@@ -75,17 +75,25 @@ const EditEntitlements = props => {
         <Typography style={{ color: 'blue' }}>{row.assigned}</Typography>
       ),
       isSortAvailable: false,
-      titleClass: classes.totalHeader
+      extraProps: {
+        className: classes.textCenter
+      },
+      extraHeadProps: {
+        className: classes.totalHeader
+      }
     },
     {
       id: 'total',
       label: 'total',
-      titleClass: classes.totalHeader,
+      extraHeadProps: {
+        className: classes.totalHeader
+      },
       getCellData: row => (
         <Box>
           <Input
             type='number'
-            value={row.total}
+            inputProps={{ min: '0' }}
+            defaultValue={row.total}
             className={classes.totalInput}
             variant='outlined'
           />
@@ -133,6 +141,7 @@ const EditEntitlements = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
+          onClick={props.handleClose}
         >
           {t('save')}
         </Button>

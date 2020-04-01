@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
       minHeight: '100%'
     }
   },
-  sharpIcon: {
+  textCenter: {
     textAlign: 'center'
   },
   title: {
@@ -335,7 +335,7 @@ const useStyles = makeStyles(theme => ({
   tbody: {
     '& td, th': {
       border: 'none',
-      paddingRight: 33
+      padding: '0 16px 0 16px'
     }
   },
   link: {
@@ -365,30 +365,31 @@ const useStyles = makeStyles(theme => ({
     }
   },
   tableRow: {
-    height: 44,
+    height: '70px',
     borderLeft: '5px solid transparent',
+    borderBottom: `1px solid ${theme.palette.greyE8}`,
     '&:first-child': {
       borderTop: `2px solid ${theme.palette.primary.main}`
     },
     '& > td': {
-      width: 50,
-      padding: '10px 16px',
-      paddingLeft: 44
-    },
-    '&:nth-child(2n)': {
-      backgroundColor: theme.palette.active.main,
-      '&:hover': {
-        borderLeft: `5px solid ${theme.palette.primary.main}`,
-        backgroundColor: theme.palette.active.main
-      }
-    },
-    '&:nth-child(2n+1)': {
-      backgroundColor: 'white',
-      '&:hover': {
-        borderLeft: `5px solid ${theme.palette.primary.main}`,
-        backgroundColor: 'white'
-      }
+      width: 50
+      //padding: '10px 16px',
+      //paddingLeft: 44
     }
+    // '&:nth-child(2n)': {
+    //   backgroundColor: theme.palette.active.main,
+    //   '&:hover': {
+    //     borderLeft: `5px solid ${theme.palette.primary.main}`,
+    //     backgroundColor: theme.palette.active.main
+    //   }
+    // },
+    // '&:nth-child(2n+1)': {
+    //   backgroundColor: 'white',
+    //   '&:hover': {
+    //     borderLeft: `5px solid ${theme.palette.primary.main}`,
+    //     backgroundColor: 'white'
+    //   }
+    // }
   },
   tableRowWithoutBackground: {
     height: 76,
@@ -406,7 +407,11 @@ const useStyles = makeStyles(theme => ({
     background: theme.palette.active.main,
     alignItems: 'center',
     justifyContent: ' center',
-    marginTop: 40
+    marginTop: 40,
+    marginBottom: 22,
+    position: 'absolute',
+    left: '50%',
+    transform: 'translate(-50%, 0)'
   },
   paginationIconBlock: {
     width: 30,
@@ -444,7 +449,6 @@ const useStyles = makeStyles(theme => ({
   perPageWrap: {
     display: 'flex',
     alignItems: 'center',
-    marginRight: 40,
     '& .MuiInput-underline:before': {
       display: 'none'
     },
@@ -512,7 +516,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   totalInput: {
-    width: 50
+    width: 70
   },
   subtitle: {
     display: 'flex',

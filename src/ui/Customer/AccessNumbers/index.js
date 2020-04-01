@@ -77,7 +77,7 @@ const rows = [
 const AccessNumbers = ({ t }) => {
   const match = useParams()
   const classes = useStyles()
-  const [showEditEntitlements, setShowEditEntitlements] = useState(false)
+  const [showEditEntitlements, setShowEditEntitlements] = useState(true)
 
   const { getEntitlements, postEntitlements, entitlements } = useContext(
     EntitlementsStore

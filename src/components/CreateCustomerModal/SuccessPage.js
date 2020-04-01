@@ -25,7 +25,7 @@ const SuccesPage = props => {
   const goToCustomer = () => {
     if (isCreateSubaccount) {
       history.push(
-        `/customers/${match.customerId}/subaccounts/${createdCustomerStore.groupId}/ans_instances/basic`
+        `/customers/${match.customerId}/subaccounts/${createdCustomerStore.groupId}/ans_instances`
       )
       return
     }

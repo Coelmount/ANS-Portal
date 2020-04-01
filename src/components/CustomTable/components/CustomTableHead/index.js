@@ -32,15 +32,14 @@ const CustomTableHead = ({
             extraHeadProps,
             isSortAvailable,
             headIcon,
-            onIconClick,
-            titleClass
+            onIconClick
           }) => {
             return (
               <TableCell
                 key={id}
                 align={'left'}
                 sortDirection={orderBy === id ? order : false}
-                className={titleClass || classes.headCellTitle}
+                className={classes.headCellTitle}
                 // component={'th'}
                 {...extraHeadProps}
               >
