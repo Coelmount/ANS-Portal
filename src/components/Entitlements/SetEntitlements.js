@@ -17,38 +17,38 @@ import EntitlementsStore from 'stores/Entitlements'
 import useStyles from './styles'
 import { useEffect } from 'react'
 
-const ENTITLEMENTS = [
-  {
-    id: 1,
-    name: 'fafa',
-    total: 5
-  },
-  {
-    id: 2,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10
-  },
-  {
-    id: 3,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3
-  },
-  {
-    id: 4,
-    name: 'Angola - GEO - basic',
-    total: 80
-  },
-  {
-    id: 5,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10
-  },
-  {
-    id: 6,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3
-  }
-]
+// const ENTITLEMENTS = [
+//   {
+//     id: 1,
+//     name: 'fafa',
+//     total: 5
+//   },
+//   {
+//     id: 2,
+//     name: 'South Africa - GEO - ANS basic',
+//     total: 10
+//   },
+//   {
+//     id: 3,
+//     name: 'South Africa - GEO - ANS advanced',
+//     total: 3
+//   },
+//   {
+//     id: 4,
+//     name: 'Angola - GEO - basic',
+//     total: 80
+//   },
+//   {
+//     id: 5,
+//     name: 'South Africa - GEO - ANS basic',
+//     total: 10
+//   },
+//   {
+//     id: 6,
+//     name: 'South Africa - GEO - ANS advanced',
+//     total: 3
+//   }
+// ]
 
 const columns = [
   {
@@ -59,14 +59,36 @@ const columns = [
 
 const SetEntitlements = props => {
   const { handleClose, t } = props
-  const { changeStep, getEntitlements } = useContext(EntitlementsStore)
-  const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
+  const {
+    changeStep,
+    getEntitlements,
+    entitlements,
+    isLoadingEntitlements,
+    selectedEntitlements,
+    updateSelectedArr
+  } = useContext(EntitlementsStore)
   const classes = useStyles()
+  const [selected, setSelected] = useState([])
+
+  useEffect(() => {
+    updateSelectedArr(selected)
+  }, [selected, selected.length, updateSelectedArr])
 
   useEffect(() => {
     getEntitlements()
   }, [getEntitlements])
+  console.log(selected, 'selected here')
 
+  const handleClick = selectedRow => {
+    if (selected.indexOf(selectedRow) === -1) {
+      setSelected(selected.concat(selectedRow))
+    } else {
+      const newArr = selected.filter(item => {
+        return item !== selectedRow
+      })
+      setSelected(newArr)
+    }
+  }
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -95,6 +117,10 @@ const SetEntitlements = props => {
           classes={classes}
           columns={columns}
           rows={entitlements}
+          isLoadingData={isLoadingEntitlements}
+          setSelected={setSelected}
+          handleClick={handleClick}
+          selected={selected}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -111,6 +137,7 @@ const SetEntitlements = props => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
+          disabled={selected.length <= 0}
         >
           {t('next')}
         </Button>

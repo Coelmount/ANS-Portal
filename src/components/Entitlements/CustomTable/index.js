@@ -1,10 +1,18 @@
-import React, { useState, useMemo, Fragment } from 'react'
+import React, {
+  useState,
+  useMemo,
+  Fragment,
+  useEffect,
+  useContext
+} from 'react'
 import { withNamespaces } from 'react-i18next'
 import clamp from 'lodash/clamp'
 
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
 import Typography from '@material-ui/core/Typography'
+
+import EntitlementsStore from 'stores/Entitlements'
 
 import CustomTableToolbar from './components/CustomTableToolbar'
 import CustomTableHead from './components/CustomTableHead'
@@ -47,6 +55,9 @@ const CustomTable = ({
   isFullVersion,
   rowsColor,
   withFilters,
+  setSelected,
+  handleClick,
+  selected,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -54,18 +65,24 @@ const CustomTable = ({
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
-  const [selected, setSelected] = useState([])
+  // const [selected, setSelected] = useState([])
 
-  const handleClick = selectedRow => {
-    if (selected.indexOf(selectedRow) === -1) {
-      setSelected(selected.concat(selectedRow))
-    } else {
-      const newArr = selected.filter(item => {
-        return item !== selectedRow
-      })
-      setSelected(newArr)
-    }
-  }
+  // const { updateSelectedArr } = useContext(EntitlementsStore)
+
+  // useEffect(() => {
+  //   updateSelectedArr(selected)
+  // }, [selected, selected.length, updateSelectedArr])
+
+  // const handleClick = selectedRow => {
+  //   if (selected.indexOf(selectedRow) === -1) {
+  //     setSelected(selected.concat(selectedRow))
+  //   } else {
+  //     const newArr = selected.filter(item => {
+  //       return item !== selectedRow
+  //     })
+  //     setSelected(newArr)
+  //   }
+  // }
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {

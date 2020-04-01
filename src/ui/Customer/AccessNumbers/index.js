@@ -133,7 +133,7 @@ const AccessNumbers = ({ t }) => {
           )}`}
           className={classes.link}
         >
-          {t('see_numbers')}
+          {t('see numbers')}
         </Link>
       )
     },
