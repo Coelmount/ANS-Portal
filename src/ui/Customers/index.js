@@ -159,6 +159,8 @@ const CustomersTable = observer(({ t }) => {
             deleteInfo={customerToDelete}
             isDeleting={isDeletingCustomer}
             deleteSubject={t('customer')}
+            action={t('to_delete')}
+            titleAction={t(`delete`)}
           />
         )}
         {isOpenCreateCustomer && (

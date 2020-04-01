@@ -125,6 +125,8 @@ const AdminCard = ({
       />
       <DeleteModal
         show={isDeleteModalOpen}
+        action={t('to_delete')}
+        titleAction={t(`delete`)}
         classes={classes}
         open={isDeleteModalOpen}
         handleClose={handleCloseDeleteModal}
