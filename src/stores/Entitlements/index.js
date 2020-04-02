@@ -87,6 +87,17 @@ export class Entitlements {
       }
     })
   }
+
+  // getEntitlements = () => {
+  //   axios
+  //     .get(`/custom/ans/tenants/bury/group/buryGROUP01/numbers`)
+  //     .then(res => {
+  //       console.log(res, 'post res')
+  //     })
+  //     .catch(error => {
+  //       console.log(error, 'error')
+  //     })
+  // }
 }
 
 decorate(Entitlements, {

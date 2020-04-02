@@ -47,6 +47,7 @@ const CustomTable = ({
   id,
   name,
   showSearchBar,
+  firstCell,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -110,6 +111,7 @@ const CustomTable = ({
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               columns={columns}
+              firstCell={firstCell}
             />
             {list && list.length ? (
               <CustomTableBody
@@ -118,6 +120,7 @@ const CustomTable = ({
                 page={clampedPage}
                 list={list}
                 columns={columns}
+                firstCell={firstCell}
               />
             ) : (
               <Typography className={classes.tableMessage}>
