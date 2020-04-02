@@ -1,4 +1,3 @@
-import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 import merge from 'lodash/merge'
 
@@ -24,11 +23,16 @@ export class SubaccountsStore {
   isLoadingSubaccounts = true
   isDeletingSubaccount = false
   isLoadingSubaccount = true
+  selectGroups = []
 
   getSubaccounts = id => {
     this.isLoadingSubaccounts = true
     axios.get(`/p1/tenants/${id}/groups`).then(res => {
       if (res.status === 200) {
+        this.selectGroups = res.data.groups.map(group => ({
+          value: group.groupId,
+          label: group.groupName
+        }))
         this.rows = res.data.groups
         this.isLoadingSubaccounts = false
       } else {
@@ -69,9 +73,10 @@ decorate(SubaccountsStore, {
   isLoadingSubaccounts: observable,
   isDeletingSubaccount: observable,
   isLoadingSubaccount: observable,
+  selectGroups: observable,
   getSubaccounts: action,
   getSubaccount: action,
   deleteSubaccount: action
 })
 
-export default createContext(new SubaccountsStore())
+export default new SubaccountsStore()

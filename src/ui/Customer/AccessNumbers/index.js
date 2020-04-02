@@ -24,6 +24,7 @@ import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import EditEntitlements from 'components/EditEntitlements'
+import AssignNumbers from 'components/CustomerAssignNumbers'
 
 import useStyles from './styles'
 import editSvg from 'source/images/svg/edit-blue.svg'
@@ -90,6 +91,7 @@ const AccessNumbers = ({ t }) => {
   const match = useParams()
   const classes = useStyles()
   const [showEditEntitlements, setShowEditEntitlements] = useState(false)
+  const [showAssignNumbers, setShowAssignNumbers] = useState(true)
 
   const { getEntitlements, postEntitlements, entitlements } = useContext(
     EntitlementsStore
@@ -131,7 +133,8 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'assigned',
       label: 'assigned',
-      headIcon: () => <DoneOutlinedIcon className={classes.assignedDoneIcon} />
+      headIcon: () => <DoneOutlinedIcon className={classes.assignedDoneIcon} />,
+      onIconClick: () => setShowAssignNumbers(true)
     },
     {
       id: 'entitled',
@@ -193,6 +196,12 @@ const AccessNumbers = ({ t }) => {
           <EditEntitlements
             handleClose={() => setShowEditEntitlements(false)}
             open={showEditEntitlements}
+          />
+        )}
+        {showAssignNumbers && (
+          <AssignNumbers
+            handleClose={() => setShowAssignNumbers(false)}
+            open={showAssignNumbers}
           />
         )}
 
