@@ -25,10 +25,19 @@ export class Entitlements {
     this.step = 1
   }
 
-  updateSelectedArr = indexesArr => {
-    this.selectedEntitlements = indexesArr.map(entIndex => {
-      return this.entitlements[entIndex]
+  updateSelectedArr = idArr => {
+    let resultArr = []
+    // this.selectedEntitlements = indexesArr.map(entIndex => {
+
+    //   return this.entitlements[entIndex]
+    // })
+    this.entitlements.forEach(obj => {
+      idArr.forEach(id => {
+        if (id === obj.id) resultArr.push(obj)
+      })
     })
+    console.log(resultArr, 'resultArr')
+    this.selectedEntitlements = resultArr
   }
 
   updateTotalEntitlements = (value, entitlementId) => {
@@ -49,6 +58,7 @@ export class Entitlements {
     axios.get(`/custom/ans/entitlement_types`).then(res => {
       //mock request
       if (res.status === 200) {
+        console.log(this.newTotalNumbers.arr, 'resss')
         this.isSending = false
         callback(3)
       } else {
