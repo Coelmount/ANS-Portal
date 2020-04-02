@@ -36,54 +36,61 @@ import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 
 const PHONE_NUMBERS = [
   {
+    id: 1,
     country: 'South Africa',
     countryCode: '+27',
     phoneNumber: '53423437',
     type: 'local',
-    status: 'assigned',
-    checked: false
+    status: 'assigned'
+    // checked: false
   },
   {
+    id: 2,
     country: 'Angola',
     countryCode: '+24',
     phoneNumber: '53423432',
     type: 'geo',
-    status: 'assigned',
-    checked: false
+    status: 'assigned'
+    // checked: false
   },
   {
+    id: 3,
     country: 'Angola',
     countryCode: '+24',
     phoneNumber: '53423433',
     type: 'geo',
-    status: 'available',
-    checked: false
+    status: 'available'
+    // checked: false
   },
   {
+    id: 4,
     country: 'South Africa',
     countryCode: '+27',
     phoneNumber: '53423435',
     type: 'local',
-    status: 'available',
-    checked: false
+    status: 'available'
+    // checked: false
   },
   {
+    id: 5,
     country: 'South Africa',
     countryCode: '+27',
     phoneNumber: '53423436',
     type: 'local',
-    status: 'assigned',
-    checked: false
+    status: 'assigned'
+    // checked: false
   },
   {
+    id: 6,
     country: 'South Africa',
     countryCode: '+27',
     phoneNumber: '53423439',
     type: 'geo',
-    status: 'available',
-    checked: false
+    status: 'available'
+    // checked: false
   },
   {
+    id: 7,
     country: 'Nigeria',
     countryCode: '+30',
     phoneNumber: '53423440',
@@ -92,6 +99,7 @@ const PHONE_NUMBERS = [
     checked: false
   },
   {
+    id: 8,
     country: 'Angola',
     countryCode: '+24',
     phoneNumber: '53423434',
@@ -100,6 +108,7 @@ const PHONE_NUMBERS = [
     checked: false
   },
   {
+    id: 9,
     country: 'South Africa',
     countryCode: '+27',
     phoneNumber: '53423438',
@@ -113,9 +122,31 @@ const PhoneNumbers = observer(({ t }) => {
   const classes = useStyles()
   const [transformedNumbers, setTransformedNumbers] = useState([])
   const [phoneNumbers, setPhoneNumbers] = useState(PHONE_NUMBERS)
-  const [selectedGroup, setSelectedGroup] = useState('')
-  console.log(transformedNumbers, 'transformedNumbers')
+  const [checkMap, setCheckMap] = useState({})
+  const [selected, setSelected] = React.useState([])
+  // console.log(transformedNumbers, 'transformedNumbers')
+  console.log(selected, 'selected')
 
+  const handleClick = (event, id) => {
+    console.log(id, 'id')
+    const selectedIndex = selected.indexOf(id)
+    let newSelected = []
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id)
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1))
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1))
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      )
+    }
+
+    setSelected(newSelected)
+  }
   useEffect(() => {
     const numbers = phoneNumbersRangeFilter(phoneNumbers).map(item => {
       return {
@@ -130,67 +161,72 @@ const PhoneNumbers = observer(({ t }) => {
     setTransformedNumbers(numbers)
   }, [phoneNumbers])
 
-  const columns = useMemo(() => {
-    return [
-      {
-        id: 'checkbox',
-        label: <Checkbox />,
-        isSortAvailable: false,
-        getCellData: row => <Checkbox checked={row.checked} />
-      },
-      {
-        id: 'country',
-        label: 'country'
-      },
-      {
-        id: 'rangeStart',
-        label: 'phone_numbers',
-        getCellData: row =>
-          row.phoneNumbers
-            ? `${row.countryCode} ${row.rangeStart}`
-            : `${row.countryCode} ${row.phoneNumber}`
-      },
-      {
-        id: 'rightArrow',
-        isSortAvailable: false,
-        getCellData: row => (
-          <img
-            src={RightArrowIcon}
-            className={classes.rightArrowIcon}
-            alt='right icon'
-          />
-        )
-      },
-      {
-        id: 'phoneNumbersEnd',
-        isSortAvailable: false,
-        getCellData: row =>
-          row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`
-      },
-      {
-        id: 'type',
-        label: 'type'
-      },
-      {
-        id: 'status',
-        label: 'status'
-      },
-      {
-        id: 'delete',
-        extraProps: {
-          className: classes.deleteCell,
-          align: 'right'
-        },
-        isSortAvailable: false,
-        getCellData: row => (
-          <CloseOutlinedIcon
-            // onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
-            className={classes.deleteCustomerIcon}
+  const columns = [
+    {
+      id: 'checkbox',
+      label: <Checkbox />,
+      isSortAvailable: false,
+      getCellData: row => {
+        return (
+          <Checkbox
+            onClick={event => handleClick(event, row.id)}
+            // checked={checkMap[row.id] === true ? true : false}
           />
         )
       }
-    ]
-  }, [classes.deleteCell, classes.deleteCustomerIcon, classes.rightArrowIcon])
+    },
+    {
+      id: 'country',
+      label: 'country'
+    },
+    {
+      id: 'rangeStart',
+      label: 'phone_numbers',
+      getCellData: row =>
+        row.phoneNumbers
+          ? `${row.countryCode} ${row.rangeStart}`
+          : `${row.countryCode} ${row.phoneNumber}`
+    },
+    {
+      id: 'rightArrow',
+      isSortAvailable: false,
+      getCellData: row => (
+        <img
+          src={RightArrowIcon}
+          className={classes.rightArrowIcon}
+          alt='right icon'
+        />
+      )
+    },
+    {
+      id: 'phoneNumbersEnd',
+      isSortAvailable: false,
+      getCellData: row =>
+        row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`
+    },
+    {
+      id: 'type',
+      label: 'type'
+    },
+    {
+      id: 'status',
+      label: 'status'
+    },
+    {
+      id: 'delete',
+      extraProps: {
+        className: classes.deleteCell,
+        align: 'right'
+      },
+      isSortAvailable: false,
+      getCellData: row => (
+        <CloseOutlinedIcon
+          // onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
+          className={classes.deleteCustomerIcon}
+        />
+      )
+    }
+  ]
 
   const titleData = {
     mainText: t('phone_numbers'),
