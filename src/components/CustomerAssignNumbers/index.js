@@ -22,6 +22,7 @@ import Checkbox from 'components/Checkbox'
 import Group3Person from 'source/images/svg/Group3Person.svg'
 
 import SubaccountsStore from 'stores/Subaccounts'
+import NumbersStore from 'stores/Numbers'
 
 import capitalize from 'lodash/capitalize'
 
@@ -83,10 +84,12 @@ const AssignNumbers = props => {
     selectGroups,
     isLoadingSubaccounts
   } = SubaccountsStore
+  const { isLoadingNumbers, getAvailableNumbers } = NumbersStore
 
   useEffect(() => {
     getSubaccounts(match.customerId)
-  }, [match.customerId])
+    getAvailableNumbers()
+  }, [])
 
   const columns = [
     {
@@ -152,7 +155,7 @@ const AssignNumbers = props => {
     // }
   ]
 
-  if (isLoadingSubaccounts) {
+  if (isLoadingSubaccounts || isLoadingNumbers) {
     return (
       <Dialog
         open={props.open}
