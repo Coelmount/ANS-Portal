@@ -2,6 +2,7 @@ import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
+import { PROXY_P5 } from 'utils/axios'
 
 export class EditDeleteSubaccountAdminStore {
   isLoadingData = true
@@ -25,22 +26,24 @@ export class EditDeleteSubaccountAdminStore {
   getSubaccountAdminInfo = ({ id, userId, groupId }) => {
     this.isLoadingData = true
 
-    axios.get(`tenants/${id}/groups/${groupId}/admins/${userId}`).then(res => {
-      if (res.status === 200) {
-        this.updateSubaccountAdminInfo('firstName', res.data.firstName)
-        this.updateSubaccountAdminInfo('lastName', res.data.lastName)
-        this.updateSubaccountAdminInfo('language', res.data.language)
-        this.isLoadingData = false
-      } else {
-        console.log(res, 'error')
-      }
-    })
+    axios
+      .get(`${PROXY_P5}/tenants/${id}/groups/${groupId}/admins/${userId}`)
+      .then(res => {
+        if (res.status === 200) {
+          this.updateSubaccountAdminInfo('firstName', res.data.firstName)
+          this.updateSubaccountAdminInfo('lastName', res.data.lastName)
+          this.updateSubaccountAdminInfo('language', res.data.language)
+          this.isLoadingData = false
+        } else {
+          console.log(res, 'error')
+        }
+      })
   }
   updateSubaccountAdmin = ({ id, closeModal, userId, getUsers, groupId }) => {
     this.isLoadingData = true
     axios
       .put(
-        `/tenants/${id}/groups/${groupId}/admins/${userId}`,
+        `${PROXY_P5}/tenants/${id}/groups/${groupId}/admins/${userId}`,
         this.sentSubaccountAdmin
       )
       .then(res => {
@@ -56,7 +59,7 @@ export class EditDeleteSubaccountAdminStore {
   deleteSubaccountAdmin = ({ id, closeModal, userId, getUsers, groupId }) => {
     this.isDeletingSubaccountAdmin = true
     axios
-      .delete(`/tenants/${id}/groups/${groupId}/admins/${userId}`)
+      .delete(`${PROXY_P5}/tenants/${id}/groups/${groupId}/admins/${userId}`)
       .then(res => {
         if (res.status === 200) {
           getUsers({ id, groupId })

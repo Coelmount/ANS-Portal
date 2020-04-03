@@ -3,6 +3,7 @@ import { decorate, observable, action, values, toJS } from 'mobx'
 import TotalNumbers from './TotalNumbers'
 
 import axios from 'utils/axios'
+import { PROXY_CUSTOM_ANS } from 'utils/axios'
 
 export class Entitlements {
   entitlements = []
@@ -46,7 +47,7 @@ export class Entitlements {
 
   postEntitlements = callback => {
     this.isSending = true
-    axios.get(`/custom/ans/entitlement_types`).then(res => {
+    axios.get(`${PROXY_CUSTOM_ANS}/entitlement_types`).then(res => {
       //mock request
       if (res.status === 200) {
         this.isSending = false
@@ -78,7 +79,7 @@ export class Entitlements {
 
   getEntitlements = () => {
     this.isLoadingEntitlements = true
-    axios.get(`/custom/ans/entitlement_types`).then(res => {
+    axios.get(`${PROXY_CUSTOM_ANS}/entitlement_types`).then(res => {
       if (res.status === 200) {
         this.entitlements = res.data.customer_licenses
         this.isLoadingEntitlements = false

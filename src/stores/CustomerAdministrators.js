@@ -2,6 +2,7 @@ import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
+import { PROXY_P5 } from 'utils/axios'
 
 export class CustomerAdminsStore {
   admins = []
@@ -17,7 +18,7 @@ export class CustomerAdminsStore {
 
   getCustomerAdmins = id => {
     this.isLoading = true
-    axios.get(`tenants/${id}/admins/`).then(res => {
+    axios.get(`${PROXY_P5}/tenants/${id}/admins/`).then(res => {
       if (res.status === 200) {
         this.admins = res.data.admins
         this.isLoading = false
@@ -38,16 +39,18 @@ export class CustomerAdminsStore {
 
   addCustomerAdmin = ({ id, closeModal, getUsers }) => {
     this.isLoading = true
-    axios.post(`/tenants/${id}/admins/`, this.sentAdmin).then(res => {
-      if (res.status === 201) {
-        console.log('added')
-        this.isLoading = false
-        getUsers(id)
-        closeModal()
-      } else {
-        console.log(res, 'error')
-      }
-    })
+    axios
+      .post(`${PROXY_P5}/tenants/${id}/admins/`, this.sentAdmin)
+      .then(res => {
+        if (res.status === 201) {
+          console.log('added')
+          this.isLoading = false
+          getUsers(id)
+          closeModal()
+        } else {
+          console.log(res, 'error')
+        }
+      })
   }
 }
 decorate(CustomerAdminsStore, {

@@ -1,5 +1,6 @@
 import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
+import { PROXY_P5 } from 'utils/axios'
 
 import axios from 'utils/axios'
 
@@ -25,7 +26,7 @@ export class EditDeleteAdminStore {
   getAdminInfo = ({ id, userId }) => {
     this.isLoadingData = true
 
-    axios.get(`tenants/${id}/admins/${userId}`).then(res => {
+    axios.get(`${PROXY_P5}/tenants/${id}/admins/${userId}`).then(res => {
       if (res.status === 200) {
         this.updateAdminInfo('firstName', res.data.firstName)
         this.updateAdminInfo('lastName', res.data.lastName)
@@ -38,20 +39,22 @@ export class EditDeleteAdminStore {
   }
   updateCustomerAdmin = ({ id, closeModal, userId, getUsers }) => {
     this.isLoadingData = true
-    axios.put(`/tenants/${id}/admins/${userId}`, this.sentAdmin).then(res => {
-      if (res.status === 200) {
-        console.log('updated')
-        this.isLoadingData = false
-        closeModal()
-        getUsers(id)
-      } else {
-        console.log(res, 'error')
-      }
-    })
+    axios
+      .put(`${PROXY_P5}/tenants/${id}/admins/${userId}`, this.sentAdmin)
+      .then(res => {
+        if (res.status === 200) {
+          console.log('updated')
+          this.isLoadingData = false
+          closeModal()
+          getUsers(id)
+        } else {
+          console.log(res, 'error')
+        }
+      })
   }
   deleteAdmin = ({ id, closeModal, userId, getUsers }) => {
     this.isDeletingAdmin = true
-    axios.delete(`/tenants/${id}/admins/${userId}`).then(res => {
+    axios.delete(`${PROXY_P5}/tenants/${id}/admins/${userId}`).then(res => {
       if (res.status === 200) {
         getUsers(id)
         closeModal()
