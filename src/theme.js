@@ -130,6 +130,11 @@ const theme = createMuiTheme({
         width: 650,
         maxWidth: 650
       }
+    },
+    MuiCheckbox: {
+      root: {
+        padding: 0
+      }
     }
   }
 })

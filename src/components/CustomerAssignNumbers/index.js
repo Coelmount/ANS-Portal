@@ -41,7 +41,7 @@ const NUMBERS = [
     number: '+27 540300012',
     type: 'local',
     country: 'South Africa',
-    checked: true
+    checked: false
   },
   {
     id: 3,
@@ -76,6 +76,7 @@ const NUMBERS = [
 const AssignNumbers = props => {
   const { t } = props
   const [numbers, setNumbers] = useState(NUMBERS)
+  const [selectAll, setSelectAll] = useState(false)
   const [selectedGroup, setSelectedGroup] = useState('')
   const classes = useStyles()
   const match = useParams()
@@ -91,21 +92,59 @@ const AssignNumbers = props => {
     getAvailableNumbers()
   }, [])
 
+  const selectNumbers = (checked, number) => {
+    const newNumbers = [...numbers]
+    const index = numbers.findIndex(el => el.number === number)
+    newNumbers[index].checked = checked
+    if (newNumbers.every(el => el.checked)) {
+      setSelectAll(true)
+    } else {
+      setSelectAll(false)
+    }
+    setNumbers(newNumbers)
+  }
+
+  const handleSelectAll = () => {
+    const newNumbers = numbers.map(el => ({ ...el, checked: !selectAll }))
+    setNumbers(newNumbers)
+    setSelectAll(!selectAll)
+  }
+
   const columns = [
     {
       id: 'checkbox',
-      label: <Checkbox />,
+      label: <Checkbox checked={selectAll} onChange={handleSelectAll} />,
       isSortAvailable: false,
-      getCellData: row => <Checkbox checked={row.checked} />,
+      getCellData: (row, i) =>
+        row.checked ? (
+          <Checkbox
+            checked={row.checked}
+            className={classes.checkbox}
+            onChange={e => selectNumbers(!row.checked, row.number)}
+          />
+        ) : (
+          <div
+            className={classes.cursorPointer}
+            onClick={e => selectNumbers(!row.checked, row.number)}
+          >
+            {i + 1}
+          </div>
+        ),
       extraHeadProps: {
-        className: classes.totalHeader
+        className: classes.checkboxCell
+      },
+      extraProps: {
+        className: classes.checkboxCell
       }
     },
     {
       id: 'number',
       label: 'number',
       isSortAvailable: false,
-      getCellData: row => <Typography>{row.number}</Typography>
+      getCellData: row => row.number,
+      extraProps: {
+        className: classes.textLeft
+      }
     },
     {
       id: 'type',
@@ -114,6 +153,9 @@ const AssignNumbers = props => {
       getCellData: row => <Typography>{row.type}</Typography>,
       extraHeadProps: {
         className: classes.totalHeader
+      },
+      extraProps: {
+        className: classes.textCenter
       }
     },
     {
@@ -122,37 +164,6 @@ const AssignNumbers = props => {
       isSortAvailable: false,
       getCellData: row => <Typography>{row.country}</Typography>
     }
-    // {
-    //   id: 'assigned',
-    //   label: 'assigned',
-    //   getCellData: row => <Typography>{row.assigned}</Typography>,
-    //   isSortAvailable: false,
-    //   extraProps: {
-    //     className: classes.textCenter
-    //   },
-    //   extraHeadProps: {
-    //     className: classes.totalHeader
-    //   }
-    // },
-    // {
-    //   id: 'total',
-    //   label: 'total',
-    //   extraHeadProps: {
-    //     className: classes.totalHeader
-    //   },
-    //   getCellData: row => (
-    //     <Box>
-    //       <Input
-    //         type='number'
-    //         inputProps={{ min: '0' }}
-    //         defaultValue={row.total}
-    //         className={classes.totalInput}
-    //         variant='outlined'
-    //       />
-    //     </Box>
-    //   ),
-    //   isSortAvailable: false
-    // }
   ]
 
   if (isLoadingSubaccounts || isLoadingNumbers) {
@@ -205,15 +216,9 @@ const AssignNumbers = props => {
           classes={classes}
           columns={columns}
           firstCell={false}
+          showPagination={false}
           rows={numbers}
         />
-        {/* <CustomTable
-          showSearchBar={false}
-          isFullVersion={false}
-          classes={classes}
-          columns={columns}
-          rows={entitlements}
-        /> */}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
@@ -230,7 +235,7 @@ const AssignNumbers = props => {
           className={classes.nextButton}
           onClick={props.handleClose}
         >
-          {t('save')}
+          {t('assign')}
         </Button>
       </DialogActions>
     </Dialog>

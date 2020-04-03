@@ -4,6 +4,22 @@ const useStyles = makeStyles(theme => ({
   select: {
     width: 254
   },
+  cursorPointer: {
+    cursor: 'pointer'
+  },
+  checkbox: {
+    boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
+    width: '18px',
+    height: '18px',
+    marginRight: '9px',
+    padding: 0,
+    '& .MuiSvgIcon-root': {
+      color: theme.palette.primary.main
+    },
+    '& .MuiIconButton-root': {
+      padding: 0
+    }
+  },
   wrapper: {
     marginTop: 10
   },
@@ -12,8 +28,10 @@ const useStyles = makeStyles(theme => ({
       minHeight: '100%'
     }
   },
+  textLeft: {
+    textAlign: 'left'
+  },
   textCenter: {
-    color: theme.palette.active.blue,
     textAlign: 'center'
   },
   title: {
@@ -190,7 +208,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '24px'
   },
   entitlementsDialogContent: {
-    padding: '8px 40px'
+    padding: 0
   },
   root: {
     width: '100%'
@@ -300,6 +318,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500
   },
   table: {
+    marginTop: 38
     // minWidth: 750
   },
   visuallyHidden: {
@@ -351,7 +370,7 @@ const useStyles = makeStyles(theme => ({
   tbody: {
     '& td, th': {
       border: 'none',
-      padding: '0 16px 0 16px'
+      padding: 0
     }
   },
   link: {
@@ -366,9 +385,13 @@ const useStyles = makeStyles(theme => ({
     fontSize: 14
   },
   thead: {
-    backgroundColor: theme.palette.active.main,
+    backgroundColor: 'white',
     '& th': {
       border: 'none'
+    },
+    height: 50,
+    '& > tr': {
+      height: 50
     }
   },
   deleteCustomerIcon: {
@@ -381,31 +404,31 @@ const useStyles = makeStyles(theme => ({
     }
   },
   tableRow: {
-    height: '70px',
+    height: '50px',
     borderLeft: '5px solid transparent',
-    borderBottom: `1px solid ${theme.palette.greyE8}`,
-    '&:first-child': {
-      borderTop: `2px solid ${theme.palette.primary.main}`
-    },
+    //borderBottom: `1px solid ${theme.palette.greyE8}`,
+    // '&:first-child': {
+    //   borderTop: `2px solid ${theme.palette.primary.main}`
+    // },
     '& > td': {
       width: 50
       //padding: '10px 16px',
       //paddingLeft: 44
+    },
+    '&:nth-child(2n+1)': {
+      backgroundColor: theme.palette.active.main,
+      '&:hover': {
+        borderLeft: `5px solid ${theme.palette.primary.main}`,
+        backgroundColor: theme.palette.active.main
+      }
+    },
+    '&:nth-child(2n)': {
+      backgroundColor: 'white',
+      '&:hover': {
+        borderLeft: `5px solid ${theme.palette.primary.main}`,
+        backgroundColor: 'white'
+      }
     }
-    // '&:nth-child(2n)': {
-    //   backgroundColor: theme.palette.active.main,
-    //   '&:hover': {
-    //     borderLeft: `5px solid ${theme.palette.primary.main}`,
-    //     backgroundColor: theme.palette.active.main
-    //   }
-    // },
-    // '&:nth-child(2n+1)': {
-    //   backgroundColor: 'white',
-    //   '&:hover': {
-    //     borderLeft: `5px solid ${theme.palette.primary.main}`,
-    //     backgroundColor: 'white'
-    //   }
-    // }
   },
   tableRowWithoutBackground: {
     height: 76,
@@ -449,13 +472,12 @@ const useStyles = makeStyles(theme => ({
   toolbarWrap: {
     display: 'flex',
     background: theme.palette.active.main,
-    height: 50,
-    justifyContent: 'flex-end'
+    height: 50
   },
   searchWrap: {
     position: 'relative',
     marginRight: 20,
-    marginLeft: 38.4
+    marginLeft: 70
   },
   searchIcon: {
     position: 'absolute',
@@ -563,8 +585,12 @@ const useStyles = makeStyles(theme => ({
     padding: 0
   },
   checkboxCell: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 'inherit',
     padding: 0,
-    marginLeft: 6
+    marginLeft: '30px'
   },
   nextButtonEntitlements: {
     width: 240
@@ -589,7 +615,8 @@ const useStyles = makeStyles(theme => ({
         marginTop: 11
       }
     },
-    textAlign: 'center'
+    textAlign: 'center',
+    width: 100
   }
 }))
 
