@@ -16,15 +16,9 @@ import Box from '@material-ui/core/Box'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
-import CustomersStore from 'stores/Customers'
-import CreateCustomerStore from 'stores/CreateCustomer'
-import EntitlementsStore from 'stores/Entitlements'
-
-import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
-import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
@@ -33,6 +27,8 @@ import phoneNumbersRangeFilter from 'utils/phoneNumbersRangeFilter'
 
 import useStyles from './styles'
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
+import deleteIcon from 'source/images/svg/delete-icon.svg'
+import filtersIcon from 'source/images/svg/filters.svg'
 
 const PHONE_NUMBERS = [
   {
@@ -123,12 +119,19 @@ const PhoneNumbers = observer(({ t }) => {
   const [transformedNumbers, setTransformedNumbers] = useState([])
   const [numbers, setNumbers] = useState(PHONE_NUMBERS)
   const [selectAll, setSelectAll] = useState(false)
+  const [isAnyChecked, setIsAnyChecked] = useState(false)
+  console.log(isAnyChecked, 'isAnyChecked')
   console.log(numbers, 'numbers')
 
-  const selectNumbers = (checked, id) => {
+  const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.id === id)
+    const index = numbers.findIndex(el => el.phoneNumber === phoneNumber)
     newNumbers[index].checked = checked
+    if (newNumbers.some(el => el.checked)) {
+      setIsAnyChecked(true)
+    } else {
+      setIsAnyChecked(false)
+    }
     if (newNumbers.every(el => el.checked)) {
       setSelectAll(true)
     } else {
@@ -141,6 +144,7 @@ const PhoneNumbers = observer(({ t }) => {
     const newNumbers = numbers.map(el => ({ ...el, checked: !selectAll }))
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
+    setIsAnyChecked(!selectAll)
   }
 
   useEffect(() => {
@@ -167,18 +171,18 @@ const PhoneNumbers = observer(({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={e => selectNumbers(!row.checked, row.id)}
+            onChange={e => selectNumbers(!row.checked, row.phoneNumber)}
           />
         ) : (
           <div
             className={classes.cursorPointer}
-            onClick={e => selectNumbers(!row.checked, row.id)}
+            onClick={e => selectNumbers(!row.checked, row.phoneNumber)}
           >
             {i + 1}
           </div>
         ),
       extraHeadProps: {
-        className: classes.checkboxCell
+        // className: classes.checkboxCell
       },
       extraProps: {
         className: classes.checkboxCell
@@ -254,6 +258,39 @@ const PhoneNumbers = observer(({ t }) => {
     Icon: <AddOutlinedIcon />
   }
 
+  const toolbarButtonsBlock = () => {
+    return (
+      <Box className={classes.toolbarButtonsBlockWrap}>
+        <Box className={classes.addCustomerWrap}>
+          <Box className={classes.addIconWrap}>
+            <img
+              className={classes.deleteIcon}
+              src={filtersIcon}
+              alt='delete icon'
+            />
+          </Box>
+          <Typography className={classes.addCustomerTitle}>
+            {t('filters')}
+          </Typography>
+        </Box>
+        {isAnyChecked && (
+          <Box className={classes.addCustomerWrap}>
+            <Box className={classes.addIconWrap}>
+              <img
+                className={classes.deleteIcon}
+                src={deleteIcon}
+                alt='delete icon'
+              />
+            </Box>
+            <Typography className={classes.addCustomerTitle}>
+              {t('delete')}
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    )
+  }
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -273,6 +310,7 @@ const PhoneNumbers = observer(({ t }) => {
           columns={columns}
           id='country'
           name='rangeStart'
+          extraToolbarBlock={toolbarButtonsBlock}
         />
       </Paper>
     </div>

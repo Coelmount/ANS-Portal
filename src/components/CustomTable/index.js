@@ -50,6 +50,7 @@ const CustomTable = ({
   showSearchBar,
   firstCell,
   showPagination,
+  extraToolbarBlock,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -97,6 +98,7 @@ const CustomTable = ({
         setQuery={setQuery}
         showSearchBar={showSearchBar}
         showPagination={showPagination}
+        extraToolbarBlock={extraToolbarBlock}
       />
       {isLoadingData ? (
         <Loading />
@@ -147,11 +149,13 @@ const CustomTable = ({
 }
 
 CustomTable.propTypes = {
-  showPagination: PropTypes.bool
+  showPagination: PropTypes.bool,
+  extraToolbarBlock: PropTypes.element
 }
 
 CustomTableHead.defaultProps = {
-  showPagination: true
+  showPagination: true,
+  extraToolbarBlock: null
 }
 
 export default withNamespaces()(CustomTable)

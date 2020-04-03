@@ -122,9 +122,9 @@ const useStyles = makeStyles(theme => ({
     top: 20,
     width: 1
   },
-  displayNone: {
-    display: 'none'
-  },
+  // displayNone: {
+  //   display: 'none'
+  // },
   bodyFirstCell: {
     paddingLeft: '37px'
   },
@@ -169,6 +169,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   tableRow: {
+    height: 10,
     borderLeft: '5px solid transparent',
     '& > td': {
       // width: 52,
@@ -299,6 +300,38 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
+  addCustomerWrap: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  addIconWrap: {
+    width: 30,
+    height: 30,
+    background: theme.palette.primary.main,
+    borderRadius: 100,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+    '&:hover': {
+      cursor: 'pointer'
+    },
+    color: theme.palette.black
+  },
+  addIcon: {
+    color: theme.palette.black
+  },
+  addCustomerTitle: {
+    whiteSpace: 'nowrap',
+    fontSize: 14,
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500
+  },
+  deleteIcon: {
+    width: 14,
+    height: 16
+  },
   numbersWrap: {
     display: 'flex'
   },
@@ -312,6 +345,34 @@ const useStyles = makeStyles(theme => ({
   numbersTitle: {
     fontSize: 14,
     fontWeight: 600
+  },
+  toolbarButtonsBlockWrap: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginRight: 40,
+    marginLeft: 40
+  },
+  checkbox: {
+    boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
+    width: '18px',
+    height: '18px',
+    marginRight: '9px',
+    padding: 0,
+    '& .MuiSvgIcon-root': {
+      color: theme.palette.primary.main
+    },
+    '& .MuiIconButton-root': {
+      padding: 0
+    }
+  },
+  checkboxCell: {
+    width: 60,
+    paddingLeft: 20,
+    paddingRight: '0px !important',
+    '& > div': {
+      marginLeft: 4
+    }
   }
 }))
 

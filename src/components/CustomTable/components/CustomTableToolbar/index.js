@@ -19,7 +19,8 @@ const CustomTableToolbar = props => {
     setQuery,
     t,
     showSearchBar,
-    showPagination
+    showPagination,
+    extraToolbarBlock
   } = props
 
   const handleSearch = e => {
@@ -38,7 +39,7 @@ const CustomTableToolbar = props => {
           <SearchIcon className={classes.searchIcon} />
         </div>
       )}
-
+      {extraToolbarBlock && extraToolbarBlock()}
       {showPagination && (
         <div className={classes.perPageWrap}>
           <Select
@@ -64,12 +65,14 @@ const CustomTableToolbar = props => {
 
 CustomTableToolbar.propTypes = {
   showSearchBar: PropTypes.bool,
-  showPagination: PropTypes.bool
+  showPagination: PropTypes.bool,
+  extraToolbarBlock: PropTypes.element
 }
 
 CustomTableToolbar.defaultProps = {
   showSearchBar: true,
-  showPagination: true
+  showPagination: true,
+  extraToolbarBlock: null
 }
 
 export default withNamespaces()(CustomTableToolbar)
