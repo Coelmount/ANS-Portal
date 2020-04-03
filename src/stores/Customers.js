@@ -3,7 +3,7 @@ import { decorate, observable, action } from 'mobx'
 import merge from 'lodash/merge'
 
 import axios from 'utils/axios'
-import { PROXY_P5 } from 'utils/axios'
+import { PROXY_P1 } from 'utils/axios'
 import set from 'lodash/set'
 
 export class CustomersStore {
@@ -31,7 +31,7 @@ export class CustomersStore {
 
   getCustomers = () => {
     this.isLoadingCustomers = true
-    axios.get(`${PROXY_P5}/tenants`).then(res => {
+    axios.get(`${PROXY_P1}/tenants`).then(res => {
       if (res.status === 200) {
         this.rows = res.data.tenants
         this.isLoadingCustomers = false
@@ -43,7 +43,7 @@ export class CustomersStore {
 
   getCustomer = id => {
     this.isLoadingCustomer = true
-    axios.get(`${PROXY_P5}/tenants/${id}/`).then(res => {
+    axios.get(`${PROXY_P1}/tenants/${id}/`).then(res => {
       if (res.status === 200) {
         merge(this.customer, res.data)
         this.isLoadingCustomer = false
@@ -56,7 +56,7 @@ export class CustomersStore {
   deleteCustomer = ({ id, callback }) => {
     this.isDeletingCustomer = true
     axios
-      .delete(`${PROXY_P5}/tenants/${id}/`)
+      .delete(`${PROXY_P1}/tenants/${id}/`)
       .then(res => {
         if (res.status === 200) {
           this.getCustomers()
@@ -75,7 +75,7 @@ export class CustomersStore {
 
   updateCustomer = tenantId => {
     return axios
-      .put(`${PROXY_P5}/tenants/${tenantId}`, this.customer)
+      .put(`${PROXY_P1}/tenants/${tenantId}`, this.customer)
       .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)

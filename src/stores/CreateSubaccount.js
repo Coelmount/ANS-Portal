@@ -3,7 +3,7 @@ import { decorate, observable, action } from 'mobx'
 import { set } from 'lodash'
 
 import axios from 'utils/axios'
-import { PROXY_P5 } from 'utils/axios'
+import { PROXY_P1 } from 'utils/axios'
 
 export class CreateSubaccountStore {
   step = 1
@@ -56,7 +56,7 @@ export class CreateSubaccountStore {
 
   createCustomer = customerId => {
     return axios
-      .post(`${PROXY_P5}/tenants/${customerId}/groups/`, this.customer)
+      .post(`${PROXY_P1}/tenants/${customerId}/groups/`, this.customer)
       .then(res => (this.createdCustomerStore = res.data))
   }
 }

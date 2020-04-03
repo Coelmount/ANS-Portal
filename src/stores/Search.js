@@ -1,7 +1,7 @@
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P5 } from 'utils/axios'
+import { PROXY_P1 } from 'utils/axios'
 
 export class SearchStore {
   searchResult = null
@@ -16,7 +16,7 @@ export class SearchStore {
       this.isLoading = true
 
       axios
-        .get(`${PROXY_P5}/search/numbers/usages/${phoneNumber}/`)
+        .get(`${PROXY_P1}/search/numbers/usages/${phoneNumber}/`)
         .then(res => {
           this.searchResult = res.data
           this.emptyResult = null
