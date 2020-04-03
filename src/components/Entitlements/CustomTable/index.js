@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useMemo,
-  Fragment,
-  useEffect,
-  useContext
-} from 'react'
+import React, { useState, useMemo, Fragment, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import clamp from 'lodash/clamp'
 
@@ -65,7 +59,7 @@ const CustomTable = ({
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
-  const { updateSelectedArr } = useContext(EntitlementsStore)
+  const { updateFilteredArr } = EntitlementsStore
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
@@ -87,8 +81,8 @@ const CustomTable = ({
   const filteredIdArr = list.map(item => item.id)
 
   useEffect(() => {
-    updateSelectedArr(filteredIdArr)
-  }, [filteredIdArr, list, updateSelectedArr])
+    updateFilteredArr(filteredIdArr)
+  }, [filteredIdArr, updateFilteredArr])
 
   const totalPages = useMemo(() => {
     const pages = Math.ceil(list.length / rowsPerPage)

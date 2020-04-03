@@ -20,50 +20,15 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
 import useStyles from './styles'
 
-const ENTITLEMENTS = [
-  {
-    id: 1,
-    name: 'fafa',
-    total: 5
-  },
-  {
-    id: 2,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10
-  },
-  {
-    id: 3,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3
-  },
-  {
-    id: 4,
-    name: 'Angola - GEO - basic',
-    total: 80
-  },
-  {
-    id: 5,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10
-  },
-  {
-    id: 6,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3
-  }
-]
-
 const TotalEntitlements = ({ handleClose, t }) => {
   const {
     changeStep,
     selectedEntitlements,
     updateTotalEntitlements,
-    totalEntitlements,
     postEntitlements,
     isSending,
-    arrTotals,
     objTotals
-  } = useContext(EntitlementsStore)
+  } = EntitlementsStore
   const [emptyFieldsCounter, setEmptyFieldsCounter] = useState(2)
   const [isNextButtonActive, setIsNextButtonActive] = useState(false)
 
@@ -94,7 +59,6 @@ const TotalEntitlements = ({ handleClose, t }) => {
           <Box>
             <Input
               onChange={e => {
-                console.log(row, 'row')
                 updateTotalEntitlements(e.target.value, row.id)
                 if (e.target.value === '')
                   setEmptyFieldsCounter(emptyFieldsCounter + 1)
@@ -113,7 +77,6 @@ const TotalEntitlements = ({ handleClose, t }) => {
     }
   ]
   const handleAddButton = () => {
-    // changeStep(3)
     postEntitlements(changeStep)
   }
 

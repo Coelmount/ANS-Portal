@@ -31,15 +31,16 @@ const SetEntitlements = props => {
     getEntitlements,
     entitlements,
     isLoadingEntitlements,
-    updateSelectedArr
-  } = useContext(EntitlementsStore)
+    updateCheckedArr,
+    resLength
+  } = EntitlementsStore
 
   const classes = useStyles()
   const [selected, setSelected] = useState([])
 
   useEffect(() => {
-    updateSelectedArr(selected)
-  }, [selected, selected.length, updateSelectedArr])
+    updateCheckedArr(selected)
+  }, [selected, updateCheckedArr])
 
   useEffect(() => {
     getEntitlements()
@@ -103,7 +104,7 @@ const SetEntitlements = props => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
-          disabled={selected.length <= 0}
+          disabled={resLength <= 0}
         >
           {t('next')}
         </Button>
