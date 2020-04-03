@@ -41,8 +41,8 @@ const PHONE_NUMBERS = [
     countryCode: '+27',
     phoneNumber: '53423437',
     type: 'local',
-    status: 'assigned'
-    // checked: false
+    status: 'assigned',
+    checked: false
   },
   {
     id: 2,
@@ -50,8 +50,8 @@ const PHONE_NUMBERS = [
     countryCode: '+24',
     phoneNumber: '53423432',
     type: 'geo',
-    status: 'assigned'
-    // checked: false
+    status: 'assigned',
+    checked: false
   },
   {
     id: 3,
@@ -59,8 +59,8 @@ const PHONE_NUMBERS = [
     countryCode: '+24',
     phoneNumber: '53423433',
     type: 'geo',
-    status: 'available'
-    // checked: false
+    status: 'available',
+    checked: false
   },
   {
     id: 4,
@@ -68,8 +68,8 @@ const PHONE_NUMBERS = [
     countryCode: '+27',
     phoneNumber: '53423435',
     type: 'local',
-    status: 'available'
-    // checked: false
+    status: 'available',
+    checked: false
   },
   {
     id: 5,
@@ -77,8 +77,8 @@ const PHONE_NUMBERS = [
     countryCode: '+27',
     phoneNumber: '53423436',
     type: 'local',
-    status: 'assigned'
-    // checked: false
+    status: 'assigned',
+    checked: false
   },
   {
     id: 6,
@@ -86,8 +86,8 @@ const PHONE_NUMBERS = [
     countryCode: '+27',
     phoneNumber: '53423439',
     type: 'geo',
-    status: 'available'
-    // checked: false
+    status: 'available',
+    checked: false
   },
   {
     id: 7,
@@ -121,34 +121,30 @@ const PHONE_NUMBERS = [
 const PhoneNumbers = observer(({ t }) => {
   const classes = useStyles()
   const [transformedNumbers, setTransformedNumbers] = useState([])
-  const [phoneNumbers, setPhoneNumbers] = useState(PHONE_NUMBERS)
-  const [checkMap, setCheckMap] = useState({})
-  const [selected, setSelected] = React.useState([])
-  // console.log(transformedNumbers, 'transformedNumbers')
-  console.log(selected, 'selected')
+  const [numbers, setNumbers] = useState(PHONE_NUMBERS)
+  const [selectAll, setSelectAll] = useState(false)
+  console.log(numbers, 'numbers')
 
-  const handleClick = (event, id) => {
-    console.log(id, 'id')
-    const selectedIndex = selected.indexOf(id)
-    let newSelected = []
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id)
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      )
+  const selectNumbers = (checked, id) => {
+    const newNumbers = [...numbers]
+    const index = numbers.findIndex(el => el.id === id)
+    newNumbers[index].checked = checked
+    if (newNumbers.every(el => el.checked)) {
+      setSelectAll(true)
+    } else {
+      setSelectAll(false)
     }
-
-    setSelected(newSelected)
+    setNumbers(newNumbers)
   }
+
+  const handleSelectAll = () => {
+    const newNumbers = numbers.map(el => ({ ...el, checked: !selectAll }))
+    setNumbers(newNumbers)
+    setSelectAll(!selectAll)
+  }
+
   useEffect(() => {
-    const numbers = phoneNumbersRangeFilter(phoneNumbers).map(item => {
+    const result = phoneNumbersRangeFilter(numbers).map(item => {
       return {
         numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
         rangeStart: `${item.countryCode} ${
@@ -158,21 +154,34 @@ const PhoneNumbers = observer(({ t }) => {
         ...item
       }
     })
-    setTransformedNumbers(numbers)
-  }, [phoneNumbers])
+    setTransformedNumbers(result)
+  }, [numbers])
 
   const columns = [
     {
       id: 'checkbox',
-      label: <Checkbox />,
+      label: <Checkbox checked={selectAll} onChange={handleSelectAll} />,
       isSortAvailable: false,
-      getCellData: row => {
-        return (
+      getCellData: (row, i) =>
+        row.checked ? (
           <Checkbox
-            onClick={event => handleClick(event, row.id)}
-            // checked={checkMap[row.id] === true ? true : false}
+            checked={row.checked}
+            className={classes.checkbox}
+            onChange={e => selectNumbers(!row.checked, row.id)}
           />
-        )
+        ) : (
+          <div
+            className={classes.cursorPointer}
+            onClick={e => selectNumbers(!row.checked, row.id)}
+          >
+            {i + 1}
+          </div>
+        ),
+      extraHeadProps: {
+        className: classes.checkboxCell
+      },
+      extraProps: {
+        className: classes.checkboxCell
       }
     },
     {
@@ -182,10 +191,13 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rangeStart',
       label: 'phone_numbers',
-      getCellData: row =>
-        row.phoneNumbers
-          ? `${row.countryCode} ${row.rangeStart}`
-          : `${row.countryCode} ${row.phoneNumber}`
+      getCellData: row => (
+        <Typography className={classes.numbersTitle}>
+          {row.phoneNumbers
+            ? `${row.countryCode} ${row.rangeStart}`
+            : `${row.countryCode} ${row.phoneNumber}`}
+        </Typography>
+      )
     },
     {
       id: 'rightArrow',
@@ -201,8 +213,16 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'phoneNumbersEnd',
       isSortAvailable: false,
-      getCellData: row =>
-        row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`
+      getCellData: row => (
+        <Box className={classes.numbersWrap}>
+          <Typography className={classes.numbersTitle}>
+            {row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`}
+          </Typography>
+          <Typography className={classes.numbersAmount}>
+            {row.phoneNumbers && `(${row.phoneNumbers.length})`}
+          </Typography>
+        </Box>
+      )
     },
     {
       id: 'type',

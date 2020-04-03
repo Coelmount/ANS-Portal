@@ -12,12 +12,15 @@ const CustomTableBody = ({
   page,
   list,
   columns,
-  firstCell
+  firstCell,
+  showPagination
 }) => {
   const rows = []
   for (
     let i = page * rowsPerPage,
-      length = Math.min(i + rowsPerPage, list.length),
+      length = showPagination
+        ? Math.min(i + rowsPerPage, list.length)
+        : list.length,
       row,
       labelId;
     i < length;
@@ -37,7 +40,7 @@ const CustomTableBody = ({
               scope='row'
               key={column.id}
             >
-              {(column.getCellData && column.getCellData(row)) ||
+              {(column.getCellData && column.getCellData(row, i)) ||
                 row[column.id]}
             </TableCell>
           )
@@ -49,11 +52,13 @@ const CustomTableBody = ({
 }
 
 CustomTableBody.propTypes = {
-  firstCell: PropTypes.bool
+  firstCell: PropTypes.bool,
+  showPagination: PropTypes.bool
 }
 
 CustomTableBody.defaultProps = {
-  firstCell: true
+  firstCell: true,
+  showPagination: true
 }
 
 export default memo(CustomTableBody)

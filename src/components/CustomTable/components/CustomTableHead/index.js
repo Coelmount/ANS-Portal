@@ -70,7 +70,7 @@ const CustomTableHead = ({
                     }
                     hideSortIcon={isSortAvailable === false}
                   >
-                    {typeof label === 'object' ? label : <p>{t(label)}</p>}
+                    {typeof label === 'object' ? label : t(label)}
                     {orderBy === id && (
                       <p
                         className={
