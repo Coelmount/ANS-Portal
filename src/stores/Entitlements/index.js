@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { decorate, observable, action, values, toJS } from 'mobx'
+import { decorate, observable, action } from 'mobx'
 import TotalNumbers from './TotalNumbers'
 
 import axios from 'utils/axios'
@@ -16,6 +16,8 @@ export class Entitlements {
   isTotalEmpty = true
   arrTotals = []
   objTotals = {}
+  selectedFromFilter = []
+  selectedFromCheckbox
 
   changeStep = step => {
     this.step = step
@@ -27,16 +29,13 @@ export class Entitlements {
 
   updateSelectedArr = idArr => {
     let resultArr = []
-    // this.selectedEntitlements = indexesArr.map(entIndex => {
 
-    //   return this.entitlements[entIndex]
-    // })
     this.entitlements.forEach(obj => {
       idArr.forEach(id => {
         if (id === obj.id) resultArr.push(obj)
       })
     })
-    console.log(resultArr, 'resultArr')
+
     this.selectedEntitlements = resultArr
   }
 

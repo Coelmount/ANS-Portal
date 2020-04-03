@@ -65,28 +65,11 @@ const CustomTable = ({
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
-  // const [selected, setSelected] = useState([])
-
-  // const { updateSelectedArr } = useContext(EntitlementsStore)
-
-  // useEffect(() => {
-  //   updateSelectedArr(selected)
-  // }, [selected, selected.length, updateSelectedArr])
-
-  // const handleClick = selectedRow => {
-  //   if (selected.indexOf(selectedRow) === -1) {
-  //     setSelected(selected.concat(selectedRow))
-  //   } else {
-  //     const newArr = selected.filter(item => {
-  //       return item !== selectedRow
-  //     })
-  //     setSelected(newArr)
-  //   }
-  // }
+  const { updateSelectedArr } = useContext(EntitlementsStore)
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((row, index) => index)
+      const newSelecteds = rows.map(row => row.id)
       setSelected(newSelecteds)
       return
     }
@@ -100,6 +83,12 @@ const CustomTable = ({
       : rows
     return stableSort(filteredRows, getComparator(order, orderBy))
   }, [query, rows, order, orderBy])
+
+  const filteredIdArr = list.map(item => item.id)
+
+  useEffect(() => {
+    updateSelectedArr(filteredIdArr)
+  }, [filteredIdArr, list, updateSelectedArr])
 
   const totalPages = useMemo(() => {
     const pages = Math.ceil(list.length / rowsPerPage)

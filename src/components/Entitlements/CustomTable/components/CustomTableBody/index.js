@@ -17,7 +17,6 @@ const CustomTableBody = ({
   isFullVersion,
   rowsColor
 }) => {
-  console.log(handleClick, 'handleClick')
   const rows = []
   for (
     let i = page * rowsPerPage,
