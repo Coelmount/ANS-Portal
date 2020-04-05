@@ -1,11 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useMemo,
-  Fragment
-} from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
@@ -17,7 +10,6 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import TitleBlock from 'components/TitleBlock'
-import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
@@ -127,24 +119,8 @@ const PhoneNumbers = observer(({ t }) => {
       (el) => el.phoneNumber === phoneNumber
     )
     newNumbers[index].checked = checked
-    console.log(newNumbers, 'newNumbers')
-    if (
-      newNumbers.every((el) => {
-        console.log(el.checked, 'el checked')
-        return el.checked
-      })
-    ) {
-      setSelectAll(true)
-    } else {
-      setSelectAll(false)
-    }
-    if (newNumbers.some((el) => el.checked)) {
-      setIsAnyChecked(true)
-    } else {
-      setIsAnyChecked(false)
-    }
-
     setNumbers(newNumbers)
+    handleCheckedStates(newNumbers)
   }
 
   const handleSelectAll = () => {
@@ -155,6 +131,24 @@ const PhoneNumbers = observer(({ t }) => {
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
     setIsAnyChecked(!selectAll)
+  }
+
+  const handleCheckedStates = (newNumbers) => {
+    if (
+      newNumbers.every((el) => {
+        return el.checked
+      })
+    ) {
+      setSelectAll(true)
+      setIsAnyChecked(true)
+    } else {
+      setSelectAll(false)
+      if (newNumbers.some((el) => el.checked)) {
+        setIsAnyChecked(true)
+      } else {
+        setIsAnyChecked(false)
+      }
+    }
   }
 
   useEffect(() => {
@@ -254,10 +248,7 @@ const PhoneNumbers = observer(({ t }) => {
       },
       isSortAvailable: false,
       getCellData: (row) => (
-        <CloseOutlinedIcon
-          // onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
-          className={classes.deleteCustomerIcon}
-        />
+        <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
       )
     }
   ]
@@ -306,11 +297,7 @@ const PhoneNumbers = observer(({ t }) => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock
-            titleData={titleData}
-            classes={classes}
-            // handleOpen={handleOpenCreateCustomer}
-          />
+          <TitleBlock titleData={titleData} classes={classes} />
         </CustomContainer>
         <CustomTable
           firstCell={false}
