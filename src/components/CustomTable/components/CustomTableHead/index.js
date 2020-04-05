@@ -15,6 +15,7 @@ const CustomTableHead = ({
   orderBy,
   onRequestSort,
   columns,
+  firstCell,
   t
 }) => {
   const createSortHandler = property => event => {
@@ -24,7 +25,7 @@ const CustomTableHead = ({
   return (
     <TableHead className={classes.thead}>
       <TableRow>
-        <TableCell></TableCell>
+        {firstCell && <TableCell />}
         {columns.map(
           ({
             id,
@@ -64,10 +65,12 @@ const CustomTableHead = ({
                           }
                         : createSortHandler(id)
                     }
-                    className={isSortAvailable === false && classes.displayNone}
+                    className={
+                      isSortAvailable === false ? classes.displayNone : ''
+                    }
                     hideSortIcon={isSortAvailable === false}
                   >
-                    <p>{t(label)}</p>
+                    {typeof label === 'object' ? label : t(label)}
                     {orderBy === id && (
                       <p
                         className={
@@ -96,7 +99,12 @@ CustomTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired
+  orderBy: PropTypes.string.isRequired,
+  firstCell: PropTypes.bool
+}
+
+CustomTableHead.defaultProps = {
+  firstCell: true
 }
 
 export default withNamespaces()(CustomTableHead)

@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useMemo,
-  Fragment,
-  useEffect,
-  useContext
-} from 'react'
+import React, { useState, useMemo, Fragment, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import clamp from 'lodash/clamp'
 
@@ -65,28 +59,11 @@ const CustomTable = ({
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
-  // const [selected, setSelected] = useState([])
-
-  // const { updateSelectedArr } = useContext(EntitlementsStore)
-
-  // useEffect(() => {
-  //   updateSelectedArr(selected)
-  // }, [selected, selected.length, updateSelectedArr])
-
-  // const handleClick = selectedRow => {
-  //   if (selected.indexOf(selectedRow) === -1) {
-  //     setSelected(selected.concat(selectedRow))
-  //   } else {
-  //     const newArr = selected.filter(item => {
-  //       return item !== selectedRow
-  //     })
-  //     setSelected(newArr)
-  //   }
-  // }
+  const { updateFilteredArr } = EntitlementsStore
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((row, index) => index)
+      const newSelecteds = rows.map(row => row.id)
       setSelected(newSelecteds)
       return
     }
@@ -100,6 +77,12 @@ const CustomTable = ({
       : rows
     return stableSort(filteredRows, getComparator(order, orderBy))
   }, [query, rows, order, orderBy])
+
+  const filteredIdArr = list.map(item => item.id)
+
+  useEffect(() => {
+    updateFilteredArr(filteredIdArr)
+  }, [filteredIdArr, updateFilteredArr])
 
   const totalPages = useMemo(() => {
     const pages = Math.ceil(list.length / rowsPerPage)

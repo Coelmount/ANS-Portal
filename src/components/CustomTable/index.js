@@ -1,5 +1,6 @@
 import React, { useState, useMemo, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
+import PropTypes from 'prop-types'
 import clamp from 'lodash/clamp'
 
 import Table from '@material-ui/core/Table'
@@ -47,6 +48,9 @@ const CustomTable = ({
   id,
   name,
   showSearchBar,
+  firstCell,
+  showPagination,
+  extraToolbarBlock,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -93,6 +97,8 @@ const CustomTable = ({
         setRowsPerPage={setRowsPerPage}
         setQuery={setQuery}
         showSearchBar={showSearchBar}
+        showPagination={showPagination}
+        extraToolbarBlock={extraToolbarBlock}
       />
       {isLoadingData ? (
         <Loading />
@@ -110,6 +116,7 @@ const CustomTable = ({
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               columns={columns}
+              firstCell={firstCell}
             />
             {list && list.length ? (
               <CustomTableBody
@@ -118,6 +125,8 @@ const CustomTable = ({
                 page={clampedPage}
                 list={list}
                 columns={columns}
+                firstCell={firstCell}
+                showPagination={showPagination}
               />
             ) : (
               <Typography className={classes.tableMessage}>
@@ -127,14 +136,26 @@ const CustomTable = ({
           </Table>
         </TableContainer>
       )}
-      <Pagination
-        classes={classes}
-        page={page}
-        totalPages={totalPages}
-        rewindPage={rewindPage}
-      />
+      {showPagination && (
+        <Pagination
+          classes={classes}
+          page={page}
+          totalPages={totalPages}
+          rewindPage={rewindPage}
+        />
+      )}
     </Fragment>
   )
+}
+
+CustomTable.propTypes = {
+  showPagination: PropTypes.bool,
+  extraToolbarBlock: PropTypes.element
+}
+
+CustomTableHead.defaultProps = {
+  showPagination: true,
+  extraToolbarBlock: null
 }
 
 export default withNamespaces()(CustomTable)

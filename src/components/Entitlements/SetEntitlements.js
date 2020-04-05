@@ -17,39 +17,6 @@ import EntitlementsStore from 'stores/Entitlements'
 import useStyles from './styles'
 import { useEffect } from 'react'
 
-// const ENTITLEMENTS = [
-//   {
-//     id: 1,
-//     name: 'fafa',
-//     total: 5
-//   },
-//   {
-//     id: 2,
-//     name: 'South Africa - GEO - ANS basic',
-//     total: 10
-//   },
-//   {
-//     id: 3,
-//     name: 'South Africa - GEO - ANS advanced',
-//     total: 3
-//   },
-//   {
-//     id: 4,
-//     name: 'Angola - GEO - basic',
-//     total: 80
-//   },
-//   {
-//     id: 5,
-//     name: 'South Africa - GEO - ANS basic',
-//     total: 10
-//   },
-//   {
-//     id: 6,
-//     name: 'South Africa - GEO - ANS advanced',
-//     total: 3
-//   }
-// ]
-
 const columns = [
   {
     id: 'name',
@@ -64,20 +31,20 @@ const SetEntitlements = props => {
     getEntitlements,
     entitlements,
     isLoadingEntitlements,
-    selectedEntitlements,
-    updateSelectedArr
-  } = useContext(EntitlementsStore)
+    updateCheckedArr,
+    resLength
+  } = EntitlementsStore
+
   const classes = useStyles()
   const [selected, setSelected] = useState([])
 
   useEffect(() => {
-    updateSelectedArr(selected)
-  }, [selected, selected.length, updateSelectedArr])
+    updateCheckedArr(selected)
+  }, [selected, updateCheckedArr])
 
   useEffect(() => {
     getEntitlements()
   }, [getEntitlements])
-  console.log(selected, 'selected here')
 
   const handleClick = selectedRow => {
     if (selected.indexOf(selectedRow) === -1) {
@@ -137,7 +104,7 @@ const SetEntitlements = props => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
-          disabled={selected.length <= 0}
+          disabled={resLength <= 0}
         >
           {t('next')}
         </Button>

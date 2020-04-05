@@ -91,9 +91,7 @@ const AccessNumbers = ({ t }) => {
   const classes = useStyles()
   const [showEditEntitlements, setShowEditEntitlements] = useState(false)
 
-  const { getEntitlements, postEntitlements, entitlements } = useContext(
-    EntitlementsStore
-  )
+  const { getEntitlements, postEntitlements, entitlements } = EntitlementsStore
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [accessNumberToDelete, setAccessNumberToDelete] = useState({})

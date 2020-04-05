@@ -19,6 +19,7 @@ import Translations from 'ui/Subaccount/AnsInstances/Basic/Translations'
 import BulkJobs from 'ui/Subaccount/AnsInstances/Basic/BulkJobs'
 import Destinations from 'ui/Subaccount/AnsInstances/Advanced/Destinations'
 import DestinationGroups from 'ui/Subaccount/AnsInstances/Advanced/DestinationGroups'
+import PhoneNumbers from 'ui/Subaccount/PhoneNumbers'
 import SubaccountAdmins from 'ui/Subaccount/Administrators'
 import SubaccountDetails from 'ui/Subaccount/Details'
 import Schedules from 'ui/Subaccount/Schedules'
@@ -85,6 +86,10 @@ const userComponents = [
   {
     path: '/customers/:customerId/subaccounts/:groupId/ans_instances/ivr',
     component: <IVR />
+  },
+  {
+    path: '/customers/:customerId/subaccounts/:groupId/phone_numbers',
+    component: <PhoneNumbers />
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/schedules',

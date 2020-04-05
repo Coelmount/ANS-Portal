@@ -1,5 +1,4 @@
-import { createContext } from 'react'
-import { decorate, observable, action, values, toJS } from 'mobx'
+import { decorate, observable, action } from 'mobx'
 import TotalNumbers from './TotalNumbers'
 
 import axios from 'utils/axios'
@@ -8,6 +7,8 @@ import { PROXY_CUSTOM_ANS } from 'utils/axios'
 export class Entitlements {
   entitlements = []
   selectedEntitlements = []
+  filteredArr = []
+  checkedArr = []
   totalEntitlements = []
   step = 1
   closeModal = false
@@ -17,6 +18,7 @@ export class Entitlements {
   isTotalEmpty = true
   arrTotals = []
   objTotals = {}
+  resLength = 0
 
   changeStep = step => {
     this.step = step
@@ -26,10 +28,27 @@ export class Entitlements {
     this.step = 1
   }
 
-  updateSelectedArr = indexesArr => {
-    this.selectedEntitlements = indexesArr.map(entIndex => {
-      return this.entitlements[entIndex]
+  updateFilteredArr = idArr => {
+    this.filteredArr = idArr
+    this.updateSelectedArr()
+  }
+  updateCheckedArr = idArr => {
+    this.checkedArr = idArr
+    this.updateSelectedArr()
+  }
+
+  updateSelectedArr = () => {
+    let resultArr = []
+    this.entitlements.forEach(obj => {
+      if (
+        this.checkedArr.includes(obj.id) &&
+        this.filteredArr.includes(obj.id)
+      ) {
+        resultArr.push(obj)
+      }
     })
+    this.selectedEntitlements = resultArr
+    this.resLength = resultArr.length
   }
 
   updateTotalEntitlements = (value, entitlementId) => {
@@ -56,6 +75,7 @@ export class Entitlements {
         console.log(res, 'error')
       }
     })
+    console.log(this.newTotalNumbers.arr, 'post it')
   }
 
   // postEntitlements = () => {
@@ -88,6 +108,17 @@ export class Entitlements {
       }
     })
   }
+
+  // getEntitlements = () => {
+  //   axios
+  //     .get(`/p5/tenants/bury/group/buryGROUP01/numbers`)
+  //     .then(res => {
+  //       console.log(res, 'post res')
+  //     })
+  //     .catch(error => {
+  //       console.log(error, 'error')
+  //     })
+  // }
 }
 
 decorate(Entitlements, {
@@ -100,12 +131,16 @@ decorate(Entitlements, {
   isTotalEmpty: observable,
   arrTotals: observable,
   objTotals: observable,
+  resLength: observable,
   changeStep: action,
   setDefaultEntitlementsValues: action,
   getEntitlements: action,
   postEntitlements: action,
   updateSelectedArr: action,
+  updateFilteredArr: action,
+  updateCheckedArr: action,
   updateTotalEntitlements: action
+  // selectedEntitlements: observable
 })
 
-export default createContext(new Entitlements())
+export default new Entitlements()

@@ -17,7 +17,6 @@ const CustomTableBody = ({
   isFullVersion,
   rowsColor
 }) => {
-  console.log(handleClick, 'handleClick')
   const rows = []
   for (
     let i = page * rowsPerPage,
@@ -36,9 +35,13 @@ const CustomTableBody = ({
         }
         tabIndex={-1}
         key={i}
-        onClick={() => handleClick(i)}
+        onClick={() => {
+          console.log(list[i].id, 'list[i]')
+          handleClick(list[i].id)
+          // handleClick(i)
+        }}
       >
-        {isFullVersion && selected && selected.includes(i) ? (
+        {isFullVersion && selected && selected.includes(list[i].id) ? (
           <TableCell>
             <Checkbox className={classes.checkboxCell} checked />
           </TableCell>

@@ -33,7 +33,7 @@ const Entitlements = props => {
     createSubaccount,
     isEditCustomer
   } = props
-  const { step } = useContext(EntitlementsStore)
+  const { step } = EntitlementsStore
   // const step = 2
   const classes = useStyles()
   return (

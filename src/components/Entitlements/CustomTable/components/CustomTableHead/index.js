@@ -26,7 +26,6 @@ const CustomTableHead = ({
   isFullVersion,
   rowsPerPage,
   setRowsPerPage,
-  withFilters,
   t
 }) => {
   const createSortHandler = property => event => {
@@ -39,8 +38,6 @@ const CustomTableHead = ({
         <TableCell className={classes.checkboxHead}>
           {isFullVersion && (
             <Checkbox
-              // indeterminate={numSelected > 0 && numSelected < rowCount}
-              // checked={rowCount > 0 && numSelected === rowCount}
               onChange={handleSelectAllClick}
               className={classes.checkbox}
             />

@@ -18,7 +18,9 @@ const CustomTableToolbar = props => {
     setRowsPerPage,
     setQuery,
     t,
-    showSearchBar
+    showSearchBar,
+    showPagination,
+    extraToolbarBlock
   } = props
 
   const handleSearch = e => {
@@ -37,32 +39,40 @@ const CustomTableToolbar = props => {
           <SearchIcon className={classes.searchIcon} />
         </div>
       )}
-
-      <div className={classes.perPageWrap}>
-        <Select
-          value={rowsPerPage}
-          onChange={e => setRowsPerPage(e.target.value)}
-          IconComponent={ArrowDropDownIcon}
-          className={classes.perPageSelect}
-        >
-          {rowsPerPageNumbers.map(number => (
-            <MenuItem value={number} key={`${number}`}>
-              {number}
-            </MenuItem>
-          ))}
-        </Select>
-        <Typography className={classes.perPageText}>{t('per_page')}</Typography>
-      </div>
+      {extraToolbarBlock && extraToolbarBlock()}
+      {showPagination && (
+        <div className={classes.perPageWrap}>
+          <Select
+            value={rowsPerPage}
+            onChange={e => setRowsPerPage(e.target.value)}
+            IconComponent={ArrowDropDownIcon}
+            className={classes.perPageSelect}
+          >
+            {rowsPerPageNumbers.map(number => (
+              <MenuItem value={number} key={`${number}`}>
+                {number}
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography className={classes.perPageText}>
+            {t('per_page')}
+          </Typography>
+        </div>
+      )}
     </div>
   )
 }
 
 CustomTableToolbar.propTypes = {
-  showSearchBar: PropTypes.bool
+  showSearchBar: PropTypes.bool,
+  showPagination: PropTypes.bool,
+  extraToolbarBlock: PropTypes.element
 }
 
 CustomTableToolbar.defaultProps = {
-  showSearchBar: true
+  showSearchBar: true,
+  showPagination: true,
+  extraToolbarBlock: null
 }
 
 export default withNamespaces()(CustomTableToolbar)

@@ -11,6 +11,7 @@ import unchecked from './checkbox.svg'
 
 const useStyles = makeStyles(theme => ({
   label: {
+    margin: 0,
     '& .MuiTypography-body1': {
       fontSize: '14px'
     }

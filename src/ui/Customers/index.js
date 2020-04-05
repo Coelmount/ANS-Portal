@@ -36,7 +36,7 @@ const CustomersTable = observer(({ t }) => {
     CreateSubaccountStore
   )
   const { setDefaultValues } = useContext(CreateCustomerStore)
-  const { setDefaultEntitlementsValues } = useContext(EntitlementsStore)
+  const { setDefaultEntitlementsValues } = EntitlementsStore
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [customerToDelete, setCustomerToDelete] = useState({})
   const [creationType, setCreationType] = useState('')
