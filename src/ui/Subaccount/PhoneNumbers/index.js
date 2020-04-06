@@ -112,11 +112,12 @@ const PhoneNumbers = observer(({ t }) => {
   const [numbers, setNumbers] = useState(PHONE_NUMBERS)
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
+  const [searchList, setSearchList] = useState([])
 
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
     const index = transformedNumbers.findIndex(
-      el => el.phoneNumber === phoneNumber
+      (el) => el.phoneNumber === phoneNumber
     )
     newNumbers[index].checked = checked
     setNumbers(newNumbers)
@@ -124,18 +125,28 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const newNumbers = transformedNumbers.map(el => ({
-      ...el,
-      checked: !selectAll
-    }))
+    const searchListId = searchList.map((item) => item.phoneNumber)
+    const newNumbers = transformedNumbers.map((el) => {
+      let result = {}
+      if (searchListId.includes(el.phoneNumber)) {
+        result = {
+          ...el,
+          checked: !selectAll
+        }
+      } else {
+        result = { ...el }
+      }
+      return result
+    })
+    handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
     setIsAnyChecked(!selectAll)
   }
 
-  const handleCheckedStates = newNumbers => {
+  const handleCheckedStates = (newNumbers) => {
     if (
-      newNumbers.every(el => {
+      newNumbers.every((el) => {
         return el.checked
       })
     ) {
@@ -143,27 +154,35 @@ const PhoneNumbers = observer(({ t }) => {
       setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newNumbers.some(el => el.checked)) {
+      if (newNumbers.some((el) => el.checked)) {
         setIsAnyChecked(true)
       } else {
         setIsAnyChecked(false)
       }
     }
+    if (!newNumbers.length) {
+      setSelectAll(false)
+      setIsAnyChecked(false)
+    }
   }
 
   useEffect(() => {
-    const result = phoneNumbersRangeFilter(numbers).map(item => {
+    const result = phoneNumbersRangeFilter(numbers).map((item) => {
       return {
         numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
         rangeStart: `${item.countryCode} ${
           item.rangeStart ? item.rangeStart : item.phoneNumber
-        }`,
+          }`,
         rangeEnd: `${item.countryCode} ${item.rangeEnd}`,
         ...item
       }
     })
     setTransformedNumbers(result)
   }, [numbers])
+
+  useEffect(() => {
+    handleCheckedStates(searchList)
+  }, [searchList])
 
   const columns = [
     {
@@ -175,16 +194,16 @@ const PhoneNumbers = observer(({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={e => selectNumbers(!row.checked, row.phoneNumber)}
+            onChange={(e) => selectNumbers(!row.checked, row.phoneNumber)}
           />
         ) : (
-          <div
-            className={classes.cursorPointer}
-            onClick={e => selectNumbers(!row.checked, row.phoneNumber)}
-          >
-            {i + 1}
-          </div>
-        ),
+            <div
+              className={classes.cursorPointer}
+              onClick={(e) => selectNumbers(!row.checked, row.phoneNumber)}
+            >
+              {i + 1}
+            </div>
+          ),
       extraHeadProps: {
         // className: classes.checkboxCell
       },
@@ -199,7 +218,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rangeStart',
       label: 'phone_numbers',
-      getCellData: row => (
+      getCellData: (row) => (
         <Typography className={classes.numbersTitle}>
           {row.phoneNumbers
             ? `${row.countryCode} ${row.rangeStart}`
@@ -210,7 +229,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rightArrow',
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <img
           src={RightArrowIcon}
           className={classes.rightArrowIcon}
@@ -221,7 +240,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'phoneNumbersEnd',
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <Box className={classes.numbersWrap}>
           <Typography className={classes.numbersTitle}>
             {row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`}
@@ -247,7 +266,7 @@ const PhoneNumbers = observer(({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
       )
     }
@@ -307,6 +326,7 @@ const PhoneNumbers = observer(({ t }) => {
           columns={columns}
           searchCriterias={['country', 'rangeStart']}
           extraToolbarBlock={toolbarButtonsBlock}
+          getSearchList={setSearchList}
         />
       </Paper>
     </div>
