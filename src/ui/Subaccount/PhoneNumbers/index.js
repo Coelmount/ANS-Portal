@@ -16,6 +16,8 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
 
+import PhoneNumbersStore from 'stores/PhoneNumbers'
+
 import phoneNumbersRangeFilter from 'utils/phoneNumbersRangeFilter'
 
 import useStyles from './styles'
@@ -115,8 +117,9 @@ const PhoneNumbers = observer(({ t }) => {
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
-    false
+    true
   )
+  const { setPhoneNumbers } = PhoneNumbersStore
 
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
@@ -190,6 +193,7 @@ const PhoneNumbers = observer(({ t }) => {
 
   useEffect(() => {
     handleCheckedStates(searchList)
+    setPhoneNumbers(searchList)
   }, [searchList])
 
   const columns = [
@@ -347,7 +351,10 @@ const PhoneNumbers = observer(({ t }) => {
           getSearchList={setSearchList}
         />
         {isAddPhoneNumbersModalOpen && (
-          <AddPhoneNumbersModal open={isAddPhoneNumbersModalOpen} />
+          <AddPhoneNumbersModal
+            open={isAddPhoneNumbersModalOpen}
+            handleClose={() => setIsAddPhoneNumbersModalOpen(false)}
+          />
         )}
       </Paper>
     </div>

@@ -7,6 +7,8 @@ import { PROXY_P6 } from 'utils/axios'
 export class PhoneNumbers {
   step = 1
   closeModal = false
+  phoneNumbers = []
+  uniqueCountries = []
 
   createdCustomerStore = {}
 
@@ -17,12 +19,24 @@ export class PhoneNumbers {
   setDefaultValues = () => {
     this.step = 1
   }
+
+  setPhoneNumbers = (phoneNumbers) => {
+    this.phoneNumbers = phoneNumbers
+    console.log(phoneNumbers, 'phoneNumbers in store')
+    const countries = phoneNumbers.map((item) => item.country)
+    console.log(countries, 'countries')
+    this.uniqueCountries = [...new Set(countries)]
+    console.log(this.uniqueCountries, 'uniqueCountries')
+  }
 }
 
 decorate(PhoneNumbers, {
   step: observable,
   closeModal: observable,
-  changeStep: action
+  uniqueCountries: observable,
+  phoneNumbers: observable,
+  changeStep: action,
+  setPhoneNumbers: action
 })
 
 export default new PhoneNumbers()

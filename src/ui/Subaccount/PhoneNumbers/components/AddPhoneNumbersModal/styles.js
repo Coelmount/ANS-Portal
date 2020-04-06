@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   sharpIcon: {
     textAlign: 'center'
   },
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 24px'
+    padding: '20px 40px'
   },
   closeButton: {
     position: 'absolute',
@@ -467,6 +467,30 @@ const useStyles = makeStyles(theme => ({
   },
   totalInput: {
     width: 50
+  },
+  dialogContent: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: 600,
+    marginLeft: 40,
+    marginTop: 30,
+    paddingBottom: 15,
+    fontFamily: 'MTN',
+    fontStyle: 'normal'
+  },
+  countryTitle: {
+    marginLeft: 67
+  },
+  countryNumbersWrap: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  endRangeWrap: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 

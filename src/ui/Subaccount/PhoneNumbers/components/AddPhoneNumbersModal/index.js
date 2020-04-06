@@ -24,8 +24,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const AddPhoneNumbersModal = (props) => {
-  const { open, handleClose, successClose } = props
+const AddPhoneNumbersModal = ({ open, handleClose, successClose }) => {
   const { step } = PhoneNumbersStore
   const classes = useStyles()
 
@@ -44,14 +43,7 @@ const AddPhoneNumbersModal = (props) => {
 const Steps = (props) => {
   switch (props.step) {
     case 1:
-      return (
-        <FirstStep
-          handleClose={props.handleClose}
-          isCreateSubaccount={props.isCreateSubaccount}
-          store={props.store}
-          isEditCustomer={props.isEditCustomer}
-        />
-      )
+      return <FirstStep handleClose={props.handleClose} />
     // case 2:
     //   return (
     //     <SecondStep
