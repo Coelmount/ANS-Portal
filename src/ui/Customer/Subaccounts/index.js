@@ -138,8 +138,7 @@ const SubaccountsTable = observer(({ t }) => {
           rows={rows}
           isLoadingData={isLoadingSubaccounts}
           columns={columns}
-          id='groupId'
-          name='groupName'
+          searchCriterias={['groupId', 'groupName']}
         />
         {isDeleteModalOpen && (
           <DeleteModal

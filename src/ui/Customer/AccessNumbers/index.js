@@ -187,8 +187,7 @@ const AccessNumbers = ({ t }) => {
           rows={entitlements}
           // isLoadingData={isLoadingCustomers}
           columns={columns}
-          id='name'
-          name='number_type'
+          searchCriterias={['name', 'number_type']}
         />
         {showEditEntitlements && (
           <EditEntitlements

@@ -116,7 +116,7 @@ const PhoneNumbers = observer(({ t }) => {
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
     const index = transformedNumbers.findIndex(
-      (el) => el.phoneNumber === phoneNumber
+      el => el.phoneNumber === phoneNumber
     )
     newNumbers[index].checked = checked
     setNumbers(newNumbers)
@@ -124,7 +124,7 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const newNumbers = transformedNumbers.map((el) => ({
+    const newNumbers = transformedNumbers.map(el => ({
       ...el,
       checked: !selectAll
     }))
@@ -133,9 +133,9 @@ const PhoneNumbers = observer(({ t }) => {
     setIsAnyChecked(!selectAll)
   }
 
-  const handleCheckedStates = (newNumbers) => {
+  const handleCheckedStates = newNumbers => {
     if (
-      newNumbers.every((el) => {
+      newNumbers.every(el => {
         return el.checked
       })
     ) {
@@ -143,7 +143,7 @@ const PhoneNumbers = observer(({ t }) => {
       setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newNumbers.some((el) => el.checked)) {
+      if (newNumbers.some(el => el.checked)) {
         setIsAnyChecked(true)
       } else {
         setIsAnyChecked(false)
@@ -152,7 +152,7 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   useEffect(() => {
-    const result = phoneNumbersRangeFilter(numbers).map((item) => {
+    const result = phoneNumbersRangeFilter(numbers).map(item => {
       return {
         numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
         rangeStart: `${item.countryCode} ${
@@ -175,12 +175,12 @@ const PhoneNumbers = observer(({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={(e) => selectNumbers(!row.checked, row.phoneNumber)}
+            onChange={e => selectNumbers(!row.checked, row.phoneNumber)}
           />
         ) : (
           <div
             className={classes.cursorPointer}
-            onClick={(e) => selectNumbers(!row.checked, row.phoneNumber)}
+            onClick={e => selectNumbers(!row.checked, row.phoneNumber)}
           >
             {i + 1}
           </div>
@@ -199,7 +199,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rangeStart',
       label: 'phone_numbers',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography className={classes.numbersTitle}>
           {row.phoneNumbers
             ? `${row.countryCode} ${row.rangeStart}`
@@ -210,7 +210,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rightArrow',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <img
           src={RightArrowIcon}
           className={classes.rightArrowIcon}
@@ -221,7 +221,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'phoneNumbersEnd',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <Box className={classes.numbersWrap}>
           <Typography className={classes.numbersTitle}>
             {row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`}
@@ -247,7 +247,7 @@ const PhoneNumbers = observer(({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
       )
     }
@@ -305,8 +305,7 @@ const PhoneNumbers = observer(({ t }) => {
           rows={transformedNumbers}
           // isLoadingData={isLoadingCustomers}
           columns={columns}
-          id='country'
-          name='rangeStart'
+          searchCriterias={['country', 'rangeStart']}
           extraToolbarBlock={toolbarButtonsBlock}
         />
       </Paper>
