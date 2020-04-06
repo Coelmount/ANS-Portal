@@ -3,7 +3,7 @@ import { decorate, observable, action } from 'mobx'
 import set from 'lodash/set'
 
 import axios from 'utils/axios'
-import { PROXY_P1 } from 'utils/axios'
+import { PROXY_P6 } from 'utils/axios'
 
 export class CreateCustomerStore {
   step = 1
@@ -60,7 +60,7 @@ export class CreateCustomerStore {
 
   createCustomer = () => {
     return axios
-      .post(`${PROXY_P1}/tenants/`, this.customer)
+      .post(`${PROXY_P6}/tenants/`, this.customer)
       .then(res => (this.createdCustomerStore = res.data))
   }
 }
