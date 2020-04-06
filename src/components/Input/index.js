@@ -45,14 +45,21 @@ const useStyles = makeStyles(() => ({
 
 const Input = props => {
   const classes = useStyles()
+  const { wrapperStyles, inputStyles, ...otherProps } = props
 
   return (
-    <Box className={classes.root}>
+    <Box
+      className={`${classes.root} ${
+        props.wrapperStyles ? props.wrapperStyles : ''
+      }`}
+    >
       {!!props.icon && <Box className={classes.icon}>{props.icon}</Box>}
       <TextField
-        className={props.icon ? classes.inputIcon : classes.input}
+        className={`${props.icon ? classes.inputIcon : classes.input} ${
+          props.inputStyles ? props.inputStyles : ''
+        }`}
         variant='outlined'
-        {...props}
+        {...otherProps}
       />
     </Box>
   )

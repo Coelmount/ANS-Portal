@@ -12,6 +12,7 @@ import CustomTableHead from './components/CustomTableHead'
 import CustomTableBody from './components/CustomTableBody'
 import Pagination from './components/Pagination'
 import Loading from 'components/Loading'
+import { ConsoleWriter } from 'istanbul-lib-report'
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'
@@ -51,6 +52,7 @@ const CustomTable = ({
   firstCell,
   showPagination,
   extraToolbarBlock,
+  searchCriterias,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -59,15 +61,25 @@ const CustomTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
 
+  const getFilter = () => {
+    let filterStr = ''
+    searchCriterias.forEach((element, i) => {
+      if (i === 0) {
+        filterStr += `row["${element}"].toLowerCase().includes(query) `
+        return
+      }
+      if (i === searchCriterias.length - 1) {
+        filterStr += `|| row["${element}"].toLowerCase().includes(query)`
+        return
+      }
+      filterStr += `|| row["${element}"].toLowerCase().includes(query) `
+    })
+    return filterStr
+  }
+
   const list = useMemo(() => {
     if (!rows) return []
-    const filteredRows = query
-      ? rows.filter(
-          row =>
-            row[id].toLowerCase().includes(query) ||
-            row[name].toLowerCase().includes(query)
-        )
-      : rows
+    const filteredRows = query ? rows.filter(row => eval(getFilter())) : rows
     return stableSort(filteredRows, getComparator(order, orderBy))
   }, [id, name, query, rows, order, orderBy])
 

@@ -28,7 +28,7 @@ const SubaccountsTable = observer(({ t }) => {
     deleteSubaccount,
     isLoadingSubaccounts,
     isDeletingSubaccount
-  } = useContext(SubaccountsStore)
+  } = SubaccountsStore
 
   const { setDefaultValues } = useContext(CreateSubaccountStore)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
