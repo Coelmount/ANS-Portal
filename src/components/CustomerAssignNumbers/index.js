@@ -31,7 +31,7 @@ import useStyles from './styles'
 const NUMBERS = [
   {
     id: 1,
-    number: '+27 540300011',
+    number: '+27 540310011',
     type: 'local',
     country: 'South Africa',
     checked: false
@@ -45,15 +45,15 @@ const NUMBERS = [
   },
   {
     id: 3,
-    number: '+27 540300013',
+    number: '+27 540310013',
     type: 'local',
-    country: 'South Africa',
+    country: 'Uganda',
     checked: false
   },
   {
     id: 4,
     number: '+27 540300014',
-    type: 'local',
+    type: 'not-local',
     country: 'South Africa',
     checked: false
   },
@@ -218,6 +218,7 @@ const AssignNumbers = props => {
           firstCell={false}
           showPagination={false}
           rows={numbers}
+          searchCriterias={['number', 'type', 'country']}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
