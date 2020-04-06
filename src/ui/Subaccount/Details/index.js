@@ -17,9 +17,7 @@ import useStyles from './styles'
 const Details = observer(({ t }) => {
   const match = useParams()
   const classes = useStyles()
-  const { subaccount, getSubaccount, isLoadingSubaccount } = useContext(
-    SubaccountsStore
-  )
+  const { subaccount, getSubaccount, isLoadingSubaccount } = SubaccountsStore
 
   useEffect(() => {
     getSubaccount(match.customerId, match.groupId)
