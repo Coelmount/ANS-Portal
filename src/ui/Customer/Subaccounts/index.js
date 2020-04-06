@@ -28,7 +28,7 @@ const SubaccountsTable = observer(({ t }) => {
     deleteSubaccount,
     isLoadingSubaccounts,
     isDeletingSubaccount
-  } = useContext(SubaccountsStore)
+  } = SubaccountsStore
 
   const { setDefaultValues } = useContext(CreateSubaccountStore)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -138,8 +138,7 @@ const SubaccountsTable = observer(({ t }) => {
           rows={rows}
           isLoadingData={isLoadingSubaccounts}
           columns={columns}
-          id='groupId'
-          name='groupName'
+          searchCriterias={['groupId', 'groupName']}
         />
         {isDeleteModalOpen && (
           <DeleteModal

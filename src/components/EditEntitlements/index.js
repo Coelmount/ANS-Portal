@@ -120,7 +120,6 @@ const EditEntitlements = props => {
       <DialogContent className={classes.entitlementsDialogContent}>
         <CustomTable
           showSearchBar={false}
-          isFullVersion={false}
           classes={classes}
           columns={columns}
           rows={entitlements}

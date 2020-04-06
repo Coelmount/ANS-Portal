@@ -111,13 +111,29 @@ const theme = createMuiTheme({
     },
     MuiDialogTitle: {
       root: {
-        boxShadow: 'inset 0px 4px 4px #F9F9F9',
+        boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
         zIndex: '1'
       }
     },
     MuiDialogContent: {
       root: {
         backgroundColor: '#F9F9F9'
+      }
+    },
+    MuiDialogActions: {
+      root: {
+        boxShadow: 'inset 0px 2px 16px rgba(196, 196, 196, 0.25)'
+      }
+    },
+    MuiDialog: {
+      paperWidthSm: {
+        width: 650,
+        maxWidth: 650
+      }
+    },
+    MuiCheckbox: {
+      root: {
+        padding: 0
       }
     }
   }
