@@ -91,7 +91,7 @@ const AccessNumbers = ({ t }) => {
   const match = useParams()
   const classes = useStyles()
   const [showEditEntitlements, setShowEditEntitlements] = useState(false)
-  const [showAssignNumbers, setShowAssignNumbers] = useState(true)
+  const [showAssignNumbers, setShowAssignNumbers] = useState(false)
 
   const { getEntitlements, postEntitlements, entitlements } = EntitlementsStore
 

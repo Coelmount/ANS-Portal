@@ -61,25 +61,18 @@ const CustomTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
 
-  const getFilter = () => {
-    let filterStr = ''
-    searchCriterias.forEach((element, i) => {
-      if (i === 0) {
-        filterStr += `row["${element}"].toLowerCase().includes(query) `
-        return
+  const getFilter = row => {
+    for (let i = 0; i < searchCriterias.length; i++) {
+      if (row[searchCriterias[i]].toLowerCase().includes(query)) {
+        return true
       }
-      if (i === searchCriterias.length - 1) {
-        filterStr += `|| row["${element}"].toLowerCase().includes(query)`
-        return
-      }
-      filterStr += `|| row["${element}"].toLowerCase().includes(query) `
-    })
-    return filterStr
+    }
+    return false
   }
 
   const list = useMemo(() => {
     if (!rows) return []
-    const filteredRows = query ? rows.filter(row => eval(getFilter())) : rows
+    const filteredRows = query ? rows.filter(row => getFilter(row)) : rows
     return stableSort(filteredRows, getComparator(order, orderBy))
   }, [id, name, query, rows, order, orderBy])
 
