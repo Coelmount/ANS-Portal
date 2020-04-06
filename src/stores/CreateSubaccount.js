@@ -4,6 +4,7 @@ import { set } from 'lodash'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
+import { removeEmpty } from 'utils/removeEmpty'
 
 export class CreateSubaccountStore {
   step = 1
@@ -27,7 +28,7 @@ export class CreateSubaccountStore {
 
   createdCustomerStore = {}
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -54,10 +55,11 @@ export class CreateSubaccountStore {
     set(this.customer, variable, value)
   }
 
-  createCustomer = (customerId) => {
+  createCustomer = customerId => {
+    const data = { ...this.customer }
     return axios
-      .post(`${PROXY_P6}/tenants/${customerId}/groups/`, this.customer)
-      .then((res) => (this.createdCustomerStore = res.data))
+      .post(`${PROXY_P6}/tenants/${customerId}/groups/`, removeEmpty(data))
+      .then(res => (this.createdCustomerStore = res.data))
   }
 }
 

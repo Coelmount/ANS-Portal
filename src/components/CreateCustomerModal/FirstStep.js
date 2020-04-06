@@ -97,7 +97,7 @@ const FirstStep = props => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
-          disabled={!customer.tenantId && !customer.groupId}
+          disabled={!customer.tenantId && !customer.groupName}
         >
           {t('next')}
         </Button>
