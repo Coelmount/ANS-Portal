@@ -112,6 +112,7 @@ const PhoneNumbers = observer(({ t }) => {
   const [numbers, setNumbers] = useState(PHONE_NUMBERS)
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
+  const [searchList, setSearchList] = useState([])
 
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
@@ -124,10 +125,20 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const newNumbers = transformedNumbers.map((el) => ({
-      ...el,
-      checked: !selectAll
-    }))
+    const searchListId = searchList.map((item) => item.phoneNumber)
+    const newNumbers = transformedNumbers.map((el) => {
+      let result = {}
+      if (searchListId.includes(el.phoneNumber)) {
+        result = {
+          ...el,
+          checked: !selectAll
+        }
+      } else {
+        result = { ...el }
+      }
+      return result
+    })
+    handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
     setIsAnyChecked(!selectAll)
@@ -149,6 +160,10 @@ const PhoneNumbers = observer(({ t }) => {
         setIsAnyChecked(false)
       }
     }
+    if (!newNumbers.length) {
+      setSelectAll(false)
+      setIsAnyChecked(false)
+    }
   }
 
   useEffect(() => {
@@ -164,6 +179,10 @@ const PhoneNumbers = observer(({ t }) => {
     })
     setTransformedNumbers(result)
   }, [numbers])
+
+  useEffect(() => {
+    handleCheckedStates(searchList)
+  }, [searchList])
 
   const columns = [
     {
@@ -308,6 +327,7 @@ const PhoneNumbers = observer(({ t }) => {
           id='country'
           name='rangeStart'
           extraToolbarBlock={toolbarButtonsBlock}
+          getSearchList={setSearchList}
         />
       </Paper>
     </div>

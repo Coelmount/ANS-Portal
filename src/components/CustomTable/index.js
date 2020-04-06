@@ -4,7 +4,10 @@ import PropTypes from 'prop-types'
 import clamp from 'lodash/clamp'
 
 import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
 import TableContainer from '@material-ui/core/TableContainer'
+import TableCell from '@material-ui/core/TableCell'
+import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 
 import CustomTableToolbar from './components/CustomTableToolbar'
@@ -27,7 +30,7 @@ const stableSort = (array, comparator) => {
     if (order !== 0) return order
     return a[1] - b[1]
   })
-  return stabilizedThis.map(el => el[0])
+  return stabilizedThis.map((el) => el[0])
 }
 
 const descendingComparator = (a, b, orderBy) => {
@@ -51,6 +54,7 @@ const CustomTable = ({
   firstCell,
   showPagination,
   extraToolbarBlock,
+  getSearchList,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -63,13 +67,15 @@ const CustomTable = ({
     if (!rows) return []
     const filteredRows = query
       ? rows.filter(
-          row =>
+          (row) =>
             row[id].toLowerCase().includes(query) ||
             row[name].toLowerCase().includes(query)
         )
       : rows
-    return stableSort(filteredRows, getComparator(order, orderBy))
-  }, [id, name, query, rows, order, orderBy])
+    const result = stableSort(filteredRows, getComparator(order, orderBy))
+    getSearchList && getSearchList(result)
+    return result
+  }, [rows, query, order, orderBy, id, name, getSearchList])
 
   const totalPages = useMemo(() => {
     const pages = Math.ceil(list.length / rowsPerPage)
@@ -84,7 +90,7 @@ const CustomTable = ({
 
   const clampedPage = clamp(page, 0, totalPages)
 
-  const rewindPage = step => {
+  const rewindPage = (step) => {
     if (clampedPage + step >= 0 && clampedPage + step <= totalPages)
       setPage(clampedPage + step)
   }
@@ -129,9 +135,15 @@ const CustomTable = ({
                 showPagination={showPagination}
               />
             ) : (
-              <Typography className={classes.tableMessage}>
-                {t('no_customers_yet')}
-              </Typography>
+              <TableBody>
+                <TableRow>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    <Typography className={classes.tableMessage}>
+                      {t('no_customers_yet')}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
             )}
           </Table>
         </TableContainer>
@@ -150,12 +162,13 @@ const CustomTable = ({
 
 CustomTable.propTypes = {
   showPagination: PropTypes.bool,
-  extraToolbarBlock: PropTypes.element
+  extraToolbarBlock: PropTypes.func
 }
 
 CustomTableHead.defaultProps = {
   showPagination: true,
-  extraToolbarBlock: null
+  extraToolbarBlock: null,
+  getSearchList: false
 }
 
 export default withNamespaces()(CustomTable)

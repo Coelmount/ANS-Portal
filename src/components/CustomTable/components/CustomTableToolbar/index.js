@@ -11,7 +11,7 @@ import { Typography } from '@material-ui/core'
 
 const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
 
-const CustomTableToolbar = props => {
+const CustomTableToolbar = (props) => {
   const {
     classes,
     rowsPerPage,
@@ -23,7 +23,7 @@ const CustomTableToolbar = props => {
     extraToolbarBlock
   } = props
 
-  const handleSearch = e => {
+  const handleSearch = (e) => {
     const value = e.target.value.toLowerCase()
     setQuery(value)
   }
@@ -44,11 +44,11 @@ const CustomTableToolbar = props => {
         <div className={classes.perPageWrap}>
           <Select
             value={rowsPerPage}
-            onChange={e => setRowsPerPage(e.target.value)}
+            onChange={(e) => setRowsPerPage(e.target.value)}
             IconComponent={ArrowDropDownIcon}
             className={classes.perPageSelect}
           >
-            {rowsPerPageNumbers.map(number => (
+            {rowsPerPageNumbers.map((number) => (
               <MenuItem value={number} key={`${number}`}>
                 {number}
               </MenuItem>
@@ -66,7 +66,7 @@ const CustomTableToolbar = props => {
 CustomTableToolbar.propTypes = {
   showSearchBar: PropTypes.bool,
   showPagination: PropTypes.bool,
-  extraToolbarBlock: PropTypes.element
+  extraToolbarBlock: PropTypes.func
 }
 
 CustomTableToolbar.defaultProps = {
