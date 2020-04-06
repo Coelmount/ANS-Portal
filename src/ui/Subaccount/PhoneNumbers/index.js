@@ -14,6 +14,7 @@ import CustomTable from 'components/CustomTable'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
+import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
 
 import phoneNumbersRangeFilter from 'utils/phoneNumbersRangeFilter'
 
@@ -113,6 +114,9 @@ const PhoneNumbers = observer(({ t }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
+  const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
+    false
+  )
 
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
@@ -164,6 +168,10 @@ const PhoneNumbers = observer(({ t }) => {
       setSelectAll(false)
       setIsAnyChecked(false)
     }
+  }
+
+  const handleAddModalClick = () => {
+    setIsAddPhoneNumbersModalOpen(true)
   }
 
   useEffect(() => {
@@ -322,7 +330,11 @@ const PhoneNumbers = observer(({ t }) => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} classes={classes} />
+          <TitleBlock
+            titleData={titleData}
+            classes={classes}
+            handleOpen={handleAddModalClick}
+          />
         </CustomContainer>
         <CustomTable
           firstCell={false}
@@ -334,6 +346,9 @@ const PhoneNumbers = observer(({ t }) => {
           extraToolbarBlock={toolbarButtonsBlock}
           getSearchList={setSearchList}
         />
+        {isAddPhoneNumbersModalOpen && (
+          <AddPhoneNumbersModal open={isAddPhoneNumbersModalOpen} />
+        )}
       </Paper>
     </div>
   )
