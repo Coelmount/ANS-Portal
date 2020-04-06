@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%'
   },
@@ -358,13 +358,17 @@ const useStyles = makeStyles(theme => ({
     width: '18px',
     height: '18px',
     marginRight: '9px',
-    padding: 0,
+    // padding: 0,
     '& .MuiSvgIcon-root': {
       color: theme.palette.primary.main
     },
     '& .MuiIconButton-root': {
       padding: 0
     }
+  },
+  headCheckbox: {
+    marginLeft: 7,
+    marginBottom: 2
   },
   checkboxCell: {
     width: 60,

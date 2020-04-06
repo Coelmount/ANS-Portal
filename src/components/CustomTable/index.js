@@ -65,8 +65,6 @@ const CustomTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [query, setQuery] = useState('')
 
-
-
   const list = useMemo(() => {
     const getFilter = (row) => {
       for (let i = 0; i < searchCriterias.length; i++) {
@@ -115,45 +113,45 @@ const CustomTable = ({
       {isLoadingData ? (
         <Loading />
       ) : (
-          <TableContainer>
-            <Table
-              className={classes.table}
-              aria-labelledby='tableTitle'
-              size={'medium'}
-              aria-label='enhanced table'
-            >
-              <CustomTableHead
+        <TableContainer>
+          <Table
+            className={classes.table}
+            aria-labelledby='tableTitle'
+            size={'medium'}
+            aria-label='enhanced table'
+          >
+            <CustomTableHead
+              classes={classes}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+              columns={columns}
+              firstCell={firstCell}
+            />
+            {list && list.length ? (
+              <CustomTableBody
                 classes={classes}
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
+                rowsPerPage={rowsPerPage}
+                page={clampedPage}
+                list={list}
                 columns={columns}
                 firstCell={firstCell}
+                showPagination={showPagination}
               />
-              {list && list.length ? (
-                <CustomTableBody
-                  classes={classes}
-                  rowsPerPage={rowsPerPage}
-                  page={clampedPage}
-                  list={list}
-                  columns={columns}
-                  firstCell={firstCell}
-                  showPagination={showPagination}
-                />
-              ) : (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell style={{ borderBottom: 'none' }}>
-                        <Typography className={classes.tableMessage}>
-                          {t('no_customers_yet')}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-            </Table>
-          </TableContainer>
-        )}
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    <Typography className={classes.tableMessage}>
+                      {t('no_customers_yet')}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
+          </Table>
+        </TableContainer>
+      )}
       {showPagination && (
         <Pagination
           classes={classes}

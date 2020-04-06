@@ -172,7 +172,7 @@ const PhoneNumbers = observer(({ t }) => {
         numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
         rangeStart: `${item.countryCode} ${
           item.rangeStart ? item.rangeStart : item.phoneNumber
-          }`,
+        }`,
         rangeEnd: `${item.countryCode} ${item.rangeEnd}`,
         ...item
       }
@@ -187,7 +187,13 @@ const PhoneNumbers = observer(({ t }) => {
   const columns = [
     {
       id: 'checkbox',
-      label: <Checkbox checked={selectAll} onChange={handleSelectAll} />,
+      label: (
+        <Checkbox
+          className={classes.headCheckbox}
+          checked={selectAll}
+          onChange={handleSelectAll}
+        />
+      ),
       isSortAvailable: false,
       getCellData: (row, i) =>
         row.checked ? (
@@ -197,13 +203,13 @@ const PhoneNumbers = observer(({ t }) => {
             onChange={(e) => selectNumbers(!row.checked, row.phoneNumber)}
           />
         ) : (
-            <div
-              className={classes.cursorPointer}
-              onClick={(e) => selectNumbers(!row.checked, row.phoneNumber)}
-            >
-              {i + 1}
-            </div>
-          ),
+          <div
+            className={classes.cursorPointer}
+            onClick={(e) => selectNumbers(!row.checked, row.phoneNumber)}
+          >
+            {i + 1}
+          </div>
+        ),
       extraHeadProps: {
         // className: classes.checkboxCell
       },
