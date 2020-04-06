@@ -4,6 +4,7 @@ import set from 'lodash/set'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
+import { removeEmpty } from 'utils/removeEmpty'
 
 export class CreateCustomerStore {
   step = 1
@@ -59,8 +60,9 @@ export class CreateCustomerStore {
   }
 
   createCustomer = () => {
+    const data = { ...this.customer }
     return axios
-      .post(`${PROXY_P6}/tenants/`, this.customer)
+      .post(`${PROXY_P6}/tenants/`, removeEmpty(data))
       .then(res => (this.createdCustomerStore = res.data))
   }
 }
