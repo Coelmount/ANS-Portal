@@ -27,6 +27,7 @@ const CustomTableToolbar = (props) => {
     const value = e.target.value.toLowerCase()
     setQuery(value)
   }
+
   return (
     <div className={classes.toolbarWrap}>
       {showSearchBar && (

@@ -36,7 +36,7 @@ export class CreateCustomerStore {
   setDefaultValues = () => {
     this.step = 1
     this.customer = {
-      type: 'Enterprise',
+      type: 'ServiceProvider',
       tenantId: '',
       name: '',
       contactInformation: {

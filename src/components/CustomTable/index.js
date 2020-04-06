@@ -169,7 +169,7 @@ CustomTable.propTypes = {
   extraToolbarBlock: PropTypes.func
 }
 
-CustomTableHead.defaultProps = {
+CustomTable.defaultProps = {
   showPagination: true,
   extraToolbarBlock: null,
   getSearchList: false

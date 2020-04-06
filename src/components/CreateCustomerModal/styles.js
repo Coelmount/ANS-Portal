@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: '16px'
   },
   city: {
-    width: '47%'
+    width: '37%'
   },
   boxOfButtons: {
     paddingRight: '40px',
