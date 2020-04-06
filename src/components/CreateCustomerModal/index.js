@@ -11,7 +11,7 @@ import SecondStep from './SecondStep'
 import SuccessPage from './SuccessPage'
 import Entitlements from 'components/Entitlements'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiDialog-paperWidthSm': {
       width: '651px'
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const CreateCustomer = props => {
+const CreateCustomer = (props) => {
   const {
     open,
     handleClose,
@@ -32,8 +32,8 @@ const CreateCustomer = props => {
     createSubaccount,
     isEditCustomer
   } = props
-  // const { step } = useContext(store)
-  const step = 4
+  const { step } = useContext(store)
+  // const step = 4
   const classes = useStyles()
 
   return (
@@ -52,7 +52,7 @@ const CreateCustomer = props => {
   )
 }
 
-const Steps = props => {
+const Steps = (props) => {
   switch (props.step) {
     case 1:
       return (

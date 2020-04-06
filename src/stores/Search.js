@@ -1,7 +1,7 @@
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P1 } from 'utils/axios'
+import { PROXY_P6 } from 'utils/axios'
 
 export class SearchStore {
   searchResult = null
@@ -9,20 +9,21 @@ export class SearchStore {
   isLoading = false
   ansInstance = null
 
-  getSearchResult = phoneNumber => {
+  getSearchResult = (phoneNumber) => {
     if (!phoneNumber) {
       this.clearSearchResult()
     } else {
       this.isLoading = true
 
       axios
-        .get(`${PROXY_P1}/search/numbers/usages/${phoneNumber}/`)
-        .then(res => {
+        .get(`${PROXY_P6}/search/numbers/usages/${phoneNumber}/`)
+        .then((res) => {
+          console.log(res, 'search res')
           this.searchResult = res.data
           this.emptyResult = null
           this.ansInstance = phoneNumber
         })
-        .catch(error => {
+        .catch((error) => {
           this.emptyResult = true
         })
         .finally(() => {

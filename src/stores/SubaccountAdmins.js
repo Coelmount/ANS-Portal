@@ -2,7 +2,7 @@ import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P1 } from 'utils/axios'
+import { PROXY_P6 } from 'utils/axios'
 
 export class SubaccountAdminsStore {
   subaccountAdmins = []
@@ -19,7 +19,7 @@ export class SubaccountAdminsStore {
   getSubaccountAdmins = ({ id, groupId }) => {
     this.isLoading = true
     axios
-      .get(`${PROXY_P1}/tenants/${id}/groups/${groupId}/admins/`)
+      .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`)
       .then(res => {
         if (res.status === 200) {
           this.subaccountAdmins = res.data.admins
@@ -44,7 +44,7 @@ export class SubaccountAdminsStore {
 
     axios
       .post(
-        `${PROXY_P1}/tenants/${id}/groups/${groupId}/admins/`,
+        `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`,
         this.sentSubaccountAdmin
       )
       .then(res => {
