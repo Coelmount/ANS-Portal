@@ -25,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const AddPhoneNumbersModal = ({ open, handleClose, successClose }) => {
+  // const step = 2
   const { step } = PhoneNumbersStore
+  const { selectedPhoneNumber } = PhoneNumbersStore
   const classes = useStyles()
 
   return (

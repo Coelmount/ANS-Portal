@@ -7,7 +7,7 @@ export class PhoneNumbers {
   step = 1
   closeModal = false
   phoneNumbers = []
-  setSelectedPhoneNumber = {}
+  selectedPhoneNumber = {}
   uniqueCountries = []
 
   createdCustomerStore = {}
@@ -22,16 +22,17 @@ export class PhoneNumbers {
 
   setPhoneNumbers = (phoneNumbers) => {
     this.phoneNumbers = phoneNumbers
-    console.log(phoneNumbers, 'phoneNumbers in store')
     const countries = phoneNumbers.map((item) => item.country)
-    console.log(countries, 'countries')
     this.uniqueCountries = [...new Set(countries)]
-    console.log(this.uniqueCountries, 'uniqueCountries')
   }
 
   setSelectedPhoneNumber = (phoneNumber) => {
     this.selectedPhoneNumber = phoneNumber
-    console.log(phoneNumber, 'store')
+  }
+
+  postPhoneNumbers = (number, amount) => {
+    console.log(number, amount, 'to post')
+    this.changeStep(3)
   }
 }
 
@@ -41,8 +42,9 @@ decorate(PhoneNumbers, {
   uniqueCountries: observable,
   phoneNumbers: observable,
   changeStep: action,
-  setPhoneNumbers: action
-  // setSelectedPhoneNumber: action
+  setPhoneNumbers: action,
+  setSelectedPhoneNumber: action,
+  postPhoneNumbers: action
 })
 
 export default new PhoneNumbers()

@@ -12,11 +12,21 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 40px'
+    padding: '20px 40px',
+    display: 'flex',
+    alignItems: 'center'
   },
   closeButton: {
     position: 'absolute',
-    right: '10px'
+    right: '10px',
+    width: 28,
+    height: 36,
+    marginRight: 30,
+    cursor: 'pointer'
+  },
+  closeButtonImg: {
+    width: 16,
+    height: 16
   },
   stepStyles: {
     marginTop: '32px',
@@ -480,6 +490,15 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'MTN',
     fontStyle: 'normal'
   },
+  selectedRangeSubtitle: {
+    fontSize: 18,
+    fontWeight: 600,
+    marginLeft: 40,
+    marginTop: 30,
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    marginBottom: 25
+  },
   countryTitle: {
     marginLeft: 67,
     marginBottom: 15,
@@ -501,6 +520,13 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: 27
     }
   },
+  selectedNumberWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    height: 50,
+    paddingLeft: 110
+  },
   endRangeWrap: {
     display: 'flex',
     alignItems: 'center'
@@ -518,6 +544,37 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     fontSize: 16,
     marginRight: 5
+  },
+  fromWhatNumberTitlte: {
+    paddingLeft: 143,
+    marginTop: 64,
+    marginBottom: 25,
+    fontSize: 18
+  },
+  startWithWrap: {
+    paddingLeft: 143,
+    display: 'flex',
+    alignItems: 'center'
+  },
+  amountOfNumbersWrap: {
+    paddingLeft: 143,
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 42
+  },
+  input: {
+    width: 193,
+    height: 50
+  },
+  amountOfNumbersInput: {
+    width: 56,
+    height: 50
+  },
+  inputTitles: {
+    marginRight: 30,
+    fontWeight: 600,
+    fontSize: 16,
+    width: 160
   }
 }))
 

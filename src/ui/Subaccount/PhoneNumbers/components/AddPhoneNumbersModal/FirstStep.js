@@ -30,7 +30,6 @@ const CountryList = ({
   checkedRow
 }) => {
   const countryNumbers = phoneNumbers.filter((item) => item.country === country)
-  // console.log(countryNumbers, 'countryNumbers comp')
 
   return (
     <Box>
@@ -43,9 +42,7 @@ const CountryList = ({
                 setCheckedRow({})
               else setCheckedRow(number)
             }}
-            // checked={
-            //   checkedRow && checkedRow.phoneNumber === number.phoneNumber
-            // }
+            checked={checkedRow.phoneNumber === number.phoneNumber}
           />
           <Typography className={classes.rangeStartTitle}>
             {number.phoneNumbers
@@ -79,13 +76,12 @@ const FirstStep = ({ handleClose, t }) => {
     changeStep,
     uniqueCountries,
     phoneNumbers,
-    setSelectedRow
+    setSelectedPhoneNumber
   } = PhoneNumbersStore
   const [checkedRow, setCheckedRow] = useState({})
-  console.log(checkedRow, 'checkedRow')
 
   const handleNextButton = () => {
-    // setSelectedRow(checkedRow)
+    setSelectedPhoneNumber(checkedRow)
     changeStep(2)
   }
 
@@ -93,14 +89,8 @@ const FirstStep = ({ handleClose, t }) => {
     <React.Fragment>
       <DialogTitle className={classes.title}>
         {t('add_numbers_from_customer_level')}
+        <CloseIcon className={classes.closeButton} />
       </DialogTitle>
-      <IconButton
-        aria-label='close'
-        onClick={handleClose}
-        className={classes.closeButton}
-      >
-        <CloseIcon />
-      </IconButton>
       <DialogContent className={classes.dialogContent}>
         <Box className={classes.subtitle}>{t('select_available_range')}</Box>
         {uniqueCountries.map((country) => (
