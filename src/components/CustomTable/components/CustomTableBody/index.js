@@ -30,7 +30,7 @@ const CustomTableBody = ({
     rows.push(
       <TableRow hover className={classes.tableRow} tabIndex={-1} key={i}>
         {firstCell && <IdCell cellValue={i} />}
-        {columns.map(column => {
+        {columns.map((column) => {
           const extraProps = column.extraProps
           return (
             <TableCell

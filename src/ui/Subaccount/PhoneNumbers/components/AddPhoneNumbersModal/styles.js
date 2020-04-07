@@ -12,11 +12,21 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 24px'
+    padding: '20px 40px',
+    display: 'flex',
+    alignItems: 'center'
   },
   closeButton: {
     position: 'absolute',
-    right: '10px'
+    right: '10px',
+    width: 28,
+    height: 36,
+    marginRight: 30,
+    cursor: 'pointer'
+  },
+  closeButtonImg: {
+    width: 16,
+    height: 16
   },
   stepStyles: {
     marginTop: '32px',
@@ -41,6 +51,12 @@ const useStyles = makeStyles((theme) => ({
   nextButton: {
     width: '160px',
     marginRight: '32px'
+  },
+  okButton: {
+    width: 160
+  },
+  okButtonAddedList: {
+    width: 160
   },
   backButton: {
     width: '160px',
@@ -467,6 +483,157 @@ const useStyles = makeStyles((theme) => ({
   },
   totalInput: {
     width: 50
+  },
+  dialogContent: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  addedListStepDialogContent: {
+    padding: 0
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: 600,
+    marginLeft: 40,
+    marginTop: 30,
+    fontFamily: 'MTN',
+    fontStyle: 'normal'
+  },
+  selectedRangeSubtitle: {
+    fontSize: 18,
+    fontWeight: 600,
+    marginLeft: 40,
+    marginTop: 30,
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    marginBottom: 25
+  },
+  countryTitle: {
+    marginLeft: 67,
+    marginBottom: 15,
+    marginTop: 25,
+    fontSize: 16,
+    fontWeight: 600
+  },
+  countryNumbersWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    '&:nth-child(2n+1)': {
+      backgroundColor: theme.palette.active.main,
+      height: 50,
+      paddingLeft: 27
+    },
+    '&:nth-child(2n)': {
+      backgroundColor: 'white',
+      height: 50,
+      paddingLeft: 27
+    }
+  },
+  selectedNumberWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    height: 50,
+    paddingLeft: 110
+  },
+  endRangeWrap: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  rangeStartTitle: {
+    marginLeft: 33,
+    fontWeight: 600,
+    fontSize: 16
+  },
+  rightArrowIcon: {
+    marginLeft: 20,
+    marginRight: 20
+  },
+  rangeEndTitle: {
+    fontWeight: 600,
+    fontSize: 16,
+    marginRight: 5
+  },
+  fromWhatNumberTitlte: {
+    paddingLeft: 143,
+    marginTop: 64,
+    marginBottom: 25,
+    fontSize: 18
+  },
+  startWithWrap: {
+    paddingLeft: 143,
+    display: 'flex',
+    alignItems: 'center'
+  },
+  amountOfNumbersWrap: {
+    paddingLeft: 143,
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 42
+  },
+  input: {
+    width: 193,
+    height: 50
+  },
+  amountOfNumbersInput: {
+    width: 56,
+    height: 50
+  },
+  inputTitles: {
+    marginRight: 30,
+    fontWeight: 600,
+    fontSize: 16,
+    width: 160
+  },
+  phoneAddedButtonWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: 25
+  },
+  dialogActionsAddedList: {
+    padding: '30px 45px 30px'
+  },
+  activeTab: {
+    maxWidth: 'none',
+    width: '50%',
+    fontFamily: 'MTN',
+    fontWeight: 600,
+    paddingTop: 30
+  },
+  nonActiveTab: {
+    maxWidth: 'none',
+    width: '50%',
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    borderBottom: '4px solid white',
+    paddingTop: 30
+  },
+  appBar: {
+    background: theme.palette.active.main,
+    marginBottom: 44
+  },
+  tabsWrap: {
+    '& > div': {
+      paddingLeft: 0,
+      paddingRight: 0,
+      '& > span': {
+        height: 4,
+        background: theme.palette.primary.main
+      }
+    }
+  },
+  toolbarWrap: {
+    display: 'none'
+  },
+  phoneNumberCellText: {
+    fontSize: 16,
+    fontWeight: 600
+  },
+  addedStatusText: {
+    color: 'green'
+  },
+  rejectedStatusText: {
+    color: theme.palette.darkRed
   }
 }))
 
