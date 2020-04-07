@@ -117,9 +117,9 @@ const PhoneNumbers = observer(({ t }) => {
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
-    true
+    false
   )
-  const { setPhoneNumbers } = PhoneNumbersStore
+  const { setPhoneNumbers, changeStep } = PhoneNumbersStore
 
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
@@ -353,7 +353,10 @@ const PhoneNumbers = observer(({ t }) => {
         {isAddPhoneNumbersModalOpen && (
           <AddPhoneNumbersModal
             open={isAddPhoneNumbersModalOpen}
-            handleClose={() => setIsAddPhoneNumbersModalOpen(false)}
+            handleClose={() => {
+              changeStep(1)
+              setIsAddPhoneNumbersModalOpen(false)
+            }}
           />
         )}
       </Paper>

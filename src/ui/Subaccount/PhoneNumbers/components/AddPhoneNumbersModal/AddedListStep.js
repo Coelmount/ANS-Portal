@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -64,6 +64,7 @@ const AddedListStep = ({ handleClose, t }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
   const columns = [
     {
       id: 'phoneNumber',
