@@ -1,5 +1,4 @@
 import { decorate, observable, action } from 'mobx'
-import set from 'lodash/set'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
@@ -8,6 +7,7 @@ export class PhoneNumbers {
   step = 1
   closeModal = false
   phoneNumbers = []
+  setSelectedPhoneNumber = {}
   uniqueCountries = []
 
   createdCustomerStore = {}
@@ -28,6 +28,11 @@ export class PhoneNumbers {
     this.uniqueCountries = [...new Set(countries)]
     console.log(this.uniqueCountries, 'uniqueCountries')
   }
+
+  setSelectedPhoneNumber = (phoneNumber) => {
+    this.selectedPhoneNumber = phoneNumber
+    console.log(phoneNumber, 'store')
+  }
 }
 
 decorate(PhoneNumbers, {
@@ -37,6 +42,7 @@ decorate(PhoneNumbers, {
   phoneNumbers: observable,
   changeStep: action,
   setPhoneNumbers: action
+  // setSelectedPhoneNumber: action
 })
 
 export default new PhoneNumbers()

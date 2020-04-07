@@ -22,70 +22,70 @@ import PhoneNumbersStore from 'stores/PhoneNumbers'
 import useStyles from './styles'
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 
-const CountryList = ({
-  classes,
-  country,
-  phoneNumbers,
-  setCheckedRow,
-  checkedRow
-}) => {
-  const countryNumbers = phoneNumbers.filter((item) => item.country === country)
-  // console.log(countryNumbers, 'countryNumbers comp')
+// const CountryList = ({
+//   classes,
+//   country,
+//   phoneNumbers,
+//   setCheckedRow,
+//   checkedRow
+// }) => {
+//   const countryNumbers = phoneNumbers.filter((item) => item.country === country)
+//   // console.log(countryNumbers, 'countryNumbers comp')
 
-  return (
-    <Box>
-      <Typography className={classes.countryTitle}>{country}</Typography>
-      {countryNumbers.map((number) => (
-        <Box key={number.phoneNumber} className={classes.countryNumbersWrap}>
-          <Checkbox
-            onChange={() => {
-              if (number.phoneNumber === checkedRow.phoneNumber)
-                setCheckedRow({})
-              else setCheckedRow(number)
-            }}
-            // checked={
-            //   checkedRow && checkedRow.phoneNumber === number.phoneNumber
-            // }
-          />
-          <Typography className={classes.rangeStartTitle}>
-            {number.phoneNumbers
-              ? `${number.countryCode} ${number.rangeStart}`
-              : `${number.countryCode} ${number.phoneNumber}`}
-          </Typography>
-          {number.phoneNumbers && (
-            <img
-              className={classes.rightArrowIcon}
-              src={RightArrowIcon}
-              alt='right icon'
-            />
-          )}
-          <Box className={classes.endRangeWrap}>
-            <Typography className={classes.rangeEndTitle}>
-              {number.phoneNumbers &&
-                `${number.countryCode} ${number.rangeEnd}`}
-            </Typography>
-            <Typography className={classes.numbersLengthTitle}>
-              {number.phoneNumbers && `(${number.phoneNumbers.length})`}
-            </Typography>
-          </Box>
-        </Box>
-      ))}
-    </Box>
-  )
-}
-const FirstStep = ({ handleClose, t }) => {
+//   return (
+//     <Box>
+//       <Typography className={classes.countryTitle}>{country}</Typography>
+//       {countryNumbers.map((number) => (
+//         <Box key={number.phoneNumber} className={classes.countryNumbersWrap}>
+//           <Checkbox
+//             onChange={() => {
+//               if (number.phoneNumber === checkedRow.phoneNumber)
+//                 setCheckedRow({})
+//               else setCheckedRow(number)
+//             }}
+//             // checked={
+//             //   checkedRow && checkedRow.phoneNumber === number.phoneNumber
+//             // }
+//           />
+//           <Typography className={classes.rangeStartTitle}>
+//             {number.phoneNumbers
+//               ? `${number.countryCode} ${number.rangeStart}`
+//               : `${number.countryCode} ${number.phoneNumber}`}
+//           </Typography>
+//           {number.phoneNumbers && (
+//             <img
+//               className={classes.rightArrowIcon}
+//               src={RightArrowIcon}
+//               alt='right icon'
+//             />
+//           )}
+//           <Box className={classes.endRangeWrap}>
+//             <Typography className={classes.rangeEndTitle}>
+//               {number.phoneNumbers &&
+//                 `${number.countryCode} ${number.rangeEnd}`}
+//             </Typography>
+//             <Typography className={classes.numbersLengthTitle}>
+//               {number.phoneNumbers && `(${number.phoneNumbers.length})`}
+//             </Typography>
+//           </Box>
+//         </Box>
+//       ))}
+//     </Box>
+//   )
+// }
+const SecondStep = ({ handleClose, t }) => {
   const classes = useStyles()
   const {
     changeStep,
     uniqueCountries,
     phoneNumbers,
-    setSelectedRow
+    setSelectedPhoneNumber
   } = PhoneNumbersStore
   const [checkedRow, setCheckedRow] = useState({})
   console.log(checkedRow, 'checkedRow')
 
   const handleNextButton = () => {
-    // setSelectedRow(checkedRow)
+    setSelectedPhoneNumber(checkedRow)
     changeStep(2)
   }
 
@@ -102,7 +102,8 @@ const FirstStep = ({ handleClose, t }) => {
         <CloseIcon />
       </IconButton>
       <DialogContent className={classes.dialogContent}>
-        <Box className={classes.subtitle}>{t('select_available_range')}</Box>
+        <p>content</p>
+        {/* <Box className={classes.subtitle}>{t('select_available_range')}</Box>
         {uniqueCountries.map((country) => (
           <CountryList
             classes={classes}
@@ -112,7 +113,7 @@ const FirstStep = ({ handleClose, t }) => {
             setCheckedRow={setCheckedRow}
             checkedRow={checkedRow}
           />
-        ))}
+        ))} */}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
@@ -128,7 +129,7 @@ const FirstStep = ({ handleClose, t }) => {
           color='primary'
           className={classes.nextButton}
           onClick={handleNextButton()}
-          disabled={!Object.keys(checkedRow).length}
+          // disabled={!Object.keys(checkedRow).length}
         >
           {t('next')}
         </Button>
@@ -137,4 +138,4 @@ const FirstStep = ({ handleClose, t }) => {
   )
 }
 
-export default withNamespaces()(observer(FirstStep))
+export default withNamespaces()(observer(SecondStep))

@@ -7,7 +7,7 @@ import Dialog from '@material-ui/core/Dialog'
 import { makeStyles } from '@material-ui/core/styles'
 
 import FirstStep from './FirstStep'
-// import SecondStep from './SecondStep'
+import SecondStep from './SecondStep'
 // import SuccessPage from './SuccessPage'
 // import Entitlements from 'components/Entitlements'
 
@@ -44,15 +44,8 @@ const Steps = (props) => {
   switch (props.step) {
     case 1:
       return <FirstStep handleClose={props.handleClose} />
-    // case 2:
-    //   return (
-    //     <SecondStep
-    //       handleClose={props.handleClose}
-    //       isCreateSubaccount={props.isCreateSubaccount}
-    //       store={props.store}
-    //       isEditCustomer={props.isEditCustomer}
-    //     />
-    //   )
+    case 2:
+      return <SecondStep handleClose={props.handleClose} />
     // case 3:
     //   return (
     //     <SuccessPage

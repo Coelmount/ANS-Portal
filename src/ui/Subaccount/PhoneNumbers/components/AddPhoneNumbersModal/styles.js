@@ -477,20 +477,47 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     marginLeft: 40,
     marginTop: 30,
-    paddingBottom: 15,
     fontFamily: 'MTN',
     fontStyle: 'normal'
   },
   countryTitle: {
-    marginLeft: 67
+    marginLeft: 67,
+    marginBottom: 15,
+    marginTop: 25,
+    fontSize: 16,
+    fontWeight: 600
   },
   countryNumbersWrap: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    '&:nth-child(2n+1)': {
+      backgroundColor: theme.palette.active.main,
+      height: 50,
+      paddingLeft: 27
+    },
+    '&:nth-child(2n)': {
+      backgroundColor: 'white',
+      height: 50,
+      paddingLeft: 27
+    }
   },
   endRangeWrap: {
     display: 'flex',
     alignItems: 'center'
+  },
+  rangeStartTitle: {
+    marginLeft: 33,
+    fontWeight: 600,
+    fontSize: 16
+  },
+  rightArrowIcon: {
+    marginLeft: 20,
+    marginRight: 20
+  },
+  rangeEndTitle: {
+    fontWeight: 600,
+    fontSize: 16,
+    marginRight: 5
   }
 }))
 
