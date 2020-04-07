@@ -9,10 +9,11 @@ export class PhoneNumbers {
   phoneNumbers = []
   selectedPhoneNumber = {}
   uniqueCountries = []
-
-  createdCustomerStore = {}
+  addedPhoneNumbers = []
+  rejectedPhoneNumbers = []
 
   changeStep = (step) => {
+    console.log(step)
     this.step = step
   }
 
@@ -33,6 +34,21 @@ export class PhoneNumbers {
   postPhoneNumbers = (number, amount) => {
     console.log(number, amount, 'to post')
     this.changeStep(3)
+    const rangeCopy = [...number.phoneNumbers]
+    this.createAddedAndRejectedGroups(rangeCopy, amount)
+  }
+
+  createAddedAndRejectedGroups = (range, amount) => {
+    const addedPhoneNumbers = []
+    const rejectedPhoneNumbers = []
+    for (let i = 0; i < range.length; i++) {
+      if (i < amount)
+        addedPhoneNumbers.push({ addStatus: 'added', ...range[i] })
+      else rejectedPhoneNumbers.push({ addStatus: 'rejected', ...range[i] })
+    }
+    this.addedPhoneNumbers = addedPhoneNumbers
+    this.rejectedPhoneNumbers = rejectedPhoneNumbers
+    console.log(addedPhoneNumbers, rejectedPhoneNumbers, 'data')
   }
 }
 

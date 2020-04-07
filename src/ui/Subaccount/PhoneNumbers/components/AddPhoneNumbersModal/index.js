@@ -8,8 +8,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
-// import SuccessPage from './SuccessPage'
-// import Entitlements from 'components/Entitlements'
+import SuccessPage from './SuccessPage'
+import AddedListStep from './AddedListStep'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 
@@ -25,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const AddPhoneNumbersModal = ({ open, handleClose, successClose }) => {
-  // const step = 2
+  // const step = 4
   const { step } = PhoneNumbersStore
   const { selectedPhoneNumber } = PhoneNumbersStore
   const classes = useStyles()
-
+  console.log(step, 'step in comp')
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <Steps
@@ -48,32 +48,12 @@ const Steps = (props) => {
       return <FirstStep handleClose={props.handleClose} />
     case 2:
       return <SecondStep handleClose={props.handleClose} />
-    // case 3:
-    //   return (
-    //     <SuccessPage
-    //       handleClose={props.successClose}
-    //       isCreateSubaccount={props.isCreateSubaccount}
-    //       store={props.store}
-    //       createSubaccount={props.createSubaccount}
-    //     />
-    //   )
-    // case 4:
-    //   return (
-    //     <Entitlements
-    //       handleClose={props.handleClose}
-    //       store={props.store}
-    //       isCreateSubaccount={props.isCreateSubaccount}
-    //       open={props.open}
-    //     />
-    //   )
+    case 3:
+      return <SuccessPage handleClose={props.successClose} />
+    case 4:
+      return <AddedListStep handleClose={props.handleClose} />
     default:
-      return (
-        <FirstStep
-          handleClose={props.handleClose}
-          store={props.store}
-          isCreateSubaccount={props.isCreateSubaccount}
-        />
-      )
+      return <FirstStep handleClose={props.handleClose} />
   }
 }
 

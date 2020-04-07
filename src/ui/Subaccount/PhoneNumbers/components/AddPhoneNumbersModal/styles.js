@@ -52,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
     width: '160px',
     marginRight: '32px'
   },
+  okButton: {
+    width: 160
+  },
+  okButtonAddedList: {
+    width: 160
+  },
   backButton: {
     width: '160px',
     marginLeft: '32px',
@@ -482,6 +488,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 0,
     paddingRight: 0
   },
+  addedListStepDialogContent: {
+    padding: 0
+  },
   subtitle: {
     fontSize: 18,
     fontWeight: 600,
@@ -575,6 +584,56 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     fontSize: 16,
     width: 160
+  },
+  phoneAddedButtonWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: 25
+  },
+  dialogActionsAddedList: {
+    padding: '30px 45px 30px'
+  },
+  activeTab: {
+    maxWidth: 'none',
+    width: '50%',
+    fontFamily: 'MTN',
+    fontWeight: 600,
+    paddingTop: 30
+  },
+  nonActiveTab: {
+    maxWidth: 'none',
+    width: '50%',
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    borderBottom: '4px solid white',
+    paddingTop: 30
+  },
+  appBar: {
+    background: theme.palette.active.main,
+    marginBottom: 44
+  },
+  tabsWrap: {
+    '& > div': {
+      paddingLeft: 0,
+      paddingRight: 0,
+      '& > span': {
+        height: 4,
+        background: theme.palette.primary.main
+      }
+    }
+  },
+  toolbarWrap: {
+    display: 'none'
+  },
+  phoneNumberCellText: {
+    fontSize: 16,
+    fontWeight: 600
+  },
+  addedStatusText: {
+    color: 'green'
+  },
+  rejectedStatusText: {
+    color: theme.palette.darkRed
   }
 }))
 

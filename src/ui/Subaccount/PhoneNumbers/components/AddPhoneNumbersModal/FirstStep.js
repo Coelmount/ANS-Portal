@@ -70,6 +70,7 @@ const CountryList = ({
     </Box>
   )
 }
+
 const FirstStep = ({ handleClose, t }) => {
   const classes = useStyles()
   const {
