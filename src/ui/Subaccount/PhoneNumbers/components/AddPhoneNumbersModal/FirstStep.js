@@ -127,7 +127,7 @@ const FirstStep = ({ handleClose, t }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={handleNextButton()}
+          onClick={() => handleNextButton()}
           disabled={!Object.keys(checkedRow).length}
         >
           {t('next')}
