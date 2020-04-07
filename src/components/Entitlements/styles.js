@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   sharpIcon: {
     textAlign: 'center'
   },
@@ -366,7 +366,7 @@ const useStyles = makeStyles(theme => ({
       borderTop: `2px solid ${theme.palette.primary.main}`
     },
     '& > td': {
-      width: 50,
+      width: 100,
       padding: '10px 16px',
       paddingLeft: 44
     },
@@ -544,7 +544,7 @@ const useStyles = makeStyles(theme => ({
   },
   checkboxCell: {
     padding: 0,
-    marginLeft: 6
+    marginLeft: -4
   },
   nextButtonEntitlements: {
     width: 240

@@ -15,9 +15,9 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 
 import useStyles from './styles'
 
-const SuccesPage = props => {
+const SuccesPage = (props) => {
   const { handleClose, t, store, isCreateSubaccount, createSubaccount } = props
-  const { changeStep, createdCustomerStore } = useContext(store)
+  const { changeStep, createdCustomerStore } = store
   const history = useHistory()
   const match = useParams()
   const classes = useStyles()

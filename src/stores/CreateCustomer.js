@@ -1,4 +1,3 @@
-import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 import set from 'lodash/set'
 
@@ -30,7 +29,7 @@ export class CreateCustomerStore {
 
   createdCustomerStore = {}
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 
@@ -63,7 +62,7 @@ export class CreateCustomerStore {
     const data = { ...this.customer }
     return axios
       .post(`${PROXY_P6}/tenants/`, removeEmpty(data))
-      .then(res => (this.createdCustomerStore = res.data))
+      .then((res) => (this.createdCustomerStore = res.data))
   }
 }
 
@@ -76,4 +75,4 @@ decorate(CreateCustomerStore, {
   changeCustomer: action
 })
 
-export default createContext(new CreateCustomerStore())
+export default new CreateCustomerStore()

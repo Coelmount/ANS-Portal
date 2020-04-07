@@ -25,6 +25,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import EditEntitlements from 'components/EditEntitlements'
 import AssignNumbers from 'components/CustomerAssignNumbers'
+import Entitlements from 'components/Entitlements'
 
 import useStyles from './styles'
 import editSvg from 'source/images/svg/edit-blue.svg'
@@ -95,6 +96,9 @@ const AccessNumbers = ({ t }) => {
 
   const { getEntitlements, postEntitlements, entitlements } = EntitlementsStore
 
+  const [isAddEntitlementsModalOpen, setIsAddEntitlementsModalOpen] = useState(
+    false
+  )
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [accessNumberToDelete, setAccessNumberToDelete] = useState({})
 
@@ -108,6 +112,10 @@ const AccessNumbers = ({ t }) => {
     setAccessNumberToDelete({ name })
   }
 
+  const handleAddEntitlementsClick = () => {
+    setIsAddEntitlementsModalOpen(true)
+  }
+
   const titleData = {
     mainText: t('access_numbers'),
     iconCapture: t('add_entitlements'),
@@ -118,7 +126,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'name',
       label: 'country',
-      getCellData: row => <Typography>{row.name.split('-')[0]}</Typography>
+      getCellData: (row) => <Typography>{row.name.split('-')[0]}</Typography>
     },
     {
       id: 'number_type',
@@ -143,7 +151,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'see_numbers',
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <Link
           to={`/customers/${match.customerId}/access_numbers/${row.name.replace(
             /\s/g,
@@ -162,7 +170,7 @@ const AccessNumbers = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}
@@ -179,7 +187,7 @@ const AccessNumbers = ({ t }) => {
           <TitleBlock
             titleData={titleData}
             classes={classes}
-            // handleOpen={handleOpenCreateCustomer}
+            handleOpen={handleAddEntitlementsClick}
           />
         </CustomContainer>
         <CustomTable
@@ -213,6 +221,12 @@ const AccessNumbers = ({ t }) => {
             deleteSubject={t('entitlement')}
             action={t('to_remove')}
             titleAction={t(`remove`)}
+          />
+        )}
+        {isAddEntitlementsModalOpen && (
+          <Entitlements
+            handleClose={() => setIsAddEntitlementsModalOpen(false)}
+            open={isAddEntitlementsModalOpen}
           />
         )}
         {/* {isOpenCreateCustomer && (

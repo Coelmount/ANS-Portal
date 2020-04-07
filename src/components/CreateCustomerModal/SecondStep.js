@@ -22,7 +22,7 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 
 import useStyles from './styles'
 
-const SecondStep = props => {
+const SecondStep = (props) => {
   const { handleClose, t, store, isCreateSubaccount, isEditCustomer } = props
   const {
     changeStep,
@@ -30,8 +30,8 @@ const SecondStep = props => {
     changeCustomer,
     createCustomer,
     updateCustomer
-  } = useContext(store)
-  const { createdCustomerStore } = useContext(CreateCustomerStore)
+  } = store
+  const createdCustomerStore = CreateCustomerStore
   const classes = useStyles()
   const match = useParams()
 
@@ -41,9 +41,9 @@ const SecondStep = props => {
       return
     }
     if (isCreateSubaccount) {
-      createCustomer(createdCustomerStore.tenantId || match.customerId).then(
-        () => changeStep(3)
-      )
+      createCustomer(
+        createdCustomerStore.tenantId || match.customerId
+      ).then(() => changeStep(3))
       return
     }
     createCustomer().then(() => changeStep(3))
@@ -77,7 +77,7 @@ const SecondStep = props => {
             }
             variant='outlined'
             value={customer.contactInformation.name}
-            onChange={e =>
+            onChange={(e) =>
               changeCustomer('contactInformation.name', e.target.value)
             }
           />
@@ -88,7 +88,7 @@ const SecondStep = props => {
             label={t('phone_number')}
             variant='outlined'
             value={customer.contactInformation.phoneNumber}
-            onChange={e =>
+            onChange={(e) =>
               changeCustomer('contactInformation.phoneNumber', e.target.value)
             }
           />
@@ -99,7 +99,7 @@ const SecondStep = props => {
             label={t('email')}
             variant='outlined'
             value={customer.contactInformation.emailAddress}
-            onChange={e =>
+            onChange={(e) =>
               changeCustomer('contactInformation.emailAddress', e.target.value)
             }
           />
@@ -112,7 +112,7 @@ const SecondStep = props => {
             label={t('street')}
             variant='outlined'
             value={customer.addressInformation.addressLine1}
-            onChange={e =>
+            onChange={(e) =>
               changeCustomer('addressInformation.addressLine1', e.target.value)
             }
           />
@@ -123,7 +123,7 @@ const SecondStep = props => {
               label={t('postal_code')}
               variant='outlined'
               value={customer.addressInformation.postalCode}
-              onChange={e =>
+              onChange={(e) =>
                 changeCustomer('addressInformation.postalCode', e.target.value)
               }
             />
@@ -133,7 +133,7 @@ const SecondStep = props => {
               label={t('city')}
               variant='outlined'
               value={customer.addressInformation.city}
-              onChange={e =>
+              onChange={(e) =>
                 changeCustomer('addressInformation.city', e.target.value)
               }
             />
@@ -144,7 +144,7 @@ const SecondStep = props => {
             label={t('country')}
             variant='outlined'
             value={customer.addressInformation.country}
-            onChange={e =>
+            onChange={(e) =>
               changeCustomer('addressInformation.country', e.target.value)
             }
           />

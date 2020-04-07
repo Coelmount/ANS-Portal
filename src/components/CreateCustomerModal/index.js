@@ -32,7 +32,7 @@ const CreateCustomer = (props) => {
     createSubaccount,
     isEditCustomer
   } = props
-  const { step } = useContext(store)
+  const { step } = store
   // const step = 4
   const classes = useStyles()
 

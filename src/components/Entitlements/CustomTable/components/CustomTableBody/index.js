@@ -36,9 +36,7 @@ const CustomTableBody = ({
         tabIndex={-1}
         key={i}
         onClick={() => {
-          console.log(list[i].id, 'list[i]')
           handleClick(list[i].id)
-          // handleClick(i)
         }}
       >
         {isFullVersion && selected && selected.includes(list[i].id) ? (
@@ -48,7 +46,7 @@ const CustomTableBody = ({
         ) : (
           <IdCell cellValue={i} />
         )}
-        {columns.map(column => {
+        {columns.map((column) => {
           const extraProps = column.extraProps
           return (
             <TableCell

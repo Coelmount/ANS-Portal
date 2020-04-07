@@ -19,12 +19,12 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 
 import useStyles from './styles'
 
-const FirstStep = props => {
+const FirstStep = (props) => {
   const { handleClose, t, isCreateSubaccount, store, isEditCustomer } = props
-  const { changeStep, customer, changeCustomer } = useContext(store)
+  const { changeStep, customer, changeCustomer } = store
   const classes = useStyles()
 
-  const changeId = value => {
+  const changeId = (value) => {
     if (isCreateSubaccount) {
       changeCustomer('groupId', value)
       return
@@ -32,7 +32,7 @@ const FirstStep = props => {
     changeCustomer('tenantId', value)
   }
 
-  const changeName = value => {
+  const changeName = (value) => {
     if (isCreateSubaccount) {
       changeCustomer('groupName', value)
       return
@@ -68,7 +68,7 @@ const FirstStep = props => {
             variant='outlined'
             disabled={isEditCustomer}
             value={customer.tenantId || customer.groupId}
-            onChange={e => changeId(e.target.value)}
+            onChange={(e) => changeId(e.target.value)}
           />
         </Box>
         <Box className={classes.inputes}>
@@ -79,7 +79,7 @@ const FirstStep = props => {
             }
             variant='outlined'
             value={customer.name || customer.groupName}
-            onChange={e => changeName(e.target.value)}
+            onChange={(e) => changeName(e.target.value)}
           />
         </Box>
       </DialogContent>

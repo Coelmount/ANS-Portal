@@ -30,7 +30,7 @@ const SubaccountsTable = observer(({ t }) => {
     isDeletingSubaccount
   } = SubaccountsStore
 
-  const { setDefaultValues } = useContext(CreateSubaccountStore)
+  const { setDefaultValues } = CreateSubaccountStore
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [subaccountToDelete, setSubaccountToDelete] = useState({})
   const [isOpenCreateSubaccount, setIsOpenCreateSubaccount] = useState(false)
@@ -47,7 +47,7 @@ const SubaccountsTable = observer(({ t }) => {
         scope: 'row'
       },
       label: 'ID',
-      getCellData: row => (
+      getCellData: (row) => (
         <Link
           to={`/customers/${match.customerId}/subaccounts/${row.groupId}/ans_instances`}
           className={classes.link}
@@ -74,7 +74,7 @@ const SubaccountsTable = observer(({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.groupId, row.groupName)}
           className={classes.deleteCustomerIcon}
@@ -112,7 +112,7 @@ const SubaccountsTable = observer(({ t }) => {
     getSubaccounts(match.customerId)
   }
 
-  const handleDelete = groupId => {
+  const handleDelete = (groupId) => {
     const payload = {
       tenantId: match.customerId,
       groupId,
