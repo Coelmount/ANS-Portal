@@ -21,7 +21,7 @@ import useStyles from './styles'
 
 const FirstStep = (props) => {
   const { handleClose, t, isCreateSubaccount, store, isEditCustomer } = props
-  const { changeStep, customer, changeCustomer } = store
+  const { changeStep, customer, changeCustomer } = useContext(store)
   const classes = useStyles()
 
   const changeId = (value) => {

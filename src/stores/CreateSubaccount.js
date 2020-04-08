@@ -72,4 +72,4 @@ decorate(CreateSubaccountStore, {
   changeCustomer: action
 })
 
-export default new CreateSubaccountStore()
+export default createContext(new CreateSubaccountStore())

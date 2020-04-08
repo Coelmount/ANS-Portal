@@ -17,7 +17,7 @@ import useStyles from './styles'
 
 const SuccesPage = (props) => {
   const { handleClose, t, store, isCreateSubaccount, createSubaccount } = props
-  const { changeStep, createdCustomerStore } = store
+  const { changeStep, createdCustomerStore } = useContext(store)
   const history = useHistory()
   const match = useParams()
   const classes = useStyles()

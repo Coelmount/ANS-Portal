@@ -20,7 +20,7 @@ export class Entitlements {
   objTotals = {}
   resLength = 0
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 
@@ -28,18 +28,18 @@ export class Entitlements {
     this.step = 1
   }
 
-  updateFilteredArr = idArr => {
+  updateFilteredArr = (idArr) => {
     this.filteredArr = idArr
     this.updateSelectedArr()
   }
-  updateCheckedArr = idArr => {
+  updateCheckedArr = (idArr) => {
     this.checkedArr = idArr
     this.updateSelectedArr()
   }
 
   updateSelectedArr = () => {
     let resultArr = []
-    this.entitlements.forEach(obj => {
+    this.entitlements.forEach((obj) => {
       if (
         this.checkedArr.includes(obj.id) &&
         this.filteredArr.includes(obj.id)
@@ -64,9 +64,9 @@ export class Entitlements {
     if (this.newTotalNumbers.arr.length > 0) this.isTotalEmpty = false
   }
 
-  postEntitlements = callback => {
+  postEntitlements = (callback) => {
     this.isSending = true
-    axios.get(`${PROXY_CUSTOM_ANS}/entitlement_types`).then(res => {
+    axios.get(`${PROXY_CUSTOM_ANS}/entitlement_types`).then((res) => {
       //mock request
       if (res.status === 200) {
         this.isSending = false
@@ -99,7 +99,7 @@ export class Entitlements {
 
   getEntitlements = () => {
     this.isLoadingEntitlements = true
-    axios.get(`${PROXY_CUSTOM_ANS}/entitlement_types`).then(res => {
+    axios.get(`${PROXY_CUSTOM_ANS}/entitlement_types`).then((res) => {
       if (res.status === 200) {
         this.entitlements = res.data.customer_licenses
         this.isLoadingEntitlements = false

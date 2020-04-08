@@ -94,7 +94,12 @@ const AccessNumbers = ({ t }) => {
   const [showEditEntitlements, setShowEditEntitlements] = useState(false)
   const [showAssignNumbers, setShowAssignNumbers] = useState(false)
 
-  const { getEntitlements, postEntitlements, entitlements } = EntitlementsStore
+  const {
+    getEntitlements,
+    postEntitlements,
+    entitlements,
+    setDefaultEntitlementsValues
+  } = EntitlementsStore
 
   const [isAddEntitlementsModalOpen, setIsAddEntitlementsModalOpen] = useState(
     false
@@ -113,6 +118,7 @@ const AccessNumbers = ({ t }) => {
   }
 
   const handleAddEntitlementsClick = () => {
+    setDefaultEntitlementsValues()
     setIsAddEntitlementsModalOpen(true)
   }
 

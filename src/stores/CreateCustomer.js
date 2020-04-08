@@ -1,4 +1,5 @@
 import { decorate, observable, action } from 'mobx'
+import { createContext } from 'react'
 import set from 'lodash/set'
 
 import axios from 'utils/axios'
@@ -75,4 +76,4 @@ decorate(CreateCustomerStore, {
   changeCustomer: action
 })
 
-export default new CreateCustomerStore()
+export default createContext(new CreateCustomerStore())

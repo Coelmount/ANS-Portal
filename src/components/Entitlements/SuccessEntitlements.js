@@ -17,17 +17,22 @@ import useStyles from './styles'
 
 const SuccesPage = (props) => {
   const { handleClose, t } = props
-  const { createdCustomerStore: createdCustomer } = CreateCustomerStore
+  const { createdCustomerStore: createdCustomer } = useContext(
+    CreateCustomerStore
+  )
   const history = useHistory()
   const match = useParams()
   const classes = useStyles()
 
   const goIntoCustomerAccount = () => {
-    history.push(`/customers/${createdCustomer.tenantId}/access_numbers`)
+    if (Object.keys(createdCustomer).length)
+      history.push(`/customers/${createdCustomer.tenantId}/access_numbers`)
+    else handleClose()
   }
 
   const goToCustomerList = () => {
-    handleClose()
+    if (Object.keys(createdCustomer).length) handleClose()
+    else history.push(`/customers`)
   }
 
   return (

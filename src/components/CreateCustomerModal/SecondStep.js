@@ -30,8 +30,8 @@ const SecondStep = (props) => {
     changeCustomer,
     createCustomer,
     updateCustomer
-  } = store
-  const createdCustomerStore = CreateCustomerStore
+  } = useContext(store)
+  const createdCustomerStore = useContext(CreateCustomerStore)
   const classes = useStyles()
   const match = useParams()
 
@@ -42,7 +42,7 @@ const SecondStep = (props) => {
     }
     if (isCreateSubaccount) {
       createCustomer(
-        createdCustomerStore.tenantId || match.customerId
+        createdCustomerStore.customer.tenantId || match.customerId
       ).then(() => changeStep(3))
       return
     }
