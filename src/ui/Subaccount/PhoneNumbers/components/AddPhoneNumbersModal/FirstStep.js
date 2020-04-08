@@ -77,13 +77,19 @@ const FirstStep = ({ handleClose, t }) => {
     changeStep,
     uniqueCountries,
     phoneNumbers,
-    setSelectedPhoneNumber
+    setSelectedPhoneNumber,
+    createGroupsSinglePhone
   } = PhoneNumbersStore
   const [checkedRow, setCheckedRow] = useState({})
 
   const handleNextButton = () => {
-    setSelectedPhoneNumber(checkedRow)
-    changeStep(2)
+    if (checkedRow.phoneNumbers) {
+      setSelectedPhoneNumber(checkedRow)
+      changeStep(2)
+    } else {
+      createGroupsSinglePhone({ addStatus: 'added', ...checkedRow })
+      changeStep(3)
+    }
   }
 
   return (

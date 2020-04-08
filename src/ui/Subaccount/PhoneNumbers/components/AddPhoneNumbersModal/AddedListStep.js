@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -116,11 +116,13 @@ const AddedListStep = ({ handleClose, t }) => {
             <Tab
               className={value === 0 ? classes.activeTab : classes.nonActiveTab}
               label={`${t('added')} (${addedPhoneNumbers.length})`}
+              disabled={addedPhoneNumbers.length <= 0}
               {...a11yProps(0)}
             />
             <Tab
               className={value === 1 ? classes.activeTab : classes.nonActiveTab}
               label={`${t('rejected')} (${rejectedPhoneNumbers.length})`}
+              disabled={rejectedPhoneNumbers.length <= 0}
               {...a11yProps(1)}
             />
           </Tabs>

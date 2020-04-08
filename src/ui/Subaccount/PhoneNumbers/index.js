@@ -119,7 +119,7 @@ const PhoneNumbers = observer(({ t }) => {
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
-  const { setPhoneNumbers, changeStep } = PhoneNumbersStore
+  const { setPhoneNumbers, setDefaultValues } = PhoneNumbersStore
 
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
@@ -175,6 +175,11 @@ const PhoneNumbers = observer(({ t }) => {
 
   const handleAddModalClick = () => {
     setIsAddPhoneNumbersModalOpen(true)
+  }
+
+  const handleAddModalClose = () => {
+    setIsAddPhoneNumbersModalOpen(false)
+    setDefaultValues()
   }
 
   useEffect(() => {
@@ -353,10 +358,7 @@ const PhoneNumbers = observer(({ t }) => {
         {isAddPhoneNumbersModalOpen && (
           <AddPhoneNumbersModal
             open={isAddPhoneNumbersModalOpen}
-            handleClose={() => {
-              changeStep(1)
-              setIsAddPhoneNumbersModalOpen(false)
-            }}
+            handleClose={handleAddModalClose}
           />
         )}
       </Paper>

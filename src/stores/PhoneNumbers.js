@@ -13,7 +13,6 @@ export class PhoneNumbers {
   rejectedPhoneNumbers = []
 
   changeStep = (step) => {
-    console.log(step)
     this.step = step
   }
 
@@ -31,24 +30,40 @@ export class PhoneNumbers {
     this.selectedPhoneNumber = phoneNumber
   }
 
-  postPhoneNumbers = (number, amount) => {
+  postPhoneNumbers = (number, amount, startNumber) => {
     console.log(number, amount, 'to post')
     this.changeStep(3)
-    const rangeCopy = [...number.phoneNumbers]
-    this.createAddedAndRejectedGroups(rangeCopy, amount)
+    this.createAddedAndRejectedGroups(number.phoneNumbers, amount, startNumber)
   }
 
-  createAddedAndRejectedGroups = (range, amount) => {
+  createAddedAndRejectedGroups = (range, amount, startNumber) => {
+    const startNumberWithoutCountryCode = startNumber
+      .split('')
+      .splice(4, startNumber.length - 3)
+      .join('')
+    const startIndex = range.findIndex(
+      (item) => item.phoneNumber === startNumberWithoutCountryCode
+    )
+
     const addedPhoneNumbers = []
     const rejectedPhoneNumbers = []
     for (let i = 0; i < range.length; i++) {
-      if (i < amount)
+      if (i >= startIndex)
         addedPhoneNumbers.push({ addStatus: 'added', ...range[i] })
       else rejectedPhoneNumbers.push({ addStatus: 'rejected', ...range[i] })
     }
     this.addedPhoneNumbers = addedPhoneNumbers
     this.rejectedPhoneNumbers = rejectedPhoneNumbers
-    console.log(addedPhoneNumbers, rejectedPhoneNumbers, 'data')
+  }
+
+  createGroupsSinglePhone = (addedPhone) =>
+    (this.addedPhoneNumbers = [addedPhone])
+
+  setDefaultValues = () => {
+    this.changeStep(1)
+    this.addedPhoneNumbers = []
+    this.rejectedPhoneNumbers = []
+    this.selectedPhoneNumber = {}
   }
 }
 
@@ -60,7 +75,9 @@ decorate(PhoneNumbers, {
   changeStep: action,
   setPhoneNumbers: action,
   setSelectedPhoneNumber: action,
-  postPhoneNumbers: action
+  postPhoneNumbers: action,
+  createGroupsSinglePhone: action,
+  setDefaultValues: action
 })
 
 export default new PhoneNumbers()

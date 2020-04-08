@@ -25,11 +25,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const AddPhoneNumbersModal = ({ open, handleClose, successClose }) => {
-  // const step = 4
   const { step } = PhoneNumbersStore
   const { selectedPhoneNumber } = PhoneNumbersStore
   const classes = useStyles()
-  console.log(step, 'step in comp')
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <Steps

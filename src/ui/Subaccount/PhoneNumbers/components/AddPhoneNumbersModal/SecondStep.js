@@ -47,7 +47,7 @@ const SecondStep = ({ handleClose, t }) => {
       enteredAmountOfNumbers > 0 &&
       enteredAmountOfNumbers <= number.phoneNumbers.length
     )
-      postPhoneNumbers(number, enteredAmountOfNumbers)
+      postPhoneNumbers(number, enteredAmountOfNumbers, enteredPhoneNumber)
   }
 
   const checkIsNumberInRange = () => {
