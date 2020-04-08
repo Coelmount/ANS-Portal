@@ -35,7 +35,7 @@ function a11yProps(index) {
 }
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props
+  const { children, value, index, classes, ...other } = props
 
   return (
     <Typography
@@ -44,6 +44,7 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      className={classes.tabPanel}
       {...other}
     >
       {value === index && <Box p={3}>{children}</Box>}
@@ -127,7 +128,7 @@ const AddedListStep = ({ handleClose, t }) => {
             />
           </Tabs>
         </AppBar>
-        <TabPanel value={value} index={0}>
+        <TabPanel classes={classes} value={value} index={0}>
           <CustomTable
             classes={classes}
             columns={columns}
@@ -138,7 +139,7 @@ const AddedListStep = ({ handleClose, t }) => {
             firstCell={true}
           />
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel classes={classes} value={value} index={1}>
           <CustomTable
             classes={classes}
             columns={columns}

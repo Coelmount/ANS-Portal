@@ -634,6 +634,9 @@ const useStyles = makeStyles((theme) => ({
   },
   rejectedStatusText: {
     color: theme.palette.darkRed
+  },
+  tabPanel: {
+    padding: '0px 45px'
   }
 }))
 
