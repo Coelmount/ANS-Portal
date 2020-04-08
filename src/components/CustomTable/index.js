@@ -31,7 +31,7 @@ const stableSort = (array, comparator) => {
     if (order !== 0) return order
     return a[1] - b[1]
   })
-  return stabilizedThis.map((el) => el[0])
+  return stabilizedThis.map(el => el[0])
 }
 
 const descendingComparator = (a, b, orderBy) => {
@@ -57,6 +57,7 @@ const CustomTable = ({
   extraToolbarBlock,
   searchCriterias,
   getSearchList,
+  showToolBar,
   t
 }) => {
   const [order, setOrder] = useState('asc')
@@ -66,7 +67,7 @@ const CustomTable = ({
   const [query, setQuery] = useState('')
 
   const list = useMemo(() => {
-    const getFilter = (row) => {
+    const getFilter = row => {
       for (let i = 0; i < searchCriterias.length; i++) {
         if (row[searchCriterias[i]].toLowerCase().includes(query)) {
           return true
@@ -75,7 +76,7 @@ const CustomTable = ({
       return false
     }
     if (!rows) return []
-    const filteredRows = query ? rows.filter((row) => getFilter(row)) : rows
+    const filteredRows = query ? rows.filter(row => getFilter(row)) : rows
     const result = stableSort(filteredRows, getComparator(order, orderBy))
     getSearchList && getSearchList(result)
     return result
@@ -94,22 +95,24 @@ const CustomTable = ({
 
   const clampedPage = clamp(page, 0, totalPages)
 
-  const rewindPage = (step) => {
+  const rewindPage = step => {
     if (clampedPage + step >= 0 && clampedPage + step <= totalPages)
       setPage(clampedPage + step)
   }
 
   return (
     <Fragment>
-      <CustomTableToolbar
-        classes={classes}
-        rowsPerPage={rowsPerPage}
-        setRowsPerPage={setRowsPerPage}
-        setQuery={setQuery}
-        showSearchBar={showSearchBar}
-        showPagination={showPagination}
-        extraToolbarBlock={extraToolbarBlock}
-      />
+      {showToolBar && (
+        <CustomTableToolbar
+          classes={classes}
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
+          setQuery={setQuery}
+          showSearchBar={showSearchBar}
+          showPagination={showPagination}
+          extraToolbarBlock={extraToolbarBlock}
+        />
+      )}
       {isLoadingData ? (
         <Loading />
       ) : (
@@ -172,7 +175,8 @@ CustomTable.propTypes = {
 CustomTable.defaultProps = {
   showPagination: true,
   extraToolbarBlock: null,
-  getSearchList: false
+  getSearchList: false,
+  showToolBar: true
 }
 
 export default withNamespaces()(CustomTable)

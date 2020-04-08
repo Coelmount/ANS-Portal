@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { withRouter } from 'react-router'
 import { Link, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
@@ -28,6 +28,8 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import useStyles from './styles'
 import editSvg from 'source/images/svg/edit-blue.svg'
 import { useEffect } from 'react'
+
+import AddNumbers from './AddNumbers/'
 
 const rows = [
   {
@@ -64,7 +66,8 @@ const rows = [
 
 const AccessNumbersItem = ({ t }) => {
   const match = useParams()
-  console.log(match, 'match')
+  const [showAddNumbers, setShowAddNumber] = useState(true)
+  const [step, setStep] = useState(1)
   const classes = useStyles()
 
   // const { getEntitlements, postEntitlements, entitlements } = useContext(
@@ -119,13 +122,26 @@ const AccessNumbersItem = ({ t }) => {
 
   return (
     <div className={classes.root}>
+      {showAddNumbers && (
+        <AddNumbers
+          open={showAddNumbers}
+          handleClose={() => {
+            setShowAddNumber(false)
+          }}
+          step={step}
+          changeStep={setStep}
+        />
+      )}
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
           <TitleBlock
             titleData={titleData}
             classes={classes}
-            // handleOpen={handleOpenCreateCustomer}
+            handleOpen={() => {
+              setShowAddNumber(true)
+              setStep(1)
+            }}
           />
         </CustomContainer>
         <CustomTable
