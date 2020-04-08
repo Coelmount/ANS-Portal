@@ -28,6 +28,7 @@ export class CustomersStore {
   isLoadingCustomers = true
   isLoadingCustomer = true
   isDeletingCustomer = false
+  isAddingCustomer = false
 
   getCustomers = () => {
     this.isLoadingCustomers = true
@@ -74,11 +75,13 @@ export class CustomersStore {
   }
 
   updateCustomer = (tenantId) => {
+    this.isAddingCustomer = true
     return axios
       .put(`${PROXY_P6}/tenants/${tenantId}`, this.customer)
       .then((res) => {
         if (res.status === 200) {
           merge(this.customer, res.data)
+          this.isAddingCustomer = false
         }
       })
   }
@@ -99,6 +102,7 @@ decorate(CustomersStore, {
   isLoadingCustomers: observable,
   isLoadingCustomer: observable,
   isDeletingCustomer: observable,
+  isAddingCustomer: observable,
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,

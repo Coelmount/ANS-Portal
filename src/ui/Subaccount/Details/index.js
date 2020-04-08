@@ -43,7 +43,7 @@ const Details = observer(({ t }) => {
 
   const handleCloseEdit = () => {
     setShowEdit(false)
-    // getCustomer(match.customerId)
+    getSubaccount(match.customerId, match.groupId)
   }
 
   return (

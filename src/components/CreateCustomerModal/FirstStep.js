@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { withNamespaces } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -20,6 +21,7 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import useStyles from './styles'
 
 const FirstStep = (props) => {
+  const match = useParams()
   const {
     handleClose,
     t,
@@ -29,7 +31,6 @@ const FirstStep = (props) => {
     isEditSubaccount
   } = props
   const { changeStep, customer, changeCustomer, subaccount } = useContext(store)
-  console.log(store, 'store')
   const classes = useStyles()
 
   const changeId = (value) => {
@@ -89,10 +90,7 @@ const FirstStep = (props) => {
             }
             variant='outlined'
             disabled={isEditCustomer || isEditSubaccount}
-            value={
-              (customer && customer.tenantId) ||
-              (subaccount && subaccount.groupId)
-            }
+            value={(customer && customer.tenantId) || match.groupId}
             onChange={(e) => changeId(e.target.value)}
           />
         </Box>

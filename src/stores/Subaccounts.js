@@ -27,6 +27,7 @@ export class SubaccountsStore {
   isLoadingSubaccounts = true
   isDeletingSubaccount = false
   isLoadingSubaccount = true
+  isAddingCustomer = false
   selectGroups = []
 
   getSubaccounts = (id) => {
@@ -51,6 +52,7 @@ export class SubaccountsStore {
       .get(`${PROXY_P6}/tenants/${customerId}/groups/${groupId}`)
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data, 'res.data')
           merge(this.subaccount, res.data)
           this.isLoadingSubaccount = false
         } else {
@@ -74,19 +76,20 @@ export class SubaccountsStore {
       })
   }
 
-  updateSubaccount = (tenantId) => {
+  updateCustomer = (tenantId, groupId) => {
+    this.isAddingCustomer = true
     return axios
-      .put(`${PROXY_P6}/tenants/${tenantId}/groups/groupId/`, this.customer)
+      .put(`${PROXY_P6}/tenants/${tenantId}/groups/${groupId}`, this.subaccount)
       .then((res) => {
         if (res.status === 200) {
           merge(this.customer, res.data)
+          this.isAddingCustomer = false
         }
       })
   }
 
   changeStep = (step) => {
     this.step = step
-    console.log(step, 'sub change step')
   }
 
   changeCustomer = (variable, value) => {
@@ -102,11 +105,13 @@ decorate(SubaccountsStore, {
   isDeletingSubaccount: observable,
   isLoadingSubaccount: observable,
   selectGroups: observable,
+  isAddingCustomer: observable,
   getSubaccounts: action,
   getSubaccount: action,
   deleteSubaccount: action,
   changeStep: action,
-  changeCustomer: action
+  changeCustomer: action,
+  updateCustomer: action
 })
 
 export default createContext(new SubaccountsStore())

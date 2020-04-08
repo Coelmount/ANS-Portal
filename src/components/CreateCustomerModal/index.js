@@ -34,7 +34,7 @@ const CreateCustomer = (props) => {
     isEditSubaccount
   } = props
   const { step } = useContext(store)
-  console.log(step, 'step')
+
   // const step = 4
   const classes = useStyles()
 
