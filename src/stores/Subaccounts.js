@@ -1,11 +1,14 @@
+import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 import merge from 'lodash/merge'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
+import set from 'lodash/set'
 
 export class SubaccountsStore {
   rows = []
+  step = 1
   subaccount = {
     groupId: '',
     groupName: '',
@@ -30,7 +33,7 @@ export class SubaccountsStore {
     this.isLoadingSubaccounts = true
     axios.get(`${PROXY_P6}/tenants/${id}/groups`).then((res) => {
       if (res.status === 200) {
-        this.selectGroups = res.data.groups.map(group => ({
+        this.selectGroups = res.data.groups.map((group) => ({
           value: group.groupId,
           label: group.groupName
         }))
@@ -70,9 +73,29 @@ export class SubaccountsStore {
         }
       })
   }
+
+  updateSubaccount = (tenantId) => {
+    return axios
+      .put(`${PROXY_P6}/tenants/${tenantId}/groups/groupId/`, this.customer)
+      .then((res) => {
+        if (res.status === 200) {
+          merge(this.customer, res.data)
+        }
+      })
+  }
+
+  changeStep = (step) => {
+    this.step = step
+    console.log(step, 'sub change step')
+  }
+
+  changeCustomer = (variable, value) => {
+    set(this.subaccount, variable, value)
+  }
 }
 
 decorate(SubaccountsStore, {
+  step: observable,
   rows: observable,
   subaccount: observable,
   isLoadingSubaccounts: observable,
@@ -81,7 +104,9 @@ decorate(SubaccountsStore, {
   selectGroups: observable,
   getSubaccounts: action,
   getSubaccount: action,
-  deleteSubaccount: action
+  deleteSubaccount: action,
+  changeStep: action,
+  changeCustomer: action
 })
 
-export default new SubaccountsStore()
+export default createContext(new SubaccountsStore())

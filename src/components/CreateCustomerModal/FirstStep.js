@@ -20,14 +20,21 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import useStyles from './styles'
 
 const FirstStep = (props) => {
-  const { handleClose, t, isCreateSubaccount, store, isEditCustomer } = props
-  const { changeStep, customer, changeCustomer } = useContext(store)
+  const {
+    handleClose,
+    t,
+    isCreateSubaccount,
+    store,
+    isEditCustomer,
+    isEditSubaccount
+  } = props
+  const { changeStep, customer, changeCustomer, subaccount } = useContext(store)
+  console.log(store, 'store')
   const classes = useStyles()
 
   const changeId = (value) => {
     if (isCreateSubaccount) {
       changeCustomer('groupId', value)
-      return
     }
     changeCustomer('tenantId', value)
   }
@@ -35,19 +42,26 @@ const FirstStep = (props) => {
   const changeName = (value) => {
     if (isCreateSubaccount) {
       changeCustomer('groupName', value)
-      return
+    } else if (isEditSubaccount) {
+      changeCustomer('groupName', value)
     }
     changeCustomer('name', value)
+  }
+
+  const getTitle = () => {
+    if (isEditCustomer) {
+      return t('edit_customer')
+    } else if (isEditSubaccount) {
+      return t('edit_subaccount')
+    } else if (isCreateSubaccount) {
+      return t('add_subaccount')
+    } else return t('add_customer')
   }
 
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        {isEditCustomer
-          ? t('edit_customer')
-          : isCreateSubaccount
-          ? t('add_subaccount')
-          : t('add_customer')}
+        {getTitle()}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -59,15 +73,26 @@ const FirstStep = (props) => {
       <DialogContent>
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.paragraphBox}>
-          {isCreateSubaccount ? t('subaccount_details') : t('customer_details')}
+          {(isCreateSubaccount && t('subaccount_details')) ||
+            (isEditCustomer && t('customer_details')) ||
+            (isEditSubaccount && t('subaccount_details')) ||
+            t('customer_details')}
         </Box>
         <Box className={classes.inputes}>
           <Input
             icon={<img src={sharp} alt='' />}
-            label={isCreateSubaccount ? t('subaccount_id') : t('customer_id')}
+            label={
+              (isCreateSubaccount && t('subaccount_id')) ||
+              (isEditCustomer && t('customer_id')) ||
+              (isEditSubaccount && t('subaccount_id')) ||
+              t('customer_id')
+            }
             variant='outlined'
-            disabled={isEditCustomer}
-            value={customer.tenantId || customer.groupId}
+            disabled={isEditCustomer || isEditSubaccount}
+            value={
+              (customer && customer.tenantId) ||
+              (subaccount && subaccount.groupId)
+            }
             onChange={(e) => changeId(e.target.value)}
           />
         </Box>
@@ -75,10 +100,16 @@ const FirstStep = (props) => {
           <Input
             icon={<PermIdentityOutlined />}
             label={
-              isCreateSubaccount ? t('subaccount_name') : t('customer_name')
+              (isCreateSubaccount && t('subaccount_name')) ||
+              (isEditCustomer && t('customer_name')) ||
+              (isEditSubaccount && t('subaccount_name')) ||
+              t('customer_name')
             }
             variant='outlined'
-            value={customer.name || customer.groupName}
+            value={
+              (customer && customer.name) ||
+              (subaccount && subaccount.groupName)
+            }
             onChange={(e) => changeName(e.target.value)}
           />
         </Box>
@@ -97,7 +128,7 @@ const FirstStep = (props) => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
-          disabled={!customer.tenantId && !customer.groupName}
+          disabled={customer && !customer.tenantId && !customer.groupName}
         >
           {t('next')}
         </Button>

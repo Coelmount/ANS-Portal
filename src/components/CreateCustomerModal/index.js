@@ -30,9 +30,11 @@ const CreateCustomer = (props) => {
     isCreateSubaccount,
     store,
     createSubaccount,
-    isEditCustomer
+    isEditCustomer,
+    isEditSubaccount
   } = props
   const { step } = useContext(store)
+  console.log(step, 'step')
   // const step = 4
   const classes = useStyles()
 
@@ -46,6 +48,7 @@ const CreateCustomer = (props) => {
         store={store}
         createSubaccount={createSubaccount}
         isEditCustomer={isEditCustomer}
+        isEditSubaccount={isEditSubaccount}
         open={open}
       />
     </Dialog>
@@ -61,6 +64,7 @@ const Steps = (props) => {
           isCreateSubaccount={props.isCreateSubaccount}
           store={props.store}
           isEditCustomer={props.isEditCustomer}
+          isEditSubaccount={props.isEditSubaccount}
         />
       )
     case 2:
@@ -70,6 +74,7 @@ const Steps = (props) => {
           isCreateSubaccount={props.isCreateSubaccount}
           store={props.store}
           isEditCustomer={props.isEditCustomer}
+          isEditSubaccount={props.isEditSubaccount}
         />
       )
     case 3:
