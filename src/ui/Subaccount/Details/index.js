@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -8,6 +8,7 @@ import TitleBlock from 'components/TitleBlock'
 import DetailsTemplate from 'components/DetailsTemplate'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
+import CreateCustomer from 'components/CreateCustomerModal'
 
 import SubaccountsStore from 'stores/Subaccounts'
 
@@ -17,7 +18,13 @@ import useStyles from './styles'
 const Details = observer(({ t }) => {
   const match = useParams()
   const classes = useStyles()
-  const { subaccount, getSubaccount, isLoadingSubaccount } = SubaccountsStore
+  const {
+    subaccount,
+    getSubaccount,
+    isLoadingSubaccount,
+    changeStep
+  } = useContext(SubaccountsStore)
+  const [showEdit, setShowEdit] = useState(false)
 
   useEffect(() => {
     getSubaccount(match.customerId, match.groupId)
@@ -29,13 +36,32 @@ const Details = observer(({ t }) => {
     Icon: <img src={editSvg} alt='edit icon' />
   }
 
+  const handleOpenEdit = () => {
+    changeStep(1)
+    setShowEdit(true)
+  }
+
+  const handleCloseEdit = () => {
+    setShowEdit(false)
+    getSubaccount(match.customerId, match.groupId)
+  }
+
   return (
     <div className={classes.root}>
       <CustomContainer>
         <CustomBreadcrumbs />
-        <TitleBlock titleData={titleData} />
+        <TitleBlock titleData={titleData} handleOpen={handleOpenEdit} />
       </CustomContainer>
       <DetailsTemplate data={subaccount} isLoading={isLoadingSubaccount} />
+      {showEdit && (
+        <CreateCustomer
+          open={showEdit}
+          handleClose={handleCloseEdit}
+          successClose={handleCloseEdit}
+          store={SubaccountsStore}
+          isEditSubaccount
+        />
+      )}
     </div>
   )
 })

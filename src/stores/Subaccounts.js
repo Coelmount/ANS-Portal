@@ -1,11 +1,14 @@
+import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 import merge from 'lodash/merge'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
+import set from 'lodash/set'
 
 export class SubaccountsStore {
   rows = []
+  step = 1
   subaccount = {
     groupId: '',
     groupName: '',
@@ -24,13 +27,14 @@ export class SubaccountsStore {
   isLoadingSubaccounts = true
   isDeletingSubaccount = false
   isLoadingSubaccount = true
+  isAddingCustomer = false
   selectGroups = []
 
   getSubaccounts = (id) => {
     this.isLoadingSubaccounts = true
     axios.get(`${PROXY_P6}/tenants/${id}/groups`).then((res) => {
       if (res.status === 200) {
-        this.selectGroups = res.data.groups.map(group => ({
+        this.selectGroups = res.data.groups.map((group) => ({
           value: group.groupId,
           label: group.groupName
         }))
@@ -48,6 +52,7 @@ export class SubaccountsStore {
       .get(`${PROXY_P6}/tenants/${customerId}/groups/${groupId}`)
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data, 'res.data')
           merge(this.subaccount, res.data)
           this.isLoadingSubaccount = false
         } else {
@@ -70,18 +75,43 @@ export class SubaccountsStore {
         }
       })
   }
+
+  updateCustomer = (tenantId, groupId) => {
+    this.isAddingCustomer = true
+    return axios
+      .put(`${PROXY_P6}/tenants/${tenantId}/groups/${groupId}`, this.subaccount)
+      .then((res) => {
+        if (res.status === 200) {
+          merge(this.customer, res.data)
+          this.isAddingCustomer = false
+        }
+      })
+  }
+
+  changeStep = (step) => {
+    this.step = step
+  }
+
+  changeCustomer = (variable, value) => {
+    set(this.subaccount, variable, value)
+  }
 }
 
 decorate(SubaccountsStore, {
+  step: observable,
   rows: observable,
   subaccount: observable,
   isLoadingSubaccounts: observable,
   isDeletingSubaccount: observable,
   isLoadingSubaccount: observable,
   selectGroups: observable,
+  isAddingCustomer: observable,
   getSubaccounts: action,
   getSubaccount: action,
-  deleteSubaccount: action
+  deleteSubaccount: action,
+  changeStep: action,
+  changeCustomer: action,
+  updateCustomer: action
 })
 
-export default new SubaccountsStore()
+export default createContext(new SubaccountsStore())

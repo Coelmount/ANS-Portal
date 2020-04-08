@@ -28,10 +28,11 @@ export class CustomersStore {
   isLoadingCustomers = true
   isLoadingCustomer = true
   isDeletingCustomer = false
+  isAddingCustomer = false
 
   getCustomers = () => {
     this.isLoadingCustomers = true
-    axios.get(`${PROXY_P6}/tenants`).then(res => {
+    axios.get(`${PROXY_P6}/tenants`).then((res) => {
       if (res.status === 200) {
         this.rows = res.data.tenants
         this.isLoadingCustomers = false
@@ -41,9 +42,9 @@ export class CustomersStore {
     })
   }
 
-  getCustomer = id => {
+  getCustomer = (id) => {
     this.isLoadingCustomer = true
-    axios.get(`${PROXY_P6}/tenants/${id}/`).then(res => {
+    axios.get(`${PROXY_P6}/tenants/${id}/`).then((res) => {
       if (res.status === 200) {
         merge(this.customer, res.data)
         this.isLoadingCustomer = false
@@ -57,7 +58,7 @@ export class CustomersStore {
     this.isDeletingCustomer = true
     axios
       .delete(`${PROXY_P6}/tenants/${id}/`)
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           this.getCustomers()
           callback()
@@ -66,24 +67,26 @@ export class CustomersStore {
           console.log(res, 'error')
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e.response.status === 400) {
           this.isDeletingCustomer = false
         }
       })
   }
 
-  updateCustomer = tenantId => {
+  updateCustomer = (tenantId) => {
+    this.isAddingCustomer = true
     return axios
       .put(`${PROXY_P6}/tenants/${tenantId}`, this.customer)
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           merge(this.customer, res.data)
+          this.isAddingCustomer = false
         }
       })
   }
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 
@@ -99,6 +102,7 @@ decorate(CustomersStore, {
   isLoadingCustomers: observable,
   isLoadingCustomer: observable,
   isDeletingCustomer: observable,
+  isAddingCustomer: observable,
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,
