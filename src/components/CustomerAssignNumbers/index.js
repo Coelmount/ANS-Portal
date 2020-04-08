@@ -77,7 +77,9 @@ const AssignNumbers = props => {
   const { t } = props
   const [numbers, setNumbers] = useState(NUMBERS)
   const [selectAll, setSelectAll] = useState(false)
+  const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [selectedGroup, setSelectedGroup] = useState('')
+  const [searchList, setSearchList] = useState([])
   const classes = useStyles()
   const match = useParams()
   const {
@@ -92,6 +94,11 @@ const AssignNumbers = props => {
     getAvailableNumbers()
   }, [])
 
+  useEffect(() => {
+    handleCheckedStates(searchList)
+    //setPhoneNumbers(searchList)
+  }, [searchList])
+
   const selectNumbers = (checked, number) => {
     const newNumbers = [...numbers]
     const index = numbers.findIndex(el => el.number === number)
@@ -104,10 +111,48 @@ const AssignNumbers = props => {
     setNumbers(newNumbers)
   }
 
+  const handleCheckedStates = newNumbers => {
+    if (
+      newNumbers.every(el => {
+        return el.checked
+      })
+    ) {
+      setSelectAll(true)
+      setIsAnyChecked(true)
+    } else {
+      setSelectAll(false)
+      if (newNumbers.some(el => el.checked)) {
+        setIsAnyChecked(true)
+      } else {
+        setIsAnyChecked(false)
+      }
+    }
+    if (!newNumbers.length) {
+      setSelectAll(false)
+      setIsAnyChecked(false)
+    }
+  }
+
   const handleSelectAll = () => {
-    const newNumbers = numbers.map(el => ({ ...el, checked: !selectAll }))
+    const searchListId = searchList.map(item => item.number)
+    console.log(searchListId)
+    const newNumbers = numbers.map(el => {
+      let result = {}
+      if (searchListId.includes(el.number)) {
+        result = {
+          ...el,
+          checked: !selectAll
+        }
+      } else {
+        result = { ...el }
+      }
+      return result
+    })
+    console.log(newNumbers)
+    handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
+    setIsAnyChecked(!selectAll)
   }
 
   const columns = [
@@ -219,6 +264,7 @@ const AssignNumbers = props => {
           showPagination={false}
           rows={numbers}
           searchCriterias={['number', 'type', 'country']}
+          getSearchList={setSearchList}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
