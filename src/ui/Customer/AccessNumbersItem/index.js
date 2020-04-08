@@ -66,7 +66,7 @@ const rows = [
 
 const AccessNumbersItem = ({ t }) => {
   const match = useParams()
-  const [showAddNumbers, setShowAddNumber] = useState(true)
+  const [showAddNumbers, setShowAddNumber] = useState(false)
   const [step, setStep] = useState(1)
   const classes = useStyles()
 
