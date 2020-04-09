@@ -34,7 +34,8 @@ export class CustomersStore {
     this.isLoadingCustomers = true
     axios.get(`${PROXY_P6}/tenants`).then((res) => {
       if (res.status === 200) {
-        this.rows = res.data.tenants
+        console.log('get custs', res.data.customers)
+        this.rows = res.data.customers
         this.isLoadingCustomers = false
       } else {
         console.log(res, 'error')

@@ -87,20 +87,22 @@ const CustomersTable = observer(({ t }) => {
     }
     return [
       {
-        id: 'tenantId',
+        id: 'external_id',
         numeric: false,
         extraProps: {
           scope: 'row'
         },
         label: 'ID',
-        getCellData: (row) => (
-          <Link
-            to={`/customers/${row.tenantId}/access_numbers`}
-            className={classes.link}
-          >
-            {row.tenantId}
-          </Link>
-        )
+        getCellData: (row) => {
+          return (
+            <Link
+              to={`/customers/${row.external_id}/access_numbers`}
+              className={classes.link}
+            >
+              {row.external_id}
+            </Link>
+          )
+        }
       },
       {
         id: 'name',

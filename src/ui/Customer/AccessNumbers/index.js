@@ -109,7 +109,7 @@ const AccessNumbers = ({ t }) => {
 
   useEffect(() => {
     // postEntitlements()
-    getEntitlements()
+    getEntitlements(match.customerId)
   }, [getEntitlements, postEntitlements])
 
   const handleOpenDeleteModal = (id, name) => {
@@ -235,20 +235,6 @@ const AccessNumbers = ({ t }) => {
             open={isAddEntitlementsModalOpen}
           />
         )}
-        {/* {isOpenCreateCustomer && (
-          <CreateCustomer
-            open={isOpenCreateCustomer}
-            handleClose={handleCloseCreateCustomer}
-            successClose={handleCloseCreateCustomerSuccess}
-            store={
-              creationType === 'subaccount'
-                ? CreateSubaccountStore
-                : CreateCustomerStore
-            }
-            createSubaccount={createSubaccount}
-            isCreateSubaccount={creationType === 'subaccount'}
-          />
-        )} */}
       </Paper>
     </div>
   )
