@@ -7,6 +7,7 @@ import { PROXY_P6 } from 'utils/axios'
 export class CustomerAdminsStore {
   admins = []
   isLoading = true
+  isLanguagesLoading = true
   admin = {
     userId: '',
     firstName: '',
@@ -15,10 +16,21 @@ export class CustomerAdminsStore {
     password: ''
   }
   sentAdmin = {}
+  languagesList = []
 
-  getCustomerAdmins = id => {
+  clearFields = () => {
+    this.admin = {
+      userId: '',
+      firstName: '',
+      lastName: '',
+      language: '',
+      password: ''
+    }
+  }
+
+  getCustomerAdmins = (id) => {
     this.isLoading = true
-    axios.get(`${PROXY_P6}/tenants/${id}/admins/`).then(res => {
+    axios.get(`${PROXY_P6}/tenants/${id}/admins/`).then((res) => {
       if (res.status === 200) {
         this.admins = res.data.admins
         this.isLoading = false
@@ -26,6 +38,18 @@ export class CustomerAdminsStore {
         console.log(res, 'error')
       }
     })
+  }
+
+  getCustomerAdminsLanguages = () => {
+    this.isLanguagesLoading = true
+    axios
+      .get(`${PROXY_P6}/system/languages/`)
+      .then((res) => {
+        this.languagesList = res.data.availableLanguages
+        this.isLanguagesLoading = false
+      })
+      .catch((error) => console.log(error, 'error'))
+      .finally(() => (this.isLanguagesLoading = false))
   }
 
   setAdminInfo = (valueKey, value) => {
@@ -41,9 +65,8 @@ export class CustomerAdminsStore {
     this.isLoading = true
     axios
       .post(`${PROXY_P6}/tenants/${id}/admins/`, this.sentAdmin)
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
-          console.log('added')
           this.isLoading = false
           getUsers(id)
           closeModal()
@@ -56,11 +79,15 @@ export class CustomerAdminsStore {
 decorate(CustomerAdminsStore, {
   admins: observable,
   isLoading: observable,
-  getCustomerAdmins: action,
+  sentAdmin: observable,
   admin: observable,
+  languagesList: observable,
+  isLanguagesLoading: observable,
+  getCustomerAdmins: action,
   addCustomerAdmin: action,
   setAdminInfo: action,
-  sentAdmin: observable
+  getCustomerAdminsLanguages: action,
+  clearFields: action
 })
 
 export default createContext(new CustomerAdminsStore())

@@ -19,7 +19,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import useStyles from './styles'
 
-const Administrators = props => {
+const Administrators = (props) => {
   const [isOpened, setIsOpened] = useState(false)
   const {
     admins,
@@ -27,7 +27,8 @@ const Administrators = props => {
     isLoading,
     admin,
     setAdminInfo,
-    addCustomerAdmin
+    addCustomerAdmin,
+    clearFields
   } = useContext(CustomerAdministrators)
 
   const {
@@ -59,6 +60,7 @@ const Administrators = props => {
   }
   const hideModal = () => {
     setIsOpened(false)
+    clearFields()
   }
   const addAdmin = () => {
     addCustomerAdmin({
@@ -67,7 +69,7 @@ const Administrators = props => {
       getUsers: getCustomerAdmins
     })
   }
-  const handleDelete = adminId => {
+  const handleDelete = (adminId) => {
     deleteAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -75,7 +77,7 @@ const Administrators = props => {
       getUsers: getCustomerAdmins
     })
   }
-  const handleUpdate = adminId => {
+  const handleUpdate = (adminId) => {
     updateCustomerAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -84,7 +86,7 @@ const Administrators = props => {
     })
   }
 
-  const getAdminInfoHandle = adminId => {
+  const getAdminInfoHandle = (adminId) => {
     getAdminInfo({
       id: match.customerId,
       userId: adminId
