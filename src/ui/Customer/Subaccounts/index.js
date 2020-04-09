@@ -41,7 +41,7 @@ const SubaccountsTable = observer(({ t }) => {
 
   const columns = [
     {
-      id: 'groupId',
+      id: 'external_id',
       numeric: false,
       extraProps: {
         scope: 'row'
@@ -49,10 +49,10 @@ const SubaccountsTable = observer(({ t }) => {
       label: 'ID',
       getCellData: (row) => (
         <Link
-          to={`/customers/${match.customerId}/subaccounts/${row.groupId}/ans_instances`}
+          to={`/customers/${match.customerId}/subaccounts/${row.id}/ans_instances`}
           className={classes.link}
         >
-          {row.groupId}
+          {row.external_id}
         </Link>
       ),
       extraHeadProps: {
@@ -60,7 +60,7 @@ const SubaccountsTable = observer(({ t }) => {
       }
     },
     {
-      id: 'groupName',
+      id: 'name',
       numeric: false,
       label: 'name',
       extraProps: {

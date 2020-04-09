@@ -22,7 +22,6 @@ const Details = observer(({ t }) => {
     CustomersStore
   )
   const [showEdit, setShowEdit] = useState(false)
-
   useEffect(() => {
     getCustomer(match.customerId)
   }, [getCustomer, match.customerId])

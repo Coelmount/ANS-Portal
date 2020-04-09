@@ -11,7 +11,7 @@ const DetailsBlock = ({ classes, data, t }) => {
   const detailsFields = [
     {
       name: 'ID',
-      value: data.tenantId || data.groupId || match.groupId || 'none'
+      value: data.external_id || data.groupId || match.groupId || 'none'
     },
     { name: t('name'), value: data.name || data.groupName },
     { name: t('status'), value: 'active' }
@@ -22,7 +22,7 @@ const DetailsBlock = ({ classes, data, t }) => {
       <Typography className={classes.detailsBlockTitle}>
         Customer Details
       </Typography>
-      {detailsFields.map(detailsField => (
+      {detailsFields.map((detailsField) => (
         <Box
           className={`${classes.detailsFieldsWrap} ${classes.firstBlockFields}`}
           key={detailsField.name}

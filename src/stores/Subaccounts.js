@@ -34,11 +34,11 @@ export class SubaccountsStore {
     this.isLoadingSubaccounts = true
     axios.get(`${PROXY_P6}/tenants/${id}/groups`).then((res) => {
       if (res.status === 200) {
-        this.selectGroups = res.data.groups.map((group) => ({
+        this.selectGroups = res.data.accounts.map((group) => ({
           value: group.groupId,
           label: group.groupName
         }))
-        this.rows = res.data.groups
+        this.rows = res.data.accounts
         this.isLoadingSubaccounts = false
       } else {
         console.log(res, 'error')

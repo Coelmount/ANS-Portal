@@ -12,7 +12,7 @@ export class CreateCustomerStore {
 
   customer = {
     type: 'ServiceProvider',
-    tenantId: '',
+    external_id: '',
     name: '',
     contactInformation: {
       name: '',
@@ -38,7 +38,7 @@ export class CreateCustomerStore {
     this.step = 1
     this.customer = {
       type: 'ServiceProvider',
-      tenantId: '',
+      external_id: '',
       name: '',
       contactInformation: {
         name: '',
@@ -62,7 +62,7 @@ export class CreateCustomerStore {
   createCustomer = () => {
     const data = { ...this.customer }
     return axios
-      .post(`${PROXY_P6}/tenants/`, removeEmpty(data))
+      .post(`${PROXY_P6}/tenants`, removeEmpty(data))
       .then((res) => (this.createdCustomerStore = res.data))
   }
 }

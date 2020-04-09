@@ -108,7 +108,6 @@ const AccessNumbers = ({ t }) => {
   const [accessNumberToDelete, setAccessNumberToDelete] = useState({})
 
   useEffect(() => {
-    // postEntitlements()
     getEntitlements(match.customerId)
   }, [getEntitlements, postEntitlements])
 
@@ -149,7 +148,7 @@ const AccessNumbers = ({ t }) => {
       onIconClick: () => setShowAssignNumbers(true)
     },
     {
-      id: 'entitled',
+      id: 'entitlement',
       label: 'entitled',
       headIcon: () => <img src={editSvg} alt='edit icon' />,
       onIconClick: () => setShowEditEntitlements(true)

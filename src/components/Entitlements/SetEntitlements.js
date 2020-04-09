@@ -24,12 +24,12 @@ const columns = [
   }
 ]
 
-const SetEntitlements = props => {
+const SetEntitlements = (props) => {
   const { handleClose, t } = props
   const {
     changeStep,
-    getEntitlements,
-    entitlements,
+    getEntitlementTypes,
+    entitlementTypes,
     isLoadingEntitlements,
     updateCheckedArr,
     resLength
@@ -43,14 +43,14 @@ const SetEntitlements = props => {
   }, [selected, updateCheckedArr])
 
   useEffect(() => {
-    getEntitlements()
-  }, [getEntitlements])
+    getEntitlementTypes()
+  }, [getEntitlementTypes])
 
-  const handleClick = selectedRow => {
+  const handleClick = (selectedRow) => {
     if (selected.indexOf(selectedRow) === -1) {
       setSelected(selected.concat(selectedRow))
     } else {
-      const newArr = selected.filter(item => {
+      const newArr = selected.filter((item) => {
         return item !== selectedRow
       })
       setSelected(newArr)
@@ -83,7 +83,7 @@ const SetEntitlements = props => {
           withFilters={true}
           classes={classes}
           columns={columns}
-          rows={entitlements}
+          rows={entitlementTypes}
           isLoadingData={isLoadingEntitlements}
           setSelected={setSelected}
           handleClick={handleClick}

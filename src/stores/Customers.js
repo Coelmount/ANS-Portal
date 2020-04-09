@@ -10,7 +10,8 @@ export class CustomersStore {
   rows = []
   step = 1
   customer = {
-    tenantId: '',
+    id: '',
+    external_id: '',
     name: '',
     contactInformation: {
       name: '',
@@ -45,9 +46,9 @@ export class CustomersStore {
 
   getCustomer = (id) => {
     this.isLoadingCustomer = true
-    axios.get(`${PROXY_P6}/tenants/${id}/`).then((res) => {
+    axios.get(`${PROXY_P6}/tenants/${id}`).then((res) => {
       if (res.status === 200) {
-        merge(this.customer, res.data)
+        merge(this.customer, res.data.customers[0])
         this.isLoadingCustomer = false
       } else {
         console.log(res, 'error')

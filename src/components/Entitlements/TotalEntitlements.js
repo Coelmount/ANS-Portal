@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useParams } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -21,6 +22,7 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import useStyles from './styles'
 
 const TotalEntitlements = ({ handleClose, t }) => {
+  const match = useParams()
   const {
     changeStep,
     selectedEntitlements,
@@ -35,7 +37,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
   const handleClick = () => {
     console.log('11')
   }
-
+  console.log(match, 'match here')
   useEffect(() => {
     if (
       !Object.values(objTotals).includes('') &&
@@ -54,11 +56,11 @@ const TotalEntitlements = ({ handleClose, t }) => {
     {
       id: 'total',
       label: 'total',
-      getCellData: row => {
+      getCellData: (row) => {
         return (
           <Box>
             <Input
-              onChange={e => {
+              onChange={(e) => {
                 updateTotalEntitlements(e.target.value, row.id)
                 if (e.target.value === '')
                   setEmptyFieldsCounter(emptyFieldsCounter + 1)
@@ -77,7 +79,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
     }
   ]
   const handleAddButton = () => {
-    postEntitlements(changeStep)
+    postEntitlements(changeStep, match.customerId)
   }
 
   return (

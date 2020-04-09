@@ -6,6 +6,7 @@ import { PROXY_CUSTOM_ANS, PROXY_P6 } from 'utils/axios'
 
 export class Entitlements {
   entitlements = []
+  entitlementTypes = []
   selectedEntitlements = []
   filteredArr = []
   checkedArr = []
@@ -37,9 +38,34 @@ export class Entitlements {
     this.updateSelectedArr()
   }
 
+  getEntitlements = (id) => {
+    this.isLoadingEntitlements = true
+    axios.get(`${PROXY_P6}/tenants/${id}/entitlements`).then((res) => {
+      if (res.status === 200) {
+        console.log(res.data.entitlments, 'res.data.entitlment')
+        this.entitlements = res.data.entitlments
+        this.isLoadingEntitlements = false
+      } else {
+        console.log(res, 'error')
+      }
+    })
+  }
+
+  getEntitlementTypes = () => {
+    this.isLoadingEntitlements = true
+    axios.get(`${PROXY_P6}/entitlement_types`).then((res) => {
+      if (res.status === 200) {
+        console.log(res.data, 'ent types res data')
+        this.isLoadingEntitlements = false
+        this.entitlementTypes = res.data.customer_licenses
+      } else {
+        console.log(res, 'error')
+      }
+    })
+  }
   updateSelectedArr = () => {
     let resultArr = []
-    this.entitlements.forEach((obj) => {
+    this.entitlementTypes.forEach((obj) => {
       if (
         this.checkedArr.includes(obj.id) &&
         this.filteredArr.includes(obj.id)
@@ -64,61 +90,42 @@ export class Entitlements {
     if (this.newTotalNumbers.arr.length > 0) this.isTotalEmpty = false
   }
 
-  postEntitlements = (callback) => {
+  postEntitlements = (callback, id) => {
     this.isSending = true
-    axios.get(`${PROXY_P6}/entitlement_types`).then((res) => {
-      //mock request
-      if (res.status === 200) {
+    console.log(this.newTotalNumbers.arr, 'this.newTotalNumbers.arr')
+    console.log(
+      {
+        id: this.newTotalNumbers.arr[0].id,
+        entitlements: this.newTotalNumbers.arr[0].value
+      },
+      'to send ent'
+    )
+    axios
+      .post(`${PROXY_P6}/tenants/${id}/entitlements`, {
+        license_model_id: this.newTotalNumbers.arr[0].id,
+        entitlements: this.newTotalNumbers.arr[0].value
+      })
+      .then(() => {
         this.isSending = false
         callback(3)
-      } else {
-        console.log(res, 'error')
-      }
-    })
-    console.log(this.newTotalNumbers.arr, 'post it')
+      })
+      .finally(() => {
+        this.isSending = false
+      })
   }
 
-  // postEntitlements = () => {
-  //   // this.isLoadingCustomer = true
-  //   axios
-  //     .post(`/custom/ans/tenants/10440/entitlements`, {
-  //       // id: 1,
-  //       license_model_id: 2,
-  //       // entitlements: 80,
-  //       entitlement: 3
-  //     })
-  //     .then(res => {
-  //       if (res.status === 200) {
-  //         // this.entitlements = res.data.customer_licenses
-  //         console.log(res)
-  //       } else {
-  //         console.log(res, 'error')
-  //       }
-  //     })
-  // }
-
-  getEntitlements = (id) => {
-    this.isLoadingEntitlements = true
-    axios.get(`${PROXY_P6}/tenants/2/entitlements`).then((res) => {
-      if (res.status === 200) {
-        console.log(res, 'res new')
-        this.entitlements = res.data.customer_licenses
-        this.isLoadingEntitlements = false
-      } else {
-        console.log(res, 'error')
-      }
-    })
-  }
-
-  // getEntitlements = () => {
-  //   axios
-  //     .get(`/p5/tenants/bury/group/buryGROUP01/numbers`)
-  //     .then(res => {
-  //       console.log(res, 'post res')
-  //     })
-  //     .catch(error => {
-  //       console.log(error, 'error')
-  //     })
+  //mock request
+  // postEntitlements = (callback) => {
+  //   this.isSending = true
+  //   axios.get(`${PROXY_P6}/entitlement_types`).then((res) => {
+  //     if (res.status === 200) {
+  //       this.isSending = false
+  //       callback(3)
+  //     } else {
+  //       console.log(res, 'error')
+  //     }
+  //   })
+  //   console.log(this.newTotalNumbers.arr, 'post it')
   // }
 }
 
@@ -126,6 +133,7 @@ decorate(Entitlements, {
   step: observable,
   closeModal: observable,
   entitlements: observable,
+  entitlementTypes: observable,
   isLoadingEntitlements: observable,
   totalEntitlements: observable,
   isSending: observable,
@@ -136,6 +144,7 @@ decorate(Entitlements, {
   changeStep: action,
   setDefaultEntitlementsValues: action,
   getEntitlements: action,
+  getEntitlementTypes: action,
   postEntitlements: action,
   updateSelectedArr: action,
   updateFilteredArr: action,

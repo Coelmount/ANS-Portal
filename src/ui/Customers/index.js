@@ -96,7 +96,7 @@ const CustomersTable = observer(({ t }) => {
         getCellData: (row) => {
           return (
             <Link
-              to={`/customers/${row.external_id}/access_numbers`}
+              to={`/customers/${row.id}/access_numbers`}
               className={classes.link}
             >
               {row.external_id}
