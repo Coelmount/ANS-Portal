@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -15,6 +15,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline'
 import LanguageIcon from '@material-ui/icons/Language'
 
+import CustomerAdministrators from 'stores/CustomerAdministrators'
 import Loading from 'components/Loading'
 
 import { SELECTLANGUAGE } from 'source/config'
@@ -35,13 +36,28 @@ const UpdateAdminInfo = ({
   getAdminInfo,
   editSubject
 }) => {
+  const classes = useStyles()
   const match = useParams()
+
+  const {
+    getCustomerAdminsLanguages,
+    languagesList,
+    isLanguagesLoading
+  } = useContext(CustomerAdministrators)
+
+  const [changedSubaccountAdmin, setChangedSubaccountAdmin] = useState({
+    firstName: '',
+    lastName: '',
+    language: ''
+  })
 
   useEffect(() => {
     getAdminInfo(userId)
   }, [userId])
 
-  const classes = useStyles()
+  useEffect(() => {
+    getCustomerAdminsLanguages()
+  }, [])
 
   return (
     <Dialog className={classes.editInfo} open={show} onClose={handleClose}>
@@ -78,7 +94,7 @@ const UpdateAdminInfo = ({
                   icon={<PersonOutlineIcon />}
                   label={t('first_name')}
                   value={user.firstName}
-                  onChange={e => updateInfo('firstName', e.target.value)}
+                  onChange={(e) => updateInfo('firstName', e.target.value)}
                 />
               </Box>
               <Box className={classes.inputes}>
@@ -86,18 +102,21 @@ const UpdateAdminInfo = ({
                   icon={<PersonOutlineIcon />}
                   label={t('last_name')}
                   value={user.lastName}
-                  onChange={e => updateInfo('lastName', e.target.value)}
+                  onChange={(e) => updateInfo('lastName', e.target.value)}
                 />
               </Box>
               <Box className={classes.inputes}>
                 <CustomSelect
                   icon={<LanguageIcon />}
                   label={t('language')}
-                  options={SELECTLANGUAGE.map(el => {
-                    return { label: t(el.label), value: el.value }
+                  options={languagesList.map((item) => {
+                    return {
+                      label: t(item.name.toLowerCase()),
+                      value: item.name
+                    }
                   })}
                   value={user.language}
-                  onChange={e =>
+                  onChange={(e) =>
                     updateInfo(
                       'language',
                       e.target.value[0].toUpperCase() + e.target.value.slice(1)
@@ -113,10 +132,11 @@ const UpdateAdminInfo = ({
                 {t('cancel')}
               </Typography>
             </Box>
-            <Box onClick={() => handleUpdate(userId)} className={classes.editButtonWrap}>
-              <Typography
-                className={classes.editButtonTitle}
-              >
+            <Box
+              onClick={() => handleUpdate(userId)}
+              className={classes.editButtonWrap}
+            >
+              <Typography className={classes.editButtonTitle}>
                 {t('save')}
               </Typography>
             </Box>

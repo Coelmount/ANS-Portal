@@ -18,7 +18,6 @@ export class SearchStore {
       axios
         .get(`${PROXY_P6}/search/numbers/usages/${phoneNumber}/`)
         .then((res) => {
-          console.log(res, 'search res')
           this.searchResult = res.data
           this.emptyResult = null
           this.ansInstance = phoneNumber
@@ -34,6 +33,7 @@ export class SearchStore {
 
   clearSearchResult = () => {
     this.searchResult = null
+    this.emptyResult = null
   }
 }
 
