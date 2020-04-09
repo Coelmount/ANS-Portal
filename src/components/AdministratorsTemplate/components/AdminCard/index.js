@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { withNamespaces } from 'react-i18next'
 
 import Card from '@material-ui/core/Card'
@@ -12,8 +12,13 @@ import CloseIcon from '@material-ui/icons/Close'
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline'
 import LanguageIcon from '@material-ui/icons/Language'
 
+import CustomerAdministrators from 'stores/CustomerAdministrators'
+import SubaccountAdministrators from 'stores/SubaccountAdmins'
+import EditDeleteSubaccountsAdmin from 'stores/EditDeleteSubaccountsAdmin'
+
 import DeleteModal from 'components/DeleteModal'
 import UpdateAdminInfo from '../UpdateAdminInfo'
+
 import adminIcon from 'source/images/svg/adminIcon.svg'
 
 const AdminCard = ({
@@ -44,14 +49,31 @@ const AdminCard = ({
   }
 
   const [isOpened, setIsOpened] = useState(false)
+  console.log(isOpened, 'isOpened card')
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [customerNameToDelete, setCustomerNameToDelete] = useState('')
   const [adminId, setAdminId] = useState('')
+  console.log(adminId, 'adminId')
+  // const { clearFields: clearCustomerFields } = useContext(
+  //   CustomerAdministrators
+  // )
+
+  // const { clearFields: clearSubaccountFields } = useContext(
+  //   SubaccountAdministrators
+  // )
+  const { сlearFields, updatedSubaccountAdmin } = useContext(
+    EditDeleteSubaccountsAdmin
+  )
+
+  console.log(сlearFields, updatedSubaccountAdmin, 'clearFields')
 
   const showModal = () => {
     setIsOpened(true)
   }
+
   const hideModal = () => {
+    console.log(updatedSubaccountAdmin, 'updatedSubaccountAdmin')
+    // getAdminInfo(adminId)
     setIsOpened(false)
   }
   const handleOpenDeleteModal = () => {

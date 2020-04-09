@@ -16,11 +16,21 @@ export class SubaccountAdminsStore {
   }
   sentSubaccountAdmin = {}
 
+  clearFields = () => {
+    this.subaccountAdmin = {
+      userId: '',
+      firstName: '',
+      lastName: '',
+      language: '',
+      password: ''
+    }
+  }
+
   getSubaccountAdmins = ({ id, groupId }) => {
     this.isLoading = true
     axios
       .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`)
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           this.subaccountAdmins = res.data.admins
           this.isLoading = false
@@ -47,7 +57,7 @@ export class SubaccountAdminsStore {
         `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`,
         this.sentSubaccountAdmin
       )
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers({ id: id, groupId: groupId })
@@ -68,11 +78,12 @@ export class SubaccountAdminsStore {
 decorate(SubaccountAdminsStore, {
   subaccountAdmins: observable,
   isLoading: observable,
-  getSubaccountAdmins: action,
+  sentSubaccountAdmin: observable,
   subaccountAdmin: observable,
+  getSubaccountAdmins: action,
   addSubaccountAdmin: action,
   setSubaccountAdminInfo: action,
-  sentSubaccountAdmin: observable
+  clearFields: action
 })
 
 export default createContext(new SubaccountAdminsStore())
