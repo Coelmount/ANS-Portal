@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { withNamespaces } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -48,32 +49,24 @@ const AdminCard = ({
     )
   }
 
+  const match = useParams()
   const [isOpened, setIsOpened] = useState(false)
-  console.log(isOpened, 'isOpened card')
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [customerNameToDelete, setCustomerNameToDelete] = useState('')
   const [adminId, setAdminId] = useState('')
-  console.log(adminId, 'adminId')
-  // const { clearFields: clearCustomerFields } = useContext(
-  //   CustomerAdministrators
-  // )
 
-  // const { clearFields: clearSubaccountFields } = useContext(
-  //   SubaccountAdministrators
-  // )
-  const { сlearFields, updatedSubaccountAdmin } = useContext(
-    EditDeleteSubaccountsAdmin
-  )
-
-  console.log(сlearFields, updatedSubaccountAdmin, 'clearFields')
+  const { getSubaccountAdmins } = useContext(SubaccountAdministrators)
+  const { getCustomerAdmins } = useContext(CustomerAdministrators)
 
   const showModal = () => {
     setIsOpened(true)
   }
 
   const hideModal = () => {
-    console.log(updatedSubaccountAdmin, 'updatedSubaccountAdmin')
-    // getAdminInfo(adminId)
+    console.log(match.groupId, 'mp')
+    match.groupId
+      ? getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
+      : getCustomerAdmins(match.customerId)
     setIsOpened(false)
   }
   const handleOpenDeleteModal = () => {
