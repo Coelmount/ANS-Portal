@@ -58,7 +58,7 @@ const UpdateAdminInfo = ({
   useEffect(() => {
     getCustomerAdminsLanguages()
   }, [])
-  console.log(user, 'user in comp')
+
   return (
     <Dialog className={classes.editInfo} open={show} onClose={handleClose}>
       {isLoadingData ? (

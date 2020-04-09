@@ -63,7 +63,6 @@ const AdminCard = ({
   }
 
   const hideModal = () => {
-    console.log(match.groupId, 'mp')
     match.groupId
       ? getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
       : getCustomerAdmins(match.customerId)
