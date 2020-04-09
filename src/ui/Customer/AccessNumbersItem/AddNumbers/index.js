@@ -9,7 +9,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import SuccessPage from './SuccessPage'
-//import Entitlements from 'components/Entitlements'
+import FirstStepSub from './FirstStepSub'
+import SuccessPageSub from './SuccessPageSub'
+import FirstStepNFN from './FirstStepNFN'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +30,9 @@ const CreateCustomer = props => {
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [addedNumbers, setAddedNumber] = useState([])
+  const [selectAllAddedNumbers, setSelectAllAddedNumbers] = useState(true)
+  const [selectedGroup, setSelectedGroup] = useState('')
+  const [addedNumbersSub, setAddedNumberSub] = useState([])
 
   useEffect(() => {
     const createNumbers = []
@@ -61,24 +66,136 @@ const CreateCustomer = props => {
     changeStep(3)
   }
 
-  console.log(addedNumbers)
+  const selectNumbersAdded = (checked, number) => {
+    const newNumbers = [...addedNumbers]
+    const index = addedNumbers.findIndex(el => el.number === number)
+    newNumbers[index].checked = checked
+    if (newNumbers.every(el => el.checked)) {
+      setSelectAllAddedNumbers(true)
+    } else {
+      setSelectAllAddedNumbers(false)
+    }
+    setAddedNumber(newNumbers)
+  }
+
+  const handleSelectAllAdded = () => {
+    const newNumbers = addedNumbers.map(el => ({
+      ...el,
+      checked: !selectAllAddedNumbers
+    }))
+    setAddedNumber(newNumbers)
+    setSelectAllAddedNumbers(!selectAllAddedNumbers)
+  }
+
+  const fakePostSub = () => {
+    const newNumbers = [...addedNumbers]
+    setAddedNumberSub(newNumbers.filter(el => el.checked))
+    changeStep(5)
+  }
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
-      <Steps
-        step={step}
-        handleClose={handleClose}
-        open={open}
-        changeStep={changeStep}
-        numbers={numbers}
-        selectNumbers={selectNumbers}
-        handleSelectAll={handleSelectAll}
-        selectAll={selectAll}
-        fakePost={fakePost}
-        addedNumbers={addedNumbers}
-      />
+      {true ? (
+        <Steps
+          step={step}
+          handleClose={handleClose}
+          changeStep={changeStep}
+          numbers={numbers}
+          selectNumbers={selectNumbers}
+          handleSelectAll={handleSelectAll}
+          selectAll={selectAll}
+          fakePost={fakePost}
+          addedNumbers={addedNumbers}
+          selectAllAddedNumbers={selectAllAddedNumbers}
+          selectNumbersAdded={selectNumbersAdded}
+          handleSelectAllAdded={handleSelectAllAdded}
+          selectedGroup={selectedGroup}
+          setSelectedGroup={setSelectedGroup}
+          fakePostSub={fakePostSub}
+          addedNumbersSub={addedNumbersSub}
+        />
+      ) : (
+        <StepsNotFoundNumbers
+          step={step}
+          handleClose={handleClose}
+          changeStep={changeStep}
+          // numbers={numbers}
+          // selectNumbers={selectNumbers}
+          // handleSelectAll={handleSelectAll}
+          // selectAll={selectAll}
+          // fakePost={fakePost}
+          // addedNumbers={addedNumbers}
+          // selectAllAddedNumbers={selectAllAddedNumbers}
+          // selectNumbersAdded={selectNumbersAdded}
+          // handleSelectAllAdded={handleSelectAllAdded}
+          // selectedGroup={selectedGroup}
+          // setSelectedGroup={setSelectedGroup}
+          // fakePostSub={fakePostSub}
+          // addedNumbersSub={addedNumbersSub}
+        />
+      )}
     </Dialog>
   )
+}
+
+const StepsNotFoundNumbers = props => {
+  switch (props.step) {
+    case 1:
+      return (
+        <FirstStepNFN
+          handleClose={props.handleClose}
+          changeStep={props.changeStep}
+        />
+      )
+    // case 2:
+    //   return (
+    //     <SecondStep
+    //       numbers={props.numbers}
+    //       handleClose={props.handleClose}
+    //       changeStep={props.changeStep}
+    //       selectNumbers={props.selectNumbers}
+    //       handleSelectAll={props.handleSelectAll}
+    //       selectAll={props.selectAll}
+    //       fakePost={props.fakePost}
+    //     />
+    //   )
+    // case 3:
+    //   return (
+    //     <SuccessPage
+    //       addedNumbers={props.addedNumbers}
+    //       handleClose={props.handleClose}
+    //       changeStep={props.changeStep}
+    //     />
+    //   )
+    // case 4:
+    //   return (
+    //     <FirstStepSub
+    //       addedNumbers={props.addedNumbers}
+    //       selectNumbers={props.selectNumbersAdded}
+    //       handleSelectAll={props.handleSelectAllAdded}
+    //       handleClose={props.handleClose}
+    //       selectAllAddedNumbers={props.selectAllAddedNumbers}
+    //       selectedGroup={props.selectedGroup}
+    //       setSelectedGroup={props.setSelectedGroup}
+    //       fakePostSub={props.fakePostSub}
+    //     />
+    //   )
+    // case 5:
+    //   return (
+    //     <SuccessPageSub
+    //       handleClose={props.handleClose}
+    //       addedNumbersSub={props.addedNumbersSub}
+    //       selectedGroup={props.selectedGroup}
+    //     />
+    //   )
+    default:
+      return (
+        <FirstStep
+          handleClose={props.handleClose}
+          changeStep={props.changeStep}
+        />
+      )
+  }
 }
 
 const Steps = props => {
@@ -109,6 +226,27 @@ const Steps = props => {
           addedNumbers={props.addedNumbers}
           handleClose={props.handleClose}
           changeStep={props.changeStep}
+        />
+      )
+    case 4:
+      return (
+        <FirstStepSub
+          addedNumbers={props.addedNumbers}
+          selectNumbers={props.selectNumbersAdded}
+          handleSelectAll={props.handleSelectAllAdded}
+          handleClose={props.handleClose}
+          selectAllAddedNumbers={props.selectAllAddedNumbers}
+          selectedGroup={props.selectedGroup}
+          setSelectedGroup={props.setSelectedGroup}
+          fakePostSub={props.fakePostSub}
+        />
+      )
+    case 5:
+      return (
+        <SuccessPageSub
+          handleClose={props.handleClose}
+          addedNumbersSub={props.addedNumbersSub}
+          selectedGroup={props.selectedGroup}
         />
       )
     default:

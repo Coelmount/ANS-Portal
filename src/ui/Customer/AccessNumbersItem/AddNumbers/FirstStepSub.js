@@ -14,6 +14,7 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import Input from 'components/Input'
+import Select from 'components/Select'
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
 import Checkbox from 'components/Checkbox'
@@ -28,15 +29,27 @@ import capitalize from 'lodash/capitalize'
 import useStyles from './styles'
 
 const SecondStep = props => {
-  const { t, numbers, selectAll, fakePost } = props
+  const { t, addedNumbers, fakePostSub } = props
+  const {
+    getSubaccounts,
+    selectGroups,
+    isLoadingSubaccounts
+  } = SubaccountsStore
   const classes = useStyles()
   const match = useParams()
+
+  useEffect(() => {
+    getSubaccounts(match.customerId)
+  }, [])
 
   const columns = [
     {
       id: 'checkbox',
       label: (
-        <Checkbox checked={props.selectAll} onChange={props.handleSelectAll} />
+        <Checkbox
+          checked={props.selectAllAddedNumbers}
+          onChange={props.handleSelectAll}
+        />
       ),
       isSortAvailable: false,
       getCellData: (row, i) =>
@@ -72,6 +85,10 @@ const SecondStep = props => {
     }
   ]
 
+  if (isLoadingSubaccounts) {
+    return <Loading />
+  }
+
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -85,6 +102,20 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
+        <Box className={classes.secondParagraphBox}>
+          <div>{t('select_subaccount')}</div>
+          <Box>
+            <Select
+              label={capitalize(t('subaccount'))}
+              icon={<img src={Group3Person} alt='Group3Person' />}
+              selectStyles={classes.select}
+              wrapperStyles={classes.wrapper}
+              options={selectGroups}
+              value={props.selectedGroup}
+              onChange={e => props.setSelectedGroup(e.target.value)}
+            />
+          </Box>
+        </Box>
         <Box className={classes.secondParagraphBox}>{match.numbersId}</Box>
         <CustomTable
           classes={classes}
@@ -93,7 +124,7 @@ const SecondStep = props => {
           showPagination={false}
           showSearchBar={false}
           showToolBar={false}
-          rows={numbers}
+          rows={addedNumbers}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -109,10 +140,13 @@ const SecondStep = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disabled={!numbers.filter(el => el.checked).length}
-          onClick={() => fakePost()}
+          disabled={
+            !addedNumbers.filter(el => el.checked).length ||
+            !props.selectedGroup
+          }
+          onClick={fakePostSub}
         >
-          {`${t('add')} (${numbers.filter(el => el.checked).length})`}
+          {`${t('add')} (${addedNumbers.filter(el => el.checked).length})`}
         </Button>
       </DialogActions>
     </React.Fragment>

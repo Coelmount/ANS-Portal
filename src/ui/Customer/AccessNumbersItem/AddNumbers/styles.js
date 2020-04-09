@@ -1,6 +1,17 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
+  searchParametersBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
+  phoneAddedButtonWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: 22
+  },
   slectGroupBox: {
     marginTop: '28px',
     marginLeft: '70px',
@@ -72,8 +83,8 @@ const useStyles = makeStyles(theme => ({
     right: '10px'
   },
   stepStyles: {
-    marginRight: 24,
-    paddingLeft: 44,
+    marginTop: 42,
+    marginLeft: 40,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
@@ -84,6 +95,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: '28px',
     marginLeft: '82px',
     fontSize: '16px',
+    flexWrap: 'wrap',
     color: theme.palette.black
   },
   secondParagraphBox: {
@@ -138,7 +150,7 @@ const useStyles = makeStyles(theme => ({
   boxOfButtons: {
     paddingRight: '40px',
     paddingLeft: '40px',
-    marginBottom: '40px',
+    marginBottom: '22px',
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%'

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useHistory, useParams } from 'react-router-dom'
@@ -11,12 +11,12 @@ import Button from '@material-ui/core/Button'
 
 import phonesSuccessIcon from 'source/images/svg/phones-success.svg'
 
-import CreateCustomerStore from 'stores/CreateCustomer'
+import PhoneNumbersStore from 'stores/PhoneNumbers'
 
 import useStyles from './styles'
 
-const SuccesPage = props => {
-  const { handleClose, t, changeStep, addedNumbers } = props
+const SuccesPageSub = props => {
+  const { handleClose, t, addedNumbersSub, selectedGroup } = props
   const history = useHistory()
   const match = useParams()
   const classes = useStyles()
@@ -37,25 +37,20 @@ const SuccesPage = props => {
             <img src={phonesSuccessIcon} alt='' />
           </Box>
           <Box className={classes.successInfo}>
-            {`${addedNumbers.length} ${t('numbers_added_success')}`}
+            {t('success_assigned_numbes_sub', {
+              countNumbers: addedNumbersSub.length,
+              subaccount: selectedGroup
+            })}
           </Box>
         </Box>
-        <Box className={classes.boxOfButtons}>
-          <Button
-            variant='outlined'
-            color='primary'
-            className={classes.okButton}
-            onClick={() => handleClose()}
-          >
-            {t('ok')}
-          </Button>
+        <Box className={classes.phoneAddedButtonWrap}>
           <Button
             variant='contained'
             color='primary'
-            className={classes.assignButton}
-            onClick={() => changeStep(4)}
+            className={classes.okButton}
+            onClick={handleClose}
           >
-            {t('assign_them_to_subacc')}
+            {'OK'}
           </Button>
         </Box>
       </DialogContent>
@@ -63,4 +58,4 @@ const SuccesPage = props => {
   )
 }
 
-export default withNamespaces()(observer(SuccesPage))
+export default withNamespaces()(observer(SuccesPageSub))
