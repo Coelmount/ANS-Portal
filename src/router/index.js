@@ -20,6 +20,7 @@ import BulkJobs from 'ui/Subaccount/AnsInstances/Basic/BulkJobs'
 import Destinations from 'ui/Subaccount/AnsInstances/Advanced/Destinations'
 import DestinationGroups from 'ui/Subaccount/AnsInstances/Advanced/DestinationGroups'
 import PhoneNumbers from 'ui/Subaccount/PhoneNumbers'
+import Announcements from 'ui/Subaccount/Announcements'
 import SubaccountAdmins from 'ui/Subaccount/Administrators'
 import SubaccountDetails from 'ui/Subaccount/Details'
 import Schedules from 'ui/Subaccount/Schedules'
@@ -92,6 +93,10 @@ const userComponents = [
     component: <PhoneNumbers />
   },
   {
+    path: '/customers/:customerId/subaccounts/:groupId/announcements',
+    component: <Announcements />
+  },
+  {
     path: '/customers/:customerId/subaccounts/:groupId/schedules',
     component: <Schedules />
   },
@@ -112,7 +117,7 @@ const authComponents = [
   }
 ]
 
-const Page = props => {
+const Page = (props) => {
   const classes = useStyles()
   return (
     <div className={classes.page}>
@@ -129,7 +134,7 @@ const UserPages = () => {
   }, [getLocale, lang])
   return (
     <Switch>
-      {userComponents.map(el => (
+      {userComponents.map((el) => (
         <Route path={el.path} key={el.path} exact>
           <Page diplayedComponent={el.component} />
         </Route>
@@ -154,7 +159,7 @@ const AuthPages = observer(() => {
   const { isAuthorized } = useContext(AuthStore)
   return (
     <Switch>
-      {authComponents.map(el => (
+      {authComponents.map((el) => (
         <Route key={el.path} path={el.path} component={el.component} exact />
       ))}
       {isAuthorized && <Route path='*' component={NotFound} />}
