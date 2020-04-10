@@ -1,6 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { toJS } from 'mobx'
+import { useParams } from 'react-router-dom'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -15,52 +17,20 @@ import Typography from '@material-ui/core/Typography'
 import Input from 'components/Input'
 import CustomTable from 'components/CustomTable'
 
-import useStyles from './styles'
+import entitlementsStore from 'stores/Entitlements'
 
-const ENTITLEMENTS = [
-  {
-    id: 1,
-    name: 'fafa',
-    total: 5,
-    assigned: 2
-  },
-  {
-    id: 2,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10,
-    assigned: 2
-  },
-  {
-    id: 3,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3,
-    assigned: 2
-  },
-  {
-    id: 4,
-    name: 'Angola - GEO - basic',
-    total: 80,
-    assigned: 2
-  },
-  {
-    id: 5,
-    name: 'South Africa - GEO - ANS basic',
-    total: 10,
-    assigned: 2
-  },
-  {
-    id: 6,
-    name: 'South Africa - GEO - ANS advanced',
-    total: 3,
-    assigned: 2
-  }
-]
+import useStyles from './styles'
 
 const EditEntitlements = props => {
   const { t } = props
-  //const { changeStep } = useContext(store)
-  const [entitlements, setEntitlements] = useState(ENTITLEMENTS)
+  const {
+    entitlements: propsEntitlements,
+    putTotalEntitlements
+  } = entitlementsStore
+  const [entitlements, setEntitlements] = useState(toJS(propsEntitlements))
+  const [disabledSave, setDisabledSave] = useState(false)
   const classes = useStyles()
+  const match = useParams()
 
   const columns = [
     {
@@ -71,7 +41,7 @@ const EditEntitlements = props => {
     {
       id: 'assigned',
       label: 'assigned',
-      getCellData: row => <Typography>{row.assigned}</Typography>,
+      getCellData: row => <Typography>{''}</Typography>,
       isSortAvailable: false,
       extraProps: {
         className: classes.textCenter
@@ -91,8 +61,9 @@ const EditEntitlements = props => {
           <Input
             type='number'
             inputProps={{ min: '0' }}
-            defaultValue={row.total}
+            value={row.entitlement}
             className={classes.totalInput}
+            onChange={e => changeTotal(e.target.value, row.id)}
             variant='outlined'
           />
         </Box>
@@ -100,6 +71,38 @@ const EditEntitlements = props => {
       isSortAvailable: false
     }
   ]
+
+  const changeTotal = (newTotal, id) => {
+    const newEntitlements = [...entitlements]
+    const index = entitlements.findIndex(el => el.id === id)
+    newEntitlements[index].entitlement = Number(newTotal)
+    setEntitlements(newEntitlements)
+  }
+
+  const handleSave = () => {
+    setDisabledSave(true)
+    const promiseArray = []
+    propsEntitlements.forEach(propsEnt => {
+      entitlements.forEach(stateEnt => {
+        if (
+          propsEnt.id === stateEnt.id &&
+          propsEnt.entitlement !== stateEnt.entitlement
+        ) {
+          promiseArray.push(
+            putTotalEntitlements(
+              match.customerId,
+              stateEnt.id,
+              stateEnt.entitlement
+            )
+          )
+        }
+      })
+    })
+    Promise.all(promiseArray).then(() => {
+      setDisabledSave(false)
+      props.handleClose()
+    })
+  }
 
   return (
     <Dialog
@@ -138,7 +141,8 @@ const EditEntitlements = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={props.handleClose}
+          onClick={handleSave}
+          disabled={disabledSave}
         >
           {t('save')}
         </Button>

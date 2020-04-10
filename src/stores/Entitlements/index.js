@@ -21,7 +21,7 @@ export class Entitlements {
   objTotals = {}
   resLength = 0
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -29,18 +29,18 @@ export class Entitlements {
     this.step = 1
   }
 
-  updateFilteredArr = (idArr) => {
+  updateFilteredArr = idArr => {
     this.filteredArr = idArr
     this.updateSelectedArr()
   }
-  updateCheckedArr = (idArr) => {
+  updateCheckedArr = idArr => {
     this.checkedArr = idArr
     this.updateSelectedArr()
   }
 
-  getEntitlements = (id) => {
+  getEntitlements = id => {
     this.isLoadingEntitlements = true
-    axios.get(`${PROXY_P6}/tenants/${id}/entitlements`).then((res) => {
+    axios.get(`${PROXY_P6}/tenants/${id}/entitlements`).then(res => {
       if (res.status === 200) {
         console.log(res.data.entitlments, 'res.data.entitlment')
         this.entitlements = res.data.entitlments
@@ -53,7 +53,7 @@ export class Entitlements {
 
   getEntitlementTypes = () => {
     this.isLoadingEntitlements = true
-    axios.get(`${PROXY_P6}/entitlement_types`).then((res) => {
+    axios.get(`${PROXY_P6}/entitlement_types`).then(res => {
       if (res.status === 200) {
         console.log(res.data, 'ent types res data')
         this.isLoadingEntitlements = false
@@ -65,7 +65,7 @@ export class Entitlements {
   }
   updateSelectedArr = () => {
     let resultArr = []
-    this.entitlementTypes.forEach((obj) => {
+    this.entitlementTypes.forEach(obj => {
       if (
         this.checkedArr.includes(obj.id) &&
         this.filteredArr.includes(obj.id)
@@ -114,6 +114,12 @@ export class Entitlements {
       })
   }
 
+  putTotalEntitlements = (tenantId, entitlementId, total) => {
+    axios.put(`${PROXY_P6}/tenants/${tenantId}/entitlements/${entitlementId}`, {
+      entitlement: total
+    })
+  }
+
   //mock request
   // postEntitlements = (callback) => {
   //   this.isSending = true
@@ -149,7 +155,8 @@ decorate(Entitlements, {
   updateSelectedArr: action,
   updateFilteredArr: action,
   updateCheckedArr: action,
-  updateTotalEntitlements: action
+  updateTotalEntitlements: action,
+  putTotalEntitlements: action
   // selectedEntitlements: observable
 })
 
