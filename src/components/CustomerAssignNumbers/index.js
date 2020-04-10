@@ -144,7 +144,8 @@ const AssignNumbers = props => {
       if (searchListId.includes(el.number)) {
         result = {
           ...el,
-          checked: !selectAll
+          checked: !selectAll,
+          hover: false
         }
       } else {
         result = { ...el }
