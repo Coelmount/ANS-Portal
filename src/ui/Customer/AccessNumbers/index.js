@@ -31,62 +31,62 @@ import useStyles from './styles'
 import editSvg from 'source/images/svg/edit-blue.svg'
 import { useEffect } from 'react'
 
-const rows = [
-  {
-    id: 1,
-    country: 'Angola',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70',
-    name: 'Angola - GEO - ANS basic'
-  },
-  {
-    id: 2,
-    country: 'South Africa',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70',
-    name: 'South Africa - GEO - ANS basic'
-  },
-  {
-    id: 3,
-    country: 'Angola',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70',
-    name: 'Angola - GEO - ANS basic'
-  },
-  {
-    id: 4,
-    country: 'South Africa',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70',
-    name: 'South Africa - GEO - ANS basic'
-  },
-  {
-    id: 5,
-    country: 'Angola',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70',
-    name: 'Angola - GEO - ANS basic'
-  },
-  {
-    id: 6,
-    country: 'South Africa',
-    type: 'geographic',
-    service: 'basic',
-    assigned: '10',
-    entitled: '70',
-    name: 'South Africa - GEO - ANS basic'
-  }
-]
+// const rows = [
+//   {
+//     id: 1,
+//     country: 'Angola',
+//     type: 'geographic',
+//     service: 'basic',
+//     assigned: '10',
+//     entitled: '70',
+//     name: 'Angola - GEO - ANS basic'
+//   },
+//   {
+//     id: 2,
+//     country: 'South Africa',
+//     type: 'geographic',
+//     service: 'basic',
+//     assigned: '10',
+//     entitled: '70',
+//     name: 'South Africa - GEO - ANS basic'
+//   },
+//   {
+//     id: 3,
+//     country: 'Angola',
+//     type: 'geographic',
+//     service: 'basic',
+//     assigned: '10',
+//     entitled: '70',
+//     name: 'Angola - GEO - ANS basic'
+//   },
+//   {
+//     id: 4,
+//     country: 'South Africa',
+//     type: 'geographic',
+//     service: 'basic',
+//     assigned: '10',
+//     entitled: '70',
+//     name: 'South Africa - GEO - ANS basic'
+//   },
+//   {
+//     id: 5,
+//     country: 'Angola',
+//     type: 'geographic',
+//     service: 'basic',
+//     assigned: '10',
+//     entitled: '70',
+//     name: 'Angola - GEO - ANS basic'
+//   },
+//   {
+//     id: 6,
+//     country: 'South Africa',
+//     type: 'geographic',
+//     service: 'basic',
+//     assigned: '10',
+//     entitled: '70',
+//     name: 'South Africa - GEO - ANS basic'
+//   }
+// ]
 
 const AccessNumbers = ({ t }) => {
   const match = useParams()
@@ -101,7 +101,6 @@ const AccessNumbers = ({ t }) => {
     setDefaultEntitlementsValues,
     isLoadingEntitlements
   } = EntitlementsStore
-  console.log(isLoadingEntitlements, 'isLoadingEntitlements')
 
   const [isAddEntitlementsModalOpen, setIsAddEntitlementsModalOpen] = useState(
     false

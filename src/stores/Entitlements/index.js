@@ -6,6 +6,7 @@ import { PROXY_CUSTOM_ANS, PROXY_P6 } from 'utils/axios'
 
 export class Entitlements {
   entitlements = []
+  entitlementsIdArr = []
   entitlementTypes = []
   selectedEntitlements = []
   filteredArr = []
@@ -44,6 +45,10 @@ export class Entitlements {
       if (res.status === 200) {
         console.log(res.data.entitlments, 'res.data.entitlment')
         this.entitlements = res.data.entitlments
+        this.entitlementsIdArr = res.data.entitlments.map(
+          (item) => item.license_model_id
+        )
+        console.log(this.entitlementsIdArr, 'this.entitlementsIdArr')
         this.isLoadingEntitlements = false
       } else {
         console.log(res, 'error')
@@ -55,9 +60,16 @@ export class Entitlements {
     this.isLoadingEntitlements = true
     axios.get(`${PROXY_P6}/entitlement_types`).then((res) => {
       if (res.status === 200) {
-        console.log(res.data, 'ent types res data')
         this.isLoadingEntitlements = false
-        this.entitlementTypes = res.data.customer_licenses
+        const result = res.data.customer_licenses.filter((item) => {
+          return !this.entitlementsIdArr.some(
+            (entitlementId) => entitlementId === item.id
+          )
+        })
+        this.entitlementTypes = result.map((item) => {
+          return { checked: false, hover: false, ...item }
+        })
+        console.log(this.entitlementTypes, 'this.entitlementTypes')
       } else {
         console.log(res, 'error')
       }
