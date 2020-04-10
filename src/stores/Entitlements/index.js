@@ -42,7 +42,7 @@ export class Entitlements {
   }
 
   getEntitlementTypes = () => {
-    this.isLoadingEntitlementTypes = true
+    this.isLoadingEntitlements = true
     axios.get(`${PROXY_P6}/entitlement_types`).then((res) => {
       if (res.status === 200) {
         this.isLoadingEntitlementTypes = false
@@ -58,19 +58,6 @@ export class Entitlements {
         console.log(res, 'error')
       }
     })
-  }
-
-  updateTotalEntitlements = (value, entitlementId) => {
-    this.newTotalNumbers.add(value, entitlementId)
-    this.arrTotals = [...this.newTotalNumbers.arr]
-    this.objTotals = this.arrTotals.reduce(
-      (prev, { id, value }) => ({
-        ...prev,
-        [id]: value
-      }),
-      {}
-    )
-    if (this.newTotalNumbers.arr.length > 0) this.isTotalEmpty = false
   }
 
   postEntitlements = (callback, id, entitlements) => {
@@ -90,6 +77,12 @@ export class Entitlements {
         })
     })
   }
+
+  putTotalEntitlements = (tenantId, entitlementId, total) => {
+    axios.put(`${PROXY_P6}/tenants/${tenantId}/entitlements/${entitlementId}`, {
+      entitlement: total
+    })
+  }
 }
 
 decorate(Entitlements, {
@@ -106,7 +99,8 @@ decorate(Entitlements, {
   getEntitlements: action,
   getEntitlementTypes: action,
   postEntitlements: action,
-  updateCheckedArr: action
+  updateCheckedArr: action,
+  putTotalEntitlements: action
 })
 
 export default new Entitlements()

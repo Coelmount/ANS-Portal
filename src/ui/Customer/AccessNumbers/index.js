@@ -80,7 +80,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'name',
       label: 'country',
-      getCellData: (row) => <Typography>{row.name.split('-')[0]}</Typography>
+      getCellData: row => <Typography>{row.name.split('-')[0]}</Typography>
     },
     {
       id: 'number_type',
@@ -114,7 +114,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'see_numbers',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <Link
           to={`/customers/${match.customerId}/access_numbers/${row.name.replace(
             /\s/g,
@@ -133,7 +133,7 @@ const AccessNumbers = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}
@@ -162,7 +162,10 @@ const AccessNumbers = ({ t }) => {
         />
         {showEditEntitlements && (
           <EditEntitlements
-            handleClose={() => setShowEditEntitlements(false)}
+            handleClose={() => {
+              setShowEditEntitlements(false)
+              getEntitlements(match.customerId)
+            }}
             open={showEditEntitlements}
           />
         )}
