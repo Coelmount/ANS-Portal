@@ -4,8 +4,10 @@ const useStyles = makeStyles(theme => ({
   select: {
     width: 254
   },
-  cursorPointer: {
-    cursor: 'pointer'
+  indexHoverCheckbox: {
+    cursor: 'pointer',
+    width: 24,
+    textAlign: 'center'
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',

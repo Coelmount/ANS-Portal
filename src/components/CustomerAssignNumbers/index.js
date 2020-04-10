@@ -180,7 +180,7 @@ const AssignNumbers = props => {
           />
         ) : (
           <div
-            className={classes.cursorPointer}
+            className={classes.indexHoverCheckbox}
             onClick={() => selectNumbers(!row.checked, row.number)}
             onMouseLeave={() => changeHover(false, row.number)}
             onMouseEnter={() => changeHover(true, row.number)}
