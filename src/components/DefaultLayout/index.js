@@ -159,6 +159,12 @@ const DefaultLayout = ({ t, notFoundPage }) => {
       icon: PhoneOutlinedIcon
     },
     {
+      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/announcements`,
+      text: t('announcements'),
+      name: 'announcements',
+      icon: PhoneOutlinedIcon
+    },
+    {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules`,
       text: t('schedules'),
       name: 'schedules',

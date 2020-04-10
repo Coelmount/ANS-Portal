@@ -98,8 +98,10 @@ const AccessNumbers = ({ t }) => {
     getEntitlements,
     postEntitlements,
     entitlements,
-    setDefaultEntitlementsValues
+    setDefaultEntitlementsValues,
+    isLoadingEntitlements
   } = EntitlementsStore
+  console.log(isLoadingEntitlements, 'isLoadingEntitlements')
 
   const [isAddEntitlementsModalOpen, setIsAddEntitlementsModalOpen] = useState(
     false
@@ -198,9 +200,9 @@ const AccessNumbers = ({ t }) => {
         <CustomTable
           classes={classes}
           rows={entitlements}
-          // isLoadingData={isLoadingCustomers}
+          isLoadingData={isLoadingEntitlements}
           columns={columns}
-          searchCriterias={['name', 'number_type']}
+          searchCriterias={['name', 'number_type', 'service_capabilities']}
         />
         {showEditEntitlements && (
           <EditEntitlements
