@@ -34,42 +34,48 @@ const NUMBERS = [
     number: '+27 540310011',
     type: 'local',
     country: 'South Africa',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 2,
     number: '+27 540300012',
     type: 'local',
     country: 'South Africa',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 3,
     number: '+27 540310013',
     type: 'local',
     country: 'Uganda',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 4,
     number: '+27 540300014',
     type: 'not-local',
     country: 'South Africa',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 5,
     number: '+27 540300015',
     type: 'local',
     country: 'South Africa',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 6,
     number: '+27 540300016',
     type: 'local',
     country: 'South Africa',
-    checked: false
+    checked: false,
+    hover: false
   }
 ]
 
@@ -133,7 +139,6 @@ const AssignNumbers = props => {
 
   const handleSelectAll = () => {
     const searchListId = searchList.map(item => item.number)
-    console.log(searchListId)
     const newNumbers = numbers.map(el => {
       let result = {}
       if (searchListId.includes(el.number)) {
@@ -153,6 +158,13 @@ const AssignNumbers = props => {
     setIsAnyChecked(!selectAll)
   }
 
+  const changeHover = (newHover, number) => {
+    const newNumbers = [...numbers]
+    const index = numbers.findIndex(el => el.number === number)
+    newNumbers[index].hover = newHover
+    setNumbers(newNumbers)
+  }
+
   const columns = [
     {
       id: 'checkbox',
@@ -163,14 +175,24 @@ const AssignNumbers = props => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={e => selectNumbers(!row.checked, row.number)}
+            onChange={() => selectNumbers(!row.checked, row.number)}
           />
         ) : (
           <div
             className={classes.cursorPointer}
-            onClick={e => selectNumbers(!row.checked, row.number)}
+            onClick={() => selectNumbers(!row.checked, row.number)}
+            onMouseLeave={() => changeHover(false, row.number)}
+            onMouseEnter={() => changeHover(true, row.number)}
           >
-            {i + 1}
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectNumbers(true, row.number)}
+              />
+            ) : (
+              i + 1
+            )}
           </div>
         ),
       extraHeadProps: {
