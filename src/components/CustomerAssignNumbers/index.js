@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -82,11 +82,9 @@ const AssignNumbers = props => {
   const [searchList, setSearchList] = useState([])
   const classes = useStyles()
   const match = useParams()
-  const {
-    getSubaccounts,
-    selectGroups,
-    isLoadingSubaccounts
-  } = SubaccountsStore
+  const { getSubaccounts, selectGroups, isLoadingSubaccounts } = useContext(
+    SubaccountsStore
+  )
   const { isLoadingNumbers, getAvailableNumbers } = NumbersStore
 
   useEffect(() => {
