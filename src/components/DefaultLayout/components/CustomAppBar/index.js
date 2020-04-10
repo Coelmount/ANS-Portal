@@ -1,6 +1,7 @@
 import React, { useContext, Fragment } from 'react'
 import { useHistory } from 'react-router-dom'
 import i18n from 'i18n'
+import { observer } from 'mobx-react'
 
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -22,13 +23,15 @@ import { LANGUAGES } from 'source/config'
 
 const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
   const history = useHistory()
-  const { user, logOut } = useContext(AuthStore)
+  const { user, logOut, username } = AuthStore
   const { getLocale } = useContext(LanguagesStore)
 
   const changeLanguage = lng => {
     getLocale(lng)
     i18n.changeLanguage(lng)
   }
+
+  console.log(username)
 
   return (
     <Fragment>
@@ -55,9 +58,7 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
             >
               <Box className={classes.headerBlock}>
                 <AccountCircleIcon className={classes.userIcon} />
-                <Typography className={classes.userName}>
-                  {user.username}
-                </Typography>
+                <Typography className={classes.userName}>{username}</Typography>
                 <ExpandMoreOutlinedIcon className={classes.expandMoreIcon} />
               </Box>
             </LinkMaterial>
@@ -91,4 +92,4 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
   )
 }
 
-export default CustomDrawer
+export default observer(CustomDrawer)
