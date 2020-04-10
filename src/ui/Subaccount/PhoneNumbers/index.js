@@ -33,7 +33,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423437',
     type: 'local',
     status: 'assigned',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 2,
@@ -42,7 +43,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423432',
     type: 'geo',
     status: 'assigned',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 3,
@@ -51,7 +53,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423433',
     type: 'geo',
     status: 'available',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 4,
@@ -60,7 +63,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423435',
     type: 'local',
     status: 'available',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 5,
@@ -69,7 +73,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423436',
     type: 'local',
     status: 'assigned',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 6,
@@ -78,7 +83,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423439',
     type: 'geo',
     status: 'available',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 7,
@@ -87,7 +93,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423440',
     type: 'geo',
     status: 'assigned',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 8,
@@ -96,7 +103,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423434',
     type: 'geo',
     status: 'available',
-    checked: false
+    checked: false,
+    hover: false
   },
   {
     id: 9,
@@ -105,7 +113,8 @@ const PHONE_NUMBERS = [
     phoneNumber: '53423438',
     type: 'local',
     status: 'available',
-    checked: false
+    checked: false,
+    hover: false
   }
 ]
 
@@ -138,7 +147,8 @@ const PhoneNumbers = observer(({ t }) => {
       if (searchListId.includes(el.phoneNumber)) {
         result = {
           ...el,
-          checked: !selectAll
+          checked: !selectAll,
+          hover: false
         }
       } else {
         result = { ...el }
@@ -182,6 +192,16 @@ const PhoneNumbers = observer(({ t }) => {
     setDefaultValues()
   }
 
+  const changeHover = (newHover, number) => {
+    console.log('hover')
+    const newNumbers = [...transformedNumbers]
+    const index = transformedNumbers.findIndex(
+      (el) => el.phoneNumber === number
+    )
+    newNumbers[index].hover = newHover
+    setTransformedNumbers(newNumbers)
+  }
+
   useEffect(() => {
     const result = phoneNumbersRangeFilter(numbers).map((item) => {
       return {
@@ -222,9 +242,19 @@ const PhoneNumbers = observer(({ t }) => {
         ) : (
           <div
             className={classes.cursorPointer}
-            onClick={(e) => selectNumbers(!row.checked, row.phoneNumber)}
+            onClick={() => selectNumbers(!row.checked, row.phoneNumber)}
+            onMouseLeave={() => changeHover(false, row.phoneNumber)}
+            onMouseEnter={() => changeHover(true, row.phoneNumber)}
           >
-            {i + 1}
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectNumbers(true, row.phoneNumber)}
+              />
+            ) : (
+              i + 1
+            )}
           </div>
         ),
       extraHeadProps: {

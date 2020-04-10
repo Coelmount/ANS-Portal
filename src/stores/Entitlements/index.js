@@ -63,6 +63,7 @@ export class Entitlements {
       }
     })
   }
+
   updateSelectedArr = () => {
     let resultArr = []
     this.entitlementTypes.forEach((obj) => {
@@ -95,15 +96,15 @@ export class Entitlements {
     console.log(this.newTotalNumbers.arr, 'this.newTotalNumbers.arr')
     console.log(
       {
-        id: this.newTotalNumbers.arr[0].id,
-        entitlements: this.newTotalNumbers.arr[0].value
+        license_model_id: this.newTotalNumbers.arr[0].id,
+        entitlement: this.newTotalNumbers.arr[0].value
       },
       'to send ent'
     )
     axios
       .post(`${PROXY_P6}/tenants/${id}/entitlements`, {
         license_model_id: this.newTotalNumbers.arr[0].id,
-        entitlements: this.newTotalNumbers.arr[0].value
+        entitlement: Number(this.newTotalNumbers.arr[0].value)
       })
       .then(() => {
         this.isSending = false
