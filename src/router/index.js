@@ -162,7 +162,7 @@ const UserPages = () => {
 }
 
 const AuthPages = observer(() => {
-  const { isAuthorized } = useContext(AuthStore)
+  const { isAuthorized } = AuthStore
   return (
     <Switch>
       {authComponents.map((el) => (
@@ -174,7 +174,7 @@ const AuthPages = observer(() => {
 })
 
 const Router = () => {
-  const { getLocal, isAuthorized } = useContext(AuthStore)
+  const { getLocal, isAuthorized } = AuthStore
   const { getLocale, isLoadingLang, lang } = useContext(LanguagesStore)
   useEffect(() => {
     getLocal()

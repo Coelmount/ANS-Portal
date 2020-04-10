@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Auth = ({ t }) => {
-  const { postLogin } = useContext(AuthStore)
+  const { postLogin } = AuthStore
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
