@@ -13,6 +13,7 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import PermPhoneMsgOutlinedIcon from '@material-ui/icons/PermPhoneMsgOutlined'
 
 import CustomDrawer from './components/CustomDrawer'
 import CustomAppBar from './components/CustomAppBar'
@@ -162,7 +163,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/announcements`,
       text: t('announcements'),
       name: 'announcements',
-      icon: PhoneOutlinedIcon
+      icon: PermPhoneMsgOutlinedIcon
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules`,

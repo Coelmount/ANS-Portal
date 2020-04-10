@@ -1,8 +1,9 @@
 import React from 'react'
 import { withRouter } from 'react-router'
+import ComingSoon from 'components/ComingSoon'
 
 const Advanced = () => {
-  return <p>Advanced</p>
+  return <ComingSoon />
 }
 
 export default withRouter(Advanced)

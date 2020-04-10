@@ -1,8 +1,10 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 
+import ComingSoon from 'components/ComingSoon'
+
 const Announcements = () => {
-  return <p>Announcements</p>
+  return <ComingSoon />
 }
 
 export default withRouter(Announcements)
