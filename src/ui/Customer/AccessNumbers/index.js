@@ -31,63 +31,6 @@ import useStyles from './styles'
 import editSvg from 'source/images/svg/edit-blue.svg'
 import { useEffect } from 'react'
 
-// const rows = [
-//   {
-//     id: 1,
-//     country: 'Angola',
-//     type: 'geographic',
-//     service: 'basic',
-//     assigned: '10',
-//     entitled: '70',
-//     name: 'Angola - GEO - ANS basic'
-//   },
-//   {
-//     id: 2,
-//     country: 'South Africa',
-//     type: 'geographic',
-//     service: 'basic',
-//     assigned: '10',
-//     entitled: '70',
-//     name: 'South Africa - GEO - ANS basic'
-//   },
-//   {
-//     id: 3,
-//     country: 'Angola',
-//     type: 'geographic',
-//     service: 'basic',
-//     assigned: '10',
-//     entitled: '70',
-//     name: 'Angola - GEO - ANS basic'
-//   },
-//   {
-//     id: 4,
-//     country: 'South Africa',
-//     type: 'geographic',
-//     service: 'basic',
-//     assigned: '10',
-//     entitled: '70',
-//     name: 'South Africa - GEO - ANS basic'
-//   },
-//   {
-//     id: 5,
-//     country: 'Angola',
-//     type: 'geographic',
-//     service: 'basic',
-//     assigned: '10',
-//     entitled: '70',
-//     name: 'Angola - GEO - ANS basic'
-//   },
-//   {
-//     id: 6,
-//     country: 'South Africa',
-//     type: 'geographic',
-//     service: 'basic',
-//     assigned: '10',
-//     entitled: '70',
-//     name: 'South Africa - GEO - ANS basic'
-//   }
-// ]
-
 const AccessNumbers = ({ t }) => {
   const match = useParams()
   const classes = useStyles()
@@ -122,6 +65,11 @@ const AccessNumbers = ({ t }) => {
     setIsAddEntitlementsModalOpen(true)
   }
 
+  const handleAddEntitlementsModalClose = () => {
+    setIsAddEntitlementsModalOpen(false)
+    getEntitlements(match.customerId)
+  }
+
   const titleData = {
     mainText: t('access_numbers'),
     iconCapture: t('add_entitlements'),
@@ -145,12 +93,21 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'assigned',
       label: 'assigned',
+      getCellData: (row) => (
+        <Typography>{row.assigned >= 1 ? row.assigned : 0}</Typography>
+      ),
+      extraProps: {
+        className: classes.textCenterBlue
+      },
       headIcon: () => <DoneOutlinedIcon className={classes.assignedDoneIcon} />,
       onIconClick: () => setShowAssignNumbers(true)
     },
     {
       id: 'entitlement',
       label: 'entitled',
+      extraProps: {
+        className: classes.textCenter
+      },
       headIcon: () => <img src={editSvg} alt='edit icon' />,
       onIconClick: () => setShowEditEntitlements(true)
     },
@@ -231,7 +188,7 @@ const AccessNumbers = ({ t }) => {
         )}
         {isAddEntitlementsModalOpen && (
           <Entitlements
-            handleClose={() => setIsAddEntitlementsModalOpen(false)}
+            handleClose={handleAddEntitlementsModalClose}
             open={isAddEntitlementsModalOpen}
           />
         )}

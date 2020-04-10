@@ -1,8 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
+import { toJS } from 'mobx'
 
+import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -13,83 +15,71 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import Input from 'components/Input'
-import CustomTable from './CustomTable'
+import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
 import EntitlementsStore from 'stores/Entitlements'
 
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
-import useStyles from './styles'
+import useStyles from './totalStyles'
 
 const TotalEntitlements = ({ handleClose, t }) => {
+  const classes = useStyles()
   const match = useParams()
   const {
     changeStep,
-    selectedEntitlements,
-    updateTotalEntitlements,
+    checkedArr,
     postEntitlements,
-    isSending,
-    objTotals
+    isSending
   } = EntitlementsStore
-  const [emptyFieldsCounter, setEmptyFieldsCounter] = useState(2)
-  const [isNextButtonActive, setIsNextButtonActive] = useState(false)
 
-  const handleClick = () => {
-    console.log('11')
+  const [entitlements, setEntitlements] = useState(toJS(checkedArr))
+  const changeTotal = (newTotal, id) => {
+    const newEntitlements = [...entitlements]
+    const index = entitlements.findIndex((el) => el.id === id)
+    newEntitlements[index].entitlement = Number(newTotal)
+    setEntitlements(newEntitlements)
   }
-  console.log(match, 'match here')
-  useEffect(() => {
-    if (
-      !Object.values(objTotals).includes('') &&
-      Object.keys(objTotals).length === selectedEntitlements.length
-    )
-      setIsNextButtonActive(true)
-    else setIsNextButtonActive(false)
-  }, [objTotals, selectedEntitlements.length])
 
-  const classes = useStyles()
   const columns = [
     {
       id: 'name',
-      label: 'entitlement'
+      label: 'entitlement',
+      isSortAvailable: false
     },
     {
       id: 'total',
       label: 'total',
-      getCellData: (row) => {
-        return (
-          <Box>
-            <Input
-              onChange={(e) => {
-                updateTotalEntitlements(e.target.value, row.id)
-                if (e.target.value === '')
-                  setEmptyFieldsCounter(emptyFieldsCounter + 1)
-                else if (
-                  e.target.value.length === 1 &&
-                  emptyFieldsCounter >= e.target.value.length
-                )
-                  setEmptyFieldsCounter(emptyFieldsCounter - 1)
-              }}
-              className={classes.totalInput}
-              variant='outlined'
-            />
-          </Box>
-        )
-      }
+      extraHeadProps: {
+        className: classes.totalHeader
+      },
+      getCellData: (row) => (
+        <Box>
+          <Input
+            type='number'
+            inputProps={{ min: '0' }}
+            value={row.entitlement}
+            className={classes.totalInput}
+            onChange={(e) => changeTotal(e.target.value, row.id)}
+            variant='outlined'
+          />
+        </Box>
+      ),
+      isSortAvailable: false
     }
   ]
   const handleAddButton = () => {
-    postEntitlements(changeStep, match.customerId)
+    postEntitlements(changeStep, match.customerId, entitlements)
   }
 
   return (
-    <React.Fragment>
+    <Fragment>
       {isSending ? (
         <Loading />
       ) : (
-        <React.Fragment>
+        <Fragment>
           <DialogTitle className={classes.title}>
-            {t('add_entitlements')}
+            {t('edit_entitlements')}
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -99,22 +89,12 @@ const TotalEntitlements = ({ handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
-            <Box className={classes.secondStepSubtitle}>
-              <Typography className={classes.stepStyles}>{`${t(
-                'step'
-              )} 2/2`}</Typography>
-              <Typography className={classes.setEntitlementsTitle}>
-                {t('set_entitlements_limit')}
-              </Typography>
-            </Box>
             <CustomTable
-              isFullVersion={false}
-              rowsColor={false}
-              withFilters={false}
+              showSearchBar={false}
               classes={classes}
               columns={columns}
-              rows={selectedEntitlements}
-              handleClick={handleClick}
+              rows={entitlements}
+              isDataLoading={isSending}
             />
           </DialogContent>
           <DialogActions className={classes.dialogActionsSecond}>
@@ -132,14 +112,14 @@ const TotalEntitlements = ({ handleClose, t }) => {
               color='primary'
               className={classes.nextButton}
               onClick={handleAddButton}
-              disabled={!isNextButtonActive}
+              disabled={!entitlements.every((item) => item.entitlement >= 1)}
             >
               {t('add')}
             </Button>
           </DialogActions>
-        </React.Fragment>
+        </Fragment>
       )}
-    </React.Fragment>
+    </Fragment>
   )
 }
 

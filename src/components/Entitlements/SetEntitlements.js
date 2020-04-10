@@ -11,18 +11,12 @@ import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
-import CustomTable from './CustomTable'
+import CustomTable from 'components/CustomTable'
 import EntitlementsStore from 'stores/Entitlements'
+import Checkbox from 'components/Checkbox'
 
 import useStyles from './styles'
 import { useEffect } from 'react'
-
-const columns = [
-  {
-    id: 'name',
-    label: 'entitlement'
-  }
-]
 
 const SetEntitlements = (props) => {
   const { handleClose, t } = props
@@ -30,32 +24,140 @@ const SetEntitlements = (props) => {
     changeStep,
     getEntitlementTypes,
     entitlementTypes,
-    isLoadingEntitlements,
-    updateCheckedArr,
-    resLength
+    isLoadingEntitlementTypes,
+    updateCheckedArr
   } = EntitlementsStore
 
   const classes = useStyles()
   const [selected, setSelected] = useState([])
+  const [selectAll, setSelectAll] = useState(false)
+  const [isAnyChecked, setIsAnyChecked] = useState(false)
+  const [selectedGroup, setSelectedGroup] = useState('')
+  const [searchList, setSearchList] = useState([])
 
   useEffect(() => {
-    updateCheckedArr(selected)
-  }, [selected, updateCheckedArr])
+    handleCheckedStates(searchList)
+  }, [searchList])
 
   useEffect(() => {
     getEntitlementTypes()
-  }, [getEntitlementTypes])
+  }, [])
 
-  const handleClick = (selectedRow) => {
-    if (selected.indexOf(selectedRow) === -1) {
-      setSelected(selected.concat(selectedRow))
+  useEffect(() => {
+    setSelected(entitlementTypes)
+  }, [entitlementTypes])
+
+  const selectEntitlementTypes = (checked, id) => {
+    const newSelected = [...selected]
+    const index = selected.findIndex((el) => el.id === id)
+    newSelected[index].checked = checked
+    if (newSelected.every((el) => el.checked)) {
+      setSelectAll(true)
     } else {
-      const newArr = selected.filter((item) => {
-        return item !== selectedRow
+      setSelectAll(false)
+    }
+    setSelected(newSelected)
+  }
+
+  const handleSelectAll = () => {
+    const searchListId = searchList.map((item) => item.id)
+    const newSelected = selected.map((el) => {
+      let result = {}
+      if (searchListId.includes(el.id)) {
+        result = {
+          ...el,
+          checked: !selectAll,
+          hover: false
+        }
+      } else {
+        result = { ...el }
+      }
+      return result
+    })
+    handleCheckedStates(newSelected)
+    setSelected(newSelected)
+    setSelectAll(!selectAll)
+    setIsAnyChecked(!selectAll)
+  }
+
+  const handleCheckedStates = (newSelected) => {
+    if (
+      newSelected.every((el) => {
+        return el.checked
       })
-      setSelected(newArr)
+    ) {
+      setSelectAll(true)
+      setIsAnyChecked(true)
+    } else {
+      setSelectAll(false)
+      if (newSelected.some((el) => el.checked)) {
+        setIsAnyChecked(true)
+      } else {
+        setIsAnyChecked(false)
+      }
+    }
+    if (!newSelected.length) {
+      setSelectAll(false)
+      setIsAnyChecked(false)
     }
   }
+
+  const changeHover = (newHover, id) => {
+    const newSelected = [...selected]
+    const index = selected.findIndex((el) => el.id === id)
+    newSelected[index].hover = newHover
+    setSelected(newSelected)
+  }
+
+  const handleNextButtonClick = () => {
+    console.log(selected, 'selected in set')
+    updateCheckedArr(selected.filter((item) => item.checked === true))
+    changeStep(2)
+  }
+
+  const columns = [
+    {
+      id: 'checkbox',
+      label: <Checkbox checked={selectAll} onChange={handleSelectAll} />,
+      isSortAvailable: false,
+      getCellData: (row, i) =>
+        row.checked ? (
+          <Checkbox
+            checked={row.checked}
+            className={classes.checkbox}
+            onChange={() => selectEntitlementTypes(!row.checked, row.id)}
+          />
+        ) : (
+          <div
+            className={classes.indexHoverCheckbox}
+            onClick={() => selectEntitlementTypes(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
+          >
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectEntitlementTypes(true, row.id)}
+              />
+            ) : (
+              i + 1
+            )}
+          </div>
+        ),
+      extraHeadProps: {
+        className: classes.checkboxCell
+      },
+      extraProps: {
+        className: classes.checkboxCell
+      }
+    },
+    {
+      id: 'name',
+      label: 'entitlement'
+    }
+  ]
+
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -78,16 +180,14 @@ const SetEntitlements = (props) => {
           </Typography>
         </Box>
         <CustomTable
-          isFullVersion={true}
-          rowsColor={true}
-          withFilters={true}
           classes={classes}
           columns={columns}
-          rows={entitlementTypes}
-          isLoadingData={isLoadingEntitlements}
-          setSelected={setSelected}
-          handleClick={handleClick}
-          selected={selected}
+          firstCell={false}
+          showPagination={false}
+          rows={selected}
+          searchCriterias={['name']}
+          getSearchList={setSearchList}
+          isLoadingData={isLoadingEntitlementTypes}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -103,8 +203,8 @@ const SetEntitlements = (props) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(2)}
-          disabled={resLength <= 0}
+          onClick={handleNextButtonClick}
+          disabled={!selected.some((item) => item.checked === true)}
         >
           {t('next')}
         </Button>

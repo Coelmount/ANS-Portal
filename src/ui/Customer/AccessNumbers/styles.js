@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%'
   },
@@ -8,6 +8,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     marginBottom: theme.spacing(2),
     boxShadow: 'none'
+  },
+  textCenterBlue: {
+    color: theme.palette.active.blue,
+    textAlign: 'center'
+  },
+  textCenter: {
+    textAlign: 'center'
   },
   deleteModal: {
     '& .MuiDialog-paperWidthSm': {

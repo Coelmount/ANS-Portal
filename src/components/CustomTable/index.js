@@ -31,7 +31,7 @@ const stableSort = (array, comparator) => {
     if (order !== 0) return order
     return a[1] - b[1]
   })
-  return stabilizedThis.map(el => el[0])
+  return stabilizedThis.map((el) => el[0])
 }
 
 const descendingComparator = (a, b, orderBy) => {
@@ -49,8 +49,6 @@ const CustomTable = ({
   rows,
   isLoadingData,
   columns,
-  id,
-  name,
   showSearchBar,
   firstCell,
   showPagination,
@@ -67,7 +65,7 @@ const CustomTable = ({
   const [query, setQuery] = useState('')
 
   const list = useMemo(() => {
-    const getFilter = row => {
+    const getFilter = (row) => {
       for (let i = 0; i < searchCriterias.length; i++) {
         if (row[searchCriterias[i]].toLowerCase().includes(query)) {
           return true
@@ -76,7 +74,7 @@ const CustomTable = ({
       return false
     }
     if (!rows) return []
-    const filteredRows = query ? rows.filter(row => getFilter(row)) : rows
+    const filteredRows = query ? rows.filter((row) => getFilter(row)) : rows
     const result = stableSort(filteredRows, getComparator(order, orderBy))
     getSearchList && getSearchList(result)
     return result
@@ -95,73 +93,78 @@ const CustomTable = ({
 
   const clampedPage = clamp(page, 0, totalPages)
 
-  const rewindPage = step => {
+  const rewindPage = (step) => {
     if (clampedPage + step >= 0 && clampedPage + step <= totalPages)
       setPage(clampedPage + step)
   }
 
   return (
     <Fragment>
-      {showToolBar && (
-        <CustomTableToolbar
-          classes={classes}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          setQuery={setQuery}
-          showSearchBar={showSearchBar}
-          showPagination={showPagination}
-          extraToolbarBlock={extraToolbarBlock}
-        />
-      )}
-      {isLoadingData ? (
-        <Loading />
-      ) : (
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby='tableTitle'
-            size={'medium'}
-            aria-label='enhanced table'
-          >
-            <CustomTableHead
+      {rows.length > 0 && (
+        <Fragment>
+          {' '}
+          {showToolBar && (
+            <CustomTableToolbar
               classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              columns={columns}
-              firstCell={firstCell}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+              setQuery={setQuery}
+              showSearchBar={showSearchBar}
+              showPagination={showPagination}
+              extraToolbarBlock={extraToolbarBlock}
             />
-            {list && list.length ? (
-              <CustomTableBody
-                classes={classes}
-                rowsPerPage={rowsPerPage}
-                page={clampedPage}
-                list={list}
-                columns={columns}
-                firstCell={firstCell}
-                showPagination={showPagination}
-              />
-            ) : (
-              <TableBody>
-                <TableRow>
-                  <TableCell style={{ borderBottom: 'none' }}>
-                    <Typography className={classes.tableMessage}>
-                      {t('no_customers_yet')}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            )}
-          </Table>
-        </TableContainer>
-      )}
-      {showPagination && (
-        <Pagination
-          classes={classes}
-          page={page}
-          totalPages={totalPages}
-          rewindPage={rewindPage}
-        />
+          )}
+          {isLoadingData ? (
+            <Loading />
+          ) : (
+            <TableContainer>
+              <Table
+                className={classes.table}
+                aria-labelledby='tableTitle'
+                size={'medium'}
+                aria-label='enhanced table'
+              >
+                <CustomTableHead
+                  classes={classes}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  columns={columns}
+                  firstCell={firstCell}
+                />
+                {list && list.length ? (
+                  <CustomTableBody
+                    classes={classes}
+                    rowsPerPage={rowsPerPage}
+                    page={clampedPage}
+                    list={list}
+                    columns={columns}
+                    firstCell={firstCell}
+                    showPagination={showPagination}
+                  />
+                ) : (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell style={{ borderBottom: 'none' }}>
+                        <Typography className={classes.tableMessage}>
+                          {t('no_customers_yet')}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+          )}
+          {showPagination && (
+            <Pagination
+              classes={classes}
+              page={page}
+              totalPages={totalPages}
+              rewindPage={rewindPage}
+            />
+          )}{' '}
+        </Fragment>
       )}
     </Fragment>
   )

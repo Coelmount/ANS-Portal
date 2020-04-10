@@ -12,7 +12,7 @@ import SetEntitlements from './SetEntitlements'
 import TotalEntitlements from './TotalEntitlements'
 import SuccessEntitlements from './SuccessEntitlements'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiDialog-paperWidthSm': {
       width: '651px'
@@ -23,7 +23,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Entitlements = props => {
+const Entitlements = (props) => {
+  const classes = useStyles()
   const {
     open,
     handleClose,
@@ -34,8 +35,7 @@ const Entitlements = props => {
     isEditCustomer
   } = props
   const { step } = EntitlementsStore
-  // const step = 2
-  const classes = useStyles()
+
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <Steps
@@ -51,7 +51,7 @@ const Entitlements = props => {
   )
 }
 
-const Steps = props => {
+const Steps = (props) => {
   switch (props.step) {
     case 1:
       return (
