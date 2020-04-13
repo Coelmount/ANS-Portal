@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -120,6 +121,7 @@ const PHONE_NUMBERS = [
 
 const PhoneNumbers = observer(({ t }) => {
   const classes = useStyles()
+  const match = useParams()
   const [transformedNumbers, setTransformedNumbers] = useState([])
   const [numbers, setNumbers] = useState(PHONE_NUMBERS)
   const [selectAll, setSelectAll] = useState(false)
@@ -128,7 +130,11 @@ const PhoneNumbers = observer(({ t }) => {
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
-  const { setPhoneNumbers, setDefaultValues } = PhoneNumbersStore
+  const {
+    setPhoneNumbers,
+    setDefaultValues,
+    getPhoneNumbers
+  } = PhoneNumbersStore
 
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
@@ -193,7 +199,6 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const changeHover = (newHover, number) => {
-    console.log('hover')
     const newNumbers = [...transformedNumbers]
     const index = transformedNumbers.findIndex(
       (el) => el.phoneNumber === number
@@ -201,6 +206,10 @@ const PhoneNumbers = observer(({ t }) => {
     newNumbers[index].hover = newHover
     setTransformedNumbers(newNumbers)
   }
+
+  useEffect(() => {
+    getPhoneNumbers(match.customerId, match.groupId)
+  }, [])
 
   useEffect(() => {
     const result = phoneNumbersRangeFilter(numbers).map((item) => {

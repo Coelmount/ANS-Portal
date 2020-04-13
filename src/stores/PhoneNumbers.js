@@ -11,6 +11,7 @@ export class PhoneNumbers {
   uniqueCountries = []
   addedPhoneNumbers = []
   rejectedPhoneNumbers = []
+  isPhoneNumbersLoading = true
 
   changeStep = (step) => {
     this.step = step
@@ -18,6 +19,17 @@ export class PhoneNumbers {
 
   setDefaultValues = () => {
     this.step = 1
+  }
+
+  getPhoneNumbers = (customerId, groupId) => {
+    this.isPhoneNumbersLoading = true
+    axios
+      .get(`${PROXY_P6}/available_numbers`)
+      .then((res) => {
+        console.log(res.data)
+        this.isPhoneNumbersLoading = false
+      })
+      .finally(() => (this.isPhoneNumbersLoading = false))
   }
 
   setPhoneNumbers = (phoneNumbers) => {
@@ -77,7 +89,8 @@ decorate(PhoneNumbers, {
   setSelectedPhoneNumber: action,
   postPhoneNumbers: action,
   createGroupsSinglePhone: action,
-  setDefaultValues: action
+  setDefaultValues: action,
+  getPhoneNumbers: action
 })
 
 export default new PhoneNumbers()
