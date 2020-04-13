@@ -1,6 +1,33 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
+  failedResultTitle: {
+    fontFamily: 'MTN',
+    fontSize: 24,
+    marginBottom: 20
+  },
+  failedNFNContent: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  partNumberWrapperInput: {
+    marginTop: 30
+  },
+  rangeBox: {
+    display: 'flex',
+    marginTop: 30,
+    alignItems: 'center',
+    width: 392
+  },
+  rangeWrapperStylesInput: {
+    width: 70,
+    marginLeft: 10
+  },
+  wrapperStylesSelect: {
+    marginTop: 30
+  },
   searchParametersBox: {
     display: 'flex',
     alignItems: 'center',
@@ -100,8 +127,16 @@ const useStyles = makeStyles(theme => ({
   },
   secondParagraphBox: {
     marginTop: '28px',
-    marginBottom: 16,
     marginLeft: '40px',
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    fontSize: '18px',
+    color: theme.palette.black
+  },
+  thirdParagraphBox: {
+    marginTop: 16,
+    marginBottom: 26,
+    marginLeft: 66,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '18px',
@@ -634,9 +669,13 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: 'inherit',
-    padding: 0,
-    marginLeft: '40px',
-    width: 80
+    padding: 0
+  },
+  rangeFromTo: {
+    fontSize: 16,
+    fontWeight: 600,
+    width: 140,
+    padding: 0
   },
   nextButtonEntitlements: {
     width: 240

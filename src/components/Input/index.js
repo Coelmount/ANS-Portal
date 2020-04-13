@@ -39,6 +39,11 @@ const useStyles = makeStyles(() => ({
     '& .MuiInputLabel-shrink': {
       transform: 'translate(-10px, -11px) scale(0.75)',
       color: '#666666'
+    },
+    '& .MuiFormHelperText-contained': {
+      margin: '0 !important',
+      paddingTop: 3,
+      backgroundColor: '#F9F9F9'
     }
   }
 }))

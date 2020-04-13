@@ -6,12 +6,16 @@ import Dialog from '@material-ui/core/Dialog'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import numbersStore from 'stores/Numbers'
+
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import SuccessPage from './SuccessPage'
 import FirstStepSub from './FirstStepSub'
 import SuccessPageSub from './SuccessPageSub'
 import FirstStepNFN from './FirstStepNFN'
+import SecondStepNFNFailed from './SecondStepNFNFailed'
+import SecondStepNFNSuccess from './SecondStepNFNSuccess'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 const CreateCustomer = props => {
   const { open, handleClose, step, changeStep } = props
+  const { getAvailableNumbers, availableNumbers } = numbersStore
   const classes = useStyles()
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
@@ -33,6 +38,16 @@ const CreateCustomer = props => {
   const [selectAllAddedNumbers, setSelectAllAddedNumbers] = useState(true)
   const [selectedGroup, setSelectedGroup] = useState('')
   const [addedNumbersSub, setAddedNumberSub] = useState([])
+  const [queryAvalibleNumbers, setQueryAvalibleNumbers] = useState({
+    range_size: '',
+    number_type: '',
+    country_code: '',
+    numbers_of_results: ''
+  })
+
+  const searchAvalibleNumbers = () => {
+    getAvailableNumbers(queryAvalibleNumbers).then(() => changeStep(2))
+  }
 
   useEffect(() => {
     const createNumbers = []
@@ -95,7 +110,7 @@ const CreateCustomer = props => {
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
-      {true ? (
+      {false ? (
         <Steps
           step={step}
           handleClose={handleClose}
@@ -119,6 +134,10 @@ const CreateCustomer = props => {
           step={step}
           handleClose={handleClose}
           changeStep={changeStep}
+          queryAvalibleNumbers={queryAvalibleNumbers}
+          setQueryAvalibleNumbers={setQueryAvalibleNumbers}
+          searchAvalibleNumbers={searchAvalibleNumbers}
+          availableNumbers={availableNumbers}
           // numbers={numbers}
           // selectNumbers={selectNumbers}
           // handleSelectAll={handleSelectAll}
@@ -145,8 +164,27 @@ const StepsNotFoundNumbers = props => {
         <FirstStepNFN
           handleClose={props.handleClose}
           changeStep={props.changeStep}
+          queryAvalibleNumbers={props.queryAvalibleNumbers}
+          setQueryAvalibleNumbers={props.setQueryAvalibleNumbers}
+          searchAvalibleNumbers={props.searchAvalibleNumbers}
         />
       )
+    case 2:
+      if (props.availableNumbers.length) {
+        return (
+          <SecondStepNFNSuccess
+            handleClose={props.handleClose}
+            changeStep={props.changeStep}
+          />
+        )
+      } else {
+        return (
+          <SecondStepNFNFailed
+            handleClose={props.handleClose}
+            changeStep={props.changeStep}
+          />
+        )
+      }
     // case 2:
     //   return (
     //     <SecondStep

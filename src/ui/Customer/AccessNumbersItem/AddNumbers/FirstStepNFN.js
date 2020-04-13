@@ -23,7 +23,14 @@ import useStyles from './styles'
 import Loading from 'components/Loading'
 
 const FirstStepNFN = props => {
-  const { handleClose, t, changeStep } = props
+  const {
+    handleClose,
+    t,
+    changeStep,
+    queryAvalibleNumbers,
+    setQueryAvalibleNumbers,
+    searchAvalibleNumbers
+  } = props
   const classes = useStyles()
   const match = useParams()
 
@@ -54,6 +61,14 @@ const FirstStepNFN = props => {
         <Box className={classes.searchParametersBox}>
           <Select
             label={t('country')}
+            wrapperStyles={classes.wrapperStylesSelect}
+            options={[{ value: 32, label: 'Belgium' }]}
+            onChange={e =>
+              setQueryAvalibleNumbers({
+                ...queryAvalibleNumbers,
+                country_code: e.target.value
+              })
+            }
             // icon={<img src={Group3Person} alt='Group3Person' />}
             // selectStyles={classes.select}
             // wrapperStyles={classes.wrapper}
@@ -63,6 +78,14 @@ const FirstStepNFN = props => {
           />
           <Select
             label={t('type')}
+            wrapperStyles={classes.wrapperStylesSelect}
+            options={[{ value: 'geo', label: 'GEO' }]}
+            onChange={e =>
+              setQueryAvalibleNumbers({
+                ...queryAvalibleNumbers,
+                number_type: e.target.value
+              })
+            }
             // icon={<img src={Group3Person} alt='Group3Person' />}
             // selectStyles={classes.select}
             // wrapperStyles={classes.wrapper}
@@ -70,6 +93,38 @@ const FirstStepNFN = props => {
             // value={props.selectedGroup}
             // onChange={e => props.setSelectedGroup(e.target.value)}
           />
+          <Box className={classes.rangeBox}>
+            {'Range size (70 max)'}
+            <Input
+              type='number'
+              wrapperStyles={classes.rangeWrapperStylesInput}
+              inputProps={{ min: 0, max: 70 }}
+              onChange={e =>
+                setQueryAvalibleNumbers({
+                  ...queryAvalibleNumbers,
+                  range_size: e.target.value
+                })
+              }
+            />
+          </Box>
+          <Input
+            wrapperStyles={classes.partNumberWrapperInput}
+            helperText='Search by prefix, or characters you want in your phone number'
+            placeholder={'A part of number'}
+          />
+          <Box className={classes.rangeBox}>
+            {'How many suggestions do you want? '}
+            <Input
+              type='number'
+              wrapperStyles={classes.rangeWrapperStylesInput}
+              onChange={e =>
+                setQueryAvalibleNumbers({
+                  ...queryAvalibleNumbers,
+                  numbers_of_results: e.target.value
+                })
+              }
+            />
+          </Box>
         </Box>
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -85,9 +140,9 @@ const FirstStepNFN = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(2)}
+          onClick={searchAvalibleNumbers}
         >
-          {t('select')}
+          {t('search')}
         </Button>
       </DialogActions>
     </React.Fragment>
