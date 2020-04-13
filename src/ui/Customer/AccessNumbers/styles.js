@@ -251,7 +251,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   perPageText: {
-    fontSize: 14
+    fontSize: 14,
+    whiteSpace: 'nowrap'
   },
   perPageSelect: {
     display: 'flex',
@@ -323,6 +324,43 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100,
     boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
     cursor: 'pointer'
+  },
+  toolbarButtonsBlockWrap: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    width: '100%',
+    marginRight: 40,
+    marginLeft: 40
+  },
+  addCustomerWrap: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  addIconWrap: {
+    width: 30,
+    height: 30,
+    background: theme.palette.primary.main,
+    borderRadius: 100,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+    '&:hover': {
+      cursor: 'pointer'
+    },
+    color: theme.palette.black
+  },
+  deleteIcon: {
+    width: 19,
+    height: 19,
+    marginLeft: 2
+  },
+  addCustomerTitle: {
+    whiteSpace: 'nowrap',
+    fontSize: 14,
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500
   }
 }))
 

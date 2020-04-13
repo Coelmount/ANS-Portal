@@ -6,6 +6,7 @@ import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
@@ -70,17 +71,39 @@ const AccessNumbers = ({ t }) => {
     getEntitlements(match.customerId)
   }
 
+  const handleAssignButtonClick = () => {
+    setShowAssignNumbers(true)
+  }
+
   const titleData = {
     mainText: t('access_numbers'),
     iconCapture: t('add_entitlements'),
     Icon: <AddOutlinedIcon />
   }
 
+  const toolbarButtonsBlock = () => {
+    return (
+      <Box className={classes.toolbarButtonsBlockWrap}>
+        <Box className={classes.addCustomerWrap}>
+          <Box
+            onClick={handleAssignButtonClick}
+            className={classes.addIconWrap}
+          >
+            <DoneOutlinedIcon className={classes.deleteIcon} />
+          </Box>
+          <Typography className={classes.addCustomerTitle}>
+            {t('assign_to_subaccount')}
+          </Typography>
+        </Box>
+      </Box>
+    )
+  }
+
   const columns = [
     {
       id: 'name',
       label: 'country',
-      getCellData: row => <Typography>{row.name.split('-')[0]}</Typography>
+      getCellData: (row) => <Typography>{row.name.split('-')[0]}</Typography>
     },
     {
       id: 'number_type',
@@ -92,15 +115,13 @@ const AccessNumbers = ({ t }) => {
     },
     {
       id: 'assigned',
-      label: 'assigned',
+      label: 'selected',
       getCellData: (row) => (
         <Typography>{row.assigned >= 1 ? row.assigned : 0}</Typography>
       ),
       extraProps: {
         className: classes.textCenterBlue
-      },
-      headIcon: () => <DoneOutlinedIcon className={classes.assignedDoneIcon} />,
-      onIconClick: () => setShowAssignNumbers(true)
+      }
     },
     {
       id: 'entitlement',
@@ -114,7 +135,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'see_numbers',
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <Link
           to={`/customers/${match.customerId}/access_numbers/${row.name.replace(
             /\s/g,
@@ -133,7 +154,7 @@ const AccessNumbers = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}
@@ -159,6 +180,7 @@ const AccessNumbers = ({ t }) => {
           isLoadingData={isLoadingEntitlements}
           columns={columns}
           searchCriterias={['name', 'number_type', 'service_capabilities']}
+          extraToolbarBlock={toolbarButtonsBlock}
         />
         {showEditEntitlements && (
           <EditEntitlements
