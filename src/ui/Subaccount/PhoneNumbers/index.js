@@ -193,7 +193,6 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const changeHover = (newHover, number) => {
-    console.log('hover')
     const newNumbers = [...transformedNumbers]
     const index = transformedNumbers.findIndex(
       (el) => el.phoneNumber === number

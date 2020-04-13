@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%'
   },
@@ -8,6 +8,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     marginBottom: theme.spacing(2),
     boxShadow: 'none'
+  },
+  textCenterBlue: {
+    color: theme.palette.active.blue,
+    textAlign: 'center'
+  },
+  textCenter: {
+    textAlign: 'center'
   },
   deleteModal: {
     '& .MuiDialog-paperWidthSm': {
@@ -122,9 +129,9 @@ const useStyles = makeStyles(theme => ({
     top: 20,
     width: 1
   },
-  displayNone: {
-    display: 'none'
-  },
+  // displayNone: {
+  //   display: 'none'
+  // },
   bodyFirstCell: {
     paddingLeft: '37px'
   },
@@ -233,7 +240,6 @@ const useStyles = makeStyles(theme => ({
   perPageWrap: {
     display: 'flex',
     alignItems: 'center',
-    width: 75,
     '& .MuiInput-underline:before': {
       display: 'none'
     },
@@ -245,7 +251,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   perPageText: {
-    fontSize: 14
+    fontSize: 14,
+    whiteSpace: 'nowrap'
   },
   perPageSelect: {
     display: 'flex',
@@ -257,7 +264,6 @@ const useStyles = makeStyles(theme => ({
     '& div': {
       paddingLeft: 16,
       paddingTop: 8,
-      paddingRight: '28px !important',
       width: 66,
       fontSize: 14
     },
@@ -316,21 +322,15 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 11,
     background: 'white',
     borderRadius: 100,
-    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)'
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    cursor: 'pointer'
   },
-  titleWrap: {
+  toolbarButtonsBlockWrap: {
     display: 'flex',
-    height: 91,
-    alignItems: 'center'
-  },
-  title: {
-    flex: '1 1 100%',
-    fontFamily: 'MTN',
-    fontStyle: 'normal',
-    fontWeight: 700,
-    fontSize: 24,
-    letterSpacing: '0.02em',
-    color: theme.palette.black
+    justifyContent: 'flex-end',
+    width: '100%',
+    marginRight: 40,
+    marginLeft: 40
   },
   addCustomerWrap: {
     display: 'flex',
@@ -348,14 +348,11 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       cursor: 'pointer'
     },
-    color: theme.palette.black,
-    '& > img': {
-      width: 14,
-      height: 16
-    }
-  },
-  addIcon: {
     color: theme.palette.black
+  },
+  deleteIcon: {
+    width: 14,
+    height: 16
   },
   addCustomerTitle: {
     whiteSpace: 'nowrap',
@@ -363,6 +360,34 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
+  },
+  checkbox: {
+    boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
+    width: '18px',
+    height: '18px',
+    marginRight: '9px',
+    // padding: 0,
+    '& .MuiSvgIcon-root': {
+      color: theme.palette.primary.main
+    },
+    '& .MuiIconButton-root': {
+      padding: 0
+    }
+  },
+  headCheckbox: {
+    marginLeft: 4,
+    marginBottom: 2
+  },
+  checkboxCell: {
+    width: 60,
+    paddingLeft: 20,
+    paddingRight: '0px !important',
+    '& > div': {
+      marginLeft: 4
+    }
+  },
+  indexHoverCheckbox: {
+    marginLeft: 3
   }
 }))
 
