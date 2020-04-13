@@ -147,7 +147,7 @@ const CustomTable = ({
                     <TableRow>
                       <TableCell style={{ borderBottom: 'none' }}>
                         <Typography className={classes.tableMessage}>
-                          {t('no_customers_yet')}
+                          {t('no_search_result')}
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -163,7 +163,7 @@ const CustomTable = ({
               totalPages={totalPages}
               rewindPage={rewindPage}
             />
-          )}{' '}
+          )}
         </Fragment>
       )}
     </Fragment>
