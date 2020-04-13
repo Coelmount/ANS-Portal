@@ -121,6 +121,9 @@ const AccessNumbers = ({ t }) => {
       ),
       extraProps: {
         className: classes.textCenterBlue
+      },
+      extraHeadProps: {
+        className: classes.assignedHeadCell
       }
     },
     {
@@ -143,7 +146,7 @@ const AccessNumbers = ({ t }) => {
           )}`}
           className={classes.link}
         >
-          {t('see numbers')}
+          {t('see_numbers')}
         </Link>
       )
     },

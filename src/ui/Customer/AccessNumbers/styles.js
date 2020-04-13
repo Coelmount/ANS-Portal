@@ -136,8 +136,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '37px'
   },
   headCellTitle: {
-    paddingBottom: 0,
     paddingTop: 0,
+    paddingBottom: 0,
     '& span': {
       fontWeight: 600,
       fontSize: 16
@@ -308,7 +308,12 @@ const useStyles = makeStyles((theme) => ({
   },
   headCellWithCustomButtons: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& p': {
+      fontWeight: 600,
+      fontSize: 16
+    }
   },
   assignedDoneIcon: {
     color: theme.palette.active.blue
@@ -361,6 +366,18 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
+  },
+  assignedHeadCell: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 0,
+    paddingBottom: 0,
+    marginTop: 4,
+    '& span': {
+      fontWeight: 600,
+      fontSize: 16
+    }
   }
 }))
 
