@@ -92,10 +92,10 @@ const AccessNumbersItem = ({ t }) => {
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
   console.log(selected, 'selected')
-  // const { assignedNumbers, getAssignedNumbers } = AssignedNumbersStore
+  const { assignedNumbers, getAssignedNumbers } = AssignedNumbersStore
 
   useEffect(() => {
-    // getAssignedNumbers(match.customerId)
+    getAssignedNumbers(match.customerId)
   }, [])
 
   const handleOpenDeleteModal = (id, name) => {
