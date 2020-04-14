@@ -26,6 +26,22 @@ export class NumbersStore {
       })
   }
 
+  postAssignNumbersToCustomer = tenantId => {
+    const selectedNumbers = this.availableNumbersTable.filter(el => el.checked)
+    const dataForPost = this.parseNumbersToPost(selectedNumbers)
+    dataForPost.forEach(data => {
+      axios.post(`/custom/ans/tenants/${tenantId}/numbers`, data)
+    })
+  }
+
+  parseNumbersToPost = numbers => {
+    const parsedNumbers = numbers.map(el => ({
+      country_code: el.code,
+      range: [Number(el.rangeFrom), Number(el.rangeTo)]
+    }))
+    return parsedNumbers
+  }
+
   parseAvailebleNumbers = numbers => {
     const parsedNumbers = numbers.map(el => {
       if (Number(el[1]) - Number(el[0]) === 0) {

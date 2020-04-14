@@ -30,7 +30,7 @@ const FirstStepNFN = props => {
   const { handleClose, t, changeStep } = props
   const classes = useStyles()
   const match = useParams()
-  const { availableNumbersTable } = numbersStore
+  const { availableNumbersTable, postAssignNumbersToCustomer } = numbersStore
   const [numbers, setNumbers] = useState(availableNumbersTable)
   const [selectAll, setSelectAll] = useState(false)
   const [countNumbers, setCountNumbers] = useState(0)
@@ -186,7 +186,7 @@ const FirstStepNFN = props => {
           color='primary'
           className={classes.nextButton}
           disable
-          onClick={handleClose}
+          onClick={() => postAssignNumbersToCustomer(match.customerId)}
         >
           {`${t('add')} (${countNumbers})`}
         </Button>
