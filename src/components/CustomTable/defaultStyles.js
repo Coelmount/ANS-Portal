@@ -122,14 +122,11 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1
   },
-  displayNone: {
-    display: 'none'
-  },
   bodyFirstCell: {
     paddingLeft: '37px'
   },
   headCellTitle: {
-    paddingBottom: 0,
+    // paddingBottom: 0,
     paddingTop: 0,
     '& span': {
       fontWeight: 600,
@@ -265,11 +262,6 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.active.blue,
       top: 11,
       right: 7
-    }
-  },
-  MuiTableCell: {
-    root: {
-      padding: '10px 16px'
     }
   },
   deleteCell: {

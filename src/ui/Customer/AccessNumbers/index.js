@@ -180,12 +180,11 @@ const AccessNumbers = ({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock
             titleData={titleData}
-            classes={classes}
             handleOpen={handleAddEntitlementsClick}
           />
         </CustomContainer>
         <CustomTable
-          // classes={classes}
+          classes={classes}
           rows={entitlements}
           isLoadingData={isLoadingEntitlements}
           columns={columns}
