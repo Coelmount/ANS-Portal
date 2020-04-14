@@ -18,3 +18,5 @@ export const SELECTLANGUAGE = [
 ]
 
 export const CUSTOMER_TEMPLATE = 'ANS'
+
+export const CUSTOMER_TYPE = 'ServiceProvider'

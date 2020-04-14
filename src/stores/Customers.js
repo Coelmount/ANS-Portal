@@ -5,13 +5,11 @@ import merge from 'lodash/merge'
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 import set from 'lodash/set'
-import { CUSTOMER_TEMPLATE } from 'source/config'
 
 export class CustomersStore {
   rows = []
   step = 1
   customer = {
-    templateName: CUSTOMER_TEMPLATE,
     id: '',
     external_id: '',
     name: '',
