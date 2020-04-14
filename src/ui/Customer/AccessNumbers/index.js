@@ -43,7 +43,8 @@ const AccessNumbers = ({ t }) => {
     postEntitlements,
     entitlements,
     setDefaultEntitlementsValues,
-    isLoadingEntitlements
+    isLoadingEntitlements,
+    deleteEntitlements
   } = EntitlementsStore
 
   const [isAddEntitlementsModalOpen, setIsAddEntitlementsModalOpen] = useState(
@@ -58,7 +59,7 @@ const AccessNumbers = ({ t }) => {
 
   const handleOpenDeleteModal = (id, name) => {
     setIsDeleteModalOpen(true)
-    setAccessNumberToDelete({ name })
+    setAccessNumberToDelete({ name, id })
   }
 
   const handleAddEntitlementsClick = () => {
@@ -73,6 +74,12 @@ const AccessNumbers = ({ t }) => {
 
   const handleAssignButtonClick = () => {
     setShowAssignNumbers(true)
+  }
+
+  const handleDelete = accessNumber => {
+    deleteEntitlements(match.customerId, accessNumber.id)
+      .then(() => setIsDeleteModalOpen(false))
+      .then(() => getEntitlements(match.customerId))
   }
 
   const titleData = {
@@ -103,7 +110,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'name',
       label: 'country',
-      getCellData: (row) => <Typography>{row.name.split('-')[0]}</Typography>
+      getCellData: row => <Typography>{row.name.split('-')[0]}</Typography>
     },
     {
       id: 'number_type',
@@ -116,7 +123,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'assigned',
       label: 'selected',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography>{row.assigned >= 1 ? row.assigned : 0}</Typography>
       ),
       extraProps: {
@@ -138,7 +145,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'see_numbers',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <Link
           to={`/customers/${match.customerId}/access_numbers/${row.name.replace(
             /\s/g,
@@ -157,7 +164,7 @@ const AccessNumbers = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}
@@ -206,7 +213,7 @@ const AccessNumbers = ({ t }) => {
             classes={classes}
             open={isDeleteModalOpen}
             handleClose={() => setIsDeleteModalOpen(false)}
-            //handleDelete={handleDelete}
+            handleDelete={() => handleDelete(accessNumberToDelete)}
             deleteInfo={accessNumberToDelete}
             //isDeleting={isDeletingCustomer}
             deleteSubject={t('entitlement')}
