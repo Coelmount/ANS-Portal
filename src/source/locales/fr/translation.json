@@ -1,4 +1,5 @@
 {
+  "1_ans_basic_number": "1 numéro de base ANS",
   "access_numbers": "Numéros d'accès",
   "access_number": "Numéro d'accès",
   "add": "Ajouter",
@@ -73,6 +74,7 @@
   "last_name": "Nom de famille",
   "log_in": "S'identifier",
   "login_details": "Détails de connexion",
+  "multiply_ans_basic_number": "Numéro multiple ET de base",
   "name": "Nom",
   "next": "Prochain",
   "no_customers_yet": "Pas encore de clients",

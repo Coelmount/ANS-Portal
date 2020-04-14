@@ -435,7 +435,14 @@ const Translations = observer(({ t }) => {
           rows={numbers}
           // isLoadingData={isLoadingCustomers}
           columns={columns}
-          searchCriterias={['country', 'rangeStart']}
+          searchCriterias={[
+            'accessCountry',
+            'destinationCountry',
+            'accessCountryCode',
+            'accessNumber',
+            'destinationCountryCode',
+            'destinationNumber'
+          ]}
           extraToolbarBlock={toolbarButtonsBlock}
           getSearchList={setSearchList}
         />
