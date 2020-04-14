@@ -7,7 +7,7 @@ import useStyles from './styles'
 
 const TitleBlock = ({ handleOpen, titleData }) => {
   const classes = useStyles()
-  const { mainText, iconCapture, Icon } = titleData
+  const { mainText, iconCapture, Icon, buttonBlock } = titleData
 
   return (
     <Box className={classes.titleWrap}>
@@ -24,6 +24,7 @@ const TitleBlock = ({ handleOpen, titleData }) => {
           </Typography>
         </Box>
       )}
+      {buttonBlock}
     </Box>
   )
 }

@@ -14,6 +14,7 @@ import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import PermPhoneMsgOutlinedIcon from '@material-ui/icons/PermPhoneMsgOutlined'
+import SettingsPhoneOutlinedIcon from '@material-ui/icons/SettingsPhoneOutlined'
 
 import CustomDrawer from './components/CustomDrawer'
 import CustomAppBar from './components/CustomAppBar'
@@ -105,7 +106,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances`,
       text: t('ans_instances'),
       name: 'ans_instances',
-      icon: AnsInstancesIcon,
+      icon: SettingsPhoneOutlinedIcon,
       childLinks: [
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`,
@@ -142,14 +143,14 @@ const DefaultLayout = ({ t, notFoundPage }) => {
           ]
         },
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/time_based_routing`,
-          text: t('time_based_routing'),
-          name: 'time_based_routing'
-        },
-        {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/ivr`,
           text: t('ivr'),
           name: 'ivr'
+        },
+        {
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/time_based_routing`,
+          text: t('time_based_routing'),
+          name: 'time_based_routing'
         }
       ]
     },
