@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   titleWrap: {
     display: 'flex',
-    height: 91,
+    height: 80,
     alignItems: 'center'
   },
   title: {
