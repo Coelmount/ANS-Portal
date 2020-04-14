@@ -431,7 +431,7 @@ const Translations = observer(({ t }) => {
         </CustomContainer>
         <CustomTable
           firstCell={false}
-          classes={classes}
+          // classes={classes}
           rows={numbers}
           // isLoadingData={isLoadingCustomers}
           columns={columns}

@@ -245,7 +245,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   perPageText: {
-    fontSize: 14
+    fontSize: 14,
+    whiteSpace: 'nowrap'
   },
   perPageSelect: {
     display: 'flex',

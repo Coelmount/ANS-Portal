@@ -141,7 +141,6 @@ const CustomersTable = observer(({ t }) => {
         <CustomContainer>
           <TitleBlock
             titleData={titleData}
-            classes={classes}
             handleOpen={handleOpenCreateCustomer}
           />
         </CustomContainer>
