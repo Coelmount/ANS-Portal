@@ -1,16 +1,20 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Switch from '@material-ui/core/Switch'
+import Popover from '@material-ui/core/Popover'
+import MenuItem from '@material-ui/core/MenuItem'
 
 import UpdateIcon from '@material-ui/icons/Update'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
+import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 
 import TitleBlock from 'components/TitleBlock'
 import CustomTable from 'components/CustomTable'
@@ -46,7 +50,7 @@ const PHONE_NUMBERS = [
     destinationCountry: 'USA',
     destinationCountryCode: '+1',
     destinationNumber: '23243242',
-    enabled: false,
+    enabled: true,
     checked: false,
     hover: false
   },
@@ -110,11 +114,25 @@ const Translations = observer(({ t }) => {
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  // const [isAddPopoverOpen, setIsPopoverOpen] = useState(false)
+  const isAddPopoverOpen = Boolean(anchorEl)
+  const id = isAddPopoverOpen ? 'simple-popover' : undefined
   const {
     setPhoneNumbers,
     setDefaultValues,
     getPhoneNumbers
   } = PhoneNumbersStore
+
+  console.log(numbers, 'numbers')
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   const selectNumbers = (checked, id) => {
     const newNumbers = [...numbers]
@@ -245,6 +263,7 @@ const Translations = observer(({ t }) => {
     },
     {
       label: 'access_number',
+      isSortAvailable: false,
       getCellData: (row) => (
         <Box>
           <Typography
@@ -273,6 +292,7 @@ const Translations = observer(({ t }) => {
     },
     {
       label: 'destination_number',
+      isSortAvailable: false,
       getCellData: (row) => (
         <Box>
           <Typography
@@ -285,14 +305,14 @@ const Translations = observer(({ t }) => {
     {
       id: 'status',
       label: 'enable_disable',
-      extraProps: {
-        className: classes.switchCell
-      },
+      isSortAvailable: false,
+      align: 'center',
       getCellData: (row) => (
         <Switch
+          checked={row.enabled}
+          onChange={(e) => enableNumbers(!row.enabled, row.id)}
           focusVisibleClassName={classes.focusVisible}
           classes={{
-            // root: classes.root,
             switchBase: classes.switchBase,
             thumb: classes.thumb,
             track: classes.track,
@@ -314,16 +334,63 @@ const Translations = observer(({ t }) => {
     }
   ]
 
+  const addPopoverItems = [
+    {
+      id: 1,
+      label: t('1_ans_basic_number'),
+      link: '/'
+    },
+    {
+      id: 2,
+      label: t('multiply_ans_basic_number'),
+      link: '/'
+    }
+  ]
+
   const titleData = {
     mainText: t('basic_translations'),
-    iconCapture: t('add'),
-    Icon: <AddOutlinedIcon />
+    buttonBlock: (
+      <Box className={classes.addCustomerWrap}>
+        <Box onClick={handleClick} className={classes.addIconWrap}>
+          <AddOutlinedIcon />
+        </Box>
+        <Box className={classes.addTitleWrap}>
+          <Typography className={classes.addCustomerTitle}>
+            {t('add')}
+          </Typography>
+          <ArrowDropUpOutlinedIcon className={classes.upArrowIcon} />
+          <ArrowDropDownOutlinedIcon className={classes.downArrowIcon} />
+        </Box>
+        <Popover
+          id={id}
+          open={isAddPopoverOpen}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+        >
+          <Box className={classes.addPopoverWrap}>
+            {addPopoverItems.map((item) => (
+              <MenuItem
+                value={item.label}
+                key={item.id}
+                className={classes.addPopoverItem}
+              >
+                <Link to={item.link}>
+                  <Typography className={classes.addPopoverItemText}>
+                    {item.label}
+                  </Typography>
+                </Link>
+              </MenuItem>
+            ))}
+          </Box>
+        </Popover>
+      </Box>
+    )
   }
 
   const toolbarButtonsBlock = () => {
     return (
       <Fragment>
-        {true && (
+        {isAnyChecked && (
           <Box className={classes.toolbarButtonsBlockWrap}>
             <Box className={classes.addCustomerWrap}>
               <Box className={classes.addIconWrap}>

@@ -416,13 +416,59 @@ const useStyles = makeStyles((theme) => ({
     },
     '&$checked + $track': {
       color: 'white',
-      background: theme.palette.primary.main
+      background: theme.palette.primary.main,
+      opacity: 1
     }
   },
   track: {
     background: 'grey'
   },
-  checked: {}
+  checked: {},
+  addTitleWrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute'
+  },
+  upArrowIcon: {
+    position: 'absolute',
+    right: -14,
+    top: -3,
+    color: theme.palette.active.blue
+  },
+  downArrowIcon: {
+    position: 'absolute',
+    right: -14,
+    top: 5,
+    color: theme.palette.active.blue
+  },
+  addCustomerTitle: {
+    marginRight: 10,
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    whiteSpace: 'nowrap'
+  },
+  addTitleWrap: {
+    position: 'relative'
+  },
+  addPopoverWrap: {
+    width: 268,
+    height: 101
+  },
+  addPopoverItem: {
+    height: '50%',
+    paddingLeft: 30,
+    '&:nth-child(1)': {
+      borderBottom: `1px solid ${theme.palette.active.main}`
+    },
+    '& > a': {
+      textDecoration: 'none'
+    }
+  },
+  addPopoverItemText: {
+    color: theme.palette.black
+  }
 }))
 
 export default useStyles
