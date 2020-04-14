@@ -76,7 +76,7 @@ const AccessNumbers = ({ t }) => {
     setShowAssignNumbers(true)
   }
 
-  const handleDelete = accessNumber => {
+  const handleDelete = (accessNumber) => {
     deleteEntitlements(match.customerId, accessNumber.id)
       .then(() => setIsDeleteModalOpen(false))
       .then(() => getEntitlements(match.customerId))
@@ -110,7 +110,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'name',
       label: 'country',
-      getCellData: row => <Typography>{row.name.split('-')[0]}</Typography>
+      getCellData: (row) => <Typography>{row.name.split('-')[0]}</Typography>
     },
     {
       id: 'number_type',
@@ -123,7 +123,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'assigned',
       label: 'selected',
-      getCellData: row => (
+      getCellData: (row) => (
         <Typography>{row.assigned >= 1 ? row.assigned : 0}</Typography>
       ),
       extraProps: {
@@ -145,7 +145,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'see_numbers',
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <Link
           to={`/customers/${match.customerId}/access_numbers/${row.name.replace(
             /\s/g,
@@ -164,7 +164,7 @@ const AccessNumbers = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}
@@ -185,7 +185,7 @@ const AccessNumbers = ({ t }) => {
           />
         </CustomContainer>
         <CustomTable
-          classes={classes}
+          // classes={classes}
           rows={entitlements}
           isLoadingData={isLoadingEntitlements}
           columns={columns}

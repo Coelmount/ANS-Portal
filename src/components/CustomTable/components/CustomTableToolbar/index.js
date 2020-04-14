@@ -14,6 +14,7 @@ const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
 const CustomTableToolbar = (props) => {
   const {
     classes,
+    defaultClasses,
     rowsPerPage,
     setRowsPerPage,
     setQuery,
@@ -29,25 +30,27 @@ const CustomTableToolbar = (props) => {
   }
 
   return (
-    <div className={classes.toolbarWrap}>
+    <div className={`${defaultClasses.toolbarWrap} ${classes.toolbarWrap}`}>
       {showSearchBar && (
-        <div className={classes.searchWrap}>
+        <div className={`${defaultClasses.searchWrap} ${classes.searchWrap}`}>
           <input
-            className={classes.searchInput}
+            className={`${defaultClasses.searchInput} ${classes.searchInput}`}
             placeholder={t('search_input_placeholder')}
             onChange={handleSearch}
           />
-          <SearchIcon className={classes.searchIcon} />
+          <SearchIcon
+            className={`${defaultClasses.searchIcon} ${classes.searchIcon}`}
+          />
         </div>
       )}
       {extraToolbarBlock && extraToolbarBlock()}
       {showPagination && (
-        <div className={classes.perPageWrap}>
+        <div className={`${defaultClasses.perPageWrap} ${classes.perPageWrap}`}>
           <Select
             value={rowsPerPage}
             onChange={(e) => setRowsPerPage(e.target.value)}
             IconComponent={ArrowDropDownIcon}
-            className={classes.perPageSelect}
+            className={`${defaultClasses.perPageSelect} ${classes.perPageSelect}`}
           >
             {rowsPerPageNumbers.map((number) => (
               <MenuItem value={number} key={`${number}`}>
@@ -55,7 +58,9 @@ const CustomTableToolbar = (props) => {
               </MenuItem>
             ))}
           </Select>
-          <Typography className={classes.perPageText}>
+          <Typography
+            className={`${defaultClasses.perPageText} ${classes.perPageText}`}
+          >
             {t('per_page')}
           </Typography>
         </div>

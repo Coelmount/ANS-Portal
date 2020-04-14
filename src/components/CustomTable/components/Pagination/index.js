@@ -5,25 +5,41 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 
 import useAdditionalStyles from './styles'
 
-const Pagination = ({ page, totalPages, rewindPage, classes }) => {
+const Pagination = ({
+  page,
+  totalPages,
+  rewindPage,
+  classes,
+  defaultClasses
+}) => {
   const additionalClasses = useAdditionalStyles({ page, totalPages })
 
   return (
-    <div className={classes.paginationWrap}>
-      <div className={classes.paginationIconBlock}>
+    <div
+      className={`${defaultClasses.paginationWrap} ${classes.paginationWrap}`}
+    >
+      <div
+        className={`${defaultClasses.paginationIconBlock} ${classes.paginationIconBlock}`}
+      >
         <ArrowBackIosIcon
-          className={`${classes.paginationIcon} ${additionalClasses.prevPaginationIcon}`}
+          className={`${defaultClasses.paginationIcon} ${additionalClasses.prevPaginationIcon} ${classes.paginationIcon}`}
           onClick={() => rewindPage(-1)}
         />
       </div>
       <p>
-        <span className={classes.paginationText}>{page + 1}</span>
+        <span
+          className={`${defaultClasses.paginationText} ${classes.paginationText}`}
+        >
+          {page + 1}
+        </span>
         &nbsp;of&nbsp;
         {totalPages + 1}
       </p>
-      <div className={classes.paginationIconBlock}>
+      <div
+        className={`${defaultClasses.paginationIconBlock} ${classes.paginationIconBlock}`}
+      >
         <ArrowForwardIosIcon
-          className={`${classes.paginationIcon} ${additionalClasses.nextPaginationIcon}`}
+          className={`${defaultClasses.paginationIcon} ${additionalClasses.nextPaginationIcon} ${classes.paginationIcon}`}
           onClick={() => rewindPage(1)}
         />
       </div>
