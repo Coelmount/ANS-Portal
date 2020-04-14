@@ -16,3 +16,5 @@ export const SELECTLANGUAGE = [
   { label: 'spanish', value: 'Spanish' },
   { label: 'portuguese', value: 'Portuguese' }
 ]
+
+export const CUSTOMER_TEMPLATE = 'ANS'

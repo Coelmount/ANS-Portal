@@ -5,11 +5,13 @@ import merge from 'lodash/merge'
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 import set from 'lodash/set'
+import { CUSTOMER_TEMPLATE } from 'source/config'
 
 export class CustomersStore {
   rows = []
   step = 1
   customer = {
+    templateName: CUSTOMER_TEMPLATE,
     id: '',
     external_id: '',
     name: '',
@@ -33,7 +35,7 @@ export class CustomersStore {
 
   getCustomers = () => {
     this.isLoadingCustomers = true
-    axios.get(`${PROXY_P6}/tenants`).then((res) => {
+    axios.get(`${PROXY_P6}/tenants`).then(res => {
       if (res.status === 200) {
         console.log('get custs', res.data.customers)
         this.rows = res.data.customers
@@ -44,9 +46,9 @@ export class CustomersStore {
     })
   }
 
-  getCustomer = (id) => {
+  getCustomer = id => {
     this.isLoadingCustomer = true
-    axios.get(`${PROXY_P6}/tenants/${id}`).then((res) => {
+    axios.get(`${PROXY_P6}/tenants/${id}`).then(res => {
       if (res.status === 200) {
         merge(this.customer, res.data.customers[0])
         this.isLoadingCustomer = false
@@ -60,7 +62,7 @@ export class CustomersStore {
     this.isDeletingCustomer = true
     axios
       .delete(`${PROXY_P6}/tenants/${id}/`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.getCustomers()
           callback()
@@ -69,18 +71,18 @@ export class CustomersStore {
           console.log(res, 'error')
         }
       })
-      .catch((e) => {
+      .catch(e => {
         if (e.response.status === 400) {
           this.isDeletingCustomer = false
         }
       })
   }
 
-  updateCustomer = (tenantId) => {
+  updateCustomer = tenantId => {
     this.isAddingCustomer = true
     return axios
       .put(`${PROXY_P6}/tenants/${tenantId}`, this.customer)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)
           this.isAddingCustomer = false
@@ -88,7 +90,7 @@ export class CustomersStore {
       })
   }
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
