@@ -227,7 +227,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
           classes={classes}
           columns={columns}
           firstCell={false}
-          showPagination={false}
+          showPagination={true}
           rows={selected}
           searchCriterias={['phoneNumber', 'type', 'country']}
           getSearchList={setSearchList}

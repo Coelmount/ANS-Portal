@@ -125,18 +125,31 @@ const useStyles = makeStyles((theme) => ({
   bodyFirstCell: {
     paddingLeft: '37px'
   },
+  // headCellTitle: {
+  //   // paddingBottom: 0,
+  //   paddingTop: 0,
+  //   '& span': {
+  //     fontWeight: 600,
+  //     fontSize: 16
+  //   }
+  // },
   headCellTitle: {
-    // paddingBottom: 0,
-    paddingTop: 0,
+    padding: 0,
     '& span': {
       fontWeight: 600,
-      fontSize: 16
+      fontSize: 16,
+      '& > p': {
+        height: 11
+      },
+      '& < svg': {
+        marginTop: 11
+      }
     }
   },
   tbody: {
     '& td, th': {
       border: 'none',
-      paddingRight: 33
+      paddingLeft: 0
     }
   },
   link: {
