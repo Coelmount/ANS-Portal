@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -11,42 +11,80 @@ import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
+import BasicTranslationsStore from 'stores/BasicTranslations'
 import CustomTable from 'components/CustomTable'
-import EntitlementsStore from 'stores/Entitlements'
 import Checkbox from 'components/Checkbox'
 
 import useStyles from './styles'
 
-const SetEntitlements = (props) => {
-  const { handleClose, t } = props
-  const {
-    changeStep,
-    getEntitlementTypes,
-    entitlementTypes,
-    isLoadingEntitlementTypes,
-    updateCheckedArr
-  } = EntitlementsStore
+const PHONE_NUMBERS = [
+  {
+    id: 1,
+    country: 'South Africa',
+    countryCode: '+27',
+    phoneNumber: '53423437',
+    type: 'local',
+    checked: false,
+    hover: false
+  },
+  {
+    id: 2,
+    country: 'Ghana',
+    countryCode: '+31',
+    phoneNumber: '53423467',
+    type: 'local',
+    checked: false,
+    hover: false
+  },
+  {
+    id: 3,
+    country: 'South Africa',
+    countryCode: '+27',
+    phoneNumber: '53424437',
+    type: 'geo',
+    checked: false,
+    hover: false
+  },
+  {
+    id: 4,
+    country: 'South Africa',
+    countryCode: '+27',
+    phoneNumber: '53423467',
+    type: 'local',
+    checked: false,
+    hover: false
+  },
+  {
+    id: 5,
+    country: 'South Africa',
+    countryCode: '+27',
+    phoneNumber: '53423438',
+    type: 'local',
+    checked: false,
+    hover: false
+  },
+  {
+    id: 6,
+    country: 'South Africa',
+    countryCode: '+27',
+    phoneNumber: '53423431',
+    type: 'local',
+    checked: false,
+    hover: false
+  }
+]
 
+const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   const classes = useStyles()
-  const [selected, setSelected] = useState([])
+
+  const { step, changeStep } = BasicTranslationsStore
+
+  const [selected, setSelected] = useState(PHONE_NUMBERS)
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
-  const [selectedGroup, setSelectedGroup] = useState('')
   const [searchList, setSearchList] = useState([])
 
-  useEffect(() => {
-    handleCheckedStates(searchList)
-  }, [searchList])
-
-  useEffect(() => {
-    getEntitlementTypes()
-  }, [])
-
-  useEffect(() => {
-    setSelected(entitlementTypes)
-  }, [entitlementTypes])
-
-  const selectEntitlementTypes = (checked, id) => {
+  const selectInstances = (checked, id) => {
     const newSelected = [...selected]
     const index = selected.findIndex((el) => el.id === id)
     newSelected[index].checked = checked
@@ -109,7 +147,7 @@ const SetEntitlements = (props) => {
   }
 
   const handleNextButtonClick = () => {
-    updateCheckedArr(selected.filter((item) => item.checked === true))
+    // updateCheckedArr(selected.filter((item) => item.checked === true))
     changeStep(2)
   }
 
@@ -123,12 +161,12 @@ const SetEntitlements = (props) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={() => selectEntitlementTypes(!row.checked, row.id)}
+            onChange={() => selectInstances(!row.checked, row.id)}
           />
         ) : (
           <div
             className={classes.indexHoverCheckbox}
-            onClick={() => selectEntitlementTypes(!row.checked, row.id)}
+            onClick={() => selectInstances(!row.checked, row.id)}
             onMouseLeave={() => changeHover(false, row.id)}
             onMouseEnter={() => changeHover(true, row.id)}
           >
@@ -136,7 +174,7 @@ const SetEntitlements = (props) => {
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => selectEntitlementTypes(true, row.id)}
+                onChange={() => selectInstances(true, row.id)}
               />
             ) : (
               i + 1
@@ -151,15 +189,23 @@ const SetEntitlements = (props) => {
       }
     },
     {
-      id: 'name',
-      label: 'entitlement'
+      id: 'phoneNumber',
+      label: 'number'
+    },
+    {
+      id: 'type',
+      label: 'type'
+    },
+    {
+      id: 'country',
+      label: 'country'
     }
   ]
 
   return (
-    <React.Fragment>
+    <Fragment>
       <DialogTitle className={classes.title}>
-        {t('add_entitlements')}
+        {t('add_ans_basic_instance')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -174,7 +220,7 @@ const SetEntitlements = (props) => {
             'step'
           )} 1/2`}</Typography>
           <Typography className={classes.setEntitlementsTitle}>
-            {t('select_entitlement')}
+            {t('select_access_phone_number')}
           </Typography>
         </Box>
         <CustomTable
@@ -183,9 +229,9 @@ const SetEntitlements = (props) => {
           firstCell={false}
           showPagination={false}
           rows={selected}
-          searchCriterias={['name']}
+          searchCriterias={['phoneNumber', 'type', 'country']}
           getSearchList={setSearchList}
-          isLoadingData={isLoadingEntitlementTypes}
+          // isLoadingData={isLoadingEntitlementTypes}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -207,8 +253,8 @@ const SetEntitlements = (props) => {
           {t('next')}
         </Button>
       </DialogActions>
-    </React.Fragment>
+    </Fragment>
   )
 }
 
-export default withNamespaces()(observer(SetEntitlements))
+export default withNamespaces()(observer(SelectAccessPhoneNumber))

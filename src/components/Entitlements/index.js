@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
 import Dialog from '@material-ui/core/Dialog'
@@ -88,4 +87,4 @@ const Steps = (props) => {
   }
 }
 
-export default withNamespaces()(observer(Entitlements))
+export default observer(Entitlements)

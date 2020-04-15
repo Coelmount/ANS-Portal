@@ -21,7 +21,7 @@ import CustomTable from 'components/CustomTable'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
-// import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
+import AddInstance from './components/AddInstance'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 
@@ -107,6 +107,7 @@ const PHONE_NUMBERS = [
 const Translations = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
+
   const [numbers, setNumbers] = useState(PHONE_NUMBERS)
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
@@ -115,22 +116,26 @@ const Translations = observer(({ t }) => {
     false
   )
   const [anchorEl, setAnchorEl] = React.useState(null)
-  // const [isAddPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(true)
+
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
+
   const {
     setPhoneNumbers,
     setDefaultValues,
     getPhoneNumbers
   } = PhoneNumbersStore
 
-  console.log(numbers, 'numbers')
+  const handleAddInstanceModalOpen = () => {
+    setIsAddInstanceModalOpen(true)
+  }
 
-  const handleClick = (event) => {
+  const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
+  const handlePopoverClose = () => {
     setAnchorEl(null)
   }
 
@@ -337,13 +342,11 @@ const Translations = observer(({ t }) => {
   const addPopoverItems = [
     {
       id: 1,
-      label: t('1_ans_basic_number'),
-      link: '/'
+      label: t('1_ans_basic_number')
     },
     {
       id: 2,
-      label: t('multiply_ans_basic_number'),
-      link: '/'
+      label: t('multiply_ans_basic_number')
     }
   ]
 
@@ -351,7 +354,7 @@ const Translations = observer(({ t }) => {
     mainText: t('basic_translations'),
     buttonBlock: (
       <Box className={classes.addCustomerWrap}>
-        <Box onClick={handleClick} className={classes.addIconWrap}>
+        <Box onClick={handlePopoverOpen} className={classes.addIconWrap}>
           <AddOutlinedIcon />
         </Box>
         <Box className={classes.addTitleWrap}>
@@ -365,20 +368,19 @@ const Translations = observer(({ t }) => {
           id={id}
           open={isAddPopoverOpen}
           anchorEl={anchorEl}
-          onClose={handleClose}
+          onClose={handlePopoverClose}
         >
           <Box className={classes.addPopoverWrap}>
             {addPopoverItems.map((item) => (
               <MenuItem
+                onClick={item.id === 1 && handleAddInstanceModalOpen}
                 value={item.label}
                 key={item.id}
                 className={classes.addPopoverItem}
               >
-                <Link to={item.link}>
-                  <Typography className={classes.addPopoverItemText}>
-                    {item.label}
-                  </Typography>
-                </Link>
+                <Typography className={classes.addPopoverItemText}>
+                  {item.label}
+                </Typography>
               </MenuItem>
             ))}
           </Box>
@@ -442,12 +444,12 @@ const Translations = observer(({ t }) => {
           extraToolbarBlock={toolbarButtonsBlock}
           getSearchList={setSearchList}
         />
-        {/* {isAddPhoneNumbersModalOpen && (
-          <AddPhoneNumbersModal
-            open={isAddPhoneNumbersModalOpen}
-            handleClose={handleAddModalClose}
+        {isAddInstanceModalOpen && (
+          <AddInstance
+            open={isAddInstanceModalOpen}
+            handleClose={handleAddInstanceModalOpen}
           />
-        )} */}
+        )}
       </Paper>
     </div>
   )
