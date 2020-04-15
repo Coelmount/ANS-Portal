@@ -184,7 +184,7 @@ const AccessNumbersItem = ({ t }) => {
             />
           </Box>
           <Typography className={classes.addCustomerTitle}>
-            {t('deasign')}
+            {t('deassign')}
           </Typography>
         </Box>
       </Box>
