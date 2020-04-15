@@ -299,7 +299,8 @@ const useStyles = makeStyles((theme) => ({
   subtitle: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: 29
+    marginTop: 29,
+    marginBottom: 40
   },
   secondStepSubtitle: {
     display: 'flex',
@@ -345,6 +346,26 @@ const useStyles = makeStyles((theme) => ({
     },
     textAlign: 'center',
     width: 100
+  },
+  select: {
+    width: 254
+  },
+  inputsWrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  input: {
+    width: 254,
+    marginTop: 30
+  },
+  phoneAddedButtonWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: 25
+  },
+  okButton: {
+    width: 160
   }
 }))
 

@@ -307,7 +307,7 @@ const PhoneNumbers = observer(({ t }) => {
           <Typography className={classes.numbersTitle}>
             {row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`}
           </Typography>
-          <Typography className={classes.numbersAmount}>
+          <Typography className={classes.numberPhoneNumbersStoresAmount}>
             {row.phoneNumbers && `(${row.phoneNumbers.length})`}
           </Typography>
         </Box>

@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog'
 
 import SelectAccessPhoneNumber from './SelectAccessPhoneNumber'
 import AddDestinationNumber from './AddDestinationNumber'
+import AddInstanceSuccess from './AddInstanceSuccess'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -39,8 +40,8 @@ const Steps = ({ step, handleClose }) => {
       return <SelectAccessPhoneNumber handleClose={handleClose} />
     case 2:
       return <AddDestinationNumber handleClose={handleClose} />
-    // case 3:
-    //   return <AddInstanceSuccess handleClose={handleClose} />
+    case 3:
+      return <AddInstanceSuccess handleClose={handleClose} />
     default:
       return <SelectAccessPhoneNumber handleClose={handleClose} />
   }

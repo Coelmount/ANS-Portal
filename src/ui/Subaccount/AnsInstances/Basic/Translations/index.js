@@ -116,7 +116,7 @@ const Translations = observer(({ t }) => {
     false
   )
   const [anchorEl, setAnchorEl] = React.useState(null)
-  const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(true)
+  const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
 
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
@@ -129,6 +129,10 @@ const Translations = observer(({ t }) => {
 
   const handleAddInstanceModalOpen = () => {
     setIsAddInstanceModalOpen(true)
+  }
+
+  const handleAddInstanceModalClose = () => {
+    setIsAddInstanceModalOpen(false)
   }
 
   const handlePopoverOpen = (event) => {
@@ -447,7 +451,7 @@ const Translations = observer(({ t }) => {
         {isAddInstanceModalOpen && (
           <AddInstance
             open={isAddInstanceModalOpen}
-            handleClose={handleAddInstanceModalOpen}
+            handleClose={handleAddInstanceModalClose}
           />
         )}
       </Paper>

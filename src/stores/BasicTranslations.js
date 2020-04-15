@@ -12,14 +12,19 @@ export class BasicTranslations {
 
   updateSelectedPhoneNumber = (number) => {
     this.selectedPhoneNumber = number
-    console.log(number, 'numb in store')
+  }
+
+  postDestinationNumber = (country, number) => {
+    console.log(country, number, 'to post')
+    this.changeStep(3)
   }
 }
 
 decorate(BasicTranslations, {
   step: observable,
   changeStep: action,
-  updateSelectedPhoneNumber: action
+  updateSelectedPhoneNumber: action,
+  postDestinationNumber: action
 })
 
 export default new BasicTranslations()
