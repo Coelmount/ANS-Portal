@@ -21,8 +21,7 @@ const PHONE_NUMBERS = [
   {
     id: 1,
     country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423437',
+    phoneNumber: '+27 53423437',
     type: 'local',
     checked: false,
     hover: false
@@ -30,8 +29,7 @@ const PHONE_NUMBERS = [
   {
     id: 2,
     country: 'Ghana',
-    countryCode: '+31',
-    phoneNumber: '53423467',
+    phoneNumber: '+31 53423467',
     type: 'local',
     checked: false,
     hover: false
@@ -39,8 +37,7 @@ const PHONE_NUMBERS = [
   {
     id: 3,
     country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53424437',
+    phoneNumber: '+27 53424437',
     type: 'geo',
     checked: false,
     hover: false
@@ -48,8 +45,7 @@ const PHONE_NUMBERS = [
   {
     id: 4,
     country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423467',
+    phoneNumber: '+27 53423467',
     type: 'local',
     checked: false,
     hover: false
@@ -57,8 +53,7 @@ const PHONE_NUMBERS = [
   {
     id: 5,
     country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423438',
+    phoneNumber: '+27 53423438',
     type: 'local',
     checked: false,
     hover: false
@@ -66,8 +61,7 @@ const PHONE_NUMBERS = [
   {
     id: 6,
     country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423431',
+    phoneNumber: '+27 53423431',
     type: 'local',
     checked: false,
     hover: false
@@ -77,96 +71,60 @@ const PHONE_NUMBERS = [
 const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   const classes = useStyles()
 
-  const { step, changeStep } = BasicTranslationsStore
+  const { step, changeStep, updateSelectedPhoneNumber } = BasicTranslationsStore
 
-  const [selected, setSelected] = useState(PHONE_NUMBERS)
-  const [selectAll, setSelectAll] = useState(false)
+  const [selectedList, setSelectedList] = useState(PHONE_NUMBERS)
+  const [selectedNumber, setSelectedNumber] = useState(null)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
 
-  const selectInstances = (checked, id) => {
-    const newSelected = [...selected]
-    const index = selected.findIndex((el) => el.id === id)
-    newSelected[index].checked = checked
-    if (newSelected.every((el) => el.checked)) {
-      setSelectAll(true)
-    } else {
-      setSelectAll(false)
-    }
-    setSelected(newSelected)
-  }
-
-  const handleSelectAll = () => {
-    const searchListId = searchList.map((item) => item.id)
-    const newSelected = selected.map((el) => {
+  const selectInstance = (checked, id) => {
+    const newSelected = selectedList.map((item) => {
       let result = {}
-      if (searchListId.includes(el.id)) {
+      if (item.id === id) {
         result = {
-          ...el,
-          checked: !selectAll,
-          hover: false
+          ...item,
+          checked: checked
         }
+        setSelectedNumber(result)
       } else {
-        result = { ...el }
+        result = {
+          ...item,
+          checked: false
+        }
       }
       return result
     })
-    handleCheckedStates(newSelected)
-    setSelected(newSelected)
-    setSelectAll(!selectAll)
-    setIsAnyChecked(!selectAll)
-  }
-
-  const handleCheckedStates = (newSelected) => {
-    if (
-      newSelected.every((el) => {
-        return el.checked
-      })
-    ) {
-      setSelectAll(true)
-      setIsAnyChecked(true)
-    } else {
-      setSelectAll(false)
-      if (newSelected.some((el) => el.checked)) {
-        setIsAnyChecked(true)
-      } else {
-        setIsAnyChecked(false)
-      }
-    }
-    if (!newSelected.length) {
-      setSelectAll(false)
-      setIsAnyChecked(false)
-    }
+    setSelectedList(newSelected)
   }
 
   const changeHover = (newHover, id) => {
-    const newSelected = [...selected]
-    const index = selected.findIndex((el) => el.id === id)
+    const newSelected = [...selectedList]
+    const index = selectedList.findIndex((el) => el.id === id)
     newSelected[index].hover = newHover
-    setSelected(newSelected)
+    setSelectedList(newSelected)
   }
 
   const handleNextButtonClick = () => {
-    // updateCheckedArr(selected.filter((item) => item.checked === true))
+    updateSelectedPhoneNumber(selectedNumber)
     changeStep(2)
   }
 
   const columns = [
     {
       id: 'checkbox',
-      label: <Checkbox checked={selectAll} onChange={handleSelectAll} />,
       isSortAvailable: false,
       getCellData: (row, i) =>
         row.checked ? (
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={() => selectInstances(!row.checked, row.id)}
+            onChange={() => selectInstance(!row.checked, row.id)}
           />
         ) : (
           <div
             className={classes.indexHoverCheckbox}
-            onClick={() => selectInstances(!row.checked, row.id)}
+            onClick={() => selectInstance(!row.checked, row.id)}
             onMouseLeave={() => changeHover(false, row.id)}
             onMouseEnter={() => changeHover(true, row.id)}
           >
@@ -174,16 +132,13 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => selectInstances(true, row.id)}
+                onChange={() => selectInstance(true, row.id)}
               />
             ) : (
               i + 1
             )}
           </div>
         ),
-      extraHeadProps: {
-        className: classes.checkboxCell
-      },
       extraProps: {
         className: classes.checkboxCell
       }
@@ -228,7 +183,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
           columns={columns}
           firstCell={false}
           showPagination={true}
-          rows={selected}
+          rows={selectedList}
           searchCriterias={['phoneNumber', 'type', 'country']}
           getSearchList={setSearchList}
           // isLoadingData={isLoadingEntitlementTypes}
@@ -248,7 +203,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
           color='primary'
           className={classes.nextButton}
           onClick={handleNextButtonClick}
-          disabled={!selected.some((item) => item.checked === true)}
+          disabled={!selectedList.some((item) => item.checked === true)}
         >
           {t('next')}
         </Button>

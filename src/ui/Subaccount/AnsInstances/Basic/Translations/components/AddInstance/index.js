@@ -4,6 +4,7 @@ import { observer } from 'mobx-react'
 import Dialog from '@material-ui/core/Dialog'
 
 import SelectAccessPhoneNumber from './SelectAccessPhoneNumber'
+import AddDestinationNumber from './AddDestinationNumber'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -36,8 +37,8 @@ const Steps = ({ step, handleClose }) => {
   switch (step) {
     case 1:
       return <SelectAccessPhoneNumber handleClose={handleClose} />
-    // case 2:
-    //   return <AddDestinationNumber handleClose={handleClose} />
+    case 2:
+      return <AddDestinationNumber handleClose={handleClose} />
     // case 3:
     //   return <AddInstanceSuccess handleClose={handleClose} />
     default:
