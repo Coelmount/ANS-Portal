@@ -141,12 +141,11 @@ const CustomersTable = observer(({ t }) => {
         <CustomContainer>
           <TitleBlock
             titleData={titleData}
-            classes={classes}
             handleOpen={handleOpenCreateCustomer}
           />
         </CustomContainer>
         <CustomTable
-          classes={classes}
+          // classes={classes}
           rows={rows}
           isLoadingData={isLoadingCustomers}
           columns={columns}

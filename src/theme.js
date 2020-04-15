@@ -144,6 +144,11 @@ const theme = createMuiTheme({
       root: {
         padding: '24px 0px'
       }
+    },
+    MuiTableCell: {
+      root: {
+        padding: '9px 16px'
+      }
     }
   }
 })

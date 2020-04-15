@@ -378,15 +378,11 @@ const PhoneNumbers = observer(({ t }) => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock
-            titleData={titleData}
-            classes={classes}
-            handleOpen={handleAddModalClick}
-          />
+          <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
         </CustomContainer>
         <CustomTable
           firstCell={false}
-          classes={classes}
+          // classes={classes}
           rows={transformedNumbers}
           // isLoadingData={isLoadingCustomers}
           columns={columns}

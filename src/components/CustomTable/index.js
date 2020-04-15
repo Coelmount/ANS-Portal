@@ -15,7 +15,8 @@ import CustomTableHead from './components/CustomTableHead'
 import CustomTableBody from './components/CustomTableBody'
 import Pagination from './components/Pagination'
 import Loading from 'components/Loading'
-import { ConsoleWriter } from 'istanbul-lib-report'
+
+import useStyles from './defaultStyles'
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'
@@ -58,6 +59,7 @@ const CustomTable = ({
   showToolBar,
   t
 }) => {
+  const defaultClasses = useStyles()
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
@@ -102,10 +104,10 @@ const CustomTable = ({
     <Fragment>
       {rows.length > 0 && (
         <Fragment>
-          {' '}
           {showToolBar && (
             <CustomTableToolbar
               classes={classes}
+              defaultClasses={defaultClasses}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
               setQuery={setQuery}
@@ -119,13 +121,14 @@ const CustomTable = ({
           ) : (
             <TableContainer>
               <Table
-                className={classes.table}
+                className={`${classes.table} ${defaultClasses.table}`}
                 aria-labelledby='tableTitle'
                 size={'medium'}
                 aria-label='enhanced table'
               >
                 <CustomTableHead
                   classes={classes}
+                  defaultClasses={defaultClasses}
                   order={order}
                   orderBy={orderBy}
                   onRequestSort={handleRequestSort}
@@ -135,6 +138,7 @@ const CustomTable = ({
                 {list && list.length ? (
                   <CustomTableBody
                     classes={classes}
+                    defaultClasses={defaultClasses}
                     rowsPerPage={rowsPerPage}
                     page={clampedPage}
                     list={list}
@@ -146,7 +150,9 @@ const CustomTable = ({
                   <TableBody>
                     <TableRow>
                       <TableCell style={{ borderBottom: 'none' }}>
-                        <Typography className={classes.tableMessage}>
+                        <Typography
+                          className={`${classes.tableMessage} ${defaultClasses.tableMessage}`}
+                        >
                           {t('no_search_result')}
                         </Typography>
                       </TableCell>
@@ -159,6 +165,7 @@ const CustomTable = ({
           {showPagination && (
             <Pagination
               classes={classes}
+              defaultClasses={defaultClasses}
               page={page}
               totalPages={totalPages}
               rewindPage={rewindPage}
@@ -179,7 +186,8 @@ CustomTable.defaultProps = {
   showPagination: true,
   extraToolbarBlock: null,
   getSearchList: false,
-  showToolBar: true
+  showToolBar: true,
+  classes: {}
 }
 
 export default withNamespaces()(CustomTable)

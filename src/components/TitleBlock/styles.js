@@ -1,13 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   titleWrap: {
     display: 'flex',
-    height: 91,
+    height: 75,
     alignItems: 'center'
   },
   title: {
     flex: '1 1 100%',
+    marginTop: 5,
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 700,

@@ -11,6 +11,7 @@ import { Typography } from '@material-ui/core'
 
 const CustomTableHead = ({
   classes,
+  defaultClasses,
   order,
   orderBy,
   onRequestSort,
@@ -18,12 +19,12 @@ const CustomTableHead = ({
   firstCell,
   t
 }) => {
-  const createSortHandler = property => event => {
+  const createSortHandler = (property) => (event) => {
     onRequestSort(event, property)
   }
 
   return (
-    <TableHead className={classes.thead}>
+    <TableHead className={`${defaultClasses.thead} ${classes.thead}`}>
       <TableRow>
         {firstCell && <TableCell />}
         {columns.map(
@@ -40,15 +41,17 @@ const CustomTableHead = ({
                 key={id}
                 align={'left'}
                 sortDirection={orderBy === id ? order : false}
-                className={classes.headCellTitle}
+                className={`${defaultClasses.headCellTitle} ${classes.headCellTitle}`}
                 // component={'th'}
                 {...extraHeadProps}
               >
                 {headIcon ? (
-                  <Box className={classes.headCellWithCustomButtons}>
+                  <Box
+                    className={`${defaultClasses.headCellWithCustomButtons} ${classes.headCellWithCustomButtons}`}
+                  >
                     <Typography>{t(`${label}`)}</Typography>
                     <Box
-                      className={classes.customHeadIconWrap}
+                      className={`${defaultClasses.customHeadIconWrap} ${classes.customHeadIconWrap}`}
                       onClick={onIconClick}
                     >
                       {headIcon()}
@@ -66,7 +69,9 @@ const CustomTableHead = ({
                         : createSortHandler(id)
                     }
                     className={
-                      isSortAvailable === false ? classes.displayNone : ''
+                      isSortAvailable === false
+                        ? `${defaultClasses.displayNone} ${classes.displayNone}`
+                        : ''
                     }
                     hideSortIcon={isSortAvailable === false}
                   >
@@ -75,8 +80,8 @@ const CustomTableHead = ({
                       <p
                         className={
                           isSortAvailable === false
-                            ? classes.displayNone
-                            : classes.visuallyHidden
+                            ? defaultClasses.displayNone
+                            : defaultClasses.visuallyHidden
                         }
                       >
                         {order === 'desc'
@@ -96,7 +101,7 @@ const CustomTableHead = ({
 }
 
 CustomTableHead.propTypes = {
-  classes: PropTypes.object.isRequired,
+  defaultClasses: PropTypes.object.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,

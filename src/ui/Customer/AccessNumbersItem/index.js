@@ -279,7 +279,6 @@ const AccessNumbersItem = ({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock
             titleData={titleData}
-            classes={classes}
             handleOpen={() => {
               setShowAddNumber(true)
               setStep(1)
@@ -287,7 +286,7 @@ const AccessNumbersItem = ({ t }) => {
           />
         </CustomContainer>
         <CustomTable
-          classes={classes}
+          // classes={classes}
           columns={columns}
           firstCell={false}
           rows={selected}

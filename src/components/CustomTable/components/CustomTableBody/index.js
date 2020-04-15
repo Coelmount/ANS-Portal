@@ -8,6 +8,7 @@ import IdCell from 'utils/IdCell'
 
 const CustomTableBody = ({
   classes,
+  defaultClasses,
   rowsPerPage,
   page,
   list,
@@ -28,7 +29,12 @@ const CustomTableBody = ({
   ) {
     row = list[i]
     rows.push(
-      <TableRow hover className={classes.tableRow} tabIndex={-1} key={i}>
+      <TableRow
+        className={`${defaultClasses.tableRow} ${classes.tableRow}`}
+        tabIndex={-1}
+        key={i}
+        hover
+      >
         {firstCell && <IdCell cellValue={i} />}
         {columns.map((column) => {
           const extraProps = column.extraProps
@@ -48,7 +54,11 @@ const CustomTableBody = ({
       </TableRow>
     )
   }
-  return <TableBody className={classes.tbody}>{rows}</TableBody>
+  return (
+    <TableBody className={`${defaultClasses.tbody} ${classes.tbody}`}>
+      {rows}
+    </TableBody>
+  )
 }
 
 CustomTableBody.propTypes = {

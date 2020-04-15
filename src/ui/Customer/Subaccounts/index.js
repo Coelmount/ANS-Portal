@@ -128,13 +128,12 @@ const SubaccountsTable = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock
             titleData={titleData}
-            classes={classes}
             handleOpen={handleOpenCreateSubaccount}
           />
         </CustomContainer>
 
         <CustomTable
-          classes={classes}
+          // classes={classes}
           rows={rows}
           isLoadingData={isLoadingSubaccounts}
           columns={columns}
