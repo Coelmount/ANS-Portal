@@ -34,11 +34,16 @@ const TotalEntitlements = ({ handleClose, t }) => {
   } = EntitlementsStore
 
   const [entitlements, setEntitlements] = useState(toJS(checkedArr))
+
   const changeTotal = (newTotal, id) => {
     const newEntitlements = [...entitlements]
     const index = entitlements.findIndex((el) => el.id === id)
     newEntitlements[index].entitlement = Number(newTotal)
     setEntitlements(newEntitlements)
+  }
+
+  const handleBackButtonClick = () => {
+    changeStep(1)
   }
 
   const columns = [
@@ -102,7 +107,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
               variant='outlined'
               color='primary'
               className={classes.backButton}
-              onClick={() => changeStep(1)}
+              onClick={handleBackButtonClick}
             >
               <ChevronLeft />
               {t('back')}

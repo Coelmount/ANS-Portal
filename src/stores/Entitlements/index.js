@@ -12,9 +12,10 @@ export class Entitlements {
   step = 1
   closeModal = false
   isLoadingEntitlements = true
+  isLoadingEntitlementTypes = true
   isSending = false
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 
@@ -22,17 +23,25 @@ export class Entitlements {
     this.step = 1
   }
 
-  updateCheckedArr = selected => {
+  setDefaultEntitlementTypes = () => {
+    const newEntitlementTypes = this.entitlementTypes.map((item) => {
+      let result = { ...item, hover: false, checked: false }
+      return result
+    })
+    this.entitlementTypes = newEntitlementTypes
+  }
+
+  updateCheckedArr = (selected) => {
     this.checkedArr = selected
   }
 
-  getEntitlements = id => {
+  getEntitlements = (id) => {
     this.isLoadingEntitlements = true
-    axios.get(`${PROXY_P6}/tenants/${id}/entitlements`).then(res => {
+    axios.get(`${PROXY_P6}/tenants/${id}/entitlements`).then((res) => {
       if (res.status === 200) {
         this.entitlements = res.data.entitlments
         this.entitlementsIdArr = res.data.entitlments.map(
-          item => item.license_model_id
+          (item) => item.license_model_id
         )
         this.isLoadingEntitlements = false
       } else {
@@ -43,15 +52,15 @@ export class Entitlements {
 
   getEntitlementTypes = () => {
     this.isLoadingEntitlements = true
-    axios.get(`${PROXY_P6}/entitlement_types`).then(res => {
+    axios.get(`${PROXY_P6}/entitlement_types`).then((res) => {
       if (res.status === 200) {
         this.isLoadingEntitlementTypes = false
-        const result = res.data.customer_licenses.filter(item => {
+        const result = res.data.customer_licenses.filter((item) => {
           return !this.entitlementsIdArr.some(
-            entitlementId => entitlementId === item.id
+            (entitlementId) => entitlementId === item.id
           )
         })
-        this.entitlementTypes = result.map(item => {
+        this.entitlementTypes = result.map((item) => {
           return { checked: false, hover: false, ...item }
         })
       } else {
@@ -62,7 +71,7 @@ export class Entitlements {
 
   postEntitlements = (callback, id, entitlements) => {
     this.isSending = true
-    entitlements.forEach(item => {
+    entitlements.forEach((item) => {
       axios
         .post(`${PROXY_P6}/tenants/${id}/entitlements`, {
           license_model_id: item.id,
@@ -104,6 +113,7 @@ decorate(Entitlements, {
   setDefaultEntitlementsValues: action,
   getEntitlements: action,
   getEntitlementTypes: action,
+  setDefaultEntitlementTypes: action,
   postEntitlements: action,
   updateCheckedArr: action,
   putTotalEntitlements: action,

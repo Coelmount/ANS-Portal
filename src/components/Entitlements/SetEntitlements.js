@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import CustomTable from 'components/CustomTable'
 import EntitlementsStore from 'stores/Entitlements'
 import Checkbox from 'components/Checkbox'
+import Loading from 'components/Loading'
 
 import useStyles from './styles'
 
@@ -24,7 +25,8 @@ const SetEntitlements = (props) => {
     getEntitlementTypes,
     entitlementTypes,
     isLoadingEntitlementTypes,
-    updateCheckedArr
+    updateCheckedArr,
+    setDefaultEntitlementTypes
   } = EntitlementsStore
 
   const classes = useStyles()
@@ -40,6 +42,7 @@ const SetEntitlements = (props) => {
 
   useEffect(() => {
     getEntitlementTypes()
+    return () => setDefaultEntitlementTypes()
   }, [])
 
   useEffect(() => {
@@ -157,7 +160,7 @@ const SetEntitlements = (props) => {
   ]
 
   return (
-    <React.Fragment>
+    <Fragment>
       <DialogTitle className={classes.title}>
         {t('add_entitlements')}
         <IconButton
@@ -207,7 +210,7 @@ const SetEntitlements = (props) => {
           {t('next')}
         </Button>
       </DialogActions>
-    </React.Fragment>
+    </Fragment>
   )
 }
 
