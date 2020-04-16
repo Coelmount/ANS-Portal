@@ -28,7 +28,7 @@ const AddInstance = ({ open, handleClose }) => {
   const { step } = BasicTranslationsStore
 
   return (
-    <Dialog open={open} handleClose={handleClose} className={classes.root}>
+    <Dialog open={open} onClose={handleClose} className={classes.root}>
       <Steps step={step} handleClose={handleClose}></Steps>
     </Dialog>
   )

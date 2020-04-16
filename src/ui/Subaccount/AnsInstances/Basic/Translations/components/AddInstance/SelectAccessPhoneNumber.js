@@ -84,13 +84,15 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
       if (item.id === id) {
         result = {
           ...item,
-          checked: checked
+          checked: checked,
+          hover: false
         }
         setSelectedNumber(result)
       } else {
         result = {
           ...item,
-          checked: false
+          checked: false,
+          hover: false
         }
       }
       return result
@@ -175,7 +177,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
             'step'
           )} 1/2`}</Typography>
           <Typography className={classes.setEntitlementsTitle}>
-            {t('select_access_phone_number')}
+            {t('select_access_ph_num')}
           </Typography>
         </Box>
         <CustomTable

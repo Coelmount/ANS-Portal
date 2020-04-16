@@ -149,6 +149,11 @@ const theme = createMuiTheme({
       root: {
         padding: '9px 16px'
       }
+    },
+    MuiOutlinedInput: {
+      input: {
+        paddingLeft: 20
+      }
     }
   }
 })

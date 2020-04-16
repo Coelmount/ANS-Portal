@@ -63,13 +63,10 @@ const AddDestinationNumber = ({ handleClose, t }) => {
         </Box>
 
         <Box className={classes.inputsWrap}>
-          <Select
-            label={capitalize(t('country'))}
-            selectStyles={classes.select}
-            wrapperStyles={classes.wrapper}
-            options={selectCountries}
-            value={selectedCountry}
+          <Input
             onChange={(e) => setSelectedCountry(e.target.value)}
+            className={classes.wrapper}
+            placeholder={t('country')}
           />
 
           <Input
@@ -94,7 +91,7 @@ const AddDestinationNumber = ({ handleClose, t }) => {
           color='primary'
           className={classes.nextButton}
           onClick={handleAddButton}
-          // disabled={!entitlements.every((item) => item.entitlement >= 1)}
+          disabled={!selectedCountry || !destinationNumber}
         >
           {t('add')}
         </Button>

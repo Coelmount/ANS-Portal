@@ -51,7 +51,12 @@ const useStyles = makeStyles((theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: '10px'
+    right: 10,
+    top: 20,
+    '& > span > svg': {
+      width: 25,
+      height: 25
+    }
   },
   stepStyles: {
     marginRight: 24,

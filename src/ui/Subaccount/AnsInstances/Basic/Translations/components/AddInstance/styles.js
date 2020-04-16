@@ -97,7 +97,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   wrapper: {
-    marginTop: 10
+    width: 254,
+    marginTop: 40
   },
   modalDialog: {
     '& .MuiDialog-paperScrollPaper': {
@@ -122,7 +123,12 @@ const useStyles = makeStyles((theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: '10px'
+    right: 10,
+    top: 20,
+    '& > span > svg': {
+      width: 25,
+      height: 25
+    }
   },
   stepStyles: {
     marginRight: 24,
@@ -299,8 +305,8 @@ const useStyles = makeStyles((theme) => ({
   subtitle: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: 29,
-    marginBottom: 40
+    marginTop: 29
+    // marginBottom: 40
   },
   secondStepSubtitle: {
     display: 'flex',
@@ -310,7 +316,7 @@ const useStyles = makeStyles((theme) => ({
   },
   setEntitlementsTitle: {
     fontSize: 18,
-    fontWeight: 500,
+    fontWeight: 600,
     fontFamily: 'MTN'
   },
   sortLabel: {

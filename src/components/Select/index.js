@@ -46,6 +46,16 @@ const useStyles = makeStyles(() => ({
       transform: 'translate(62px, 20px) scale(1)'
     }
   },
+  labelWithoutIcon: {
+    width: 'auto',
+    '& .MuiInputLabel-shrink': {
+      transform: 'translate(13px, -11px) scale(0.75) !important',
+      color: '#666666'
+    },
+    '& .MuiInputLabel-formControl': {
+      transform: 'translate(20px, 20px) scale(1)'
+    }
+  },
   input: {
     width: '392px',
     '& .MuiInputLabel-outlined': {
@@ -58,8 +68,8 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const CustomSelect = props => {
-  const classes = useStyles()
+const CustomSelect = (props) => {
+  const classes = useStyles(props)
   const { wrapperStyles, selectStyles, ...otherProps } = props
 
   return (
@@ -69,7 +79,9 @@ const CustomSelect = props => {
       }`}
     >
       {!!props.icon && <Box className={classes.icon}>{props.icon}</Box>}
-      <FormControl className={classes.label}>
+      <FormControl
+        className={props.icon ? classes.label : classes.labelWithoutIcon}
+      >
         <InputLabel>{props.label}</InputLabel>
         <Select
           className={`${props.icon ? classes.inputIcon : classes.input} ${
@@ -84,7 +96,7 @@ const CustomSelect = props => {
             </MenuItem>
           )}
           {has(props, 'options')
-            ? props.options.map(opt => (
+            ? props.options.map((opt) => (
                 <MenuItem key={opt.value} value={opt.value}>
                   {opt.label}
                 </MenuItem>

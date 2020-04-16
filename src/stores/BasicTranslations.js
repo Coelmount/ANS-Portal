@@ -10,6 +10,11 @@ export class BasicTranslations {
     this.step = step
   }
 
+  setDefaultValues = () => {
+    this.step = 1
+    this.selectedPhoneNumber = null
+  }
+
   updateSelectedPhoneNumber = (number) => {
     this.selectedPhoneNumber = number
   }
@@ -23,6 +28,7 @@ export class BasicTranslations {
 decorate(BasicTranslations, {
   step: observable,
   changeStep: action,
+  setDefaultValues: action,
   updateSelectedPhoneNumber: action,
   postDestinationNumber: action
 })

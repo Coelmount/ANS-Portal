@@ -23,7 +23,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddInstance from './components/AddInstance'
 
-import PhoneNumbersStore from 'stores/PhoneNumbers'
+import BasicTranslationsStore from 'stores/BasicTranslations'
 
 import useStyles from './styles'
 import arrowsIcon from 'source/images/svg/arrows.svg'
@@ -112,20 +112,14 @@ const Translations = observer(({ t }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
-  const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
-    false
-  )
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
+
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
 
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
 
-  const {
-    setPhoneNumbers,
-    setDefaultValues,
-    getPhoneNumbers
-  } = PhoneNumbersStore
+  const { setDefaultValues } = BasicTranslationsStore
 
   const handleAddInstanceModalOpen = () => {
     setIsAddInstanceModalOpen(true)
@@ -133,6 +127,7 @@ const Translations = observer(({ t }) => {
 
   const handleAddInstanceModalClose = () => {
     setIsAddInstanceModalOpen(false)
+    setDefaultValues()
   }
 
   const handlePopoverOpen = (event) => {
@@ -141,6 +136,10 @@ const Translations = observer(({ t }) => {
 
   const handlePopoverClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleMenuItemClick = (id) => {
+    if (id === 1) handleAddInstanceModalOpen()
   }
 
   const selectNumbers = (checked, id) => {
@@ -202,15 +201,6 @@ const Translations = observer(({ t }) => {
     }
   }
 
-  const handleAddModalClick = () => {
-    setIsAddPhoneNumbersModalOpen(true)
-  }
-
-  const handleAddModalClose = () => {
-    setIsAddPhoneNumbersModalOpen(false)
-    setDefaultValues()
-  }
-
   const changeHover = (newHover, number) => {
     const newNumbers = [...numbers]
     const index = numbers.findIndex((el) => el.id === number)
@@ -219,12 +209,12 @@ const Translations = observer(({ t }) => {
   }
 
   useEffect(() => {
-    getPhoneNumbers(match.customerId, match.groupId)
+    // getPhoneNumbers(match.customerId, match.groupId)
   }, [])
 
   useEffect(() => {
     handleCheckedStates(searchList)
-    setPhoneNumbers(searchList)
+    // setPhoneNumbers(searchList)
   }, [searchList])
 
   const columns = [
@@ -377,7 +367,7 @@ const Translations = observer(({ t }) => {
           <Box className={classes.addPopoverWrap}>
             {addPopoverItems.map((item) => (
               <MenuItem
-                onClick={item.id === 1 && handleAddInstanceModalOpen}
+                onClick={() => handleMenuItemClick(item.id)}
                 value={item.label}
                 key={item.id}
                 className={classes.addPopoverItem}
@@ -429,7 +419,7 @@ const Translations = observer(({ t }) => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
+          <TitleBlock titleData={titleData} />
         </CustomContainer>
         <CustomTable
           firstCell={false}
