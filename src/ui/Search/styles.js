@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%'
   },
@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
     borderRadius: 3,
     '&:focus': {
-      outline: `2px solid ${theme.palette.primary.main}`
+      outline: `3px solid ${theme.palette.primary.main}`
     }
   },
   searchIconWrap: {
