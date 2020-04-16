@@ -110,7 +110,11 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'name',
       label: 'country',
-      getCellData: (row) => <Typography>{row.name.split('-')[0]}</Typography>
+      getCellData: (row) => (
+        <Typography className={classes.countryCellText}>
+          {row.name.split('-')[0]}
+        </Typography>
+      )
     },
     {
       id: 'number_type',

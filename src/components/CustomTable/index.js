@@ -83,6 +83,7 @@ const CustomTable = ({
   }, [rows, query, order, orderBy, getSearchList])
 
   const totalPages = useMemo(() => {
+    if (rowsPerPage > list.length) return 0
     const pages = Math.ceil(list.length / rowsPerPage)
     return pages ? pages - 1 : pages
   }, [list.length, rowsPerPage])
@@ -100,6 +101,11 @@ const CustomTable = ({
       setPage(clampedPage + step)
   }
 
+  const changeRowsPerPage = (newValue) => {
+    if (newValue > list.length) setPage(0)
+    setRowsPerPage(newValue)
+  }
+
   return (
     <Fragment>
       {rows.length > 0 && (
@@ -109,7 +115,7 @@ const CustomTable = ({
               classes={classes}
               defaultClasses={defaultClasses}
               rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
+              setRowsPerPage={changeRowsPerPage}
               setQuery={setQuery}
               showSearchBar={showSearchBar}
               showPagination={showPagination}

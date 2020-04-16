@@ -96,6 +96,9 @@ const useStyles = makeStyles((theme) => ({
   },
   textCenter: {
     textAlign: 'center'
+  },
+  countryCellText: {
+    fontWeight: 600
   }
 }))
 
