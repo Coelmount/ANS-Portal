@@ -22,11 +22,15 @@ const useStyles = makeStyles((theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    right: '10px'
+    right: 10,
+    top: 20,
+    '& > span > svg': {
+      width: 25,
+      height: 25
+    }
   },
   stepStyles: {
     marginRight: 24,
-    paddingLeft: 44,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
@@ -175,7 +179,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '24px'
   },
   entitlementsDialogContent: {
-    padding: '8px 40px'
+    padding: '0px 44px '
   },
   root: {
     width: '100%'
@@ -285,6 +289,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500
   },
   table: {
+    marginTop: 27
     // minWidth: 750
   },
   visuallyHidden: {
@@ -518,7 +523,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   totalInput: {
-    width: 70
+    width: 68
   },
   subtitle: {
     display: 'flex',
@@ -533,7 +538,7 @@ const useStyles = makeStyles((theme) => ({
   },
   setEntitlementsTitle: {
     fontSize: 18,
-    fontWeight: 500,
+    fontWeight: 600,
     fontFamily: 'MTN'
   },
   checkbox: {
@@ -575,6 +580,18 @@ const useStyles = makeStyles((theme) => ({
       }
     },
     textAlign: 'center'
+  },
+  totalInputCell: {
+    '& > div > div': {
+      justifyContent: 'center'
+    }
+  },
+  entitlementHeadCell: {
+    paddingLeft: 15,
+    '& > span': {
+      fontSize: 16,
+      fontWeight: 600
+    }
   }
 }))
 

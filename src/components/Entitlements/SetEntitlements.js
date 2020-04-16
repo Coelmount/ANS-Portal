@@ -119,7 +119,13 @@ const SetEntitlements = (props) => {
   const columns = [
     {
       id: 'checkbox',
-      label: <Checkbox checked={selectAll} onChange={handleSelectAll} />,
+      label: (
+        <Checkbox
+          className={classes.headCheckbox}
+          checked={selectAll}
+          onChange={handleSelectAll}
+        />
+      ),
       isSortAvailable: false,
       getCellData: (row, i) =>
         row.checked ? (
@@ -155,7 +161,10 @@ const SetEntitlements = (props) => {
     },
     {
       id: 'name',
-      label: 'entitlement'
+      label: 'entitlement',
+      extraProps: {
+        className: classes.entitlementHeadCell
+      }
     }
   ]
 
@@ -184,7 +193,7 @@ const SetEntitlements = (props) => {
           classes={classes}
           columns={columns}
           firstCell={false}
-          showPagination={false}
+          showPagination={true}
           rows={selected}
           searchCriterias={['name']}
           getSearchList={setSearchList}

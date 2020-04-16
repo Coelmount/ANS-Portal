@@ -50,13 +50,19 @@ const TotalEntitlements = ({ handleClose, t }) => {
     {
       id: 'name',
       label: 'entitlement',
-      isSortAvailable: false
+      isSortAvailable: false,
+      extraHeadProps: {
+        className: classes.entitlementHeadCell
+      }
     },
     {
       id: 'total',
       label: 'total',
       extraHeadProps: {
         className: classes.totalHeader
+      },
+      extraProps: {
+        className: classes.totalInputCell
       },
       getCellData: (row) => (
         <Box>
@@ -84,7 +90,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
       ) : (
         <Fragment>
           <DialogTitle className={classes.title}>
-            {t('edit_entitlements')}
+            {t('add_entitlements')}
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -94,6 +100,14 @@ const TotalEntitlements = ({ handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
+            <Box className={classes.subtitle}>
+              <Typography className={classes.stepStyles}>{`${t(
+                'step'
+              )} 2/2`}</Typography>
+              <Typography className={classes.setEntitlementsTitle}>
+                {t('set_entitlements_limit')}
+              </Typography>
+            </Box>
             <CustomTable
               showSearchBar={false}
               classes={classes}
