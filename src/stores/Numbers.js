@@ -29,7 +29,7 @@ export class NumbersStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Notistack is great with mobx!',
+          message: 'Feiled to fetch available numbers',
           options: {
             variant: 'error'
           }
