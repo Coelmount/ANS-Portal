@@ -53,7 +53,6 @@ const SingleNumber = ({ t }) => {
 
   const handleSaveButtonClick = () => {
     let callback = null
-    console.log(outboundCountry.length, destinationNumber.length, 'val')
     if (
       selectedInstance.accessNumber &&
       selectedInstance.accessCountry &&
