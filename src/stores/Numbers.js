@@ -5,6 +5,8 @@ import queryString from 'query-string'
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 
+import SnackbarStore from './Snackbar'
+
 export class NumbersStore {
   availableNumbers = []
   availableNumbersTable = []
@@ -25,6 +27,14 @@ export class NumbersStore {
           res.data.suggestions
         )
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Notistack is great with mobx!',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 
   postAssignNumbersToCustomer = tenantId => {
