@@ -10,14 +10,13 @@ import Box from '@material-ui/core/Box'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
 import EntitlementsStore from 'stores/Entitlements'
-
-import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
-
 import CreateSubaccountStore from 'stores/CreateSubaccount'
+
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
