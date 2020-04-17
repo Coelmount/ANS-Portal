@@ -66,13 +66,13 @@ const AddDestinationNumber = ({ handleClose, t }) => {
           <Input
             onChange={(e) => setSelectedCountry(e.target.value)}
             className={classes.wrapper}
-            placeholder={t('country')}
+            label={t('country')}
           />
 
           <Input
             onChange={(e) => setDestinationNumber(e.target.value)}
             className={classes.input}
-            placeholder={t('destination_number')}
+            label={t('destination_number')}
           />
         </Box>
       </DialogContent>
