@@ -98,6 +98,19 @@ const useStyles = makeStyles((theme) => ({
   },
   countryCellText: {
     fontWeight: 600
+  },
+  // delete cell
+  deleteCell: {
+    paddingRight: '38px !important'
+  },
+  deleteCustomerIcon: {
+    width: 20,
+    height: 20,
+    marginTop: 7,
+    color: theme.palette.black,
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }))
 

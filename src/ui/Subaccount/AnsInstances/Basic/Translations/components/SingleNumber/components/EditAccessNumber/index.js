@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
+
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -10,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import Dialog from '@material-ui/core/Dialog'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 import CustomTable from 'components/CustomTable'
@@ -20,58 +22,63 @@ import useStyles from './styles'
 const PHONE_NUMBERS = [
   {
     id: 1,
-    country: 'South Africa',
-    phoneNumber: '+27 53423437',
+    accessCountry: 'South Africa',
+    accessNumber: '+2753423437',
     type: 'local',
+    enabled: false,
     checked: false,
     hover: false
   },
   {
     id: 2,
-    country: 'Ghana',
-    phoneNumber: '+31 53423467',
+    accessCountry: 'Ghana',
+    accessNumber: '+3153423421',
     type: 'local',
+    enabled: true,
     checked: false,
     hover: false
   },
   {
     id: 3,
-    country: 'South Africa',
-    phoneNumber: '+27 53424437',
-    type: 'geo',
+    accessCountry: 'South Africa',
+    accessNumber: '+2753423437',
+    type: 'local',
+    enabled: true,
     checked: false,
     hover: false
   },
   {
     id: 4,
-    country: 'South Africa',
-    phoneNumber: '+27 53423467',
+    accessCountry: 'South Africa',
+    accessNumber: '+2753423467',
     type: 'local',
+    enabled: false,
     checked: false,
     hover: false
   },
   {
     id: 5,
-    country: 'South Africa',
-    phoneNumber: '+27 53423438',
+    accessCountry: 'South Africa',
+    accessNumber: '+2753423312',
     type: 'local',
+    enabled: true,
     checked: false,
     hover: false
   },
   {
     id: 6,
-    country: 'South Africa',
-    phoneNumber: '+27 53423431',
+    accessCountry: 'South Africa',
+    accessNumber: '+2753423432',
     type: 'local',
+    enabled: false,
     checked: false,
     hover: false
   }
 ]
 
-const SelectAccessPhoneNumber = ({ handleClose, t }) => {
+const EditAccessNumber = ({ open, handleClose, defaultInboundCountry, t }) => {
   const classes = useStyles()
-
-  const { step, changeStep, updateSelectedPhoneNumber } = BasicTranslationsStore
+  const { step, changeStep, updateSelectedInstance } = BasicTranslationsStore
 
   const [selectedList, setSelectedList] = useState(PHONE_NUMBERS)
   const [selectedNumber, setSelectedNumber] = useState(null)
@@ -108,8 +115,8 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   }
 
   const handleNextButtonClick = () => {
-    updateSelectedPhoneNumber(selectedNumber)
-    changeStep(2)
+    updateSelectedInstance(selectedNumber)
+    handleClose()
   }
 
   const columns = [
@@ -150,7 +157,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
       }
     },
     {
-      id: 'phoneNumber',
+      id: 'accessNumber',
       label: 'number'
     },
     {
@@ -158,15 +165,15 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
       label: 'type'
     },
     {
-      id: 'country',
-      label: 'country'
+      id: 'accessCountry',
+      label: 'accessCountry'
     }
   ]
 
   return (
-    <Fragment>
+    <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
-        {t('add_ans_basic_instance')}
+        {t('edit_ans_basic_instance')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -177,11 +184,8 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
         <Box className={classes.subtitle}>
-          <Typography className={classes.stepStyles}>{`${t(
-            'step'
-          )} 1/2`}</Typography>
           <Typography className={classes.setEntitlementsTitle}>
-            {t('select_access_ph_num')}
+            {t('select_new_inbound_number')}
           </Typography>
         </Box>
         <CustomTable
@@ -190,8 +194,9 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
           firstCell={false}
           showPagination={true}
           rows={selectedList}
-          searchCriterias={['phoneNumber', 'type', 'country']}
+          searchCriterias={['accessNumber', 'type', 'accessCountry']}
           getSearchList={setSearchList}
+          initialSearchQuery={defaultInboundCountry}
           // isLoadingData={isLoadingEntitlementTypes}
         />
       </DialogContent>
@@ -209,13 +214,13 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
           color='primary'
           className={classes.nextButton}
           onClick={handleNextButtonClick}
-          disabled={!selectedList.some((item) => item.checked === true)}
+          disabled={!selectedNumber}
         >
-          {t('next')}
+          {t('save')}
         </Button>
       </DialogActions>
-    </Fragment>
+    </Dialog>
   )
 }
 
-export default withNamespaces()(observer(SelectAccessPhoneNumber))
+export default withNamespaces()(observer(EditAccessNumber))

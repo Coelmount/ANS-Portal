@@ -4,10 +4,11 @@ import { withNamespaces } from 'react-i18next'
 
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-import SearchIcon from '@material-ui/icons/Search'
+import Typography from '@material-ui/core/Typography'
 
+import SearchIcon from '@material-ui/icons/Search'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import { Typography } from '@material-ui/core'
+import clearResultIcon from 'source/images/svg/clear-result.svg'
 
 const rowsPerPageNumbers = [5, 10, 15, 25, 50, 100]
 
@@ -17,6 +18,7 @@ const CustomTableToolbar = (props) => {
     defaultClasses,
     rowsPerPage,
     setRowsPerPage,
+    query,
     setQuery,
     t,
     showSearchBar,
@@ -28,19 +30,22 @@ const CustomTableToolbar = (props) => {
     const value = e.target.value.toLowerCase()
     setQuery(value)
   }
-
   return (
     <div className={`${defaultClasses.toolbarWrap} ${classes.toolbarWrap}`}>
       {showSearchBar && (
         <div className={`${defaultClasses.searchWrap} ${classes.searchWrap}`}>
           <input
+            value={query}
             className={`${defaultClasses.searchInput} ${classes.searchInput}`}
             placeholder={t('search_input_placeholder')}
             onChange={handleSearch}
           />
-          <SearchIcon
-            className={`${defaultClasses.searchIcon} ${classes.searchIcon}`}
-          />
+          <img
+            src={clearResultIcon}
+            onClick={() => setQuery('')}
+            className={defaultClasses.clearResultIcon}
+            alt='clear result icon'
+          ></img>
         </div>
       )}
       {extraToolbarBlock && extraToolbarBlock()}

@@ -17,6 +17,7 @@ import AnsInstances from 'ui/Subaccount/AnsInstances'
 import TimeBasedRouting from 'ui/Subaccount/AnsInstances/TimeBasedRouting'
 import IVR from 'ui/Subaccount/AnsInstances/IVR'
 import Translations from 'ui/Subaccount/AnsInstances/Basic/Translations'
+import TranslationsSingleNumber from 'ui/Subaccount/AnsInstances/Basic/Translations/components/SingleNumber'
 import BulkJobs from 'ui/Subaccount/AnsInstances/Basic/BulkJobs'
 import Destinations from 'ui/Subaccount/AnsInstances/Advanced/Destinations'
 import DestinationGroups from 'ui/Subaccount/AnsInstances/Advanced/DestinationGroups'
@@ -69,6 +70,11 @@ const userComponents = [
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/translations',
     component: <Translations />
+  },
+  {
+    path:
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/translations/:instanceNumber',
+    component: <TranslationsSingleNumber />
   },
   {
     path:

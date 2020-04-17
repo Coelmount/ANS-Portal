@@ -33,11 +33,9 @@ const PHONE_NUMBERS = [
   {
     id: 1,
     accessCountry: 'South Africa',
-    accessCountryCode: '+27',
-    accessNumber: '53423437',
+    accessNumber: '+2753423437',
     destinationCountry: 'USA',
-    destinationCountryCode: '+1',
-    destinationNumber: '23243242',
+    destinationNumber: '+123243242',
     enabled: false,
     checked: false,
     hover: false
@@ -45,11 +43,9 @@ const PHONE_NUMBERS = [
   {
     id: 2,
     accessCountry: 'Ghana',
-    accessCountryCode: '+27',
-    accessNumber: '53423421',
+    accessNumber: '+3153423421',
     destinationCountry: 'USA',
-    destinationCountryCode: '+1',
-    destinationNumber: '23243242',
+    destinationNumber: '+123243242',
     enabled: true,
     checked: false,
     hover: false
@@ -57,11 +53,9 @@ const PHONE_NUMBERS = [
   {
     id: 3,
     accessCountry: 'South Africa',
-    accessCountryCode: '+27',
-    accessNumber: '53423437',
+    accessNumber: '+2753423437',
     destinationCountry: 'USA',
-    destinationCountryCode: '+1',
-    destinationNumber: '23243242',
+    destinationNumber: '+123243242',
     enabled: true,
     checked: false,
     hover: false
@@ -69,11 +63,9 @@ const PHONE_NUMBERS = [
   {
     id: 4,
     accessCountry: 'South Africa',
-    accessCountryCode: '+27',
-    accessNumber: '53423467',
+    accessNumber: '+2753423467',
     destinationCountry: 'USA',
-    destinationCountryCode: '+1',
-    destinationNumber: '23243212',
+    destinationNumber: '+123243212',
     enabled: false,
     checked: false,
     hover: false
@@ -81,11 +73,9 @@ const PHONE_NUMBERS = [
   {
     id: 5,
     accessCountry: 'South Africa',
-    accessCountryCode: '+27',
-    accessNumber: '53423312',
+    accessNumber: '+2753423312',
     destinationCountry: 'USA',
-    destinationCountryCode: '+1',
-    destinationNumber: '23243612',
+    destinationNumber: '+123243612',
     enabled: true,
     checked: false,
     hover: false
@@ -93,11 +83,9 @@ const PHONE_NUMBERS = [
   {
     id: 6,
     accessCountry: 'South Africa',
-    accessCountryCode: '+27',
-    accessNumber: '53423432',
+    accessNumber: '+2753423432',
     destinationCountry: 'USA',
-    destinationCountryCode: '+1',
-    destinationNumber: '23243231',
+    destinationNumber: '+123243231',
     enabled: false,
     checked: false,
     hover: false
@@ -119,7 +107,7 @@ const Translations = observer(({ t }) => {
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
 
-  const { setDefaultValues } = BasicTranslationsStore
+  const { setDefaultValues, updateSelectedInstance } = BasicTranslationsStore
 
   const handleAddInstanceModalOpen = () => {
     setIsAddInstanceModalOpen(true)
@@ -265,9 +253,13 @@ const Translations = observer(({ t }) => {
       isSortAvailable: false,
       getCellData: (row) => (
         <Box>
-          <Typography
-            className={classes.accessNumberText}
-          >{`${row.accessCountryCode} ${row.accessNumber}`}</Typography>
+          <Link
+            onClick={() => updateSelectedInstance(row)}
+            to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.accessNumber}`}
+            className={classes.link}
+          >
+            {row.accessNumber}
+          </Link>
           <Typography>{row.accessCountry}</Typography>
         </Box>
       ),
@@ -294,9 +286,9 @@ const Translations = observer(({ t }) => {
       isSortAvailable: false,
       getCellData: (row) => (
         <Box>
-          <Typography
-            className={classes.destinationNumberText}
-          >{`${row.destinationCountryCode} ${row.destinationNumber}`}</Typography>
+          <Typography className={classes.destinationNumberText}>
+            {row.destinationNumber}
+          </Typography>
           <Typography>{row.destinationCountry}</Typography>
         </Box>
       )
@@ -430,9 +422,7 @@ const Translations = observer(({ t }) => {
           searchCriterias={[
             'accessCountry',
             'destinationCountry',
-            'accessCountryCode',
             'accessNumber',
-            'destinationCountryCode',
             'destinationNumber'
           ]}
           extraToolbarBlock={toolbarButtonsBlock}
