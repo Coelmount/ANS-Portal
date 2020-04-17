@@ -40,9 +40,9 @@ const FirstStepNFN = props => {
     getCustomer(match.customerId)
   }, [])
 
-  if (isLoadingCustomer) {
-    return <Loading />
-  }
+  // if (isLoadingCustomer) {
+  //   return <Loading />
+  // }
 
   return (
     <React.Fragment>
