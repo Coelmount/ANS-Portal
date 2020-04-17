@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
       color: '#598597'
     }
   },
-
   headCellWithCustomButtons: {
     display: 'flex',
     alignItems: 'center',
