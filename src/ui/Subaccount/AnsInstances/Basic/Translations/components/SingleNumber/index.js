@@ -28,7 +28,6 @@ const SingleNumber = ({ t }) => {
 
   const { selectedInstance, postAccessNumber } = BasicTranslationsStore
   const defaultDestinationNumber = '+1231231313'
-  const defaultInboundCountry = 'ghana'
   const defaultOutboundCountry = 'USA'
 
   const [outboundCountry, setOutboundCountry] = useState(defaultOutboundCountry)
@@ -94,10 +93,7 @@ const SingleNumber = ({ t }) => {
             </Box>
 
             <Input
-              value={
-                (selectedInstance && selectedInstance.accessCountry) ||
-                defaultInboundCountry
-              }
+              value={selectedInstance && selectedInstance.accessCountry}
               className={`${classes.input} ${classes.bottomInput}`}
               label={t('inbound_country')}
               disabled
@@ -113,14 +109,14 @@ const SingleNumber = ({ t }) => {
               defaultValue={destinationNumber}
               onChange={(e) => setDestinationNumber(e.target.value)}
               className={classes.input}
-              label={t('destination')}
+              label={t('destination_phone_number')}
             />
 
             <Input
               defaultValue={outboundCountry}
               onChange={(e) => setOutboundCountry(e.target.value)}
               className={`${classes.input} ${classes.bottomInput}`}
-              label={t('onbound_country')}
+              label={t('outbound_country')}
             />
 
             <Box className={classes.buttonsWrap}>
@@ -161,7 +157,7 @@ const SingleNumber = ({ t }) => {
           <EditAccessNumber
             open={isEditAccessNumberModalOpen}
             handleClose={handleCloseModal}
-            defaultInboundCountry={defaultInboundCountry}
+            defaultInboundCountry={selectedInstance.accessCountry}
           />
         )}
       </Paper>

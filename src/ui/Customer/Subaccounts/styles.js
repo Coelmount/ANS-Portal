@@ -15,6 +15,18 @@ const useStyles = makeStyles((theme) => ({
     '&:focus': {
       color: '#598597'
     }
+  },
+  deleteCell: {
+    paddingRight: '38px !important'
+  },
+  deleteCustomerIcon: {
+    width: 20,
+    height: 20,
+    marginTop: 7,
+    color: theme.palette.black,
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }))
 

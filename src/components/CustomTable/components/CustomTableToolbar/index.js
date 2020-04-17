@@ -23,8 +23,7 @@ const CustomTableToolbar = (props) => {
     t,
     showSearchBar,
     showPagination,
-    extraToolbarBlock,
-    initialSearchQuery
+    extraToolbarBlock
   } = props
 
   const handleSearch = (e) => {

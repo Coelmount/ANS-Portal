@@ -76,14 +76,8 @@ const PHONE_NUMBERS = [
   }
 ]
 
-const EditAccessNumber = ({
-  open,
-  handleClose,
-  defaultInboundaccessCountry,
-  t
-}) => {
+const EditAccessNumber = ({ open, handleClose, defaultInboundCountry, t }) => {
   const classes = useStyles()
-
   const { step, changeStep, updateSelectedInstance } = BasicTranslationsStore
 
   const [selectedList, setSelectedList] = useState(PHONE_NUMBERS)
@@ -179,7 +173,7 @@ const EditAccessNumber = ({
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
-        {t('add_ans_basic_instance')}
+        {t('edit_ans_basic_instance')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -202,7 +196,7 @@ const EditAccessNumber = ({
           rows={selectedList}
           searchCriterias={['accessNumber', 'type', 'accessCountry']}
           getSearchList={setSearchList}
-          initialSearchQuery={defaultInboundaccessCountry}
+          initialSearchQuery={defaultInboundCountry}
           // isLoadingData={isLoadingEntitlementTypes}
         />
       </DialogContent>

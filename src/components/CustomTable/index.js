@@ -70,7 +70,9 @@ const CustomTable = ({
   const list = useMemo(() => {
     const getFilter = (row) => {
       for (let i = 0; i < searchCriterias.length; i++) {
-        if (row[searchCriterias[i]].toLowerCase().includes(query)) {
+        if (
+          row[searchCriterias[i]].toLowerCase().includes(query.toLowerCase())
+        ) {
           return true
         }
       }
