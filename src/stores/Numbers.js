@@ -3,6 +3,7 @@ import merge from 'lodash/merge'
 import queryString from 'query-string'
 
 import axios from 'utils/axios'
+import { PROXY_P6 } from 'utils/axios'
 
 export class NumbersStore {
   availableNumbers = []
@@ -14,7 +15,7 @@ export class NumbersStore {
     this.params = params
     return axios
       .get(
-        `/custom/ans/available_numbers?${queryString.stringify(params, {
+        `${PROXY_P6}/available_numbers?${queryString.stringify(params, {
           skipEmptyString: true
         })}`
       )
@@ -30,13 +31,13 @@ export class NumbersStore {
     const selectedNumbers = this.availableNumbersTable.filter(el => el.checked)
     const dataForPost = this.parseNumbersToPost(selectedNumbers)
     dataForPost.forEach(data => {
-      axios.post(`/custom/ans/tenants/${tenantId}/numbers`, data)
+      axios.post(`${PROXY_P6}/tenants/${tenantId}/numbers`, data)
     })
   }
 
   parseNumbersToPost = numbers => {
     const parsedNumbers = numbers.map(el => ({
-      country_code: el.code,
+      country_code: `${el.code}`,
       range: [Number(el.rangeFrom), Number(el.rangeTo)]
     }))
     return parsedNumbers
