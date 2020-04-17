@@ -235,11 +235,12 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     marginRight: 20
   },
-  searchIcon: {
+  clearResultIcon: {
     position: 'absolute',
     top: 15,
     right: 20,
-    color: theme.palette.black
+    color: theme.palette.black,
+    cursor: 'pointer'
   },
   perPageWrap: {
     display: 'flex',

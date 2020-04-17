@@ -107,7 +107,7 @@ const Translations = observer(({ t }) => {
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
 
-  const { setDefaultValues, updateCurrentInstance } = BasicTranslationsStore
+  const { setDefaultValues, updateSelectedInstance } = BasicTranslationsStore
 
   const handleAddInstanceModalOpen = () => {
     setIsAddInstanceModalOpen(true)
@@ -254,9 +254,9 @@ const Translations = observer(({ t }) => {
       getCellData: (row) => (
         <Box>
           <Link
+            onClick={() => updateSelectedInstance(row)}
             to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.accessNumber}`}
             className={classes.link}
-            onClick={() => updateCurrentInstance(row)}
           >
             {row.accessNumber}
           </Link>
@@ -286,9 +286,9 @@ const Translations = observer(({ t }) => {
       isSortAvailable: false,
       getCellData: (row) => (
         <Box>
-          <Typography
-            className={classes.destinationNumberText}
-          >{`${row.destinationCountryCode} ${row.destinationNumber}`}</Typography>
+          <Typography className={classes.destinationNumberText}>
+            {row.destinationNumber}
+          </Typography>
           <Typography>{row.destinationCountry}</Typography>
         </Box>
       )
@@ -422,9 +422,7 @@ const Translations = observer(({ t }) => {
           searchCriterias={[
             'accessCountry',
             'destinationCountry',
-            'accessCountryCode',
             'accessNumber',
-            'destinationCountryCode',
             'destinationNumber'
           ]}
           extraToolbarBlock={toolbarButtonsBlock}

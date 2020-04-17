@@ -81,6 +81,9 @@ const useStyles = makeStyles((theme) => ({
     width: 19,
     height: 19
   },
+  doneIcon: {
+    marginLeft: 2
+  },
   buttonLabel: {
     fontSize: 14,
     fontFamily: 'MTN'

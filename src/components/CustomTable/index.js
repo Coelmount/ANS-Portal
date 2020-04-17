@@ -57,6 +57,7 @@ const CustomTable = ({
   searchCriterias,
   getSearchList,
   showToolBar,
+  initialSearchQuery,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -64,7 +65,7 @@ const CustomTable = ({
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(initialSearchQuery)
 
   const list = useMemo(() => {
     const getFilter = (row) => {
@@ -116,10 +117,12 @@ const CustomTable = ({
               defaultClasses={defaultClasses}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={changeRowsPerPage}
+              query={query}
               setQuery={setQuery}
               showSearchBar={showSearchBar}
               showPagination={showPagination}
               extraToolbarBlock={extraToolbarBlock}
+              initialSearchQuery={initialSearchQuery}
             />
           )}
           {isLoadingData ? (
@@ -185,7 +188,8 @@ const CustomTable = ({
 
 CustomTable.propTypes = {
   showPagination: PropTypes.bool,
-  extraToolbarBlock: PropTypes.func
+  extraToolbarBlock: PropTypes.func,
+  initialSearchQuery: PropTypes.string
 }
 
 CustomTable.defaultProps = {
@@ -193,7 +197,8 @@ CustomTable.defaultProps = {
   extraToolbarBlock: null,
   getSearchList: false,
   showToolBar: true,
-  classes: {}
+  classes: {},
+  initialSearchQuery: ''
 }
 
 export default withNamespaces()(CustomTable)
