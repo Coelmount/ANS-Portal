@@ -52,15 +52,17 @@ const SingleNumber = ({ t }) => {
   }
 
   const handleSaveButtonClick = () => {
-    const callback = history.push(
-      `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`
-    )
+    let callback = null
+    console.log(outboundCountry.length, destinationNumber.length, 'val')
     if (
       selectedInstance.accessNumber &&
       selectedInstance.accessCountry &&
-      outboundCountry &&
-      destinationNumber
+      outboundCountry.length > 0 &&
+      destinationNumber.length > 0
     ) {
+      callback = history.push(
+        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`
+      )
       postAccessNumber(callback)
     } else console.log('error')
   }
