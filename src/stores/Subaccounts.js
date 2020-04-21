@@ -45,7 +45,7 @@ export class SubaccountsStore {
       })
       .catch((e) =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch subaccounts',
+          message: 'Failed to fetch subaccounts',
           options: {
             variant: 'error'
           }
@@ -75,7 +75,7 @@ export class SubaccountsStore {
       })
       .catch((e) =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch subaccount',
+          message: 'Failed to fetch subaccount',
           options: {
             variant: 'error'
           }
@@ -98,7 +98,7 @@ export class SubaccountsStore {
       })
       .catch((e) =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to delete subaccount',
+          message: 'Failed to delete subaccount',
           options: {
             variant: 'error'
           }
@@ -118,7 +118,7 @@ export class SubaccountsStore {
       })
       .catch((e) =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to update subaccounts',
+          message: 'Failed to update subaccounts',
           options: {
             variant: 'error'
           }

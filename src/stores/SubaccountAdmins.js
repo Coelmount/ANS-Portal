@@ -41,7 +41,7 @@ export class SubaccountAdminsStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch admins',
+          message: 'Failed to fetch admins',
           options: {
             variant: 'error'
           }
@@ -84,7 +84,7 @@ export class SubaccountAdminsStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to add admin',
+          message: 'Failed to add admin',
           options: {
             variant: 'error'
           }

@@ -29,7 +29,7 @@ export class NumbersStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch available numbers',
+          message: 'Failed to fetch available numbers',
           options: {
             variant: 'error'
           }
@@ -43,7 +43,7 @@ export class NumbersStore {
     dataForPost.forEach(data => {
       axios.post(`${PROXY_P6}/tenants/${tenantId}/numbers`, data).catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to assign numbers',
+          message: 'Failed to assign numbers',
           options: {
             variant: 'error'
           }

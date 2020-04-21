@@ -49,7 +49,7 @@ export class CustomersStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch customers',
+          message: 'Failed to fetch customers',
           options: {
             variant: 'error'
           }
@@ -70,7 +70,7 @@ export class CustomersStore {
         this.isLoadingCustomer = false
 
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch customer',
+          message: 'Failed to fetch customer',
           options: {
             variant: 'error'
           }
@@ -100,7 +100,7 @@ export class CustomersStore {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to delete customer',
+          message: 'Failed to delete customer',
           options: {
             variant: 'error'
           }
@@ -123,7 +123,7 @@ export class CustomersStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to update customer',
+          message: 'Failed to update customer',
           options: {
             variant: 'error'
           }

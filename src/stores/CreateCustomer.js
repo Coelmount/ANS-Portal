@@ -57,7 +57,7 @@ export class CreateCustomerStore {
       .then((res) => (this.createdCustomerStore = res.data))
       .catch((e) =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to create customer',
+          message: 'Failed to create customer',
           options: {
             variant: 'error'
           }

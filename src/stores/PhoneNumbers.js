@@ -33,7 +33,7 @@ export class PhoneNumbers {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch phone numbers',
+          message: 'Failed to fetch phone numbers',
           options: {
             variant: 'error'
           }

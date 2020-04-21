@@ -27,7 +27,7 @@ export class SearchStore {
         .catch(error => {
           this.emptyResult = true
           SnackbarStore.enqueueSnackbar({
-            message: 'Feiled to fetch phone numbers',
+            message: 'Failed to fetch phone numbers',
             options: {
               variant: 'error'
             }
