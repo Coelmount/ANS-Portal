@@ -111,7 +111,7 @@ const AccessNumbers = ({ t }) => {
       label: 'country',
       getCellData: (row) => (
         <Typography className={classes.countryCellText}>
-          {row.name.split('-')[0]}
+          {(row.name && row.name.split('-')[0]) || row.countryCode}
         </Typography>
       )
     },
