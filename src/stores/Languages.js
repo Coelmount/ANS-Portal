@@ -36,7 +36,7 @@ export class LanguagesStore {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: `Feiled to get ${lang} localization`,
+          message: `Failed to get ${lang} localization`,
           options: {
             variant: 'error'
           }

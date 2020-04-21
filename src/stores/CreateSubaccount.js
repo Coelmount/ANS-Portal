@@ -63,7 +63,7 @@ export class CreateSubaccountStore {
       .then(res => (this.createdCustomerStore = res.data))
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to create subaccaunt',
+          message: 'Failed to create subaccaunt',
           options: {
             variant: 'error'
           }

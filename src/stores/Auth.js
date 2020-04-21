@@ -36,7 +36,7 @@ export class AuthStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to login',
+          message: 'Failed to login',
           options: {
             variant: 'error'
           }
@@ -63,7 +63,7 @@ export class AuthStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to get user local data',
+          message: 'Failed to get user local data',
           options: {
             variant: 'error'
           }

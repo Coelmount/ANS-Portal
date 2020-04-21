@@ -43,7 +43,7 @@ export class CustomerAdminsStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch admins',
+          message: 'Failed to fetch admins',
           options: {
             variant: 'error'
           }
@@ -61,7 +61,7 @@ export class CustomerAdminsStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch languages',
+          message: 'Failed to fetch languages',
           options: {
             variant: 'error'
           }
@@ -94,7 +94,7 @@ export class CustomerAdminsStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to add admins',
+          message: 'Failed to add admins',
           options: {
             variant: 'error'
           }

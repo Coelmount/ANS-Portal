@@ -53,7 +53,7 @@ export class Entitlements {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch entitlements',
+          message: 'Failed to fetch entitlements',
           options: {
             variant: 'error'
           }
@@ -82,7 +82,7 @@ export class Entitlements {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch entitlement types',
+          message: 'Failed to fetch entitlement types',
           options: {
             variant: 'error'
           }
@@ -104,7 +104,7 @@ export class Entitlements {
         })
         .catch(e =>
           SnackbarStore.enqueueSnackbar({
-            message: 'Feiled to create entitlements',
+            message: 'Failed to create entitlements',
             options: {
               variant: 'error'
             }
@@ -123,7 +123,7 @@ export class Entitlements {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to update entitlement',
+          message: 'Failed to update entitlement',
           options: {
             variant: 'error'
           }
@@ -136,7 +136,7 @@ export class Entitlements {
       .delete(`${PROXY_P6}/tenants/${tenantId}/entitlements/${entitlementId}`)
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to delete entitlement',
+          message: 'Failed to delete entitlement',
           options: {
             variant: 'error'
           }

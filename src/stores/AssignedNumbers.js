@@ -20,7 +20,7 @@ export class AssignedNumbers {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to get assigned numbers',
+          message: 'Failed to get assigned numbers',
           options: {
             variant: 'error'
           }

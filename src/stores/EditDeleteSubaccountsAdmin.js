@@ -50,7 +50,7 @@ export class EditDeleteSubaccountAdminStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to fetch admin',
+          message: 'Failed to fetch admin',
           options: {
             variant: 'error'
           }
@@ -75,7 +75,7 @@ export class EditDeleteSubaccountAdminStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to update admin',
+          message: 'Failed to update admin',
           options: {
             variant: 'error'
           }
@@ -97,7 +97,7 @@ export class EditDeleteSubaccountAdminStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Feiled to delete admin',
+          message: 'Failed to delete admin',
           options: {
             variant: 'error'
           }
