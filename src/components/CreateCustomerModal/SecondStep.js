@@ -44,6 +44,7 @@ const SecondStep = (props) => {
   const createdCustomerStore = useContext(CreateCustomerStore)
   const classes = useStyles()
   const match = useParams()
+
   const handleCreate = () => {
     if (isEditCustomer) {
       updateCustomer(match.customerId).then(() => handleClose())

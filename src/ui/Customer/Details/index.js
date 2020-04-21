@@ -18,13 +18,22 @@ import useStyles from './styles'
 const Details = observer(({ t }) => {
   const match = useParams()
   const classes = useStyles()
-  const { customer, getCustomer, isLoadingCustomer, changeStep } = useContext(
-    CustomersStore
-  )
+  const {
+    customer,
+    getCustomer,
+    isLoadingCustomer,
+    changeStep,
+    getCustomerDefaultValues
+  } = useContext(CustomersStore)
+
   const [showEdit, setShowEdit] = useState(false)
   useEffect(() => {
     getCustomer(match.customerId)
   }, [getCustomer, match.customerId])
+
+  useEffect(() => {
+    getCustomerDefaultValues()
+  }, [])
 
   const titleData = {
     mainText: 'MTN ANS',

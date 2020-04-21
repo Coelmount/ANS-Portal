@@ -14,7 +14,7 @@ export class CreateCustomerStore {
   customer = {
     templateName: CUSTOMER_TEMPLATE,
     type: CUSTOMER_TYPE,
-    external_id: '',
+    tenantId: '',
     name: '',
     contactInformation: {
       name: '',
@@ -32,7 +32,7 @@ export class CreateCustomerStore {
 
   createdCustomerStore = {}
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 
@@ -41,7 +41,7 @@ export class CreateCustomerStore {
     this.customer = {
       templateName: CUSTOMER_TEMPLATE,
       type: CUSTOMER_TYPE,
-      external_id: '',
+      tenantId: '',
       name: '',
       contactInformation: {
         name: '',
@@ -66,7 +66,7 @@ export class CreateCustomerStore {
     const data = { ...this.customer }
     return axios
       .post(`${PROXY_P6}/tenants`, removeEmpty(data))
-      .then(res => (this.createdCustomerStore = res.data))
+      .then((res) => (this.createdCustomerStore = res.data))
   }
 }
 

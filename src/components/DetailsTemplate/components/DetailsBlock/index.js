@@ -11,10 +11,10 @@ const DetailsBlock = ({ classes, data, t }) => {
   const detailsFields = [
     {
       name: 'ID',
-      value: data.external_id || data.groupId || match.groupId || 'none'
+      value: data.tenantId || data.groupId || match.groupId || t('none')
     },
-    { name: t('name'), value: data.name || data.groupName },
-    { name: t('status'), value: 'active' }
+    { name: t('name'), value: data.name || data.groupName || t('none') },
+    { name: t('status'), value: data.status || t('none') }
   ]
 
   return (

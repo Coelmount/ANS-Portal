@@ -150,10 +150,7 @@ const AccessNumbers = ({ t }) => {
       isSortAvailable: false,
       getCellData: (row) => (
         <Link
-          to={`/customers/${match.customerId}/access_numbers/${row.name.replace(
-            /\s/g,
-            ''
-          )}`}
+          to={`/customers/${match.customerId}/access_numbers/${row.name}`}
           className={classes.link}
         >
           {t('see_numbers')}

@@ -37,7 +37,7 @@ const FirstStep = (props) => {
     if (isCreateSubaccount) {
       changeCustomer('groupId', value)
     }
-    changeCustomer('external_id', value)
+    changeCustomer('tenantId', value)
   }
 
   const changeName = (value) => {
@@ -90,7 +90,7 @@ const FirstStep = (props) => {
             }
             variant='outlined'
             disabled={isEditCustomer || isEditSubaccount}
-            value={(customer && customer.external_id) || match.groupId}
+            value={(customer && customer.tenantId) || match.groupId}
             onChange={(e) => changeId(e.target.value)}
           />
         </Box>
@@ -126,7 +126,7 @@ const FirstStep = (props) => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
-          disabled={customer && !customer.external_id && !customer.groupName}
+          disabled={customer && !customer.tenantId && !customer.groupName}
         >
           {t('next')}
         </Button>
