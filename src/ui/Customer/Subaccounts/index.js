@@ -27,7 +27,8 @@ const SubaccountsTable = observer(({ t }) => {
     getSubaccounts,
     deleteSubaccount,
     isLoadingSubaccounts,
-    isDeletingSubaccount
+    isDeletingSubaccount,
+    getDefaultValues
   } = SubaccountsStore
 
   const { setDefaultValues } = CreateSubaccountStore
@@ -39,20 +40,24 @@ const SubaccountsTable = observer(({ t }) => {
     getSubaccounts(match.customerId)
   }, [getSubaccounts, match.customerId])
 
+  useEffect(() => {
+    getDefaultValues()
+  }, [])
+
   const columns = [
     {
-      id: 'external_id',
+      id: 'groupId',
       numeric: false,
       extraProps: {
         scope: 'row'
       },
       label: 'ID',
-      getCellData: row => (
+      getCellData: (row) => (
         <Link
-          to={`/customers/${match.customerId}/subaccounts/${row.id}/ans_instances`}
+          to={`/customers/${match.customerId}/subaccounts/${row.groupId}/ans_instances`}
           className={classes.link}
         >
-          {row.external_id}
+          {row.groupId}
         </Link>
       ),
       extraHeadProps: {
@@ -60,7 +65,7 @@ const SubaccountsTable = observer(({ t }) => {
       }
     },
     {
-      id: 'name',
+      id: 'groupName',
       numeric: false,
       label: 'name',
       extraProps: {
@@ -74,7 +79,7 @@ const SubaccountsTable = observer(({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.groupId, row.groupName)}
           className={classes.deleteCustomerIcon}
@@ -112,7 +117,7 @@ const SubaccountsTable = observer(({ t }) => {
     getSubaccounts(match.customerId)
   }
 
-  const handleDelete = groupId => {
+  const handleDelete = (groupId) => {
     const payload = {
       tenantId: match.customerId,
       groupId,
