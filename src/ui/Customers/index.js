@@ -149,7 +149,7 @@ const CustomersTable = observer(({ t }) => {
           rows={rows}
           isLoadingData={isLoadingCustomers}
           columns={columns}
-          searchCriterias={['tenantId', 'name']}
+          searchCriterias={['external_id', 'name']}
         />
         {isDeleteModalOpen && (
           <DeleteModal
