@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button'
 
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import LockOutlined from '@material-ui/icons/LockOutlined'
+import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined'
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
 
 import AuthStore from 'stores/Auth'
 import bgImg from 'source/images/other/bg_img.jpg'
@@ -20,7 +22,7 @@ import { withNamespaces } from 'react-i18next'
 
 import './index.css'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
     width: '18px',
@@ -48,19 +50,20 @@ const Auth = ({ t }) => {
   const { postLogin } = AuthStore
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const history = useHistory()
   const classes = useStyles()
 
-  const handleLoginChange = e => {
+  const handleLoginChange = (e) => {
     setUsername(e.target.value)
   }
 
-  const handlePasswordChange = e => {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value)
   }
 
-  const loginSubmit = e => {
+  const loginSubmit = (e) => {
     e.preventDefault()
     postLogin({ username, password }, history)
   }
@@ -93,8 +96,19 @@ const Auth = ({ t }) => {
                 variant='outlined'
                 value={password}
                 onChange={handlePasswordChange}
-                type={'password'}
+                type={isPasswordVisible ? 'text' : 'password'}
               />
+              {isPasswordVisible ? (
+                <VisibilityOutlinedIcon
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  className={`visibilityIcon`}
+                />
+              ) : (
+                <VisibilityOffOutlinedIcon
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  className={`visibilityOffIcon`}
+                />
+              )}
             </Box>
             <Box className={'support-box'}>
               <Checkbox className={classes.checkbox} label={t('remember_me')} />
