@@ -19,7 +19,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import useStyles from './styles'
 
-const SubaccountAdministrators = (props) => {
+const SubaccountAdministrators = props => {
   const { t } = props
   const [isOpened, setIsOpened] = useState(false)
   const match = useParams()
@@ -33,7 +33,7 @@ const SubaccountAdministrators = (props) => {
     setSubaccountAdminInfo,
     addSubaccountAdmin,
     clearFields
-  } = useContext(SubaccountAdminsStore)
+  } = SubaccountAdminsStore
 
   const {
     updatedSubaccountAdmin,
@@ -43,7 +43,7 @@ const SubaccountAdministrators = (props) => {
     isLoadingData,
     updateSubaccountAdmin,
     isDeletingSubaccountAdmin
-  } = useContext(EditDeleteSubaccountAdminStore)
+  } = EditDeleteSubaccountAdminStore
 
   useEffect(() => {
     getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
@@ -73,7 +73,7 @@ const SubaccountAdministrators = (props) => {
     })
   }
 
-  const handleDelete = (adminId) => {
+  const handleDelete = adminId => {
     deleteSubaccountAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -83,7 +83,7 @@ const SubaccountAdministrators = (props) => {
     })
   }
 
-  const handleUpdate = (adminId) => {
+  const handleUpdate = adminId => {
     updateSubaccountAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -93,7 +93,7 @@ const SubaccountAdministrators = (props) => {
     })
   }
 
-  const getAdminInfo = (adminId) => {
+  const getAdminInfo = adminId => {
     getSubaccountAdminInfo({
       id: match.customerId,
       userId: adminId,

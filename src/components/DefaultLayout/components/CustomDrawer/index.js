@@ -28,7 +28,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
     handleActiveChildNav,
     handleActiveSubChildNav,
     getActiveNavsAfterUpdate
-  } = useContext(DefaultLayoutStore)
+  } = DefaultLayoutStore
   useEffect(() => {
     getActiveNavsAfterUpdate(match.url)
   }, [getActiveNavsAfterUpdate, match.url])

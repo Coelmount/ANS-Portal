@@ -5,6 +5,7 @@ import merge from 'lodash/merge'
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 import set from 'lodash/set'
+import SnackbarStore from './Snackbar'
 
 const defaultCustomerValue = {
   id: '',
@@ -35,28 +36,45 @@ export class CustomersStore {
 
   getCustomers = () => {
     this.isLoadingCustomers = true
-    axios.get(`${PROXY_P6}/tenants`).then((res) => {
-      if (res.status === 200) {
-        console.log('get custs', res.data.customers)
-        this.rows = res.data.customers
-        this.isLoadingCustomers = false
-      } else {
-        console.log(res, 'error')
-      }
-    })
+    axios
+      .get(`${PROXY_P6}/tenants`)
+      .then(res => {
+        if (res.status === 200) {
+          console.log('get custs', res.data.customers)
+          this.rows = res.data.customers
+          this.isLoadingCustomers = false
+        } else {
+          console.log(res, 'error')
+        }
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to fetch customers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 
-  getCustomer = (id) => {
+  getCustomer = id => {
     this.isLoadingCustomer = true
     axios
       .get(`${PROXY_P6}/tenants/${id}/`)
-      .then((res) => {
+      .then(res => {
         // merge(this.customer, res.data.customers[0])
         merge(this.customer, res.data)
         this.isLoadingCustomer = false
       })
-      .catch(() => {
+      .catch(e => {
         this.isLoadingCustomer = false
+
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to fetch customer',
+          options: {
+            variant: 'error'
+          }
+        })
       })
       .finally(() => {
         this.isLoadingCustomer = false
@@ -71,7 +89,7 @@ export class CustomersStore {
     this.isDeletingCustomer = true
     axios
       .delete(`${PROXY_P6}/tenants/${id}/`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.getCustomers()
           callback()
@@ -80,26 +98,40 @@ export class CustomersStore {
           console.log(res, 'error')
         }
       })
-      .catch((e) => {
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to delete customer',
+          options: {
+            variant: 'error'
+          }
+        })
         if (e.response.status === 400) {
           this.isDeletingCustomer = false
         }
       })
   }
 
-  updateCustomer = (tenantId) => {
+  updateCustomer = tenantId => {
     this.isAddingCustomer = true
     return axios
       .put(`${PROXY_P6}/tenants/${tenantId}`, this.customer)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)
           this.isAddingCustomer = false
         }
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to update customer',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -125,4 +157,4 @@ decorate(CustomersStore, {
   getCustomerDefaultValues: action
 })
 
-export default createContext(new CustomersStore())
+export default new CustomersStore()

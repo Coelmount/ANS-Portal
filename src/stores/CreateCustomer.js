@@ -6,6 +6,7 @@ import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 import { removeEmpty } from 'utils/removeEmpty'
 import { CUSTOMER_TEMPLATE, CUSTOMER_TYPE } from 'source/config'
+import SnackbarStore from './Snackbar'
 
 export class CreateCustomerStore {
   step = 1
@@ -32,7 +33,7 @@ export class CreateCustomerStore {
 
   createdCustomerStore = {}
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -66,7 +67,15 @@ export class CreateCustomerStore {
     const data = { ...this.customer }
     return axios
       .post(`${PROXY_P6}/tenants`, removeEmpty(data))
-      .then((res) => (this.createdCustomerStore = res.data))
+      .then(res => (this.createdCustomerStore = res.data))
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to create customer',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 }
 
@@ -79,4 +88,4 @@ decorate(CreateCustomerStore, {
   changeCustomer: action
 })
 
-export default createContext(new CreateCustomerStore())
+export default new CreateCustomerStore()

@@ -23,7 +23,7 @@ const Details = observer(({ t }) => {
     getSubaccount,
     isLoadingSubaccount,
     changeStep
-  } = useContext(SubaccountsStore)
+  } = SubaccountsStore
   const [showEdit, setShowEdit] = useState(false)
 
   useEffect(() => {

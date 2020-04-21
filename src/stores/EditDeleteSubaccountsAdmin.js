@@ -3,6 +3,7 @@ import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
+import SnackbarStore from './Snackbar'
 
 export class EditDeleteSubaccountAdminStore {
   isLoadingData = true
@@ -37,7 +38,7 @@ export class EditDeleteSubaccountAdminStore {
 
     axios
       .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.updateSubaccountAdminInfo('firstName', res.data.firstName)
           this.updateSubaccountAdminInfo('lastName', res.data.lastName)
@@ -47,6 +48,14 @@ export class EditDeleteSubaccountAdminStore {
           console.log(res, 'error')
         }
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to fetch admin',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
   updateSubaccountAdmin = ({ id, closeModal, userId, getUsers, groupId }) => {
     this.isLoadingData = true
@@ -55,7 +64,7 @@ export class EditDeleteSubaccountAdminStore {
         `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`,
         this.sentSubaccountAdmin
       )
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.isLoadingData = false
           closeModal()
@@ -64,12 +73,20 @@ export class EditDeleteSubaccountAdminStore {
           console.log(res, 'error')
         }
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to update admin',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
   deleteSubaccountAdmin = ({ id, closeModal, userId, getUsers, groupId }) => {
     this.isDeletingSubaccountAdmin = true
     axios
       .delete(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           getUsers({ id, groupId })
           closeModal()
@@ -78,6 +95,14 @@ export class EditDeleteSubaccountAdminStore {
           console.log(res, 'error')
         }
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to delete admin',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 }
 decorate(EditDeleteSubaccountAdminStore, {
@@ -91,4 +116,4 @@ decorate(EditDeleteSubaccountAdminStore, {
   deleteSubaccountAdmin: action
 })
 
-export default createContext(new EditDeleteSubaccountAdminStore())
+export default new EditDeleteSubaccountAdminStore()

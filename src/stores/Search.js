@@ -3,13 +3,15 @@ import { decorate, observable, action } from 'mobx'
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 
+import SnackbarStore from './Snackbar'
+
 export class SearchStore {
   searchResult = null
   emptyResult = null
   isLoading = false
   ansInstance = null
 
-  getSearchResult = (phoneNumber) => {
+  getSearchResult = phoneNumber => {
     if (!phoneNumber) {
       this.clearSearchResult()
     } else {
@@ -17,13 +19,19 @@ export class SearchStore {
 
       axios
         .get(`${PROXY_P6}/search/numbers/usages/${phoneNumber}/`)
-        .then((res) => {
+        .then(res => {
           this.searchResult = res.data
           this.emptyResult = null
           this.ansInstance = phoneNumber
         })
-        .catch((error) => {
+        .catch(error => {
           this.emptyResult = true
+          SnackbarStore.enqueueSnackbar({
+            message: 'Feiled to fetch phone numbers',
+            options: {
+              variant: 'error'
+            }
+          })
         })
         .finally(() => {
           this.isLoading = false

@@ -3,6 +3,7 @@ import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
+import SnackbarStore from './Snackbar'
 
 export class CustomerAdminsStore {
   admins = []
@@ -28,27 +29,44 @@ export class CustomerAdminsStore {
     }
   }
 
-  getCustomerAdmins = (id) => {
+  getCustomerAdmins = id => {
     this.isLoading = true
-    axios.get(`${PROXY_P6}/tenants/${id}/admins/`).then((res) => {
-      if (res.status === 200) {
-        this.admins = res.data.admins
-        this.isLoading = false
-      } else {
-        console.log(res, 'error')
-      }
-    })
+    axios
+      .get(`${PROXY_P6}/tenants/${id}/admins/`)
+      .then(res => {
+        if (res.status === 200) {
+          this.admins = res.data.admins
+          this.isLoading = false
+        } else {
+          console.log(res, 'error')
+        }
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to fetch admins',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 
   getCustomerAdminsLanguages = () => {
     this.isLanguagesLoading = true
     axios
       .get(`${PROXY_P6}/system/languages/`)
-      .then((res) => {
+      .then(res => {
         this.languagesList = res.data.availableLanguages
         this.isLanguagesLoading = false
       })
-      .catch((error) => console.log(error, 'error'))
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to fetch languages',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
       .finally(() => (this.isLanguagesLoading = false))
   }
 
@@ -65,7 +83,7 @@ export class CustomerAdminsStore {
     this.isLoading = true
     axios
       .post(`${PROXY_P6}/tenants/${id}/admins/`, this.sentAdmin)
-      .then((res) => {
+      .then(res => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers(id)
@@ -74,6 +92,14 @@ export class CustomerAdminsStore {
           console.log(res, 'error')
         }
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to add admins',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 }
 decorate(CustomerAdminsStore, {
@@ -90,4 +116,4 @@ decorate(CustomerAdminsStore, {
   clearFields: action
 })
 
-export default createContext(new CustomerAdminsStore())
+export default new CustomerAdminsStore()

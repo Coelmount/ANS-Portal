@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
 import Loading from 'components/Loading'
+import Snackbar from 'components/Snackbar'
 
 import DefaultLayout from 'components/DefaultLayout'
 import Auth from 'ui/Auth'
@@ -129,7 +130,7 @@ const authComponents = [
   }
 ]
 
-const Page = (props) => {
+const Page = props => {
   const classes = useStyles()
   return (
     <div className={classes.page}>
@@ -140,13 +141,13 @@ const Page = (props) => {
 }
 
 const UserPages = () => {
-  const { getLocale, isLoadingLang, lang } = useContext(LanguagesStore)
+  const { getLocale, isLoadingLang, lang } = LanguagesStore
   useEffect(() => {
     getLocale(localStorage.getItem('i18nextLng'))
   }, [getLocale, lang])
   return (
     <Switch>
-      {userComponents.map((el) => (
+      {userComponents.map(el => (
         <Route path={el.path} key={el.path} exact>
           <Page diplayedComponent={el.component} />
         </Route>
@@ -171,7 +172,7 @@ const AuthPages = observer(() => {
   const { isAuthorized } = AuthStore
   return (
     <Switch>
-      {authComponents.map((el) => (
+      {authComponents.map(el => (
         <Route key={el.path} path={el.path} component={el.component} exact />
       ))}
       {isAuthorized && <Route path='*' component={NotFound} />}
@@ -181,7 +182,7 @@ const AuthPages = observer(() => {
 
 const Router = () => {
   const { getLocal, isAuthorized } = AuthStore
-  const { getLocale, isLoadingLang, lang } = useContext(LanguagesStore)
+  const { getLocale, isLoadingLang, lang } = LanguagesStore
   useEffect(() => {
     getLocal()
   }, [getLocal])
@@ -189,12 +190,17 @@ const Router = () => {
     getLocale(localStorage.getItem('i18nextLng'))
   }, [getLocale, lang])
 
-  return isAuthorized && localStorage.getItem('token') ? (
-    <Route path='/' component={UserPages} />
-  ) : (
-    <Switch>
-      <Route path='/' component={AuthPages} />
-    </Switch>
+  return (
+    <React.Fragment>
+      <Snackbar />
+      {isAuthorized && localStorage.getItem('token') ? (
+        <Route path='/' component={UserPages} />
+      ) : (
+        <Switch>
+          <Route path='/' component={AuthPages} />
+        </Switch>
+      )}
+    </React.Fragment>
   )
 }
 

@@ -24,7 +24,7 @@ import { LANGUAGES } from 'source/config'
 const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
   const history = useHistory()
   const { user, logOut, username } = AuthStore
-  const { getLocale } = useContext(LanguagesStore)
+  const { getLocale } = LanguagesStore
 
   const changeLanguage = lng => {
     getLocale(lng)

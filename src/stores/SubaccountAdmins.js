@@ -3,6 +3,7 @@ import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
+import SnackbarStore from './Snackbar'
 
 export class SubaccountAdminsStore {
   subaccountAdmins = []
@@ -30,7 +31,7 @@ export class SubaccountAdminsStore {
     this.isLoading = true
     axios
       .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.subaccountAdmins = res.data.admins
           this.isLoading = false
@@ -38,6 +39,14 @@ export class SubaccountAdminsStore {
           console.log(res, 'error')
         }
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to fetch admins',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 
   setSubaccountAdminInfo = (valueKey, value) => {
@@ -57,7 +66,7 @@ export class SubaccountAdminsStore {
         `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`,
         this.sentSubaccountAdmin
       )
-      .then((res) => {
+      .then(res => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers({ id: id, groupId: groupId })
@@ -73,6 +82,14 @@ export class SubaccountAdminsStore {
           console.log(res, 'error')
         }
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to add admin',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 }
 decorate(SubaccountAdminsStore, {
@@ -86,4 +103,4 @@ decorate(SubaccountAdminsStore, {
   clearFields: action
 })
 
-export default createContext(new SubaccountAdminsStore())
+export default new SubaccountAdminsStore()

@@ -30,13 +30,11 @@ const CustomersTable = observer(({ t }) => {
     isLoadingCustomers,
     isDeletingCustomer,
     addCustomer
-  } = useContext(CustomersStore)
+  } = CustomersStore
 
-  const { setDefaultValues: setDefaultValuesSubaccaunt } = useContext(
-    CreateSubaccountStore
-  )
+  const { setDefaultValues: setDefaultValuesSubaccaunt } = CreateSubaccountStore
 
-  const { setDefaultValues } = useContext(CreateCustomerStore)
+  const { setDefaultValues } = CreateCustomerStore
   const { setDefaultEntitlementsValues } = EntitlementsStore
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [customerToDelete, setCustomerToDelete] = useState({})
@@ -72,7 +70,7 @@ const CustomersTable = observer(({ t }) => {
     setCreationType('subaccount')
   }
 
-  const handleDelete = (id) => {
+  const handleDelete = id => {
     const payload = {
       id,
       callback: setIsDeleteModalOpen
@@ -93,7 +91,7 @@ const CustomersTable = observer(({ t }) => {
           scope: 'row'
         },
         label: 'ID',
-        getCellData: (row) => {
+        getCellData: row => {
           return (
             <Link
               to={`/customers/${row.external_id}/access_numbers`}
@@ -119,7 +117,7 @@ const CustomersTable = observer(({ t }) => {
           align: 'right'
         },
         isSortAvailable: false,
-        getCellData: (row) => (
+        getCellData: row => (
           <CloseOutlinedIcon
             onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
             className={classes.deleteCustomerIcon}

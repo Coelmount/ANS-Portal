@@ -5,6 +5,8 @@ import queryString from 'query-string'
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 
+import SnackbarStore from './Snackbar'
+
 export class NumbersStore {
   availableNumbers = []
   availableNumbersTable = []
@@ -25,13 +27,28 @@ export class NumbersStore {
           res.data.suggestions
         )
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to fetch available numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 
   postAssignNumbersToCustomer = tenantId => {
     const selectedNumbers = this.availableNumbersTable.filter(el => el.checked)
     const dataForPost = this.parseNumbersToPost(selectedNumbers)
     dataForPost.forEach(data => {
-      axios.post(`${PROXY_P6}/tenants/${tenantId}/numbers`, data)
+      axios.post(`${PROXY_P6}/tenants/${tenantId}/numbers`, data).catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to assign numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
     })
   }
 

@@ -30,9 +30,12 @@ import useStyles from './styles'
 
 const SecondStep = props => {
   const { t, addedNumbers, fakePostSub } = props
-  const { getSubaccounts, selectGroups, isLoadingSubaccounts } = useContext(
-    SubaccountsStore
-  )
+  const {
+    getSubaccounts,
+    selectGroups,
+    isLoadingSubaccounts
+  } = SubaccountsStore
+
   const classes = useStyles()
   const match = useParams()
 

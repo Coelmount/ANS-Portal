@@ -5,6 +5,8 @@ import i18n from '../i18n'
 import axios from 'utils/axios'
 import { getLocale } from 'i18n'
 
+import SnackbarStore from 'stores/Snackbar'
+
 export class LanguagesStore {
   isLoadingLang = true
   lang = ''
@@ -33,6 +35,12 @@ export class LanguagesStore {
         this.isLoadingLang = false
       })
       .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: `Feiled to get ${lang} localization`,
+          options: {
+            variant: 'error'
+          }
+        })
         if (e.response.status === 401) {
           this.isLoadingLang = false
         }
@@ -46,4 +54,4 @@ decorate(LanguagesStore, {
   getLocale: action
 })
 
-export default createContext(new LanguagesStore())
+export default new LanguagesStore()

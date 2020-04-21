@@ -24,7 +24,7 @@ const Details = observer(({ t }) => {
     isLoadingCustomer,
     changeStep,
     getCustomerDefaultValues
-  } = useContext(CustomersStore)
+  } = CustomersStore
 
   const [showEdit, setShowEdit] = useState(false)
   useEffect(() => {

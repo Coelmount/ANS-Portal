@@ -15,11 +15,10 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 
 import useStyles from './styles'
 
-const SuccesPage = (props) => {
+const SuccesPage = props => {
   const { handleClose, t } = props
-  const { createdCustomerStore: createdCustomer } = useContext(
-    CreateCustomerStore
-  )
+  const { createdCustomerStore: createdCustomer } = CreateCustomerStore
+
   const history = useHistory()
   const match = useParams()
   const classes = useStyles()

@@ -88,9 +88,12 @@ const AssignNumbers = props => {
   const [searchList, setSearchList] = useState([])
   const classes = useStyles()
   const match = useParams()
-  const { getSubaccounts, selectGroups, isLoadingSubaccounts } = useContext(
-    SubaccountsStore
-  )
+  const {
+    getSubaccounts,
+    selectGroups,
+    isLoadingSubaccounts
+  } = SubaccountsStore
+
   const { isLoadingNumbers, getAvailableNumbers } = NumbersStore
 
   useEffect(() => {
