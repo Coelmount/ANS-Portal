@@ -8,55 +8,41 @@ import { removeEmpty } from 'utils/removeEmpty'
 import { CUSTOMER_TEMPLATE, CUSTOMER_TYPE } from 'source/config'
 import SnackbarStore from './Snackbar'
 
+const defaultCustomerValues = {
+  templateName: CUSTOMER_TEMPLATE,
+  type: CUSTOMER_TYPE,
+  tenantId: '',
+  name: '',
+  contactInformation: {
+    name: '',
+    phoneNumber: '',
+    emailAddress: ''
+  },
+  useTenantLanguage: '',
+  addressInformation: {
+    addressLine1: '',
+    postalCode: '',
+    city: '',
+    country: ''
+  }
+}
+
 export class CreateCustomerStore {
   step = 1
   closeModal = false
+  isCustomerAdding = false
 
-  customer = {
-    templateName: CUSTOMER_TEMPLATE,
-    type: CUSTOMER_TYPE,
-    tenantId: '',
-    name: '',
-    contactInformation: {
-      name: '',
-      phoneNumber: '',
-      emailAddress: ''
-    },
-    useTenantLanguage: '',
-    addressInformation: {
-      addressLine1: '',
-      postalCode: '',
-      city: '',
-      country: ''
-    }
-  }
+  customer = defaultCustomerValues
 
   createdCustomerStore = {}
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 
   setDefaultValues = () => {
     this.step = 1
-    this.customer = {
-      templateName: CUSTOMER_TEMPLATE,
-      type: CUSTOMER_TYPE,
-      tenantId: '',
-      name: '',
-      contactInformation: {
-        name: '',
-        phoneNumber: '',
-        emailAddress: ''
-      },
-      useTenantLanguage: '',
-      addressInformation: {
-        addressLine1: '',
-        postalCode: '',
-        city: '',
-        country: ''
-      }
-    }
+    this.customer = defaultCustomerValues
   }
 
   changeCustomer = (variable, value) => {
@@ -64,11 +50,12 @@ export class CreateCustomerStore {
   }
 
   createCustomer = () => {
+    this.isCustomerAdding = true
     const data = { ...this.customer }
     return axios
       .post(`${PROXY_P6}/tenants`, removeEmpty(data))
-      .then(res => (this.createdCustomerStore = res.data))
-      .catch(e =>
+      .then((res) => (this.createdCustomerStore = res.data))
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Feiled to create customer',
           options: {
@@ -76,6 +63,9 @@ export class CreateCustomerStore {
           }
         })
       )
+      .finally(() => {
+        this.isCustomerAdding = false
+      })
   }
 }
 
@@ -84,6 +74,7 @@ decorate(CreateCustomerStore, {
   customer: observable,
   closeModal: observable,
   createdCustomer: observable,
+  isCustomerAdding: observable,
   changeStep: action,
   changeCustomer: action
 })

@@ -51,6 +51,7 @@ const CustomersTable = observer(({ t }) => {
 
   const handleCloseCreateCustomer = () => {
     setIsOpenCreateCustomer(false)
+    getCustomers()
   }
 
   const handleOpenCreateCustomer = () => {
@@ -70,7 +71,7 @@ const CustomersTable = observer(({ t }) => {
     setCreationType('subaccount')
   }
 
-  const handleDelete = id => {
+  const handleDelete = (id) => {
     const payload = {
       id,
       callback: setIsDeleteModalOpen
@@ -91,7 +92,7 @@ const CustomersTable = observer(({ t }) => {
           scope: 'row'
         },
         label: 'ID',
-        getCellData: row => {
+        getCellData: (row) => {
           return (
             <Link
               to={`/customers/${row.external_id}/access_numbers`}
@@ -117,7 +118,7 @@ const CustomersTable = observer(({ t }) => {
           align: 'right'
         },
         isSortAvailable: false,
-        getCellData: row => (
+        getCellData: (row) => (
           <CloseOutlinedIcon
             onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
             className={classes.deleteCustomerIcon}

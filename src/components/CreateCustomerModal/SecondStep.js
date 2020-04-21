@@ -23,7 +23,7 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import useStyles from './styles'
 import Loading from 'components/Loading'
 
-const SecondStep = props => {
+const SecondStep = (props) => {
   const {
     handleClose,
     t,
@@ -32,6 +32,7 @@ const SecondStep = props => {
     isEditCustomer,
     isEditSubaccount
   } = props
+
   const {
     changeStep,
     customer,
@@ -39,8 +40,9 @@ const SecondStep = props => {
     createCustomer,
     updateCustomer,
     subaccount,
-    isAddingCustomer
+    isCustomerAdding
   } = store
+
   const createdCustomerStore = CreateCustomerStore
   const classes = useStyles()
   const match = useParams()
@@ -79,7 +81,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        {isAddingCustomer ? (
+        {isCustomerAdding ? (
           <Loading />
         ) : (
           <Fragment>
@@ -101,7 +103,7 @@ const SecondStep = props => {
                   (customer && customer.contactInformation.name) ||
                   (subaccount && subaccount.contactInformation.name)
                 }
-                onChange={e =>
+                onChange={(e) =>
                   changeCustomer('contactInformation.name', e.target.value)
                 }
               />
@@ -115,7 +117,7 @@ const SecondStep = props => {
                   (customer && customer.contactInformation.phoneNumber) ||
                   (subaccount && subaccount.contactInformation.phoneNumber)
                 }
-                onChange={e =>
+                onChange={(e) =>
                   changeCustomer(
                     'contactInformation.phoneNumber',
                     e.target.value
@@ -132,7 +134,7 @@ const SecondStep = props => {
                   (customer && customer.contactInformation.emailAddress) ||
                   (subaccount && subaccount.contactInformation.emailAddress)
                 }
-                onChange={e =>
+                onChange={(e) =>
                   changeCustomer(
                     'contactInformation.emailAddress',
                     e.target.value
@@ -151,7 +153,7 @@ const SecondStep = props => {
                   (customer && customer.addressInformation.addressLine1) ||
                   (subaccount && subaccount.addressInformation.addressLine1)
                 }
-                onChange={e =>
+                onChange={(e) =>
                   changeCustomer(
                     'addressInformation.addressLine1',
                     e.target.value
@@ -168,7 +170,7 @@ const SecondStep = props => {
                     (customer && customer.addressInformation.postalCode) ||
                     (subaccount && subaccount.addressInformation.postalCode)
                   }
-                  onChange={e =>
+                  onChange={(e) =>
                     changeCustomer(
                       'addressInformation.postalCode',
                       e.target.value
@@ -184,7 +186,7 @@ const SecondStep = props => {
                     (customer && customer.addressInformation.city) ||
                     (subaccount && subaccount.addressInformation.city)
                   }
-                  onChange={e =>
+                  onChange={(e) =>
                     changeCustomer('addressInformation.city', e.target.value)
                   }
                 />
@@ -198,7 +200,7 @@ const SecondStep = props => {
                   (customer && customer.addressInformation.country) ||
                   (subaccount && subaccount.addressInformation.country)
                 }
-                onChange={e =>
+                onChange={(e) =>
                   changeCustomer('addressInformation.country', e.target.value)
                 }
               />

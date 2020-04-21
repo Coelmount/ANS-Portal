@@ -13,9 +13,10 @@ import accountCheck from 'source/images/svg/account-check.svg'
 
 import useStyles from './styles'
 
-const SuccesPage = props => {
+const SuccesPage = (props) => {
   const { handleClose, t, store, isCreateSubaccount, createSubaccount } = props
   const { changeStep, createdCustomerStore } = store
+
   const history = useHistory()
   const match = useParams()
   const classes = useStyles()
@@ -27,7 +28,9 @@ const SuccesPage = props => {
       )
       return
     }
-    history.push(`/customers/${createdCustomerStore.tenantId}/access_numbers`)
+    history.push(
+      `/customers/${createdCustomerStore.apio.body.tenantId}/access_numbers`
+    )
   }
 
   return (
@@ -61,7 +64,7 @@ const SuccesPage = props => {
             variant='outlined'
             color='primary'
             className={classes.leftButtonFromSP}
-            onClick={() => goToCustomer()}
+            onClick={goToCustomer}
           >
             {t('go_into_account')}
           </Button>
