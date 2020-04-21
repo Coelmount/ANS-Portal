@@ -15,7 +15,7 @@ import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ match, t }) => {
   const { userLogin } = AuthStore
-  const { handleCloseNav } = useContext(DefaultLayoutStore)
+  const { handleCloseNav } = DefaultLayoutStore
   const classes = useStyles()
   const { url } = match
 

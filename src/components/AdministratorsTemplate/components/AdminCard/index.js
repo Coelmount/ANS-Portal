@@ -15,7 +15,6 @@ import LanguageIcon from '@material-ui/icons/Language'
 
 import CustomerAdministrators from 'stores/CustomerAdministrators'
 import SubaccountAdministrators from 'stores/SubaccountAdmins'
-import EditDeleteSubaccountsAdmin from 'stores/EditDeleteSubaccountsAdmin'
 
 import DeleteModal from 'components/DeleteModal'
 import UpdateAdminInfo from '../UpdateAdminInfo'
@@ -55,8 +54,8 @@ const AdminCard = ({
   const [customerNameToDelete, setCustomerNameToDelete] = useState('')
   const [adminId, setAdminId] = useState('')
 
-  const { getSubaccountAdmins } = useContext(SubaccountAdministrators)
-  const { getCustomerAdmins } = useContext(CustomerAdministrators)
+  const { getSubaccountAdmins } = SubaccountAdministrators
+  const { getCustomerAdmins } = CustomerAdministrators
 
   const showModal = () => {
     setIsOpened(true)

@@ -30,7 +30,7 @@ export class SubaccountAdminsStore {
     this.isLoading = true
     axios
       .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.subaccountAdmins = res.data.admins
           this.isLoading = false
@@ -57,7 +57,7 @@ export class SubaccountAdminsStore {
         `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`,
         this.sentSubaccountAdmin
       )
-      .then((res) => {
+      .then(res => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers({ id: id, groupId: groupId })
@@ -86,4 +86,4 @@ decorate(SubaccountAdminsStore, {
   clearFields: action
 })
 
-export default createContext(new SubaccountAdminsStore())
+export default new SubaccountAdminsStore()

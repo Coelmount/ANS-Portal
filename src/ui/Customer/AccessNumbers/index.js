@@ -11,13 +11,10 @@ import Box from '@material-ui/core/Box'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
-import CustomersStore from 'stores/Customers'
-import CreateCustomerStore from 'stores/CreateCustomer'
 import EntitlementsStore from 'stores/Entitlements'
 
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
-import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
@@ -76,7 +73,7 @@ const AccessNumbers = ({ t }) => {
     setShowAssignNumbers(true)
   }
 
-  const handleDelete = (accessNumber) => {
+  const handleDelete = accessNumber => {
     deleteEntitlements(match.customerId, accessNumber.id)
       .then(() => setIsDeleteModalOpen(false))
       .then(() => getEntitlements(match.customerId))
@@ -110,7 +107,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'name',
       label: 'country',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography className={classes.countryCellText}>
           {row.name.split('-')[0]}
         </Typography>
@@ -127,7 +124,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'assigned',
       label: 'selected',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography>{row.assigned >= 1 ? row.assigned : 0}</Typography>
       ),
       extraProps: {
@@ -149,7 +146,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'see_numbers',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <Link
           to={`/customers/${match.customerId}/access_numbers/${row.name.replace(
             /\s/g,
@@ -168,7 +165,7 @@ const AccessNumbers = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}

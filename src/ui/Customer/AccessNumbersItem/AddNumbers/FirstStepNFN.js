@@ -17,7 +17,7 @@ import CallOutlined from '@material-ui/icons/CallOutlined'
 import Input from 'components/Input'
 import Select from 'components/Select'
 
-import customerStore from 'stores/Customers'
+import CustomerStore from 'stores/Customers'
 
 import useStyles from './styles'
 import Loading from 'components/Loading'
@@ -34,7 +34,7 @@ const FirstStepNFN = props => {
   const classes = useStyles()
   const match = useParams()
 
-  const { customer, getCustomer, isLoadingCustomer } = useContext(customerStore)
+  const { customer, getCustomer, isLoadingCustomer } = CustomerStore
 
   useEffect(() => {
     getCustomer(match.customerId)

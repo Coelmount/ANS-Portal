@@ -91,4 +91,4 @@ decorate(DefaultLayoutStore, {
   getActiveNavsAfterUpdate: action
 })
 
-export default createContext(new DefaultLayoutStore())
+export default new DefaultLayoutStore()

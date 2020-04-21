@@ -3,6 +3,8 @@ import { decorate, observable, action } from 'mobx'
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 
+import SnackbarStore from './Snackbar'
+
 export class PhoneNumbers {
   step = 1
   closeModal = false
@@ -13,7 +15,7 @@ export class PhoneNumbers {
   rejectedPhoneNumbers = []
   isPhoneNumbersLoading = true
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -25,20 +27,28 @@ export class PhoneNumbers {
     this.isPhoneNumbersLoading = true
     axios
       .get(`${PROXY_P6}/available_numbers`)
-      .then((res) => {
+      .then(res => {
         console.log(res.data)
         this.isPhoneNumbersLoading = false
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to fetch phone numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
       .finally(() => (this.isPhoneNumbersLoading = false))
   }
 
-  setPhoneNumbers = (phoneNumbers) => {
+  setPhoneNumbers = phoneNumbers => {
     this.phoneNumbers = phoneNumbers
-    const countries = phoneNumbers.map((item) => item.country)
+    const countries = phoneNumbers.map(item => item.country)
     this.uniqueCountries = [...new Set(countries)]
   }
 
-  setSelectedPhoneNumber = (phoneNumber) => {
+  setSelectedPhoneNumber = phoneNumber => {
     this.selectedPhoneNumber = phoneNumber
   }
 
@@ -54,7 +64,7 @@ export class PhoneNumbers {
       .splice(4, startNumber.length - 3)
       .join('')
     const startIndex = range.findIndex(
-      (item) => item.phoneNumber === startNumberWithoutCountryCode
+      item => item.phoneNumber === startNumberWithoutCountryCode
     )
 
     const addedPhoneNumbers = []
@@ -68,7 +78,7 @@ export class PhoneNumbers {
     this.rejectedPhoneNumbers = rejectedPhoneNumbers
   }
 
-  createGroupsSinglePhone = (addedPhone) =>
+  createGroupsSinglePhone = addedPhone =>
     (this.addedPhoneNumbers = [addedPhone])
 
   setDefaultValues = () => {

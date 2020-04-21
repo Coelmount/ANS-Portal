@@ -75,4 +75,4 @@ decorate(EditDeleteAdminStore, {
   deleteAdmin: action
 })
 
-export default createContext(new EditDeleteAdminStore())
+export default new EditDeleteAdminStore()

@@ -30,11 +30,11 @@ export class SubaccountsStore {
   isAddingCustomer = false
   selectGroups = []
 
-  getSubaccounts = (id) => {
+  getSubaccounts = id => {
     this.isLoadingSubaccounts = true
-    axios.get(`${PROXY_P6}/ans/tenants/1/groups`).then((res) => {
+    axios.get(`${PROXY_P6}/ans/tenants/1/groups`).then(res => {
       if (res.status === 200) {
-        this.selectGroups = res.data.accounts.map((group) => ({
+        this.selectGroups = res.data.accounts.map(group => ({
           value: group.external_id,
           label: group.name
         }))
@@ -50,7 +50,7 @@ export class SubaccountsStore {
     this.isLoadingSubaccount = true
     axios
       .get(`${PROXY_P6}/tenants/${customerId}/groups/${groupId}`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           console.log(res.data, 'res.data')
           merge(this.subaccount, res.data)
@@ -65,7 +65,7 @@ export class SubaccountsStore {
     this.isDeletingSubaccount = true
     axios
       .delete(`${PROXY_P6}/tenants/${tenantId}/groups/${groupId}/`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.getSubaccounts(tenantId)
           callback()
@@ -80,7 +80,7 @@ export class SubaccountsStore {
     this.isAddingCustomer = true
     return axios
       .put(`${PROXY_P6}/tenants/${tenantId}/groups/${groupId}`, this.subaccount)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)
           this.isAddingCustomer = false
@@ -88,7 +88,7 @@ export class SubaccountsStore {
       })
   }
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -114,4 +114,4 @@ decorate(SubaccountsStore, {
   updateCustomer: action
 })
 
-export default createContext(new SubaccountsStore())
+export default new SubaccountsStore()

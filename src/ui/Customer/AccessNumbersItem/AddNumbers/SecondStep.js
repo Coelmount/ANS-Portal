@@ -20,7 +20,6 @@ import Checkbox from 'components/Checkbox'
 
 import Group3Person from 'source/images/svg/Group3Person.svg'
 
-import SubaccountsStore from 'stores/Subaccounts'
 import NumbersStore from 'stores/Numbers'
 
 import capitalize from 'lodash/capitalize'

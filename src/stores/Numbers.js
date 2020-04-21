@@ -41,7 +41,14 @@ export class NumbersStore {
     const selectedNumbers = this.availableNumbersTable.filter(el => el.checked)
     const dataForPost = this.parseNumbersToPost(selectedNumbers)
     dataForPost.forEach(data => {
-      axios.post(`${PROXY_P6}/tenants/${tenantId}/numbers`, data)
+      axios.post(`${PROXY_P6}/tenants/${tenantId}/numbers`, data).catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to assign numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
     })
   }
 

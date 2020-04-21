@@ -3,6 +3,8 @@ import { decorate, observable, action } from 'mobx'
 import axios from 'axios'
 import { LOGIN_URL } from 'utils/axios'
 
+import SnackbarStore from './Snackbar'
+
 export class AuthStore {
   token = localStorage.getItem('token')
   user = {}
@@ -13,23 +15,33 @@ export class AuthStore {
   username = ''
 
   postLogin = (data, history) => {
-    axios.post(`${LOGIN_URL}/auth/login`, data).then(res => {
-      if (res.status === 200) {
-        localStorage.setItem('token', res.data.token)
-        this.token = res.data.token
-        this.userLogin = res.data
-        this.getLocal()
-        if (res.data.ids) {
-          if (res.data.ids.group_id) {
-            history.push(
-              `/customers/${res.data.ids.tenant_id}/subaccounts/${res.data.ids.group_id}/ans_instances`
-            )
-            return
+    axios
+      .post(`${LOGIN_URL}/auth/login`, data)
+      .then(res => {
+        if (res.status === 200) {
+          localStorage.setItem('token', res.data.token)
+          this.token = res.data.token
+          this.userLogin = res.data
+          this.getLocal()
+          if (res.data.ids) {
+            if (res.data.ids.group_id) {
+              history.push(
+                `/customers/${res.data.ids.tenant_id}/subaccounts/${res.data.ids.group_id}/ans_instances`
+              )
+              return
+            }
+            history.push(`/customers/${res.data.ids.tenant_id}/access_numbers`)
           }
-          history.push(`/customers/${res.data.ids.tenant_id}/access_numbers`)
         }
-      }
-    })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to login',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 
   getLocal = () => {
@@ -49,6 +61,14 @@ export class AuthStore {
           this.isAuthorized = false
         }
       })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Feiled to get user local data',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
   }
 
   logOut = () => {

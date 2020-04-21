@@ -11,8 +11,6 @@ import Button from '@material-ui/core/Button'
 
 import phonesSuccessIcon from 'source/images/svg/phones-success.svg'
 
-import CreateCustomerStore from 'stores/CreateCustomer'
-
 import useStyles from './styles'
 
 const SuccesPage = props => {

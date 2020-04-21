@@ -28,9 +28,9 @@ export class CustomerAdminsStore {
     }
   }
 
-  getCustomerAdmins = (id) => {
+  getCustomerAdmins = id => {
     this.isLoading = true
-    axios.get(`${PROXY_P6}/tenants/${id}/admins/`).then((res) => {
+    axios.get(`${PROXY_P6}/tenants/${id}/admins/`).then(res => {
       if (res.status === 200) {
         this.admins = res.data.admins
         this.isLoading = false
@@ -44,11 +44,11 @@ export class CustomerAdminsStore {
     this.isLanguagesLoading = true
     axios
       .get(`${PROXY_P6}/system/languages/`)
-      .then((res) => {
+      .then(res => {
         this.languagesList = res.data.availableLanguages
         this.isLanguagesLoading = false
       })
-      .catch((error) => console.log(error, 'error'))
+      .catch(error => console.log(error, 'error'))
       .finally(() => (this.isLanguagesLoading = false))
   }
 
@@ -65,7 +65,7 @@ export class CustomerAdminsStore {
     this.isLoading = true
     axios
       .post(`${PROXY_P6}/tenants/${id}/admins/`, this.sentAdmin)
-      .then((res) => {
+      .then(res => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers(id)
@@ -90,4 +90,4 @@ decorate(CustomerAdminsStore, {
   clearFields: action
 })
 
-export default createContext(new CustomerAdminsStore())
+export default new CustomerAdminsStore()

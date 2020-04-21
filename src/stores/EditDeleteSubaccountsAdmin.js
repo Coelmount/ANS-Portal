@@ -37,7 +37,7 @@ export class EditDeleteSubaccountAdminStore {
 
     axios
       .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.updateSubaccountAdminInfo('firstName', res.data.firstName)
           this.updateSubaccountAdminInfo('lastName', res.data.lastName)
@@ -55,7 +55,7 @@ export class EditDeleteSubaccountAdminStore {
         `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`,
         this.sentSubaccountAdmin
       )
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           this.isLoadingData = false
           closeModal()
@@ -69,7 +69,7 @@ export class EditDeleteSubaccountAdminStore {
     this.isDeletingSubaccountAdmin = true
     axios
       .delete(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           getUsers({ id, groupId })
           closeModal()
@@ -91,4 +91,4 @@ decorate(EditDeleteSubaccountAdminStore, {
   deleteSubaccountAdmin: action
 })
 
-export default createContext(new EditDeleteSubaccountAdminStore())
+export default new EditDeleteSubaccountAdminStore()

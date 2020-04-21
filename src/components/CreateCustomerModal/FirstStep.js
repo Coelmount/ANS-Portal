@@ -16,11 +16,9 @@ import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
 import Input from 'components/Input'
 
-import CreateCustomerStore from 'stores/CreateCustomer'
-
 import useStyles from './styles'
 
-const FirstStep = (props) => {
+const FirstStep = props => {
   const match = useParams()
   const {
     handleClose,
@@ -30,17 +28,17 @@ const FirstStep = (props) => {
     isEditCustomer,
     isEditSubaccount
   } = props
-  const { changeStep, customer, changeCustomer, subaccount } = useContext(store)
+  const { changeStep, customer, changeCustomer, subaccount } = store
   const classes = useStyles()
 
-  const changeId = (value) => {
+  const changeId = value => {
     if (isCreateSubaccount) {
       changeCustomer('groupId', value)
     }
     changeCustomer('external_id', value)
   }
 
-  const changeName = (value) => {
+  const changeName = value => {
     if (isCreateSubaccount) {
       changeCustomer('groupName', value)
     } else if (isEditSubaccount) {
@@ -91,7 +89,7 @@ const FirstStep = (props) => {
             variant='outlined'
             disabled={isEditCustomer || isEditSubaccount}
             value={(customer && customer.external_id) || match.groupId}
-            onChange={(e) => changeId(e.target.value)}
+            onChange={e => changeId(e.target.value)}
           />
         </Box>
         <Box className={classes.inputes}>
@@ -108,7 +106,7 @@ const FirstStep = (props) => {
               (customer && customer.name) ||
               (subaccount && subaccount.groupName)
             }
-            onChange={(e) => changeName(e.target.value)}
+            onChange={e => changeName(e.target.value)}
           />
         </Box>
       </DialogContent>

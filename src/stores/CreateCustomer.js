@@ -79,4 +79,4 @@ decorate(CreateCustomerStore, {
   changeCustomer: action
 })
 
-export default createContext(new CreateCustomerStore())
+export default new CreateCustomerStore()

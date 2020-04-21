@@ -113,4 +113,4 @@ decorate(CustomersStore, {
   changeCustomer: action
 })
 
-export default createContext(new CustomersStore())
+export default new CustomersStore()
