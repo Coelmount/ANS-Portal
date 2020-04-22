@@ -1,9 +1,9 @@
 import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
-import { PROXY_P6 } from 'utils/axios'
 
 import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class EditDeleteAdminStore {
   isLoadingData = true
@@ -28,20 +28,18 @@ export class EditDeleteAdminStore {
     this.isLoadingData = true
 
     axios
-      .get(`${PROXY_P6}/tenants/${id}/admins/${userId}`)
+      .get(`/tenants/${id}/admins/${userId}`)
       .then(res => {
         if (res.status === 200) {
           this.updateAdminInfo('firstName', res.data.firstName)
           this.updateAdminInfo('lastName', res.data.lastName)
           this.updateAdminInfo('language', res.data.language)
           this.isLoadingData = false
-        } else {
-          console.log(res, 'error')
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch admin',
+          message: getErrorMessage(e) || 'Failed to fetch admin',
           options: {
             variant: 'error'
           }
@@ -51,20 +49,17 @@ export class EditDeleteAdminStore {
   updateCustomerAdmin = ({ id, closeModal, userId, getUsers }) => {
     this.isLoadingData = true
     axios
-      .put(`${PROXY_P6}/tenants/${id}/admins/${userId}`, this.sentAdmin)
+      .put(`/tenants/${id}/admins/${userId}`, this.sentAdmin)
       .then(res => {
         if (res.status === 200) {
-          console.log('updated')
           this.isLoadingData = false
           closeModal()
           getUsers(id)
-        } else {
-          console.log(res, 'error')
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to update admin',
+          message: getErrorMessage(e) || 'Failed to update admin',
           options: {
             variant: 'error'
           }
@@ -74,19 +69,17 @@ export class EditDeleteAdminStore {
   deleteAdmin = ({ id, closeModal, userId, getUsers }) => {
     this.isDeletingAdmin = true
     axios
-      .delete(`${PROXY_P6}/tenants/${id}/admins/${userId}`)
+      .delete(`/tenants/${id}/admins/${userId}`)
       .then(res => {
         if (res.status === 200) {
           getUsers(id)
           closeModal()
           this.isDeletingAdmin = false
-        } else {
-          console.log(res, 'error')
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to delete admin',
+          message: getErrorMessage(e) || 'Failed to delete admin',
           options: {
             variant: 'error'
           }

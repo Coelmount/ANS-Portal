@@ -3,9 +3,9 @@ import { decorate, observable, action } from 'mobx'
 import merge from 'lodash/merge'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 import set from 'lodash/set'
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 const defaultCustomerValue = {
   id: '',
@@ -37,17 +37,13 @@ export class CustomersStore {
   getCustomers = () => {
     this.isLoadingCustomers = true
     axios
-      .get(`${PROXY_P6}/tenants`)
-      .then((res) => {
-        if (res.status === 200) {
-          this.rows = res.data.customers
-        } else {
-          console.log(res, 'error')
-        }
+      .get(`/tenants`)
+      .then(res => {
+        this.rows = res.data.customers
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch customers',
+          message: getErrorMessage(e) || 'Failed to fetch customers',
           options: {
             variant: 'error'
           }
@@ -58,20 +54,19 @@ export class CustomersStore {
       })
   }
 
-  getCustomer = (id) => {
+  getCustomer = id => {
     this.isLoadingCustomer = true
     axios
-      .get(`${PROXY_P6}/tenants/${id}/`)
-      .then((res) => {
-        // merge(this.customer, res.data.customers[0])
+      .get(`/tenants/${id}/`)
+      .then(res => {
         merge(this.customer, res.data)
         this.isLoadingCustomer = false
       })
-      .catch((e) => {
+      .catch(e => {
         this.isLoadingCustomer = false
 
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch customer',
+          message: getErrorMessage(e) || 'Failed to fetch customer',
           options: {
             variant: 'error'
           }
@@ -89,15 +84,15 @@ export class CustomersStore {
   deleteCustomer = ({ id, callback }) => {
     this.isDeletingCustomer = true
     axios
-      .delete(`${PROXY_P6}/tenants/${id}`)
+      .delete(`/tenants/${id}`)
       .then(() => {
         this.getCustomers()
         callback()
         this.isDeletingCustomer = false
       })
-      .catch((e) => {
+      .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to delete customer',
+          message: getErrorMessage(e) || 'Failed to delete customer',
           options: {
             variant: 'error'
           }
@@ -111,19 +106,19 @@ export class CustomersStore {
       })
   }
 
-  updateCustomer = (tenantId) => {
+  updateCustomer = tenantId => {
     this.isAddingCustomer = true
     return axios
-      .put(`${PROXY_P6}/tenants/${tenantId}`, this.customer)
-      .then((res) => {
+      .put(`/tenants/${tenantId}`, this.customer)
+      .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)
           this.isAddingCustomer = false
         }
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to update customer',
+          message: getErrorMessage(e) || 'Failed to update customer',
           options: {
             variant: 'error'
           }
@@ -131,7 +126,7 @@ export class CustomersStore {
       )
   }
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 

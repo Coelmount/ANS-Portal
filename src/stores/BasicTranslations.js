@@ -1,13 +1,13 @@
 import { decorate, observable, action } from 'mobx'
 
-import axios, { PROXY_P6 } from 'utils/axios'
+import axios from 'utils/axios'
 
 export class BasicTranslations {
   step = 1
   selectedPhoneNumber = null
   selectedInstance = null
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -16,25 +16,25 @@ export class BasicTranslations {
     this.selectedPhoneNumber = null
   }
 
-  updateSelectedPhoneNumber = (number) => {
+  updateSelectedPhoneNumber = number => {
     this.selectedPhoneNumber = number
   }
 
   postDestinationNumber = (country, number) => {
-    console.log(country, number, 'to post')
+    //console.log(country, number, 'to post')
     this.changeStep(3)
   }
 
-  updateSelectedInstance = (instance) => {
+  updateSelectedInstance = instance => {
     this.selectedInstance = instance
   }
 
-  postAccessNumber = (callback) => {
-    console.log(
-      this.selectedInstance.accessCountry,
-      this.selectedInstance.accessNumber,
-      'to post'
-    )
+  postAccessNumber = callback => {
+    // console.log(
+    //   this.selectedInstance.accessCountry,
+    //   this.selectedInstance.accessNumber,
+    //   'to post'
+    // )
     callback && callback()
   }
 }

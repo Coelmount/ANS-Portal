@@ -1,9 +1,9 @@
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class SearchStore {
   searchResult = null
@@ -18,16 +18,16 @@ export class SearchStore {
       this.isLoading = true
 
       axios
-        .get(`${PROXY_P6}/search/numbers/usages/${phoneNumber}/`)
+        .get(`/search/numbers/usages/${phoneNumber}/`)
         .then(res => {
           this.searchResult = res.data
           this.emptyResult = null
           this.ansInstance = phoneNumber
         })
-        .catch(error => {
+        .catch(e => {
           this.emptyResult = true
           SnackbarStore.enqueueSnackbar({
-            message: 'Failed to fetch phone numbers',
+            message: getErrorMessage(e) || 'Failed to fetch phone numbers',
             options: {
               variant: 'error'
             }

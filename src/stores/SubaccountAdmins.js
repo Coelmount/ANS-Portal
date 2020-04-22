@@ -2,8 +2,9 @@ import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
+
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class SubaccountAdminsStore {
   subaccountAdmins = []
@@ -30,13 +31,13 @@ export class SubaccountAdminsStore {
   getSubaccountAdmins = ({ id, groupId }) => {
     this.isLoading = true
     axios
-      .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`)
-      .then((res) => {
+      .get(`/tenants/${id}/groups/${groupId}/admins/`)
+      .then(res => {
         this.subaccountAdmins = res.data.admins
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch admins',
+          message: getErrorMessage(e) || 'Failed to fetch admins',
           options: {
             variant: 'error'
           }
@@ -61,10 +62,10 @@ export class SubaccountAdminsStore {
 
     axios
       .post(
-        `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`,
+        `/tenants/${id}/groups/${groupId}/admins/`,
         this.sentSubaccountAdmin
       )
-      .then((res) => {
+      .then(res => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers({ id: id, groupId: groupId })
@@ -76,13 +77,11 @@ export class SubaccountAdminsStore {
             password: ''
           }
           closeModal()
-        } else {
-          console.log(res, 'error')
         }
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to add admin',
+          message: getErrorMessage(e) || 'Failed to add admin',
           options: {
             variant: 'error'
           }

@@ -155,7 +155,6 @@ const AssignNumbers = props => {
       }
       return result
     })
-    console.log(newNumbers)
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)

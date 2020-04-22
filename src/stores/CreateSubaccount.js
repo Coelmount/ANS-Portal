@@ -3,9 +3,9 @@ import { decorate, observable, action } from 'mobx'
 import { set } from 'lodash'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 import { removeEmpty } from 'utils/removeEmpty'
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class CreateSubaccountStore {
   step = 1
@@ -59,11 +59,11 @@ export class CreateSubaccountStore {
   createCustomer = customerId => {
     const data = { ...this.customer }
     return axios
-      .post(`${PROXY_P6}/tenants/${customerId}/groups/`, removeEmpty(data))
+      .post(`/tenants/${customerId}/groups/`, removeEmpty(data))
       .then(res => (this.createdCustomerStore = res.data))
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to create subaccaunt',
+          message: getErrorMessage(e) || 'Failed to create subaccaunt',
           options: {
             variant: 'error'
           }

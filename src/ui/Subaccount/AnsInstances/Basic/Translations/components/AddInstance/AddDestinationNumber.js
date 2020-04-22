@@ -34,7 +34,6 @@ const AddDestinationNumber = ({ handleClose, t }) => {
 
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [destinationNumber, setDestinationNumber] = useState(null)
-  console.log(selectedCountry, destinationNumber, 'data')
 
   const handleAddButton = () => {
     postDestinationNumber(selectedCountry, destinationNumber)
@@ -64,13 +63,13 @@ const AddDestinationNumber = ({ handleClose, t }) => {
 
         <Box className={classes.inputsWrap}>
           <Input
-            onChange={(e) => setSelectedCountry(e.target.value)}
+            onChange={e => setSelectedCountry(e.target.value)}
             className={classes.wrapper}
             label={t('country')}
           />
 
           <Input
-            onChange={(e) => setDestinationNumber(e.target.value)}
+            onChange={e => setDestinationNumber(e.target.value)}
             className={classes.input}
             label={t('destination_number')}
           />

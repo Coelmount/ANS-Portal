@@ -1,8 +1,8 @@
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_CUSTOM_ANS, PROXY_P6 } from 'utils/axios'
 import SnackbarStore from '../Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class Entitlements {
   entitlements = []
@@ -16,7 +16,7 @@ export class Entitlements {
   isLoadingEntitlementTypes = true
   isSending = false
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -25,30 +25,30 @@ export class Entitlements {
   }
 
   setDefaultEntitlementTypes = () => {
-    const newEntitlementTypes = this.entitlementTypes.map((item) => {
+    const newEntitlementTypes = this.entitlementTypes.map(item => {
       let result = { ...item, hover: false, checked: false }
       return result
     })
     this.entitlementTypes = newEntitlementTypes
   }
 
-  updateCheckedArr = (selected) => {
+  updateCheckedArr = selected => {
     this.checkedArr = selected
   }
 
-  getEntitlements = (id) => {
+  getEntitlements = id => {
     this.isLoadingEntitlements = true
     axios
-      .get(`${PROXY_P6}/tenants/${id}/entitlements`)
-      .then((res) => {
+      .get(`/tenants/${id}/entitlements`)
+      .then(res => {
         this.entitlements = res.data.entitlments
         this.entitlementsIdArr = res.data.entitlments.map(
-          (item) => item.license_model_id
+          item => item.license_model_id
         )
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch entitlements',
+          message: getErrorMessage(e) || 'Failed to fetch entitlements',
           options: {
             variant: 'error'
           }
@@ -62,20 +62,20 @@ export class Entitlements {
   getEntitlementTypes = () => {
     this.isLoadingEntitlementTypes = true
     axios
-      .get(`${PROXY_P6}/entitlement_types`)
-      .then((res) => {
-        const result = res.data.customer_licenses.filter((item) => {
+      .get(`/entitlement_types`)
+      .then(res => {
+        const result = res.data.customer_licenses.filter(item => {
           return !this.entitlementsIdArr.some(
-            (entitlementId) => entitlementId === item.id
+            entitlementId => entitlementId === item.id
           )
         })
-        this.entitlementTypes = result.map((item) => {
+        this.entitlementTypes = result.map(item => {
           return { checked: false, hover: false, ...item }
         })
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch entitlement types',
+          message: getErrorMessage(e) || 'Failed to fetch entitlement types',
           options: {
             variant: 'error'
           }
@@ -88,9 +88,9 @@ export class Entitlements {
 
   postEntitlements = (callback, id, entitlements) => {
     this.isSending = true
-    entitlements.forEach((item) => {
+    entitlements.forEach(item => {
       axios
-        .post(`${PROXY_P6}/tenants/${id}/entitlements`, {
+        .post(`/tenants/${id}/entitlements`, {
           license_model_id: item.id,
           entitlement: item.entitlement
         })
@@ -98,9 +98,9 @@ export class Entitlements {
           this.isSending = false
           callback(3)
         })
-        .catch((e) =>
+        .catch(e =>
           SnackbarStore.enqueueSnackbar({
-            message: 'Failed to create entitlements',
+            message: getErrorMessage(e) || 'Failed to create entitlements',
             options: {
               variant: 'error'
             }
@@ -114,12 +114,12 @@ export class Entitlements {
 
   putTotalEntitlements = (tenantId, entitlementId, total) => {
     axios
-      .put(`${PROXY_P6}/tenants/${tenantId}/entitlements/${entitlementId}`, {
+      .put(`/tenants/${tenantId}/entitlements/${entitlementId}`, {
         entitlement: total
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to update entitlement',
+          message: getErrorMessage(e) || 'Failed to update entitlement',
           options: {
             variant: 'error'
           }
@@ -129,10 +129,10 @@ export class Entitlements {
 
   deleteEntitlements = (tenantId, entitlementId) => {
     return axios
-      .delete(`${PROXY_P6}/tenants/${tenantId}/entitlements/${entitlementId}`)
-      .catch((e) =>
+      .delete(`/tenants/${tenantId}/entitlements/${entitlementId}`)
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to delete entitlement',
+          message: getErrorMessage(e) || 'Failed to delete entitlement',
           options: {
             variant: 'error'
           }

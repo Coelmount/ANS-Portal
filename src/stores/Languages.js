@@ -6,6 +6,7 @@ import axios from 'utils/axios'
 import { getLocale } from 'i18n'
 
 import SnackbarStore from 'stores/Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class LanguagesStore {
   isLoadingLang = true
@@ -20,7 +21,6 @@ export class LanguagesStore {
         try {
           JSON.parse(res.data.data)
         } catch (e) {
-          console.error(e)
           localStorage.setItem('i18nextLng', 'en')
           this.isLoadingLang = false
           return
@@ -36,7 +36,7 @@ export class LanguagesStore {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: `Failed to get ${lang} localization`,
+          message: getErrorMessage(e) || `Failed to get ${lang} localization`,
           options: {
             variant: 'error'
           }
