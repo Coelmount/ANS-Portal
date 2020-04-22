@@ -41,13 +41,10 @@ export class Entitlements {
     axios
       .get(`/tenants/${id}/entitlements`)
       .then(res => {
-        if (res.status === 200) {
-          this.entitlements = res.data.entitlments
-          this.entitlementsIdArr = res.data.entitlments.map(
-            item => item.license_model_id
-          )
-          this.isLoadingEntitlements = false
-        }
+        this.entitlements = res.data.entitlments
+        this.entitlementsIdArr = res.data.entitlments.map(
+          item => item.license_model_id
+        )
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -57,24 +54,24 @@ export class Entitlements {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingEntitlements = false
+      })
   }
 
   getEntitlementTypes = () => {
-    this.isLoadingEntitlements = true
+    this.isLoadingEntitlementTypes = true
     axios
       .get(`/entitlement_types`)
       .then(res => {
-        if (res.status === 200) {
-          this.isLoadingEntitlementTypes = false
-          const result = res.data.customer_licenses.filter(item => {
-            return !this.entitlementsIdArr.some(
-              entitlementId => entitlementId === item.id
-            )
-          })
-          this.entitlementTypes = result.map(item => {
-            return { checked: false, hover: false, ...item }
-          })
-        }
+        const result = res.data.customer_licenses.filter(item => {
+          return !this.entitlementsIdArr.some(
+            entitlementId => entitlementId === item.id
+          )
+        })
+        this.entitlementTypes = result.map(item => {
+          return { checked: false, hover: false, ...item }
+        })
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -84,6 +81,9 @@ export class Entitlements {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingEntitlementTypes = false
+      })
   }
 
   postEntitlements = (callback, id, entitlements) => {

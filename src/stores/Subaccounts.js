@@ -106,10 +106,7 @@ export class SubaccountsStore {
     return axios
       .put(`/tenants/${tenantId}/groups/${groupId}`, this.subaccount)
       .then(res => {
-        if (res.status === 200) {
-          merge(this.customer, res.data)
-          this.isAddingCustomer = false
-        }
+        merge(this.customer, res.data)
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -119,6 +116,9 @@ export class SubaccountsStore {
           }
         })
       )
+      .finally(() => {
+        this.isAddingCustomer = false
+      })
   }
 
   changeStep = step => {

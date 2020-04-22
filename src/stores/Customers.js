@@ -39,10 +39,7 @@ export class CustomersStore {
     axios
       .get(`/tenants`)
       .then(res => {
-        if (res.status === 200) {
-          this.rows = res.data.customers
-          this.isLoadingCustomers = false
-        }
+        this.rows = res.data.customers
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -52,6 +49,9 @@ export class CustomersStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingCustomers = false
+      })
   }
 
   getCustomer = id => {

@@ -33,11 +33,7 @@ export class SubaccountAdminsStore {
     axios
       .get(`/tenants/${id}/groups/${groupId}/admins/`)
       .then(res => {
-        if (res.status === 200) {
-          this.subaccountAdmins = res.data.admins
-          this.isLoading = false
-        } else {
-        }
+        this.subaccountAdmins = res.data.admins
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -47,6 +43,9 @@ export class SubaccountAdminsStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoading = false
+      })
   }
 
   setSubaccountAdminInfo = (valueKey, value) => {

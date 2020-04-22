@@ -23,11 +23,11 @@ import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
+import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
+import AddNumbers from './AddNumbers/'
 
 import useStyles from './styles'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
-
-import AddNumbers from './AddNumbers/'
 
 const rows = [
   {
@@ -103,9 +103,9 @@ const AccessNumbersItem = ({ t }) => {
 
   const selectNumbers = (checked, id) => {
     const newSelected = [...selected]
-    const index = selected.findIndex(el => el.id === id)
+    const index = selected.findIndex((el) => el.id === id)
     newSelected[index].checked = checked
-    if (newSelected.every(el => el.checked)) {
+    if (newSelected.every((el) => el.checked)) {
       setSelectAll(true)
     } else {
       setSelectAll(false)
@@ -114,8 +114,8 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const searchListId = searchList.map(item => item.id)
-    const newSelected = selected.map(el => {
+    const searchListId = searchList.map((item) => item.id)
+    const newSelected = selected.map((el) => {
       let result = {}
       if (searchListId.includes(el.id)) {
         result = {
@@ -134,9 +134,9 @@ const AccessNumbersItem = ({ t }) => {
     setIsAnyChecked(!selectAll)
   }
 
-  const handleCheckedStates = newSelected => {
+  const handleCheckedStates = (newSelected) => {
     if (
-      newSelected.every(el => {
+      newSelected.every((el) => {
         return el.checked
       })
     ) {
@@ -144,7 +144,7 @@ const AccessNumbersItem = ({ t }) => {
       setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newSelected.some(el => el.checked)) {
+      if (newSelected.some((el) => el.checked)) {
         setIsAnyChecked(true)
       } else {
         setIsAnyChecked(false)
@@ -158,7 +158,7 @@ const AccessNumbersItem = ({ t }) => {
 
   const changeHover = (newHover, id) => {
     const newSelected = [...selected]
-    const index = selected.findIndex(el => el.id === id)
+    const index = selected.findIndex((el) => el.id === id)
     newSelected[index].hover = newHover
     setSelected(newSelected)
   }
@@ -250,7 +250,7 @@ const AccessNumbersItem = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.country)}
           className={classes.deleteCustomerIcon}
@@ -282,15 +282,19 @@ const AccessNumbersItem = ({ t }) => {
             }}
           />
         </CustomContainer>
-        <CustomTable
-          // classes={classes}
-          columns={columns}
-          firstCell={false}
-          rows={selected}
-          searchCriterias={['phone_numbers', 'subaccount_id']}
-          getSearchList={setSearchList}
-          extraToolbarBlock={toolbarButtonsBlock}
-        />
+        {selected.length ? (
+          <CustomTable
+            // classes={classes}
+            columns={columns}
+            firstCell={false}
+            rows={selected}
+            searchCriterias={['phone_numbers', 'subaccount_id']}
+            getSearchList={setSearchList}
+            extraToolbarBlock={toolbarButtonsBlock}
+          />
+        ) : (
+          <NoAvailableDataBlock />
+        )}
       </Paper>
     </div>
   )

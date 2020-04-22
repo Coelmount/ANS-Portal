@@ -47,6 +47,9 @@ export class CustomerAdminsStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoading = false
+      })
   }
 
   getCustomerAdminsLanguages = () => {

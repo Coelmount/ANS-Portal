@@ -16,6 +16,7 @@ import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
+import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './styles'
 
@@ -30,7 +31,6 @@ const SubaccountsTable = observer(({ t }) => {
     isDeletingSubaccount,
     getDefaultValues
   } = SubaccountsStore
-
   const { setDefaultValues } = CreateSubaccountStore
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [subaccountToDelete, setSubaccountToDelete] = useState({})
@@ -41,7 +41,7 @@ const SubaccountsTable = observer(({ t }) => {
   }, [getSubaccounts, match.customerId])
 
   useEffect(() => {
-    getDefaultValues()
+    return () => getDefaultValues()
   }, [])
 
   const columns = [
@@ -137,13 +137,17 @@ const SubaccountsTable = observer(({ t }) => {
           />
         </CustomContainer>
 
-        <CustomTable
-          // classes={classes}
-          rows={rows}
-          isLoadingData={isLoadingSubaccounts}
-          columns={columns}
-          searchCriterias={['groupId', 'groupName']}
-        />
+        {rows.length ? (
+          <CustomTable
+            // classes={classes}
+            rows={rows}
+            isLoadingData={isLoadingSubaccounts}
+            columns={columns}
+            searchCriterias={['groupId', 'groupName']}
+          />
+        ) : (
+          <NoAvailableDataBlock />
+        )}
         {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}
