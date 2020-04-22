@@ -6,11 +6,12 @@ import axios from 'utils/axios'
 import { removeEmpty } from 'utils/removeEmpty'
 import { CUSTOMER_TEMPLATE, CUSTOMER_TYPE } from 'source/config'
 import SnackbarStore from './Snackbar'
+import ConfigStore from './Config'
 import getErrorMessage from 'utils/getErrorMessage'
 
 const defaultCustomerValues = {
-  templateName: CUSTOMER_TEMPLATE,
-  type: CUSTOMER_TYPE,
+  templateName: '',
+  type: '',
   tenantId: '',
   name: '',
   contactInformation: {
