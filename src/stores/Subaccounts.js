@@ -3,9 +3,9 @@ import { decorate, observable, action } from 'mobx'
 import merge from 'lodash/merge'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 import set from 'lodash/set'
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class SubaccountsStore {
   rows = []
@@ -31,21 +31,21 @@ export class SubaccountsStore {
   isAddingCustomer = false
   selectGroups = []
 
-  getSubaccounts = (tenantId) => {
+  getSubaccounts = tenantId => {
     this.isLoadingSubaccounts = true
     axios
-      .get(`${PROXY_P6}/tenants/${tenantId}/groups`)
-      .then((res) => {
+      .get(`/tenants/${tenantId}/groups`)
+      .then(res => {
         this.rows = res.data.groups
 
-        this.selectGroups = res.data.groups.map((group) => ({
+        this.selectGroups = res.data.groups.map(group => ({
           value: group.groupId,
           label: group.groupName
         }))
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch subaccounts',
+          message: getErrorMessage(e) || 'Failed to fetch subaccounts',
           options: {
             variant: 'error'
           }
@@ -63,19 +63,16 @@ export class SubaccountsStore {
   getSubaccount = (customerId, groupId) => {
     this.isLoadingSubaccount = true
     axios
-      .get(`${PROXY_P6}/tenants/${customerId}/groups/${groupId}`)
-      .then((res) => {
+      .get(`/tenants/${customerId}/groups/${groupId}`)
+      .then(res => {
         if (res.status === 200) {
-          console.log(res.data, 'res.data')
           merge(this.subaccount, res.data)
           this.isLoadingSubaccount = false
-        } else {
-          console.log(res, 'error')
         }
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch subaccount',
+          message: getErrorMessage(e) || 'Failed to fetch subaccount',
           options: {
             variant: 'error'
           }
@@ -86,19 +83,17 @@ export class SubaccountsStore {
   deleteSubaccount = ({ tenantId, groupId, callback }) => {
     this.isDeletingSubaccount = true
     axios
-      .delete(`${PROXY_P6}/tenants/${tenantId}/groups/${groupId}/`)
-      .then((res) => {
+      .delete(`/tenants/${tenantId}/groups/${groupId}/`)
+      .then(res => {
         if (res.status === 200) {
           this.getSubaccounts(tenantId)
           callback()
           this.isDeletingSubaccount = false
-        } else {
-          console.log(res, 'error')
         }
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to delete subaccount',
+          message: getErrorMessage(e) || 'Failed to delete subaccount',
           options: {
             variant: 'error'
           }
@@ -109,16 +104,16 @@ export class SubaccountsStore {
   updateCustomer = (tenantId, groupId) => {
     this.isAddingCustomer = true
     return axios
-      .put(`${PROXY_P6}/tenants/${tenantId}/groups/${groupId}`, this.subaccount)
-      .then((res) => {
+      .put(`/tenants/${tenantId}/groups/${groupId}`, this.subaccount)
+      .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)
           this.isAddingCustomer = false
         }
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to update subaccounts',
+          message: getErrorMessage(e) || 'Failed to update subaccounts',
           options: {
             variant: 'error'
           }
@@ -126,7 +121,7 @@ export class SubaccountsStore {
       )
   }
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 

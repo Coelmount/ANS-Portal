@@ -1,7 +1,8 @@
 import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 import axios from 'axios'
-import { LOGIN_URL } from 'utils/axios'
+import { BASE_URL } from 'utils/axios'
+import getErrorMessage from 'utils/getErrorMessage'
 
 import SnackbarStore from './Snackbar'
 
@@ -16,7 +17,7 @@ export class AuthStore {
 
   postLogin = (data, history) => {
     axios
-      .post(`${LOGIN_URL}/auth/login`, data)
+      .post(`${BASE_URL}/auth/login`, data)
       .then(res => {
         if (res.status === 200) {
           localStorage.setItem('token', res.data.token)
@@ -36,7 +37,7 @@ export class AuthStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to login',
+          message: getErrorMessage(e) || 'Failed to login',
           options: {
             variant: 'error'
           }
@@ -46,13 +47,12 @@ export class AuthStore {
 
   getLocal = () => {
     axios
-      .get(`${LOGIN_URL}/system/users/local`, {
+      .get(`${BASE_URL}/system/users/local`, {
         headers: { Authorization: `Bearer ${this.token}` }
       })
       .then(res => {
         if (res.status === 200) {
           this.user = res.data
-          console.log(res.data)
           this.username = res.data.username
           localStorage.setItem('isAuthorized', true)
           this.isAuthorized = true
@@ -63,7 +63,7 @@ export class AuthStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to get user local data',
+          message: getErrorMessage(e) || 'Failed to get user local data',
           options: {
             variant: 'error'
           }

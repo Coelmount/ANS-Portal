@@ -2,8 +2,8 @@ import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class CustomerAdminsStore {
   admins = []
@@ -32,18 +32,16 @@ export class CustomerAdminsStore {
   getCustomerAdmins = id => {
     this.isLoading = true
     axios
-      .get(`${PROXY_P6}/tenants/${id}/admins/`)
+      .get(`/tenants/${id}/admins/`)
       .then(res => {
         if (res.status === 200) {
           this.admins = res.data.admins
           this.isLoading = false
-        } else {
-          console.log(res, 'error')
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch admins',
+          message: getErrorMessage(e) || 'Failed to fetch admins',
           options: {
             variant: 'error'
           }
@@ -54,14 +52,14 @@ export class CustomerAdminsStore {
   getCustomerAdminsLanguages = () => {
     this.isLanguagesLoading = true
     axios
-      .get(`${PROXY_P6}/system/languages/`)
+      .get(`/system/languages/`)
       .then(res => {
         this.languagesList = res.data.availableLanguages
         this.isLanguagesLoading = false
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch languages',
+          message: getErrorMessage(e) || 'Failed to fetch languages',
           options: {
             variant: 'error'
           }
@@ -82,19 +80,17 @@ export class CustomerAdminsStore {
   addCustomerAdmin = ({ id, closeModal, getUsers }) => {
     this.isLoading = true
     axios
-      .post(`${PROXY_P6}/tenants/${id}/admins/`, this.sentAdmin)
+      .post(`/tenants/${id}/admins/`, this.sentAdmin)
       .then(res => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers(id)
           closeModal()
-        } else {
-          console.log(res, 'error')
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to add admins',
+          message: getErrorMessage(e) || 'Failed to add admins',
           options: {
             variant: 'error'
           }

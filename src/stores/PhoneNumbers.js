@@ -4,6 +4,7 @@ import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class PhoneNumbers {
   step = 1
@@ -26,14 +27,13 @@ export class PhoneNumbers {
   getPhoneNumbers = (customerId, groupId) => {
     this.isPhoneNumbersLoading = true
     axios
-      .get(`${PROXY_P6}/available_numbers`)
+      .get(`/available_numbers`)
       .then(res => {
-        console.log(res.data)
         this.isPhoneNumbersLoading = false
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch phone numbers',
+          message: getErrorMessage(e) || 'Failed to fetch phone numbers',
           options: {
             variant: 'error'
           }
@@ -53,7 +53,7 @@ export class PhoneNumbers {
   }
 
   postPhoneNumbers = (number, amount, startNumber) => {
-    console.log(number, amount, 'to post')
+    //console.log(number, amount, 'to post')
     this.changeStep(3)
     this.createAddedAndRejectedGroups(number.phoneNumbers, amount, startNumber)
   }

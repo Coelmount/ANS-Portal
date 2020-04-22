@@ -3,9 +3,9 @@ import merge from 'lodash/merge'
 import queryString from 'query-string'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class NumbersStore {
   availableNumbers = []
@@ -17,7 +17,7 @@ export class NumbersStore {
     this.params = params
     return axios
       .get(
-        `${PROXY_P6}/available_numbers?${queryString.stringify(params, {
+        `/available_numbers?${queryString.stringify(params, {
           skipEmptyString: true
         })}`
       )
@@ -29,7 +29,7 @@ export class NumbersStore {
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch available numbers',
+          message: getErrorMessage(e) || 'Failed to fetch available numbers',
           options: {
             variant: 'error'
           }
@@ -41,9 +41,9 @@ export class NumbersStore {
     const selectedNumbers = this.availableNumbersTable.filter(el => el.checked)
     const dataForPost = this.parseNumbersToPost(selectedNumbers)
     dataForPost.forEach(data => {
-      axios.post(`${PROXY_P6}/tenants/${tenantId}/numbers`, data).catch(e =>
+      axios.post(`/tenants/${tenantId}/numbers`, data).catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to assign numbers',
+          message: getErrorMessage(e) || 'Failed to assign numbers',
           options: {
             variant: 'error'
           }

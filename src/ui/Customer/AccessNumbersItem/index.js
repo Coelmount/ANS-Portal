@@ -89,7 +89,6 @@ const AccessNumbersItem = ({ t }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
-  console.log(selected, 'selected')
   const { assignedNumbers, getAssignedNumbers } = AssignedNumbersStore
 
   useEffect(() => {
@@ -97,7 +96,7 @@ const AccessNumbersItem = ({ t }) => {
   }, [])
 
   const handleOpenDeleteModal = (id, name) => {
-    console.log('delete')
+    //console.log('delete')
     // setIsDeleteModalOpen(true)
     // setSubaccountToDelete({ id, name })
   }

@@ -31,8 +31,6 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
     i18n.changeLanguage(lng)
   }
 
-  console.log(username)
-
   return (
     <Fragment>
       <AppBar position='fixed' className={classes.appBar}>

@@ -3,10 +3,10 @@ import { createContext } from 'react'
 import set from 'lodash/set'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 import { removeEmpty } from 'utils/removeEmpty'
 import { CUSTOMER_TEMPLATE, CUSTOMER_TYPE } from 'source/config'
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 const defaultCustomerValues = {
   templateName: CUSTOMER_TEMPLATE,
@@ -36,7 +36,7 @@ export class CreateCustomerStore {
 
   createdCustomerStore = {}
 
-  changeStep = (step) => {
+  changeStep = step => {
     this.step = step
   }
 
@@ -53,11 +53,11 @@ export class CreateCustomerStore {
     this.isCustomerAdding = true
     const data = { ...this.customer }
     return axios
-      .post(`${PROXY_P6}/tenants`, removeEmpty(data))
-      .then((res) => (this.createdCustomerStore = res.data))
-      .catch((e) =>
+      .post(`/tenants`, removeEmpty(data))
+      .then(res => (this.createdCustomerStore = res.data))
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to create customer',
+          message: getErrorMessage(e) || 'Failed to create customer',
           options: {
             variant: 'error'
           }

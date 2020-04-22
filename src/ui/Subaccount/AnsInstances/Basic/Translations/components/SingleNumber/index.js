@@ -63,7 +63,7 @@ const SingleNumber = ({ t }) => {
         `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`
       )
       postAccessNumber(callback)
-    } else console.log('error')
+    }
   }
 
   return (
@@ -108,14 +108,14 @@ const SingleNumber = ({ t }) => {
           <Box className={classes.rightBlock}>
             <Input
               defaultValue={destinationNumber}
-              onChange={(e) => setDestinationNumber(e.target.value)}
+              onChange={e => setDestinationNumber(e.target.value)}
               className={classes.input}
               label={t('destination_phone_number')}
             />
 
             <Input
               defaultValue={outboundCountry}
-              onChange={(e) => setOutboundCountry(e.target.value)}
+              onChange={e => setOutboundCountry(e.target.value)}
               className={`${classes.input} ${classes.bottomInput}`}
               label={t('outbound_country')}
             />

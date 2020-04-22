@@ -17,7 +17,6 @@ import useStyles from './styles'
 
 const AddInstanceSuccess = ({ handleClose, t }) => {
   const classes = useStyles()
-  console.log(handleClose, 'close')
   const { changeStep } = BasicTranslationsStore
 
   return (

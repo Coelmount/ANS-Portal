@@ -2,8 +2,8 @@ import { createContext } from 'react'
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
 
 export class EditDeleteSubaccountAdminStore {
   isLoadingData = true
@@ -37,20 +37,18 @@ export class EditDeleteSubaccountAdminStore {
     this.isLoadingData = true
 
     axios
-      .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`)
+      .get(`/tenants/${id}/groups/${groupId}/admins/${userId}`)
       .then(res => {
         if (res.status === 200) {
           this.updateSubaccountAdminInfo('firstName', res.data.firstName)
           this.updateSubaccountAdminInfo('lastName', res.data.lastName)
           this.updateSubaccountAdminInfo('language', res.data.language)
           this.isLoadingData = false
-        } else {
-          console.log(res, 'error')
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to fetch admin',
+          message: getErrorMessage(e) || 'Failed to fetch admin',
           options: {
             variant: 'error'
           }
@@ -61,7 +59,7 @@ export class EditDeleteSubaccountAdminStore {
     this.isLoadingData = true
     axios
       .put(
-        `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`,
+        `/tenants/${id}/groups/${groupId}/admins/${userId}`,
         this.sentSubaccountAdmin
       )
       .then(res => {
@@ -69,13 +67,11 @@ export class EditDeleteSubaccountAdminStore {
           this.isLoadingData = false
           closeModal()
           getUsers({ id, groupId })
-        } else {
-          console.log(res, 'error')
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to update admin',
+          message: getErrorMessage(e) || 'Failed to update admin',
           options: {
             variant: 'error'
           }
@@ -85,19 +81,17 @@ export class EditDeleteSubaccountAdminStore {
   deleteSubaccountAdmin = ({ id, closeModal, userId, getUsers, groupId }) => {
     this.isDeletingSubaccountAdmin = true
     axios
-      .delete(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/${userId}`)
+      .delete(`/tenants/${id}/groups/${groupId}/admins/${userId}`)
       .then(res => {
         if (res.status === 200) {
           getUsers({ id, groupId })
           closeModal()
           this.isDeletingSubaccountAdmin = false
-        } else {
-          console.log(res, 'error')
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: 'Failed to delete admin',
+          message: getErrorMessage(e) || 'Failed to delete admin',
           options: {
             variant: 'error'
           }
