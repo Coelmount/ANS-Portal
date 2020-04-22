@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -10,6 +10,9 @@ import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import SuccessPage from './SuccessPage'
 import Entitlements from 'components/Entitlements'
+
+import ConfigStore from 'stores/Config'
+import Loading from 'components/Loading'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,10 +36,35 @@ const CreateCustomer = props => {
     isEditCustomer,
     isEditSubaccount
   } = props
-  const { step } = store
+  const { step, changeCustomer } = store
+
+  const { config, getConfig, isLoadingConfig } = ConfigStore
 
   // const step = 4
   const classes = useStyles()
+
+  useEffect(() => {
+    getConfig()
+  }, [])
+
+  useEffect(() => {
+    if (!isLoadingConfig) {
+      if (isCreateSubaccount) {
+        changeCustomer('templateName', config.templates.group)
+      } else {
+        changeCustomer('templateName', config.templates.tenant)
+        changeCustomer('type', config.tenant_type)
+      }
+    }
+  }, [isLoadingConfig, config])
+
+  if (isLoadingConfig) {
+    return (
+      <Dialog open={open} onClose={handleClose} className={classes.root}>
+        <Loading />
+      </Dialog>
+    )
+  }
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>

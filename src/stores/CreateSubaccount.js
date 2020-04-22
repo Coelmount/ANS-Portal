@@ -12,6 +12,7 @@ export class CreateSubaccountStore {
   closeModal = false
 
   customer = {
+    type: '',
     groupId: '',
     groupName: '',
     contactInformation: {
@@ -36,6 +37,7 @@ export class CreateSubaccountStore {
   setDefaultValues = () => {
     this.step = 1
     this.customer = {
+      type: '',
       groupId: '',
       groupName: '',
       contactInformation: {
