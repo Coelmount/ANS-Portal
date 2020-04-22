@@ -29,19 +29,15 @@ export class CustomerAdminsStore {
     }
   }
 
-  getCustomerAdmins = id => {
+  getCustomerAdmins = (id) => {
     this.isLoading = true
     axios
       .get(`${PROXY_P6}/tenants/${id}/admins/`)
-      .then(res => {
-        if (res.status === 200) {
-          this.admins = res.data.admins
-          this.isLoading = false
-        } else {
-          console.log(res, 'error')
-        }
+      .then((res) => {
+        this.admins = res.data.admins
+        this.isLoading = false
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to fetch admins',
           options: {
@@ -49,17 +45,20 @@ export class CustomerAdminsStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoading = false
+      })
   }
 
   getCustomerAdminsLanguages = () => {
     this.isLanguagesLoading = true
     axios
       .get(`${PROXY_P6}/system/languages/`)
-      .then(res => {
+      .then((res) => {
         this.languagesList = res.data.availableLanguages
         this.isLanguagesLoading = false
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to fetch languages',
           options: {
@@ -83,7 +82,7 @@ export class CustomerAdminsStore {
     this.isLoading = true
     axios
       .post(`${PROXY_P6}/tenants/${id}/admins/`, this.sentAdmin)
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers(id)
@@ -92,7 +91,7 @@ export class CustomerAdminsStore {
           console.log(res, 'error')
         }
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to add admins',
           options: {

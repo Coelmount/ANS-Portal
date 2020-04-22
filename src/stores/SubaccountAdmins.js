@@ -31,15 +31,10 @@ export class SubaccountAdminsStore {
     this.isLoading = true
     axios
       .get(`${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`)
-      .then(res => {
-        if (res.status === 200) {
-          this.subaccountAdmins = res.data.admins
-          this.isLoading = false
-        } else {
-          console.log(res, 'error')
-        }
+      .then((res) => {
+        this.subaccountAdmins = res.data.admins
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to fetch admins',
           options: {
@@ -47,6 +42,9 @@ export class SubaccountAdminsStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoading = false
+      })
   }
 
   setSubaccountAdminInfo = (valueKey, value) => {
@@ -66,7 +64,7 @@ export class SubaccountAdminsStore {
         `${PROXY_P6}/tenants/${id}/groups/${groupId}/admins/`,
         this.sentSubaccountAdmin
       )
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers({ id: id, groupId: groupId })
@@ -82,7 +80,7 @@ export class SubaccountAdminsStore {
           console.log(res, 'error')
         }
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to add admin',
           options: {
