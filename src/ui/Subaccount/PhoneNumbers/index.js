@@ -6,25 +6,23 @@ import { useParams } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
+import PhoneNumbersStore from 'stores/PhoneNumbers'
 import TitleBlock from 'components/TitleBlock'
 import CustomTable from 'components/CustomTable'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
-
-import PhoneNumbersStore from 'stores/PhoneNumbers'
-
+import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 import phoneNumbersRangeFilter from 'utils/phoneNumbersRangeFilter'
 
-import useStyles from './styles'
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import filtersIcon from 'source/images/svg/filters.svg'
+import useStyles from './styles'
 
 const PHONE_NUMBERS = [
   {
@@ -380,16 +378,20 @@ const PhoneNumbers = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
         </CustomContainer>
-        <CustomTable
-          firstCell={false}
-          // classes={classes}
-          rows={transformedNumbers}
-          // isLoadingData={isLoadingCustomers}
-          columns={columns}
-          searchCriterias={['country', 'rangeStart']}
-          extraToolbarBlock={toolbarButtonsBlock}
-          getSearchList={setSearchList}
-        />
+        {transformedNumbers.length ? (
+          <CustomTable
+            firstCell={false}
+            // classes={classes}
+            rows={transformedNumbers}
+            // isLoadingData={isLoadingCustomers}
+            columns={columns}
+            searchCriterias={['country', 'rangeStart']}
+            extraToolbarBlock={toolbarButtonsBlock}
+            getSearchList={setSearchList}
+          />
+        ) : (
+          <NoAvailableDataBlock />
+        )}
         {isAddPhoneNumbersModalOpen && (
           <AddPhoneNumbersModal
             open={isAddPhoneNumbersModalOpen}

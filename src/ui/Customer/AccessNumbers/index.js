@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { withRouter } from 'react-router'
 import { Link, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
@@ -24,10 +24,10 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import EditEntitlements from 'components/EditEntitlements'
 import AssignNumbers from 'components/CustomerAssignNumbers'
 import Entitlements from 'components/Entitlements'
+import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
-import useStyles from './styles'
 import editSvg from 'source/images/svg/edit-blue.svg'
-import { useEffect } from 'react'
+import useStyles from './styles'
 
 const AccessNumbers = ({ t }) => {
   const match = useParams()
@@ -52,7 +52,7 @@ const AccessNumbers = ({ t }) => {
 
   useEffect(() => {
     getEntitlements(match.customerId)
-  }, [getEntitlements, postEntitlements])
+  }, [getEntitlements])
 
   const handleOpenDeleteModal = (id, name) => {
     setIsDeleteModalOpen(true)
@@ -73,7 +73,7 @@ const AccessNumbers = ({ t }) => {
     setShowAssignNumbers(true)
   }
 
-  const handleDelete = accessNumber => {
+  const handleDelete = (accessNumber) => {
     deleteEntitlements(match.customerId, accessNumber.id)
       .then(() => setIsDeleteModalOpen(false))
       .then(() => getEntitlements(match.customerId))
@@ -107,7 +107,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'name',
       label: 'country',
-      getCellData: row => (
+      getCellData: (row) => (
         <Typography className={classes.countryCellText}>
           {(row.name && row.name.split('-')[0]) || row.countryCode}
         </Typography>
@@ -124,7 +124,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'assigned',
       label: 'selected',
-      getCellData: row => (
+      getCellData: (row) => (
         <Typography>{row.assigned >= 1 ? row.assigned : 0}</Typography>
       ),
       extraProps: {
@@ -146,7 +146,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'see_numbers',
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <Link
           to={`/customers/${match.customerId}/access_numbers/${row.name}`}
           className={classes.link}
@@ -162,7 +162,7 @@ const AccessNumbers = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: row => (
+      getCellData: (row) => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}
@@ -181,14 +181,18 @@ const AccessNumbers = ({ t }) => {
             handleOpen={handleAddEntitlementsClick}
           />
         </CustomContainer>
-        <CustomTable
-          classes={classes}
-          rows={entitlements}
-          isLoadingData={isLoadingEntitlements}
-          columns={columns}
-          searchCriterias={['name', 'number_type', 'service_capabilities']}
-          extraToolbarBlock={toolbarButtonsBlock}
-        />
+        {entitlements.length ? (
+          <CustomTable
+            classes={classes}
+            rows={entitlements}
+            isLoadingData={isLoadingEntitlements}
+            columns={columns}
+            searchCriterias={['name', 'number_type', 'service_capabilities']}
+            extraToolbarBlock={toolbarButtonsBlock}
+          />
+        ) : (
+          <NoAvailableDataBlock />
+        )}
         {showEditEntitlements && (
           <EditEntitlements
             handleClose={() => {

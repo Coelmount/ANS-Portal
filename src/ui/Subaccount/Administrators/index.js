@@ -16,10 +16,11 @@ import CustomContainer from 'components/CustomContainer'
 import AddCustomerAdministratorModal from 'components/AdministratorsTemplate/components/AddCustomerAdministratorModal'
 import AdministratorsTemplate from 'components/AdministratorsTemplate'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
+import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './styles'
 
-const SubaccountAdministrators = props => {
+const SubaccountAdministrators = (props) => {
   const { t } = props
   const [isOpened, setIsOpened] = useState(false)
   const match = useParams()
@@ -73,7 +74,7 @@ const SubaccountAdministrators = props => {
     })
   }
 
-  const handleDelete = adminId => {
+  const handleDelete = (adminId) => {
     deleteSubaccountAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -83,7 +84,7 @@ const SubaccountAdministrators = props => {
     })
   }
 
-  const handleUpdate = adminId => {
+  const handleUpdate = (adminId) => {
     updateSubaccountAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -93,7 +94,7 @@ const SubaccountAdministrators = props => {
     })
   }
 
-  const getAdminInfo = adminId => {
+  const getAdminInfo = (adminId) => {
     getSubaccountAdminInfo({
       id: match.customerId,
       userId: adminId,
@@ -115,18 +116,22 @@ const SubaccountAdministrators = props => {
               handleOpen={showModal}
             />
           </CustomContainer>
-          <AdministratorsTemplate
-            data={subaccountAdmins}
-            admin={subaccountAdmin}
-            updatedUser={updatedSubaccountAdmin}
-            getAdminInfo={getAdminInfo}
-            updateInfo={updateSubaccountAdminInfo}
-            isLoadingData={isLoadingData}
-            isDeleting={isDeletingSubaccountAdmin}
-            handleUpdate={handleUpdate}
-            handleDelete={handleDelete}
-            subject={t('subaccount_administrator')}
-          />
+          {subaccountAdmins.length ? (
+            <AdministratorsTemplate
+              data={subaccountAdmins}
+              admin={subaccountAdmin}
+              updatedUser={updatedSubaccountAdmin}
+              getAdminInfo={getAdminInfo}
+              updateInfo={updateSubaccountAdminInfo}
+              isLoadingData={isLoadingData}
+              isDeleting={isDeletingSubaccountAdmin}
+              handleUpdate={handleUpdate}
+              handleDelete={handleDelete}
+              subject={t('subaccount_administrator')}
+            />
+          ) : (
+            <NoAvailableDataBlock />
+          )}
           <AddCustomerAdministratorModal
             show={isOpened}
             handleClose={hideModal}

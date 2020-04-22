@@ -41,7 +41,6 @@ export class CustomersStore {
       .then((res) => {
         if (res.status === 200) {
           this.rows = res.data.customers
-          this.isLoadingCustomers = false
         } else {
           console.log(res, 'error')
         }
@@ -54,6 +53,9 @@ export class CustomersStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingCustomers = false
+      })
   }
 
   getCustomer = (id) => {

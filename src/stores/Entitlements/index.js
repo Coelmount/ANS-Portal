@@ -16,7 +16,7 @@ export class Entitlements {
   isLoadingEntitlementTypes = true
   isSending = false
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 
@@ -25,33 +25,28 @@ export class Entitlements {
   }
 
   setDefaultEntitlementTypes = () => {
-    const newEntitlementTypes = this.entitlementTypes.map(item => {
+    const newEntitlementTypes = this.entitlementTypes.map((item) => {
       let result = { ...item, hover: false, checked: false }
       return result
     })
     this.entitlementTypes = newEntitlementTypes
   }
 
-  updateCheckedArr = selected => {
+  updateCheckedArr = (selected) => {
     this.checkedArr = selected
   }
 
-  getEntitlements = id => {
+  getEntitlements = (id) => {
     this.isLoadingEntitlements = true
     axios
       .get(`${PROXY_P6}/tenants/${id}/entitlements`)
-      .then(res => {
-        if (res.status === 200) {
-          this.entitlements = res.data.entitlments
-          this.entitlementsIdArr = res.data.entitlments.map(
-            item => item.license_model_id
-          )
-          this.isLoadingEntitlements = false
-        } else {
-          console.log(res, 'error')
-        }
+      .then((res) => {
+        this.entitlements = res.data.entitlments
+        this.entitlementsIdArr = res.data.entitlments.map(
+          (item) => item.license_model_id
+        )
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to fetch entitlements',
           options: {
@@ -59,28 +54,26 @@ export class Entitlements {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingEntitlements = false
+      })
   }
 
   getEntitlementTypes = () => {
-    this.isLoadingEntitlements = true
+    this.isLoadingEntitlementTypes = true
     axios
       .get(`${PROXY_P6}/entitlement_types`)
-      .then(res => {
-        if (res.status === 200) {
-          this.isLoadingEntitlementTypes = false
-          const result = res.data.customer_licenses.filter(item => {
-            return !this.entitlementsIdArr.some(
-              entitlementId => entitlementId === item.id
-            )
-          })
-          this.entitlementTypes = result.map(item => {
-            return { checked: false, hover: false, ...item }
-          })
-        } else {
-          console.log(res, 'error')
-        }
+      .then((res) => {
+        const result = res.data.customer_licenses.filter((item) => {
+          return !this.entitlementsIdArr.some(
+            (entitlementId) => entitlementId === item.id
+          )
+        })
+        this.entitlementTypes = result.map((item) => {
+          return { checked: false, hover: false, ...item }
+        })
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to fetch entitlement types',
           options: {
@@ -88,11 +81,14 @@ export class Entitlements {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingEntitlementTypes = false
+      })
   }
 
   postEntitlements = (callback, id, entitlements) => {
     this.isSending = true
-    entitlements.forEach(item => {
+    entitlements.forEach((item) => {
       axios
         .post(`${PROXY_P6}/tenants/${id}/entitlements`, {
           license_model_id: item.id,
@@ -102,7 +98,7 @@ export class Entitlements {
           this.isSending = false
           callback(3)
         })
-        .catch(e =>
+        .catch((e) =>
           SnackbarStore.enqueueSnackbar({
             message: 'Failed to create entitlements',
             options: {
@@ -121,7 +117,7 @@ export class Entitlements {
       .put(`${PROXY_P6}/tenants/${tenantId}/entitlements/${entitlementId}`, {
         entitlement: total
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to update entitlement',
           options: {
@@ -134,7 +130,7 @@ export class Entitlements {
   deleteEntitlements = (tenantId, entitlementId) => {
     return axios
       .delete(`${PROXY_P6}/tenants/${tenantId}/entitlements/${entitlementId}`)
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to delete entitlement',
           options: {

@@ -18,6 +18,7 @@ import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
+import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './styles'
 
@@ -143,13 +144,17 @@ const CustomersTable = observer(({ t }) => {
             handleOpen={handleOpenCreateCustomer}
           />
         </CustomContainer>
-        <CustomTable
-          // classes={classes}
-          rows={rows}
-          isLoadingData={isLoadingCustomers}
-          columns={columns}
-          searchCriterias={['external_id', 'name']}
-        />
+        {rows.length ? (
+          <CustomTable
+            // classes={classes}
+            rows={rows}
+            isLoadingData={isLoadingCustomers}
+            columns={columns}
+            searchCriterias={['external_id', 'name']}
+          />
+        ) : (
+          <NoAvailableDataBlock />
+        )}
         {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}
