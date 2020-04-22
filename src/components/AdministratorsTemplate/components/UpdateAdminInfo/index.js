@@ -86,6 +86,7 @@ const UpdateAdminInfo = ({
                   icon={<img src={sharp} at='icon' />}
                   label={'ID'}
                   value={userId}
+                  disabled
                 />
               </Box>
 
@@ -94,7 +95,7 @@ const UpdateAdminInfo = ({
                   icon={<PersonOutlineIcon />}
                   label={t('first_name')}
                   value={user.firstName}
-                  onChange={e => updateInfo('firstName', e.target.value)}
+                  onChange={(e) => updateInfo('firstName', e.target.value)}
                 />
               </Box>
               <Box className={classes.inputes}>
@@ -102,21 +103,21 @@ const UpdateAdminInfo = ({
                   icon={<PersonOutlineIcon />}
                   label={t('last_name')}
                   value={user.lastName}
-                  onChange={e => updateInfo('lastName', e.target.value)}
+                  onChange={(e) => updateInfo('lastName', e.target.value)}
                 />
               </Box>
               <Box className={classes.inputes}>
                 <CustomSelect
                   icon={<LanguageIcon />}
                   label={t('language')}
-                  options={languagesList.map(item => {
+                  options={languagesList.map((item) => {
                     return {
                       label: t(item.name.toLowerCase()),
                       value: item.name
                     }
                   })}
                   value={user.language}
-                  onChange={e =>
+                  onChange={(e) =>
                     updateInfo(
                       'language',
                       e.target.value[0].toUpperCase() + e.target.value.slice(1)

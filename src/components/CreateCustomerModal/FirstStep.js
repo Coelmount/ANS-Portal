@@ -18,7 +18,7 @@ import Input from 'components/Input'
 
 import useStyles from './styles'
 
-const FirstStep = props => {
+const FirstStep = (props) => {
   const match = useParams()
   const {
     handleClose,
@@ -31,20 +31,22 @@ const FirstStep = props => {
   const { changeStep, customer, changeCustomer, subaccount } = store
   const classes = useStyles()
 
-  const changeId = value => {
+  const changeId = (value) => {
     if (isCreateSubaccount) {
       changeCustomer('groupId', value)
+    } else {
+      changeCustomer('tenantId', value)
     }
-    changeCustomer('tenantId', value)
   }
 
-  const changeName = value => {
+  const changeName = (value) => {
     if (isCreateSubaccount) {
       changeCustomer('groupName', value)
     } else if (isEditSubaccount) {
       changeCustomer('groupName', value)
+    } else {
+      changeCustomer('name', value)
     }
-    changeCustomer('name', value)
   }
 
   const getTitle = () => {
@@ -89,7 +91,7 @@ const FirstStep = props => {
             variant='outlined'
             disabled={isEditCustomer || isEditSubaccount}
             value={(customer && customer.tenantId) || match.groupId}
-            onChange={e => changeId(e.target.value)}
+            onChange={(e) => changeId(e.target.value)}
           />
         </Box>
         <Box className={classes.inputes}>
@@ -106,7 +108,7 @@ const FirstStep = props => {
               (customer && customer.name) ||
               (subaccount && subaccount.groupName)
             }
-            onChange={e => changeName(e.target.value)}
+            onChange={(e) => changeName(e.target.value)}
           />
         </Box>
       </DialogContent>

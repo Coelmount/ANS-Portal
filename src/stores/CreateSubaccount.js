@@ -30,7 +30,7 @@ export class CreateSubaccountStore {
 
   createdCustomerStore = {}
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 
@@ -58,14 +58,14 @@ export class CreateSubaccountStore {
     set(this.customer, variable, value)
   }
 
-  createCustomer = customerId => {
+  createCustomer = (customerId) => {
     const data = { ...this.customer }
     return axios
-      .post(`/tenants/${customerId}/groups/`, removeEmpty(data))
-      .then(res => (this.createdCustomerStore = res.data))
-      .catch(e =>
+      .post(`/tenants/${customerId}/groups`, removeEmpty(data))
+      .then((res) => (this.createdCustomerStore = res.data))
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to create subaccaunt',
+          message: getErrorMessage(e) || 'Failed to create subaccount',
           options: {
             variant: 'error'
           }
