@@ -32,10 +32,10 @@ export class SubaccountAdminsStore {
     this.isLoading = true
     axios
       .get(`/tenants/${id}/groups/${groupId}/admins/`)
-      .then(res => {
+      .then((res) => {
         this.subaccountAdmins = res.data.admins
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to fetch admins',
           options: {
@@ -61,11 +61,11 @@ export class SubaccountAdminsStore {
     this.isLoading = true
 
     axios
-      .post(
-        `/tenants/${id}/groups/${groupId}/admins/`,
-        this.sentSubaccountAdmin
-      )
-      .then(res => {
+      .post(`/tenants/${id}/groups/${groupId}/admins/`, {
+        ...this.sentSubaccountAdmin,
+        userId: this.sentSubaccountAdmin.userId + '@netaxis.be'
+      })
+      .then((res) => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers({ id: id, groupId: groupId })
@@ -79,7 +79,7 @@ export class SubaccountAdminsStore {
           closeModal()
         }
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to add admin',
           options: {

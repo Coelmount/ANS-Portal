@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   createAdminModal: {
     '& .MuiDialog-paperWidthSm': {
       width: 646,
@@ -60,7 +60,24 @@ const useStyles = makeStyles(theme => ({
   },
   inputes: {
     marginTop: '30px',
-    marginLeft: 'calc(104px - 24px)'
+    marginLeft: 'calc(104px - 24px)',
+    '&:nth-child(1)': {
+      display: 'flex',
+      position: 'relative'
+    }
+  },
+  maskInput: {
+    position: 'absolute',
+    background: '#eee',
+    right: 128,
+    top: 0,
+    height: 52,
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 2,
+    borderLeft: '1px solid grey',
+    paddingLeft: 7,
+    paddingRight: 7
   },
   buttonsWrapper: {
     display: 'flex',

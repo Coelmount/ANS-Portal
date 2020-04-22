@@ -51,11 +51,11 @@ const AddCustomerAdministrator = ({
     getCustomerAdminsLanguages()
   }, [])
 
-  const handleRepeatPasswordChange = e => {
+  const handleRepeatPasswordChange = (e) => {
     setRepeatedPassword(e.target.value)
   }
 
-  const handlePasswordChange = e => {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value)
   }
 
@@ -91,8 +91,11 @@ const AddCustomerAdministrator = ({
                   icon={<img src={sharp} />}
                   label={`${subject[0].toUpperCase() + subject.slice(1)} id`}
                   value={user.userId}
-                  onChange={e => setUserInfo('userId', e.target.value)}
+                  onChange={(e) => setUserInfo('userId', e.target.value)}
                 />
+                <Typography className={classes.maskInput}>
+                  {'@netaxis.be'}
+                </Typography>
               </Box>
               <Box className={classes.inputes}>
                 <Input
@@ -119,7 +122,7 @@ const AddCustomerAdministrator = ({
                   icon={<PersonOutlineIcon />}
                   label={t('first_name')}
                   value={user.firstName}
-                  onChange={e => setUserInfo('firstName', e.target.value)}
+                  onChange={(e) => setUserInfo('firstName', e.target.value)}
                 />
               </Box>
               <Box className={classes.inputes}>
@@ -127,21 +130,21 @@ const AddCustomerAdministrator = ({
                   icon={<PersonOutlineIcon />}
                   label={t('last_name')}
                   value={user.lastName}
-                  onChange={e => setUserInfo('lastName', e.target.value)}
+                  onChange={(e) => setUserInfo('lastName', e.target.value)}
                 />
               </Box>
               <Box className={classes.inputes}>
                 <CustomSelect
                   icon={<LanguageIcon />}
                   label={t('language')}
-                  options={languagesList.map(item => {
+                  options={languagesList.map((item) => {
                     return {
                       label: t(item.name.toLowerCase()),
                       value: item.name
                     }
                   })}
                   value={user.language}
-                  onChange={e => setUserInfo('language', e.target.value)}
+                  onChange={(e) => setUserInfo('language', e.target.value)}
                 />
               </Box>
             </Box>

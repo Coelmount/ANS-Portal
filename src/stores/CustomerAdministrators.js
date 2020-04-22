@@ -29,17 +29,17 @@ export class CustomerAdminsStore {
     }
   }
 
-  getCustomerAdmins = id => {
+  getCustomerAdmins = (id) => {
     this.isLoading = true
     axios
       .get(`/tenants/${id}/admins/`)
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           this.admins = res.data.admins
           this.isLoading = false
         }
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to fetch admins',
           options: {
@@ -56,11 +56,11 @@ export class CustomerAdminsStore {
     this.isLanguagesLoading = true
     axios
       .get(`/system/languages/`)
-      .then(res => {
+      .then((res) => {
         this.languagesList = res.data.availableLanguages
         this.isLanguagesLoading = false
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to fetch languages',
           options: {
@@ -84,14 +84,14 @@ export class CustomerAdminsStore {
     this.isLoading = true
     axios
       .post(`/tenants/${id}/admins/`, this.sentAdmin)
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers(id)
           closeModal()
         }
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to add admins',
           options: {
@@ -99,6 +99,9 @@ export class CustomerAdminsStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoading = false
+      })
   }
 }
 decorate(CustomerAdminsStore, {
