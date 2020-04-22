@@ -16,7 +16,6 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
-import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 import phoneNumbersRangeFilter from 'utils/phoneNumbersRangeFilter'
 
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
@@ -378,20 +377,16 @@ const PhoneNumbers = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
         </CustomContainer>
-        {transformedNumbers.length ? (
-          <CustomTable
-            firstCell={false}
-            // classes={classes}
-            rows={transformedNumbers}
-            // isLoadingData={isLoadingCustomers}
-            columns={columns}
-            searchCriterias={['country', 'rangeStart']}
-            extraToolbarBlock={toolbarButtonsBlock}
-            getSearchList={setSearchList}
-          />
-        ) : (
-          <NoAvailableDataBlock />
-        )}
+        <CustomTable
+          firstCell={false}
+          // classes={classes}
+          rows={transformedNumbers}
+          // isLoadingData={isLoadingCustomers}
+          columns={columns}
+          searchCriterias={['country', 'rangeStart']}
+          extraToolbarBlock={toolbarButtonsBlock}
+          getSearchList={setSearchList}
+        />
         {isAddPhoneNumbersModalOpen && (
           <AddPhoneNumbersModal
             open={isAddPhoneNumbersModalOpen}

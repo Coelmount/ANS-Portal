@@ -16,7 +16,6 @@ import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './styles'
 
@@ -137,17 +136,13 @@ const SubaccountsTable = observer(({ t }) => {
           />
         </CustomContainer>
 
-        {rows.length ? (
-          <CustomTable
-            // classes={classes}
-            rows={rows}
-            isLoadingData={isLoadingSubaccounts}
-            columns={columns}
-            searchCriterias={['groupId', 'groupName']}
-          />
-        ) : (
-          <NoAvailableDataBlock />
-        )}
+        <CustomTable
+          // classes={classes}
+          rows={rows}
+          isLoadingData={isLoadingSubaccounts}
+          columns={columns}
+          searchCriterias={['groupId', 'groupName']}
+        />
         {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}

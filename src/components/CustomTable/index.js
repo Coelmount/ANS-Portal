@@ -15,6 +15,7 @@ import CustomTableHead from './components/CustomTableHead'
 import CustomTableBody from './components/CustomTableBody'
 import Pagination from './components/Pagination'
 import Loading from 'components/Loading'
+import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './defaultStyles'
 
@@ -111,7 +112,7 @@ const CustomTable = ({
 
   return (
     <Fragment>
-      {rows.length > 0 && (
+      {rows.length > 0 ? (
         <Fragment>
           {showToolBar && (
             <CustomTableToolbar
@@ -183,6 +184,8 @@ const CustomTable = ({
             />
           )}
         </Fragment>
+      ) : (
+        <NoAvailableDataBlock />
       )}
     </Fragment>
   )

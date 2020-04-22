@@ -24,7 +24,6 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import EditEntitlements from 'components/EditEntitlements'
 import AssignNumbers from 'components/CustomerAssignNumbers'
 import Entitlements from 'components/Entitlements'
-import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import editSvg from 'source/images/svg/edit-blue.svg'
 import useStyles from './styles'
@@ -181,18 +180,15 @@ const AccessNumbers = ({ t }) => {
             handleOpen={handleAddEntitlementsClick}
           />
         </CustomContainer>
-        {entitlements.length ? (
-          <CustomTable
-            classes={classes}
-            rows={entitlements}
-            isLoadingData={isLoadingEntitlements}
-            columns={columns}
-            searchCriterias={['name', 'number_type', 'service_capabilities']}
-            extraToolbarBlock={toolbarButtonsBlock}
-          />
-        ) : (
-          <NoAvailableDataBlock />
-        )}
+        <CustomTable
+          classes={classes}
+          rows={entitlements}
+          isLoadingData={isLoadingEntitlements}
+          columns={columns}
+          searchCriterias={['name', 'number_type', 'service_capabilities']}
+          extraToolbarBlock={toolbarButtonsBlock}
+        />
+
         {showEditEntitlements && (
           <EditEntitlements
             handleClose={() => {

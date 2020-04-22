@@ -15,7 +15,6 @@ import CustomTable from 'components/CustomTable'
 import EntitlementsStore from 'stores/Entitlements'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
-import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './styles'
 
@@ -190,20 +189,16 @@ const SetEntitlements = (props) => {
             {t('select_entitlement')}
           </Typography>
         </Box>
-        {selected.length ? (
-          <CustomTable
-            classes={classes}
-            columns={columns}
-            firstCell={false}
-            showPagination={true}
-            rows={selected}
-            searchCriterias={['name']}
-            getSearchList={setSearchList}
-            isLoadingData={isLoadingEntitlementTypes}
-          />
-        ) : (
-          <NoAvailableDataBlock />
-        )}
+        <CustomTable
+          classes={classes}
+          columns={columns}
+          firstCell={false}
+          showPagination={true}
+          rows={selected}
+          searchCriterias={['name']}
+          getSearchList={setSearchList}
+          isLoadingData={isLoadingEntitlementTypes}
+        />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button

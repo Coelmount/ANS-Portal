@@ -23,7 +23,6 @@ import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
-import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 import AddNumbers from './AddNumbers/'
 
 import useStyles from './styles'
@@ -283,19 +282,15 @@ const AccessNumbersItem = ({ t }) => {
             }}
           />
         </CustomContainer>
-        {selected.length ? (
-          <CustomTable
-            // classes={classes}
-            columns={columns}
-            firstCell={false}
-            rows={selected}
-            searchCriterias={['phone_numbers', 'subaccount_id']}
-            getSearchList={setSearchList}
-            extraToolbarBlock={toolbarButtonsBlock}
-          />
-        ) : (
-          <NoAvailableDataBlock />
-        )}
+        <CustomTable
+          // classes={classes}
+          columns={columns}
+          firstCell={false}
+          rows={selected}
+          searchCriterias={['phone_numbers', 'subaccount_id']}
+          getSearchList={setSearchList}
+          extraToolbarBlock={toolbarButtonsBlock}
+        />
       </Paper>
     </div>
   )
