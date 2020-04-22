@@ -38,16 +38,15 @@ export class CustomersStore {
     this.isLoadingCustomers = true
     axios
       .get(`${PROXY_P6}/tenants`)
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
-          console.log('get custs', res.data.customers)
           this.rows = res.data.customers
           this.isLoadingCustomers = false
         } else {
           console.log(res, 'error')
         }
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to fetch customers',
           options: {
@@ -57,16 +56,16 @@ export class CustomersStore {
       )
   }
 
-  getCustomer = id => {
+  getCustomer = (id) => {
     this.isLoadingCustomer = true
     axios
       .get(`${PROXY_P6}/tenants/${id}/`)
-      .then(res => {
+      .then((res) => {
         // merge(this.customer, res.data.customers[0])
         merge(this.customer, res.data)
         this.isLoadingCustomer = false
       })
-      .catch(e => {
+      .catch((e) => {
         this.isLoadingCustomer = false
 
         SnackbarStore.enqueueSnackbar({
@@ -88,17 +87,13 @@ export class CustomersStore {
   deleteCustomer = ({ id, callback }) => {
     this.isDeletingCustomer = true
     axios
-      .delete(`${PROXY_P6}/tenants/${id}/`)
-      .then(res => {
-        if (res.status === 200) {
-          this.getCustomers()
-          callback()
-          this.isDeletingCustomer = false
-        } else {
-          console.log(res, 'error')
-        }
+      .delete(`${PROXY_P6}/tenants/${id}`)
+      .then(() => {
+        this.getCustomers()
+        callback()
+        this.isDeletingCustomer = false
       })
-      .catch(e => {
+      .catch((e) => {
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to delete customer',
           options: {
@@ -109,19 +104,22 @@ export class CustomersStore {
           this.isDeletingCustomer = false
         }
       })
+      .finally(() => {
+        this.isDeletingCustomer = false
+      })
   }
 
-  updateCustomer = tenantId => {
+  updateCustomer = (tenantId) => {
     this.isAddingCustomer = true
     return axios
       .put(`${PROXY_P6}/tenants/${tenantId}`, this.customer)
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           merge(this.customer, res.data)
           this.isAddingCustomer = false
         }
       })
-      .catch(e =>
+      .catch((e) =>
         SnackbarStore.enqueueSnackbar({
           message: 'Failed to update customer',
           options: {
@@ -131,7 +129,7 @@ export class CustomersStore {
       )
   }
 
-  changeStep = step => {
+  changeStep = (step) => {
     this.step = step
   }
 

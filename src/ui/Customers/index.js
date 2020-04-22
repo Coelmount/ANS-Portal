@@ -120,7 +120,7 @@ const CustomersTable = observer(({ t }) => {
         isSortAvailable: false,
         getCellData: (row) => (
           <CloseOutlinedIcon
-            onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
+            onClick={() => handleOpenDeleteModal(row.external_id, row.name)}
             className={classes.deleteCustomerIcon}
           />
         )
