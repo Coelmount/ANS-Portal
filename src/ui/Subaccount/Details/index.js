@@ -19,7 +19,7 @@ const Details = observer(({ t }) => {
   const match = useParams()
   const classes = useStyles()
   const {
-    subaccount,
+    customer: subaccount,
     getSubaccount,
     isLoadingSubaccount,
     changeStep

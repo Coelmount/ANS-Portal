@@ -30,7 +30,7 @@ const FirstStep = props => {
     isEditCustomer,
     isEditSubaccount
   } = props
-  const { changeStep, customer, changeCustomer, subaccount } = store
+  const { changeStep, customer, changeCustomer } = store
   const classes = useStyles()
 
   const { config, isLoadingConfig } = ConfigStore
@@ -105,7 +105,7 @@ const FirstStep = props => {
             }
             variant='outlined'
             disabled={isEditCustomer || isEditSubaccount}
-            value={(customer && customer.tenantId) || match.groupId}
+            value={customer.tenantId || match.groupId}
             onChange={e => changeId(e.target.value)}
           />
         </Box>
@@ -119,10 +119,7 @@ const FirstStep = props => {
               t('customer_name')
             }
             variant='outlined'
-            value={
-              (customer && customer.name) ||
-              (subaccount && subaccount.groupName)
-            }
+            value={customer.name || customer.groupName}
             onChange={e => changeName(e.target.value)}
           />
         </Box>
@@ -141,7 +138,7 @@ const FirstStep = props => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
-          disabled={customer && !customer.name && !customer.groupName}
+          disabled={!(customer.name || customer.groupName)}
         >
           {t('next')}
         </Button>

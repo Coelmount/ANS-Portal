@@ -23,7 +23,7 @@ import CreateCustomerStore from 'stores/CreateCustomer'
 import useStyles from './styles'
 import Loading from 'components/Loading'
 
-const SecondStep = (props) => {
+const SecondStep = props => {
   const {
     handleClose,
     t,
@@ -39,7 +39,6 @@ const SecondStep = (props) => {
     changeCustomer,
     createCustomer,
     updateCustomer,
-    subaccount,
     isCustomerAdding
   } = store
 
@@ -57,12 +56,10 @@ const SecondStep = (props) => {
       return
     }
     if (isCreateSubaccount) {
-      createCustomer(
-        createdCustomerStore.customer.tenantId || match.customerId
-      ).then(() => changeStep(3))
+      createCustomer(createdCustomerStore.customer.tenantId || match.customerId)
       return
     }
-    createCustomer().then(() => changeStep(3))
+    createCustomer()
   }
 
   return (
@@ -92,18 +89,10 @@ const SecondStep = (props) => {
             <Box className={classes.inputes}>
               <Input
                 icon={<PermIdentityOutlined />}
-                label={
-                  (isCreateSubaccount && t('subaccount_name')) ||
-                  (isEditCustomer && t('customer_name')) ||
-                  (isEditSubaccount && t('subaccount_name')) ||
-                  t('customer_name')
-                }
+                label={t('name')}
                 variant='outlined'
-                value={
-                  (customer && customer.contactInformation.name) ||
-                  (subaccount && subaccount.contactInformation.name)
-                }
-                onChange={(e) =>
+                value={customer.contactInformation.name}
+                onChange={e =>
                   changeCustomer('contactInformation.name', e.target.value)
                 }
               />
@@ -113,11 +102,8 @@ const SecondStep = (props) => {
                 icon={<CallOutlined />}
                 label={t('phone_number')}
                 variant='outlined'
-                value={
-                  (customer && customer.contactInformation.phoneNumber) ||
-                  (subaccount && subaccount.contactInformation.phoneNumber)
-                }
-                onChange={(e) =>
+                value={customer.contactInformation.phoneNumber}
+                onChange={e =>
                   changeCustomer(
                     'contactInformation.phoneNumber',
                     e.target.value
@@ -130,11 +116,8 @@ const SecondStep = (props) => {
                 icon={<EmailOutlined />}
                 label={t('email')}
                 variant='outlined'
-                value={
-                  (customer && customer.contactInformation.emailAddress) ||
-                  (subaccount && subaccount.contactInformation.emailAddress)
-                }
-                onChange={(e) =>
+                value={customer.contactInformation.emailAddress}
+                onChange={e =>
                   changeCustomer(
                     'contactInformation.emailAddress',
                     e.target.value
@@ -149,11 +132,8 @@ const SecondStep = (props) => {
               <Input
                 label={t('street')}
                 variant='outlined'
-                value={
-                  (customer && customer.addressInformation.addressLine1) ||
-                  (subaccount && subaccount.addressInformation.addressLine1)
-                }
-                onChange={(e) =>
+                value={customer.addressInformation.addressLine1}
+                onChange={e =>
                   changeCustomer(
                     'addressInformation.addressLine1',
                     e.target.value
@@ -166,11 +146,8 @@ const SecondStep = (props) => {
                 <Input
                   label={t('postal_code')}
                   variant='outlined'
-                  value={
-                    (customer && customer.addressInformation.postalCode) ||
-                    (subaccount && subaccount.addressInformation.postalCode)
-                  }
-                  onChange={(e) =>
+                  value={customer.addressInformation.postalCode}
+                  onChange={e =>
                     changeCustomer(
                       'addressInformation.postalCode',
                       e.target.value
@@ -182,11 +159,8 @@ const SecondStep = (props) => {
                 <Input
                   label={t('city')}
                   variant='outlined'
-                  value={
-                    (customer && customer.addressInformation.city) ||
-                    (subaccount && subaccount.addressInformation.city)
-                  }
-                  onChange={(e) =>
+                  value={customer.addressInformation.city}
+                  onChange={e =>
                     changeCustomer('addressInformation.city', e.target.value)
                   }
                 />
@@ -196,11 +170,8 @@ const SecondStep = (props) => {
               <Input
                 label={t('country')}
                 variant='outlined'
-                value={
-                  (customer && customer.addressInformation.country) ||
-                  (subaccount && subaccount.addressInformation.country)
-                }
-                onChange={(e) =>
+                value={customer.addressInformation.country}
+                onChange={e =>
                   changeCustomer('addressInformation.country', e.target.value)
                 }
               />
