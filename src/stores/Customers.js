@@ -11,6 +11,7 @@ const defaultCustomerValue = {
   id: '',
   tenantId: '',
   name: '',
+  defaultDomain: '',
   contactInformation: {
     name: '',
     phoneNumber: '',

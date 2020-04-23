@@ -13,6 +13,7 @@ export class SubaccountsStore {
   subaccount = {
     groupId: '',
     groupName: '',
+    defaultDomain: '',
     contactInformation: {
       name: '',
       phoneNumber: '',

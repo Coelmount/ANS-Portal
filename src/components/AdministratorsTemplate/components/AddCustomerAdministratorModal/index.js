@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useParams, useHistory } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -31,9 +32,13 @@ const AddCustomerAdministrator = ({
   user,
   setUserInfo,
   addAdmin,
-  subject
+  subject,
+  getUserInfo,
+  userInfo: { defaultDomain },
+  isLoadingUserInfo
 }) => {
   const classes = useStyles()
+  const match = useParams()
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatedPassword] = useState('')
   const {
@@ -49,6 +54,7 @@ const AddCustomerAdministrator = ({
 
   useEffect(() => {
     getCustomerAdminsLanguages()
+    getUserInfo(match.customerId, match.groupId)
   }, [])
 
   const handleRepeatPasswordChange = (e) => {
@@ -65,111 +71,111 @@ const AddCustomerAdministrator = ({
       open={show}
       onClose={handleClose}
     >
-      {isLanguagesLoading ? (
+      {isLanguagesLoading || isLoadingUserInfo ? (
         <Loading />
       ) : (
-        <Fragment>
-          <DialogTitle className={classes.addAdminHeader}>
-            <Typography className={classes.addAdminTitle}>
-              {`${t(`add`)} ${subject}`}
-            </Typography>
-
-            <CloseOutlinedIcon
-              onClick={handleClose}
-              className={classes.closeIcon}
-            />
-          </DialogTitle>
-          <DialogContent>
-            <Box className={classes.loginTitleWrapper}>
-              <Typography className={classes.loginTitle}>
-                {t('login_details')}
+          <Fragment>
+            <DialogTitle className={classes.addAdminHeader}>
+              <Typography className={classes.addAdminTitle}>
+                {`${t(`add`)} ${subject}`}
               </Typography>
-            </Box>
-            <Box className={classes.inputsWrapper}>
-              <Box className={classes.inputes}>
-                <Input
-                  icon={<img src={sharp} />}
-                  label={`${subject[0].toUpperCase() + subject.slice(1)} id`}
-                  value={user.userId}
-                  onChange={(e) => setUserInfo('userId', e.target.value)}
-                />
-                <Typography className={classes.maskInput}>
-                  {'@netaxis.be'}
+
+              <CloseOutlinedIcon
+                onClick={handleClose}
+                className={classes.closeIcon}
+              />
+            </DialogTitle>
+            <DialogContent>
+              <Box className={classes.loginTitleWrapper}>
+                <Typography className={classes.loginTitle}>
+                  {t('login_details')}
                 </Typography>
               </Box>
-              <Box className={classes.inputes}>
-                <Input
-                  icon={<LockOutlinedIcon />}
-                  label={t('password')}
-                  variant='outlined'
-                  value={password}
-                  onChange={handlePasswordChange}
-                  type={'password'}
-                />
+              <Box className={classes.inputsWrapper}>
+                <Box className={classes.inputes}>
+                  <Input
+                    icon={<img src={sharp} />}
+                    label={`${subject[0].toUpperCase() + subject.slice(1)} id`}
+                    value={user.userId}
+                    onChange={(e) => setUserInfo('userId', e.target.value)}
+                  />
+                  <Typography className={classes.maskInput}>
+                    {`@${defaultDomain}`}
+                  </Typography>
+                </Box>
+                <Box className={classes.inputes}>
+                  <Input
+                    icon={<LockOutlinedIcon />}
+                    label={t('password')}
+                    variant='outlined'
+                    value={password}
+                    onChange={handlePasswordChange}
+                    type={'password'}
+                  />
+                </Box>
+                <Box className={classes.inputes}>
+                  <Input
+                    icon={<LockOutlinedIcon />}
+                    label={t('repeat_password')}
+                    variant='outlined'
+                    value={repeatPassword}
+                    onChange={handleRepeatPasswordChange}
+                    type={'password'}
+                  />
+                </Box>
+                <Box className={classes.inputes}>
+                  <Input
+                    icon={<PersonOutlineIcon />}
+                    label={t('first_name')}
+                    value={user.firstName}
+                    onChange={(e) => setUserInfo('firstName', e.target.value)}
+                  />
+                </Box>
+                <Box className={classes.inputes}>
+                  <Input
+                    icon={<PersonOutlineIcon />}
+                    label={t('last_name')}
+                    value={user.lastName}
+                    onChange={(e) => setUserInfo('lastName', e.target.value)}
+                  />
+                </Box>
+                <Box className={classes.inputes}>
+                  <CustomSelect
+                    icon={<LanguageIcon />}
+                    label={t('language')}
+                    options={languagesList.map((item) => {
+                      return {
+                        label: t(item.name.toLowerCase()),
+                        value: item.name
+                      }
+                    })}
+                    value={user.language}
+                    onChange={(e) => setUserInfo('language', e.target.value)}
+                  />
+                </Box>
               </Box>
-              <Box className={classes.inputes}>
-                <Input
-                  icon={<LockOutlinedIcon />}
-                  label={t('repeat_password')}
-                  variant='outlined'
-                  value={repeatPassword}
-                  onChange={handleRepeatPasswordChange}
-                  type={'password'}
-                />
-              </Box>
-              <Box className={classes.inputes}>
-                <Input
-                  icon={<PersonOutlineIcon />}
-                  label={t('first_name')}
-                  value={user.firstName}
-                  onChange={(e) => setUserInfo('firstName', e.target.value)}
-                />
-              </Box>
-              <Box className={classes.inputes}>
-                <Input
-                  icon={<PersonOutlineIcon />}
-                  label={t('last_name')}
-                  value={user.lastName}
-                  onChange={(e) => setUserInfo('lastName', e.target.value)}
-                />
-              </Box>
-              <Box className={classes.inputes}>
-                <CustomSelect
-                  icon={<LanguageIcon />}
-                  label={t('language')}
-                  options={languagesList.map((item) => {
-                    return {
-                      label: t(item.name.toLowerCase()),
-                      value: item.name
-                    }
-                  })}
-                  value={user.language}
-                  onChange={(e) => setUserInfo('language', e.target.value)}
-                />
-              </Box>
-            </Box>
-          </DialogContent>
-          <DialogActions className={classes.dialogActionsSecond}>
-            <Button
-              variant='outlined'
-              color='primary'
-              className={classes.backButton}
-              onClick={() => handleClose()}
-            >
-              {t('cancel')}
-            </Button>
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.nextButton}
-              onClick={() => addAdmin()}
-              disabled={!user.userId && !repeatPassword}
-            >
-              {t('add')}
-            </Button>
-          </DialogActions>
-        </Fragment>
-      )}
+            </DialogContent>
+            <DialogActions className={classes.dialogActionsSecond}>
+              <Button
+                variant='outlined'
+                color='primary'
+                className={classes.backButton}
+                onClick={() => handleClose()}
+              >
+                {t('cancel')}
+              </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                className={classes.nextButton}
+                onClick={() => addAdmin(defaultDomain)}
+                disabled={!user.userId && !repeatPassword}
+              >
+                {t('add')}
+              </Button>
+            </DialogActions>
+          </Fragment>
+        )}
     </Dialog>
   )
 }

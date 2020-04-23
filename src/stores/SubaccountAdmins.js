@@ -57,13 +57,13 @@ export class SubaccountAdminsStore {
     }
   }
 
-  addSubaccountAdmin = ({ id, closeModal, getUsers, groupId }) => {
+  addSubaccountAdmin = ({ id, closeModal, getUsers, groupId, defaultDomain }) => {
     this.isLoading = true
 
     axios
       .post(`/tenants/${id}/groups/${groupId}/admins/`, {
         ...this.sentSubaccountAdmin,
-        userId: this.sentSubaccountAdmin.userId + '@netaxis.be'
+        userId: this.sentSubaccountAdmin.userId + `@${defaultDomain}`
       })
       .then((res) => {
         if (res.status === 201) {

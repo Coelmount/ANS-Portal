@@ -9,6 +9,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
 
 import EditDeleteAdminStore from 'stores/EditDeleteAdministrator'
 import CustomerAdministrators from 'stores/CustomerAdministrators'
+import CustomersStore from 'stores/Customers'
 
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
@@ -41,6 +42,12 @@ const Administrators = (props) => {
     updateCustomerAdmin,
     isDeletingAdmin
   } = EditDeleteAdminStore
+
+  const {
+    getCustomer,
+    customer,
+    isLoadingCustomer
+  } = CustomersStore
 
   const { t } = props
   const match = useParams()
@@ -98,42 +105,45 @@ const Administrators = (props) => {
       {isLoading ? (
         <Loading />
       ) : (
-        <Paper className={classes.paper}>
-          <CustomContainer>
-            <CustomBreadcrumbs />
-            <TitleBlock
-              titleData={titleData}
-              classes={classes}
-              handleOpen={showModal}
-            />
-          </CustomContainer>
-          {admins.length ? (
-            <AdministratorsTemplate
-              data={admins}
-              admin={admin}
-              updatedUser={updatedAdmin}
-              getAdminInfo={getAdminInfoHandle}
-              updateInfo={updateAdminInfo}
-              isLoadingData={isLoadingData}
-              isDeleting={isDeletingAdmin}
-              handleDelete={handleDelete}
-              handleUpdate={handleUpdate}
-              subject={t('customer_administrator')}
-            />
-          ) : (
-            <NoAvailableDataBlock />
-          )}
+          <Paper className={classes.paper}>
+            <CustomContainer>
+              <CustomBreadcrumbs />
+              <TitleBlock
+                titleData={titleData}
+                classes={classes}
+                handleOpen={showModal}
+              />
+            </CustomContainer>
+            {admins.length ? (
+              <AdministratorsTemplate
+                data={admins}
+                admin={admin}
+                updatedUser={updatedAdmin}
+                getAdminInfo={getAdminInfoHandle}
+                updateInfo={updateAdminInfo}
+                isLoadingData={isLoadingData}
+                isDeleting={isDeletingAdmin}
+                handleDelete={handleDelete}
+                handleUpdate={handleUpdate}
+                subject={t('customer_administrator')}
+              />
+            ) : (
+                <NoAvailableDataBlock />
+              )}
 
-          <AddCustomerAdministratorModal
-            show={isOpened}
-            handleClose={hideModal}
-            user={admin}
-            setUserInfo={setAdminInfo}
-            addAdmin={addAdmin}
-            subject={t('customer_administrator')}
-          />
-        </Paper>
-      )}
+            <AddCustomerAdministratorModal
+              show={isOpened}
+              handleClose={hideModal}
+              user={admin}
+              setUserInfo={setAdminInfo}
+              addAdmin={addAdmin}
+              subject={t('customer_administrator')}
+              getUserInfo={getCustomer}
+              userInfo={customer}
+              isLoadingUserInfo={isLoadingCustomer}
+            />
+          </Paper>
+        )}
     </div>
   )
 }
