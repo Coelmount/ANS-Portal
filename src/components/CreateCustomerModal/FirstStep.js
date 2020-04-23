@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
@@ -14,11 +14,13 @@ import Button from '@material-ui/core/Button'
 import sharp from 'source/images/svg/sharp.svg'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
+import ConfigStore from 'stores/Config'
+
 import Input from 'components/Input'
 
 import useStyles from './styles'
 
-const FirstStep = (props) => {
+const FirstStep = props => {
   const match = useParams()
   const {
     handleClose,
@@ -31,7 +33,20 @@ const FirstStep = (props) => {
   const { changeStep, customer, changeCustomer, subaccount } = store
   const classes = useStyles()
 
-  const changeId = (value) => {
+  const { config, isLoadingConfig } = ConfigStore
+
+  useEffect(() => {
+    if (!isLoadingConfig) {
+      if (isCreateSubaccount) {
+        changeCustomer('templateName', config.templates.group)
+      } else {
+        changeCustomer('templateName', config.templates.tenant)
+        changeCustomer('type', config.tenant_type)
+      }
+    }
+  }, [isLoadingConfig, config])
+
+  const changeId = value => {
     if (isCreateSubaccount) {
       changeCustomer('groupId', value)
     } else {
@@ -39,7 +54,7 @@ const FirstStep = (props) => {
     }
   }
 
-  const changeName = (value) => {
+  const changeName = value => {
     if (isCreateSubaccount) {
       changeCustomer('groupName', value)
     } else if (isEditSubaccount) {
@@ -91,7 +106,7 @@ const FirstStep = (props) => {
             variant='outlined'
             disabled={isEditCustomer || isEditSubaccount}
             value={(customer && customer.tenantId) || match.groupId}
-            onChange={(e) => changeId(e.target.value)}
+            onChange={e => changeId(e.target.value)}
           />
         </Box>
         <Box className={classes.inputes}>
@@ -108,7 +123,7 @@ const FirstStep = (props) => {
               (customer && customer.name) ||
               (subaccount && subaccount.groupName)
             }
-            onChange={(e) => changeName(e.target.value)}
+            onChange={e => changeName(e.target.value)}
           />
         </Box>
       </DialogContent>
