@@ -10,7 +10,7 @@ import getErrorMessage from 'utils/getErrorMessage'
 export class SubaccountsStore {
   rows = []
   step = 1
-  subaccount = {
+  customer = {
     groupId: '',
     groupName: '',
     defaultDomain: '',
@@ -67,7 +67,7 @@ export class SubaccountsStore {
       .get(`/tenants/${customerId}/groups/${groupId}`)
       .then(res => {
         if (res.status === 200) {
-          merge(this.subaccount, res.data)
+          merge(this.customer, res.data)
           this.isLoadingSubaccount = false
         }
       })
@@ -105,7 +105,7 @@ export class SubaccountsStore {
   updateCustomer = (tenantId, groupId, handleClose) => {
     this.isUpdatingCustomer = true
     return axios
-      .put(`/tenants/${tenantId}/groups/${groupId}`, this.subaccount)
+      .put(`/tenants/${tenantId}/groups/${groupId}`, this.customer)
       .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)
@@ -130,14 +130,14 @@ export class SubaccountsStore {
   }
 
   changeCustomer = (variable, value) => {
-    set(this.subaccount, variable, value)
+    set(this.customer, variable, value)
   }
 }
 
 decorate(SubaccountsStore, {
   step: observable,
   rows: observable,
-  subaccount: observable,
+  customer: observable,
   isLoadingSubaccounts: observable,
   isDeletingSubaccount: observable,
   isLoadingSubaccount: observable,

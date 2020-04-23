@@ -55,7 +55,10 @@ export class CreateCustomerStore {
     const data = { ...this.customer }
     return axios
       .post(`/tenants`, removeEmpty(data))
-      .then(res => (this.createdCustomerStore = res.data))
+      .then(res => {
+        this.createdCustomerStore = res.data
+        this.changeStep(3)
+      })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to create customer',
