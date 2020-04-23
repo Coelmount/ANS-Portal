@@ -47,17 +47,6 @@ const CreateCustomer = props => {
     getConfig()
   }, [])
 
-  useEffect(() => {
-    if (!isLoadingConfig) {
-      if (isCreateSubaccount) {
-        changeCustomer('templateName', config.templates.group)
-      } else {
-        changeCustomer('templateName', config.templates.tenant)
-        changeCustomer('type', config.tenant_type)
-      }
-    }
-  }, [isLoadingConfig, config])
-
   if (isLoadingConfig) {
     return (
       <Dialog open={open} onClose={handleClose} className={classes.root}>
