@@ -29,7 +29,7 @@ export class SubaccountsStore {
   isLoadingSubaccounts = true
   isDeletingSubaccount = false
   isLoadingSubaccount = true
-  isAddingCustomer = false
+  isUpdatingCustomer = false
   selectGroups = []
 
   getSubaccounts = tenantId => {
@@ -102,12 +102,15 @@ export class SubaccountsStore {
       )
   }
 
-  updateCustomer = (tenantId, groupId) => {
-    this.isAddingCustomer = true
+  updateCustomer = (tenantId, groupId, handleClose) => {
+    this.isUpdatingCustomer = true
     return axios
       .put(`/tenants/${tenantId}/groups/${groupId}`, this.subaccount)
       .then(res => {
-        merge(this.customer, res.data)
+        if (res.status === 200) {
+          merge(this.customer, res.data)
+          handleClose()
+        }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -118,7 +121,7 @@ export class SubaccountsStore {
         })
       )
       .finally(() => {
-        this.isAddingCustomer = false
+        this.isUpdatingCustomer = false
       })
   }
 
@@ -139,7 +142,7 @@ decorate(SubaccountsStore, {
   isDeletingSubaccount: observable,
   isLoadingSubaccount: observable,
   selectGroups: observable,
-  isAddingCustomer: observable,
+  isUpdatingCustomer: observable,
   getSubaccounts: action,
   getSubaccount: action,
   deleteSubaccount: action,

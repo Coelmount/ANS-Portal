@@ -33,7 +33,7 @@ export class CustomersStore {
   isLoadingCustomers = true
   isLoadingCustomer = true
   isDeletingCustomer = false
-  isAddingCustomer = false
+  isUpdatingCustomer = false
 
   getCustomers = () => {
     this.isLoadingCustomers = true
@@ -107,14 +107,15 @@ export class CustomersStore {
       })
   }
 
-  updateCustomer = tenantId => {
-    this.isAddingCustomer = true
+  updateCustomer = (tenantId, handleClose) => {
+    this.isUpdatingCustomer = true
     return axios
       .put(`/tenants/${tenantId}`, this.customer)
       .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)
           this.isAddingCustomer = false
+          handleClose()
         }
       })
       .catch(e =>
@@ -124,7 +125,9 @@ export class CustomersStore {
             variant: 'error'
           }
         })
-      )
+      ).finally(() => {
+        this.isUpdatingCustomer = false
+      })
   }
 
   changeStep = step => {
@@ -143,7 +146,7 @@ decorate(CustomersStore, {
   isLoadingCustomers: observable,
   isLoadingCustomer: observable,
   isDeletingCustomer: observable,
-  isAddingCustomer: observable,
+  isUpdatingCustomer: observable,
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,
