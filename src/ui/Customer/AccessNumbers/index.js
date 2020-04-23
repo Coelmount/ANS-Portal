@@ -121,10 +121,10 @@ const AccessNumbers = ({ t }) => {
       label: 'service'
     },
     {
-      id: 'assigned',
+      id: 'counter',
       label: 'selected',
       getCellData: (row) => (
-        <Typography>{row.assigned >= 1 ? row.assigned : 0}</Typography>
+        <Typography>{row.counter >= 1 ? row.counter : 0}</Typography>
       ),
       extraProps: {
         className: classes.textCenterBlue

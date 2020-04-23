@@ -72,7 +72,8 @@ const CustomTable = ({
     const getFilter = (row) => {
       for (let i = 0; i < searchCriterias.length; i++) {
         if (
-          row[searchCriterias[i]].toLowerCase().includes(query.toLowerCase())
+          row[searchCriterias[i]]
+          && row[searchCriterias[i]].toLowerCase().includes(query.toLowerCase())
         ) {
           return true
         }
@@ -131,49 +132,49 @@ const CustomTable = ({
           {isLoadingData ? (
             <Loading />
           ) : (
-            <TableContainer>
-              <Table
-                className={`${classes.table} ${defaultClasses.table}`}
-                aria-labelledby='tableTitle'
-                size={'medium'}
-                aria-label='enhanced table'
-              >
-                <CustomTableHead
-                  classes={classes}
-                  defaultClasses={defaultClasses}
-                  order={order}
-                  orderBy={orderBy}
-                  onRequestSort={handleRequestSort}
-                  columns={columns}
-                  firstCell={firstCell}
-                />
-                {list && list.length ? (
-                  <CustomTableBody
+              <TableContainer>
+                <Table
+                  className={`${classes.table} ${defaultClasses.table}`}
+                  aria-labelledby='tableTitle'
+                  size={'medium'}
+                  aria-label='enhanced table'
+                >
+                  <CustomTableHead
                     classes={classes}
                     defaultClasses={defaultClasses}
-                    rowsPerPage={rowsPerPage}
-                    page={clampedPage}
-                    list={list}
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
                     columns={columns}
                     firstCell={firstCell}
-                    showPagination={showPagination}
                   />
-                ) : (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell style={{ borderBottom: 'none' }}>
-                        <Typography
-                          className={`${classes.tableMessage} ${defaultClasses.tableMessage}`}
-                        >
-                          {t('no_search_result')}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          )}
+                  {list && list.length ? (
+                    <CustomTableBody
+                      classes={classes}
+                      defaultClasses={defaultClasses}
+                      rowsPerPage={rowsPerPage}
+                      page={clampedPage}
+                      list={list}
+                      columns={columns}
+                      firstCell={firstCell}
+                      showPagination={showPagination}
+                    />
+                  ) : (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell style={{ borderBottom: 'none' }}>
+                            <Typography
+                              className={`${classes.tableMessage} ${defaultClasses.tableMessage}`}
+                            >
+                              {t('no_search_result')}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )}
+                </Table>
+              </TableContainer>
+            )}
           {showPagination && (
             <Pagination
               classes={classes}
@@ -185,8 +186,8 @@ const CustomTable = ({
           )}
         </Fragment>
       ) : (
-        <NoAvailableDataBlock />
-      )}
+          <NoAvailableDataBlock />
+        )}
     </Fragment>
   )
 }
