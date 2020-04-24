@@ -91,20 +91,35 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   headCheckbox: {
-    marginLeft: 4,
+    marginLeft: 5,
     marginBottom: 2
   },
   checkboxCell: {
-    width: 60,
-    paddingLeft: 20,
-    paddingRight: '0px !important',
+    width: 85,
+    paddingLeft: `20px !important`,
+    // paddingRight: '40px !important',
     '& > div': {
       marginLeft: 4
     }
   },
   indexHoverCheckbox: {
     marginLeft: 3
-  }
+  },
+  inUseTitle: {
+    color: theme.palette.active.blue
+  },
+  avaliableTitle: {
+    color: theme.palette.lightGreen
+  },
+  deleteCustomerIcon: {
+    width: 20,
+    height: 20,
+    marginTop: 7,
+    color: theme.palette.black,
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
 }))
 
 export default useStyles

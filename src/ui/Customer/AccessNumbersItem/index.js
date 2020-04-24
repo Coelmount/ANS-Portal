@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, Fragment } from 'react'
 import { withRouter } from 'react-router'
 import { Link, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
@@ -84,20 +84,38 @@ const AccessNumbersItem = ({ t }) => {
   const classes = useStyles()
   const [showAddNumbers, setShowAddNumber] = useState(false)
   const [step, setStep] = useState(1)
-  const [selected, setSelected] = useState(rows)
+  const [selected, setSelected] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
-  const { assignedNumbers, getAssignedNumbers } = AssignedNumbersStore
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [phoneNumberToDelete, setPhoneNumberToDelete] = useState(null)
+  const { assignedNumbers, isAssignedNumbersLoading, isDeletingAssignedNumber, getAssignedNumbers, deleteAssignedNumber } = AssignedNumbersStore
 
   useEffect(() => {
     getAssignedNumbers(match.customerId)
   }, [])
 
+  useEffect(() => {
+    setSelected(assignedNumbers)
+  }, [assignedNumbers])
+
+
   const handleOpenDeleteModal = (id, name) => {
-    //console.log('delete')
-    // setIsDeleteModalOpen(true)
-    // setSubaccountToDelete({ id, name })
+    setIsDeleteModalOpen(true)
+    setPhoneNumberToDelete({ id })
+  }
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false)
+  }
+
+  const handleDelete = (id) => {
+    const payload = {
+      id,
+      callback: setIsDeleteModalOpen
+    }
+    deleteAssignedNumber(payload)
   }
 
   const selectNumbers = (checked, id) => {
@@ -206,23 +224,23 @@ const AccessNumbersItem = ({ t }) => {
             onChange={() => selectNumbers(!row.checked, row.id)}
           />
         ) : (
-          <div
-            className={classes.indexHoverCheckbox}
-            onClick={() => selectNumbers(!row.checked, row.id)}
-            onMouseLeave={() => changeHover(false, row.id)}
-            onMouseEnter={() => changeHover(true, row.id)}
-          >
-            {row.hover ? (
-              <Checkbox
-                checked={row.checked}
-                className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.id)}
-              />
-            ) : (
-              i + 1
-            )}
-          </div>
-        ),
+            <div
+              className={classes.indexHoverCheckbox}
+              onClick={() => selectNumbers(!row.checked, row.id)}
+              onMouseLeave={() => changeHover(false, row.id)}
+              onMouseEnter={() => changeHover(true, row.id)}
+            >
+              {row.hover ? (
+                <Checkbox
+                  checked={row.checked}
+                  className={classes.checkbox}
+                  onChange={() => selectNumbers(true, row.id)}
+                />
+              ) : (
+                  i + 1
+                )}
+            </div>
+          ),
       extraHeadProps: {
         className: classes.checkboxCell
       },
@@ -231,16 +249,19 @@ const AccessNumbersItem = ({ t }) => {
       }
     },
     {
-      id: 'phone_numbers',
+      id: 'phoneNumber',
       label: 'phone_numbers'
     },
     {
-      id: 'subaccount_id',
-      label: 'subaccount_id'
+      id: 'subaccountId',
+      label: 'subaccount_id',
     },
     {
       id: 'status',
-      label: 'status'
+      label: 'status',
+      getCellData: row => (
+        <Typography className={row.status === 'in_use' ? classes.inUseTitle : classes.avaliableTitle}>{t(`${row.status}`)}</Typography>
+      )
     },
     {
       id: 'delete',
@@ -249,12 +270,14 @@ const AccessNumbersItem = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
-        <CloseOutlinedIcon
-          onClick={() => handleOpenDeleteModal(row.country)}
-          className={classes.deleteCustomerIcon}
-        />
-      )
+      getCellData: (row) => <Fragment>
+        {
+          row.status === 'available' && <CloseOutlinedIcon
+            onClick={() => handleOpenDeleteModal(match.customerId)}
+            className={classes.deleteCustomerIcon}
+          />
+        }
+      </Fragment>
     }
   ]
 
@@ -282,14 +305,28 @@ const AccessNumbersItem = ({ t }) => {
           />
         </CustomContainer>
         <CustomTable
-          // classes={classes}
+          classes={classes}
           columns={columns}
           firstCell={false}
           rows={selected}
-          searchCriterias={['phone_numbers', 'subaccount_id']}
+          searchCriterias={['phoneNumber', 'subaccountId', 'status']}
           getSearchList={setSearchList}
           extraToolbarBlock={toolbarButtonsBlock}
+          isLoadingData={isAssignedNumbersLoading}
         />
+        {isDeleteModalOpen && (
+          <DeleteModal
+            classes={classes}
+            open={isDeleteModalOpen}
+            handleClose={handleCloseDeleteModal}
+            handleDelete={handleDelete}
+            deleteInfo={phoneNumberToDelete}
+            isDeleting={isDeletingAssignedNumber}
+            deleteSubject={t('phone_number')}
+            action={t('to_delete')}
+            titleAction={t(`delete`)}
+          />
+        )}
       </Paper>
     </div>
   )
