@@ -18,6 +18,7 @@ import Loading from 'components/Loading'
 import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './defaultStyles'
+import { useEffect } from 'react'
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'
@@ -59,6 +60,10 @@ const CustomTable = ({
   getSearchList,
   showToolBar,
   initialSearchQuery,
+  setCurrentPage,
+  setCurrentPerPage,
+  totalPagesServer,
+  onPageChangeActions,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -67,6 +72,14 @@ const CustomTable = ({
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [query, setQuery] = useState(initialSearchQuery)
+
+  useEffect(() => {
+    setCurrentPage(page)
+  }, [page])
+
+  useEffect(() => {
+    setCurrentPerPage(rowsPerPage)
+  }, [rowsPerPage])
 
   const list = useMemo(() => {
     const getFilter = row => {
@@ -88,6 +101,7 @@ const CustomTable = ({
   }, [rows, query, order, orderBy, getSearchList])
 
   const totalPages = useMemo(() => {
+    if (totalPagesServer) return totalPagesServer - 1
     if (rowsPerPage > list.length) return 0
     const pages = Math.ceil(list.length / rowsPerPage)
     return pages ? pages - 1 : pages
@@ -182,6 +196,7 @@ const CustomTable = ({
               page={page}
               totalPages={totalPages}
               rewindPage={rewindPage}
+              onPageChangeActions={onPageChangeActions}
             />
           )}
         </Fragment>
@@ -195,7 +210,11 @@ const CustomTable = ({
 CustomTable.propTypes = {
   showPagination: PropTypes.bool,
   extraToolbarBlock: PropTypes.func,
-  initialSearchQuery: PropTypes.string
+  initialSearchQuery: PropTypes.string,
+  onPageChangeActions: PropTypes.func,
+  setCurrentPage: PropTypes.func.isRequired,
+  setCurrentPerPage: PropTypes.func.isRequired,
+  totalPagesServer: PropTypes.number.isRequired
 }
 
 CustomTable.defaultProps = {
@@ -204,7 +223,8 @@ CustomTable.defaultProps = {
   getSearchList: false,
   showToolBar: true,
   classes: {},
-  initialSearchQuery: ''
+  initialSearchQuery: '',
+  onPageChangeActions: () => {}
 }
 
 export default withNamespaces()(CustomTable)

@@ -120,6 +120,9 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'pointer'
     }
   },
+  deleteCell: {
+    paddingRight: '38px !important'
+  },
 }))
 
 export default useStyles
