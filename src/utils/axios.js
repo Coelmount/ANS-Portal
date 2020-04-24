@@ -1,4 +1,5 @@
 import axios from 'axios'
+import AuthStore from 'stores/Auth'
 
 export const BASE_URL = 'https://yaoh1.bxl.netaxis.be/api/v01'
 export const PROXY_P6 = '/p6'
@@ -17,6 +18,17 @@ instance.interceptors.request.use(
     return config
   },
   error => Promise.reject(error)
+)
+
+instance.interceptors.response.use(
+  response => {
+    return response
+  },
+  error => {
+    console.log('axios1', error.response)
+    AuthStore.logOut()
+    return Promise.reject(error)
+  }
 )
 
 export default instance

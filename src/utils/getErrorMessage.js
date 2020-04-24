@@ -7,6 +7,9 @@ const getErrorMessage = error => {
   if (has(error, 'response.data.error')) {
     return error.response.data.error
   }
+  if (error.response.status === 401) {
+    return 'Your current session has expired. Please login again to continue.'
+  }
 }
 
 export default getErrorMessage
