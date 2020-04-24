@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -20,6 +20,9 @@ const useStyles = makeStyles(() => ({
   },
   inputIcon: {
     width: '392px',
+    [theme.breakpoints.down('md')]: {
+      width: '256px'
+    },
     '& .MuiInputLabel-outlined': {
       left: '49px'
     },

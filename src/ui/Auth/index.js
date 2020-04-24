@@ -22,7 +22,7 @@ import { withNamespaces } from 'react-i18next'
 
 import './index.css'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
     width: '18px',
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   link: {
+    marginLeft: 5,
     fontSize: '14px',
     color: theme.palette.secondary.main,
     fontFamily: 'MTN',
@@ -55,15 +56,15 @@ const Auth = ({ t }) => {
   const history = useHistory()
   const classes = useStyles()
 
-  const handleLoginChange = (e) => {
+  const handleLoginChange = e => {
     setUsername(e.target.value)
   }
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = e => {
     setPassword(e.target.value)
   }
 
-  const loginSubmit = (e) => {
+  const loginSubmit = e => {
     e.preventDefault()
     postLogin({ username, password }, history)
   }
@@ -80,35 +81,39 @@ const Auth = ({ t }) => {
         <Grid item md={6} xs={12} className={'login-col'}>
           <form onSubmit={loginSubmit} className={'form'}>
             <Box className={'login-title'}>{t('welcome_to_ans')}</Box>
-            <Box className={'login-box'}>
-              <Input
-                icon={<PermIdentityOutlined className={'icon'} />}
-                label={t('user_name')}
-                variant='outlined'
-                value={username}
-                onChange={handleLoginChange}
-              />
+            <Box>
+              <Box className={'login-box'}>
+                <Input
+                  icon={<PermIdentityOutlined className={'icon'} />}
+                  label={t('user_name')}
+                  variant='outlined'
+                  value={username}
+                  onChange={handleLoginChange}
+                />
+              </Box>
             </Box>
-            <Box className={'password-box'}>
-              <Input
-                icon={<LockOutlined className={'icon'} />}
-                label={t('password')}
-                variant='outlined'
-                value={password}
-                onChange={handlePasswordChange}
-                type={isPasswordVisible ? 'text' : 'password'}
-              />
-              {isPasswordVisible ? (
-                <VisibilityOutlinedIcon
-                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  className={`visibilityIcon`}
+            <Box>
+              <Box className={'password-box'}>
+                <Input
+                  icon={<LockOutlined className={'icon'} />}
+                  label={t('password')}
+                  variant='outlined'
+                  value={password}
+                  onChange={handlePasswordChange}
+                  type={isPasswordVisible ? 'text' : 'password'}
                 />
-              ) : (
-                <VisibilityOffOutlinedIcon
-                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  className={`visibilityOffIcon`}
-                />
-              )}
+                {isPasswordVisible ? (
+                  <VisibilityOutlinedIcon
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                    className={`visibilityIcon`}
+                  />
+                ) : (
+                  <VisibilityOffOutlinedIcon
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                    className={`visibilityOffIcon`}
+                  />
+                )}
+              </Box>
             </Box>
             <Box className={'support-box'}>
               <Checkbox className={classes.checkbox} label={t('remember_me')} />
