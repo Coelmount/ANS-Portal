@@ -18,7 +18,7 @@ import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
-import CustomTable from 'components/CustomTable'
+import CustomTable from 'components/CustomTableBackendPagination'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
@@ -27,57 +27,6 @@ import AddNumbers from './AddNumbers/'
 
 import useStyles from './styles'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
-
-const rows = [
-  {
-    id: 1,
-    phone_numbers: '+24440300011',
-    subaccount_id: '10440_01',
-    status: 'in use',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 2,
-    phone_numbers: '+24440300012',
-    subaccount_id: '10440_01',
-    status: 'in use',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 3,
-    phone_numbers: '+24440300044',
-    subaccount_id: '10440_01',
-    status: 'in use',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 4,
-    phone_numbers: '+24440300014',
-    subaccount_id: '10440abs1',
-    status: 'in use',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 5,
-    phone_numbers: '+24440300015',
-    subaccount_id: '10440_01',
-    status: 'available',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 6,
-    phone_numbers: '+24440300016',
-    subaccount_id: '10440_01',
-    status: 'available',
-    checked: false,
-    hover: false
-  }
-]
 
 const AccessNumbersItem = ({ t }) => {
   const match = useParams()
@@ -90,16 +39,31 @@ const AccessNumbersItem = ({ t }) => {
   const [searchList, setSearchList] = useState([])
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [phoneNumberToDelete, setPhoneNumberToDelete] = useState(null)
-  const { assignedNumbers, isAssignedNumbersLoading, isDeletingAssignedNumber, getAssignedNumbers, deleteAssignedNumber } = AssignedNumbersStore
+  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPerPage, setCurrentPerPage] = useState(10)
+  const {
+    assignedNumbers,
+    isAssignedNumbersLoading,
+    isDeletingAssignedNumber,
+    getAssignedNumbers,
+    deleteAssignedNumber,
+    totalPagesServer
+  } = AssignedNumbersStore
 
   useEffect(() => {
-    getAssignedNumbers(match.customerId)
-  }, [])
+    getAssignedNumbers(match.customerId, currentPage + 1, currentPerPage)
+  }, [currentPage, currentPerPage])
 
-  useEffect(() => {
-    setSelected(assignedNumbers)
-  }, [assignedNumbers])
+  useEffect(
+    id => {
+      setSelected(assignedNumbers)
+    },
+    [assignedNumbers]
+  )
 
+  const handlePageChange = () => {
+    setIsAnyChecked(false)
+  }
 
   const handleOpenDeleteModal = (id, name) => {
     setIsDeleteModalOpen(true)
@@ -110,7 +74,7 @@ const AccessNumbersItem = ({ t }) => {
     setIsDeleteModalOpen(false)
   }
 
-  const handleDelete = (id) => {
+  const handleDelete = id => {
     const payload = {
       id,
       callback: setIsDeleteModalOpen
@@ -120,19 +84,20 @@ const AccessNumbersItem = ({ t }) => {
 
   const selectNumbers = (checked, id) => {
     const newSelected = [...selected]
-    const index = selected.findIndex((el) => el.id === id)
+    const index = selected.findIndex(el => el.id === id)
     newSelected[index].checked = checked
-    if (newSelected.every((el) => el.checked)) {
+    if (newSelected.every(el => el.checked)) {
       setSelectAll(true)
     } else {
       setSelectAll(false)
     }
     setSelected(newSelected)
+    handleCheckedStates(newSelected)
   }
 
   const handleSelectAll = () => {
-    const searchListId = searchList.map((item) => item.id)
-    const newSelected = selected.map((el) => {
+    const searchListId = searchList.map(item => item.id)
+    const newSelected = selected.map(el => {
       let result = {}
       if (searchListId.includes(el.id)) {
         result = {
@@ -151,9 +116,9 @@ const AccessNumbersItem = ({ t }) => {
     setIsAnyChecked(!selectAll)
   }
 
-  const handleCheckedStates = (newSelected) => {
+  const handleCheckedStates = newSelected => {
     if (
-      newSelected.every((el) => {
+      newSelected.every(el => {
         return el.checked
       })
     ) {
@@ -161,7 +126,7 @@ const AccessNumbersItem = ({ t }) => {
       setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newSelected.some((el) => el.checked)) {
+      if (newSelected.some(el => el.checked)) {
         setIsAnyChecked(true)
       } else {
         setIsAnyChecked(false)
@@ -175,7 +140,7 @@ const AccessNumbersItem = ({ t }) => {
 
   const changeHover = (newHover, id) => {
     const newSelected = [...selected]
-    const index = selected.findIndex((el) => el.id === id)
+    const index = selected.findIndex(el => el.id === id)
     newSelected[index].hover = newHover
     setSelected(newSelected)
   }
@@ -189,18 +154,20 @@ const AccessNumbersItem = ({ t }) => {
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
-        <Box className={classes.addCustomerWrap}>
-          <Box className={classes.addIconWrap}>
-            <img
-              className={classes.deleteIcon}
-              src={deleteIcon}
-              alt='delete icon'
-            />
+        {isAnyChecked && (
+          <Box className={classes.addCustomerWrap}>
+            <Box className={classes.addIconWrap}>
+              <img
+                className={classes.deleteIcon}
+                src={deleteIcon}
+                alt='delete icon'
+              />
+            </Box>
+            <Typography className={classes.addCustomerTitle}>
+              {t('deassign')}
+            </Typography>
           </Box>
-          <Typography className={classes.addCustomerTitle}>
-            {t('deassign')}
-          </Typography>
-        </Box>
+        )}
       </Box>
     )
   }
@@ -224,23 +191,23 @@ const AccessNumbersItem = ({ t }) => {
             onChange={() => selectNumbers(!row.checked, row.id)}
           />
         ) : (
-            <div
-              className={classes.indexHoverCheckbox}
-              onClick={() => selectNumbers(!row.checked, row.id)}
-              onMouseLeave={() => changeHover(false, row.id)}
-              onMouseEnter={() => changeHover(true, row.id)}
-            >
-              {row.hover ? (
-                <Checkbox
-                  checked={row.checked}
-                  className={classes.checkbox}
-                  onChange={() => selectNumbers(true, row.id)}
-                />
-              ) : (
-                  i + 1
-                )}
-            </div>
-          ),
+          <div
+            className={classes.indexHoverCheckbox}
+            onClick={() => selectNumbers(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
+          >
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectNumbers(true, row.id)}
+              />
+            ) : (
+              currentPage * currentPerPage + i + 1
+            )}
+          </div>
+        ),
       extraHeadProps: {
         className: classes.checkboxCell
       },
@@ -254,13 +221,30 @@ const AccessNumbersItem = ({ t }) => {
     },
     {
       id: 'subaccountId',
-      label: 'subaccount_id',
+      label: 'subaccount_id'
+    },
+    {
+      id: 'usedBy',
+      label: 'used_by',
+      getCellData: row => (
+        <Typography>
+          {row.connected_to ? row.connected_to : t('none')}
+        </Typography>
+      )
     },
     {
       id: 'status',
       label: 'status',
       getCellData: row => (
-        <Typography className={row.status === 'in_use' ? classes.inUseTitle : classes.avaliableTitle}>{t(`${row.status}`)}</Typography>
+        <Typography
+          className={
+            row.status === 'in_use'
+              ? classes.inUseTitle
+              : classes.avaliableTitle
+          }
+        >
+          {t(`${row.status}`)}
+        </Typography>
       )
     },
     {
@@ -270,14 +254,16 @@ const AccessNumbersItem = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => <Fragment>
-        {
-          row.status === 'available' && <CloseOutlinedIcon
-            onClick={() => handleOpenDeleteModal(match.customerId)}
-            className={classes.deleteCustomerIcon}
-          />
-        }
-      </Fragment>
+      getCellData: row => (
+        <Fragment>
+          {row.status === 'available' && (
+            <CloseOutlinedIcon
+              onClick={() => handleOpenDeleteModal(match.customerId)}
+              className={classes.deleteCustomerIcon}
+            />
+          )}
+        </Fragment>
+      )
     }
   ]
 
@@ -309,10 +295,14 @@ const AccessNumbersItem = ({ t }) => {
           columns={columns}
           firstCell={false}
           rows={selected}
-          searchCriterias={['phoneNumber', 'subaccountId', 'status']}
+          searchCriterias={['phoneNumber', 'subaccountId', 'usedBy', 'status']}
           getSearchList={setSearchList}
           extraToolbarBlock={toolbarButtonsBlock}
           isLoadingData={isAssignedNumbersLoading}
+          setCurrentPage={setCurrentPage}
+          setCurrentPerPage={setCurrentPerPage}
+          totalPagesServer={totalPagesServer}
+          onPageChangeActions={handlePageChange}
         />
         {isDeleteModalOpen && (
           <DeleteModal

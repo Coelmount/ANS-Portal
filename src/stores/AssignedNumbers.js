@@ -8,18 +8,31 @@ export class AssignedNumbers {
   assignedNumbers = []
   isAssignedNumbersLoading = true
   isDeletingAssignedNumber = false
+  totalPagesServer = 0
 
-  getAssignedNumbers = id => {
+  getAssignedNumbers = (customerId, page, perPage) => {
     this.isAssignedNumbersLoading = true
     axios
       .get(
-        `/tenants/${id}/numbers?cols=["nsn","country_code","type","customer","customer_account","connected_to","service_capabilities","free_text_1","state"]&paging={"page_number":1,"page_size":5}`
+        `/tenants/${customerId}/numbers?cols=["nsn","country_code","type","customer","customer_account","connected_to","service_capabilities","free_text_1","state"]&paging={"page_number":${page},"page_size":${perPage}}`
       )
       .then(res => {
         const transformedAssignedNumbers = res.data.numbers.map(item => {
-          return { status: item.connected_to ? 'in_use' : 'available', subaccountId: item.customer_account ? item.customer_account : 'none', checked: false, hover: false, phoneNumber: `${item.country_code} ${item.nsn}`, ...item }
+          return {
+            usedBy: item.connected_to ? item.connected_to : 'none',
+            status: item.connected_to ? 'in_use' : 'available',
+            subaccountId: item.customer_account
+              ? item.customer_account
+              : 'none',
+            checked: false,
+            hover: false,
+            phoneNumber: `${item.country_code} ${item.nsn}`,
+            ...item
+          }
         })
         this.assignedNumbers = transformedAssignedNumbers
+        const pagination = res.data.pagination
+        this.totalPagesServer = pagination[2]
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -61,6 +74,7 @@ decorate(AssignedNumbers, {
   assignedNumbers: observable,
   isAssignedNumbersLoading: observable,
   isDeletingAssignedNumber: observable,
+  totalPagesServer: observable,
   getAssignedNumbers: action,
   deleteAssignedNumber: action
 })
