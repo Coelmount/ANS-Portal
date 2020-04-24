@@ -25,8 +25,9 @@ instance.interceptors.response.use(
     return response
   },
   error => {
-    console.log('axios1', error.response)
-    AuthStore.logOut()
+    if (error.response.status === 401) {
+      AuthStore.logOut()
+    }
     return Promise.reject(error)
   }
 )
