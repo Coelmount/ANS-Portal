@@ -35,7 +35,7 @@ const CustomTableBody = ({
         key={i}
         hover
       >
-        {firstCell && <IdCell cellValue={i} />}
+        {firstCell && <IdCell cellValue={page * rowsPerPage + i} />}
         {columns.map(column => {
           const extraProps = column.extraProps
           return (

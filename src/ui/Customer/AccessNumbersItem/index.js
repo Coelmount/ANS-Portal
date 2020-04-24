@@ -204,7 +204,7 @@ const AccessNumbersItem = ({ t }) => {
                 onChange={() => selectNumbers(true, row.id)}
               />
             ) : (
-              i + 1
+              currentPage * currentPerPage + i + 1
             )}
           </div>
         ),
