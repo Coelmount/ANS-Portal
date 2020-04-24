@@ -54,12 +54,9 @@ const AccessNumbersItem = ({ t }) => {
     getAssignedNumbers(match.customerId, currentPage + 1, currentPerPage)
   }, [currentPage, currentPerPage])
 
-  useEffect(
-    id => {
-      setSelected(assignedNumbers)
-    },
-    [assignedNumbers]
-  )
+  useEffect(() => {
+    setSelected(assignedNumbers)
+  }, [assignedNumbers])
 
   const handlePageChange = () => {
     setIsAnyChecked(false)

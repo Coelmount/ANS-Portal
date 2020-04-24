@@ -29,74 +29,74 @@ import useStyles from './styles'
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
-const PHONE_NUMBERS = [
-  {
-    id: 1,
-    accessCountry: 'South Africa',
-    accessNumber: '+2753423437',
-    destinationCountry: 'USA',
-    destinationNumber: '+123243242',
-    enabled: false,
-    checked: false,
-    hover: false
-  },
-  {
-    id: 2,
-    accessCountry: 'Ghana',
-    accessNumber: '+3153423421',
-    destinationCountry: 'USA',
-    destinationNumber: '+123243242',
-    enabled: true,
-    checked: false,
-    hover: false
-  },
-  {
-    id: 3,
-    accessCountry: 'South Africa',
-    accessNumber: '+2753423437',
-    destinationCountry: 'USA',
-    destinationNumber: '+123243242',
-    enabled: true,
-    checked: false,
-    hover: false
-  },
-  {
-    id: 4,
-    accessCountry: 'South Africa',
-    accessNumber: '+2753423467',
-    destinationCountry: 'USA',
-    destinationNumber: '+123243212',
-    enabled: false,
-    checked: false,
-    hover: false
-  },
-  {
-    id: 5,
-    accessCountry: 'South Africa',
-    accessNumber: '+2753423312',
-    destinationCountry: 'USA',
-    destinationNumber: '+123243612',
-    enabled: true,
-    checked: false,
-    hover: false
-  },
-  {
-    id: 6,
-    accessCountry: 'South Africa',
-    accessNumber: '+2753423432',
-    destinationCountry: 'USA',
-    destinationNumber: '+123243231',
-    enabled: false,
-    checked: false,
-    hover: false
-  }
-]
+// const PHONE_NUMBERS = [
+//   {
+//     id: 1,
+//     accessCountry: 'South Africa',
+//     accessNumber: '+2753423437',
+//     destinationCountry: 'USA',
+//     destinationNumber: '+123243242',
+//     enabled: false,
+//     checked: false,
+//     hover: false
+//   },
+//   {
+//     id: 2,
+//     accessCountry: 'Ghana',
+//     accessNumber: '+3153423421',
+//     destinationCountry: 'USA',
+//     destinationNumber: '+123243242',
+//     enabled: true,
+//     checked: false,
+//     hover: false
+//   },
+//   {
+//     id: 3,
+//     accessCountry: 'South Africa',
+//     accessNumber: '+2753423437',
+//     destinationCountry: 'USA',
+//     destinationNumber: '+123243242',
+//     enabled: true,
+//     checked: false,
+//     hover: false
+//   },
+//   {
+//     id: 4,
+//     accessCountry: 'South Africa',
+//     accessNumber: '+2753423467',
+//     destinationCountry: 'USA',
+//     destinationNumber: '+123243212',
+//     enabled: false,
+//     checked: false,
+//     hover: false
+//   },
+//   {
+//     id: 5,
+//     accessCountry: 'South Africa',
+//     accessNumber: '+2753423312',
+//     destinationCountry: 'USA',
+//     destinationNumber: '+123243612',
+//     enabled: true,
+//     checked: false,
+//     hover: false
+//   },
+//   {
+//     id: 6,
+//     accessCountry: 'South Africa',
+//     accessNumber: '+2753423432',
+//     destinationCountry: 'USA',
+//     destinationNumber: '+123243231',
+//     enabled: false,
+//     checked: false,
+//     hover: false
+//   }
+// ]
 
 const Translations = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
 
-  const [numbers, setNumbers] = useState(PHONE_NUMBERS)
+  const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
@@ -107,7 +107,23 @@ const Translations = observer(({ t }) => {
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
 
-  const { setDefaultValues, updateSelectedInstance } = BasicTranslationsStore
+  const {
+    setDefaultValues,
+    updateSelectedInstance,
+    basicTranslationsNumbers,
+    isBasicTranslationsNumbersLoading,
+    getBasicTranslationsNumbers
+  } = BasicTranslationsStore
+
+  console.log(basicTranslationsNumbers, 'in comp')
+
+  useEffect(() => {
+    getBasicTranslationsNumbers(match.customerId, match.groupId)
+  }, [])
+
+  useEffect(() => {
+    setNumbers(basicTranslationsNumbers)
+  }, [basicTranslationsNumbers])
 
   const handleAddInstanceModalOpen = () => {
     setIsAddInstanceModalOpen(true)
@@ -118,7 +134,7 @@ const Translations = observer(({ t }) => {
     setDefaultValues()
   }
 
-  const handlePopoverOpen = (event) => {
+  const handlePopoverOpen = event => {
     setAnchorEl(event.currentTarget)
   }
 
@@ -126,13 +142,13 @@ const Translations = observer(({ t }) => {
     setAnchorEl(null)
   }
 
-  const handleMenuItemClick = (id) => {
+  const handleMenuItemClick = id => {
     if (id === 1) handleAddInstanceModalOpen()
   }
 
   const selectNumbers = (checked, id) => {
     const newNumbers = [...numbers]
-    const index = numbers.findIndex((el) => el.id === id)
+    const index = numbers.findIndex(el => el.id === id)
     newNumbers[index].checked = checked
     setNumbers(newNumbers)
     handleCheckedStates(newNumbers)
@@ -140,15 +156,15 @@ const Translations = observer(({ t }) => {
 
   const enableNumbers = (enabled, id) => {
     const newNumbers = [...numbers]
-    const index = numbers.findIndex((el) => el.id === id)
+    const index = numbers.findIndex(el => el.id === id)
     newNumbers[index].enabled = enabled
     setNumbers(newNumbers)
     handleCheckedStates(newNumbers)
   }
 
   const handleSelectAll = () => {
-    const searchListId = searchList.map((item) => item.id)
-    const newNumbers = numbers.map((el) => {
+    const searchListId = searchList.map(item => item.id)
+    const newNumbers = numbers.map(el => {
       let result = {}
       if (searchListId.includes(el.id)) {
         result = {
@@ -167,9 +183,9 @@ const Translations = observer(({ t }) => {
     setIsAnyChecked(!selectAll)
   }
 
-  const handleCheckedStates = (newNumbers) => {
+  const handleCheckedStates = newNumbers => {
     if (
-      newNumbers.every((el) => {
+      newNumbers.every(el => {
         return el.checked
       })
     ) {
@@ -177,7 +193,7 @@ const Translations = observer(({ t }) => {
       setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newNumbers.some((el) => el.checked)) {
+      if (newNumbers.some(el => el.checked)) {
         setIsAnyChecked(true)
       } else {
         setIsAnyChecked(false)
@@ -191,7 +207,7 @@ const Translations = observer(({ t }) => {
 
   const changeHover = (newHover, number) => {
     const newNumbers = [...numbers]
-    const index = numbers.findIndex((el) => el.id === number)
+    const index = numbers.findIndex(el => el.id === number)
     newNumbers[index].hover = newHover
     setNumbers(newNumbers)
   }
@@ -221,7 +237,7 @@ const Translations = observer(({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={(e) => selectNumbers(!row.checked, row.id)}
+            onChange={e => selectNumbers(!row.checked, row.id)}
           />
         ) : (
           <div
@@ -249,16 +265,17 @@ const Translations = observer(({ t }) => {
       }
     },
     {
+      id: 'access_number',
       label: 'access_number',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <Box>
           <Link
             onClick={() => updateSelectedInstance(row)}
-            to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.accessNumber}`}
+            to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.access_number}`}
             className={classes.link}
           >
-            {row.accessNumber}
+            {row.access_number}
           </Link>
           <Typography>{row.accessCountry}</Typography>
         </Box>
@@ -273,7 +290,7 @@ const Translations = observer(({ t }) => {
     {
       id: 'rightArrow',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <img
           src={arrowsIcon}
           className={classes.rightArrowIcon}
@@ -282,12 +299,13 @@ const Translations = observer(({ t }) => {
       )
     },
     {
+      id: 'destination_number',
       label: 'destination_number',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <Box>
           <Typography className={classes.destinationNumberText}>
-            {row.destinationNumber}
+            {row.destination_number}
           </Typography>
           <Typography>{row.destinationCountry}</Typography>
         </Box>
@@ -298,10 +316,10 @@ const Translations = observer(({ t }) => {
       label: 'enable_disable',
       isSortAvailable: false,
       align: 'center',
-      getCellData: (row) => (
+      getCellData: row => (
         <Switch
           checked={row.enabled}
-          onChange={(e) => enableNumbers(!row.enabled, row.id)}
+          onChange={e => enableNumbers(!row.enabled, row.id)}
           focusVisibleClassName={classes.focusVisible}
           classes={{
             switchBase: classes.switchBase,
@@ -319,7 +337,7 @@ const Translations = observer(({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
       )
     }
@@ -357,7 +375,7 @@ const Translations = observer(({ t }) => {
           onClose={handlePopoverClose}
         >
           <Box className={classes.addPopoverWrap}>
-            {addPopoverItems.map((item) => (
+            {addPopoverItems.map(item => (
               <MenuItem
                 onClick={() => handleMenuItemClick(item.id)}
                 value={item.label}

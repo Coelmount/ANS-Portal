@@ -27,7 +27,7 @@ export class PhoneNumbers {
   getPhoneNumbers = (customerId, groupId) => {
     this.isPhoneNumbersLoading = true
     axios
-      .get(`/available_numbers`)
+      .get(`/tenants/${customerId}/groups/${groupId}/numbers/ `)
       .then(res => {
         this.isPhoneNumbersLoading = false
       })
