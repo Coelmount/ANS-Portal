@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   inputIcon: {
     width: '392px',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('xs')]: {
       width: '256px'
     },
     '& .MuiInputLabel-outlined': {

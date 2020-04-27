@@ -95,19 +95,21 @@ const FirstStep = props => {
             t('customer_details')}
         </Box>
         <Box className={classes.inputes}>
-          <Input
-            icon={<img src={sharp} alt='' />}
-            label={
-              (isCreateSubaccount && t('subaccount_id')) ||
-              (isEditCustomer && t('customer_id')) ||
-              (isEditSubaccount && t('subaccount_id')) ||
-              t('customer_id')
-            }
-            variant='outlined'
-            disabled={isEditCustomer || isEditSubaccount}
-            value={customer.tenantId || match.groupId}
-            onChange={e => changeId(e.target.value)}
-          />
+          {!isCreateSubaccount && (
+            <Input
+              icon={<img src={sharp} alt='' />}
+              label={
+                (isCreateSubaccount && t('subaccount_id')) ||
+                (isEditCustomer && t('customer_id')) ||
+                (isEditSubaccount && t('subaccount_id')) ||
+                t('customer_id')
+              }
+              variant='outlined'
+              disabled={isEditCustomer || isEditSubaccount}
+              value={customer.tenantId || match.groupId}
+              onChange={e => changeId(e.target.value)}
+            />
+          )}
         </Box>
         <Box className={classes.inputes}>
           <Input
@@ -138,7 +140,7 @@ const FirstStep = props => {
           color='primary'
           className={classes.nextButton}
           onClick={() => changeStep(2)}
-          disabled={!(customer.name || customer.groupName)}
+          disabled={!(customer.tenantId || customer.groupName)}
         >
           {t('next')}
         </Button>
