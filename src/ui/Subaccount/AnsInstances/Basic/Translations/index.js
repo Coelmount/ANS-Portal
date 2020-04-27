@@ -6,7 +6,6 @@ import { useParams, Link } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-import Switch from '@material-ui/core/Switch'
 import Popover from '@material-ui/core/Popover'
 import MenuItem from '@material-ui/core/MenuItem'
 
@@ -29,69 +28,6 @@ import useStyles from './styles'
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
-// const PHONE_NUMBERS = [
-//   {
-//     id: 1,
-//     accessCountry: 'South Africa',
-//     accessNumber: '+2753423437',
-//     destinationCountry: 'USA',
-//     destinationNumber: '+123243242',
-//     enabled: false,
-//     checked: false,
-//     hover: false
-//   },
-//   {
-//     id: 2,
-//     accessCountry: 'Ghana',
-//     accessNumber: '+3153423421',
-//     destinationCountry: 'USA',
-//     destinationNumber: '+123243242',
-//     enabled: true,
-//     checked: false,
-//     hover: false
-//   },
-//   {
-//     id: 3,
-//     accessCountry: 'South Africa',
-//     accessNumber: '+2753423437',
-//     destinationCountry: 'USA',
-//     destinationNumber: '+123243242',
-//     enabled: true,
-//     checked: false,
-//     hover: false
-//   },
-//   {
-//     id: 4,
-//     accessCountry: 'South Africa',
-//     accessNumber: '+2753423467',
-//     destinationCountry: 'USA',
-//     destinationNumber: '+123243212',
-//     enabled: false,
-//     checked: false,
-//     hover: false
-//   },
-//   {
-//     id: 5,
-//     accessCountry: 'South Africa',
-//     accessNumber: '+2753423312',
-//     destinationCountry: 'USA',
-//     destinationNumber: '+123243612',
-//     enabled: true,
-//     checked: false,
-//     hover: false
-//   },
-//   {
-//     id: 6,
-//     accessCountry: 'South Africa',
-//     accessNumber: '+2753423432',
-//     destinationCountry: 'USA',
-//     destinationNumber: '+123243231',
-//     enabled: false,
-//     checked: false,
-//     hover: false
-//   }
-// ]
-
 const Translations = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
@@ -112,10 +48,10 @@ const Translations = observer(({ t }) => {
     updateSelectedInstance,
     basicTranslationsNumbers,
     isBasicTranslationsNumbersLoading,
-    getBasicTranslationsNumbers
+    getBasicTranslationsNumbers,
+    getCountriesConfig,
+    setNumbersWithConfig
   } = BasicTranslationsStore
-
-  console.log(basicTranslationsNumbers, 'in comp')
 
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
@@ -124,6 +60,11 @@ const Translations = observer(({ t }) => {
   useEffect(() => {
     setNumbers(basicTranslationsNumbers)
   }, [basicTranslationsNumbers])
+
+  useEffect(() => {
+    handleCheckedStates(searchList)
+    // setPhoneNumbers(searchList)
+  }, [searchList])
 
   const handleAddInstanceModalOpen = () => {
     setIsAddInstanceModalOpen(true)
@@ -211,15 +152,6 @@ const Translations = observer(({ t }) => {
     newNumbers[index].hover = newHover
     setNumbers(newNumbers)
   }
-
-  useEffect(() => {
-    // getPhoneNumbers(match.customerId, match.groupId)
-  }, [])
-
-  useEffect(() => {
-    handleCheckedStates(searchList)
-    // setPhoneNumbers(searchList)
-  }, [searchList])
 
   const columns = [
     {
@@ -309,25 +241,6 @@ const Translations = observer(({ t }) => {
           </Typography>
           <Typography>{row.destinationCountry}</Typography>
         </Box>
-      )
-    },
-    {
-      id: 'status',
-      label: 'enable_disable',
-      isSortAvailable: false,
-      align: 'center',
-      getCellData: row => (
-        <Switch
-          checked={row.enabled}
-          onChange={e => enableNumbers(!row.enabled, row.id)}
-          focusVisibleClassName={classes.focusVisible}
-          classes={{
-            switchBase: classes.switchBase,
-            thumb: classes.thumb,
-            track: classes.track,
-            checked: classes.checked
-          }}
-        />
       )
     },
     {

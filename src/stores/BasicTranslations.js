@@ -3,6 +3,7 @@ import { decorate, observable, action } from 'mobx'
 import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 export class BasicTranslations {
   step = 1
@@ -47,17 +48,20 @@ export class BasicTranslations {
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
-        console.log(res, 'res')
         const transformedNumbers = res.data.ans_basic.map(item => {
           return {
             checked: false,
             hover: false,
             enabled: true,
+            accessCountry: parsePhoneNumberFromString(item.access_number)
+              .country,
+            destinationCountry: parsePhoneNumberFromString(
+              item.destination_number
+            ).country,
             ...item
           }
         })
         this.basicTranslationsNumbers = transformedNumbers
-        console.log(transformedNumbers, 'transformedNumbers in store')
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
