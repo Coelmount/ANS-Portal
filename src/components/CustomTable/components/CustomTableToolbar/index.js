@@ -12,7 +12,7 @@ import clearResultIcon from 'source/images/svg/clear-result.svg'
 
 const rowsPerPageNumbers = [10, 15, 25, 50, 100]
 
-const CustomTableToolbar = (props) => {
+const CustomTableToolbar = props => {
   const {
     classes,
     defaultClasses,
@@ -26,7 +26,7 @@ const CustomTableToolbar = (props) => {
     extraToolbarBlock
   } = props
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     const value = e.target.value.toLowerCase()
     setQuery(value)
   }
@@ -40,12 +40,16 @@ const CustomTableToolbar = (props) => {
             placeholder={t('search_input_placeholder')}
             onChange={handleSearch}
           />
-          <img
-            src={clearResultIcon}
-            onClick={() => setQuery('')}
-            className={defaultClasses.clearResultIcon}
-            alt='clear result icon'
-          ></img>
+          {query.length ? (
+            <img
+              src={clearResultIcon}
+              onClick={() => setQuery('')}
+              className={defaultClasses.clearResultIcon}
+              alt='clear result icon'
+            />
+          ) : (
+            <SearchIcon className={defaultClasses.clearResultIcon} />
+          )}
         </div>
       )}
       {extraToolbarBlock && extraToolbarBlock()}
@@ -53,11 +57,11 @@ const CustomTableToolbar = (props) => {
         <div className={`${defaultClasses.perPageWrap} ${classes.perPageWrap}`}>
           <Select
             value={rowsPerPage}
-            onChange={(e) => setRowsPerPage(e.target.value)}
+            onChange={e => setRowsPerPage(e.target.value)}
             IconComponent={ArrowDropDownIcon}
             className={`${defaultClasses.perPageSelect} ${classes.perPageSelect}`}
           >
-            {rowsPerPageNumbers.map((number) => (
+            {rowsPerPageNumbers.map(number => (
               <MenuItem value={number} key={`${number}`}>
                 {number}
               </MenuItem>

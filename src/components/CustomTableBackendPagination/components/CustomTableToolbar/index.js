@@ -40,12 +40,16 @@ const CustomTableToolbar = props => {
             placeholder={t('search_input_placeholder')}
             onChange={handleSearch}
           />
-          <img
-            src={clearResultIcon}
-            onClick={() => setQuery('')}
-            className={defaultClasses.clearResultIcon}
-            alt='clear result icon'
-          ></img>
+          {query.length ? (
+            <img
+              src={clearResultIcon}
+              onClick={() => setQuery('')}
+              className={defaultClasses.clearResultIcon}
+              alt='clear result icon'
+            />
+          ) : (
+            <SearchIcon className={defaultClasses.clearResultIcon} />
+          )}
         </div>
       )}
       {extraToolbarBlock && extraToolbarBlock()}
