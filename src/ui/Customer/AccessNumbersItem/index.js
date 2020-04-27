@@ -51,7 +51,12 @@ const AccessNumbersItem = ({ t }) => {
   } = AssignedNumbersStore
 
   useEffect(() => {
-    getAssignedNumbers(match.customerId, currentPage + 1, currentPerPage)
+    getAssignedNumbers(
+      match.customerId,
+      match.numbersId,
+      currentPage + 1,
+      currentPerPage
+    )
   }, [currentPage, currentPerPage])
 
   useEffect(() => {

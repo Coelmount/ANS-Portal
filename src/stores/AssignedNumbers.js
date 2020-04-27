@@ -10,29 +10,32 @@ export class AssignedNumbers {
   isDeletingAssignedNumber = false
   totalPagesServer = 0
 
-  getAssignedNumbers = (customerId, page, perPage) => {
+  getAssignedNumbers = (customerId, numbersId, page, perPage) => {
     this.isAssignedNumbersLoading = true
     axios
-      .get(
-        `/tenants/${customerId}/numbers?cols=["nsn","country_code","type","customer","customer_account","connected_to","service_capabilities","free_text_1","state"]&paging={"page_number":${page},"page_size":${perPage}}`
-      )
+      // .get(
+      //   `/tenants/${customerId}/numbers?cols=["nsn","country_code","type","customer","customer_account","connected_to","service_capabilities","free_text_1","state"]&paging={"page_number":${page},"page_size":${perPage}}`
+      // )
+      .get(`/tenants/${customerId}/entitlements/${numbersId}/numbers`)
       .then(res => {
-        const transformedAssignedNumbers = res.data.numbers.map(item => {
-          return {
-            usedBy: item.connected_to ? item.connected_to : 'none',
-            status: item.connected_to ? 'in_use' : 'available',
-            subaccountId: item.customer_account
-              ? item.customer_account
-              : 'none',
-            checked: false,
-            hover: false,
-            phoneNumber: `${item.country_code} ${item.nsn}`,
-            ...item
-          }
-        })
-        this.assignedNumbers = transformedAssignedNumbers
-        const pagination = res.data.pagination
-        this.totalPagesServer = pagination[2]
+        console.log(res)
+
+        // const transformedAssignedNumbers = res.data.numbers.map(item => {
+        //   return {
+        //     usedBy: item.connected_to ? item.connected_to : 'none',
+        //     status: item.connected_to ? 'in_use' : 'available',
+        //     subaccountId: item.customer_account
+        //       ? item.customer_account
+        //       : 'none',
+        //     checked: false,
+        //     hover: false,
+        //     phoneNumber: `${item.country_code} ${item.nsn}`,
+        //     ...item
+        //   }
+        // })
+        // this.assignedNumbers = transformedAssignedNumbers
+        // const pagination = res.data.pagination
+        // this.totalPagesServer = pagination[2]
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
