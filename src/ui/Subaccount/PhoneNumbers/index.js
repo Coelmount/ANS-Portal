@@ -128,15 +128,54 @@ const PhoneNumbers = observer(({ t }) => {
     false
   )
   const {
+    initialPhoneNumbers,
     setPhoneNumbers,
     setDefaultValues,
     getPhoneNumbers
   } = PhoneNumbersStore
 
+  useEffect(() => {
+    getPhoneNumbers(match.customerId, match.groupId)
+  }, [])
+
+  useEffect(() => {
+    const result = phoneNumbersRangeFilter(numbers).map(item => {
+      return {
+        numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
+        rangeStart: `${item.countryCode} ${
+          item.rangeStart ? item.rangeStart : item.phoneNumber
+        }`,
+        rangeEnd: `${item.countryCode} ${item.rangeEnd}`,
+        ...item
+      }
+    })
+    setTransformedNumbers(result)
+  }, [numbers])
+
+  // useEffect(() => {
+  //   console.log(initialPhoneNumbers, 'numbers')
+  //   const result = phoneNumbersRangeFilter(numbers).map(item => {
+  //     return {
+  //       numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
+  //       rangeStart: `${item.countryCode} ${
+  //         item.rangeStart ? item.rangeStart : item.phoneNumber
+  //       }`,
+  //       rangeEnd: `${item.countryCode} ${item.rangeEnd}`,
+  //       ...item
+  //     }
+  //   })
+  //   setTransformedNumbers(result)
+  // }, [initialPhoneNumbers])
+
+  useEffect(() => {
+    handleCheckedStates(searchList)
+    setPhoneNumbers(searchList)
+  }, [searchList])
+
   const selectNumbers = (checked, phoneNumber) => {
     const newNumbers = [...transformedNumbers]
     const index = transformedNumbers.findIndex(
-      (el) => el.phoneNumber === phoneNumber
+      el => el.phoneNumber === phoneNumber
     )
     newNumbers[index].checked = checked
     setNumbers(newNumbers)
@@ -144,8 +183,8 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const searchListId = searchList.map((item) => item.phoneNumber)
-    const newNumbers = transformedNumbers.map((el) => {
+    const searchListId = searchList.map(item => item.phoneNumber)
+    const newNumbers = transformedNumbers.map(el => {
       let result = {}
       if (searchListId.includes(el.phoneNumber)) {
         result = {
@@ -164,9 +203,9 @@ const PhoneNumbers = observer(({ t }) => {
     setIsAnyChecked(!selectAll)
   }
 
-  const handleCheckedStates = (newNumbers) => {
+  const handleCheckedStates = newNumbers => {
     if (
-      newNumbers.every((el) => {
+      newNumbers.every(el => {
         return el.checked
       })
     ) {
@@ -174,7 +213,7 @@ const PhoneNumbers = observer(({ t }) => {
       setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newNumbers.some((el) => el.checked)) {
+      if (newNumbers.some(el => el.checked)) {
         setIsAnyChecked(true)
       } else {
         setIsAnyChecked(false)
@@ -197,35 +236,10 @@ const PhoneNumbers = observer(({ t }) => {
 
   const changeHover = (newHover, number) => {
     const newNumbers = [...transformedNumbers]
-    const index = transformedNumbers.findIndex(
-      (el) => el.phoneNumber === number
-    )
+    const index = transformedNumbers.findIndex(el => el.phoneNumber === number)
     newNumbers[index].hover = newHover
     setTransformedNumbers(newNumbers)
   }
-
-  useEffect(() => {
-    getPhoneNumbers(match.customerId, match.groupId)
-  }, [])
-
-  useEffect(() => {
-    const result = phoneNumbersRangeFilter(numbers).map((item) => {
-      return {
-        numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
-        rangeStart: `${item.countryCode} ${
-          item.rangeStart ? item.rangeStart : item.phoneNumber
-        }`,
-        rangeEnd: `${item.countryCode} ${item.rangeEnd}`,
-        ...item
-      }
-    })
-    setTransformedNumbers(result)
-  }, [numbers])
-
-  useEffect(() => {
-    handleCheckedStates(searchList)
-    setPhoneNumbers(searchList)
-  }, [searchList])
 
   const columns = [
     {
@@ -243,7 +257,7 @@ const PhoneNumbers = observer(({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={(e) => selectNumbers(!row.checked, row.phoneNumber)}
+            onChange={e => selectNumbers(!row.checked, row.phoneNumber)}
           />
         ) : (
           <div
@@ -277,7 +291,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rangeStart',
       label: 'phone_numbers',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography className={classes.numbersTitle}>
           {row.phoneNumbers
             ? `${row.countryCode} ${row.rangeStart}`
@@ -288,7 +302,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rightArrow',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <img
           src={RightArrowIcon}
           className={classes.rightArrowIcon}
@@ -299,7 +313,7 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'phoneNumbersEnd',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <Box className={classes.numbersWrap}>
           <Typography className={classes.numbersTitle}>
             {row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`}
@@ -325,7 +339,7 @@ const PhoneNumbers = observer(({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
       )
     }
