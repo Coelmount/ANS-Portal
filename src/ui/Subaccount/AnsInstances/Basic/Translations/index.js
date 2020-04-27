@@ -173,7 +173,7 @@ const Translations = observer(({ t }) => {
           />
         ) : (
           <div
-            className={classes.cursorPointer}
+            className={classes.indexHoverCheckbox}
             onClick={() => selectNumbers(!row.checked, row.id)}
             onMouseLeave={() => changeHover(false, row.id)}
             onMouseEnter={() => changeHover(true, row.id)}
@@ -190,7 +190,7 @@ const Translations = observer(({ t }) => {
           </div>
         ),
       extraHeadProps: {
-        // className: classes.checkboxCell
+        className: classes.checkboxCell
       },
       extraProps: {
         className: classes.checkboxCell

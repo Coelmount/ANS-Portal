@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
@@ -97,7 +97,6 @@ const useStyles = makeStyles((theme) => ({
   checkboxCell: {
     width: 85,
     paddingLeft: `20px !important`,
-    // paddingRight: '40px !important',
     '& > div': {
       marginLeft: 4
     }
@@ -122,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
   },
   deleteCell: {
     paddingRight: '38px !important'
-  },
+  }
 }))
 
 export default useStyles

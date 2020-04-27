@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
@@ -79,7 +79,6 @@ const useStyles = makeStyles((theme) => ({
     width: '18px',
     height: '18px',
     marginRight: '9px',
-    // padding: 0,
     '& .MuiSvgIcon-root': {
       color: theme.palette.primary.main
     },
@@ -88,16 +87,18 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   headCheckbox: {
-    marginLeft: 4,
+    marginLeft: 5,
     marginBottom: 2
   },
   checkboxCell: {
-    width: 60,
-    paddingLeft: 20,
-    paddingRight: '0px !important',
+    width: 85,
+    paddingLeft: `20px !important`,
     '& > div': {
       marginLeft: 4
     }
+  },
+  indexHoverCheckbox: {
+    marginLeft: 3
   },
   accessNumberText: {
     color: theme.palette.active.blue,
@@ -183,6 +184,18 @@ const useStyles = makeStyles((theme) => ({
   },
   addPopoverItemText: {
     color: theme.palette.black
+  },
+  deleteCustomerIcon: {
+    width: 20,
+    height: 20,
+    marginTop: 7,
+    color: theme.palette.black,
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  deleteCell: {
+    paddingRight: '38px !important'
   }
 }))
 
