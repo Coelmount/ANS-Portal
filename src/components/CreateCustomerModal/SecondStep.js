@@ -48,11 +48,11 @@ const SecondStep = props => {
 
   const handleCreate = () => {
     if (isEditCustomer) {
-      updateCustomer(match.customerId).then(() => handleClose())
+      updateCustomer(match.customerId, handleClose)
       return
     }
     if (isEditSubaccount) {
-      updateCustomer(match.customerId, match.groupId).then(() => handleClose())
+      updateCustomer(match.customerId, match.groupId, handleClose)
       return
     }
     if (isCreateSubaccount) {

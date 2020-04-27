@@ -1,11 +1,16 @@
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
+import SnackbarStore from './Snackbar'
+import getErrorMessage from 'utils/getErrorMessage'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 export class BasicTranslations {
   step = 1
   selectedPhoneNumber = null
   selectedInstance = null
+  isBasicTranslationsNumbersLoading = true
+  basicTranslationsNumbers = []
 
   changeStep = step => {
     this.step = step
@@ -37,17 +42,54 @@ export class BasicTranslations {
     // )
     callback && callback()
   }
+
+  getBasicTranslationsNumbers = (customerId, groupId) => {
+    this.isBasicTranslationsNumbersLoading = true
+    axios
+      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
+      .then(res => {
+        const transformedNumbers = res.data.ans_basic.map(item => {
+          return {
+            checked: false,
+            hover: false,
+            enabled: true,
+            accessCountry: parsePhoneNumberFromString(item.access_number)
+              .country,
+            destinationCountry: parsePhoneNumberFromString(
+              item.destination_number
+            ).country,
+            ...item
+          }
+        })
+        this.basicTranslationsNumbers = transformedNumbers
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch basic translations',
+          options: {
+            variant: 'error'
+          }
+        })
+        if (e.response.status === 400) {
+          this.isDeletingCustomer = false
+        }
+      })
+      .finally(() => (this.isBasicTranslationsNumbersLoading = false))
+  }
 }
 
 decorate(BasicTranslations, {
   step: observable,
   selectedInstance: observable,
+  isBasicTranslationsNumbersLoading: observable,
+  basicTranslationsNumbers: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
   postDestinationNumber: action,
   updateSelectedInstance: action,
-  postAccessNumber: action
+  postAccessNumber: action,
+  getBasicTranslationsNumbers: action
 })
 
 export default new BasicTranslations()

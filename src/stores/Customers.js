@@ -125,7 +125,8 @@ export class CustomersStore {
             variant: 'error'
           }
         })
-      ).finally(() => {
+      )
+      .finally(() => {
         this.isUpdatingCustomer = false
       })
   }
