@@ -56,7 +56,10 @@ const SecondStep = props => {
       return
     }
     if (isCreateSubaccount) {
-      createCustomer(createdCustomerStore.customer.tenantId || match.customerId)
+      createCustomer(
+        createdCustomerStore.customer.tenantId || match.customerId,
+        handleClose
+      )
       return
     }
     createCustomer()

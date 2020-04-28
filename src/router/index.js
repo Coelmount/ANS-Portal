@@ -48,7 +48,7 @@ const userComponents = [
     component: <AccessNumbers />
   },
   {
-    path: '/customers/:customerId/access_numbers/:numbersId',
+    path: '/customers/:customerId/access_numbers/:numbersId/numbers',
     component: <AccessNumbersItem />
   },
   {

@@ -32,6 +32,7 @@ export class CreateCustomerStore {
   step = 1
   closeModal = false
   isCustomerAdding = false
+  createSubaccountFunct = () => {}
 
   customer = defaultCustomerValues
 
@@ -39,6 +40,10 @@ export class CreateCustomerStore {
 
   changeStep = step => {
     this.step = step
+  }
+
+  setCreateSubaccaunt = data => {
+    this.createSubaccountFunct = data
   }
 
   setDefaultValues = () => {
@@ -80,7 +85,8 @@ decorate(CreateCustomerStore, {
   createdCustomer: observable,
   isCustomerAdding: observable,
   changeStep: action,
-  changeCustomer: action
+  changeCustomer: action,
+  createSubaccountFunct: action
 })
 
 export default new CreateCustomerStore()

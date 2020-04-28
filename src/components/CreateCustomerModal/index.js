@@ -36,7 +36,7 @@ const CreateCustomer = props => {
     isEditCustomer,
     isEditSubaccount
   } = props
-  const { step, changeCustomer } = store
+  const { step, changeCustomer, setCreateSubaccaunt } = store
 
   const { config, getConfig, isLoadingConfig } = ConfigStore
 
@@ -45,6 +45,7 @@ const CreateCustomer = props => {
 
   useEffect(() => {
     getConfig()
+    setCreateSubaccaunt && setCreateSubaccaunt(createSubaccount)
   }, [])
 
   if (isLoadingConfig) {

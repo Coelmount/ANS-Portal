@@ -18,12 +18,13 @@ import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
-import CustomTable from 'components/CustomTableBackendPagination'
+import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddNumbers from './AddNumbers/'
+import Loading from 'components/Loading'
 
 import useStyles from './styles'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
@@ -44,15 +45,29 @@ const AccessNumbersItem = ({ t }) => {
   const {
     assignedNumbers,
     isAssignedNumbersLoading,
+    isLoadingEntitlements,
     isDeletingAssignedNumber,
     getAssignedNumbers,
     deleteAssignedNumber,
-    totalPagesServer
+    totalPagesServer,
+    getEntitlementsAndFindCurrent,
+    currentEntitlement,
+    setDefaultValues
   } = AssignedNumbersStore
 
+  // useEffect(() => {
+  //   getAssignedNumbers(
+  //     match.customerId,
+  //     match.numbersId,
+  //     currentPage + 1,
+  //     currentPerPage
+  //   )
+  // }, [currentPage, currentPerPage])
+
   useEffect(() => {
-    getAssignedNumbers(match.customerId, currentPage + 1, currentPerPage)
-  }, [currentPage, currentPerPage])
+    getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
+    return () => setDefaultValues()
+  }, [])
 
   useEffect(() => {
     setSelected(assignedNumbers)
@@ -143,7 +158,7 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const titleData = {
-    mainText: match.numbersId,
+    mainText: currentEntitlement && currentEntitlement.name,
     iconCapture: t('add_numbers'),
     Icon: <AddOutlinedIcon />
   }
@@ -266,41 +281,52 @@ const AccessNumbersItem = ({ t }) => {
 
   return (
     <div className={classes.root}>
-      {showAddNumbers && (
-        <AddNumbers
-          open={showAddNumbers}
-          handleClose={() => {
-            setShowAddNumber(false)
-          }}
-          step={step}
-          changeStep={setStep}
-        />
-      )}
       <Paper className={classes.paper}>
-        <CustomContainer>
-          <CustomBreadcrumbs />
-          <TitleBlock
-            titleData={titleData}
-            handleOpen={() => {
-              setShowAddNumber(true)
-              setStep(1)
+        {isAssignedNumbersLoading || isLoadingEntitlements ? (
+          <Loading />
+        ) : (
+          <Fragment>
+            <CustomContainer>
+              <CustomBreadcrumbs />
+              <TitleBlock
+                titleData={titleData}
+                handleOpen={() => {
+                  setShowAddNumber(true)
+                  setStep(1)
+                }}
+              />
+            </CustomContainer>
+            <CustomTable
+              classes={classes}
+              columns={columns}
+              firstCell={false}
+              rows={selected}
+              searchCriterias={[
+                'phoneNumber',
+                'subaccountId',
+                'usedBy',
+                'status'
+              ]}
+              getSearchList={setSearchList}
+              extraToolbarBlock={toolbarButtonsBlock}
+              // isLoadingData={isAssignedNumbersLoading && isLoadingEntitlements}
+              setCurrentPage={setCurrentPage}
+              setCurrentPerPage={setCurrentPerPage}
+              totalPagesServer={totalPagesServer}
+              onPageChangeActions={handlePageChange}
+            />
+          </Fragment>
+        )}
+        {showAddNumbers && (
+          <AddNumbers
+            open={showAddNumbers}
+            handleClose={() => {
+              setShowAddNumber(false)
             }}
+            step={step}
+            changeStep={setStep}
           />
-        </CustomContainer>
-        <CustomTable
-          classes={classes}
-          columns={columns}
-          firstCell={false}
-          rows={selected}
-          searchCriterias={['phoneNumber', 'subaccountId', 'usedBy', 'status']}
-          getSearchList={setSearchList}
-          extraToolbarBlock={toolbarButtonsBlock}
-          isLoadingData={isAssignedNumbersLoading}
-          setCurrentPage={setCurrentPage}
-          setCurrentPerPage={setCurrentPerPage}
-          totalPagesServer={totalPagesServer}
-          onPageChangeActions={handlePageChange}
-        />
+        )}
         {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}

@@ -33,7 +33,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
     postEntitlements,
     isSending
   } = EntitlementsStore
-  const { createdCustomerStore } = CustomerStore
+  const { createdCustomerStore, createSubaccountFunct } = CustomerStore
 
   const [entitlements, setEntitlements] = useState(toJS(checkedArr))
 
@@ -46,6 +46,14 @@ const TotalEntitlements = ({ handleClose, t }) => {
 
   const handleBackButtonClick = () => {
     changeStep(1)
+  }
+
+  const handleAddButton = () => {
+    postEntitlements(
+      createdCustomerStore.tenantId ? createSubaccountFunct : handleClose,
+      createdCustomerStore.tenantId || match.customerId,
+      entitlements
+    )
   }
 
   const columns = [
@@ -81,12 +89,6 @@ const TotalEntitlements = ({ handleClose, t }) => {
       isSortAvailable: false
     }
   ]
-  const handleAddButton = () => {
-    postEntitlements(
-      createdCustomerStore.tenantId || match.customerId,
-      entitlements
-    )
-  }
 
   return (
     <Fragment>

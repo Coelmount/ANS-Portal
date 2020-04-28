@@ -25,7 +25,7 @@ import AddInstance from './components/AddInstance'
 import BasicTranslationsStore from 'stores/BasicTranslations'
 
 import useStyles from './styles'
-import arrowsIcon from 'source/images/svg/arrows.svg'
+import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
 const Translations = observer(({ t }) => {
@@ -224,7 +224,7 @@ const Translations = observer(({ t }) => {
       isSortAvailable: false,
       getCellData: row => (
         <img
-          src={arrowsIcon}
+          src={RightArrowIcon}
           className={classes.rightArrowIcon}
           alt='right icon'
         />

@@ -9,6 +9,7 @@ import getErrorMessage from 'utils/getErrorMessage'
 export class PhoneNumbers {
   step = 1
   closeModal = false
+  initialPhoneNumbers = []
   phoneNumbers = []
   selectedPhoneNumber = {}
   uniqueCountries = []
@@ -29,7 +30,7 @@ export class PhoneNumbers {
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/numbers/ `)
       .then(res => {
-        this.isPhoneNumbersLoading = false
+        this.initialPhoneNumbers = res.data.numbers
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -92,6 +93,7 @@ export class PhoneNumbers {
 decorate(PhoneNumbers, {
   step: observable,
   closeModal: observable,
+  initialPhoneNumbers: observable,
   uniqueCountries: observable,
   phoneNumbers: observable,
   changeStep: action,

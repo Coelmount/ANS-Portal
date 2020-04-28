@@ -72,7 +72,7 @@ const AccessNumbers = ({ t }) => {
     setShowAssignNumbers(true)
   }
 
-  const handleDelete = (accessNumber) => {
+  const handleDelete = accessNumber => {
     deleteEntitlements(match.customerId, accessNumber.id)
       .then(() => setIsDeleteModalOpen(false))
       .then(() => getEntitlements(match.customerId))
@@ -106,7 +106,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'name',
       label: 'country',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography className={classes.countryCellText}>
           {(row.name && row.name.split('-')[0]) || row.countryCode}
         </Typography>
@@ -123,7 +123,7 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'counter',
       label: 'selected',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography>{row.counter >= 1 ? row.counter : 0}</Typography>
       ),
       extraProps: {
@@ -145,9 +145,9 @@ const AccessNumbers = ({ t }) => {
     {
       id: 'see_numbers',
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <Link
-          to={`/customers/${match.customerId}/access_numbers/${row.name}`}
+          to={`/customers/${match.customerId}/access_numbers/${row.id}/numbers`}
           className={classes.link}
         >
           {t('see_numbers')}
@@ -161,7 +161,7 @@ const AccessNumbers = ({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.id, row.name)}
           className={classes.deleteCustomerIcon}
@@ -186,7 +186,7 @@ const AccessNumbers = ({ t }) => {
           isLoadingData={isLoadingEntitlements}
           columns={columns}
           searchCriterias={['name', 'number_type', 'service_capabilities']}
-          extraToolbarBlock={toolbarButtonsBlock}
+          // extraToolbarBlock={toolbarButtonsBlock}
         />
 
         {showEditEntitlements && (

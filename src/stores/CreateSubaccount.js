@@ -58,13 +58,19 @@ export class CreateSubaccountStore {
     set(this.customer, variable, value)
   }
 
-  createCustomer = customerId => {
+  createCustomer = (customerId, callback) => {
     const data = { ...this.customer }
     return axios
       .post(`/tenants/${customerId}/groups`, removeEmpty(data))
       .then(res => {
         this.createdCustomerStore = res.data
-        this.changeStep(3)
+        SnackbarStore.enqueueSnackbar({
+          message: 'Subaccaount successfully created',
+          options: {
+            variant: 'success'
+          }
+        })
+        callback()
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
