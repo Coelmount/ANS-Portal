@@ -186,7 +186,7 @@ const AccessNumbers = ({ t }) => {
           isLoadingData={isLoadingEntitlements}
           columns={columns}
           searchCriterias={['name', 'number_type', 'service_capabilities']}
-          extraToolbarBlock={toolbarButtonsBlock}
+          // extraToolbarBlock={toolbarButtonsBlock}
         />
 
         {showEditEntitlements && (
