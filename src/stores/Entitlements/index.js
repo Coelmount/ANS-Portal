@@ -95,8 +95,13 @@ export class Entitlements {
           entitlement: item.entitlement
         })
         .then(() => {
-          this.isSending = false
-          callback(3)
+          callback()
+          SnackbarStore.enqueueSnackbar({
+            message: 'Entitlements added successfully',
+            options: {
+              variant: 'success'
+            }
+          })
         })
         .catch(e =>
           SnackbarStore.enqueueSnackbar({

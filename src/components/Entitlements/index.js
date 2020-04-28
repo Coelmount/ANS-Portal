@@ -9,9 +9,8 @@ import EntitlementsStore from 'stores/Entitlements'
 
 import SetEntitlements from './SetEntitlements'
 import TotalEntitlements from './TotalEntitlements'
-import SuccessEntitlements from './SuccessEntitlements'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiDialog-paperWidthSm': {
       width: '651px'
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Entitlements = (props) => {
+const Entitlements = props => {
   const classes = useStyles()
   const {
     open,
@@ -50,7 +49,7 @@ const Entitlements = (props) => {
   )
 }
 
-const Steps = (props) => {
+const Steps = props => {
   switch (props.step) {
     case 1:
       return (
@@ -63,14 +62,6 @@ const Steps = (props) => {
     case 2:
       return (
         <TotalEntitlements
-          handleClose={props.handleClose}
-          store={props.store}
-          isCreateSubaccount={props.isCreateSubaccount}
-        />
-      )
-    case 3:
-      return (
-        <SuccessEntitlements
           handleClose={props.handleClose}
           store={props.store}
           isCreateSubaccount={props.isCreateSubaccount}
