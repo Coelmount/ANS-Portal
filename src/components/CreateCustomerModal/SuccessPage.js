@@ -13,7 +13,7 @@ import accountCheck from 'source/images/svg/account-check.svg'
 
 import useStyles from './styles'
 
-const SuccesPage = (props) => {
+const SuccesPage = props => {
   const { handleClose, t, store, isCreateSubaccount, createSubaccount } = props
   const { changeStep, createdCustomerStore } = store
 
@@ -68,25 +68,14 @@ const SuccesPage = (props) => {
           >
             {t('go_into_account')}
           </Button>
-          {!isCreateSubaccount ? (
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.rigthButtonFromSP}
-              onClick={createSubaccount}
-            >
-              {t('add_subaccount')}
-            </Button>
-          ) : (
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.rigthButtonFromSP}
-              onClick={() => changeStep(4)}
-            >
-              {t('set_entitlements')}
-            </Button>
-          )}
+          <Button
+            variant='contained'
+            color='primary'
+            className={classes.rigthButtonFromSP}
+            onClick={() => changeStep(4)}
+          >
+            {t('set_entitlements')}
+          </Button>
         </Box>
       </DialogContent>
     </React.Fragment>

@@ -86,7 +86,7 @@ export class Entitlements {
       })
   }
 
-  postEntitlements = (callback, id, entitlements) => {
+  postEntitlements = (id, entitlements) => {
     this.isSending = true
     entitlements.forEach(item => {
       axios
@@ -96,7 +96,6 @@ export class Entitlements {
         })
         .then(() => {
           this.isSending = false
-          callback(3)
         })
         .catch(e =>
           SnackbarStore.enqueueSnackbar({

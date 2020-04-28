@@ -56,7 +56,7 @@ export class CreateCustomerStore {
     return axios
       .post(`/tenants`, removeEmpty(data))
       .then(res => {
-        this.createdCustomerStore = res.data
+        this.createdCustomerStore = res.data.apio.body
         this.changeStep(3)
       })
       .catch(e =>

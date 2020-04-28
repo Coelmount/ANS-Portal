@@ -18,6 +18,7 @@ import Input from 'components/Input'
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
 import EntitlementsStore from 'stores/Entitlements'
+import CustomerStore from 'stores/CreateCustomer'
 
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
@@ -32,12 +33,13 @@ const TotalEntitlements = ({ handleClose, t }) => {
     postEntitlements,
     isSending
   } = EntitlementsStore
+  const { createdCustomerStore } = CustomerStore
 
   const [entitlements, setEntitlements] = useState(toJS(checkedArr))
 
   const changeTotal = (newTotal, id) => {
     const newEntitlements = [...entitlements]
-    const index = entitlements.findIndex((el) => el.id === id)
+    const index = entitlements.findIndex(el => el.id === id)
     newEntitlements[index].entitlement = Number(newTotal)
     setEntitlements(newEntitlements)
   }
@@ -64,14 +66,14 @@ const TotalEntitlements = ({ handleClose, t }) => {
       extraProps: {
         className: classes.totalInputCell
       },
-      getCellData: (row) => (
+      getCellData: row => (
         <Box>
           <Input
             type='number'
             inputProps={{ min: '0' }}
             value={row.entitlement}
             className={classes.totalInput}
-            onChange={(e) => changeTotal(e.target.value, row.id)}
+            onChange={e => changeTotal(e.target.value, row.id)}
             variant='outlined'
           />
         </Box>
@@ -80,7 +82,10 @@ const TotalEntitlements = ({ handleClose, t }) => {
     }
   ]
   const handleAddButton = () => {
-    postEntitlements(changeStep, match.customerId, entitlements)
+    postEntitlements(
+      createdCustomerStore.tenantId || match.customerId,
+      entitlements
+    )
   }
 
   return (
@@ -131,7 +136,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
               color='primary'
               className={classes.nextButton}
               onClick={handleAddButton}
-              disabled={!entitlements.every((item) => item.entitlement >= 1)}
+              disabled={!entitlements.every(item => item.entitlement >= 1)}
             >
               {t('add')}
             </Button>

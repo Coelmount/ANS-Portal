@@ -142,9 +142,6 @@ const Page = props => {
 
 const UserPages = () => {
   const { getLocale, isLoadingLang, lang } = LanguagesStore
-  useEffect(() => {
-    getLocale(localStorage.getItem('i18nextLng'))
-  }, [getLocale, lang])
   return (
     <Switch>
       {userComponents.map(el => (
@@ -186,10 +183,8 @@ const Router = () => {
   const { getLocale, isLoadingLang, lang } = LanguagesStore
   useEffect(() => {
     getLocal()
-  }, [getLocal])
-  useEffect(() => {
     getLocale(localStorage.getItem('i18nextLng'))
-  }, [getLocale, lang])
+  }, [])
 
   return (
     <React.Fragment>

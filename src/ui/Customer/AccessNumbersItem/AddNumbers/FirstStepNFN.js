@@ -62,7 +62,7 @@ const FirstStepNFN = props => {
           <Select
             label={t('country')}
             wrapperStyles={classes.wrapperStylesSelect}
-            options={[{ value: 32, label: 'Belgium' }]}
+            options={[{ value: '+966', label: 'KSA' }]}
             onChange={e =>
               setQueryAvalibleNumbers({
                 ...queryAvalibleNumbers,
