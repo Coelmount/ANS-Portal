@@ -16,6 +16,9 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
+import transformOnChange from 'utils/tableCheckbox/transformOnChange'
+import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
+import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
@@ -32,6 +35,7 @@ const PhoneNumbers = observer(({ t }) => {
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
+  console.log(numbers, 'numbers')
   const [currentPage, setCurrentPage] = useState(0)
   const [currentPerPage, setCurrentPerPage] = useState(10)
   const {
@@ -63,30 +67,15 @@ const PhoneNumbers = observer(({ t }) => {
   }, [searchList])
 
   // handle check/uncheck
-  const selectNumbers = (checked, phoneNumber) => {
-    const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.phoneNumber === phoneNumber)
-    newNumbers[index].checked = checked
+  const selectNumbers = (checked, id) => {
+    const newNumbers = transformOnChange(numbers, checked, id)
     setNumbers(newNumbers)
     handleCheckedStates(newNumbers)
   }
 
   // handle check all
   const handleSelectAll = () => {
-    const searchListId = searchList.map(item => item.phoneNumber)
-    const newNumbers = numbers.map(el => {
-      let result = {}
-      if (searchListId.includes(el.phoneNumber)) {
-        result = {
-          ...el,
-          checked: !selectAll,
-          hover: false
-        }
-      } else {
-        result = { ...el }
-      }
-      return result
-    })
+    const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
@@ -125,10 +114,8 @@ const PhoneNumbers = observer(({ t }) => {
     setDefaultValues()
   }
 
-  const changeHover = (newHover, number) => {
-    const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.phoneNumber === number)
-    newNumbers[index].hover = newHover
+  const changeHover = (newHover, id) => {
+    const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
   }
 
@@ -148,20 +135,20 @@ const PhoneNumbers = observer(({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={e => selectNumbers(!row.checked, row.phoneNumber)}
+            onChange={e => selectNumbers(!row.checked, row.id)}
           />
         ) : (
           <div
             className={classes.cursorPointer}
-            onClick={() => selectNumbers(!row.checked, row.phoneNumber)}
-            onMouseLeave={() => changeHover(false, row.phoneNumber)}
-            onMouseEnter={() => changeHover(true, row.phoneNumber)}
+            onClick={() => selectNumbers(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
           >
             {row.hover ? (
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.phoneNumber)}
+                onChange={() => selectNumbers(true, row.id)}
               />
             ) : (
               i + 1

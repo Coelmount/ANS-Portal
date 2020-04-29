@@ -22,6 +22,9 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddInstance from './components/AddInstance'
 import Loading from 'components/Loading'
+import transformOnChange from 'utils/tableCheckbox/transformOnChange'
+import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
+import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 
@@ -89,9 +92,7 @@ const Translations = observer(({ t }) => {
   }
 
   const selectNumbers = (checked, id) => {
-    const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.id === id)
-    newNumbers[index].checked = checked
+    const newNumbers = transformOnChange(numbers, checked, id)
     setNumbers(newNumbers)
     handleCheckedStates(newNumbers)
   }
@@ -105,20 +106,7 @@ const Translations = observer(({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const searchListId = searchList.map(item => item.id)
-    const newNumbers = numbers.map(el => {
-      let result = {}
-      if (searchListId.includes(el.id)) {
-        result = {
-          ...el,
-          checked: !selectAll,
-          hover: false
-        }
-      } else {
-        result = { ...el }
-      }
-      return result
-    })
+    const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
@@ -148,9 +136,10 @@ const Translations = observer(({ t }) => {
   }
 
   const changeHover = (newHover, number) => {
-    const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.id === number)
-    newNumbers[index].hover = newHover
+    // const newNumbers = [...numbers]
+    // const index = numbers.findIndex(el => el.id === number)
+    // newNumbers[index].hover = newHover
+    const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
   }
 

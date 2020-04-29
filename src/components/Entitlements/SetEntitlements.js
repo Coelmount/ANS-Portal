@@ -15,6 +15,9 @@ import CustomTable from 'components/CustomTable'
 import EntitlementsStore from 'stores/Entitlements'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
+import transformOnChange from 'utils/tableCheckbox/transformOnChange'
+import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
+import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import useStyles from './styles'
 
@@ -50,32 +53,12 @@ const SetEntitlements = props => {
   }, [entitlementTypes])
 
   const selectEntitlementTypes = (checked, id) => {
-    const newSelected = [...selected]
-    const index = selected.findIndex(el => el.id === id)
-    newSelected[index].checked = checked
-    if (newSelected.every(el => el.checked)) {
-      setSelectAll(true)
-    } else {
-      setSelectAll(false)
-    }
+    const newSelected = transformOnChange(selected, checked, id)
     setSelected(newSelected)
   }
 
   const handleSelectAll = () => {
-    const searchListId = searchList.map(item => item.id)
-    const newSelected = selected.map(el => {
-      let result = {}
-      if (searchListId.includes(el.id)) {
-        result = {
-          ...el,
-          checked: !selectAll,
-          hover: false
-        }
-      } else {
-        result = { ...el }
-      }
-      return result
-    })
+    const newSelected = transformOnCheckAll(searchList, selected, selectAll)
     handleCheckedStates(newSelected)
     setSelected(newSelected)
     setSelectAll(!selectAll)
@@ -105,9 +88,7 @@ const SetEntitlements = props => {
   }
 
   const changeHover = (newHover, id) => {
-    const newSelected = [...selected]
-    const index = selected.findIndex(el => el.id === id)
-    newSelected[index].hover = newHover
+    const newSelected = transformOnHover(selected, newHover, id)
     setSelected(newSelected)
   }
 
