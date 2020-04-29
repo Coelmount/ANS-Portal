@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import basicIcon from 'source/images/svg/dashboard_basic_icon.svg'
+import advancedIcon from 'source/images/svg/dashboard_advanced_icon.svg'
 import timeBasedRoutingIcon from 'source/images/svg/dasboard_tbr_icon.svg'
 import ivrIcon from 'source/images/svg/dashboard_ivr_icon.svg'
 import useStyles from './styles'
@@ -21,6 +22,7 @@ const AnsInstances = ({ t }) => {
   const classes = useStyles()
   const history = useHistory()
   const match = useParams()
+  const ansInstancesPrefix = `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances`
 
   const handleInstanceRedirect = link => {
     history.push(link)
@@ -30,22 +32,22 @@ const AnsInstances = ({ t }) => {
     {
       label: t('basic'),
       iconSrc: basicIcon,
-      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`
+      link: `${ansInstancesPrefix}/basic/translations`
     },
     {
       label: t('advanced'),
-      iconSrc: basicIcon,
-      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`
+      iconSrc: advancedIcon,
+      link: `${ansInstancesPrefix}/advanced/destinations`
     },
     {
       label: t('time_based_routing'),
       iconSrc: timeBasedRoutingIcon,
-      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/time_based_routing`
+      link: `${ansInstancesPrefix}/time_based_routing`
     },
     {
       label: t('ivr'),
       iconSrc: ivrIcon,
-      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/ivr`
+      link: `${ansInstancesPrefix}/ivr`
     }
   ]
 
