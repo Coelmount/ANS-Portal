@@ -138,6 +138,7 @@ const useStyles = makeStyles(theme => ({
     '& span': {
       fontWeight: 600,
       fontSize: 16,
+      whiteSpace: 'nowrap',
       '& > p': {
         height: 11
       },

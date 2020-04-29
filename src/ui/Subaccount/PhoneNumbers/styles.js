@@ -52,10 +52,6 @@ const useStyles = makeStyles(theme => ({
   numbersAmount: {
     marginLeft: 10
   },
-  numbersTitle: {
-    fontSize: 14,
-    fontWeight: 600
-  },
   toolbarButtonsBlockWrap: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -76,16 +72,18 @@ const useStyles = makeStyles(theme => ({
     }
   },
   headCheckbox: {
-    marginLeft: 7,
+    marginLeft: 5,
     marginBottom: 2
   },
   checkboxCell: {
-    width: 60,
-    paddingLeft: 20,
-    paddingRight: '0px !important',
+    width: 85,
+    paddingLeft: `20px !important`,
     '& > div': {
       marginLeft: 4
     }
+  },
+  indexHoverCheckbox: {
+    marginLeft: 3
   },
   assignedTitle: {
     color: theme.palette.active.blue,
@@ -95,12 +93,51 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.lightGreen,
     fontSize: 14
   },
-  typeTitle: {
-    fontSize: 14
-  },
   numberPhoneNumbersStoresAmount: {
     marginLeft: 12,
     fontSize: 14
+  },
+  countryNameColumn: {
+    width: 250,
+    whiteSpace: 'nowrap',
+    fontSize: 16
+  },
+  rangeStartColumn: {
+    width: 150,
+    fontSize: 14,
+    fontWeight: 600
+  },
+  rangeStartHeadColumn: {
+    whiteSpace: 'nowrap'
+  },
+  rightArrowColumn: {
+    width: 50
+  },
+  rangeEndColumn: {
+    width: 250,
+    fontSize: 14,
+    fontWeight: 600,
+    whiteSpace: 'nowrap'
+  },
+  typeColumn: {
+    width: 200,
+    fontSize: 14
+  },
+  numbersTitle: {
+    fontSize: 14,
+    fontWeight: 600
+  },
+  deleteCustomerIcon: {
+    width: 20,
+    height: 20,
+    marginTop: 7,
+    color: theme.palette.black,
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  deleteCell: {
+    paddingRight: '38px !important'
   }
 }))
 

@@ -47,7 +47,7 @@ export class PhoneNumbers {
           },
           {
             country_code: '+966',
-            id: 10983,
+            id: 10982,
             nsn: '115050911',
             state: 'available',
             type: 'local'

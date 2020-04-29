@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
@@ -138,6 +138,7 @@ const useStyles = makeStyles((theme) => ({
     '& span': {
       fontWeight: 600,
       fontSize: 16,
+      whiteSpace: 'nowrap',
       '& > p': {
         height: 11
       },

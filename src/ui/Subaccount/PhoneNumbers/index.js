@@ -139,7 +139,7 @@ const PhoneNumbers = observer(({ t }) => {
           />
         ) : (
           <div
-            className={classes.cursorPointer}
+            className={classes.indexHoverCheckbox}
             onClick={() => selectNumbers(!row.checked, row.id)}
             onMouseLeave={() => changeHover(false, row.id)}
             onMouseEnter={() => changeHover(true, row.id)}
@@ -156,7 +156,7 @@ const PhoneNumbers = observer(({ t }) => {
           </div>
         ),
       extraHeadProps: {
-        // className: classes.checkboxCell
+        className: classes.checkboxCell
       },
       extraProps: {
         className: classes.checkboxCell
@@ -164,18 +164,24 @@ const PhoneNumbers = observer(({ t }) => {
     },
     {
       id: 'countryName',
-      label: 'country'
+      label: 'country',
+      extraProps: {
+        className: classes.countryNameColumn
+      }
     },
     {
       id: 'rangeStart',
       label: 'phone_numbers',
       extraProps: {
-        className: classes.numbersTitle
+        className: classes.rangeStartColumn
       }
     },
     {
       id: 'rightArrow',
       isSortAvailable: false,
+      extraProps: {
+        className: classes.rightArrowColumn
+      },
       getCellData: row => (
         <Fragment>
           {row.phoneNumbers && (
@@ -191,6 +197,9 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rangeEnd',
       isSortAvailable: false,
+      extraProps: {
+        className: classes.rangeEndColumn
+      },
       getCellData: row => (
         <Box className={classes.numbersWrap}>
           <Typography className={classes.numbersTitle}>
@@ -285,7 +294,7 @@ const PhoneNumbers = observer(({ t }) => {
         </CustomContainer>
         <CustomTable
           firstCell={false}
-          // classes={classes}
+          classes={classes}
           rows={numbers}
           // isLoadingData={isLoadingCustomers}
           columns={columns}
