@@ -35,14 +35,16 @@ const PhoneNumbers = observer(({ t }) => {
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
-  console.log(numbers, 'numbers')
+  // console.log(numbers, 'numbers')
   const [currentPage, setCurrentPage] = useState(0)
   const [currentPerPage, setCurrentPerPage] = useState(10)
   const {
     transformedPhoneNumbers,
     setPhoneNumbers,
     setDefaultValues,
-    getPhoneNumbers
+    getPhoneNumbers,
+    totalPagesServer,
+    isPhoneNumbersLoading
   } = PhoneNumbersStore
 
   // initial request
@@ -53,7 +55,7 @@ const PhoneNumbers = observer(({ t }) => {
       currentPage + 1, // cause on back pagination starts from 1, not 0
       currentPerPage
     )
-  }, [])
+  }, [currentPage, currentPerPage])
 
   // set in component after store transformation
   useEffect(() => {
@@ -296,7 +298,7 @@ const PhoneNumbers = observer(({ t }) => {
           firstCell={false}
           classes={classes}
           rows={numbers}
-          // isLoadingData={isLoadingCustomers}
+          isLoadingData={isPhoneNumbersLoading}
           columns={columns}
           searchCriterias={[
             'countryName',
@@ -309,6 +311,7 @@ const PhoneNumbers = observer(({ t }) => {
           getSearchList={setSearchList}
           setCurrentPage={setCurrentPage}
           setCurrentPerPage={setCurrentPerPage}
+          totalPagesServer={totalPagesServer}
         />
         {isAddPhoneNumbersModalOpen && (
           <AddPhoneNumbersModal

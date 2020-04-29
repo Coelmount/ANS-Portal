@@ -19,6 +19,7 @@ export class PhoneNumbers {
   addedPhoneNumbers = []
   rejectedPhoneNumbers = []
   isPhoneNumbersLoading = true
+  totalPagesServer = 0
 
   changeStep = step => {
     this.step = step
@@ -32,27 +33,27 @@ export class PhoneNumbers {
     this.isPhoneNumbersLoading = true
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number": ${page}, "page_size": ${perPage}}&cols=["country_code","nsn","type","state"] `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","state"] `
       )
       .then(res => {
         const requestResult = res.data.numbers
         // this push part time solution for test range logic and state col colors(delete it when backend provide more data)
-        requestResult.push(
-          {
-            country_code: '+966',
-            id: 10983,
-            nsn: '115050982',
-            state: 'assigned',
-            type: 'geo'
-          },
-          {
-            country_code: '+966',
-            id: 10982,
-            nsn: '115050911',
-            state: 'available',
-            type: 'local'
-          }
-        )
+        // requestResult.push(
+        //   {
+        //     country_code: '+966',
+        //     id: 10983,
+        //     nsn: '115050982',
+        //     state: 'assigned',
+        //     type: 'geo'
+        //   },
+        //   {
+        //     country_code: '+966',
+        //     id: 10982,
+        //     nsn: '115050911',
+        //     state: 'available',
+        //     type: 'local'
+        //   }
+        // )
 
         const transformedNumbers = phoneNumbersRangeFilter(requestResult).map(
           item => {
@@ -75,6 +76,8 @@ export class PhoneNumbers {
           }
         )
         this.transformedPhoneNumbers = transformedNumbers
+        const pagination = res.data.pagination
+        this.totalPagesServer = pagination[2]
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -140,6 +143,8 @@ decorate(PhoneNumbers, {
   transformedPhoneNumbers: observable,
   uniqueCountries: observable,
   phoneNumbers: observable,
+  totalPagesServer: observable,
+  isPhoneNumbersLoading: observable,
   changeStep: action,
   setPhoneNumbers: action,
   setSelectedPhoneNumber: action,
