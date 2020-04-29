@@ -6,6 +6,7 @@ import axios from 'utils/axios'
 import { removeEmpty } from 'utils/removeEmpty'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import SubaccountStore from 'stores/Subaccounts'
 
 export class CreateSubaccountStore {
   step = 1
@@ -51,7 +52,8 @@ export class CreateSubaccountStore {
         postalCode: '',
         city: '',
         country: ''
-      }
+      },
+      timeZone: ''
     }
   }
 
@@ -65,7 +67,7 @@ export class CreateSubaccountStore {
     return axios
       .post(`/tenants/${customerId}/groups`, removeEmpty(data))
       .then(res => {
-        this.createdCustomerStore = res.data
+        this.createdCustomerStore = res.data.apio.body
         SnackbarStore.enqueueSnackbar({
           message: 'Subaccaount successfully created',
           options: {
@@ -83,6 +85,7 @@ export class CreateSubaccountStore {
         })
       )
       .finally(() => {
+        SubaccountStore.getSubaccounts(customerId)
         this.addUpdateCustomer = false
       })
   }

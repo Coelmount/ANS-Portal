@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
+
+import ct from 'countries-and-timezones'
+import toArray from 'lodash/toArray'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -13,10 +16,13 @@ import Button from '@material-ui/core/Button'
 
 import sharp from 'source/images/svg/sharp.svg'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
+import TimeZoneMap from 'source/images/svg/TimeZoneMap.svg'
 
 import ConfigStore from 'stores/Config'
 
 import Input from 'components/Input'
+import Switch from 'components/Switch'
+import Select from 'components/Select'
 
 import useStyles from './styles'
 
@@ -32,8 +38,27 @@ const FirstStep = props => {
   } = props
   const { changeStep, customer, changeCustomer } = store
   const classes = useStyles()
+  const [checkedTimeZone, setCheckedTimeZone] = useState(
+    customer.timeZone ? false : true
+  )
+  const [timeZones, setTimeZones] = useState([])
 
   const { config, isLoadingConfig } = ConfigStore
+
+  useEffect(() => {
+    setTimeZones(
+      toArray(ct.getAllTimezones())
+        .sort((a, b) => {
+          if (a.name > b.name) return 1
+          if (a.name < b.name) return -1
+          return 0
+        })
+        .map(el => ({
+          value: el.name,
+          label: el.name
+        }))
+    )
+  }, [])
 
   useEffect(() => {
     if (!isLoadingConfig) {
@@ -123,6 +148,29 @@ const FirstStep = props => {
             onChange={e => changeName(e.target.value)}
           />
         </Box>
+        {(isCreateSubaccount || isEditSubaccount) && (
+          <React.Fragment>
+            <Box className={classes.inputes}>
+              <Switch
+                checked={checkedTimeZone}
+                handleChange={() => setCheckedTimeZone(!checkedTimeZone)}
+                label={'Default timezone'}
+                labelPlacement={'start'}
+              />
+            </Box>
+            {!checkedTimeZone && (
+              <Box className={classes.inputes}>
+                <Select
+                  icon={<img src={TimeZoneMap} alt='TimeZoneMap' />}
+                  options={timeZones}
+                  value={customer.timeZone}
+                  label={'Time zone'}
+                  onChange={e => changeCustomer('timeZone', e.target.value)}
+                />
+              </Box>
+            )}
+          </React.Fragment>
+        )}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
