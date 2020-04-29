@@ -18,6 +18,9 @@ import Select from 'components/Select'
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
 import Checkbox from 'components/Checkbox'
+import transformOnChange from 'utils/tableCheckbox/transformOnChange'
+import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
+import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import Group3Person from 'source/images/svg/Group3Person.svg'
 
@@ -106,15 +109,8 @@ const AssignNumbers = props => {
     //setPhoneNumbers(searchList)
   }, [searchList])
 
-  const selectNumbers = (checked, number) => {
-    const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.number === number)
-    newNumbers[index].checked = checked
-    if (newNumbers.every(el => el.checked)) {
-      setSelectAll(true)
-    } else {
-      setSelectAll(false)
-    }
+  const selectNumbers = (checked, id) => {
+    const newNumbers = transformOnChange(numbers, checked, id)
     setNumbers(newNumbers)
   }
 
@@ -141,30 +137,18 @@ const AssignNumbers = props => {
   }
 
   const handleSelectAll = () => {
-    const searchListId = searchList.map(item => item.number)
-    const newNumbers = numbers.map(el => {
-      let result = {}
-      if (searchListId.includes(el.number)) {
-        result = {
-          ...el,
-          checked: !selectAll,
-          hover: false
-        }
-      } else {
-        result = { ...el }
-      }
-      return result
-    })
+    const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
     setIsAnyChecked(!selectAll)
   }
 
-  const changeHover = (newHover, number) => {
-    const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.number === number)
-    newNumbers[index].hover = newHover
+  const changeHover = (newHover, id) => {
+    // const newNumbers = [...numbers]
+    // const index = numbers.findIndex(el => el.number === number)
+    // newNumbers[index].hover = newHover
+    const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
   }
 
@@ -178,20 +162,20 @@ const AssignNumbers = props => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={() => selectNumbers(!row.checked, row.number)}
+            onChange={() => selectNumbers(!row.checked, row.id)}
           />
         ) : (
           <div
             className={classes.indexHoverCheckbox}
-            onClick={() => selectNumbers(!row.checked, row.number)}
-            onMouseLeave={() => changeHover(false, row.number)}
-            onMouseEnter={() => changeHover(true, row.number)}
+            onClick={() => selectNumbers(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
           >
             {row.hover ? (
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.number)}
+                onChange={() => selectNumbers(true, row.id)}
               />
             ) : (
               i + 1
