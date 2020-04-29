@@ -5,11 +5,12 @@ import { PROXY_P6 } from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import phoneNumbersRangeFilter from 'utils/phoneNumbersRangeFilter'
 
 export class PhoneNumbers {
   step = 1
   closeModal = false
-  initialPhoneNumbers = []
+  transformedPhoneNumbers = []
   phoneNumbers = []
   selectedPhoneNumber = {}
   uniqueCountries = []
@@ -25,12 +26,38 @@ export class PhoneNumbers {
     this.step = 1
   }
 
-  getPhoneNumbers = (customerId, groupId) => {
+  getPhoneNumbers = (customerId, groupId, page, perPage) => {
     this.isPhoneNumbersLoading = true
     axios
-      .get(`/tenants/${customerId}/groups/${groupId}/numbers/ `)
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number": ${page}, "page_size": ${perPage}}&cols=["country_code","nsn","type","state"] `
+      )
       .then(res => {
-        this.initialPhoneNumbers = res.data.numbers
+        const requestResult = res.data.numbers
+        // this push part time solution for test range logic(delete it when backend provide more data)
+        requestResult.push({
+          country_code: '+966',
+          id: 10983,
+          nsn: '115050982',
+          state: 'assigned',
+          type: 'geo'
+        })
+
+        const transformedNumbers = phoneNumbersRangeFilter(requestResult).map(
+          item => {
+            return {
+              ...item,
+              phoneNumber: `${item.country_code} ${item.nsn}`,
+              rangeStart: item.rangeStart
+                ? `${item.country_code} ${item.rangeStart}`
+                : `${item.country_code} ${item.nsn}`,
+              rangeEnd: `${item.country_code} ${item.rangeEnd}`,
+              checked: false,
+              hover: false
+            }
+          }
+        )
+        this.transformedPhoneNumbers = transformedNumbers
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -93,7 +120,7 @@ export class PhoneNumbers {
 decorate(PhoneNumbers, {
   step: observable,
   closeModal: observable,
-  initialPhoneNumbers: observable,
+  transformedPhoneNumbers: observable,
   uniqueCountries: observable,
   phoneNumbers: observable,
   changeStep: action,

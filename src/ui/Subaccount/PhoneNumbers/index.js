@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -11,198 +11,78 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import TitleBlock from 'components/TitleBlock'
-import CustomTable from 'components/CustomTable'
+import CustomTable from 'components/CustomTableBackendPagination'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
-import phoneNumbersRangeFilter from 'utils/phoneNumbersRangeFilter'
+import transformOnChange from 'utils/tableCheckbox/transformOnChange'
+import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
+import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import filtersIcon from 'source/images/svg/filters.svg'
 import useStyles from './styles'
 
-const PHONE_NUMBERS = [
-  {
-    id: 1,
-    country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423437',
-    type: 'local',
-    status: 'assigned',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 2,
-    country: 'Angola',
-    countryCode: '+24',
-    phoneNumber: '53423432',
-    type: 'geo',
-    status: 'assigned',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 3,
-    country: 'Angola',
-    countryCode: '+24',
-    phoneNumber: '53423433',
-    type: 'geo',
-    status: 'available',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 4,
-    country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423435',
-    type: 'local',
-    status: 'available',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 5,
-    country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423436',
-    type: 'local',
-    status: 'assigned',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 6,
-    country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423439',
-    type: 'geo',
-    status: 'available',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 7,
-    country: 'Nigeria',
-    countryCode: '+30',
-    phoneNumber: '53423440',
-    type: 'geo',
-    status: 'assigned',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 8,
-    country: 'Angola',
-    countryCode: '+24',
-    phoneNumber: '53423434',
-    type: 'geo',
-    status: 'available',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 9,
-    country: 'South Africa',
-    countryCode: '+27',
-    phoneNumber: '53423438',
-    type: 'local',
-    status: 'available',
-    checked: false,
-    hover: false
-  }
-]
-
 const PhoneNumbers = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
-  const [transformedNumbers, setTransformedNumbers] = useState([])
-  const [numbers, setNumbers] = useState(PHONE_NUMBERS)
+  const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
+  console.log(numbers, 'numbers')
+  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPerPage, setCurrentPerPage] = useState(10)
   const {
-    initialPhoneNumbers,
+    transformedPhoneNumbers,
     setPhoneNumbers,
     setDefaultValues,
     getPhoneNumbers
   } = PhoneNumbersStore
 
+  // initial request
   useEffect(() => {
-    getPhoneNumbers(match.customerId, match.groupId)
+    getPhoneNumbers(
+      match.customerId,
+      match.groupId,
+      currentPage + 1, // cause on back pagination starts from 1, not 0
+      currentPerPage
+    )
   }, [])
 
+  // set in component after store transformation
   useEffect(() => {
-    const result = phoneNumbersRangeFilter(numbers).map(item => {
-      return {
-        numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
-        rangeStart: `${item.countryCode} ${
-          item.rangeStart ? item.rangeStart : item.phoneNumber
-        }`,
-        rangeEnd: `${item.countryCode} ${item.rangeEnd}`,
-        ...item
-      }
-    })
-    setTransformedNumbers(result)
-  }, [numbers])
+    setNumbers(transformedPhoneNumbers)
+  }, [transformedPhoneNumbers])
 
-  // useEffect(() => {
-  //   console.log(initialPhoneNumbers, 'numbers')
-  //   const result = phoneNumbersRangeFilter(numbers).map(item => {
-  //     return {
-  //       numberWithCode: `${item.countryCode} ${item.phoneNumber}`,
-  //       rangeStart: `${item.countryCode} ${
-  //         item.rangeStart ? item.rangeStart : item.phoneNumber
-  //       }`,
-  //       rangeEnd: `${item.countryCode} ${item.rangeEnd}`,
-  //       ...item
-  //     }
-  //   })
-  //   setTransformedNumbers(result)
-  // }, [initialPhoneNumbers])
-
+  // handle search
   useEffect(() => {
     handleCheckedStates(searchList)
     setPhoneNumbers(searchList)
   }, [searchList])
 
-  const selectNumbers = (checked, phoneNumber) => {
-    const newNumbers = [...transformedNumbers]
-    const index = transformedNumbers.findIndex(
-      el => el.phoneNumber === phoneNumber
-    )
-    newNumbers[index].checked = checked
+  // handle check/uncheck
+  const selectNumbers = (checked, id) => {
+    const newNumbers = transformOnChange(numbers, checked, id)
     setNumbers(newNumbers)
     handleCheckedStates(newNumbers)
   }
 
+  // handle check all
   const handleSelectAll = () => {
-    const searchListId = searchList.map(item => item.phoneNumber)
-    const newNumbers = transformedNumbers.map(el => {
-      let result = {}
-      if (searchListId.includes(el.phoneNumber)) {
-        result = {
-          ...el,
-          checked: !selectAll,
-          hover: false
-        }
-      } else {
-        result = { ...el }
-      }
-      return result
-    })
+    const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
     setIsAnyChecked(!selectAll)
   }
 
+  // handler of check states schema
   const handleCheckedStates = newNumbers => {
     if (
       newNumbers.every(el => {
@@ -234,11 +114,9 @@ const PhoneNumbers = observer(({ t }) => {
     setDefaultValues()
   }
 
-  const changeHover = (newHover, number) => {
-    const newNumbers = [...transformedNumbers]
-    const index = transformedNumbers.findIndex(el => el.phoneNumber === number)
-    newNumbers[index].hover = newHover
-    setTransformedNumbers(newNumbers)
+  const changeHover = (newHover, id) => {
+    const newNumbers = transformOnHover(numbers, newHover, id)
+    setNumbers(newNumbers)
   }
 
   const columns = [
@@ -257,20 +135,20 @@ const PhoneNumbers = observer(({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={e => selectNumbers(!row.checked, row.phoneNumber)}
+            onChange={e => selectNumbers(!row.checked, row.id)}
           />
         ) : (
           <div
             className={classes.cursorPointer}
-            onClick={() => selectNumbers(!row.checked, row.phoneNumber)}
-            onMouseLeave={() => changeHover(false, row.phoneNumber)}
-            onMouseEnter={() => changeHover(true, row.phoneNumber)}
+            onClick={() => selectNumbers(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
           >
             {row.hover ? (
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.phoneNumber)}
+                onChange={() => selectNumbers(true, row.id)}
               />
             ) : (
               i + 1
@@ -291,23 +169,23 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'rangeStart',
       label: 'phone_numbers',
-      getCellData: row => (
-        <Typography className={classes.numbersTitle}>
-          {row.phoneNumbers
-            ? `${row.countryCode} ${row.rangeStart}`
-            : `${row.countryCode} ${row.phoneNumber}`}
-        </Typography>
-      )
+      extraProps: {
+        className: classes.numbersTitle
+      }
     },
     {
       id: 'rightArrow',
       isSortAvailable: false,
       getCellData: row => (
-        <img
-          src={RightArrowIcon}
-          className={classes.rightArrowIcon}
-          alt='right icon'
-        />
+        <Fragment>
+          {row.phoneNumbers && (
+            <img
+              src={RightArrowIcon}
+              className={classes.rightArrowIcon}
+              alt='right icon'
+            />
+          )}
+        </Fragment>
       )
     },
     {
@@ -316,7 +194,7 @@ const PhoneNumbers = observer(({ t }) => {
       getCellData: row => (
         <Box className={classes.numbersWrap}>
           <Typography className={classes.numbersTitle}>
-            {row.phoneNumbers && `${row.countryCode} ${row.rangeEnd}`}
+            {row.phoneNumbers && row.rangeEnd}
           </Typography>
           <Typography className={classes.numberPhoneNumbersStoresAmount}>
             {row.phoneNumbers && `(${row.phoneNumbers.length})`}
@@ -394,12 +272,14 @@ const PhoneNumbers = observer(({ t }) => {
         <CustomTable
           firstCell={false}
           // classes={classes}
-          rows={transformedNumbers}
+          rows={numbers}
           // isLoadingData={isLoadingCustomers}
           columns={columns}
           searchCriterias={['country', 'rangeStart']}
           extraToolbarBlock={toolbarButtonsBlock}
           getSearchList={setSearchList}
+          setCurrentPage={setCurrentPage}
+          setCurrentPerPage={setCurrentPerPage}
         />
         {isAddPhoneNumbersModalOpen && (
           <AddPhoneNumbersModal

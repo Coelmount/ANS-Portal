@@ -1,20 +1,20 @@
 const phoneNumbersRangeFilter = phoneNumbers => {
-  phoneNumbers.sort((a, b) => a.phoneNumber - b.phoneNumber)
+  phoneNumbers.sort((a, b) => a.nsn - b.nsn)
 
   let count = 1
   const phoneNumbersWithRange = phoneNumbers.reduce((arrPN, phone, index) => {
     if (
       arrPN.length &&
-      arrPN[arrPN.length - 1].prevNum - phone.phoneNumber === -1 &&
+      arrPN[arrPN.length - 1].prevNum - phone.nsn === -1 &&
       arrPN[arrPN.length - 1].type === phone.type &&
-      arrPN[arrPN.length - 1].country === phone.country
+      arrPN[arrPN.length - 1].country_code === phone.country_code
     ) {
       if (count === 1) {
         arrPN[arrPN.length - 1] = {
           ...phone,
-          rangeStart: phoneNumbers[index - 1].phoneNumber,
-          rangeEnd: phone.phoneNumber,
-          prevNum: phone.phoneNumber,
+          rangeStart: phoneNumbers[index - 1].nsn,
+          rangeEnd: phone.nsn,
+          prevNum: phone.nsn,
           phoneNumbers: []
         }
 
@@ -30,8 +30,8 @@ const phoneNumbersRangeFilter = phoneNumbers => {
       } else {
         arrPN[arrPN.length - 1] = {
           ...arrPN[arrPN.length - 1],
-          prevNum: phone.phoneNumber,
-          rangeEnd: phone.phoneNumber
+          prevNum: phone.nsn,
+          rangeEnd: phone.nsn
         }
         arrPN[arrPN.length - 1].phoneNumbers.push({
           ...phone,
@@ -42,7 +42,7 @@ const phoneNumbersRangeFilter = phoneNumbers => {
       arrPN = [...arrPN]
     } else {
       count = 1
-      arrPN = [...arrPN, { ...phone, prevNum: phone.phoneNumber }]
+      arrPN = [...arrPN, { ...phone, prevNum: phone.nsn }]
     }
     return arrPN
   }, [])
