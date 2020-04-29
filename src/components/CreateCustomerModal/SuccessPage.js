@@ -28,9 +28,7 @@ const SuccesPage = props => {
       )
       return
     }
-    history.push(
-      `/customers/${createdCustomerStore.apio.body.tenantId}/access_numbers`
-    )
+    history.push(`/customers/${createdCustomerStore.tenantId}/access_numbers`)
   }
 
   return (
