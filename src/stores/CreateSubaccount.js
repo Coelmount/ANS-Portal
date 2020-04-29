@@ -10,6 +10,7 @@ import getErrorMessage from 'utils/getErrorMessage'
 export class CreateSubaccountStore {
   step = 1
   closeModal = false
+  addUpdateCustomer = false
 
   customer = {
     type: '',
@@ -59,6 +60,7 @@ export class CreateSubaccountStore {
   }
 
   createCustomer = (customerId, callback) => {
+    this.addUpdateCustomer = true
     const data = { ...this.customer }
     return axios
       .post(`/tenants/${customerId}/groups`, removeEmpty(data))
@@ -80,10 +82,14 @@ export class CreateSubaccountStore {
           }
         })
       )
+      .finally(() => {
+        this.addUpdateCustomer = false
+      })
   }
 }
 
 decorate(CreateSubaccountStore, {
+  addUpdateCustomer: observable,
   step: observable,
   customer: observable,
   closeModal: observable,

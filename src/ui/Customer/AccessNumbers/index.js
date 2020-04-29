@@ -36,7 +36,6 @@ const AccessNumbers = ({ t }) => {
 
   const {
     getEntitlements,
-    postEntitlements,
     entitlements,
     setDefaultEntitlementsValues,
     isLoadingEntitlements,

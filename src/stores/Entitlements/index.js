@@ -86,7 +86,7 @@ export class Entitlements {
       })
   }
 
-  postEntitlements = (callback, id, entitlements) => {
+  postEntitlements = (id, entitlements, callback) => {
     this.isSending = true
     entitlements.forEach(item => {
       axios
@@ -95,7 +95,7 @@ export class Entitlements {
           entitlement: item.entitlement
         })
         .then(() => {
-          callback()
+          callback && callback()
           SnackbarStore.enqueueSnackbar({
             message: 'Entitlements added successfully',
             options: {

@@ -29,7 +29,7 @@ export class SubaccountsStore {
   isLoadingSubaccounts = true
   isDeletingSubaccount = false
   isLoadingSubaccount = true
-  isUpdatingCustomer = false
+  addUpdateCustomer = false
   selectGroups = []
 
   getSubaccounts = tenantId => {
@@ -103,7 +103,7 @@ export class SubaccountsStore {
   }
 
   updateCustomer = (tenantId, groupId, handleClose) => {
-    this.isUpdatingCustomer = true
+    this.addUpdateCustomer = true
     return axios
       .put(`/tenants/${tenantId}/groups/${groupId}`, this.customer)
       .then(res => {
@@ -121,7 +121,7 @@ export class SubaccountsStore {
         })
       )
       .finally(() => {
-        this.isUpdatingCustomer = false
+        this.addUpdateCustomer = false
       })
   }
 
@@ -142,7 +142,7 @@ decorate(SubaccountsStore, {
   isDeletingSubaccount: observable,
   isLoadingSubaccount: observable,
   selectGroups: observable,
-  isUpdatingCustomer: observable,
+  addUpdateCustomer: observable,
   getSubaccounts: action,
   getSubaccount: action,
   deleteSubaccount: action,
