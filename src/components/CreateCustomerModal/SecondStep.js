@@ -39,7 +39,7 @@ const SecondStep = props => {
     changeCustomer,
     createCustomer,
     updateCustomer,
-    isCustomerAdding
+    addUpdateCustomer
   } = store
 
   const createdCustomerStore = CreateCustomerStore
@@ -81,106 +81,97 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        {isCustomerAdding ? (
-          <Loading />
-        ) : (
-          <Fragment>
-            <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
-            <Box className={classes.paragraphBox}>
-              {t('contact_information')}
-            </Box>
-            <Box className={classes.inputes}>
+        <Fragment>
+          <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
+          <Box className={classes.paragraphBox}>{t('contact_information')}</Box>
+          <Box className={classes.inputes}>
+            <Input
+              icon={<PermIdentityOutlined />}
+              label={t('name')}
+              variant='outlined'
+              value={customer.contactInformation.name}
+              onChange={e =>
+                changeCustomer('contactInformation.name', e.target.value)
+              }
+            />
+          </Box>
+          <Box className={classes.inputes}>
+            <Input
+              icon={<CallOutlined />}
+              label={t('phone_number')}
+              variant='outlined'
+              value={customer.contactInformation.phoneNumber}
+              onChange={e =>
+                changeCustomer('contactInformation.phoneNumber', e.target.value)
+              }
+            />
+          </Box>
+          <Box className={classes.inputes}>
+            <Input
+              icon={<EmailOutlined />}
+              label={t('email')}
+              variant='outlined'
+              value={customer.contactInformation.emailAddress}
+              onChange={e =>
+                changeCustomer(
+                  'contactInformation.emailAddress',
+                  e.target.value
+                )
+              }
+            />
+          </Box>
+          <Box className={classes.paragraphBox}>
+            {t('address_information_opt')}
+          </Box>
+          <Box className={classes.inputes}>
+            <Input
+              label={t('street')}
+              variant='outlined'
+              value={customer.addressInformation.addressLine1}
+              onChange={e =>
+                changeCustomer(
+                  'addressInformation.addressLine1',
+                  e.target.value
+                )
+              }
+            />
+          </Box>
+          <Box className={classes.zipCityRow}>
+            <Box className={classes.zip}>
               <Input
-                icon={<PermIdentityOutlined />}
-                label={t('name')}
+                label={t('postal_code')}
                 variant='outlined'
-                value={customer.contactInformation.name}
-                onChange={e =>
-                  changeCustomer('contactInformation.name', e.target.value)
-                }
-              />
-            </Box>
-            <Box className={classes.inputes}>
-              <Input
-                icon={<CallOutlined />}
-                label={t('phone_number')}
-                variant='outlined'
-                value={customer.contactInformation.phoneNumber}
+                value={customer.addressInformation.postalCode}
                 onChange={e =>
                   changeCustomer(
-                    'contactInformation.phoneNumber',
+                    'addressInformation.postalCode',
                     e.target.value
                   )
                 }
               />
             </Box>
-            <Box className={classes.inputes}>
+            <Box className={classes.city}>
               <Input
-                icon={<EmailOutlined />}
-                label={t('email')}
+                label={t('city')}
                 variant='outlined'
-                value={customer.contactInformation.emailAddress}
+                value={customer.addressInformation.city}
                 onChange={e =>
-                  changeCustomer(
-                    'contactInformation.emailAddress',
-                    e.target.value
-                  )
+                  changeCustomer('addressInformation.city', e.target.value)
                 }
               />
             </Box>
-            <Box className={classes.paragraphBox}>
-              {t('address_information_opt')}
-            </Box>
-            <Box className={classes.inputes}>
-              <Input
-                label={t('street')}
-                variant='outlined'
-                value={customer.addressInformation.addressLine1}
-                onChange={e =>
-                  changeCustomer(
-                    'addressInformation.addressLine1',
-                    e.target.value
-                  )
-                }
-              />
-            </Box>
-            <Box className={classes.zipCityRow}>
-              <Box className={classes.zip}>
-                <Input
-                  label={t('postal_code')}
-                  variant='outlined'
-                  value={customer.addressInformation.postalCode}
-                  onChange={e =>
-                    changeCustomer(
-                      'addressInformation.postalCode',
-                      e.target.value
-                    )
-                  }
-                />
-              </Box>
-              <Box className={classes.city}>
-                <Input
-                  label={t('city')}
-                  variant='outlined'
-                  value={customer.addressInformation.city}
-                  onChange={e =>
-                    changeCustomer('addressInformation.city', e.target.value)
-                  }
-                />
-              </Box>
-            </Box>
-            <Box className={classes.inputes}>
-              <Input
-                label={t('country')}
-                variant='outlined'
-                value={customer.addressInformation.country}
-                onChange={e =>
-                  changeCustomer('addressInformation.country', e.target.value)
-                }
-              />
-            </Box>
-          </Fragment>
-        )}
+          </Box>
+          <Box className={classes.inputes}>
+            <Input
+              label={t('country')}
+              variant='outlined'
+              value={customer.addressInformation.country}
+              onChange={e =>
+                changeCustomer('addressInformation.country', e.target.value)
+              }
+            />
+          </Box>
+        </Fragment>
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
@@ -188,6 +179,7 @@ const SecondStep = props => {
           color='primary'
           className={classes.backButton}
           onClick={() => changeStep(1)}
+          disable={addUpdateCustomer}
         >
           <ChevronLeft />
           {t('back')}
@@ -197,6 +189,7 @@ const SecondStep = props => {
           color='primary'
           className={classes.nextButton}
           onClick={handleCreate}
+          disable={addUpdateCustomer}
         >
           {isEditCustomer || isEditSubaccount ? t('save') : t('add')}
         </Button>

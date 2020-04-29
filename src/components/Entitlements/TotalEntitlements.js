@@ -18,7 +18,8 @@ import Input from 'components/Input'
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
 import EntitlementsStore from 'stores/Entitlements'
-import CustomerStore from 'stores/CreateCustomer'
+import CreateCustomerStore from 'stores/CreateCustomer'
+import CreateSubaccauntStore from 'stores/CreateSubaccount'
 
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
@@ -33,7 +34,8 @@ const TotalEntitlements = ({ handleClose, t }) => {
     postEntitlements,
     isSending
   } = EntitlementsStore
-  const { createdCustomerStore, createSubaccountFunct } = CustomerStore
+  const { createdCustomerStore, createSubaccountFunct } = CreateCustomerStore
+  const { changeCustomer: changeSubaccaunt } = CreateSubaccauntStore
 
   const [entitlements, setEntitlements] = useState(toJS(checkedArr))
 
@@ -48,11 +50,20 @@ const TotalEntitlements = ({ handleClose, t }) => {
     changeStep(1)
   }
 
+  const createDefaultSubaccaunt = () => {
+    if (createdCustomerStore.tenantId) {
+      createSubaccountFunct()
+      changeSubaccaunt('groupName', 'Default')
+      return
+    }
+    handleClose()
+  }
+
   const handleAddButton = () => {
     postEntitlements(
-      createdCustomerStore.tenantId ? createSubaccountFunct : handleClose,
       createdCustomerStore.tenantId || match.customerId,
-      entitlements
+      entitlements,
+      createDefaultSubaccaunt
     )
   }
 

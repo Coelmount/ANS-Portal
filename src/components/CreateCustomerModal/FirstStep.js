@@ -55,9 +55,7 @@ const FirstStep = props => {
   }
 
   const changeName = value => {
-    if (isCreateSubaccount) {
-      changeCustomer('groupName', value)
-    } else if (isEditSubaccount) {
+    if (isCreateSubaccount || isEditSubaccount) {
       changeCustomer('groupName', value)
     } else {
       changeCustomer('name', value)

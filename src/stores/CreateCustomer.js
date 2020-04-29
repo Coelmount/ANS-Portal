@@ -31,7 +31,7 @@ const defaultCustomerValues = {
 export class CreateCustomerStore {
   step = 1
   closeModal = false
-  isCustomerAdding = false
+  addUpdateCustomer = false
   createSubaccountFunct = () => {}
 
   customer = defaultCustomerValues
@@ -56,7 +56,7 @@ export class CreateCustomerStore {
   }
 
   createCustomer = () => {
-    this.isCustomerAdding = true
+    this.addUpdateCustomer = true
     const data = { ...this.customer }
     return axios
       .post(`/tenants`, removeEmpty(data))
@@ -73,7 +73,7 @@ export class CreateCustomerStore {
         })
       )
       .finally(() => {
-        this.isCustomerAdding = false
+        this.addUpdateCustomer = false
       })
   }
 }
@@ -83,7 +83,7 @@ decorate(CreateCustomerStore, {
   customer: observable,
   closeModal: observable,
   createdCustomer: observable,
-  isCustomerAdding: observable,
+  addUpdateCustomer: observable,
   changeStep: action,
   changeCustomer: action,
   createSubaccountFunct: action

@@ -33,7 +33,7 @@ export class CustomersStore {
   isLoadingCustomers = true
   isLoadingCustomer = true
   isDeletingCustomer = false
-  isUpdatingCustomer = false
+  addUpdateCustomer = false
 
   getCustomers = () => {
     this.isLoadingCustomers = true
@@ -108,7 +108,7 @@ export class CustomersStore {
   }
 
   updateCustomer = (tenantId, handleClose) => {
-    this.isUpdatingCustomer = true
+    this.addUpdateCustomer = true
     return axios
       .put(`/tenants/${tenantId}`, this.customer)
       .then(res => {
@@ -127,7 +127,7 @@ export class CustomersStore {
         })
       )
       .finally(() => {
-        this.isUpdatingCustomer = false
+        this.addUpdateCustomer = false
       })
   }
 
@@ -147,7 +147,6 @@ decorate(CustomersStore, {
   isLoadingCustomers: observable,
   isLoadingCustomer: observable,
   isDeletingCustomer: observable,
-  isUpdatingCustomer: observable,
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,
