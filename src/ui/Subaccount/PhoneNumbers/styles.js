@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
@@ -86,6 +86,21 @@ const useStyles = makeStyles((theme) => ({
     '& > div': {
       marginLeft: 4
     }
+  },
+  assignedTitle: {
+    color: theme.palette.active.blue,
+    fontSize: 14
+  },
+  availableTitle: {
+    color: theme.palette.lightGreen,
+    fontSize: 14
+  },
+  typeTitle: {
+    fontSize: 14
+  },
+  numberPhoneNumbersStoresAmount: {
+    marginLeft: 12,
+    fontSize: 14
   }
 }))
 

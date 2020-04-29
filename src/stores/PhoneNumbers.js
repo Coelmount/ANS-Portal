@@ -1,4 +1,6 @@
 import { decorate, observable, action } from 'mobx'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
+import { getCountry } from 'countries-and-timezones'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
@@ -34,19 +36,34 @@ export class PhoneNumbers {
       )
       .then(res => {
         const requestResult = res.data.numbers
-        // this push part time solution for test range logic(delete it when backend provide more data)
-        requestResult.push({
-          country_code: '+966',
-          id: 10983,
-          nsn: '115050982',
-          state: 'assigned',
-          type: 'geo'
-        })
+        // this push part time solution for test range logic and state col colors(delete it when backend provide more data)
+        requestResult.push(
+          {
+            country_code: '+966',
+            id: 10983,
+            nsn: '115050982',
+            state: 'assigned',
+            type: 'geo'
+          },
+          {
+            country_code: '+966',
+            id: 10983,
+            nsn: '115050911',
+            state: 'available',
+            type: 'local'
+          }
+        )
 
         const transformedNumbers = phoneNumbersRangeFilter(requestResult).map(
           item => {
+            const countryName = getCountry(
+              parsePhoneNumberFromString(`${item.country_code} ${item.nsn}`)
+                .country
+            ).name
+
             return {
               ...item,
+              countryName: countryName,
               phoneNumber: `${item.country_code} ${item.nsn}`,
               rangeStart: item.rangeStart
                 ? `${item.country_code} ${item.rangeStart}`

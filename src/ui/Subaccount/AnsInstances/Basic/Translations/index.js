@@ -136,9 +136,6 @@ const Translations = observer(({ t }) => {
   }
 
   const changeHover = (newHover, number) => {
-    // const newNumbers = [...numbers]
-    // const index = numbers.findIndex(el => el.id === number)
-    // newNumbers[index].hover = newHover
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
   }

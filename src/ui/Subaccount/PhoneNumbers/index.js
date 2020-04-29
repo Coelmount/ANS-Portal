@@ -163,7 +163,7 @@ const PhoneNumbers = observer(({ t }) => {
       }
     },
     {
-      id: 'country',
+      id: 'countryName',
       label: 'country'
     },
     {
@@ -189,7 +189,7 @@ const PhoneNumbers = observer(({ t }) => {
       )
     },
     {
-      id: 'phoneNumbersEnd',
+      id: 'rangeEnd',
       isSortAvailable: false,
       getCellData: row => (
         <Box className={classes.numbersWrap}>
@@ -204,11 +204,25 @@ const PhoneNumbers = observer(({ t }) => {
     },
     {
       id: 'type',
-      label: 'type'
+      label: 'type',
+      extraProps: {
+        className: classes.typeTitle
+      }
     },
     {
-      id: 'status',
-      label: 'status'
+      id: 'state',
+      label: 'status',
+      getCellData: row => (
+        <Typography
+          className={
+            row.state === 'assigned'
+              ? classes.assignedTitle
+              : classes.availableTitle
+          }
+        >
+          {row.state}
+        </Typography>
+      )
     },
     {
       id: 'delete',
@@ -275,7 +289,13 @@ const PhoneNumbers = observer(({ t }) => {
           rows={numbers}
           // isLoadingData={isLoadingCustomers}
           columns={columns}
-          searchCriterias={['country', 'rangeStart']}
+          searchCriterias={[
+            'countryName',
+            'rangeStart',
+            'rangeEnd',
+            'type',
+            'state'
+          ]}
           extraToolbarBlock={toolbarButtonsBlock}
           getSearchList={setSearchList}
           setCurrentPage={setCurrentPage}
