@@ -18,7 +18,7 @@ import Loading from 'components/Loading'
 
 import useStyles from './styles'
 
-const SetEntitlements = (props) => {
+const SetEntitlements = props => {
   const { handleClose, t } = props
   const {
     changeStep,
@@ -51,9 +51,9 @@ const SetEntitlements = (props) => {
 
   const selectEntitlementTypes = (checked, id) => {
     const newSelected = [...selected]
-    const index = selected.findIndex((el) => el.id === id)
+    const index = selected.findIndex(el => el.id === id)
     newSelected[index].checked = checked
-    if (newSelected.every((el) => el.checked)) {
+    if (newSelected.every(el => el.checked)) {
       setSelectAll(true)
     } else {
       setSelectAll(false)
@@ -62,8 +62,8 @@ const SetEntitlements = (props) => {
   }
 
   const handleSelectAll = () => {
-    const searchListId = searchList.map((item) => item.id)
-    const newSelected = selected.map((el) => {
+    const searchListId = searchList.map(item => item.id)
+    const newSelected = selected.map(el => {
       let result = {}
       if (searchListId.includes(el.id)) {
         result = {
@@ -82,9 +82,9 @@ const SetEntitlements = (props) => {
     setIsAnyChecked(!selectAll)
   }
 
-  const handleCheckedStates = (newSelected) => {
+  const handleCheckedStates = newSelected => {
     if (
-      newSelected.every((el) => {
+      newSelected.every(el => {
         return el.checked
       })
     ) {
@@ -92,7 +92,7 @@ const SetEntitlements = (props) => {
       setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newSelected.some((el) => el.checked)) {
+      if (newSelected.some(el => el.checked)) {
         setIsAnyChecked(true)
       } else {
         setIsAnyChecked(false)
@@ -106,13 +106,13 @@ const SetEntitlements = (props) => {
 
   const changeHover = (newHover, id) => {
     const newSelected = [...selected]
-    const index = selected.findIndex((el) => el.id === id)
+    const index = selected.findIndex(el => el.id === id)
     newSelected[index].hover = newHover
     setSelected(newSelected)
   }
 
   const handleNextButtonClick = () => {
-    updateCheckedArr(selected.filter((item) => item.checked === true))
+    updateCheckedArr(selected.filter(item => item.checked === true))
     changeStep(2)
   }
 
@@ -189,16 +189,20 @@ const SetEntitlements = (props) => {
             {t('select_entitlement')}
           </Typography>
         </Box>
-        <CustomTable
-          classes={classes}
-          columns={columns}
-          firstCell={false}
-          showPagination={true}
-          rows={selected}
-          searchCriterias={['name']}
-          getSearchList={setSearchList}
-          isLoadingData={isLoadingEntitlementTypes}
-        />
+        {isLoadingEntitlementTypes ? (
+          <Loading />
+        ) : (
+          <CustomTable
+            classes={classes}
+            columns={columns}
+            firstCell={false}
+            showPagination={true}
+            rows={selected}
+            searchCriterias={['name']}
+            getSearchList={setSearchList}
+            // isLoadingData={isLoadingEntitlementTypes}
+          />
+        )}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
@@ -214,7 +218,7 @@ const SetEntitlements = (props) => {
           color='primary'
           className={classes.nextButton}
           onClick={handleNextButtonClick}
-          disabled={!selected.some((item) => item.checked === true)}
+          disabled={!selected.some(item => item.checked === true)}
         >
           {t('next')}
         </Button>

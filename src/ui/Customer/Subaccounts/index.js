@@ -16,6 +16,7 @@ import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
+import Loading from 'components/Loading'
 
 import useStyles from './styles'
 
@@ -51,7 +52,7 @@ const SubaccountsTable = observer(({ t }) => {
         scope: 'row'
       },
       label: 'ID',
-      getCellData: (row) => (
+      getCellData: row => (
         <Link
           to={`/customers/${match.customerId}/subaccounts/${row.groupId}/ans_instances`}
           className={classes.link}
@@ -78,7 +79,7 @@ const SubaccountsTable = observer(({ t }) => {
         align: 'right'
       },
       isSortAvailable: false,
-      getCellData: (row) => (
+      getCellData: row => (
         <CloseOutlinedIcon
           onClick={() => handleOpenDeleteModal(row.groupId, row.groupName)}
           className={classes.deleteCustomerIcon}
@@ -116,7 +117,7 @@ const SubaccountsTable = observer(({ t }) => {
     getSubaccounts(match.customerId)
   }
 
-  const handleDelete = (groupId) => {
+  const handleDelete = groupId => {
     const payload = {
       tenantId: match.customerId,
       groupId,
@@ -136,13 +137,17 @@ const SubaccountsTable = observer(({ t }) => {
           />
         </CustomContainer>
 
-        <CustomTable
-          // classes={classes}
-          rows={rows}
-          isLoadingData={isLoadingSubaccounts}
-          columns={columns}
-          searchCriterias={['groupId', 'groupName']}
-        />
+        {isLoadingSubaccounts ? (
+          <Loading />
+        ) : (
+          <CustomTable
+            // classes={classes}
+            rows={rows}
+            // isLoadingData={isLoadingSubaccounts}
+            columns={columns}
+            searchCriterias={['groupId', 'groupName']}
+          />
+        )}
         {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}

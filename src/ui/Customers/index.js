@@ -18,6 +18,7 @@ import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
+import Loading from 'components/Loading'
 
 import useStyles from './styles'
 
@@ -71,7 +72,7 @@ const CustomersTable = observer(({ t }) => {
     setCreationType('subaccount')
   }
 
-  const handleDelete = (id) => {
+  const handleDelete = id => {
     const payload = {
       id,
       callback: setIsDeleteModalOpen
@@ -92,7 +93,7 @@ const CustomersTable = observer(({ t }) => {
           scope: 'row'
         },
         label: 'ID',
-        getCellData: (row) => {
+        getCellData: row => {
           return (
             <Link
               to={`/customers/${row.external_id}/access_numbers`}
@@ -118,7 +119,7 @@ const CustomersTable = observer(({ t }) => {
           align: 'right'
         },
         isSortAvailable: false,
-        getCellData: (row) => (
+        getCellData: row => (
           <CloseOutlinedIcon
             onClick={() => handleOpenDeleteModal(row.external_id, row.name)}
             className={classes.deleteCustomerIcon}
@@ -143,13 +144,17 @@ const CustomersTable = observer(({ t }) => {
             handleOpen={handleOpenCreateCustomer}
           />
         </CustomContainer>
-        <CustomTable
-          // classes={classes}
-          rows={rows}
-          isLoadingData={isLoadingCustomers}
-          columns={columns}
-          searchCriterias={['external_id', 'name']}
-        />
+        {isLoadingCustomers ? (
+          <Loading />
+        ) : (
+          <CustomTable
+            // classes={classes}
+            rows={rows}
+            // isLoadingData={isLoadingCustomers}
+            columns={columns}
+            searchCriterias={['external_id', 'name']}
+          />
+        )}
         {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}

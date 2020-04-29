@@ -21,6 +21,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddInstance from './components/AddInstance'
+import Loading from 'components/Loading'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 
@@ -344,21 +345,25 @@ const Translations = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock titleData={titleData} />
         </CustomContainer>
-        <CustomTable
-          firstCell={false}
-          // classes={classes}
-          rows={numbers}
-          // isLoadingData={isLoadingCustomers}
-          columns={columns}
-          searchCriterias={[
-            'accessCountry',
-            'destinationCountry',
-            'accessNumber',
-            'destinationNumber'
-          ]}
-          extraToolbarBlock={toolbarButtonsBlock}
-          getSearchList={setSearchList}
-        />
+        {isBasicTranslationsNumbersLoading ? (
+          <Loading />
+        ) : (
+          <CustomTable
+            firstCell={false}
+            // classes={classes}
+            rows={numbers}
+            // isLoadingData={isBasicTranslationsNumbersLoading}
+            columns={columns}
+            searchCriterias={[
+              'accessCountry',
+              'destinationCountry',
+              'accessNumber',
+              'destinationNumber'
+            ]}
+            extraToolbarBlock={toolbarButtonsBlock}
+            getSearchList={setSearchList}
+          />
+        )}
         {isAddInstanceModalOpen && (
           <AddInstance
             open={isAddInstanceModalOpen}
