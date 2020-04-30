@@ -22,6 +22,7 @@ import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
 
 import numbersStore from 'stores/Numbers'
+import AccessNumbersStore from 'stores/AssignedNumbers'
 
 import useStyles from './styles'
 import Loading from 'components/Loading'
@@ -30,7 +31,13 @@ const FirstStepNFN = props => {
   const { handleClose, t, changeStep } = props
   const classes = useStyles()
   const match = useParams()
-  const { availableNumbersTable, postAssignNumbersToCustomer } = numbersStore
+  const {
+    availableNumbersTable,
+    postAssignNumbersToCustomer,
+    isAddingNumbers,
+    clearNumbers
+  } = numbersStore
+  const { currentEntitlement } = AccessNumbersStore
   const [numbers, setNumbers] = useState(availableNumbersTable)
   const [selectAll, setSelectAll] = useState(false)
   const [countNumbers, setCountNumbers] = useState(0)
@@ -160,7 +167,9 @@ const FirstStepNFN = props => {
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
         <Box className={classes.stepStyles}>{'SEARCH RESULT'}</Box>
-        <Box className={classes.thirdParagraphBox}>Belgium (+32)</Box>
+        <Box
+          className={classes.thirdParagraphBox}
+        >{`${currentEntitlement.name} (${currentEntitlement.country_code})`}</Box>
         <CustomTable
           classes={classes}
           columns={columns}
@@ -176,7 +185,11 @@ const FirstStepNFN = props => {
           variant='outlined'
           color='primary'
           className={classes.backButton}
-          onClick={() => changeStep(1)}
+          onClick={() => {
+            changeStep(1)
+            clearNumbers()
+          }}
+          disable={isAddingNumbers}
         >
           <ChevronLeft />
           {t('back')}
@@ -185,8 +198,10 @@ const FirstStepNFN = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disable
-          onClick={() => postAssignNumbersToCustomer(match.customerId)}
+          disable={isAddingNumbers}
+          onClick={() =>
+            postAssignNumbersToCustomer(match.customerId, changeStep)
+          }
         >
           {`${t('add')} (${countNumbers})`}
         </Button>

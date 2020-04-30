@@ -130,7 +130,7 @@ const Auth = ({ t }) => {
               {t('log_in')}
             </Button>
             <Box>
-              {t('dont_have_accaunt_message')}{' '}
+              {t('dont_have_account_message')}{' '}
               <Link to='/signup' className={classes.link}>
                 {t('sign_up')}
               </Link>
