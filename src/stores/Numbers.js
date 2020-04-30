@@ -56,7 +56,7 @@ export class NumbersStore {
     const parsedNumbers = numbers.map(el => ({
       country_code: `${el.code}`,
       range: [Number(el.rangeFrom), Number(el.rangeTo)],
-      service_capabilities: 'basic'
+      service_capabilities: this.params.service_capabilities
     }))
     return parsedNumbers
   }

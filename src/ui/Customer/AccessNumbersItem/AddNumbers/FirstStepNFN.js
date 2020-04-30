@@ -18,6 +18,7 @@ import Input from 'components/Input'
 import Select from 'components/Select'
 
 import CustomerStore from 'stores/Customers'
+import AccessNumbersStore from 'stores/AssignedNumbers'
 
 import useStyles from './styles'
 import Loading from 'components/Loading'
@@ -35,10 +36,19 @@ const FirstStepNFN = props => {
   const match = useParams()
 
   const { customer, getCustomer, isLoadingCustomer } = CustomerStore
+  const { currentEntitlement } = AccessNumbersStore
 
   useEffect(() => {
     getCustomer(match.customerId)
+    setQueryAvalibleNumbers({
+      ...queryAvalibleNumbers,
+      country_code: currentEntitlement.country_code,
+      number_type: currentEntitlement.number_type,
+      service_capabilities: currentEntitlement.service_capabilities
+    })
   }, [])
+
+  console.log(currentEntitlement)
 
   // if (isLoadingCustomer) {
   //   return <Loading />
@@ -59,7 +69,7 @@ const FirstStepNFN = props => {
       <DialogContent>
         <Box className={classes.stepStyles}>{t('search_parameters')}</Box>
         <Box className={classes.searchParametersBox}>
-          <Select
+          {/* <Select
             label={t('country')}
             wrapperStyles={classes.wrapperStylesSelect}
             options={[{ value: '+966', label: 'KSA' }]}
@@ -69,12 +79,6 @@ const FirstStepNFN = props => {
                 country_code: e.target.value
               })
             }
-            // icon={<img src={Group3Person} alt='Group3Person' />}
-            // selectStyles={classes.select}
-            // wrapperStyles={classes.wrapper}
-            // options={selectGroups}
-            // value={props.selectedGroup}
-            // onChange={e => props.setSelectedGroup(e.target.value)}
           />
           <Select
             label={t('type')}
@@ -86,15 +90,10 @@ const FirstStepNFN = props => {
                 number_type: e.target.value
               })
             }
-            // icon={<img src={Group3Person} alt='Group3Person' />}
-            // selectStyles={classes.select}
-            // wrapperStyles={classes.wrapper}
-            // options={selectGroups}
-            // value={props.selectedGroup}
-            // onChange={e => props.setSelectedGroup(e.target.value)}
-          />
+          /> */}
           <Box className={classes.rangeBox}>
-            {'Range size (70 max)'}
+            {`Range size (${currentEntitlement.entitlement -
+              currentEntitlement.counter} max)`}
             <Input
               type='number'
               wrapperStyles={classes.rangeWrapperStylesInput}
