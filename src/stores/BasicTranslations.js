@@ -4,6 +4,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 
 export class BasicTranslations {
   step = 1
@@ -53,11 +54,10 @@ export class BasicTranslations {
             checked: false,
             hover: false,
             enabled: true,
-            accessCountry: parsePhoneNumberFromString(item.access_number)
-              .country,
-            destinationCountry: parsePhoneNumberFromString(
+            accessCountry: getCountryNameFromNumber(item.access_number),
+            destinationCountry: getCountryNameFromNumber(
               item.destination_number
-            ).country,
+            ),
             ...item
           }
         })

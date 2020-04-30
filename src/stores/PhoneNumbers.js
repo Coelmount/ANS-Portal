@@ -1,13 +1,12 @@
 import { decorate, observable, action } from 'mobx'
-import { parsePhoneNumberFromString } from 'libphonenumber-js'
-import { getCountry } from 'countries-and-timezones'
 
 import axios from 'utils/axios'
 import { PROXY_P6 } from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
-import phoneNumbersRangeFilter from 'utils/phoneNumbersRangeFilter'
+import phoneNumbersRangeFilter from 'utils/phoneNumbers/rangeFilter'
+import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 
 export class PhoneNumbers {
   step = 1
@@ -57,10 +56,9 @@ export class PhoneNumbers {
 
         const transformedNumbers = phoneNumbersRangeFilter(requestResult).map(
           item => {
-            const countryName = getCountry(
-              parsePhoneNumberFromString(`${item.country_code} ${item.nsn}`)
-                .country
-            ).name
+            const countryName = getCountryNameFromNumber(
+              `${item.country_code}${item.nsn}`
+            )
 
             return {
               ...item,

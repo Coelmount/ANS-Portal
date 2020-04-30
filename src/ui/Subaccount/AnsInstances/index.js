@@ -66,6 +66,7 @@ const AnsInstances = ({ t }) => {
             <Box
               onClick={() => handleInstanceRedirect(item.link)}
               className={classes.instanceItemWrap}
+              key={item.link}
             >
               <Box className={classes.iconWrap}>
                 <img src={item.iconSrc} alt={`${item.label} icon`} />
