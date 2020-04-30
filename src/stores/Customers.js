@@ -82,6 +82,16 @@ export class CustomersStore {
     this.customer = defaultCustomerValue
   }
 
+  setDefaultTableValues = () => {
+    this.rows = []
+    this.step = 1
+    this.customer = defaultCustomerValue
+    this.isLoadingCustomers = true
+    this.isLoadingCustomer = true
+    this.isDeletingCustomer = false
+    this.addUpdateCustomer = false
+  }
+
   deleteCustomer = ({ id, callback }) => {
     this.isDeletingCustomer = true
     axios
@@ -153,7 +163,8 @@ decorate(CustomersStore, {
   addCustomer: action,
   changeStep: action,
   changeCustomer: action,
-  getCustomerDefaultValues: action
+  getCustomerDefaultValues: action,
+  setDefaultTableValues: action
 })
 
 export default new CustomersStore()

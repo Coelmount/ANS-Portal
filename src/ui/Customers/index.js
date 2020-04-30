@@ -30,7 +30,8 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer,
     isLoadingCustomers,
     isDeletingCustomer,
-    addCustomer
+    addCustomer,
+    setDefaultTableValues
   } = CustomersStore
 
   const { setDefaultValues: setDefaultValuesSubaccaunt } = CreateSubaccountStore
@@ -44,7 +45,8 @@ const CustomersTable = observer(({ t }) => {
 
   useEffect(() => {
     getCustomers()
-  }, [getCustomers])
+    return () => setDefaultTableValues()
+  }, [])
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)

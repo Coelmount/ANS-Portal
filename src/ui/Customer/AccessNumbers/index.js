@@ -40,7 +40,8 @@ const AccessNumbers = ({ t }) => {
     entitlements,
     setDefaultEntitlementsValues,
     isLoadingEntitlements,
-    deleteEntitlements
+    deleteEntitlements,
+    setDefaultTableValues
   } = EntitlementsStore
 
   const [isAddEntitlementsModalOpen, setIsAddEntitlementsModalOpen] = useState(
@@ -52,6 +53,10 @@ const AccessNumbers = ({ t }) => {
   useEffect(() => {
     getEntitlements(match.customerId)
   }, [getEntitlements])
+
+  useEffect(() => {
+    setDefaultTableValues()
+  }, [])
 
   const handleOpenDeleteModal = (id, name) => {
     setIsDeleteModalOpen(true)
