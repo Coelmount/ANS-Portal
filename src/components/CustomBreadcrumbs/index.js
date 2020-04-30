@@ -41,10 +41,13 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
-    if (index === 1) {
+    if (
+      index === 1 ||
+      (breadcrumbsArr.length > 4 && index === 2 && match.params.numbersId)
+    ) {
       return (
         <Link
-          to={`/customers/${breadcrumb}/access_numbers`}
+          to={`/customers/${match.params.customerId}/access_numbers`}
           className={classes.link}
           key={breadcrumb}
         >
@@ -64,7 +67,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
-    if (breadcrumbsArr.length > 4 && index === 3) {
+    if (breadcrumbsArr.length > 4 && index === 3 && !match.params.numbersId) {
       return (
         <Link
           to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
