@@ -33,7 +33,7 @@ const CustomersTable = observer(({ t }) => {
     addCustomer
   } = CustomersStore
 
-  const { setDefaultValues: setDefaultValuesSubaccaunt } = CreateSubaccountStore
+  const { setDefaultValues: setDefaultValuesSubaccount } = CreateSubaccountStore
 
   const { setDefaultValues } = CreateCustomerStore
   const { setDefaultEntitlementsValues } = EntitlementsStore
@@ -56,7 +56,7 @@ const CustomersTable = observer(({ t }) => {
   }
 
   const handleOpenCreateCustomer = () => {
-    setDefaultValuesSubaccaunt()
+    setDefaultValuesSubaccount()
     setDefaultEntitlementsValues()
     setDefaultValues()
     setCreationType('customer')

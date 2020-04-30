@@ -65,9 +65,6 @@ export class AssignedNumbers {
             variant: 'error'
           }
         })
-        if (e.response.status === 400) {
-          this.isDeletingCustomer = false
-        }
       })
       .finally(() => {
         this.isDeletingAssignedNumber = false

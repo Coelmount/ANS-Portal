@@ -16,6 +16,7 @@ import SuccessPageSub from './SuccessPageSub'
 import FirstStepNFN from './FirstStepNFN'
 import SecondStepNFNFailed from './SecondStepNFNFailed'
 import SecondStepNFNSuccess from './SecondStepNFNSuccess'
+import AddedListStep from './AddedListStep'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -185,6 +186,13 @@ const StepsNotFoundNumbers = props => {
           />
         )
       }
+    case 3:
+      return (
+        <AddedListStep
+          handleClose={props.handleClose}
+          changeStep={props.changeStep}
+        />
+      )
     // case 2:
     //   return (
     //     <SecondStep

@@ -1,6 +1,57 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
+  addedListStepDialogContent: {
+    padding: 0
+  },
+  okButtonAddedList: {
+    width: 160
+  },
+  dialogActionsAddedList: {
+    padding: '30px 45px 30px'
+  },
+  activeTab: {
+    maxWidth: 'none',
+    width: '50%',
+    fontFamily: 'MTN',
+    fontWeight: 600,
+    paddingTop: 30
+  },
+  nonActiveTab: {
+    maxWidth: 'none',
+    width: '50%',
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    borderBottom: '4px solid white',
+    paddingTop: 30
+  },
+  appBar: {
+    background: theme.palette.active.main,
+    marginBottom: 44
+  },
+  tabsWrap: {
+    '& > div': {
+      paddingLeft: 0,
+      paddingRight: 0,
+      '& > span': {
+        height: 4,
+        background: theme.palette.primary.main
+      }
+    }
+  },
+  tabPanel: {
+    padding: '0px 45px'
+  },
+  phoneNumberCellText: {
+    fontSize: 16,
+    fontWeight: 600
+  },
+  addedStatusText: {
+    color: 'green'
+  },
+  rejectedStatusText: {
+    color: theme.palette.darkRed
+  },
   failedResultTitle: {
     fontFamily: 'MTN',
     fontSize: 24,

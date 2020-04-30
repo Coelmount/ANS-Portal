@@ -12,6 +12,9 @@ export class NumbersStore {
   availableNumbersTable = []
   isLoadingNumbers = false
   params = {}
+  isAddingNumbers = false
+  addedNumbers = []
+  rejectedNumbers = []
 
   getAvailableNumbers = params => {
     this.params = params
@@ -37,19 +40,41 @@ export class NumbersStore {
       )
   }
 
-  postAssignNumbersToCustomer = tenantId => {
+  postAssignNumbersToCustomer = (tenantId, changeStep) => {
+    this.isAddingNumbers = true
     const selectedNumbers = this.availableNumbersTable.filter(el => el.checked)
     const dataForPost = this.parseNumbersToPost(selectedNumbers)
     dataForPost.forEach(data => {
-      axios.post(`/tenants/${tenantId}/numbers`, data).catch(e =>
-        SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to assign numbers',
-          options: {
-            variant: 'error'
-          }
+      axios
+        .post(`/tenants/${tenantId}/numbers`, data)
+        .then(res => {
+          const response = JSON.parse(res.data.apio.body)
+          this.addedNumbers = response.result.filter(
+            el => el.status === 'added'
+          )
+          this.rejectedNumbers = response.result.filter(
+            el => el.status === 'rejected'
+          )
+          console.log(this.addedNumbers, this.rejectedNumbers)
+          changeStep && changeStep(3)
         })
-      )
+        .catch(e =>
+          SnackbarStore.enqueueSnackbar({
+            message: getErrorMessage(e) || 'Failed to assign numbers',
+            options: {
+              variant: 'error'
+            }
+          })
+        )
+        .finally(() => {
+          this.isAddingNumbers = false
+        })
     })
+  }
+
+  clearNumbers = () => {
+    this.availableNumbers = []
+    this.availableNumbersTable = []
   }
 
   parseNumbersToPost = numbers => {
@@ -93,6 +118,7 @@ decorate(NumbersStore, {
   availableNumbers: observable,
   isLoadingNumbers: observable,
   availableNumbersTable: observable,
+  isAddingNumbers: observable,
   getAvailableNumbers: action
 })
 

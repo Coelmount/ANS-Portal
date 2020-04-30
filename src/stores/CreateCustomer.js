@@ -42,7 +42,7 @@ export class CreateCustomerStore {
     this.step = step
   }
 
-  setCreateSubaccaunt = data => {
+  setCreateSubaccount = data => {
     this.createSubaccountFunct = data
   }
 

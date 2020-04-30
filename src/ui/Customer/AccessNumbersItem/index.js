@@ -303,6 +303,7 @@ const AccessNumbersItem = ({ t }) => {
             open={showAddNumbers}
             handleClose={() => {
               setShowAddNumber(false)
+              getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
             }}
             step={step}
             changeStep={setStep}

@@ -44,11 +44,10 @@ const FirstStepNFN = props => {
       ...queryAvalibleNumbers,
       country_code: currentEntitlement.country_code,
       number_type: currentEntitlement.number_type,
-      service_capabilities: currentEntitlement.service_capabilities
+      service_capabilities: currentEntitlement.service_capabilities,
+      range_size: ''
     })
   }, [])
-
-  console.log(currentEntitlement)
 
   // if (isLoadingCustomer) {
   //   return <Loading />
