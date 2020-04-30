@@ -16,6 +16,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
+import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
@@ -46,6 +47,7 @@ const PhoneNumbers = observer(({ t }) => {
     isPhoneNumbersLoading
   } = PhoneNumbersStore
 
+  console.log(numbers, 'numbers')
   // initial request
   useEffect(() => {
     getPhoneNumbers(
@@ -55,6 +57,12 @@ const PhoneNumbers = observer(({ t }) => {
       currentPerPage
     )
   }, [currentPage, currentPerPage])
+
+  useEffect(() => {
+    return () => {
+      setDefaultValues()
+    }
+  }, [])
 
   // set in component after store transformation
   useEffect(() => {
@@ -293,25 +301,29 @@ const PhoneNumbers = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
         </CustomContainer>
-        <CustomTable
-          firstCell={false}
-          classes={classes}
-          rows={numbers}
-          isLoadingData={isPhoneNumbersLoading}
-          columns={columns}
-          searchCriterias={[
-            'countryName',
-            'rangeStart',
-            'rangeEnd',
-            'type',
-            'state'
-          ]}
-          extraToolbarBlock={toolbarButtonsBlock}
-          getSearchList={setSearchList}
-          setCurrentPage={setCurrentPage}
-          setCurrentPerPage={setCurrentPerPage}
-          totalPagesServer={totalPagesServer}
-        />
+        {isPhoneNumbersLoading ? (
+          <Loading />
+        ) : (
+          <CustomTable
+            firstCell={false}
+            classes={classes}
+            rows={numbers}
+            // isLoadingData={isPhoneNumbersLoading}
+            columns={columns}
+            searchCriterias={[
+              'countryName',
+              'rangeStart',
+              'rangeEnd',
+              'type',
+              'state'
+            ]}
+            extraToolbarBlock={toolbarButtonsBlock}
+            getSearchList={setSearchList}
+            setCurrentPage={setCurrentPage}
+            setCurrentPerPage={setCurrentPerPage}
+            totalPagesServer={totalPagesServer}
+          />
+        )}
         {isAddPhoneNumbersModalOpen && (
           <AddPhoneNumbersModal
             open={isAddPhoneNumbersModalOpen}

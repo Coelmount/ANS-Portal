@@ -26,6 +26,15 @@ export class PhoneNumbers {
 
   setDefaultValues = () => {
     this.step = 1
+    this.closeModal = false
+    this.transformedPhoneNumbers = []
+    this.phoneNumbers = []
+    this.selectedPhoneNumber = {}
+    this.uniqueCountries = []
+    this.addedPhoneNumbers = []
+    this.rejectedPhoneNumbers = []
+    this.isPhoneNumbersLoading = true
+    this.totalPagesServer = 0
   }
 
   getPhoneNumbers = (customerId, groupId, page, perPage) => {
@@ -126,13 +135,6 @@ export class PhoneNumbers {
 
   createGroupsSinglePhone = addedPhone =>
     (this.addedPhoneNumbers = [addedPhone])
-
-  setDefaultValues = () => {
-    this.changeStep(1)
-    this.addedPhoneNumbers = []
-    this.rejectedPhoneNumbers = []
-    this.selectedPhoneNumber = {}
-  }
 }
 
 decorate(PhoneNumbers, {
