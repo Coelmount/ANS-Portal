@@ -21,7 +21,7 @@ import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './styles'
 
-const SubaccountAdministrators = (props) => {
+const SubaccountAdministrators = props => {
   const { t } = props
   const [isOpened, setIsOpened] = useState(false)
   const match = useParams()
@@ -47,11 +47,7 @@ const SubaccountAdministrators = (props) => {
     isDeletingSubaccountAdmin
   } = EditDeleteSubaccountAdminStore
 
-  const {
-    getSubaccount,
-    subaccount,
-    isLoadingSubaccount
-  } = SubaccountsStore
+  const { getSubaccount, subaccount, isLoadingSubaccount } = SubaccountsStore
 
   useEffect(() => {
     getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
@@ -82,7 +78,7 @@ const SubaccountAdministrators = (props) => {
     })
   }
 
-  const handleDelete = (adminId) => {
+  const handleDelete = adminId => {
     deleteSubaccountAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -92,7 +88,7 @@ const SubaccountAdministrators = (props) => {
     })
   }
 
-  const handleUpdate = (adminId) => {
+  const handleUpdate = adminId => {
     updateSubaccountAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -102,7 +98,7 @@ const SubaccountAdministrators = (props) => {
     })
   }
 
-  const getAdminInfo = (adminId) => {
+  const getAdminInfo = adminId => {
     getSubaccountAdminInfo({
       id: match.customerId,
       userId: adminId,
@@ -115,44 +111,43 @@ const SubaccountAdministrators = (props) => {
       {isLoading ? (
         <Loading />
       ) : (
-          <Paper className={classes.paper}>
-            <CustomContainer>
-              <CustomBreadcrumbs />
-              <TitleBlock
-                titleData={titleData}
-                classes={classes}
-                handleOpen={showModal}
-              />
-            </CustomContainer>
-            {subaccountAdmins.length ? (
-              <AdministratorsTemplate
-                data={subaccountAdmins}
-                admin={subaccountAdmin}
-                updatedUser={updatedSubaccountAdmin}
-                getAdminInfo={getAdminInfo}
-                updateInfo={updateSubaccountAdminInfo}
-                isLoadingData={isLoadingData}
-                isDeleting={isDeletingSubaccountAdmin}
-                handleUpdate={handleUpdate}
-                handleDelete={handleDelete}
-                subject={t('subaccount_administrator')}
-              />
-            ) : (
-                <NoAvailableDataBlock />
-              )}
-            <AddCustomerAdministratorModal
-              show={isOpened}
-              handleClose={hideModal}
-              user={subaccountAdmin}
-              setUserInfo={setSubaccountAdminInfo}
-              addAdmin={addAdmin}
-              subject={t('subaccount_administrator')}
-              getUserInfo={getSubaccount}
-              userInfo={subaccount}
-              isLoadingUserInfo={isLoadingSubaccount}
+        <Paper className={classes.paper}>
+          <CustomContainer>
+            <CustomBreadcrumbs />
+            <TitleBlock
+              titleData={titleData}
+              classes={classes}
+              handleOpen={showModal}
             />
-          </Paper>
-        )}
+          </CustomContainer>
+          {subaccountAdmins.length ? (
+            <AdministratorsTemplate
+              data={subaccountAdmins}
+              admin={subaccountAdmin}
+              updatedUser={updatedSubaccountAdmin}
+              getAdminInfo={getAdminInfo}
+              updateInfo={updateSubaccountAdminInfo}
+              isLoadingData={isLoadingData}
+              isDeleting={isDeletingSubaccountAdmin}
+              handleUpdate={handleUpdate}
+              handleDelete={handleDelete}
+              subject={t('subaccount_administrator')}
+            />
+          ) : (
+            <NoAvailableDataBlock />
+          )}
+          <AddCustomerAdministratorModal
+            show={isOpened}
+            handleClose={hideModal}
+            user={subaccountAdmin}
+            setUserInfo={setSubaccountAdminInfo}
+            addAdmin={addAdmin}
+            subject={t('subaccount_administrator')}
+            getUserInfo={getSubaccount}
+            isLoadingUserInfo={isLoadingSubaccount}
+          />
+        </Paper>
+      )}
     </div>
   )
 }

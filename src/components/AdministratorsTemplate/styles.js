@@ -72,6 +72,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 18,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     '&:hover': {
       overflow: 'visible'
     }

@@ -21,7 +21,7 @@ import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './styles'
 
-const Administrators = (props) => {
+const Administrators = props => {
   const [isOpened, setIsOpened] = useState(false)
   const {
     admins,
@@ -43,11 +43,7 @@ const Administrators = (props) => {
     isDeletingAdmin
   } = EditDeleteAdminStore
 
-  const {
-    getCustomer,
-    customer,
-    isLoadingCustomer
-  } = CustomersStore
+  const { getCustomer, customer, isLoadingCustomer } = CustomersStore
 
   const { t } = props
   const match = useParams()
@@ -77,7 +73,7 @@ const Administrators = (props) => {
       getUsers: getCustomerAdmins
     })
   }
-  const handleDelete = (adminId) => {
+  const handleDelete = adminId => {
     deleteAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -85,7 +81,7 @@ const Administrators = (props) => {
       getUsers: getCustomerAdmins
     })
   }
-  const handleUpdate = (adminId) => {
+  const handleUpdate = adminId => {
     updateCustomerAdmin({
       id: match.customerId,
       closeModal: hideModal,
@@ -94,7 +90,7 @@ const Administrators = (props) => {
     })
   }
 
-  const getAdminInfoHandle = (adminId) => {
+  const getAdminInfoHandle = adminId => {
     getAdminInfo({
       id: match.customerId,
       userId: adminId
@@ -105,45 +101,44 @@ const Administrators = (props) => {
       {isLoading ? (
         <Loading />
       ) : (
-          <Paper className={classes.paper}>
-            <CustomContainer>
-              <CustomBreadcrumbs />
-              <TitleBlock
-                titleData={titleData}
-                classes={classes}
-                handleOpen={showModal}
-              />
-            </CustomContainer>
-            {admins.length ? (
-              <AdministratorsTemplate
-                data={admins}
-                admin={admin}
-                updatedUser={updatedAdmin}
-                getAdminInfo={getAdminInfoHandle}
-                updateInfo={updateAdminInfo}
-                isLoadingData={isLoadingData}
-                isDeleting={isDeletingAdmin}
-                handleDelete={handleDelete}
-                handleUpdate={handleUpdate}
-                subject={t('customer_administrator')}
-              />
-            ) : (
-                <NoAvailableDataBlock />
-              )}
-
-            <AddCustomerAdministratorModal
-              show={isOpened}
-              handleClose={hideModal}
-              user={admin}
-              setUserInfo={setAdminInfo}
-              addAdmin={addAdmin}
-              subject={t('customer_administrator')}
-              getUserInfo={getCustomer}
-              userInfo={customer}
-              isLoadingUserInfo={isLoadingCustomer}
+        <Paper className={classes.paper}>
+          <CustomContainer>
+            <CustomBreadcrumbs />
+            <TitleBlock
+              titleData={titleData}
+              classes={classes}
+              handleOpen={showModal}
             />
-          </Paper>
-        )}
+          </CustomContainer>
+          {admins.length ? (
+            <AdministratorsTemplate
+              data={admins}
+              admin={admin}
+              updatedUser={updatedAdmin}
+              getAdminInfo={getAdminInfoHandle}
+              updateInfo={updateAdminInfo}
+              isLoadingData={isLoadingData}
+              isDeleting={isDeletingAdmin}
+              handleDelete={handleDelete}
+              handleUpdate={handleUpdate}
+              subject={t('customer_administrator')}
+            />
+          ) : (
+            <NoAvailableDataBlock />
+          )}
+
+          <AddCustomerAdministratorModal
+            show={isOpened}
+            handleClose={hideModal}
+            user={admin}
+            setUserInfo={setAdminInfo}
+            addAdmin={addAdmin}
+            subject={t('customer_administrator')}
+            getUserInfo={getCustomer}
+            isLoadingUserInfo={isLoadingCustomer}
+          />
+        </Paper>
+      )}
     </div>
   )
 }
