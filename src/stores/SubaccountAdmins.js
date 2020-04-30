@@ -32,10 +32,10 @@ export class SubaccountAdminsStore {
     this.isLoading = true
     axios
       .get(`/tenants/${id}/groups/${groupId}/admins/`)
-      .then((res) => {
+      .then(res => {
         this.subaccountAdmins = res.data.admins
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to fetch admins',
           options: {
@@ -57,15 +57,23 @@ export class SubaccountAdminsStore {
     }
   }
 
-  addSubaccountAdmin = ({ id, closeModal, getUsers, groupId, defaultDomain }) => {
+  addSubaccountAdmin = ({
+    id,
+    closeModal,
+    getUsers,
+    groupId,
+    defaultDomain
+  }) => {
     this.isLoading = true
 
     axios
       .post(`/tenants/${id}/groups/${groupId}/admins/`, {
         ...this.sentSubaccountAdmin,
-        userId: this.sentSubaccountAdmin.userId + `@${defaultDomain}`
+        userId: defaultDomain
+          ? this.sentSubaccountAdmin.userId + `@${defaultDomain}`
+          : this.sentSubaccountAdmin.userId
       })
-      .then((res) => {
+      .then(res => {
         if (res.status === 201) {
           this.isLoading = false
           getUsers({ id: id, groupId: groupId })
@@ -76,10 +84,11 @@ export class SubaccountAdminsStore {
             language: '',
             password: ''
           }
+          this.isLoading = false
           closeModal()
         }
       })
-      .catch((e) =>
+      .catch(e =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to add admin',
           options: {
@@ -87,6 +96,7 @@ export class SubaccountAdminsStore {
           }
         })
       )
+      .finally(() => (this.isLoading = false))
   }
 }
 decorate(SubaccountAdminsStore, {
