@@ -30,12 +30,11 @@ const PhoneNumbers = observer(({ t }) => {
   const match = useParams()
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
-  const [isAnyChecked, setIsAnyChecked] = useState(false)
+  const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [searchList, setSearchList] = useState([])
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
-  // console.log(numbers, 'numbers')
   const [currentPage, setCurrentPage] = useState(0)
   const [currentPerPage, setCurrentPerPage] = useState(10)
   const {
@@ -73,6 +72,9 @@ const PhoneNumbers = observer(({ t }) => {
     const newNumbers = transformOnChange(numbers, checked, id)
     setNumbers(newNumbers)
     handleCheckedStates(newNumbers)
+    checked
+      ? setNumberOfChecked(numberOfChecked + 1)
+      : setNumberOfChecked(numberOfChecked - 1)
   }
 
   // handle check all
@@ -81,7 +83,7 @@ const PhoneNumbers = observer(({ t }) => {
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
-    setIsAnyChecked(!selectAll)
+    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(searchList.length)
   }
 
   // handler of check states schema
@@ -92,18 +94,11 @@ const PhoneNumbers = observer(({ t }) => {
       })
     ) {
       setSelectAll(true)
-      setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newNumbers.some(el => el.checked)) {
-        setIsAnyChecked(true)
-      } else {
-        setIsAnyChecked(false)
-      }
     }
     if (!newNumbers.length) {
       setSelectAll(false)
-      setIsAnyChecked(false)
     }
   }
 
@@ -119,6 +114,45 @@ const PhoneNumbers = observer(({ t }) => {
   const changeHover = (newHover, id) => {
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
+  }
+
+  const titleData = {
+    mainText: t('phone_numbers'),
+    iconCapture: t('add'),
+    Icon: <AddOutlinedIcon />
+  }
+
+  const toolbarButtonsBlock = () => {
+    return (
+      <Box className={classes.toolbarButtonsBlockWrap}>
+        <Box className={classes.addCustomerWrap}>
+          <Box className={classes.addIconWrap}>
+            <img
+              className={classes.deleteIcon}
+              src={filtersIcon}
+              alt='delete icon'
+            />
+          </Box>
+          <Typography className={classes.addCustomerTitle}>
+            {t('filters')}
+          </Typography>
+        </Box>
+        {numberOfChecked > 1 && (
+          <Box className={classes.addCustomerWrap}>
+            <Box className={classes.addIconWrap}>
+              <img
+                className={classes.deleteIcon}
+                src={deleteIcon}
+                alt='delete icon'
+              />
+            </Box>
+            <Typography className={classes.addCustomerTitle}>
+              {t('delete')}
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    )
   }
 
   const columns = [
@@ -203,14 +237,18 @@ const PhoneNumbers = observer(({ t }) => {
         className: classes.rangeEndColumn
       },
       getCellData: row => (
-        <Box className={classes.numbersWrap}>
-          <Typography className={classes.numbersTitle}>
-            {row.phoneNumbers && row.rangeEnd}
-          </Typography>
-          <Typography className={classes.numberPhoneNumbersStoresAmount}>
-            {row.phoneNumbers && `(${row.phoneNumbers.length})`}
-          </Typography>
-        </Box>
+        <Fragment>
+          {row.phoneNumbers && (
+            <Box className={classes.numbersWrap}>
+              <Typography className={classes.numbersTitle}>
+                {row.rangeEnd}
+              </Typography>
+              <Typography className={classes.numberPhoneNumbersStoresAmount}>
+                {`(${row.phoneNumbers.length})`}
+              </Typography>
+            </Box>
+          )}
+        </Fragment>
       )
     },
     {
@@ -247,45 +285,6 @@ const PhoneNumbers = observer(({ t }) => {
       )
     }
   ]
-
-  const titleData = {
-    mainText: t('phone_numbers'),
-    iconCapture: t('add'),
-    Icon: <AddOutlinedIcon />
-  }
-
-  const toolbarButtonsBlock = () => {
-    return (
-      <Box className={classes.toolbarButtonsBlockWrap}>
-        <Box className={classes.addCustomerWrap}>
-          <Box className={classes.addIconWrap}>
-            <img
-              className={classes.deleteIcon}
-              src={filtersIcon}
-              alt='delete icon'
-            />
-          </Box>
-          <Typography className={classes.addCustomerTitle}>
-            {t('filters')}
-          </Typography>
-        </Box>
-        {isAnyChecked && (
-          <Box className={classes.addCustomerWrap}>
-            <Box className={classes.addIconWrap}>
-              <img
-                className={classes.deleteIcon}
-                src={deleteIcon}
-                alt='delete icon'
-              />
-            </Box>
-            <Typography className={classes.addCustomerTitle}>
-              {t('delete')}
-            </Typography>
-          </Box>
-        )}
-      </Box>
-    )
-  }
 
   return (
     <div className={classes.root}>

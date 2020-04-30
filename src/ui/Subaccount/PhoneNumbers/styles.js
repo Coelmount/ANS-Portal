@@ -42,9 +42,6 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 16
   },
-  numbersWrap: {
-    display: 'flex'
-  },
   rightArrowIcon: {
     marginRight: 31,
     marginLeft: 31
@@ -113,14 +110,19 @@ const useStyles = makeStyles(theme => ({
   rightArrowColumn: {
     width: 50
   },
-  rangeEndColumn: {
-    width: 250,
+  numbersWrap: {
+    // maxWidth: 250,
     fontSize: 14,
     fontWeight: 600,
+    whiteSpace: 'nowrap',
+    display: 'flex',
     whiteSpace: 'nowrap'
   },
+  rangeEndColumn: {
+    maxWidth: 200
+  },
   typeColumn: {
-    width: 200,
+    width: 150,
     fontSize: 14
   },
   numbersTitle: {
