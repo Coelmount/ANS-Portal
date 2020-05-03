@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     '& .MuiDialog-paperWidthSm': {
@@ -75,9 +75,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
     paddingTop: 0,
     paddingLeft: 44
-  },
-  checkbox: {
-    paddingBottom: 0
   },
   // <-
   indexHoverCheckbox: {

@@ -56,13 +56,13 @@ const PhoneNumbers = observer(({ t }) => {
       page, // cause on back pagination starts from 1, not 0
       rowsPerPage
     )
-  }, [page, rowsPerPage])
+  }, [page, rowsPerPage, match.customerId, match.groupId, getPhoneNumbers])
 
   useEffect(() => {
     return () => {
       setDefaultValues()
     }
-  }, [])
+  }, [setDefaultValues])
 
   // set in component after store transformation
   useEffect(() => {
@@ -73,7 +73,7 @@ const PhoneNumbers = observer(({ t }) => {
   useEffect(() => {
     handleCheckedStates(searchList)
     setPhoneNumbers(searchList)
-  }, [searchList])
+  }, [searchList, setPhoneNumbers])
 
   // handle check/uncheck
   const selectNumbers = (checked, id) => {

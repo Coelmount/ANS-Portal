@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   // Table overwrites =>
   paginationWrap: {
     left: '50%',
@@ -66,9 +66,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
     paddingTop: 0,
     paddingLeft: 44
-  },
-  checkbox: {
-    paddingBottom: 0
   },
   // <-
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -13,7 +13,7 @@ import AddedListStep from './AddedListStep'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiDialog-paperWidthSm': {
       width: '651px'
@@ -40,7 +40,7 @@ const AddPhoneNumbersModal = ({ open, handleClose, successClose }) => {
   )
 }
 
-const Steps = (props) => {
+const Steps = props => {
   switch (props.step) {
     case 1:
       return <FirstStep handleClose={props.handleClose} />

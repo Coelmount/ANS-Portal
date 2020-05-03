@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   sharpIcon: {
     textAlign: 'center'
   },
@@ -394,15 +394,6 @@ const useStyles = makeStyles((theme) => ({
   paginationText: {
     fontWeight: 600
   },
-  toolbarWrap: {
-    display: 'flex',
-    background: theme.palette.active.main,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 98,
-    paddingLeft: 68,
-    paddingRight: 33
-  },
   searchWrap: {
     position: 'relative',
     marginRight: 20
@@ -621,9 +612,6 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.primary.main
       }
     }
-  },
-  toolbarWrap: {
-    display: 'none'
   },
   phoneNumberCellText: {
     fontSize: 16,

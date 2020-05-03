@@ -70,7 +70,7 @@ const AddedListStep = ({ handleClose, t }) => {
     {
       id: 'phoneNumber',
       label: 'number',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography
           className={classes.phoneNumberCellText}
         >{`${row.countryCode} ${row.phoneNumber}`}</Typography>
@@ -85,7 +85,7 @@ const AddedListStep = ({ handleClose, t }) => {
     {
       id: 'addStatus',
       label: 'status',
-      getCellData: (row) => (
+      getCellData: row => (
         <Typography
           className={
             row.addStatus === 'added'
@@ -132,7 +132,6 @@ const AddedListStep = ({ handleClose, t }) => {
           <CustomTable
             classes={classes}
             columns={columns}
-            firstCell={false}
             showPagination={false}
             rows={addedPhoneNumbers}
             showSearchBar={false}
@@ -143,7 +142,6 @@ const AddedListStep = ({ handleClose, t }) => {
           <CustomTable
             classes={classes}
             columns={columns}
-            firstCell={false}
             showPagination={false}
             rows={rejectedPhoneNumbers}
             showSearchBar={false}

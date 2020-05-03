@@ -1,7 +1,6 @@
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'

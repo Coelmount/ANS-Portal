@@ -11,7 +11,7 @@ import DefaultLayout from 'components/DefaultLayout'
 import comingSoonSvg from 'source/images/svg/coming-soon.svg'
 import './styles.css'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   goBackButtonWrapper: {
     width: 140,
     height: 50,
@@ -42,7 +42,7 @@ const ComingSoon = ({ t }) => {
     <div className='pageWrapper'>
       <DefaultLayout />
       <div className='comingSoonWrapper'>
-        <img src={comingSoonSvg} alt='coming soon image' />
+        <img src={comingSoonSvg} alt='coming soon' />
         <h2 className='title'>{t('coming_soon_title')}</h2>
 
         <Box className={classes.goBackButtonWrapper}>

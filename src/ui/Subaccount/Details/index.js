@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'

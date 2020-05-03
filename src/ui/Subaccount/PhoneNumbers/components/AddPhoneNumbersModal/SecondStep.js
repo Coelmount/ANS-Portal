@@ -5,18 +5,14 @@ import { observer } from 'mobx-react'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
-import sharp from 'source/images/svg/sharp.svg'
-import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
 import Input from 'components/Input'
-import Checkbox from 'components/Checkbox'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 
@@ -55,7 +51,7 @@ const SecondStep = ({ handleClose, t }) => {
     phoneNumberSymbolsArr.splice(0, 4)
     const phoneNumberWithCountryCode = phoneNumberSymbolsArr.join('')
     return number.phoneNumbers.some(
-      (item) => item.phoneNumber === phoneNumberWithCountryCode
+      item => item.phoneNumber === phoneNumberWithCountryCode
     )
   }
 
@@ -100,7 +96,7 @@ const SecondStep = ({ handleClose, t }) => {
             {t('start_with_number')}
           </Typography>
           <Input
-            onChange={(e) => setEnteredPhoneNumber(e.target.value)}
+            onChange={e => setEnteredPhoneNumber(e.target.value)}
             className={classes.input}
             defaultValue={defaultPhoneNumber}
           />
@@ -110,7 +106,7 @@ const SecondStep = ({ handleClose, t }) => {
             {t('amount_of_numbers')}
           </Typography>
           <Input
-            onChange={(e) => setEnteredAmountOfNumbers(e.target.value)}
+            onChange={e => setEnteredAmountOfNumbers(e.target.value)}
             defaultValue={enteredAmountOfNumbers}
             className={classes.amountOfNumbersInput}
           />
