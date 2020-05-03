@@ -36,14 +36,14 @@ const PhoneNumbers = observer(({ t }) => {
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
-  const [currentPage, setCurrentPage] = useState(0)
-  const [currentPerPage, setCurrentPerPage] = useState(10)
+  const [page, setPage] = useState(1)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
   const {
     transformedPhoneNumbers,
     setPhoneNumbers,
     setDefaultValues,
     getPhoneNumbers,
-    totalPagesServer,
+    totalPages,
     isPhoneNumbersLoading
   } = PhoneNumbersStore
 
@@ -53,10 +53,10 @@ const PhoneNumbers = observer(({ t }) => {
     getPhoneNumbers(
       match.customerId,
       match.groupId,
-      currentPage + 1, // cause on back pagination starts from 1, not 0
-      currentPerPage
+      page, // cause on back pagination starts from 1, not 0
+      rowsPerPage
     )
-  }, [currentPage, currentPerPage])
+  }, [page, rowsPerPage])
 
   useEffect(() => {
     return () => {
@@ -308,7 +308,6 @@ const PhoneNumbers = observer(({ t }) => {
             firstCell={false}
             classes={classes}
             rows={numbers}
-            // isLoadingData={isPhoneNumbersLoading}
             columns={columns}
             searchCriterias={[
               'countryName',
@@ -319,9 +318,11 @@ const PhoneNumbers = observer(({ t }) => {
             ]}
             extraToolbarBlock={toolbarButtonsBlock}
             getSearchList={setSearchList}
-            setCurrentPage={setCurrentPage}
-            setCurrentPerPage={setCurrentPerPage}
-            totalPagesServer={totalPagesServer}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            totalPages={totalPages}
           />
         )}
         {isAddPhoneNumbersModalOpen && (

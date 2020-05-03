@@ -34,10 +34,10 @@ const Pagination = ({
         <span
           className={`${defaultClasses.paginationText} ${classes.paginationText}`}
         >
-          {page + 1}
+          {page}
         </span>
         &nbsp;of&nbsp;
-        {totalPages + 1}
+        {totalPages}
       </p>
       <div
         className={`${defaultClasses.paginationIconBlock} ${classes.paginationIconBlock}`}
