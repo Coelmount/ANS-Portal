@@ -18,11 +18,22 @@ export class NumbersStore {
   reservedNumbers = []
   isLoadingReservedNumbers = false
 
-  getReservedNumbers = tenantId => {
+  getReservedNumbers = (tenantId, cc, type) => {
     this.isLoadingReservedNumbers = true
-    axios
-      .get(`/tenants/${tenantId}/reserved_numbers`)
-      .then(res => (this.reservedNumbers = res.data.numbers))
+    return axios
+      .get(
+        `/tenants/${tenantId}/reserved_numbers?country_code=${cc.replace(
+          '+',
+          '%2B'
+        )}&number_type=${type}`
+      )
+      .then(
+        res =>
+          (this.reservedNumbers = res.data.numbers.map(el => ({
+            ...el,
+            checked: false
+          })))
+      )
       .finally(() => (this.isLoadingReservedNumbers = false))
   }
 

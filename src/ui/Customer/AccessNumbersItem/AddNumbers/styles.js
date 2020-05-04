@@ -184,6 +184,15 @@ const useStyles = makeStyles(theme => ({
     fontSize: '18px',
     color: theme.palette.black
   },
+  secondParagraphBoxFN: {
+    marginTop: '28px',
+    marginLeft: '40px',
+    marginBottom: '40px',
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    fontSize: '18px',
+    color: theme.palette.black
+  },
   thirdParagraphBox: {
     marginTop: 16,
     marginBottom: 26,
@@ -714,6 +723,26 @@ const useStyles = makeStyles(theme => ({
   },
   dataCells: {
     padding: 0
+  },
+  checkboxCellFN: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 'inherit',
+    textAlign: 'center',
+    padding: 0,
+    marginLeft: 40,
+    width: 100
+  },
+  checkboxCellFNHead: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 'inherit',
+    textAlign: 'center',
+    padding: 0,
+    marginLeft: 45,
+    width: 100
   },
   checkboxCell: {
     display: 'flex',

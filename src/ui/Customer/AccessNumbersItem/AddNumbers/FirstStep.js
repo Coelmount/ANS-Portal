@@ -20,6 +20,7 @@ import CustomerStore from 'stores/Customers'
 
 import useStyles from './styles'
 import Loading from 'components/Loading'
+import AssignedNumbersStore from 'stores/AssignedNumbers'
 
 const FirstStep = props => {
   const {
@@ -35,6 +36,7 @@ const FirstStep = props => {
   const match = useParams()
 
   const { customer, getCustomer, isLoadingCustomer } = CustomerStore
+  const { currentEntitlement } = AssignedNumbersStore
 
   useEffect(() => {
     getCustomer(match.customerId)
@@ -66,10 +68,12 @@ const FirstStep = props => {
           >{`${customer.name} (id: ${customer.tenantId}) `}</div>
         </Box>
         <Box className={classes.numbersTitleBlock}>
-          {numbers[0].country_code}
+          {currentEntitlement.name}
         </Box>
         {numbers.map(el => (
-          <Box className={classes.numbersBlock}>{el.nsn}</Box>
+          <Box key={el.nsn} className={classes.numbersBlock}>
+            {`${numbers[0].country_code} ${el.nsn}`}
+          </Box>
         ))}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>

@@ -71,7 +71,8 @@ const AddedListStep = ({ handleClose, t }) => {
           {row.phoneNumber}
         </Typography>
       ),
-      isSortAvailable: false
+      isSortAvailable: false,
+      extraProps: { className: classes.textCenter }
     },
     {
       id: 'addStatus',

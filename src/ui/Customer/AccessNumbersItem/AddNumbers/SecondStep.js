@@ -21,15 +21,26 @@ import Checkbox from 'components/Checkbox'
 import Group3Person from 'source/images/svg/Group3Person.svg'
 
 import NumbersStore from 'stores/Numbers'
+import AssignedNumbersStore from 'stores/AssignedNumbers'
 
 import capitalize from 'lodash/capitalize'
 
 import useStyles from './styles'
 
 const SecondStep = props => {
-  const { t, numbers, selectAll, fakePost } = props
+  const {
+    t,
+    numbers,
+    selectAll,
+    fakePost,
+    handleSelectAll,
+    selectNumbers
+  } = props
   const classes = useStyles()
   const match = useParams()
+  const { currentEntitlement } = AssignedNumbersStore
+
+  console.log(numbers)
 
   const columns = [
     {
@@ -54,17 +65,17 @@ const SecondStep = props => {
           </div>
         ),
       extraHeadProps: {
-        className: classes.checkboxCell
+        className: classes.checkboxCellFNHead
       },
       extraProps: {
-        className: classes.checkboxCell
+        className: classes.checkboxCellFN
       }
     },
     {
       id: 'number',
       label: 'Number',
       isSortAvailable: false,
-      getCellData: row => row.number,
+      getCellData: row => `${row.country_code} ${row.nsn}`,
       extraProps: {
         className: classes.textLeft
       }
@@ -84,7 +95,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <Box className={classes.secondParagraphBox}>{match.numbersId}</Box>
+        <Box className={classes.secondParagraphBoxFN}>{match.numbersId}</Box>
         <CustomTable
           classes={classes}
           columns={columns}

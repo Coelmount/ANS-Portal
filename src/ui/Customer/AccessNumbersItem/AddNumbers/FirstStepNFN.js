@@ -92,11 +92,20 @@ const FirstStepNFN = props => {
           /> */}
           <Box className={classes.rangeBox}>
             {`Range size (${currentEntitlement.entitlement -
-              currentEntitlement.counter} max)`}
+              (isNaN(currentEntitlement.counter)
+                ? 0
+                : currentEntitlement.counter)} max)`}
             <Input
               type='number'
               wrapperStyles={classes.rangeWrapperStylesInput}
-              inputProps={{ min: 0, max: 70 }}
+              inputProps={{
+                min: 0,
+                max:
+                  currentEntitlement.entitlement -
+                  (isNaN(currentEntitlement.counter)
+                    ? 0
+                    : currentEntitlement.counter)
+              }}
               onChange={e =>
                 setQueryAvalibleNumbers({
                   ...queryAvalibleNumbers,
@@ -121,6 +130,9 @@ const FirstStepNFN = props => {
             <Input
               type='number'
               wrapperStyles={classes.rangeWrapperStylesInput}
+              inputProps={{
+                min: 0
+              }}
               onChange={e =>
                 setQueryAvalibleNumbers({
                   ...queryAvalibleNumbers,

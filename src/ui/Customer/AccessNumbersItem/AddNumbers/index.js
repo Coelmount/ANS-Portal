@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog'
 import { makeStyles } from '@material-ui/core/styles'
 
 import numbersStore from 'stores/Numbers'
+import AssignedNumbersStore from 'stores/AssignedNumbers'
 
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
@@ -40,6 +41,7 @@ const CreateCustomer = props => {
     reservedNumbers,
     isLoadingReservedNumbers
   } = numbersStore
+  const { currentEntitlement } = AssignedNumbersStore
   const classes = useStyles()
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
@@ -60,13 +62,14 @@ const CreateCustomer = props => {
   }
 
   useEffect(() => {
-    const createNumbers = []
-    for (let i = 0; i < 70; i++) {
-      createNumbers.push({ number: `+${24440400021 + i}`, checked: false })
-    }
-    getReservedNumbers(match.customerId)
-    setNumbers(createNumbers)
-  }, [])
+    getReservedNumbers(
+      match.customerId,
+      currentEntitlement.country_code,
+      currentEntitlement.number_type
+    ).then(() => {
+      setNumbers(reservedNumbers)
+    })
+  }, [reservedNumbers.length])
 
   const selectNumbers = (checked, number) => {
     const newNumbers = [...numbers]
@@ -129,12 +132,12 @@ const CreateCustomer = props => {
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
-      {reservedNumbers.length ? (
+      {numbers.length ? (
         <Steps
           step={step}
           handleClose={handleClose}
           changeStep={changeStep}
-          numbers={reservedNumbers}
+          numbers={numbers}
           selectNumbers={selectNumbers}
           handleSelectAll={handleSelectAll}
           selectAll={selectAll}
