@@ -15,6 +15,16 @@ export class NumbersStore {
   isAddingNumbers = false
   addedNumbers = []
   rejectedNumbers = []
+  reservedNumbers = []
+  isLoadingReservedNumbers = false
+
+  getReservedNumbers = tenantId => {
+    this.isLoadingReservedNumbers = true
+    axios
+      .get(`/tenants/${tenantId}/reserved_numbers`)
+      .then(res => (this.reservedNumbers = res.data.numbers))
+      .finally(() => (this.isLoadingReservedNumbers = false))
+  }
 
   getAvailableNumbers = params => {
     this.params = params
@@ -119,7 +129,10 @@ decorate(NumbersStore, {
   isLoadingNumbers: observable,
   availableNumbersTable: observable,
   isAddingNumbers: observable,
-  getAvailableNumbers: action
+  isLoadingReservedNumbers: observable,
+  reservedNumbers: observable,
+  getAvailableNumbers: action,
+  getReservedNumbers: action
 })
 
 export default new NumbersStore()

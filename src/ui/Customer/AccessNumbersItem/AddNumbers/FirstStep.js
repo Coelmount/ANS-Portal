@@ -65,10 +65,12 @@ const FirstStep = props => {
             className={classes.boldText}
           >{`${customer.name} (id: ${customer.tenantId}) `}</div>
         </Box>
-        <Box className={classes.numbersTitleBlock}>{match.numbersId}</Box>
-        <Box
-          className={classes.numbersBlock}
-        >{`${numbers[0].number} → ${numbers[numbers.length - 1].number} (${numbers.length})`}</Box>
+        <Box className={classes.numbersTitleBlock}>
+          {numbers[0].country_code}
+        </Box>
+        {numbers.map(el => (
+          <Box className={classes.numbersBlock}>{el.nsn}</Box>
+        ))}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button

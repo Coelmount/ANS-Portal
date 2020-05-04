@@ -109,6 +109,12 @@ const FirstStepNFN = props => {
             wrapperStyles={classes.partNumberWrapperInput}
             helperText='Search by prefix, or characters you want in your phone number'
             placeholder={'A part of number'}
+            onChange={e =>
+              setQueryAvalibleNumbers({
+                ...queryAvalibleNumbers,
+                number_like: e.target.value
+              })
+            }
           />
           <Box className={classes.rangeBox}>
             {'How many suggestions do you want? '}
