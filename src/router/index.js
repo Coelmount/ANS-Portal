@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
 

@@ -162,7 +162,8 @@ const useStyles = makeStyles(theme => ({
   },
   tableMessage: {
     paddingLeft: '24%',
-    fontSize: 14
+    fontSize: 14,
+    whiteSpace: 'nowrap'
   },
   thead: {
     backgroundColor: theme.palette.active.main,

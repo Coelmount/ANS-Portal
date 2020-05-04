@@ -24,6 +24,18 @@ export class Entitlements {
     this.step = 1
   }
 
+  setDefaultTableValues = () => {
+    this.entitlements = []
+    this.entitlementsIdArr = []
+    this.entitlementTypes = []
+    this.checkedArr = []
+    this.totalEntitlements = []
+    this.closeModal = false
+    this.isLoadingEntitlements = true
+    this.isLoadingEntitlementTypes = true
+    this.isSending = false
+  }
+
   setDefaultEntitlementTypes = () => {
     const newEntitlementTypes = this.entitlementTypes.map(item => {
       let result = { ...item, hover: false, checked: false }
@@ -163,7 +175,8 @@ decorate(Entitlements, {
   postEntitlements: action,
   updateCheckedArr: action,
   putTotalEntitlements: action,
-  deleteEntitlements: action
+  deleteEntitlements: action,
+  setDefaultTableValues: action
 })
 
 export default new Entitlements()

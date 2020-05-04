@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
@@ -97,7 +97,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center'
   },
   countryCellText: {
-    fontWeight: 600
+    fontWeight: 600,
+    fontSize: 14
   },
   // delete cell
   deleteCell: {

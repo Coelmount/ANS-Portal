@@ -1,7 +1,6 @@
 import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { useHistory, useParams } from 'react-router-dom'
 
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
@@ -16,8 +15,6 @@ import PhoneNumbersStore from 'stores/PhoneNumbers'
 import useStyles from './styles'
 
 const SuccesPage = ({ handleClose, t }) => {
-  const history = useHistory()
-  const match = useParams()
   const classes = useStyles()
 
   const { changeStep } = PhoneNumbersStore

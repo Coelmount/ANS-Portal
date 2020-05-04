@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
@@ -30,7 +30,7 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer,
     isLoadingCustomers,
     isDeletingCustomer,
-    addCustomer
+    setDefaultTableValues
   } = CustomersStore
 
   const { setDefaultValues: setDefaultValuesSubaccount } = CreateSubaccountStore
@@ -44,7 +44,8 @@ const CustomersTable = observer(({ t }) => {
 
   useEffect(() => {
     getCustomers()
-  }, [getCustomers])
+    return () => setDefaultTableValues()
+  }, [getCustomers, setDefaultTableValues])
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)

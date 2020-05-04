@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -35,8 +35,6 @@ const SetEntitlements = props => {
   const classes = useStyles()
   const [selected, setSelected] = useState([])
   const [selectAll, setSelectAll] = useState(false)
-  const [isAnyChecked, setIsAnyChecked] = useState(false)
-  const [selectedGroup, setSelectedGroup] = useState('')
   const [searchList, setSearchList] = useState([])
 
   useEffect(() => {
@@ -46,7 +44,7 @@ const SetEntitlements = props => {
   useEffect(() => {
     getEntitlementTypes()
     return () => setDefaultEntitlementTypes()
-  }, [])
+  }, [getEntitlementTypes, setDefaultEntitlementTypes])
 
   useEffect(() => {
     setSelected(entitlementTypes)
@@ -62,7 +60,6 @@ const SetEntitlements = props => {
     handleCheckedStates(newSelected)
     setSelected(newSelected)
     setSelectAll(!selectAll)
-    setIsAnyChecked(!selectAll)
   }
 
   const handleCheckedStates = newSelected => {
@@ -72,18 +69,11 @@ const SetEntitlements = props => {
       })
     ) {
       setSelectAll(true)
-      setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newSelected.some(el => el.checked)) {
-        setIsAnyChecked(true)
-      } else {
-        setIsAnyChecked(false)
-      }
     }
     if (!newSelected.length) {
       setSelectAll(false)
-      setIsAnyChecked(false)
     }
   }
 

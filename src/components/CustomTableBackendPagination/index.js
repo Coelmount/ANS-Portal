@@ -60,26 +60,18 @@ const CustomTable = ({
   getSearchList,
   showToolBar,
   initialSearchQuery,
-  setCurrentPage,
-  setCurrentPerPage,
-  totalPagesServer,
+  page,
+  setPage,
+  rowsPerPage,
+  setRowsPerPage,
+  totalPages,
   onPageChangeActions,
   t
 }) => {
   const defaultClasses = useStyles()
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
   const [query, setQuery] = useState(initialSearchQuery)
-
-  useEffect(() => {
-    setCurrentPage(page)
-  }, [page])
-
-  useEffect(() => {
-    setCurrentPerPage(rowsPerPage)
-  }, [rowsPerPage])
 
   const list = useMemo(() => {
     const getFilter = row => {
@@ -100,28 +92,21 @@ const CustomTable = ({
     return result
   }, [rows, query, order, orderBy, getSearchList])
 
-  const totalPages = useMemo(() => {
-    if (totalPagesServer) return totalPagesServer - 1
-    if (rowsPerPage > list.length) return 0
-    const pages = Math.ceil(list.length / rowsPerPage)
-    return pages ? pages - 1 : pages
-  }, [list.length, rowsPerPage])
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
   }
 
-  const clampedPage = clamp(page, 0, totalPages)
+  const clampedPage = clamp(page, 1, totalPages)
 
   const rewindPage = step => {
-    if (clampedPage + step >= 0 && clampedPage + step <= totalPages)
+    if (clampedPage + step >= 1 && clampedPage + step <= totalPages)
       setPage(clampedPage + step)
   }
 
   const changeRowsPerPage = newValue => {
-    if (newValue > list.length) setPage(0)
+    if (newValue > list.length) setPage(1)
     setRowsPerPage(newValue)
   }
 

@@ -1,8 +1,7 @@
 import React from 'react'
 import { withNamespaces } from 'react-i18next'
-import { Link, useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
-import CustomBreadctumbs from 'components/CustomBreadcrumbs'
 import CustomContainer from 'components/CustomContainer'
 import TitleBlock from 'components/TitleBlock'
 

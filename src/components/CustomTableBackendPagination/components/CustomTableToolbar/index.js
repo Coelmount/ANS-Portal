@@ -10,7 +10,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import clearResultIcon from 'source/images/svg/clear-result.svg'
 
-const rowsPerPageNumbers = [10, 15, 25, 50, 100]
+const rowsPerPageNumbers = [1, 10, 15, 25, 50, 100]
 
 const CustomTableToolbar = props => {
   const {

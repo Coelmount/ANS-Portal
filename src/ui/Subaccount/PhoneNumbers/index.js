@@ -16,6 +16,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
+import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
@@ -35,26 +36,33 @@ const PhoneNumbers = observer(({ t }) => {
   const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
     false
   )
-  const [currentPage, setCurrentPage] = useState(0)
-  const [currentPerPage, setCurrentPerPage] = useState(10)
+  const [page, setPage] = useState(1)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
   const {
     transformedPhoneNumbers,
     setPhoneNumbers,
     setDefaultValues,
     getPhoneNumbers,
-    totalPagesServer,
+    totalPages,
     isPhoneNumbersLoading
   } = PhoneNumbersStore
 
+  console.log(numbers, 'numbers')
   // initial request
   useEffect(() => {
     getPhoneNumbers(
       match.customerId,
       match.groupId,
-      currentPage + 1, // cause on back pagination starts from 1, not 0
-      currentPerPage
+      page, // cause on back pagination starts from 1, not 0
+      rowsPerPage
     )
-  }, [currentPage, currentPerPage])
+  }, [page, rowsPerPage, match.customerId, match.groupId, getPhoneNumbers])
+
+  useEffect(() => {
+    return () => {
+      setDefaultValues()
+    }
+  }, [setDefaultValues])
 
   // set in component after store transformation
   useEffect(() => {
@@ -65,7 +73,7 @@ const PhoneNumbers = observer(({ t }) => {
   useEffect(() => {
     handleCheckedStates(searchList)
     setPhoneNumbers(searchList)
-  }, [searchList])
+  }, [searchList, setPhoneNumbers])
 
   // handle check/uncheck
   const selectNumbers = (checked, id) => {
@@ -293,25 +301,30 @@ const PhoneNumbers = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
         </CustomContainer>
-        <CustomTable
-          firstCell={false}
-          classes={classes}
-          rows={numbers}
-          isLoadingData={isPhoneNumbersLoading}
-          columns={columns}
-          searchCriterias={[
-            'countryName',
-            'rangeStart',
-            'rangeEnd',
-            'type',
-            'state'
-          ]}
-          extraToolbarBlock={toolbarButtonsBlock}
-          getSearchList={setSearchList}
-          setCurrentPage={setCurrentPage}
-          setCurrentPerPage={setCurrentPerPage}
-          totalPagesServer={totalPagesServer}
-        />
+        {isPhoneNumbersLoading ? (
+          <Loading />
+        ) : (
+          <CustomTable
+            firstCell={false}
+            classes={classes}
+            rows={numbers}
+            columns={columns}
+            searchCriterias={[
+              'countryName',
+              'rangeStart',
+              'rangeEnd',
+              'type',
+              'state'
+            ]}
+            extraToolbarBlock={toolbarButtonsBlock}
+            getSearchList={setSearchList}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            totalPages={totalPages}
+          />
+        )}
         {isAddPhoneNumbersModalOpen && (
           <AddPhoneNumbersModal
             open={isAddPhoneNumbersModalOpen}

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { withNamespaces } from 'react-i18next'
 
@@ -19,7 +19,7 @@ const CustomTableHead = ({
   firstCell,
   t
 }) => {
-  const createSortHandler = (property) => (event) => {
+  const createSortHandler = property => event => {
     onRequestSort(event, property)
   }
 

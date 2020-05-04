@@ -1,7 +1,6 @@
 import { decorate, observable, action } from 'mobx'
 
 import axios from 'utils/axios'
-import { PROXY_P6 } from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
@@ -18,7 +17,7 @@ export class PhoneNumbers {
   addedPhoneNumbers = []
   rejectedPhoneNumbers = []
   isPhoneNumbersLoading = true
-  totalPagesServer = 0
+  totalPages = 0
 
   changeStep = step => {
     this.step = step
@@ -26,6 +25,15 @@ export class PhoneNumbers {
 
   setDefaultValues = () => {
     this.step = 1
+    this.closeModal = false
+    this.transformedPhoneNumbers = []
+    this.phoneNumbers = []
+    this.selectedPhoneNumber = {}
+    this.uniqueCountries = []
+    this.addedPhoneNumbers = []
+    this.rejectedPhoneNumbers = []
+    this.isPhoneNumbersLoading = true
+    this.totalPages = 0
   }
 
   getPhoneNumbers = (customerId, groupId, page, perPage) => {
@@ -75,7 +83,7 @@ export class PhoneNumbers {
         )
         this.transformedPhoneNumbers = transformedNumbers
         const pagination = res.data.pagination
-        this.totalPagesServer = pagination[2]
+        this.totalPages = pagination[2]
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -126,13 +134,6 @@ export class PhoneNumbers {
 
   createGroupsSinglePhone = addedPhone =>
     (this.addedPhoneNumbers = [addedPhone])
-
-  setDefaultValues = () => {
-    this.changeStep(1)
-    this.addedPhoneNumbers = []
-    this.rejectedPhoneNumbers = []
-    this.selectedPhoneNumber = {}
-  }
 }
 
 decorate(PhoneNumbers, {
@@ -141,7 +142,7 @@ decorate(PhoneNumbers, {
   transformedPhoneNumbers: observable,
   uniqueCountries: observable,
   phoneNumbers: observable,
-  totalPagesServer: observable,
+  totalPages: observable,
   isPhoneNumbersLoading: observable,
   changeStep: action,
   setPhoneNumbers: action,

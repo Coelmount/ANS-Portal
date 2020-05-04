@@ -1,10 +1,9 @@
-import React, { useContext, useState, useEffect, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
 import { toJS } from 'mobx'
 
-import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'

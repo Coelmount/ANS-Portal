@@ -42,13 +42,6 @@ const useStyles = makeStyles(theme => ({
   addIcon: {
     color: theme.palette.black
   },
-  addCustomerTitle: {
-    whiteSpace: 'nowrap',
-    fontSize: 14,
-    fontFamily: 'MTN',
-    fontStyle: 'normal',
-    fontWeight: 500
-  },
   deleteIcon: {
     width: 14,
     height: 16
@@ -140,11 +133,6 @@ const useStyles = makeStyles(theme => ({
     background: 'grey'
   },
   checked: {},
-  addTitleWrap: {
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute'
-  },
   upArrowIcon: {
     position: 'absolute',
     right: -14,

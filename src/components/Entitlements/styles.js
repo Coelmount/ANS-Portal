@@ -1,8 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   modalDialog: {
-    minHeight: '100%'
+    minHeight: '100%',
+    '& .MuiDialog-paperScrollPaper': {
+      minHeight: '100%'
+    }
   },
   select: {
     width: 254
@@ -27,11 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
   wrapper: {
     marginTop: 10
-  },
-  modalDialog: {
-    '& .MuiDialog-paperScrollPaper': {
-      minHeight: '100%'
-    }
   },
   textLeft: {
     textAlign: 'left'

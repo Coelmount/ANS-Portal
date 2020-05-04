@@ -115,8 +115,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 14,
     fontWeight: 600,
     whiteSpace: 'nowrap',
-    display: 'flex',
-    whiteSpace: 'nowrap'
+    display: 'flex'
   },
   rangeEndColumn: {
     maxWidth: 200

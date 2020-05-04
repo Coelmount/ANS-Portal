@@ -52,14 +52,14 @@ const Translations = observer(({ t }) => {
     updateSelectedInstance,
     basicTranslationsNumbers,
     isBasicTranslationsNumbersLoading,
-    getBasicTranslationsNumbers,
-    getCountriesConfig,
-    setNumbersWithConfig
+    getBasicTranslationsNumbers
+    // getCountriesConfig,
+    // setNumbersWithConfig
   } = BasicTranslationsStore
 
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
-  }, [])
+  }, [getBasicTranslationsNumbers, match.customerId, match.groupId])
 
   useEffect(() => {
     setNumbers(basicTranslationsNumbers)
@@ -97,13 +97,13 @@ const Translations = observer(({ t }) => {
     handleCheckedStates(newNumbers)
   }
 
-  const enableNumbers = (enabled, id) => {
-    const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.id === id)
-    newNumbers[index].enabled = enabled
-    setNumbers(newNumbers)
-    handleCheckedStates(newNumbers)
-  }
+  // const enableNumbers = (enabled, id) => {
+  //   const newNumbers = [...numbers]
+  //   const index = numbers.findIndex(el => el.id === id)
+  //   newNumbers[index].enabled = enabled
+  //   setNumbers(newNumbers)
+  //   handleCheckedStates(newNumbers)
+  // }
 
   const handleSelectAll = () => {
     const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
