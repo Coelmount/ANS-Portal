@@ -3,6 +3,7 @@ import { withRouter } from 'react-router'
 import { Link, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
+import classnames from 'classnames'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -10,11 +11,9 @@ import Box from '@material-ui/core/Box'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-
-import EntitlementsStore from 'stores/Entitlements'
-
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
+import EntitlementsStore from 'stores/Entitlements'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
@@ -24,22 +23,24 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddNumbers from './AddNumbers/'
+import AssignToSubaccountModal from './AssignToSubaccountModal'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
-import useStyles from './styles'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
+import useStyles from './styles'
 
 const AccessNumbersItem = ({ t }) => {
   const match = useParams()
   const classes = useStyles()
   const [showAddNumbers, setShowAddNumber] = useState(false)
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false)
   const [step, setStep] = useState(1)
   const [selected, setSelected] = useState([])
   const [selectAll, setSelectAll] = useState(false)
-  const [isAnyChecked, setIsAnyChecked] = useState(false)
+  const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [searchList, setSearchList] = useState([])
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [phoneNumberToDelete, setPhoneNumberToDelete] = useState(null)
@@ -55,17 +56,13 @@ const AccessNumbersItem = ({ t }) => {
     totalPagesServer,
     getEntitlementsAndFindCurrent,
     currentEntitlement,
-    setDefaultValues
+    setDefaultValues,
+    setNumbersToAssign
   } = AssignedNumbersStore
 
-  // useEffect(() => {
-  //   getAssignedNumbers(
-  //     match.customerId,
-  //     match.numbersId,
-  //     currentPage + 1,
-  //     currentPerPage
-  //   )
-  // }, [currentPage, currentPerPage])
+  const isAssignEnabled =
+    numberOfChecked > 0 &&
+    !selected.some(item => item.checked && item.subaccountId !== 'none')
 
   useEffect(() => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
@@ -77,7 +74,7 @@ const AccessNumbersItem = ({ t }) => {
   }, [assignedNumbers])
 
   const handlePageChange = () => {
-    setIsAnyChecked(false)
+    setNumberOfChecked(0)
   }
 
   const handleOpenDeleteModal = (id, name) => {
@@ -101,6 +98,9 @@ const AccessNumbersItem = ({ t }) => {
     const newSelected = transformOnChange(selected, checked, id)
     setSelected(newSelected)
     handleCheckedStates(newSelected)
+    checked
+      ? setNumberOfChecked(numberOfChecked + 1)
+      : setNumberOfChecked(numberOfChecked - 1)
   }
 
   const handleSelectAll = () => {
@@ -108,7 +108,7 @@ const AccessNumbersItem = ({ t }) => {
     handleCheckedStates(newSelected)
     setSelected(newSelected)
     setSelectAll(!selectAll)
-    setIsAnyChecked(!selectAll)
+    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(searchList.length)
   }
 
   const handleCheckedStates = newSelected => {
@@ -118,24 +118,25 @@ const AccessNumbersItem = ({ t }) => {
       })
     ) {
       setSelectAll(true)
-      setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newSelected.some(el => el.checked)) {
-        setIsAnyChecked(true)
-      } else {
-        setIsAnyChecked(false)
-      }
     }
     if (!newSelected.length) {
       setSelectAll(false)
-      setIsAnyChecked(false)
     }
   }
 
   const changeHover = (newHover, id) => {
     const newSelected = transformOnHover(selected, newHover, id)
     setSelected(newSelected)
+  }
+
+  const handleAssignButtonClick = () => {
+    if (isAssignEnabled) {
+      const checkedNumbers = selected.filter(item => item.checked === true)
+      setNumbersToAssign(checkedNumbers)
+      setIsAssignModalOpen(true)
+    }
   }
 
   const titleData = {
@@ -147,20 +148,31 @@ const AccessNumbersItem = ({ t }) => {
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
-        {isAnyChecked && (
-          <Box className={classes.addCustomerWrap}>
-            <Box className={classes.addIconWrap}>
-              <img
-                className={classes.deleteIcon}
-                src={deleteIcon}
-                alt='delete icon'
-              />
-            </Box>
-            <Typography className={classes.addCustomerTitle}>
-              {t('deassign')}
-            </Typography>
+        <Box className={classes.addCustomerWrap}>
+          <Box
+            onClick={handleAssignButtonClick}
+            className={classnames(classes.addIconWrap, {
+              [classes.enabledButton]: isAssignEnabled
+            })}
+          >
+            <DoneOutlinedIcon className={classes.assignIcon} />
           </Box>
-        )}
+          <Typography className={classes.addCustomerTitle}>
+            {t('assign_to_subaccount')}
+          </Typography>
+        </Box>
+        <Box className={`${classes.addCustomerWrap} ${classes.deassignWrap}`}>
+          <Box className={classes.addIconWrap}>
+            <img
+              className={classes.deleteIcon}
+              src={deleteIcon}
+              alt='delete icon'
+            />
+          </Box>
+          <Typography className={classes.addCustomerTitle}>
+            {t('deassign')}
+          </Typography>
+        </Box>
       </Box>
     )
   }
@@ -309,6 +321,7 @@ const AccessNumbersItem = ({ t }) => {
             changeStep={setStep}
           />
         )}
+        {isAssignModalOpen && <AssignToSubaccountModal />}
         {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}

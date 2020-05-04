@@ -47,15 +47,9 @@ const PhoneNumbers = observer(({ t }) => {
     isPhoneNumbersLoading
   } = PhoneNumbersStore
 
-  console.log(numbers, 'numbers')
   // initial request
   useEffect(() => {
-    getPhoneNumbers(
-      match.customerId,
-      match.groupId,
-      page, // cause on back pagination starts from 1, not 0
-      rowsPerPage
-    )
+    getPhoneNumbers(match.customerId, match.groupId, page, rowsPerPage)
   }, [page, rowsPerPage, match.customerId, match.groupId, getPhoneNumbers])
 
   useEffect(() => {
@@ -125,9 +119,9 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const titleData = {
-    mainText: t('phone_numbers'),
-    iconCapture: t('add'),
-    Icon: <AddOutlinedIcon />
+    mainText: t('phone_numbers')
+    // iconCapture: t('add'),
+    // Icon: <AddOutlinedIcon />
   }
 
   const toolbarButtonsBlock = () => {
@@ -145,7 +139,7 @@ const PhoneNumbers = observer(({ t }) => {
             {t('filters')}
           </Typography>
         </Box>
-        {numberOfChecked > 1 && (
+        {/* {numberOfChecked > 1 && (
           <Box className={classes.addCustomerWrap}>
             <Box className={classes.addIconWrap}>
               <img
@@ -158,7 +152,7 @@ const PhoneNumbers = observer(({ t }) => {
               {t('delete')}
             </Typography>
           </Box>
-        )}
+        )} */}
       </Box>
     )
   }

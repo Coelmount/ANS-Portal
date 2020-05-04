@@ -197,9 +197,11 @@ CustomTable.propTypes = {
   extraToolbarBlock: PropTypes.func,
   initialSearchQuery: PropTypes.string,
   onPageChangeActions: PropTypes.func,
-  setCurrentPage: PropTypes.func.isRequired,
-  setCurrentPerPage: PropTypes.func.isRequired,
-  totalPagesServer: PropTypes.number.isRequired
+  page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  setRowsPerPage: PropTypes.func.isRequired,
+  totalPages: PropTypes.number.isRequired
 }
 
 CustomTable.defaultProps = {
