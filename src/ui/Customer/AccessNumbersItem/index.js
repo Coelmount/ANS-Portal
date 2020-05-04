@@ -94,6 +94,12 @@ const AccessNumbersItem = ({ t }) => {
     deleteAssignedNumber(payload)
   }
 
+  const handleCloseAssignModal = () => {
+    setIsAssignModalOpen(false)
+    getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
+    setNumberOfChecked(0)
+  }
+
   const selectNumbers = (checked, id) => {
     const newSelected = transformOnChange(selected, checked, id)
     setSelected(newSelected)
@@ -321,7 +327,12 @@ const AccessNumbersItem = ({ t }) => {
             changeStep={setStep}
           />
         )}
-        {isAssignModalOpen && <AssignToSubaccountModal />}
+        {isAssignModalOpen && (
+          <AssignToSubaccountModal
+            open={isAssignModalOpen}
+            handleClose={handleCloseAssignModal}
+          />
+        )}
         {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}

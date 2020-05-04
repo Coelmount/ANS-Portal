@@ -3,12 +3,14 @@ import { decorate, observable, action } from 'mobx'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import phoneNumbersRangeFilter from 'utils/phoneNumbers/rangeFilter'
 
 export class AssignedNumbers {
   assignedNumbers = []
   isAssignedNumbersLoading = true
   isLoadingEntitlements = true
   isDeletingAssignedNumber = false
+  isPostAssignNumbers = false
   totalPagesServer = 0
   currentEntitlement = null
   numbersToAssign = []
@@ -18,6 +20,7 @@ export class AssignedNumbers {
     this.isAssignedNumbersLoading = true
     this.isLoadingEntitlements = true
     this.isDeletingAssignedNumber = false
+    this.isPostAssignNumbers = false
     this.totalPagesServer = 0
     this.currentEntitlement = null
   }
@@ -103,6 +106,49 @@ export class AssignedNumbers {
   setNumbersToAssign = numbers => {
     this.numbersToAssign = numbers
   }
+
+  postAssignToSubaccount = (customerId, subaccount, closeAsignModal) => {
+    this.isPostAssignNumbers = true
+    const objectsWithRangesArr = phoneNumbersRangeFilter(this.numbersToAssign)
+    const groupId = subaccount.groupId
+    const name = subaccount.groupName
+
+    objectsWithRangesArr.forEach(item => {
+      let rangeToPost
+      if (item.phoneNumbers) {
+        rangeToPost = item.phoneNumbers.map(item => item.nsn)
+      } else rangeToPost = [item.nsn]
+
+      axios.post(`tenants/${customerId}/groups/${groupId}/numbers/`, {
+        range: {
+          minPhoneNumber: rangeToPost[0],
+          maxPhoneNumber: rangeToPost[rangeToPost.length - 1]
+        }
+      })
+    })
+    // .then(() => {
+    //   closeAsignModal()
+    //   SnackbarStore.enqueueSnackbar({
+    //     message: `${this.numbersToAssign.length} numbers assigned to ${name} subaccount successfully`,
+    //     options: {
+    //       variant: 'success'
+    //     }
+    //   })
+    // })
+    // .catch(e =>
+    //   SnackbarStore.enqueueSnackbar({
+    //     message:
+    //       getErrorMessage(e) ||
+    //       `Failed to assign ${this.numbersToAssign.length} numbers to ${name} subaccount`,
+    //     options: {
+    //       variant: 'error'
+    //     }
+    //   })
+    // )
+    // .finally(() => {
+    //   this.isPostAssignNumbers = false
+    // })
+  }
 }
 
 decorate(AssignedNumbers, {
@@ -112,11 +158,13 @@ decorate(AssignedNumbers, {
   isDeletingAssignedNumber: observable,
   totalPagesServer: observable,
   currentEntitlement: observable,
+  isPostAssignNumbers: observable,
   getAssignedNumbers: action,
   deleteAssignedNumber: action,
   getEntitlementsAndFindCurrent: action,
   setDefaultValues: action,
-  setNumbersToAssign: action
+  setNumbersToAssign: action,
+  postAssignToSubaccount: action
 })
 
 export default new AssignedNumbers()

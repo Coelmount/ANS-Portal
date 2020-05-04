@@ -1,43 +1,131 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
-
-import Dialog from '@material-ui/core/Dialog'
+import { withNamespaces } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import IconButton from '@material-ui/core/IconButton'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import CloseIcon from '@material-ui/icons/Close'
 
-import EntitlementsStore from 'stores/Entitlements'
+import AssignedNumbersStore from 'stores/AssignedNumbers'
+import SubaccountsStore from 'stores/Subaccounts'
+import Loading from 'components/Loading'
+import CustomTable from 'components/CustomTable'
+import Checkbox from 'components/Checkbox'
 
-import SetEntitlements from './SetEntitlements'
-import TotalEntitlements from './TotalEntitlements'
+import useStyles from './styles'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    '& .MuiDialog-paperWidthSm': {
-      width: '651px'
-    },
-    '& .MuiDialog-paperScrollPaper': {
-      minHeight: '100%'
-    }
-  }
-}))
-
-const AssignToSubaccountModal = props => {
+const AssignToSubaccountModal = ({ open, t, handleClose }) => {
   const classes = useStyles()
-  const {
-    open,
-    handleClose,
-    successClose,
-    isCreateSubaccount,
-    store,
-    createSubaccount,
-    isEditCustomer
-  } = props
-  const { step } = EntitlementsStore
+  const match = useParams()
+
+  const [selectedSubaccount, setSelectedSubaccount] = useState(null)
+
+  const [subaccountsList, setSubaccountsList] = useState([])
+  const [isAnyChecked, setIsAnyChecked] = useState(false)
+  const [searchList, setSearchList] = useState([])
+  const { getSubaccounts, rows, isLoadingSubaccounts } = SubaccountsStore
+  const { postAssignToSubaccount } = AssignedNumbersStore
+
+  useEffect(() => {
+    getSubaccounts(match.customerId)
+  }, [getSubaccounts])
+
+  useEffect(() => {
+    setSubaccountsList(rows)
+  }, [rows])
+
+  const selectSubaccount = (checked, id) => {
+    const newSelected = subaccountsList.map(item => {
+      let result = {}
+      if (item.id === id) {
+        result = {
+          ...item,
+          checked: checked,
+          hover: false
+        }
+        setSelectedSubaccount(result)
+      } else {
+        result = {
+          ...item,
+          checked: false,
+          hover: false
+        }
+      }
+      return result
+    })
+    setSubaccountsList(newSelected)
+  }
+
+  const changeHover = (newHover, id) => {
+    const newSelected = [...subaccountsList]
+    const index = subaccountsList.findIndex(el => el.id === id)
+    newSelected[index].hover = newHover
+    setSubaccountsList(newSelected)
+  }
+
+  const handleAsignButtonClick = () => {
+    postAssignToSubaccount(match.customerId, selectedSubaccount, handleClose)
+  }
+
+  const columns = [
+    {
+      id: 'checkbox',
+      label: <Checkbox checked={false} />,
+      isSortAvailable: false,
+      getCellData: (row, i) =>
+        row.checked ? (
+          <Checkbox
+            checked={row.checked}
+            className={classes.checkbox}
+            onChange={() => selectSubaccount(!row.checked, row.id)}
+          />
+        ) : (
+          <div
+            className={classes.indexHoverCheckbox}
+            onClick={() => selectSubaccount(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
+          >
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectSubaccount(true, row.id)}
+              />
+            ) : (
+              i + 1
+            )}
+          </div>
+        ),
+      extraProps: {
+        className: classes.checkboxCell
+      },
+      extraHeadProps: {
+        className: classes.checkboxCell
+      }
+    },
+    {
+      id: 'groupId',
+      label: 'ID'
+    },
+    {
+      id: 'groupName',
+      label: 'name'
+    }
+  ]
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
-        {t('add_entitlements')}
+        {t('assign_numbers_subaccount')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -46,16 +134,13 @@ const AssignToSubaccountModal = props => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent className={classes.entitlementsDialogContent}>
+      <DialogContent className={classes.dialogContent}>
         <Box className={classes.subtitle}>
-          <Typography className={classes.stepStyles}>{`${t(
-            'step'
-          )} 1/2`}</Typography>
-          <Typography className={classes.setEntitlementsTitle}>
-            {t('select_entitlement')}
+          <Typography className={classes.subtitleText}>
+            {t('select_subaccount')}
           </Typography>
         </Box>
-        {isLoadingEntitlementTypes ? (
+        {isLoadingSubaccounts ? (
           <Loading />
         ) : (
           <CustomTable
@@ -63,18 +148,17 @@ const AssignToSubaccountModal = props => {
             columns={columns}
             firstCell={false}
             showPagination={true}
-            rows={selected}
-            searchCriterias={['name']}
+            rows={subaccountsList}
+            searchCriterias={['groupId', 'groupName']}
             getSearchList={setSearchList}
-            // isLoadingData={isLoadingEntitlementTypes}
           />
         )}
       </DialogContent>
-      <DialogActions className={classes.dialogActionsSecond}>
+      <DialogActions className={classes.dialogActions}>
         <Button
           variant='outlined'
           color='primary'
-          className={classes.backButton}
+          className={classes.cancelButton}
           onClick={handleClose}
         >
           {t('cancel')}
@@ -82,15 +166,15 @@ const AssignToSubaccountModal = props => {
         <Button
           variant='contained'
           color='primary'
-          className={classes.nextButton}
-          onClick={handleNextButtonClick}
-          disabled={!selected.some(item => item.checked === true)}
+          className={classes.assignButton}
+          onClick={handleAsignButtonClick}
+          disabled={!subaccountsList.some(item => item.checked === true)}
         >
-          {t('next')}
+          {t('assign')}
         </Button>
       </DialogActions>
     </Dialog>
   )
 }
 
-export default observer(AssignToSubaccountModal)
+export default withNamespaces()(observer(AssignToSubaccountModal))
