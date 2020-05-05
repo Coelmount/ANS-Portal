@@ -40,7 +40,7 @@ export class PhoneNumbers {
     this.isPhoneNumbersLoading = true
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","state"] `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"] `
       )
       .then(res => {
         const requestResult = res.data.numbers
@@ -70,6 +70,7 @@ export class PhoneNumbers {
 
             return {
               ...item,
+              connectedTo: item.connected_to || 'free',
               countryName: countryName,
               phoneNumber: `${item.country_code} ${item.nsn}`,
               rangeStart: item.rangeStart

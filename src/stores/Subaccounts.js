@@ -36,7 +36,10 @@ export class SubaccountsStore {
     axios
       .get(`/tenants/${tenantId}/groups`)
       .then(res => {
-        this.rows = res.data.groups
+        const result = res.data.groups.map((item, index) => {
+          return { id: index, hover: false, checked: false, ...item }
+        })
+        this.rows = result
 
         this.selectGroups = res.data.groups.map(group => ({
           value: group.groupId,
