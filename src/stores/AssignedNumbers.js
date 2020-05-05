@@ -106,48 +106,44 @@ export class AssignedNumbers {
   setNumbersToAssign = numbers => {
     this.numbersToAssign = numbers
   }
-  // item.phoneNumbers ? [rangeStart, rangeEnd] : item.nsn
-  // axios.post(`tenants/${customerId}/groups/${groupId}/numbers/`, {
+
   postAssignToSubaccount = (customerId, subaccount, closeAsignModal) => {
     this.isPostAssignNumbers = true
     const objectsWithRangesArr = phoneNumbersRangeFilter(this.numbersToAssign)
     const groupId = subaccount.groupId
     const name = subaccount.groupName
-    console.log(objectsWithRangesArr, 'objectsWithRangesArr')
+
     objectsWithRangesArr.forEach(item => {
-      axios.post(`tenants/${customerId}/groups/${groupId}/numbers/`, {
-        // range: item.phoneNumbers
-        //   ? [Number(item.rangeStart), Number(item.rangeEnd)]
-        //   : [Number(item.nsn)],
-        range: {
-          minPhoneNumber: item.rangeStart,
-          maxPhoneNumber: item.rangeEnd
-        },
-        country_code: item.country_code
-      })
+      axios
+        .post(`tenants/${customerId}/groups/${groupId}/numbers`, {
+          range: item.phoneNumbers
+            ? [Number(item.rangeStart), Number(item.rangeEnd)]
+            : [Number(item.nsn), Number(item.nsn)],
+          country_code: item.country_code
+        })
+        .then(() => {
+          closeAsignModal()
+          SnackbarStore.enqueueSnackbar({
+            message: `${this.numbersToAssign.length} numbers assigned to ${name} subaccount successfully`,
+            options: {
+              variant: 'success'
+            }
+          })
+        })
+        .catch(e =>
+          SnackbarStore.enqueueSnackbar({
+            message:
+              getErrorMessage(e) ||
+              `Failed to assign ${this.numbersToAssign.length} numbers to ${name} subaccount`,
+            options: {
+              variant: 'error'
+            }
+          })
+        )
+        .finally(() => {
+          this.isPostAssignNumbers = false
+        })
     })
-    // .then(() => {
-    //   closeAsignModal()
-    //   SnackbarStore.enqueueSnackbar({
-    //     message: `${this.numbersToAssign.length} numbers assigned to ${name} subaccount successfully`,
-    //     options: {
-    //       variant: 'success'
-    //     }
-    //   })
-    // })
-    // .catch(e =>
-    //   SnackbarStore.enqueueSnackbar({
-    //     message:
-    //       getErrorMessage(e) ||
-    //       `Failed to assign ${this.numbersToAssign.length} numbers to ${name} subaccount`,
-    //     options: {
-    //       variant: 'error'
-    //     }
-    //   })
-    // )
-    // .finally(() => {
-    //   this.isPostAssignNumbers = false
-    // })
   }
 }
 
