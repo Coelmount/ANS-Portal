@@ -106,24 +106,24 @@ export class AssignedNumbers {
   setNumbersToAssign = numbers => {
     this.numbersToAssign = numbers
   }
-
+  // item.phoneNumbers ? [rangeStart, rangeEnd] : item.nsn
+  // axios.post(`tenants/${customerId}/groups/${groupId}/numbers/`, {
   postAssignToSubaccount = (customerId, subaccount, closeAsignModal) => {
     this.isPostAssignNumbers = true
     const objectsWithRangesArr = phoneNumbersRangeFilter(this.numbersToAssign)
     const groupId = subaccount.groupId
     const name = subaccount.groupName
-
+    console.log(objectsWithRangesArr, 'objectsWithRangesArr')
     objectsWithRangesArr.forEach(item => {
-      let rangeToPost
-      if (item.phoneNumbers) {
-        rangeToPost = item.phoneNumbers.map(item => item.nsn)
-      } else rangeToPost = [item.nsn]
-
       axios.post(`tenants/${customerId}/groups/${groupId}/numbers/`, {
+        // range: item.phoneNumbers
+        //   ? [Number(item.rangeStart), Number(item.rangeEnd)]
+        //   : [Number(item.nsn)],
         range: {
-          minPhoneNumber: rangeToPost[0],
-          maxPhoneNumber: rangeToPost[rangeToPost.length - 1]
-        }
+          minPhoneNumber: item.rangeStart,
+          maxPhoneNumber: item.rangeEnd
+        },
+        country_code: item.country_code
       })
     })
     // .then(() => {
