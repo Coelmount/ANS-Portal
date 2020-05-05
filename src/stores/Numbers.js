@@ -61,6 +61,40 @@ export class NumbersStore {
       )
   }
 
+  postAddedNumbersToSubaccaunt = (
+    tenantId,
+    groupId,
+    dataForPost,
+    handleClose
+  ) => {
+    const promiseArray = []
+    dataForPost.forEach(data => {
+      promiseArray.push(
+        axios.post(`/tenants/${tenantId}/groups/${groupId}/numbers`, data)
+      )
+    })
+    Promise.all(promiseArray)
+      .then(res => {
+        res.forEach(el => {
+          SnackbarStore.enqueueSnackbar({
+            message: 'Success assigned numbers',
+            options: {
+              variant: 'success'
+            }
+          })
+        })
+        handleClose && handleClose()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to assign numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+  }
+
   postResevedNumbersToCustomer = (
     tenantId,
     dataForPost,
@@ -85,7 +119,6 @@ export class NumbersStore {
             ...response.result.filter(el => el.status === 'rejected')
           )
         })
-        console.log(this.addedNumbers, this.rejectedNumbers)
         setAddedNumber(this.addedNumbers)
         changeStep && changeStep(step)
       })
@@ -121,7 +154,6 @@ export class NumbersStore {
             ...response.result.filter(el => el.status === 'rejected')
           )
         })
-        console.log(this.addedNumbers, this.rejectedNumbers)
         changeStep && changeStep(step)
       })
       .catch(e =>
@@ -188,7 +220,8 @@ decorate(NumbersStore, {
   reservedNumbers: observable,
   getAvailableNumbers: action,
   getReservedNumbers: action,
-  postResevedNumbersToCustomer: action
+  postResevedNumbersToCustomer: action,
+  postAddedNumbersToSubaccaunt: action
 })
 
 export default new NumbersStore()

@@ -40,8 +40,6 @@ const SecondStep = props => {
   const match = useParams()
   const { currentEntitlement } = AssignedNumbersStore
 
-  console.log(numbers)
-
   const columns = [
     {
       id: 'checkbox',

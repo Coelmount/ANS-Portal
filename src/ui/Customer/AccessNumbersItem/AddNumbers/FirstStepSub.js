@@ -30,7 +30,7 @@ import capitalize from 'lodash/capitalize'
 import useStyles from './styles'
 
 const SecondStep = props => {
-  const { t, addedNumbers, fakePostSub } = props
+  const { t, addedNumbers, postAssignNumbersToSubaccaunt } = props
   const {
     getSubaccounts,
     selectGroups,
@@ -149,7 +149,7 @@ const SecondStep = props => {
             !addedNumbers.filter(el => el.checked).length ||
             !props.selectedGroup
           }
-          onClick={fakePostSub}
+          onClick={postAssignNumbersToSubaccaunt}
         >
           {`${t('add')} (${addedNumbers.filter(el => el.checked).length})`}
         </Button>

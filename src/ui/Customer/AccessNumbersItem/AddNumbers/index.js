@@ -40,7 +40,8 @@ const CreateCustomer = props => {
     getReservedNumbers,
     reservedNumbers,
     isLoadingReservedNumbers,
-    postResevedNumbersToCustomer
+    postResevedNumbersToCustomer,
+    postAddedNumbersToSubaccaunt
   } = numbersStore
   const { currentEntitlement } = AssignedNumbersStore
   const classes = useStyles()
@@ -129,10 +130,23 @@ const CreateCustomer = props => {
     setSelectAllAddedNumbers(!selectAllAddedNumbers)
   }
 
-  const fakePostSub = () => {
+  const postAssignNumbersToSubaccaunt = () => {
     const newNumbers = [...addedNumbers]
-    setAddedNumberSub(newNumbers.filter(el => el.checked))
-    changeStep(5)
+    const dataForPost = newNumbers
+      .filter(number => number.checked)
+      .map(el => ({
+        range: [
+          Number(el.phoneNumber.slice(currentEntitlement.country_code.length)),
+          Number(el.phoneNumber.slice(currentEntitlement.country_code.length))
+        ],
+        country_code: `${currentEntitlement.country_code}`
+      }))
+    postAddedNumbersToSubaccaunt(
+      match.customerId,
+      selectedGroup,
+      dataForPost,
+      handleClose
+    )
   }
 
   if (isLoadingReservedNumbers) {
@@ -161,7 +175,7 @@ const CreateCustomer = props => {
           handleSelectAllAdded={handleSelectAllAdded}
           selectedGroup={selectedGroup}
           setSelectedGroup={setSelectedGroup}
-          fakePostSub={fakePostSub}
+          postAssignNumbersToSubaccaunt={postAssignNumbersToSubaccaunt}
           addedNumbersSub={addedNumbersSub}
         />
       ) : (
@@ -173,19 +187,6 @@ const CreateCustomer = props => {
           setQueryAvalibleNumbers={setQueryAvalibleNumbers}
           searchAvalibleNumbers={searchAvalibleNumbers}
           availableNumbers={availableNumbers}
-          // numbers={numbers}
-          // selectNumbers={selectNumbers}
-          // handleSelectAll={handleSelectAll}
-          // selectAll={selectAll}
-          // fakePost={fakePost}
-          // addedNumbers={addedNumbers}
-          // selectAllAddedNumbers={selectAllAddedNumbers}
-          // selectNumbersAdded={selectNumbersAdded}
-          // handleSelectAllAdded={handleSelectAllAdded}
-          // selectedGroup={selectedGroup}
-          // setSelectedGroup={setSelectedGroup}
-          // fakePostSub={fakePostSub}
-          // addedNumbersSub={addedNumbersSub}
         />
       )}
     </Dialog>
@@ -277,7 +278,7 @@ const Steps = props => {
           selectAllAddedNumbers={props.selectAllAddedNumbers}
           selectedGroup={props.selectedGroup}
           setSelectedGroup={props.setSelectedGroup}
-          fakePostSub={props.fakePostSub}
+          postAssignNumbersToSubaccaunt={props.postAssignNumbersToSubaccaunt}
         />
       )
     case 5:
