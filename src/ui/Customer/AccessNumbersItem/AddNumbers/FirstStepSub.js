@@ -23,6 +23,7 @@ import Group3Person from 'source/images/svg/Group3Person.svg'
 
 import SubaccountsStore from 'stores/Subaccounts'
 import NumbersStore from 'stores/Numbers'
+import AssignedNumbersStore from 'stores/AssignedNumbers'
 
 import capitalize from 'lodash/capitalize'
 
@@ -35,6 +36,7 @@ const SecondStep = props => {
     selectGroups,
     isLoadingSubaccounts
   } = SubaccountsStore
+  const { currentEntitlement } = AssignedNumbersStore
 
   const classes = useStyles()
   const match = useParams()
@@ -58,28 +60,28 @@ const SecondStep = props => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={e => props.selectNumbers(!row.checked, row.number)}
+            onChange={e => props.selectNumbers(!row.checked, row.phoneNumber)}
           />
         ) : (
           <div
             className={classes.cursorPointer}
-            onClick={e => props.selectNumbers(!row.checked, row.number)}
+            onClick={e => props.selectNumbers(!row.checked, row.phoneNumber)}
           >
             {i + 1}
           </div>
         ),
       extraHeadProps: {
-        className: classes.checkboxCell
+        className: classes.checkboxCellFNHead
       },
       extraProps: {
-        className: classes.checkboxCell
+        className: classes.checkboxCellFN
       }
     },
     {
       id: 'number',
       label: 'Number',
       isSortAvailable: false,
-      getCellData: row => row.number,
+      getCellData: row => row.phoneNumber,
       extraProps: {
         className: classes.textLeft
       }
@@ -117,7 +119,9 @@ const SecondStep = props => {
             />
           </Box>
         </Box>
-        <Box className={classes.secondParagraphBox}>{match.numbersId}</Box>
+        <Box className={classes.secondParagraphBox}>
+          {currentEntitlement.name}
+        </Box>
         <CustomTable
           classes={classes}
           columns={columns}

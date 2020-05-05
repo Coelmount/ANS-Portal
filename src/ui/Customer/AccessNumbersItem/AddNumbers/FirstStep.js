@@ -72,7 +72,7 @@ const FirstStep = props => {
         </Box>
         {numbers.map(el => (
           <Box key={el.nsn} className={classes.numbersBlock}>
-            {`${numbers[0].country_code} ${el.nsn}`}
+            {`${el.country_code} ${el.nsn}`}
           </Box>
         ))}
       </DialogContent>

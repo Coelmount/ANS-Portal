@@ -39,14 +39,15 @@ const CreateCustomer = props => {
     availableNumbers,
     getReservedNumbers,
     reservedNumbers,
-    isLoadingReservedNumbers
+    isLoadingReservedNumbers,
+    postResevedNumbersToCustomer
   } = numbersStore
   const { currentEntitlement } = AssignedNumbersStore
   const classes = useStyles()
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [addedNumbers, setAddedNumber] = useState([])
-  const [selectAllAddedNumbers, setSelectAllAddedNumbers] = useState(true)
+  const [selectAllAddedNumbers, setSelectAllAddedNumbers] = useState(false)
   const [selectedGroup, setSelectedGroup] = useState('')
   const [addedNumbersSub, setAddedNumberSub] = useState([])
   const [queryAvalibleNumbers, setQueryAvalibleNumbers] = useState({
@@ -73,7 +74,7 @@ const CreateCustomer = props => {
 
   const selectNumbers = (checked, number) => {
     const newNumbers = [...numbers]
-    const index = numbers.findIndex(el => el.number === number)
+    const index = numbers.findIndex(el => el.nsn === number)
     newNumbers[index].checked = checked
     if (newNumbers.every(el => el.checked)) {
       setSelectAll(true)
@@ -89,15 +90,27 @@ const CreateCustomer = props => {
     setSelectAll(!selectAll)
   }
 
-  const fakePost = () => {
+  const postAddNumbersToCustomer = () => {
     const newNumbers = [...numbers]
-    setAddedNumber(newNumbers.filter(el => el.checked))
-    changeStep(3)
+    const dataForPost = newNumbers
+      .filter(number => number.checked)
+      .map(el => ({
+        country_code: `${el.country_code}`,
+        range: [Number(el.nsn), Number(el.nsn)],
+        service_capabilities: currentEntitlement.service_capabilities
+      }))
+    postResevedNumbersToCustomer(
+      match.customerId,
+      dataForPost,
+      changeStep,
+      3,
+      setAddedNumber
+    )
   }
 
   const selectNumbersAdded = (checked, number) => {
     const newNumbers = [...addedNumbers]
-    const index = addedNumbers.findIndex(el => el.number === number)
+    const index = addedNumbers.findIndex(el => el.phoneNumber === number)
     newNumbers[index].checked = checked
     if (newNumbers.every(el => el.checked)) {
       setSelectAllAddedNumbers(true)
@@ -141,7 +154,7 @@ const CreateCustomer = props => {
           selectNumbers={selectNumbers}
           handleSelectAll={handleSelectAll}
           selectAll={selectAll}
-          fakePost={fakePost}
+          postAddNumbersToCustomer={postAddNumbersToCustomer}
           addedNumbers={addedNumbers}
           selectAllAddedNumbers={selectAllAddedNumbers}
           selectNumbersAdded={selectNumbersAdded}
@@ -243,7 +256,7 @@ const Steps = props => {
           selectNumbers={props.selectNumbers}
           handleSelectAll={props.handleSelectAll}
           selectAll={props.selectAll}
-          fakePost={props.fakePost}
+          postAddNumbersToCustomer={props.postAddNumbersToCustomer}
         />
       )
     case 3:
