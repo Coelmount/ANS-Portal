@@ -172,8 +172,12 @@ const AuthPages = observer(() => {
       {authComponents.map(el => (
         <Route key={el.path} path={el.path} component={el.component} exact />
       ))}
-      <Redirect to='/' exact />
-      <Route path='*' component={NotFound} />
+      {!isAuthorized && !localStorage.getItem('token') && (
+        <Redirect to='/' exact />
+      )}
+      {!isAuthorized && !localStorage.getItem('token') && (
+        <Route path='*' component={NotFound} />
+      )}
     </Switch>
   )
 })

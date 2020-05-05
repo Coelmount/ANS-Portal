@@ -24,13 +24,18 @@ export class AuthStore {
           this.userLogin = res.data
           this.getLocal()
           if (res.data.ids) {
-            if (res.data.ids.group_id) {
+            if (res.data.ids.tenant_id && res.data.ids.group_id) {
               history.push(
                 `/customers/${res.data.ids.tenant_id}/subaccounts/${res.data.ids.group_id}/ans_instances`
               )
               return
             }
-            history.push(`/customers/${res.data.ids.tenant_id}/access_numbers`)
+            if (res.data.ids.tenant_id) {
+              history.push(
+                `/customers/${res.data.ids.tenant_id}/access_numbers`
+              )
+              return
+            }
           }
         }
       })

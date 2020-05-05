@@ -2,6 +2,9 @@ import has from 'lodash/has'
 
 const getErrorMessage = error => {
   if (has(error, 'response.status') && error.response.status === 401) {
+    if (has(error, 'response.data.error')) {
+      return error.response.data.error
+    }
     return 'Your current session has expired. Please login again to continue.'
   }
   if (
