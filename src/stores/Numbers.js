@@ -61,36 +61,80 @@ export class NumbersStore {
       )
   }
 
-  postAssignNumbersToCustomer = (tenantId, changeStep) => {
+  postResevedNumbersToCustomer = (
+    tenantId,
+    dataForPost,
+    changeStep,
+    step,
+    setAddedNumber
+  ) => {
+    const promiseArray = []
+    dataForPost.forEach(data => {
+      promiseArray.push(axios.post(`/tenants/${tenantId}/numbers`, data))
+    })
+    Promise.all(promiseArray)
+      .then(res => {
+        res.forEach(el => {
+          const response = JSON.parse(el.data.apio.body)
+          this.addedNumbers.push(
+            ...response.result
+              .filter(el => el.status === 'added')
+              .map(el => ({ ...el, checked: false }))
+          )
+          this.rejectedNumbers.push(
+            ...response.result.filter(el => el.status === 'rejected')
+          )
+        })
+        console.log(this.addedNumbers, this.rejectedNumbers)
+        setAddedNumber(this.addedNumbers)
+        changeStep && changeStep(step)
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to assign numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isAddingNumbers = false
+      })
+  }
+
+  postAssignNumbersToCustomer = (tenantId, changeStep, step) => {
     this.isAddingNumbers = true
     const selectedNumbers = this.availableNumbersTable.filter(el => el.checked)
     const dataForPost = this.parseNumbersToPost(selectedNumbers)
+    const promiseArray = []
     dataForPost.forEach(data => {
-      axios
-        .post(`/tenants/${tenantId}/numbers`, data)
-        .then(res => {
-          const response = JSON.parse(res.data.apio.body)
-          this.addedNumbers = response.result.filter(
-            el => el.status === 'added'
-          )
-          this.rejectedNumbers = response.result.filter(
-            el => el.status === 'rejected'
-          )
-          console.log(this.addedNumbers, this.rejectedNumbers)
-          changeStep && changeStep(3)
-        })
-        .catch(e =>
-          SnackbarStore.enqueueSnackbar({
-            message: getErrorMessage(e) || 'Failed to assign numbers',
-            options: {
-              variant: 'error'
-            }
-          })
-        )
-        .finally(() => {
-          this.isAddingNumbers = false
-        })
+      promiseArray.push(axios.post(`/tenants/${tenantId}/numbers`, data))
     })
+    Promise.all(promiseArray)
+      .then(res => {
+        res.forEach(el => {
+          const response = JSON.parse(el.data.apio.body)
+          this.addedNumbers.push(
+            ...response.result.filter(el => el.status === 'added')
+          )
+          this.rejectedNumbers.push(
+            ...response.result.filter(el => el.status === 'rejected')
+          )
+        })
+        console.log(this.addedNumbers, this.rejectedNumbers)
+        changeStep && changeStep(step)
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to assign numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isAddingNumbers = false
+      })
   }
 
   clearNumbers = () => {
@@ -143,7 +187,8 @@ decorate(NumbersStore, {
   isLoadingReservedNumbers: observable,
   reservedNumbers: observable,
   getAvailableNumbers: action,
-  getReservedNumbers: action
+  getReservedNumbers: action,
+  postResevedNumbersToCustomer: action
 })
 
 export default new NumbersStore()

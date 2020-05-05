@@ -200,7 +200,7 @@ const FirstStepNFN = props => {
           className={classes.nextButton}
           disable={isAddingNumbers}
           onClick={() =>
-            postAssignNumbersToCustomer(match.customerId, changeStep)
+            postAssignNumbersToCustomer(match.customerId, changeStep, 3)
           }
         >
           {`${t('add')} (${countNumbers})`}

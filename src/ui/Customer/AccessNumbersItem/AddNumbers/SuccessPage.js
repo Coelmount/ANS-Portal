@@ -10,11 +10,13 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
 import phonesSuccessIcon from 'source/images/svg/phones-success.svg'
+import NumbersStore from 'stores/Numbers'
 
 import useStyles from './styles'
 
 const SuccesPage = props => {
-  const { handleClose, t, changeStep, addedNumbers } = props
+  const { handleClose, t, changeStep } = props
+  const { addedNumbers } = NumbersStore
   const history = useHistory()
   const match = useParams()
   const classes = useStyles()

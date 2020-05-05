@@ -32,7 +32,7 @@ const SecondStep = props => {
     t,
     numbers,
     selectAll,
-    fakePost,
+    postAddNumbersToCustomer,
     handleSelectAll,
     selectNumbers
   } = props
@@ -54,12 +54,12 @@ const SecondStep = props => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={e => props.selectNumbers(!row.checked, row.number)}
+            onChange={e => props.selectNumbers(!row.checked, row.nsn)}
           />
         ) : (
           <div
             className={classes.cursorPointer}
-            onClick={e => props.selectNumbers(!row.checked, row.number)}
+            onClick={e => props.selectNumbers(!row.checked, row.nsn)}
           >
             {i + 1}
           </div>
@@ -95,7 +95,9 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <Box className={classes.secondParagraphBoxFN}>{match.numbersId}</Box>
+        <Box className={classes.secondParagraphBoxFN}>
+          {currentEntitlement.name}
+        </Box>
         <CustomTable
           classes={classes}
           columns={columns}
@@ -120,7 +122,7 @@ const SecondStep = props => {
           color='primary'
           className={classes.nextButton}
           disabled={!numbers.filter(el => el.checked).length}
-          onClick={() => fakePost()}
+          onClick={() => postAddNumbersToCustomer()}
         >
           {`${t('add')} (${numbers.filter(el => el.checked).length})`}
         </Button>
