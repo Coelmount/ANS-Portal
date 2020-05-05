@@ -62,14 +62,23 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
+    color: theme.palette.black,
+    opacity: 0.5,
     '&:hover': {
       cursor: 'pointer'
-    },
-    color: theme.palette.black
+    }
+  },
+  enabledButton: {
+    opacity: 1
   },
   deleteIcon: {
     width: 14,
     height: 16
+  },
+  assignIcon: {
+    width: 19,
+    height: 19,
+    marginLeft: 2
   },
   addCustomerTitle: {
     whiteSpace: 'nowrap',
@@ -121,6 +130,9 @@ const useStyles = makeStyles(theme => ({
   },
   deleteCell: {
     paddingRight: '38px !important'
+  },
+  deassignWrap: {
+    marginLeft: 30
   }
 }))
 
