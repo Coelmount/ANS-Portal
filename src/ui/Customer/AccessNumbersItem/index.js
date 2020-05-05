@@ -30,6 +30,8 @@ import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import deleteIcon from 'source/images/svg/delete-icon.svg'
+import disconnectFromCustomerIcon from 'source/images/svg/disconnect-from-customer.svg'
+
 import useStyles from './styles'
 
 const AccessNumbersItem = ({ t }) => {
@@ -145,10 +147,28 @@ const AccessNumbersItem = ({ t }) => {
     }
   }
 
+  const extraTitleBlock = (
+    <Box
+      className={classnames(classes.addCustomerWrap, classes.extraTitleWrap)}
+    >
+      <Box className={classes.addIconWrap}>
+        <img
+          className={classes.disconnectIcon}
+          src={disconnectFromCustomerIcon}
+          alt='disconnect from customer'
+        />
+      </Box>
+      <Typography className={classes.addCustomerTitle}>
+        {t('disconnect_from_customer')}
+      </Typography>
+    </Box>
+  )
+
   const titleData = {
     mainText: currentEntitlement && currentEntitlement.name,
     iconCapture: t('add_numbers'),
-    Icon: <AddOutlinedIcon />
+    Icon: <AddOutlinedIcon />,
+    extraBlock: extraTitleBlock
   }
 
   const toolbarButtonsBlock = () => {
@@ -176,7 +196,7 @@ const AccessNumbersItem = ({ t }) => {
             />
           </Box>
           <Typography className={classes.addCustomerTitle}>
-            {t('deassign')}
+            {t('deassign_from_subaccount')}
           </Typography>
         </Box>
       </Box>

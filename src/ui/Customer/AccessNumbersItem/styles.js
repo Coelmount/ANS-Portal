@@ -133,6 +133,14 @@ const useStyles = makeStyles(theme => ({
   },
   deassignWrap: {
     marginLeft: 30
+  },
+  extraTitleWrap: {
+    marginRight: 45
+  },
+  disconnectIcon: {
+    width: 19,
+    height: 19,
+    marginRight: 1
   }
 }))
 
