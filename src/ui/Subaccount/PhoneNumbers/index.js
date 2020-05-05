@@ -261,17 +261,17 @@ const PhoneNumbers = observer(({ t }) => {
       }
     },
     {
-      id: 'state',
+      id: 'connectedTo',
       label: 'status',
       getCellData: row => (
         <Typography
           className={
-            row.state === 'assigned'
+            row.connectedTo !== 'free'
               ? classes.assignedTitle
               : classes.availableTitle
           }
         >
-          {row.state}
+          {t(row.connectedTo)}
         </Typography>
       )
     },
