@@ -31,7 +31,8 @@ export class NumbersStore {
         res =>
           (this.reservedNumbers = res.data.numbers.map(el => ({
             ...el,
-            checked: false
+            checked: false,
+            hover: false
           })))
       )
       .finally(() => (this.isLoadingReservedNumbers = false))
@@ -113,7 +114,7 @@ export class NumbersStore {
           this.addedNumbers.push(
             ...response.result
               .filter(el => el.status === 'added')
-              .map(el => ({ ...el, checked: false }))
+              .map(el => ({ ...el, checked: false, hover: false }))
           )
           this.rejectedNumbers.push(
             ...response.result.filter(el => el.status === 'rejected')
