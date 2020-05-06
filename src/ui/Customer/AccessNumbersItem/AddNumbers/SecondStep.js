@@ -34,7 +34,8 @@ const SecondStep = props => {
     selectAll,
     postAddNumbersToCustomer,
     handleSelectAll,
-    selectNumbers
+    selectNumbers,
+    changeHover
   } = props
   const classes = useStyles()
   const match = useParams()
@@ -56,10 +57,20 @@ const SecondStep = props => {
           />
         ) : (
           <div
-            className={classes.cursorPointer}
-            onClick={e => props.selectNumbers(!row.checked, row.nsn)}
+            className={classes.indexHoverCheckbox}
+            onClick={() => selectNumbers(!row.checked, row.nsn)}
+            onMouseLeave={() => changeHover(false, row.nsn)}
+            onMouseEnter={() => changeHover(true, row.nsn)}
           >
-            {i + 1}
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectNumbers(true, row.nsn)}
+              />
+            ) : (
+              i + 1
+            )}
           </div>
         ),
       extraHeadProps: {

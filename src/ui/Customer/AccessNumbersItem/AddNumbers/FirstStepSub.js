@@ -30,7 +30,12 @@ import capitalize from 'lodash/capitalize'
 import useStyles from './styles'
 
 const SecondStep = props => {
-  const { t, addedNumbers, postAssignNumbersToSubaccaunt } = props
+  const {
+    t,
+    addedNumbers,
+    postAssignNumbersToSubaccaunt,
+    changeHoverAddedNumbers
+  } = props
   const {
     getSubaccounts,
     selectGroups,
@@ -64,10 +69,20 @@ const SecondStep = props => {
           />
         ) : (
           <div
-            className={classes.cursorPointer}
-            onClick={e => props.selectNumbers(!row.checked, row.phoneNumber)}
+            className={classes.indexHoverCheckbox}
+            onClick={() => props.selectNumbers(!row.checked, row.phoneNumber)}
+            onMouseLeave={() => changeHoverAddedNumbers(false, row.phoneNumber)}
+            onMouseEnter={() => changeHoverAddedNumbers(true, row.phoneNumber)}
           >
-            {i + 1}
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => props.selectNumbers(true, row.phoneNumber)}
+              />
+            ) : (
+              i + 1
+            )}
           </div>
         ),
       extraHeadProps: {

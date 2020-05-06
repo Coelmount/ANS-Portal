@@ -91,6 +91,13 @@ const CreateCustomer = props => {
     setSelectAll(!selectAll)
   }
 
+  const changeHover = (newHover, number) => {
+    const newNumbers = [...numbers]
+    const index = numbers.findIndex(el => el.nsn === number)
+    newNumbers[index].hover = newHover
+    setNumbers(newNumbers)
+  }
+
   const postAddNumbersToCustomer = () => {
     const newNumbers = [...numbers]
     const dataForPost = newNumbers
@@ -128,6 +135,13 @@ const CreateCustomer = props => {
     }))
     setAddedNumber(newNumbers)
     setSelectAllAddedNumbers(!selectAllAddedNumbers)
+  }
+
+  const changeHoverAddedNumbers = (newHover, number) => {
+    const newNumbers = [...addedNumbers]
+    const index = addedNumbers.findIndex(el => el.phoneNumber === number)
+    newNumbers[index].hover = newHover
+    setAddedNumber(newNumbers)
   }
 
   const postAssignNumbersToSubaccaunt = () => {
@@ -177,6 +191,8 @@ const CreateCustomer = props => {
           setSelectedGroup={setSelectedGroup}
           postAssignNumbersToSubaccaunt={postAssignNumbersToSubaccaunt}
           addedNumbersSub={addedNumbersSub}
+          changeHover={changeHover}
+          changeHoverAddedNumbers={changeHoverAddedNumbers}
         />
       ) : (
         <StepsNotFoundNumbers
@@ -258,6 +274,7 @@ const Steps = props => {
           handleSelectAll={props.handleSelectAll}
           selectAll={props.selectAll}
           postAddNumbersToCustomer={props.postAddNumbersToCustomer}
+          changeHover={props.changeHover}
         />
       )
     case 3:
@@ -279,6 +296,7 @@ const Steps = props => {
           selectedGroup={props.selectedGroup}
           setSelectedGroup={props.setSelectedGroup}
           postAssignNumbersToSubaccaunt={props.postAssignNumbersToSubaccaunt}
+          changeHoverAddedNumbers={props.changeHoverAddedNumbers}
         />
       )
     case 5:
