@@ -171,7 +171,8 @@ const SetEntitlements = props => {
             rows={selected}
             searchCriterias={['name']}
             getSearchList={setSearchList}
-            // isLoadingData={isLoadingEntitlementTypes}
+            noAvailableDataMessage={t('no_entitlements_available')}
+            isModal={true}
           />
         )}
       </DialogContent>

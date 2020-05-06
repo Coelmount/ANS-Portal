@@ -59,6 +59,8 @@ const CustomTable = ({
   getSearchList,
   showToolBar,
   initialSearchQuery,
+  noAvailableDataMessage,
+  isModal,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -186,7 +188,10 @@ const CustomTable = ({
           )}
         </Fragment>
       ) : (
-        <NoAvailableDataBlock />
+        <NoAvailableDataBlock
+          messageText={noAvailableDataMessage}
+          isModal={isModal}
+        />
       )}
     </Fragment>
   )
@@ -195,7 +200,9 @@ const CustomTable = ({
 CustomTable.propTypes = {
   showPagination: PropTypes.bool,
   extraToolbarBlock: PropTypes.func,
-  initialSearchQuery: PropTypes.string
+  initialSearchQuery: PropTypes.string,
+  noAvailableDataMessage: PropTypes.string.isRequired,
+  isModal: PropTypes.bool
 }
 
 CustomTable.defaultProps = {
@@ -204,7 +211,8 @@ CustomTable.defaultProps = {
   getSearchList: false,
   showToolBar: true,
   classes: {},
-  initialSearchQuery: ''
+  initialSearchQuery: '',
+  isModal: false
 }
 
 export default withNamespaces()(CustomTable)

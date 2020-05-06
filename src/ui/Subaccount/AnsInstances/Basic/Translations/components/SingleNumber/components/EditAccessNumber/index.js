@@ -86,7 +86,7 @@ const EditAccessNumber = ({ open, handleClose, defaultInboundCountry, t }) => {
   const [searchList, setSearchList] = useState([])
 
   const selectInstance = (checked, id) => {
-    const newSelected = selectedList.map((item) => {
+    const newSelected = selectedList.map(item => {
       let result = {}
       if (item.id === id) {
         result = {
@@ -109,7 +109,7 @@ const EditAccessNumber = ({ open, handleClose, defaultInboundCountry, t }) => {
 
   const changeHover = (newHover, id) => {
     const newSelected = [...selectedList]
-    const index = selectedList.findIndex((el) => el.id === id)
+    const index = selectedList.findIndex(el => el.id === id)
     newSelected[index].hover = newHover
     setSelectedList(newSelected)
   }
@@ -197,7 +197,8 @@ const EditAccessNumber = ({ open, handleClose, defaultInboundCountry, t }) => {
           searchCriterias={['accessNumber', 'type', 'accessCountry']}
           getSearchList={setSearchList}
           initialSearchQuery={defaultInboundCountry}
-          // isLoadingData={isLoadingEntitlementTypes}
+          noAvailableDataMessage={t('no_inbound_numbers_available')}
+          isModal={true}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>

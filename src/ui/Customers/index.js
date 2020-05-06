@@ -149,11 +149,10 @@ const CustomersTable = observer(({ t }) => {
           <Loading />
         ) : (
           <CustomTable
-            // classes={classes}
             rows={rows}
-            // isLoadingData={isLoadingCustomers}
             columns={columns}
             searchCriterias={['external_id', 'name']}
+            noAvailableDataMessage={t('no_customers_available')}
           />
         )}
         {isDeleteModalOpen && (

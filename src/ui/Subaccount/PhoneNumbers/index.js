@@ -317,6 +317,7 @@ const PhoneNumbers = observer(({ t }) => {
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             totalPages={totalPages}
+            noAvailableDataMessage={t('no_phone_numbers_available')}
           />
         )}
         {isAddPhoneNumbersModalOpen && (

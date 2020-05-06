@@ -70,7 +70,7 @@ export class PhoneNumbers {
 
             return {
               ...item,
-              connectedTo: item.connected_to || 'free',
+              connectedTo: item.connected_to ? 'used' : 'free',
               countryName: countryName,
               phoneNumber: `${item.country_code} ${item.nsn}`,
               rangeStart: item.rangeStart
@@ -82,6 +82,7 @@ export class PhoneNumbers {
             }
           }
         )
+        console.log(transformedNumbers, 'tn')
         this.transformedPhoneNumbers = transformedNumbers
         const pagination = res.data.pagination
         this.totalPages = pagination[2]
