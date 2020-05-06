@@ -121,7 +121,7 @@ const FirstStepNFN = props => {
             onChange={e =>
               setQueryAvalibleNumbers({
                 ...queryAvalibleNumbers,
-                number_like: e.target.value
+                start_with: e.target.value
               })
             }
           />
@@ -136,7 +136,7 @@ const FirstStepNFN = props => {
               onChange={e =>
                 setQueryAvalibleNumbers({
                   ...queryAvalibleNumbers,
-                  numbers_of_results: e.target.value
+                  number_of_result: e.target.value
                 })
               }
             />
