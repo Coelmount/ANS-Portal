@@ -121,11 +121,14 @@ export class CustomersStore {
     return axios
       .put(`/tenants/${tenantId}`, this.customer)
       .then(res => {
-        if (res.status === 200) {
-          merge(this.customer, res.data)
-          this.isAddingCustomer = false
-          handleClose()
-        }
+        merge(this.customer, res.data)
+        handleClose()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Customer updated successfully',
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({

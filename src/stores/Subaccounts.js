@@ -109,14 +109,18 @@ export class SubaccountsStore {
     return axios
       .put(`/tenants/${tenantId}/groups/${groupId}`, this.customer)
       .then(res => {
-        if (res.status === 200) {
-          merge(this.customer, res.data)
-          handleClose()
-        }
+        merge(this.customer, res.data)
+        handleClose()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Subaccount updated successfully',
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to update subaccounts',
+          message: getErrorMessage(e) || 'Failed to update subaccount',
           options: {
             variant: 'error'
           }

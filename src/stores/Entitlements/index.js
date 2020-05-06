@@ -134,6 +134,14 @@ export class Entitlements {
       .put(`/tenants/${tenantId}/entitlements/${entitlementId}`, {
         entitlement: total
       })
+      .then(() =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'Entitlement updated successfully',
+          options: {
+            variant: 'success'
+          }
+        })
+      )
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to update entitlement',

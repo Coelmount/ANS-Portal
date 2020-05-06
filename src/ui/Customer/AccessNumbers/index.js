@@ -3,6 +3,7 @@ import { withRouter } from 'react-router'
 import { Link, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
+import classnames from 'classnames'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -168,8 +169,12 @@ const AccessNumbers = ({ t }) => {
       isSortAvailable: false,
       getCellData: row => (
         <CloseOutlinedIcon
-          onClick={() => handleOpenDeleteModal(row.id, row.name)}
-          className={classes.deleteCustomerIcon}
+          onClick={() =>
+            !(row.counter > 0) && handleOpenDeleteModal(row.id, row.name)
+          }
+          className={classnames(classes.deleteCustomerIcon, {
+            [classes.disableDeleteCustomerIcon]: row.counter > 0
+          })}
         />
       )
     }
