@@ -207,7 +207,8 @@ CustomTable.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
   setRowsPerPage: PropTypes.func.isRequired,
   totalPages: PropTypes.number.isRequired,
-  noAvailableDataMessage: PropTypes.string.isRequired
+  noAvailableDataMessage: PropTypes.string.isRequired,
+  isModal: PropTypes.bool
 }
 
 CustomTable.defaultProps = {
