@@ -141,11 +141,10 @@ const SubaccountsTable = observer(({ t }) => {
           <Loading />
         ) : (
           <CustomTable
-            // classes={classes}
             rows={rows}
-            // isLoadingData={isLoadingSubaccounts}
             columns={columns}
             searchCriterias={['groupId', 'groupName']}
+            noAvailableDataMessage={t('no_subaccounts_available')}
           />
         )}
         {isDeleteModalOpen && (

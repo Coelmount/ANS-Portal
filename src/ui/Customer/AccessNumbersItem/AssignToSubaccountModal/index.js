@@ -151,6 +151,8 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
             rows={subaccountsList}
             searchCriterias={['groupId', 'groupName']}
             getSearchList={setSearchList}
+            noAvailableDataMessage={t('no_subaccounts_available')}
+            isModal={true}
           />
         )}
       </DialogContent>

@@ -79,7 +79,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   const [searchList, setSearchList] = useState([])
 
   const selectInstance = (checked, id) => {
-    const newSelected = selectedList.map((item) => {
+    const newSelected = selectedList.map(item => {
       let result = {}
       if (item.id === id) {
         result = {
@@ -102,7 +102,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
 
   const changeHover = (newHover, id) => {
     const newSelected = [...selectedList]
-    const index = selectedList.findIndex((el) => el.id === id)
+    const index = selectedList.findIndex(el => el.id === id)
     newSelected[index].hover = newHover
     setSelectedList(newSelected)
   }
@@ -192,7 +192,8 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
           rows={selectedList}
           searchCriterias={['phoneNumber', 'type', 'country']}
           getSearchList={setSearchList}
-          // isLoadingData={isLoadingEntitlementTypes}
+          noAvailableDataMessage={t('no_access_numbers_available')}
+          isModal={true}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
@@ -209,7 +210,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
           color='primary'
           className={classes.nextButton}
           onClick={handleNextButtonClick}
-          disabled={!selectedList.some((item) => item.checked === true)}
+          disabled={!selectedList.some(item => item.checked === true)}
         >
           {t('next')}
         </Button>

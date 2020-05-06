@@ -254,6 +254,7 @@ const Translations = observer(({ t }) => {
     }
   ]
 
+  // to refactor
   const titleData = {
     mainText: t('basic_translations'),
     buttonBlock: (
@@ -338,7 +339,6 @@ const Translations = observer(({ t }) => {
             firstCell={false}
             // classes={classes}
             rows={numbers}
-            // isLoadingData={isBasicTranslationsNumbersLoading}
             columns={columns}
             searchCriterias={[
               'accessCountry',
@@ -348,6 +348,7 @@ const Translations = observer(({ t }) => {
             ]}
             extraToolbarBlock={toolbarButtonsBlock}
             getSearchList={setSearchList}
+            noAvailableDataMessage={t('no_translations_available')}
           />
         )}
         {isAddInstanceModalOpen && (

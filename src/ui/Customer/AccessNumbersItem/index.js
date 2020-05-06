@@ -328,11 +328,11 @@ const AccessNumbersItem = ({ t }) => {
               ]}
               getSearchList={setSearchList}
               extraToolbarBlock={toolbarButtonsBlock}
-              // isLoadingData={isAssignedNumbersLoading && isLoadingEntitlements}
               setCurrentPage={setCurrentPage}
               setCurrentPerPage={setCurrentPerPage}
               totalPagesServer={totalPagesServer}
               onPageChangeActions={handlePageChange}
+              noAvailableDataMessage={t('no_assigned_numbers_available')}
             />
           </Fragment>
         )}

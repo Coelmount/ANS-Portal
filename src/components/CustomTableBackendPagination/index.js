@@ -66,6 +66,8 @@ const CustomTable = ({
   setRowsPerPage,
   totalPages,
   onPageChangeActions,
+  noAvailableDataMessage,
+  isModal,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -186,7 +188,10 @@ const CustomTable = ({
           )}
         </Fragment>
       ) : (
-        <NoAvailableDataBlock />
+        <NoAvailableDataBlock
+          messageText={noAvailableDataMessage}
+          isModal={isModal}
+        />
       )}
     </Fragment>
   )
@@ -201,7 +206,8 @@ CustomTable.propTypes = {
   setPage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
   setRowsPerPage: PropTypes.func.isRequired,
-  totalPages: PropTypes.number.isRequired
+  totalPages: PropTypes.number.isRequired,
+  noAvailableDataMessage: PropTypes.string.isRequired
 }
 
 CustomTable.defaultProps = {
@@ -211,7 +217,8 @@ CustomTable.defaultProps = {
   showToolBar: true,
   classes: {},
   initialSearchQuery: '',
-  onPageChangeActions: () => {}
+  onPageChangeActions: () => {},
+  isModal: false
 }
 
 export default withNamespaces()(CustomTable)

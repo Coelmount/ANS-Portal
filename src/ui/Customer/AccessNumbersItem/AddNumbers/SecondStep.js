@@ -104,6 +104,7 @@ const SecondStep = props => {
           showSearchBar={false}
           showToolBar={false}
           rows={numbers}
+          noAvailableDataMessage={t('no_phone_numbers_available')}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>

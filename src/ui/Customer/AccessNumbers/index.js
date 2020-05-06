@@ -191,9 +191,9 @@ const AccessNumbers = ({ t }) => {
           <CustomTable
             classes={classes}
             rows={entitlements}
-            // isLoadingData={isLoadingEntitlements}
             columns={columns}
             searchCriterias={['name', 'number_type', 'service_capabilities']}
+            noAvailableDataMessage={t('no_access_numbers_available')}
             // extraToolbarBlock={toolbarButtonsBlock}
           />
         )}
