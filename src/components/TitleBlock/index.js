@@ -7,13 +7,14 @@ import useStyles from './styles'
 
 const TitleBlock = ({ handleOpen, titleData }) => {
   const classes = useStyles()
-  const { mainText, iconCapture, Icon, buttonBlock } = titleData
+  const { mainText, iconCapture, Icon, buttonBlock, extraBlock } = titleData
 
   return (
     <Box className={classes.titleWrap}>
       <Typography className={classes.title} id='tableTitle'>
         {mainText}
       </Typography>
+      {extraBlock}
       {Icon && iconCapture && (
         <Box className={classes.addCustomerWrap}>
           <Box className={classes.addIconWrap} onClick={handleOpen}>
