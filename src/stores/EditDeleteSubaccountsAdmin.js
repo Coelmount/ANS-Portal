@@ -62,11 +62,14 @@ export class EditDeleteSubaccountAdminStore {
         this.sentSubaccountAdmin
       )
       .then(res => {
-        if (res.status === 200) {
-          this.isLoadingData = false
-          closeModal()
-          getUsers({ id, groupId })
-        }
+        closeModal()
+        getUsers({ id, groupId })
+        SnackbarStore.enqueueSnackbar({
+          message: 'Admin updated successfully',
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -76,6 +79,9 @@ export class EditDeleteSubaccountAdminStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingData = false
+      })
   }
   deleteSubaccountAdmin = ({ id, closeModal, userId, getUsers, groupId }) => {
     this.isDeletingSubaccountAdmin = true

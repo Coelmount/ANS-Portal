@@ -50,11 +50,14 @@ export class EditDeleteAdminStore {
     axios
       .put(`/tenants/${id}/admins/${userId}`, this.sentAdmin)
       .then(res => {
-        if (res.status === 200) {
-          this.isLoadingData = false
-          closeModal()
-          getUsers(id)
-        }
+        closeModal()
+        getUsers(id)
+        SnackbarStore.enqueueSnackbar({
+          message: 'Admin updated successfully',
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -64,6 +67,9 @@ export class EditDeleteAdminStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingData = false
+      })
   }
   deleteAdmin = ({ id, closeModal, userId, getUsers }) => {
     this.isDeletingAdmin = true
