@@ -14,6 +14,7 @@ export class AssignedNumbers {
   totalPagesServer = 0
   currentEntitlement = null
   numbersToAssign = []
+  numbersToDeassign = []
 
   setDefaultValues = () => {
     this.assignedNumbers = []
@@ -23,6 +24,16 @@ export class AssignedNumbers {
     this.isPostAssignNumbers = false
     this.totalPagesServer = 0
     this.currentEntitlement = null
+    this.numbersToAssign = []
+    this.numbersToDeassign = []
+  }
+
+  setNumbersToAssign = numbers => {
+    this.numbersToAssign = numbers
+  }
+
+  setNumbersToDeassign = numbers => {
+    this.numbersToDeassign = numbers
   }
 
   getEntitlementsAndFindCurrent = (customerId, numbersId) => {
@@ -53,6 +64,49 @@ export class AssignedNumbers {
                 ...item
               }
             })
+            console.log(
+              transformedAssignedNumbers,
+              'transformedAssignedNumbers'
+            )
+            // to test deassign logic =>
+            transformedAssignedNumbers.push(
+              {
+                checked: false,
+                connected_to: null,
+                country_code: '+966',
+                customer: 'ans 0001',
+                customer_account: null,
+                hover: false,
+                id: 1,
+                nsn: '5555555',
+                phoneNumber: '+966 5555555',
+                state: 'assigned',
+                state_updated_on: '2020-04-27T20:17:07',
+                status: 'available',
+                subaccountId: 'testaccount',
+                type: 'geo',
+                usedBy: 'none'
+              },
+              {
+                checked: false,
+                connected_to: 'connected_test',
+                country_code: '+966',
+                customer: 'ans 0002',
+                customer_account: null,
+                hover: false,
+                id: 2,
+                nsn: '6666666',
+                phoneNumber: '+966 6666666',
+                state: 'assigned',
+                state_updated_on: '2020-04-27T20:17:07',
+                status: 'in_use',
+                subaccountId: 'testaccount2',
+                type: 'geo',
+                usedBy: 'none'
+              }
+            )
+            // <-
+
             this.assignedNumbers = transformedAssignedNumbers
             // --find current
             this.currentEntitlement = entitlements.find(
@@ -82,17 +136,24 @@ export class AssignedNumbers {
       })
   }
 
-  deleteAssignedNumber = ({ id, callback }) => {
+  deleteAssignedNumber = ({ customerId, callback }) => {
     this.isDeletingAssignedNumber = true
+    console.log(this.numbersToDeassign, 'numbers to deassign')
     axios
-      .delete(`/tenants/${id}/numbers/`)
+      .delete(`/tenants/${customerId}/numbers/`)
       .then(() => {
         this.getAssignedNumbers()
         callback()
+        SnackbarStore.enqueueSnackbar({
+          message: `${this.numbersToDeassign.length} phone number(s) deassigned successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to delete assigned number',
+          message: getErrorMessage(e) || 'Failed to deassign number(s)',
           options: {
             variant: 'error'
           }
@@ -101,10 +162,6 @@ export class AssignedNumbers {
       .finally(() => {
         this.isDeletingAssignedNumber = false
       })
-  }
-
-  setNumbersToAssign = numbers => {
-    this.numbersToAssign = numbers
   }
 
   postAssignToSubaccount = (customerId, subaccount, closeAsignModal) => {

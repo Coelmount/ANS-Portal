@@ -39,6 +39,7 @@ const AccessNumbersItem = ({ t }) => {
   const classes = useStyles()
   const [showAddNumbers, setShowAddNumber] = useState(false)
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false)
+  const [isDeassignModalOpen, setIsDeassignModalOpen] = useState(false)
   const [step, setStep] = useState(1)
   const [selected, setSelected] = useState([])
   const [selectAll, setSelectAll] = useState(false)
@@ -59,12 +60,21 @@ const AccessNumbersItem = ({ t }) => {
     getEntitlementsAndFindCurrent,
     currentEntitlement,
     setDefaultValues,
-    setNumbersToAssign
+    setNumbersToAssign,
+    setNumbersToDeassign
   } = AssignedNumbersStore
 
   const isAssignEnabled =
     numberOfChecked > 0 &&
     !selected.some(item => item.checked && item.subaccountId !== 'none')
+
+  const isDeassignEnabled =
+    numberOfChecked > 0 &&
+    !selected.some(
+      item =>
+        (item.checked && item.subaccountId === 'none') ||
+        (item.checked && item.status === 'in_use')
+    )
 
   useEffect(() => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
@@ -77,23 +87,6 @@ const AccessNumbersItem = ({ t }) => {
 
   const handlePageChange = () => {
     setNumberOfChecked(0)
-  }
-
-  const handleOpenDeleteModal = (id, name) => {
-    setIsDeleteModalOpen(true)
-    setPhoneNumberToDelete({ id })
-  }
-
-  const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false)
-  }
-
-  const handleDelete = id => {
-    const payload = {
-      id,
-      callback: setIsDeleteModalOpen
-    }
-    deleteAssignedNumber(payload)
   }
 
   const handleCloseAssignModal = () => {
@@ -147,6 +140,26 @@ const AccessNumbersItem = ({ t }) => {
     }
   }
 
+  const handleDeassignButtonClick = () => {
+    if (isDeassignEnabled) {
+      const checkedNumbers = selected.filter(item => item.checked === true)
+      setNumbersToDeassign(checkedNumbers)
+      setIsDeassignModalOpen(true)
+    }
+  }
+
+  const handleCloseDeassignModal = () => {
+    setIsDeassignModalOpen(false)
+  }
+
+  const handleDeassign = () => {
+    const payload = {
+      customerId: match.customerId,
+      callback: handleCloseDeassignModal
+    }
+    deleteAssignedNumber(payload)
+  }
+
   const extraTitleBlock = (
     <Box
       className={classnames(classes.addCustomerWrap, classes.extraTitleWrap)}
@@ -188,7 +201,12 @@ const AccessNumbersItem = ({ t }) => {
           </Typography>
         </Box>
         <Box className={`${classes.addCustomerWrap} ${classes.deassignWrap}`}>
-          <Box className={classes.addIconWrap}>
+          <Box
+            onClick={handleDeassignButtonClick}
+            className={classnames(classes.addIconWrap, {
+              [classes.enabledButton]: isDeassignEnabled
+            })}
+          >
             <img
               className={classes.deleteIcon}
               src={deleteIcon}
@@ -289,7 +307,7 @@ const AccessNumbersItem = ({ t }) => {
         <Fragment>
           {row.status === 'available' && (
             <CloseOutlinedIcon
-              onClick={() => handleOpenDeleteModal(match.customerId)}
+              // onClick={() => handleOpenDeassignModal(match.customerId)}
               className={classes.deleteCustomerIcon}
             />
           )}
@@ -353,17 +371,17 @@ const AccessNumbersItem = ({ t }) => {
             handleClose={handleCloseAssignModal}
           />
         )}
-        {isDeleteModalOpen && (
+        {isDeassignModalOpen && (
           <DeleteModal
             classes={classes}
-            open={isDeleteModalOpen}
-            handleClose={handleCloseDeleteModal}
-            handleDelete={handleDelete}
-            deleteInfo={phoneNumberToDelete}
+            open={isDeassignModalOpen}
+            handleClose={handleCloseDeassignModal}
+            handleDelete={handleDeassign}
+            deleteInfo={{ name: 'test', id: null }}
             isDeleting={isDeletingAssignedNumber}
-            deleteSubject={t('phone_number')}
-            action={t('to_delete')}
-            titleAction={t(`delete`)}
+            deleteSubject={t('phonenumber(s) ?')}
+            action={t('to_deassign')}
+            titleAction={t(`deassign`)}
           />
         )}
       </Paper>

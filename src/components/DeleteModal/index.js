@@ -11,7 +11,7 @@ import deleteIcon from 'source/images/svg/delete-icon.svg'
 import Loading from 'components/Loading'
 import useStyles from './styles'
 
-const DeleteModal = (props) => {
+const DeleteModal = props => {
   const classes = useStyles()
   const {
     open,
@@ -53,10 +53,12 @@ const DeleteModal = (props) => {
             <Typography className={classes.deleteMainText}>
               {t(`are_you_sure_you_want`)}
               <span className={classes.boldText}> {action}</span>
-              {` ${deleteSubject}:`}
-              <span className={classes.boldText}>
-                {` ${name ? name : ''}${id ? ` id: ${id}` : ''}?`}
-              </span>
+              {` ${deleteSubject}`}
+              {id && (
+                <span className={classes.boldText}>
+                  {` ${name ? name : ':'}${id ? ` id: ${id}` : ''}?`}
+                </span>
+              )}
             </Typography>
             <Box className={classes.deleteButtonsBlock}>
               <Box onClick={handleClose} className={classes.cancelButtonWrap}>
@@ -65,7 +67,7 @@ const DeleteModal = (props) => {
                 </Typography>
               </Box>
               <Box
-                onClick={() => handleDelete && handleDelete(id)}
+                onClick={() => handleDelete && handleDelete()}
                 className={classes.deleteButtonWrap}
               >
                 <Typography className={classes.buttonTitle}>
