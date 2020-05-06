@@ -112,6 +112,9 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  disableDeleteCustomerIcon: {
+    color: theme.palette.lightGrey
   }
 }))
 
