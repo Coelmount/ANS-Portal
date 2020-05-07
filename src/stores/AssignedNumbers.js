@@ -49,8 +49,6 @@ export class AssignedNumbers {
         axios
           .get(`/tenants/${customerId}/entitlements/${numbersId}/numbers`)
           .then(res => {
-            console.log(res)
-
             const transformedAssignedNumbers = res.data.numbers.map(item => {
               return {
                 usedBy: item.connected_to ? item.connected_to : 'none',
@@ -64,47 +62,43 @@ export class AssignedNumbers {
                 ...item
               }
             })
-            console.log(
-              transformedAssignedNumbers,
-              'transformedAssignedNumbers'
-            )
             // to test deassign logic =>
-            transformedAssignedNumbers.push(
-              {
-                checked: false,
-                connected_to: null,
-                country_code: '+966',
-                customer: 'ans 0001',
-                customer_account: null,
-                hover: false,
-                id: 1,
-                nsn: '5555555',
-                phoneNumber: '+966 5555555',
-                state: 'assigned',
-                state_updated_on: '2020-04-27T20:17:07',
-                status: 'available',
-                subaccountId: 'testaccount',
-                type: 'geo',
-                usedBy: 'none'
-              },
-              {
-                checked: false,
-                connected_to: 'connected_test',
-                country_code: '+966',
-                customer: 'ans 0002',
-                customer_account: null,
-                hover: false,
-                id: 2,
-                nsn: '6666666',
-                phoneNumber: '+966 6666666',
-                state: 'assigned',
-                state_updated_on: '2020-04-27T20:17:07',
-                status: 'in_use',
-                subaccountId: 'testaccount2',
-                type: 'geo',
-                usedBy: 'none'
-              }
-            )
+            // transformedAssignedNumbers.push(
+            //   {
+            //     checked: false,
+            //     connected_to: null,
+            //     country_code: '+966',
+            //     customer: 'ans 0001',
+            //     customer_account: null,
+            //     hover: false,
+            //     id: 1,
+            //     nsn: '5555555',
+            //     phoneNumber: '+966 5555555',
+            //     state: 'assigned',
+            //     state_updated_on: '2020-04-27T20:17:07',
+            //     status: 'available',
+            //     subaccountId: 'testaccount',
+            //     type: 'geo',
+            //     usedBy: 'none'
+            //   },
+            //   {
+            //     checked: false,
+            //     connected_to: 'connected_test',
+            //     country_code: '+966',
+            //     customer: 'ans 0002',
+            //     customer_account: null,
+            //     hover: false,
+            //     id: 2,
+            //     nsn: '6666666',
+            //     phoneNumber: '+966 6666666',
+            //     state: 'assigned',
+            //     state_updated_on: '2020-04-27T20:17:07',
+            //     status: 'in_use',
+            //     subaccountId: 'testaccount2',
+            //     type: 'geo',
+            //     usedBy: 'none'
+            //   }
+            // )
             // <-
 
             this.assignedNumbers = transformedAssignedNumbers
@@ -202,6 +196,15 @@ export class AssignedNumbers {
         })
     })
   }
+
+  showErrorNotification = message => {
+    SnackbarStore.enqueueSnackbar({
+      message: message,
+      options: {
+        variant: 'error'
+      }
+    })
+  }
 }
 
 decorate(AssignedNumbers, {
@@ -218,7 +221,8 @@ decorate(AssignedNumbers, {
   setDefaultValues: action,
   setNumbersToAssign: action,
   setNumbersToDeassign: action,
-  postAssignToSubaccount: action
+  postAssignToSubaccount: action,
+  showErrorNotification: action
 })
 
 export default new AssignedNumbers()

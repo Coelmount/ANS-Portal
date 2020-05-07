@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
+import PropTypes from 'prop-types'
 
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
@@ -20,10 +21,11 @@ const DeleteModal = props => {
     deleteInfo,
     isDeleting,
     deleteSubject,
-    t,
+    extraDeleteSubject,
     action,
     titleAction,
-    deassignMessageBlock
+    deassignMessageBlock,
+    t
   } = props
   const { name, id } = deleteInfo
 
@@ -40,7 +42,11 @@ const DeleteModal = props => {
         <Fragment>
           <Box className={classes.deleteHeader}>
             <Box className={classes.deleteTitleBlock}>
-              <img src={deleteIcon} alt='delete icon' />
+              <img
+                className={classes.deleteIcon}
+                src={deleteIcon}
+                alt='delete icon'
+              />
               <Typography className={classes.deleteTitle}>
                 {`${titleAction} ${deleteSubject}`}
               </Typography>
@@ -54,10 +60,10 @@ const DeleteModal = props => {
             <Box className={classes.deleteMainText}>
               <span>{t(`are_you_sure_you_want`)}</span>
               <span className={classes.boldText}> {action}</span>
-              <span>{` ${deleteSubject}`}</span>
-              {id && (
+              <span>{` ${extraDeleteSubject || deleteSubject}`}</span>
+              {id && name && (
                 <span className={classes.boldText}>
-                  {` ${name ? name : ':'}${id ? ` id: ${id}` : ''}?`}
+                  {` ${name}${` id: ${id}`}?`}
                 </span>
               )}
               {deassignMessageBlock}
@@ -69,7 +75,7 @@ const DeleteModal = props => {
                 </Typography>
               </Box>
               <Box
-                onClick={() => handleDelete && handleDelete()}
+                onClick={() => handleDelete && handleDelete(id)}
                 className={classes.deleteButtonWrap}
               >
                 <Typography className={classes.buttonTitle}>
@@ -82,6 +88,17 @@ const DeleteModal = props => {
       )}
     </Dialog>
   )
+}
+
+DeleteModal.propTypes = {
+  deleteInfo: PropTypes.object
+}
+
+DeleteModal.defaultProps = {
+  deleteInfo: {
+    name: '',
+    id: null
+  }
 }
 
 export default withNamespaces()(DeleteModal)

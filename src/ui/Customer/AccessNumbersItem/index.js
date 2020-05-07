@@ -51,6 +51,7 @@ const AccessNumbersItem = ({ t }) => {
   const [currentPerPage, setCurrentPerPage] = useState(10)
   const [deassignMessage, setDeassignMessage] = useState('')
   const [deassignMessageBlock, setDeassignMessageBlock] = useState(null)
+  const [deassignSubject, setDeassignSubject] = useState('')
   const {
     assignedNumbers,
     isAssignedNumbersLoading,
@@ -63,7 +64,8 @@ const AccessNumbersItem = ({ t }) => {
     currentEntitlement,
     setDefaultValues,
     setNumbersToAssign,
-    setNumbersToDeassign
+    setNumbersToDeassign,
+    showErrorNotification
   } = AssignedNumbersStore
 
   const isAssignEnabled =
@@ -139,13 +141,23 @@ const AccessNumbersItem = ({ t }) => {
       const checkedNumbers = selected.filter(item => item.checked === true)
       setNumbersToAssign(checkedNumbers)
       setIsAssignModalOpen(true)
+    } else if (numberOfChecked === 0) {
+      showErrorNotification(t('no_numbers_selected'))
+    } else {
+      showErrorNotification(
+        'Only available numbers can be assigned to subaccount'
+      )
     }
   }
+
   const buildDeassignMessage = numbers => {
     const amountOfNumbers = numbers.length
-    const totalMessage = `${amountOfNumbers} ${t(
-      'phone_numbers'
-    ).toLowerCase()}:`
+    const deassignText =
+      amountOfNumbers > 1
+        ? t('phone_numbers').toLowerCase()
+        : t('phone_number').toLowerCase()
+    setDeassignSubject(deassignText)
+    const totalMessage = `${amountOfNumbers} ${deassignText}:`
     setDeassignMessage(totalMessage)
   }
 
@@ -153,13 +165,13 @@ const AccessNumbersItem = ({ t }) => {
     const numbersArr = numbers.map(item => item.phoneNumber)
     const splitedNumbersStr = numbersArr.join(', ')
     const totalMessage = `${splitedNumbersStr} ?`
-
     const deassignMessageBlock = (
       <Box>
         <Typography className={classes.boldDeassignText}>
           {totalMessage}
         </Typography>
-        <Typography>{t('deassign_message_end')}</Typography>
+        {/* <Typography>{t('deassign_message_end')}</Typography> */}
+        <Typography>{'These numbers can be no longer used at all.'}</Typography>
       </Box>
     )
     setDeassignMessageBlock(deassignMessageBlock)
@@ -172,11 +184,21 @@ const AccessNumbersItem = ({ t }) => {
       buildDeassignMessage(checkedNumbers)
       buildDeassignMessageBlock(checkedNumbers)
       setIsDeassignModalOpen(true)
+    } else if (numberOfChecked === 0) {
+      const translatedErrorNotification = t('no_numbers_selected')
+      // console.log(t('no_numbers_selected'))
+      showErrorNotification('No phone numbers selected')
+    } else {
+      showErrorNotification(
+        'Only assigned to subaccount and not connected to an ANS instance numbers can be deassigned'
+      )
     }
   }
 
   const handleDeassignOneNumberClick = row => {
     setNumbersToDeassign(row)
+    buildDeassignMessage([row])
+    buildDeassignMessageBlock([row])
     setIsDeassignModalOpen(true)
   }
 
@@ -205,7 +227,8 @@ const AccessNumbersItem = ({ t }) => {
         />
       </Box>
       <Typography className={classes.addCustomerTitle}>
-        {t('disconnect_from_customer')}
+        {/* {t('disconnect_from_customer')} */}
+        {'Disconnect from customer'}
       </Typography>
     </Box>
   )
@@ -247,7 +270,8 @@ const AccessNumbersItem = ({ t }) => {
             />
           </Box>
           <Typography className={classes.addCustomerTitle}>
-            {t('deassign_from_subaccount')}
+            {/* {t('deassign_from_subaccount')} */}
+            {t('Deassign from subaccount')}
           </Typography>
         </Box>
       </Box>
@@ -325,7 +349,8 @@ const AccessNumbersItem = ({ t }) => {
               : classes.avaliableTitle
           }
         >
-          {t(`${row.status}`)}
+          {/* {t(`${row.status}`)} */}
+          {row.status === 'in_use' ? 'in use' : row.status}
         </Typography>
       )
     },
@@ -410,9 +435,10 @@ const AccessNumbersItem = ({ t }) => {
             open={isDeassignModalOpen}
             handleClose={handleCloseDeassignModal}
             handleDelete={handleDeassign}
-            deleteInfo={{ name: 'test', id: null }}
+            // deleteInfo={{ name: 'test', id: null }}
             isDeleting={isDeletingAssignedNumber}
-            deleteSubject={deassignMessage}
+            deleteSubject={deassignSubject}
+            extraDeleteSubject={deassignMessage}
             action={t('to_deassign')}
             titleAction={t(`deassign`)}
             deassignMessageBlock={deassignMessageBlock}
