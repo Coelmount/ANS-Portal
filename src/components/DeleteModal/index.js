@@ -22,7 +22,8 @@ const DeleteModal = props => {
     deleteSubject,
     t,
     action,
-    titleAction
+    titleAction,
+    deassignMessageBlock
   } = props
   const { name, id } = deleteInfo
 
@@ -50,16 +51,17 @@ const DeleteModal = props => {
             />
           </Box>
           <Box className={classes.deleteMain}>
-            <Typography className={classes.deleteMainText}>
-              {t(`are_you_sure_you_want`)}
+            <Box className={classes.deleteMainText}>
+              <span>{t(`are_you_sure_you_want`)}</span>
               <span className={classes.boldText}> {action}</span>
-              {` ${deleteSubject}`}
+              <span>{` ${deleteSubject}`}</span>
               {id && (
                 <span className={classes.boldText}>
                   {` ${name ? name : ':'}${id ? ` id: ${id}` : ''}?`}
                 </span>
               )}
-            </Typography>
+              {deassignMessageBlock}
+            </Box>
             <Box className={classes.deleteButtonsBlock}>
               <Box onClick={handleClose} className={classes.cancelButtonWrap}>
                 <Typography className={classes.buttonTitle}>
@@ -71,7 +73,7 @@ const DeleteModal = props => {
                 className={classes.deleteButtonWrap}
               >
                 <Typography className={classes.buttonTitle}>
-                  {t('delete')}
+                  {titleAction || t('delete')}
                 </Typography>
               </Box>
             </Box>

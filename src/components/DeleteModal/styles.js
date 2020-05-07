@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 45,
     paddingRight: 40,
     height: 87,
-    background: 'white'
+    background: 'white',
+    boxShadow: '0px 2px 16px rgba(204, 204, 204, 0.25)'
   },
   deleteTitleBlock: {
     display: 'flex'
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   deleteTitle: {
     fontFamily: 'MTN',
     fontStyle: 'normal',
-    fontWeight: 500,
+    fontWeight: 600,
     fontSize: 24,
     marginLeft: 14
   },
@@ -56,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   deleteMain: {
-    height: 263,
+    minHeight: 263,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -65,7 +66,10 @@ const useStyles = makeStyles((theme) => ({
   },
   deleteMainText: {
     width: 450,
-    marginLeft: 10
+    marginLeft: 10,
+    '& > span': {
+      fontSize: 16
+    }
   },
   boldText: {
     fontWeight: 'bold'
@@ -73,7 +77,8 @@ const useStyles = makeStyles((theme) => ({
   deleteButtonsBlock: {
     display: 'flex',
     width: '100%',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginTop: 55
   },
   deleteButtonWrap: {
     width: 140,

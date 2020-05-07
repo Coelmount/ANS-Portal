@@ -49,6 +49,8 @@ const AccessNumbersItem = ({ t }) => {
   const [phoneNumberToDelete, setPhoneNumberToDelete] = useState(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [currentPerPage, setCurrentPerPage] = useState(10)
+  const [deassignMessage, setDeassignMessage] = useState('')
+  const [deassignMessageBlock, setDeassignMessageBlock] = useState(null)
   const {
     assignedNumbers,
     isAssignedNumbersLoading,
@@ -139,16 +141,47 @@ const AccessNumbersItem = ({ t }) => {
       setIsAssignModalOpen(true)
     }
   }
+  const buildDeassignMessage = numbers => {
+    const amountOfNumbers = numbers.length
+    const totalMessage = `${amountOfNumbers} ${t(
+      'phone_numbers'
+    ).toLowerCase()}:`
+    setDeassignMessage(totalMessage)
+  }
+
+  const buildDeassignMessageBlock = numbers => {
+    const numbersArr = numbers.map(item => item.phoneNumber)
+    const splitedNumbersStr = numbersArr.join(', ')
+    const totalMessage = `${splitedNumbersStr} ?`
+
+    const deassignMessageBlock = (
+      <Box>
+        <Typography className={classes.boldDeassignText}>
+          {totalMessage}
+        </Typography>
+        <Typography>{t('deassign_message_end')}</Typography>
+      </Box>
+    )
+    setDeassignMessageBlock(deassignMessageBlock)
+  }
 
   const handleDeassignButtonClick = () => {
     if (isDeassignEnabled) {
       const checkedNumbers = selected.filter(item => item.checked === true)
       setNumbersToDeassign(checkedNumbers)
+      buildDeassignMessage(checkedNumbers)
+      buildDeassignMessageBlock(checkedNumbers)
       setIsDeassignModalOpen(true)
     }
   }
 
+  const handleDeassignOneNumberClick = row => {
+    setNumbersToDeassign(row)
+    setIsDeassignModalOpen(true)
+  }
+
   const handleCloseDeassignModal = () => {
+    // getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDeassignModalOpen(false)
   }
 
@@ -305,9 +338,9 @@ const AccessNumbersItem = ({ t }) => {
       isSortAvailable: false,
       getCellData: row => (
         <Fragment>
-          {row.status === 'available' && (
+          {row.status === 'available' && row.subaccountId !== 'none' && (
             <CloseOutlinedIcon
-              // onClick={() => handleOpenDeassignModal(match.customerId)}
+              onClick={() => handleDeassignOneNumberClick(row)}
               className={classes.deleteCustomerIcon}
             />
           )}
@@ -379,9 +412,10 @@ const AccessNumbersItem = ({ t }) => {
             handleDelete={handleDeassign}
             deleteInfo={{ name: 'test', id: null }}
             isDeleting={isDeletingAssignedNumber}
-            deleteSubject={t('phonenumber(s) ?')}
+            deleteSubject={deassignMessage}
             action={t('to_deassign')}
             titleAction={t(`deassign`)}
+            deassignMessageBlock={deassignMessageBlock}
           />
         )}
       </Paper>

@@ -141,6 +141,9 @@ const useStyles = makeStyles(theme => ({
     width: 19,
     height: 19,
     marginRight: 1
+  },
+  boldDeassignText: {
+    fontWeight: 600
   }
 }))
 

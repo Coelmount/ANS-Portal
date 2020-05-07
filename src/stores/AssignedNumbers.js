@@ -217,6 +217,7 @@ decorate(AssignedNumbers, {
   getEntitlementsAndFindCurrent: action,
   setDefaultValues: action,
   setNumbersToAssign: action,
+  setNumbersToDeassign: action,
   postAssignToSubaccount: action
 })
 
