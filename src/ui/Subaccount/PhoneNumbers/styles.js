@@ -139,6 +139,11 @@ const useStyles = makeStyles(theme => ({
   },
   deleteCell: {
     paddingRight: '38px !important'
+  },
+  statusCell: {
+    '& > a': {
+      textDecoration: 'none'
+    }
   }
 }))
 

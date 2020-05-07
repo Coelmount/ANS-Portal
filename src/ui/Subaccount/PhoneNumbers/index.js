@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -263,16 +263,25 @@ const PhoneNumbers = observer(({ t }) => {
     {
       id: 'connectedTo',
       label: 'status',
+      extraProps: {
+        className: classes.statusCell
+      },
       getCellData: row => (
-        <Typography
-          className={
-            row.connectedTo !== 'free'
-              ? classes.assignedTitle
-              : classes.availableTitle
-          }
-        >
-          {t(row.connectedTo)}
-        </Typography>
+        <Fragment>
+          {row.connectedTo !== 'free' ? (
+            <Link
+              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.rangeStart}`}
+            >
+              <Typography className={classes.assignedTitle}>
+                {t(row.connectedTo)}
+              </Typography>
+            </Link>
+          ) : (
+            <Typography className={classes.availableTitle}>
+              {t(row.connectedTo)}
+            </Typography>
+          )}
+        </Fragment>
       )
     },
     {
