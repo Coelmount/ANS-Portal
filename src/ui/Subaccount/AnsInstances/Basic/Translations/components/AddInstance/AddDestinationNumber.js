@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import capitalize from 'lodash/capitalize'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -15,22 +14,19 @@ import Typography from '@material-ui/core/Typography'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
-import CustomTable from 'components/CustomTable'
-import Checkbox from 'components/Checkbox'
-import Select from 'components/Select'
 import Input from 'components/Input'
 
 import useStyles from './styles'
 
-const selectCountries = [
-  { value: 'africa', label: 'Africa' },
-  { value: 'uganda', label: 'Uganda' }
-]
+// const selectCountries = [
+//   { value: 'africa', label: 'Africa' },
+//   { value: 'uganda', label: 'Uganda' }
+// ]
 
 const AddDestinationNumber = ({ handleClose, t }) => {
   const classes = useStyles()
 
-  const { step, changeStep, postDestinationNumber } = BasicTranslationsStore
+  const { changeStep, postDestinationNumber } = BasicTranslationsStore
 
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [destinationNumber, setDestinationNumber] = useState(null)

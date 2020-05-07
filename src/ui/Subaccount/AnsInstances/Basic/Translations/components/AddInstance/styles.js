@@ -69,9 +69,6 @@ const useStyles = makeStyles(theme => ({
   },
   // <-
 
-  modalDialog: {
-    minHeight: '100%'
-  },
   select: {
     width: 254
   },
@@ -98,6 +95,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: 40
   },
   modalDialog: {
+    minHeight: '100%',
     '& .MuiDialog-paperScrollPaper': {
       minHeight: '100%'
     }
@@ -349,9 +347,6 @@ const useStyles = makeStyles(theme => ({
     },
     textAlign: 'center',
     width: 100
-  },
-  select: {
-    width: 254
   },
   inputsWrap: {
     display: 'flex',

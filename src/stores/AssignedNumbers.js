@@ -63,42 +63,59 @@ export class AssignedNumbers {
               }
             })
             // to test deassign logic =>
-            // transformedAssignedNumbers.push(
-            //   {
-            //     checked: false,
-            //     connected_to: null,
-            //     country_code: '+966',
-            //     customer: 'ans 0001',
-            //     customer_account: null,
-            //     hover: false,
-            //     id: 1,
-            //     nsn: '5555555',
-            //     phoneNumber: '+966 5555555',
-            //     state: 'assigned',
-            //     state_updated_on: '2020-04-27T20:17:07',
-            //     status: 'available',
-            //     subaccountId: 'testaccount',
-            //     type: 'geo',
-            //     usedBy: 'none'
-            //   },
-            //   {
-            //     checked: false,
-            //     connected_to: 'connected_test',
-            //     country_code: '+966',
-            //     customer: 'ans 0002',
-            //     customer_account: null,
-            //     hover: false,
-            //     id: 2,
-            //     nsn: '6666666',
-            //     phoneNumber: '+966 6666666',
-            //     state: 'assigned',
-            //     state_updated_on: '2020-04-27T20:17:07',
-            //     status: 'in_use',
-            //     subaccountId: 'testaccount2',
-            //     type: 'geo',
-            //     usedBy: 'none'
-            //   }
-            // )
+            transformedAssignedNumbers.push(
+              {
+                checked: false,
+                connected_to: null,
+                country_code: '+966',
+                customer: 'ans 0001',
+                customer_account: null,
+                hover: false,
+                id: 1,
+                nsn: '5555555',
+                phoneNumber: '+966 5555555',
+                state: 'assigned',
+                state_updated_on: '2020-04-27T20:17:07',
+                status: 'available',
+                subaccountId: 'testaccount',
+                type: 'geo',
+                usedBy: 'none'
+              },
+              {
+                checked: false,
+                connected_to: 'connected_test',
+                country_code: '+966',
+                customer: 'ans 0002',
+                customer_account: null,
+                hover: false,
+                id: 2,
+                nsn: '6666666',
+                phoneNumber: '+966 6666666',
+                state: 'assigned',
+                state_updated_on: '2020-04-27T20:17:07',
+                status: 'in_use',
+                subaccountId: 'testaccount2',
+                type: 'geo',
+                usedBy: 'none'
+              },
+              {
+                checked: false,
+                connected_to: null,
+                country_code: '+966',
+                customer: 'ans 00032',
+                customer_account: null,
+                hover: false,
+                id: 3,
+                nsn: '777777',
+                phoneNumber: '+966 777777',
+                state: 'assigned',
+                state_updated_on: '2020-04-27T20:17:07',
+                status: 'available',
+                subaccountId: 'testaccount3',
+                type: 'geo',
+                usedBy: 'none'
+              }
+            )
             // <-
 
             this.assignedNumbers = transformedAssignedNumbers

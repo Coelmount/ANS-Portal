@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { withRouter } from 'react-router'
+import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
@@ -7,19 +6,15 @@ import classnames from 'classnames'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
 import EntitlementsStore from 'stores/Entitlements'
-import CreateSubaccountStore from 'stores/CreateSubaccount'
 
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
-import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import EditEntitlements from 'components/EditEntitlements'
@@ -74,10 +69,6 @@ const AccessNumbers = ({ t }) => {
     getEntitlements(match.customerId)
   }
 
-  const handleAssignButtonClick = () => {
-    setShowAssignNumbers(true)
-  }
-
   const handleDelete = accessNumber => {
     deleteEntitlements(match.customerId, accessNumber.id)
       .then(() => setIsDeleteModalOpen(false))
@@ -90,23 +81,23 @@ const AccessNumbers = ({ t }) => {
     Icon: <AddOutlinedIcon />
   }
 
-  const toolbarButtonsBlock = () => {
-    return (
-      <Box className={classes.toolbarButtonsBlockWrap}>
-        <Box className={classes.addCustomerWrap}>
-          <Box
-            onClick={handleAssignButtonClick}
-            className={classes.addIconWrap}
-          >
-            <DoneOutlinedIcon className={classes.deleteIcon} />
-          </Box>
-          <Typography className={classes.addCustomerTitle}>
-            {t('assign_to_subaccount')}
-          </Typography>
-        </Box>
-      </Box>
-    )
-  }
+  // const toolbarButtonsBlock = () => {
+  //   return (
+  //     <Box className={classes.toolbarButtonsBlockWrap}>
+  //       <Box className={classes.addCustomerWrap}>
+  //         <Box
+  //           onClick={handleAssignButtonClick}
+  //           className={classes.addIconWrap}
+  //         >
+  //           <DoneOutlinedIcon className={classes.deleteIcon} />
+  //         </Box>
+  //         <Typography className={classes.addCustomerTitle}>
+  //           {t('assign_to_subaccount')}
+  //         </Typography>
+  //       </Box>
+  //     </Box>
+  //   )
+  // }
 
   const columns = [
     {

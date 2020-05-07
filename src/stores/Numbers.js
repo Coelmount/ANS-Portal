@@ -1,5 +1,5 @@
 import { decorate, observable, action } from 'mobx'
-import merge from 'lodash/merge'
+// import merge from 'lodash/merge'
 import queryString from 'query-string'
 
 import axios from 'utils/axios'

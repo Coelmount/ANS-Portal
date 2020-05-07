@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect, Fragment } from 'react'
-import { withRouter } from 'react-router'
-import { Link, useParams } from 'react-router-dom'
+import React, { useState, useEffect, Fragment } from 'react'
+import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import classnames from 'classnames'
@@ -13,12 +12,10 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
-import EntitlementsStore from 'stores/Entitlements'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
-import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
@@ -45,8 +42,6 @@ const AccessNumbersItem = ({ t }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [searchList, setSearchList] = useState([])
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [phoneNumberToDelete, setPhoneNumberToDelete] = useState(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [currentPerPage, setCurrentPerPage] = useState(10)
   const [deassignMessage, setDeassignMessage] = useState('')
@@ -57,7 +52,6 @@ const AccessNumbersItem = ({ t }) => {
     isAssignedNumbersLoading,
     isLoadingEntitlements,
     isDeletingAssignedNumber,
-    getAssignedNumbers,
     deleteAssignedNumber,
     totalPagesServer,
     getEntitlementsAndFindCurrent,
@@ -185,7 +179,7 @@ const AccessNumbersItem = ({ t }) => {
       buildDeassignMessageBlock(checkedNumbers)
       setIsDeassignModalOpen(true)
     } else if (numberOfChecked === 0) {
-      const translatedErrorNotification = t('no_numbers_selected')
+      // const translatedErrorNotification = t('no_numbers_selected')
       // console.log(t('no_numbers_selected'))
       showErrorNotification('No phone numbers selected')
     } else {
@@ -435,7 +429,6 @@ const AccessNumbersItem = ({ t }) => {
             open={isDeassignModalOpen}
             handleClose={handleCloseDeassignModal}
             handleDelete={handleDeassign}
-            // deleteInfo={{ name: 'test', id: null }}
             isDeleting={isDeletingAssignedNumber}
             deleteSubject={deassignSubject}
             extraDeleteSubject={deassignMessage}

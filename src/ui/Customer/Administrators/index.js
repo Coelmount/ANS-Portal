@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
@@ -43,7 +43,11 @@ const Administrators = props => {
     isDeletingAdmin
   } = EditDeleteAdminStore
 
-  const { getCustomer, customer, isLoadingCustomer } = CustomersStore
+  const {
+    getCustomer,
+    // customer,
+    isLoadingCustomer
+  } = CustomersStore
 
   const { t } = props
   const match = useParams()

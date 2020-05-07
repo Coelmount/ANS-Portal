@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useHistory, useParams } from 'react-router-dom'
@@ -14,7 +14,13 @@ import accountCheck from 'source/images/svg/account-check.svg'
 import useStyles from './styles'
 
 const SuccesPage = props => {
-  const { handleClose, t, store, isCreateSubaccount, createSubaccount } = props
+  const {
+    handleClose,
+    store,
+    isCreateSubaccount,
+    //  createSubaccount,
+    t
+  } = props
   const { changeStep, createdCustomerStore } = store
 
   const history = useHistory()

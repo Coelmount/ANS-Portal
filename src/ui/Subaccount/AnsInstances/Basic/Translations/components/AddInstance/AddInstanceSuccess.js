@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { useHistory, useParams } from 'react-router-dom'
 
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
@@ -11,13 +10,13 @@ import Button from '@material-ui/core/Button'
 
 import addSuccess from 'source/images/svg/basic_instance_add_success.svg'
 
-import BasicTranslationsStore from 'stores/BasicTranslations'
+// import BasicTranslationsStore from 'stores/BasicTranslations'
 
 import useStyles from './styles'
 
 const AddInstanceSuccess = ({ handleClose, t }) => {
   const classes = useStyles()
-  const { changeStep } = BasicTranslationsStore
+  // const { changeStep } = BasicTranslationsStore
 
   return (
     <Fragment>

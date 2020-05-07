@@ -1,5 +1,4 @@
 import { decorate, observable, action } from 'mobx'
-import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
