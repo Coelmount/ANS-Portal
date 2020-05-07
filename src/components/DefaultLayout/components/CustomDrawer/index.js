@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 import { withRouter } from 'react-router'
 import { observer } from 'mobx-react-lite'
@@ -29,15 +29,39 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
     handleActiveSubChildNav,
     getActiveNavsAfterUpdate
   } = DefaultLayoutStore
+  const history = useHistory()
+
   useEffect(() => {
     getActiveNavsAfterUpdate(match.url)
   }, [getActiveNavsAfterUpdate, match.url])
+
+  const redirectToMainPage = () => {
+    if (localStorage.getItem('ids')) {
+      const ids = JSON.parse(localStorage.getItem('ids'))
+      if (ids.tenant_id && ids.group_id) {
+        history.push(
+          `/customers/${ids.tenant_id}/subaccounts/${ids.group_id}/ans_instances`
+        )
+        return
+      }
+      if (ids.tenant_id) {
+        history.push(`/customers/${ids.tenant_id}/access_numbers`)
+        return
+      }
+    } else {
+      history.push('/customers')
+    }
+  }
+
   return (
     <Fragment>
       <Box className='drawerHeader'>
-        <Link to={'/'}>
-          <img src={logo} className={classes.logo} alt='mtn-logo' />
-        </Link>
+        <img
+          src={logo}
+          className={classes.logo}
+          alt='mtn-logo'
+          onClick={redirectToMainPage}
+        />
       </Box>
 
       <List className={classes.wrapper}>

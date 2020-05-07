@@ -58,6 +58,24 @@ const DefaultLayout = ({ t, notFoundPage }) => {
     setMobileOpen(!mobileOpen)
   }
 
+  const redirectToMainPage = () => {
+    if (localStorage.getItem('ids')) {
+      const ids = JSON.parse(localStorage.getItem('ids'))
+      if (ids.tenant_id && ids.group_id) {
+        history.push(
+          `/customers/${ids.tenant_id}/subaccounts/${ids.group_id}/ans_instances`
+        )
+        return
+      }
+      if (ids.tenant_id) {
+        history.push(`/customers/${ids.tenant_id}/access_numbers`)
+        return
+      }
+    } else {
+      history.push('/customers')
+    }
+  }
+
   const adminNavLinks = [
     {
       link: '/customers',
@@ -202,8 +220,8 @@ const DefaultLayout = ({ t, notFoundPage }) => {
             <img
               src={logo}
               className={classes.logo}
-              alt='mtn-logo'
-              onClick={() => history.push('/customers')}
+              alt='mtn-logo1'
+              onClick={() => redirectToMainPage()}
             />
           </Box>
         </nav>

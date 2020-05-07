@@ -25,6 +25,7 @@ import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
+import AddMultipleNumbers from './components/MultipleANSBasicNumber'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 
@@ -41,6 +42,9 @@ const Translations = observer(({ t }) => {
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
   const [anchorEl, setAnchorEl] = useState(null)
+  const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
+    false
+  )
 
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
 
@@ -85,10 +89,6 @@ const Translations = observer(({ t }) => {
 
   const handlePopoverClose = () => {
     setAnchorEl(null)
-  }
-
-  const handleMenuItemClick = id => {
-    if (id === 1) handleAddInstanceModalOpen()
   }
 
   const selectNumbers = (checked, id) => {
@@ -246,11 +246,13 @@ const Translations = observer(({ t }) => {
   const addPopoverItems = [
     {
       id: 1,
-      label: t('1_ans_basic_number')
+      label: t('1_ans_basic_number'),
+      onClick: handleAddInstanceModalOpen
     },
     {
       id: 2,
-      label: t('multiply_ans_basic_number')
+      label: t('multiply_ans_basic_number'),
+      onClick: () => setShowAddMultipleANSNumbers(true)
     }
   ]
 
@@ -278,7 +280,7 @@ const Translations = observer(({ t }) => {
           <Box className={classes.addPopoverWrap}>
             {addPopoverItems.map(item => (
               <MenuItem
-                onClick={() => handleMenuItemClick(item.id)}
+                onClick={item.onClick}
                 value={item.label}
                 key={item.id}
                 className={classes.addPopoverItem}
@@ -355,6 +357,12 @@ const Translations = observer(({ t }) => {
           <AddInstance
             open={isAddInstanceModalOpen}
             handleClose={handleAddInstanceModalClose}
+          />
+        )}
+        {showAddMultipleANSNumbers && (
+          <AddMultipleNumbers
+            open={showAddMultipleANSNumbers}
+            handleClose={() => setShowAddMultipleANSNumbers(false)}
           />
         )}
       </Paper>
