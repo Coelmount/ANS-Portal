@@ -125,16 +125,8 @@ const useStyles = makeStyles(theme => ({
   bodyFirstCell: {
     paddingLeft: '37px'
   },
-  // headCellTitle: {
-  //   // paddingBottom: 0,
-  //   paddingTop: 0,
-  //   '& span': {
-  //     fontWeight: 600,
-  //     fontSize: 16
-  //   }
-  // },
   headCellTitle: {
-    padding: 0,
+    paddingLeft: 0,
     '& span': {
       fontWeight: 600,
       fontSize: 16,
@@ -174,7 +166,6 @@ const useStyles = makeStyles(theme => ({
   deleteCustomerIcon: {
     width: 20,
     height: 20,
-    marginTop: 7,
     color: theme.palette.black,
     '&:hover': {
       cursor: 'pointer'
@@ -183,7 +174,11 @@ const useStyles = makeStyles(theme => ({
   tableRow: {
     borderLeft: '5px solid transparent',
     '& > td': {
+      height: 44,
       padding: '10px 16px'
+    },
+    '& > th': {
+      height: 44
     },
     '&:nth-child(2n)': {
       backgroundColor: theme.palette.active.main,

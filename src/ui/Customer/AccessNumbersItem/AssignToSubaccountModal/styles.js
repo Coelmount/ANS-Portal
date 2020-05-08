@@ -90,6 +90,9 @@ const useStyles = makeStyles(theme => ({
     '& > td': {
       width: 50
     },
+    '& > th': {
+      height: 50
+    },
     '&:nth-child(2n)': {
       backgroundColor: theme.palette.active.main,
       '&:hover': {

@@ -307,7 +307,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 44
   },
   headCellTitle: {
-    padding: 0,
+    paddingLeft: 16,
     '& span': {
       fontWeight: 600,
       fontSize: 16,
@@ -336,7 +336,7 @@ const useStyles = makeStyles(theme => ({
   tbody: {
     '& td, th': {
       border: 'none',
-      padding: '0 16px 0 16px'
+      paddingLeft: 16
     }
   },
   link: {
@@ -577,6 +577,12 @@ const useStyles = makeStyles(theme => ({
       }
     },
     textAlign: 'center'
+  },
+  totalCell: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignCenter: 'center',
+    paddingBottom: 65
   }
 }))
 

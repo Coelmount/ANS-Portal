@@ -109,7 +109,6 @@ const useStyles = makeStyles(theme => ({
   accessHeadCell: {
     width: 268,
     paddingLeft: 52,
-    paddingBottom: 19,
     '& > span': {
       fontSize: 16,
       fontWeight: 600
@@ -176,14 +175,16 @@ const useStyles = makeStyles(theme => ({
   deleteCustomerIcon: {
     width: 20,
     height: 20,
-    marginTop: 7,
     color: theme.palette.black,
     '&:hover': {
       cursor: 'pointer'
     }
   },
   deleteCell: {
-    paddingRight: '38px !important'
+    paddingRight: '38px !important',
+    display: 'flex',
+    alignItems: 'center',
+    height: '63px !important'
   }
 }))
 

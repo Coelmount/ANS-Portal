@@ -56,6 +56,9 @@ const EditEntitlements = props => {
       extraHeadProps: {
         className: classes.totalHeader
       },
+      extraProps: {
+        className: classes.totalCell
+      },
       getCellData: row => (
         <Box>
           <Input

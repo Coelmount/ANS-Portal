@@ -78,12 +78,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500
   },
   assignedHeadCell: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 0,
-    paddingBottom: 0,
-    marginTop: 4,
+    textAlign: 'center',
     '& span': {
       fontWeight: 600,
       fontSize: 16
@@ -100,14 +95,14 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 600,
     fontSize: 14
   },
-  // delete cell
   deleteCell: {
-    paddingRight: '38px !important'
+    paddingRight: '38px !important',
+    display: 'flex',
+    alignItems: 'center'
   },
   deleteCustomerIcon: {
     width: 20,
     height: 20,
-    marginTop: 7,
     color: theme.palette.black,
     '&:hover': {
       cursor: 'pointer'

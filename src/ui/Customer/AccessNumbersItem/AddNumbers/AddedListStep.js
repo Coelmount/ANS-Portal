@@ -72,7 +72,8 @@ const AddedListStep = ({ handleClose, t }) => {
         </Typography>
       ),
       isSortAvailable: false,
-      extraProps: { className: classes.textCenter }
+      extraProps: { className: classes.numbersCell },
+      extraHeadProps: { className: classes.headNumbersCell }
     },
     {
       id: 'addStatus',

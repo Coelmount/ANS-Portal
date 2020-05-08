@@ -95,23 +95,10 @@ const useStyles = makeStyles(theme => ({
     fontSize: 14
   },
   countryNameColumn: {
-    width: 250,
     whiteSpace: 'nowrap',
     fontSize: 16
   },
-  rangeStartColumn: {
-    width: 150,
-    fontSize: 14,
-    fontWeight: 600
-  },
-  rangeStartHeadColumn: {
-    whiteSpace: 'nowrap'
-  },
-  rightArrowColumn: {
-    width: 50
-  },
   numbersWrap: {
-    // maxWidth: 250,
     fontSize: 14,
     fontWeight: 600,
     whiteSpace: 'nowrap',
@@ -131,14 +118,15 @@ const useStyles = makeStyles(theme => ({
   deleteCustomerIcon: {
     width: 20,
     height: 20,
-    marginTop: 7,
     color: theme.palette.black,
     '&:hover': {
       cursor: 'pointer'
     }
   },
   deleteCell: {
-    paddingRight: '38px !important'
+    paddingRight: '38px !important',
+    display: 'flex',
+    alignItems: 'center'
   },
   statusCell: {
     '& > a': {
