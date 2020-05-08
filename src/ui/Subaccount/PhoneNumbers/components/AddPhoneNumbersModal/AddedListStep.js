@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
@@ -13,19 +12,12 @@ import Button from '@material-ui/core/Button'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+
 import CustomTable from 'components/CustomTable'
-
-import sharp from 'source/images/svg/sharp.svg'
-import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
-
-import Input from 'components/Input'
-import Checkbox from 'components/Checkbox'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 
 import useStyles from './styles'
-import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 
 function a11yProps(index) {
   return {
@@ -57,7 +49,7 @@ const AddedListStep = ({ handleClose, t }) => {
   const [value, setValue] = React.useState(0)
 
   const {
-    changeStep,
+    // changeStep,
     addedPhoneNumbers,
     rejectedPhoneNumbers
   } = PhoneNumbersStore

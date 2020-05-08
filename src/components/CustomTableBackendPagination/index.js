@@ -18,7 +18,6 @@ import Loading from 'components/Loading'
 import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './defaultStyles'
-import { useEffect } from 'react'
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'

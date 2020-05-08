@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -21,7 +21,7 @@ import Input from 'components/Input'
 import CreateCustomerStore from 'stores/CreateCustomer'
 
 import useStyles from './styles'
-import Loading from 'components/Loading'
+// import Loading from 'components/Loading'
 
 const SecondStep = props => {
   const {

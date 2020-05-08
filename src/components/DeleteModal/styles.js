@@ -119,6 +119,9 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
+  },
+  deleteIcon: {
+    marginBottom: 3
   }
 }))
 

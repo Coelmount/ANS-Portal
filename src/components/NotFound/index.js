@@ -9,7 +9,7 @@ import page404 from 'source/images/svg/404.svg'
 import DefaultLayout from 'components/DefaultLayout'
 import './styles.css'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   goBackButtonWrapper: {
     width: 140,
     height: 50,
@@ -43,7 +43,6 @@ const NotFound = ({ t }) => {
       <div className='notFoundWrapper'>
         <img src={page404} alt='no-ava' />
         <h2 className='notFoundTitle'>{t('not_found')}</h2>
-
         <Box className={classes.goBackButtonWrapper}>
           {history.length >= 2 ? (
             <Typography

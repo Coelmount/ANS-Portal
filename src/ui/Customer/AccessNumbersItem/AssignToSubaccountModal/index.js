@@ -3,7 +3,6 @@ import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import { makeStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -29,8 +28,7 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
   const [selectedSubaccount, setSelectedSubaccount] = useState(null)
 
   const [subaccountsList, setSubaccountsList] = useState([])
-  const [isAnyChecked, setIsAnyChecked] = useState(false)
-  const [searchList, setSearchList] = useState([])
+  // const [searchList, setSearchList] = useState([])
   const { getSubaccounts, rows, isLoadingSubaccounts } = SubaccountsStore
   const { postAssignToSubaccount } = AssignedNumbersStore
 
@@ -150,7 +148,7 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
             showPagination={true}
             rows={subaccountsList}
             searchCriterias={['groupId', 'groupName']}
-            getSearchList={setSearchList}
+            // getSearchList={setSearchList}
             noAvailableDataMessage={t('no_subaccounts_available')}
             isModal={true}
           />

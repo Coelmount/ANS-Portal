@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -43,7 +43,7 @@ const AddCustomerAdministrator = ({
   const [repeatPassword, setRepeatedPassword] = useState('')
   const {
     getCustomerAdminsLanguages,
-    clearFields,
+    // clearFields,
     languagesList,
     isLanguagesLoading
   } = CustomerAdministrators
@@ -99,7 +99,7 @@ const AddCustomerAdministrator = ({
             <Box className={classes.inputsWrapper}>
               <Box className={classes.inputes}>
                 <Input
-                  icon={<img src={sharp} />}
+                  icon={<img src={sharp} alt='sharp' />}
                   label={`${subject[0].toUpperCase() + subject.slice(1)} id`}
                   value={user.userId}
                   onChange={e => setUserInfo('userId', e.target.value)}

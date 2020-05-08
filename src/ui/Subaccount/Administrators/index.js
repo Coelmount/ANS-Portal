@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
@@ -47,7 +47,11 @@ const SubaccountAdministrators = props => {
     isDeletingSubaccountAdmin
   } = EditDeleteSubaccountAdminStore
 
-  const { getSubaccount, subaccount, isLoadingSubaccount } = SubaccountsStore
+  const {
+    getSubaccount,
+    // subaccount,
+    isLoadingSubaccount
+  } = SubaccountsStore
 
   useEffect(() => {
     getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })

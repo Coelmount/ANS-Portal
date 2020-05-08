@@ -183,7 +183,6 @@ const useStyles = makeStyles(theme => ({
   tableRow: {
     borderLeft: '5px solid transparent',
     '& > td': {
-      // width: 52,
       padding: '10px 16px'
     },
     '&:nth-child(2n)': {

@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect, Fragment } from 'react'
-import { withRouter } from 'react-router'
-import { Link, useParams } from 'react-router-dom'
+import React, { useState, useEffect, Fragment } from 'react'
+import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import classnames from 'classnames'
@@ -13,12 +12,10 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
-import EntitlementsStore from 'stores/Entitlements'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
-import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
@@ -45,25 +42,24 @@ const AccessNumbersItem = ({ t }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [searchList, setSearchList] = useState([])
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [phoneNumberToDelete, setPhoneNumberToDelete] = useState(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [currentPerPage, setCurrentPerPage] = useState(10)
   const [deassignMessage, setDeassignMessage] = useState('')
   const [deassignMessageBlock, setDeassignMessageBlock] = useState(null)
+  const [deassignSubject, setDeassignSubject] = useState('')
   const {
     assignedNumbers,
     isAssignedNumbersLoading,
     isLoadingEntitlements,
     isDeletingAssignedNumber,
-    getAssignedNumbers,
     deleteAssignedNumber,
     totalPagesServer,
     getEntitlementsAndFindCurrent,
     currentEntitlement,
     setDefaultValues,
     setNumbersToAssign,
-    setNumbersToDeassign
+    setNumbersToDeassign,
+    showErrorNotification
   } = AssignedNumbersStore
 
   const isAssignEnabled =
@@ -139,13 +135,21 @@ const AccessNumbersItem = ({ t }) => {
       const checkedNumbers = selected.filter(item => item.checked === true)
       setNumbersToAssign(checkedNumbers)
       setIsAssignModalOpen(true)
+    } else if (numberOfChecked === 0) {
+      showErrorNotification(t('no_numbers_selected'))
+    } else {
+      showErrorNotification(t('unable_assign'))
     }
   }
+
   const buildDeassignMessage = numbers => {
     const amountOfNumbers = numbers.length
-    const totalMessage = `${amountOfNumbers} ${t(
-      'phone_numbers'
-    ).toLowerCase()}:`
+    const deassignText =
+      amountOfNumbers > 1
+        ? t('phone_numbers').toLowerCase()
+        : t('phone_number').toLowerCase()
+    setDeassignSubject(deassignText)
+    const totalMessage = `${amountOfNumbers} ${deassignText}:`
     setDeassignMessage(totalMessage)
   }
 
@@ -153,7 +157,6 @@ const AccessNumbersItem = ({ t }) => {
     const numbersArr = numbers.map(item => item.phoneNumber)
     const splitedNumbersStr = numbersArr.join(', ')
     const totalMessage = `${splitedNumbersStr} ?`
-
     const deassignMessageBlock = (
       <Box>
         <Typography className={classes.boldDeassignText}>
@@ -172,16 +175,22 @@ const AccessNumbersItem = ({ t }) => {
       buildDeassignMessage(checkedNumbers)
       buildDeassignMessageBlock(checkedNumbers)
       setIsDeassignModalOpen(true)
+    } else if (numberOfChecked === 0) {
+      showErrorNotification(t('no_numbers_selected'))
+    } else {
+      showErrorNotification(t('unable_deassign'))
     }
   }
 
   const handleDeassignOneNumberClick = row => {
     setNumbersToDeassign(row)
+    buildDeassignMessage([row])
+    buildDeassignMessageBlock([row])
     setIsDeassignModalOpen(true)
   }
 
   const handleCloseDeassignModal = () => {
-    // getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
+    getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDeassignModalOpen(false)
   }
 
@@ -410,9 +419,9 @@ const AccessNumbersItem = ({ t }) => {
             open={isDeassignModalOpen}
             handleClose={handleCloseDeassignModal}
             handleDelete={handleDeassign}
-            deleteInfo={{ name: 'test', id: null }}
             isDeleting={isDeletingAssignedNumber}
-            deleteSubject={deassignMessage}
+            deleteSubject={deassignSubject}
+            extraDeleteSubject={deassignMessage}
             action={t('to_deassign')}
             titleAction={t(`deassign`)}
             deassignMessageBlock={deassignMessageBlock}

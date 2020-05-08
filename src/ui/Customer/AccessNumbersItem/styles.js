@@ -119,16 +119,19 @@ const useStyles = makeStyles(theme => ({
   avaliableTitle: {
     color: theme.palette.lightGreen
   },
+  //delete cell without icon
   deleteCustomerIcon: {
     width: 20,
     height: 20,
-    marginTop: 7,
     color: theme.palette.black,
     '&:hover': {
       cursor: 'pointer'
     }
   },
   deleteCell: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: 11,
     paddingRight: '38px !important'
   },
   deassignWrap: {

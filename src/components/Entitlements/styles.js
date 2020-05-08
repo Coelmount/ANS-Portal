@@ -15,19 +15,6 @@ const useStyles = makeStyles(theme => ({
     width: 24,
     textAlign: 'center'
   },
-  checkbox: {
-    boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
-    width: '18px',
-    height: '18px',
-    marginRight: '9px',
-    padding: 0,
-    '& .MuiSvgIcon-root': {
-      color: theme.palette.primary.main
-    },
-    '& .MuiIconButton-root': {
-      padding: 0
-    }
-  },
   wrapper: {
     marginTop: 10
   },

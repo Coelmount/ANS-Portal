@@ -1,12 +1,10 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { useParams } from 'react-router-dom'
 
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Dialog from '@material-ui/core/Dialog'
-import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -18,7 +16,7 @@ import LanguageIcon from '@material-ui/icons/Language'
 import CustomerAdministrators from 'stores/CustomerAdministrators'
 import Loading from 'components/Loading'
 
-import { SELECTLANGUAGE } from 'source/config'
+// import { SELECTLANGUAGE } from 'source/config'
 import Input from 'components/Input'
 import CustomSelect from 'components/Select'
 import sharp from 'source/images/svg/sharp.svg'
@@ -37,19 +35,18 @@ const UpdateAdminInfo = ({
   editSubject
 }) => {
   const classes = useStyles()
-  const match = useParams()
 
   const {
     getCustomerAdminsLanguages,
-    languagesList,
-    isLanguagesLoading
+    languagesList
+    // isLanguagesLoading
   } = CustomerAdministrators
 
-  const [changedSubaccountAdmin, setChangedSubaccountAdmin] = useState({
-    firstName: '',
-    lastName: '',
-    language: ''
-  })
+  // const [changedSubaccountAdmin, setChangedSubaccountAdmin] = useState({
+  //   firstName: '',
+  //   lastName: '',
+  //   language: ''
+  // })
 
   useEffect(() => {
     getAdminInfo(userId)
@@ -83,7 +80,7 @@ const UpdateAdminInfo = ({
             <Box className={classes.inputsWrapper}>
               <Box className={classes.inputes}>
                 <Input
-                  icon={<img src={sharp} at='icon' />}
+                  icon={<img src={sharp} alt='sharp' />}
                   label={'ID'}
                   value={userId}
                   disabled
@@ -95,7 +92,7 @@ const UpdateAdminInfo = ({
                   icon={<PersonOutlineIcon />}
                   label={t('first_name')}
                   value={user.firstName}
-                  onChange={(e) => updateInfo('firstName', e.target.value)}
+                  onChange={e => updateInfo('firstName', e.target.value)}
                 />
               </Box>
               <Box className={classes.inputes}>
@@ -103,21 +100,21 @@ const UpdateAdminInfo = ({
                   icon={<PersonOutlineIcon />}
                   label={t('last_name')}
                   value={user.lastName}
-                  onChange={(e) => updateInfo('lastName', e.target.value)}
+                  onChange={e => updateInfo('lastName', e.target.value)}
                 />
               </Box>
               <Box className={classes.inputes}>
                 <CustomSelect
                   icon={<LanguageIcon />}
                   label={t('language')}
-                  options={languagesList.map((item) => {
+                  options={languagesList.map(item => {
                     return {
                       label: t(item.name.toLowerCase()),
                       value: item.name
                     }
                   })}
                   value={user.language}
-                  onChange={(e) =>
+                  onChange={e =>
                     updateInfo(
                       'language',
                       e.target.value[0].toUpperCase() + e.target.value.slice(1)

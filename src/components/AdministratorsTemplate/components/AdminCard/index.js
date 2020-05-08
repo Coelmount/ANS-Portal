@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
@@ -51,7 +51,7 @@ const AdminCard = ({
   const match = useParams()
   const [isOpened, setIsOpened] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [customerNameToDelete, setCustomerNameToDelete] = useState('')
+  // const [customerNameToDelete, setCustomerNameToDelete] = useState('')
   const [adminId, setAdminId] = useState('')
 
   const { getSubaccountAdmins } = SubaccountAdministrators
