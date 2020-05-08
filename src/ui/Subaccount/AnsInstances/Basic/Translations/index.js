@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Popover from '@material-ui/core/Popover'
 import MenuItem from '@material-ui/core/MenuItem'
+import Button from '@material-ui/core/Button'
 
 import UpdateIcon from '@material-ui/icons/Update'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
@@ -26,6 +27,7 @@ import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import AddMultipleNumbers from './components/MultipleANSBasicNumber'
+import MultipleUpdateNumbers from './components/MultipleUpdateANSBasicNumbers'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 
@@ -45,6 +47,10 @@ const Translations = observer(({ t }) => {
   const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
     false
   )
+  const [
+    showMultipleUpdateANSNumbers,
+    setShowMultipleUpdateANSNumbers
+  ] = useState(false)
 
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
 
@@ -302,9 +308,14 @@ const Translations = observer(({ t }) => {
         {isAnyChecked && (
           <Box className={classes.toolbarButtonsBlockWrap}>
             <Box className={classes.addCustomerWrap}>
-              <Box className={classes.addIconWrap}>
-                <UpdateIcon />
-              </Box>
+              <Button
+                variant='contained'
+                color='primary'
+                className={classes.toolbarButton}
+                onClick={() => setShowMultipleUpdateANSNumbers(true)}
+              >
+                <UpdateIcon className={classes.updateIcon} />
+              </Button>
               <Typography className={classes.addCustomerTitle}>
                 {t('update')}
               </Typography>
@@ -363,6 +374,12 @@ const Translations = observer(({ t }) => {
           <AddMultipleNumbers
             open={showAddMultipleANSNumbers}
             handleClose={() => setShowAddMultipleANSNumbers(false)}
+          />
+        )}
+        {showMultipleUpdateANSNumbers && (
+          <MultipleUpdateNumbers
+            open={showMultipleUpdateANSNumbers}
+            handleClose={() => setShowMultipleUpdateANSNumbers(false)}
           />
         )}
       </Paper>

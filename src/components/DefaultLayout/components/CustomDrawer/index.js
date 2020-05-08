@@ -35,7 +35,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   }, [getActiveNavsAfterUpdate, match.url])
 
   const redirectToMainPage = () => {
-    if (localStorage.getItem('ids')) {
+    if (!!localStorage.getItem('ids')) {
       const ids = JSON.parse(localStorage.getItem('ids'))
       if (ids.tenant_id && ids.group_id) {
         history.push(

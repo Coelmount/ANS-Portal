@@ -59,7 +59,7 @@ const DefaultLayout = ({ t, notFoundPage }) => {
   }
 
   const redirectToMainPage = () => {
-    if (localStorage.getItem('ids')) {
+    if (!!localStorage.getItem('ids')) {
       const ids = JSON.parse(localStorage.getItem('ids'))
       if (ids.tenant_id && ids.group_id) {
         history.push(

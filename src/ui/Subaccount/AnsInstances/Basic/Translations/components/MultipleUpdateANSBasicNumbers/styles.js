@@ -2,6 +2,16 @@ import { makeStyles } from '@material-ui/core/styles'
 import { borderRadius } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
+  redirectToBulkJob: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: '20%'
+  },
+  downloadIcon: {
+    height: 24,
+    width: 24
+  },
   title: {
     '& > *': {
       fontFamily: 'MTN',
@@ -62,18 +72,19 @@ const useStyles = makeStyles(theme => ({
     fontSize: 18,
     fontWeight: 600
   },
-  uploadBoxWrapper: {
+  downloadBoxWrapper: {
     display: 'flex',
     alignItems: 'center',
     marginTop: 30,
     flexDirection: 'column'
   },
-  uploadFileTitle: {
+  downloadFileTitle: {
     fontFamily: 'MTN',
     fontSize: 24,
-    fontWeight: 600
+    fontWeight: 600,
+    marginTop: 75
   },
-  uploadButton: {
+  downloadButton: {
     height: 44,
     width: 44,
     minWidth: 44,
@@ -92,6 +103,19 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'MTN',
     fontWeight: 600,
     fontSize: '18px'
+  },
+  downloadInfoBox: {
+    width: 298,
+    marginTop: 30
+  },
+  addedBulkJobTitle: {
+    fontSize: 24,
+    fontFamily: 'MTN',
+    fontWeight: 600,
+    marginTop: 30
+  },
+  addedBulkJobLink: {
+    marginTop: 24
   }
 }))
 

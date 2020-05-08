@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import classnames from 'classnames'
 
 import Dialog from '@material-ui/core/Dialog'
 
@@ -8,8 +9,10 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
+import ThirdStep from './ThirdStep'
 
 import Loading from 'components/Loading'
+import { height } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,6 +21,12 @@ const useStyles = makeStyles(theme => ({
     },
     '& .MuiDialog-paperScrollPaper': {
       minHeight: '100%'
+    }
+  },
+  thirdStepRoot: {
+    '& .MuiDialog-paperScrollPaper': {
+      minHeight: '50%',
+      height: 540
     }
   }
 }))
@@ -29,7 +38,13 @@ const CreateCustomer = props => {
   const classes = useStyles()
 
   return (
-    <Dialog open={open} onClose={handleClose} className={classes.root}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      className={classnames(classes.root, {
+        [classes.thirdStepRoot]: step === 3
+      })}
+    >
       <Steps step={step} handleClose={handleClose} setStep={setStep} />
     </Dialog>
   )
@@ -45,6 +60,8 @@ const Steps = props => {
       return (
         <SecondStep handleClose={props.handleClose} setStep={props.setStep} />
       )
+    case 3:
+      return <ThirdStep handleClose={props.handleClose} />
     default:
       return <FirstStep handleClose={props.handleClose} />
   }
