@@ -208,77 +208,32 @@ const PhoneNumbers = observer(({ t }) => {
       }
     },
     {
-      id: 'rangeStart',
-      label: 'phone_numbers',
-      extraProps: {
-        className: classes.rangeStartColumn
-      }
-    },
-    {
-      id: 'rightArrow',
-      isSortAvailable: false,
-      extraProps: {
-        className: classes.rightArrowColumn
-      },
-      getCellData: row => (
-        <Fragment>
-          {row.phoneNumbers && (
-            <img
-              src={RightArrowIcon}
-              className={classes.rightArrowIcon}
-              alt='right icon'
-            />
-          )}
-        </Fragment>
-      )
-    },
-    {
-      id: 'rangeEnd',
-      isSortAvailable: false,
-      extraProps: {
-        className: classes.rangeEndColumn
-      },
-      getCellData: row => (
-        <Fragment>
-          {row.phoneNumbers && (
-            <Box className={classes.numbersWrap}>
-              <Typography className={classes.numbersTitle}>
-                {row.rangeEnd}
-              </Typography>
-              <Typography className={classes.numberPhoneNumbersStoresAmount}>
-                {`(${row.phoneNumbers.length})`}
-              </Typography>
-            </Box>
-          )}
-        </Fragment>
-      )
+      id: 'phoneNumber',
+      label: 'phone_number'
     },
     {
       id: 'type',
-      label: 'type',
-      extraProps: {
-        className: classes.typeTitle
-      }
+      label: 'type'
     },
     {
-      id: 'connectedTo',
+      id: 'status',
       label: 'status',
       extraProps: {
         className: classes.statusCell
       },
       getCellData: row => (
         <Fragment>
-          {row.connectedTo !== 'free' ? (
+          {row.status !== 'free' ? (
             <Link
               to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.rangeStart}`}
             >
               <Typography className={classes.assignedTitle}>
-                {t(row.connectedTo)}
+                {t(row.status)}
               </Typography>
             </Link>
           ) : (
             <Typography className={classes.availableTitle}>
-              {t(row.connectedTo)}
+              {t(row.status)}
             </Typography>
           )}
         </Fragment>
@@ -292,7 +247,11 @@ const PhoneNumbers = observer(({ t }) => {
       },
       isSortAvailable: false,
       getCellData: row => (
-        <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
+        <Fragment>
+          {row.status === 'free' && (
+            <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
+          )}
+        </Fragment>
       )
     }
   ]
@@ -312,13 +271,7 @@ const PhoneNumbers = observer(({ t }) => {
             classes={classes}
             rows={numbers}
             columns={columns}
-            searchCriterias={[
-              'countryName',
-              'rangeStart',
-              'rangeEnd',
-              'type',
-              'state'
-            ]}
+            searchCriterias={['countryName', 'phoneNumber', 'type', 'state']}
             extraToolbarBlock={toolbarButtonsBlock}
             getSearchList={setSearchList}
             page={page}
