@@ -174,7 +174,6 @@ const useStyles = makeStyles(theme => ({
   deleteCustomerIcon: {
     width: 20,
     height: 20,
-    marginTop: 7,
     color: theme.palette.black,
     '&:hover': {
       cursor: 'pointer'
@@ -183,8 +182,11 @@ const useStyles = makeStyles(theme => ({
   tableRow: {
     borderLeft: '5px solid transparent',
     '& > td': {
-      // width: 52,
+      height: 44,
       padding: '10px 16px'
+    },
+    '& > th': {
+      height: 44
     },
     '&:nth-child(2n)': {
       backgroundColor: theme.palette.active.main,

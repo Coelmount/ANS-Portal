@@ -129,8 +129,8 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '37px'
   },
   headCellTitle: {
-    paddingBottom: 0,
-    paddingTop: 0,
+    // paddingBottom: 0,
+    // paddingTop: 0,
     '& span': {
       fontWeight: 600,
       fontSize: 16
@@ -162,31 +162,9 @@ const useStyles = makeStyles(theme => ({
   deleteCustomerIcon: {
     width: 20,
     height: 20,
-    marginTop: 7,
     color: theme.palette.black,
     '&:hover': {
       cursor: 'pointer'
-    }
-  },
-  tableRow: {
-    borderLeft: '5px solid transparent',
-    '& > td': {
-      // width: 52,
-      padding: '10px 16px'
-    },
-    '&:nth-child(2n)': {
-      backgroundColor: theme.palette.active.main,
-      '&:hover': {
-        borderLeft: `5px solid ${theme.palette.primary.main}`,
-        backgroundColor: theme.palette.active.main
-      }
-    },
-    '&:nth-child(2n+1)': {
-      backgroundColor: 'white',
-      '&:hover': {
-        borderLeft: `5px solid ${theme.palette.primary.main}`,
-        backgroundColor: 'white'
-      }
     }
   },
   paginationWrap: {
@@ -272,6 +250,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   deleteCell: {
+    display: 'flex',
+    alignItems: 'center',
     paddingRight: '38px !important'
   },
   searchInput: {

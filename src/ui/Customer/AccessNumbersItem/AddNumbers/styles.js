@@ -482,6 +482,7 @@ const useStyles = makeStyles(theme => ({
   },
   headCellTitle: {
     padding: 0,
+    // textAli
     '& span': {
       fontWeight: 600,
       fontSize: 16,
@@ -551,9 +552,13 @@ const useStyles = makeStyles(theme => ({
     //   borderTop: `2px solid ${theme.palette.primary.main}`
     // },
     '& > td': {
-      width: 50
+      width: 50,
+      textAlign: 'center'
       //padding: '10px 16px',
       //paddingLeft: 44
+    },
+    '& > th': {
+      height: 50
     },
     '&:nth-child(2n+1)': {
       backgroundColor: theme.palette.active.main,
@@ -784,6 +789,16 @@ const useStyles = makeStyles(theme => ({
     },
     textAlign: 'center',
     width: 100
+  },
+  numbersCell: {
+    paddingLeft: '75px !important'
+  },
+  headNumbersCell: {
+    paddingLeft: '75px !important',
+    '& > span': {
+      fontSize: 16,
+      fontWeight: 600
+    }
   }
 }))
 

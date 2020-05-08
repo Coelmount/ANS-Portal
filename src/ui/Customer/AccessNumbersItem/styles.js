@@ -131,7 +131,6 @@ const useStyles = makeStyles(theme => ({
   deleteCell: {
     display: 'flex',
     alignItems: 'center',
-    paddingTop: 11,
     paddingRight: '38px !important'
   },
   deassignWrap: {

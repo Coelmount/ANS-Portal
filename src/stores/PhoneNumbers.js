@@ -43,48 +43,43 @@ export class PhoneNumbers {
         `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"] `
       )
       .then(res => {
+        const pagination = res.data.pagination
         const requestResult = res.data.numbers
-        // this push part time solution for test range logic and state col colors(delete it when backend provide more data)
-        // requestResult.push(
-        //   {
-        //     country_code: '+966',
-        //     id: 10983,
-        //     nsn: '115050982',
-        //     state: 'assigned',
-        //     type: 'geo'
-        //   },
-        //   {
-        //     country_code: '+966',
-        //     id: 10982,
-        //     nsn: '115050911',
-        //     state: 'available',
-        //     type: 'local'
-        //   }
-        // )
-
-        const transformedNumbers = phoneNumbersRangeFilter(requestResult).map(
-          item => {
-            const countryName = getCountryNameFromNumber(
-              `${item.country_code}${item.nsn}`
-            )
-
-            return {
-              ...item,
-              connectedTo: item.connected_to ? 'used' : 'free',
-              countryName: countryName,
-              phoneNumber: `${item.country_code} ${item.nsn}`,
-              rangeStart: item.rangeStart
-                ? `${item.country_code} ${item.rangeStart}`
-                : `${item.country_code} ${item.nsn}`,
-              rangeEnd: `${item.country_code} ${item.rangeEnd}`,
-              checked: false,
-              hover: false
-            }
+        // -> this push part time solution for test range logic and state col colors(delete it when backend provide more data)
+        requestResult.push(
+          {
+            country_code: '+966',
+            id: 1,
+            nsn: '77777777',
+            connected_to: 'testaccount1',
+            type: 'geo'
+          },
+          {
+            country_code: '+966',
+            id: 2,
+            nsn: '888888888',
+            connected_to: null,
+            type: 'local'
           }
         )
+        // <-
+        const transformedNumbers = requestResult.map(item => {
+          const countryName = getCountryNameFromNumber(
+            `${item.country_code}${item.nsn}`
+          )
+
+          return {
+            ...item,
+            status: item.connected_to ? 'used' : 'free',
+            countryName: countryName,
+            phoneNumber: `${item.country_code} ${item.nsn}`,
+            checked: false,
+            hover: false
+          }
+        })
         console.log(transformedNumbers, 'tn')
+
         this.transformedPhoneNumbers = transformedNumbers
-        const pagination = res.data.pagination
         this.totalPages = pagination[2]
       })
       .catch(e =>
