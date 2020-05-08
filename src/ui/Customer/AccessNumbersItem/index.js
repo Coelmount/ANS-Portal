@@ -138,9 +138,7 @@ const AccessNumbersItem = ({ t }) => {
     } else if (numberOfChecked === 0) {
       showErrorNotification(t('no_numbers_selected'))
     } else {
-      showErrorNotification(
-        'Only available numbers can be assigned to subaccount'
-      )
+      showErrorNotification(t('unable_assign'))
     }
   }
 
@@ -164,8 +162,7 @@ const AccessNumbersItem = ({ t }) => {
         <Typography className={classes.boldDeassignText}>
           {totalMessage}
         </Typography>
-        {/* <Typography>{t('deassign_message_end')}</Typography> */}
-        <Typography>{'These numbers can be no longer used at all.'}</Typography>
+        <Typography>{t('deassign_message_end')}</Typography>
       </Box>
     )
     setDeassignMessageBlock(deassignMessageBlock)
@@ -179,13 +176,9 @@ const AccessNumbersItem = ({ t }) => {
       buildDeassignMessageBlock(checkedNumbers)
       setIsDeassignModalOpen(true)
     } else if (numberOfChecked === 0) {
-      // const translatedErrorNotification = t('no_numbers_selected')
-      // console.log(t('no_numbers_selected'))
-      showErrorNotification('No phone numbers selected')
+      showErrorNotification(t('no_numbers_selected'))
     } else {
-      showErrorNotification(
-        'Only assigned to subaccount and not connected to an ANS instance numbers can be deassigned'
-      )
+      showErrorNotification(t('unable_deassign'))
     }
   }
 
@@ -197,7 +190,7 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const handleCloseDeassignModal = () => {
-    // getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
+    getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDeassignModalOpen(false)
   }
 
@@ -221,8 +214,7 @@ const AccessNumbersItem = ({ t }) => {
         />
       </Box>
       <Typography className={classes.addCustomerTitle}>
-        {/* {t('disconnect_from_customer')} */}
-        {'Disconnect from customer'}
+        {t('disconnect_from_customer')}
       </Typography>
     </Box>
   )
@@ -264,8 +256,7 @@ const AccessNumbersItem = ({ t }) => {
             />
           </Box>
           <Typography className={classes.addCustomerTitle}>
-            {/* {t('deassign_from_subaccount')} */}
-            {t('Deassign from subaccount')}
+            {t('deassign_from_subaccount')}
           </Typography>
         </Box>
       </Box>
@@ -343,8 +334,7 @@ const AccessNumbersItem = ({ t }) => {
               : classes.avaliableTitle
           }
         >
-          {/* {t(`${row.status}`)} */}
-          {row.status === 'in_use' ? 'in use' : row.status}
+          {t(`${row.status}`)}
         </Typography>
       )
     },
