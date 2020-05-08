@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -30,7 +30,7 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
   const [subaccountsList, setSubaccountsList] = useState([])
   // const [searchList, setSearchList] = useState([])
   const { getSubaccounts, rows, isLoadingSubaccounts } = SubaccountsStore
-  const { postAssignToSubaccount } = AssignedNumbersStore
+  const { postAssignToSubaccount, isPostAssignNumbers } = AssignedNumbersStore
 
   useEffect(() => {
     getSubaccounts(match.customerId)
@@ -133,25 +133,31 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <Box className={classes.subtitle}>
-          <Typography className={classes.subtitleText}>
-            {t('select_subaccount')}
-          </Typography>
-        </Box>
-        {isLoadingSubaccounts ? (
+        {isPostAssignNumbers ? (
           <Loading />
         ) : (
-          <CustomTable
-            classes={classes}
-            columns={columns}
-            firstCell={false}
-            showPagination={true}
-            rows={subaccountsList}
-            searchCriterias={['groupId', 'groupName']}
-            // getSearchList={setSearchList}
-            noAvailableDataMessage={t('no_subaccounts_available')}
-            isModal={true}
-          />
+          <Fragment>
+            <Box className={classes.subtitle}>
+              <Typography className={classes.subtitleText}>
+                {t('select_subaccount')}
+              </Typography>
+            </Box>
+            {isLoadingSubaccounts ? (
+              <Loading />
+            ) : (
+              <CustomTable
+                classes={classes}
+                columns={columns}
+                firstCell={false}
+                showPagination={true}
+                rows={subaccountsList}
+                searchCriterias={['groupId', 'groupName']}
+                // getSearchList={setSearchList}
+                noAvailableDataMessage={t('no_subaccounts_available')}
+                isModal={true}
+              />
+            )}
+          </Fragment>
         )}
       </DialogContent>
       <DialogActions className={classes.dialogActions}>

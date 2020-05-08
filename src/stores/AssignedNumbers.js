@@ -180,38 +180,44 @@ export class AssignedNumbers {
     const objectsWithRangesArr = phoneNumbersRangeFilter(this.numbersToAssign)
     const groupId = subaccount.groupId
     const name = subaccount.groupName
+    const sendSubject = this.numbersToAssign.length > 1 ? 'numbers' : 'number'
 
+    const arrToSend = []
     objectsWithRangesArr.forEach(item => {
-      axios
-        .post(`tenants/${customerId}/groups/${groupId}/numbers`, {
-          range: item.phoneNumbers
-            ? [Number(item.rangeStart), Number(item.rangeEnd)]
-            : [Number(item.nsn), Number(item.nsn)],
-          country_code: item.country_code
-        })
-        .then(() => {
-          closeAsignModal()
-          SnackbarStore.enqueueSnackbar({
-            message: `${this.numbersToAssign.length} numbers assigned to ${name} subaccount successfully`,
-            options: {
-              variant: 'success'
-            }
-          })
-        })
-        .catch(e =>
-          SnackbarStore.enqueueSnackbar({
-            message:
-              getErrorMessage(e) ||
-              `Failed to assign ${this.numbersToAssign.length} numbers to ${name} subaccount`,
-            options: {
-              variant: 'error'
-            }
-          })
-        )
-        .finally(() => {
-          this.isPostAssignNumbers = false
-        })
+      arrToSend.push({
+        range: item.phoneNumbers
+          ? [Number(item.rangeStart), Number(item.rangeEnd)]
+          : [Number(item.nsn)],
+        country_code: item.country_code,
+        service_capabilities: 'basic'
+      })
     })
+    axios
+      .post(`tenants/${customerId}/groups/${groupId}/numbers`, {
+        ranges: arrToSend
+      })
+      .then(() => {
+        closeAsignModal()
+        SnackbarStore.enqueueSnackbar({
+          message: `${this.numbersToAssign.length} ${sendSubject} assigned to ${name} subaccount successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) ||
+            `Failed to assign ${this.numbersToAssign.length} ${sendSubject} to ${name} subaccount`,
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isPostAssignNumbers = false
+      })
   }
 
   showErrorNotification = message => {
