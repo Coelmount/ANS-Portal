@@ -136,7 +136,7 @@ const FirstStepNFN = props => {
               onChange={e =>
                 setQueryAvalibleNumbers({
                   ...queryAvalibleNumbers,
-                  number_of_result: e.target.value
+                  number_of_results: e.target.value
                 })
               }
             />
