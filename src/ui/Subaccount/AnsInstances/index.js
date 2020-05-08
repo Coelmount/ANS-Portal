@@ -4,6 +4,7 @@ import { useParams, useHistory } from 'react-router-dom'
 
 import CustomContainer from 'components/CustomContainer'
 import TitleBlock from 'components/TitleBlock'
+import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
@@ -58,6 +59,7 @@ const AnsInstances = ({ t }) => {
     <Box className={classes.root}>
       <Paper>
         <CustomContainer>
+          <CustomBreadcrumbs />
           <TitleBlock titleData={titleData} />
         </CustomContainer>
         <Box className={classes.mainWrap}>
@@ -68,7 +70,7 @@ const AnsInstances = ({ t }) => {
               key={item.link}
             >
               <Box className={classes.iconWrap}>
-                <img src={item.iconSrc} alt={`${item.label} icon`} />
+                <img src={item.iconSrc} alt={`${item.label}`} />
               </Box>
               <Typography className={classes.labelTitle}>
                 {item.label}
