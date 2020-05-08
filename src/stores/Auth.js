@@ -39,7 +39,7 @@ export class AuthStore {
               return
             }
           }
-          localStorage.setItem('ids', null)
+          localStorage.removeItem('ids')
         }
       })
       .catch(e =>

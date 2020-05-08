@@ -184,6 +184,18 @@ const useStyles = makeStyles(theme => ({
   },
   deleteCell: {
     paddingRight: '38px !important'
+  },
+  toolbarButton: {
+    width: 30,
+    height: 30,
+    minWidth: 30,
+    marginRight: 8,
+    borderRadius: 100,
+    padding: '6px 15px'
+  },
+  updateIcon: {
+    width: 18,
+    height: 18
   }
 }))
 
