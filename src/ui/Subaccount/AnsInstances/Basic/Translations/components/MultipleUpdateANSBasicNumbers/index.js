@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 const CreateCustomer = props => {
   const { open, handleClose } = props
-  const [step, setStep] = useState(3)
+  const [step, setStep] = useState(1)
 
   const classes = useStyles()
 

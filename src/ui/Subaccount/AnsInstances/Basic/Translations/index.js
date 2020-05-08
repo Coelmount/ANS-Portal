@@ -50,7 +50,7 @@ const Translations = observer(({ t }) => {
   const [
     showMultipleUpdateANSNumbers,
     setShowMultipleUpdateANSNumbers
-  ] = useState(true)
+  ] = useState(false)
 
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
 
