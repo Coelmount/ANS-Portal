@@ -15,6 +15,7 @@ import LanguageIcon from '@material-ui/icons/Language'
 
 import CustomerAdministrators from 'stores/CustomerAdministrators'
 import SubaccountAdministrators from 'stores/SubaccountAdmins'
+import EditDeleteAdminStore from 'stores/EditDeleteAdministrator'
 
 import DeleteModal from 'components/DeleteModal'
 import UpdateAdminInfo from '../UpdateAdminInfo'
@@ -51,28 +52,33 @@ const AdminCard = ({
   const match = useParams()
   const [isOpened, setIsOpened] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  // const [customerNameToDelete, setCustomerNameToDelete] = useState('')
   const [adminId, setAdminId] = useState('')
 
   const { getSubaccountAdmins } = SubaccountAdministrators
   const { getCustomerAdmins } = CustomerAdministrators
+
+  const getAdministrators = () => {
+    match.groupId
+      ? getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
+      : getCustomerAdmins(match.customerId)
+  }
 
   const showModal = () => {
     setIsOpened(true)
   }
 
   const hideModal = () => {
-    match.groupId
-      ? getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
-      : getCustomerAdmins(match.customerId)
     setIsOpened(false)
+    getAdministrators()
   }
+
   const handleOpenDeleteModal = () => {
     setIsDeleteModalOpen(true)
   }
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
+    getAdministrators()
   }
 
   return (
@@ -125,29 +131,34 @@ const AdminCard = ({
           </Typography>
         </Box>
       </CardContent>
-      <UpdateAdminInfo
-        show={isOpened}
-        handleClose={hideModal}
-        userId={adminId}
-        updateInfo={updateInfo}
-        user={updatedUser}
-        isLoadingData={isLoadingData}
-        handleUpdate={handleUpdate}
-        getAdminInfo={getAdminInfo}
-        editSubject={subject}
-      />
-      <DeleteModal
-        show={isDeleteModalOpen}
-        action={t('to_delete')}
-        titleAction={t(`delete`)}
-        classes={classes}
-        open={isDeleteModalOpen}
-        handleClose={handleCloseDeleteModal}
-        handleDelete={handleDelete}
-        deleteInfo={{ id: adminId }}
-        isDeleting={isDeleting}
-        deleteSubject={subject}
-      />
+      {isOpened && (
+        <UpdateAdminInfo
+          show={isOpened}
+          handleClose={hideModal}
+          userId={adminId}
+          updateInfo={updateInfo}
+          user={updatedUser}
+          isLoadingData={isLoadingData}
+          handleUpdate={handleUpdate}
+          getAdminInfo={getAdminInfo}
+          editSubject={subject}
+          hideModal={hideModal}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteModal
+          show={isDeleteModalOpen}
+          action={t('to_delete')}
+          titleAction={t(`delete`)}
+          classes={classes}
+          open={isDeleteModalOpen}
+          handleClose={handleCloseDeleteModal}
+          handleDelete={handleDelete}
+          deleteInfo={{ id: adminId, name: '' }}
+          isDeleting={isDeleting}
+          deleteSubject={subject}
+        />
+      )}
     </Card>
   )
 }

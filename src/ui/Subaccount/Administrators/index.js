@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
@@ -47,11 +47,7 @@ const SubaccountAdministrators = props => {
     isDeletingSubaccountAdmin
   } = EditDeleteSubaccountAdminStore
 
-  const {
-    getSubaccount,
-    // subaccount,
-    isLoadingSubaccount
-  } = SubaccountsStore
+  const { getSubaccount, isLoadingSubaccount } = SubaccountsStore
 
   useEffect(() => {
     getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
@@ -70,6 +66,7 @@ const SubaccountAdministrators = props => {
   const hideModal = () => {
     setIsOpened(false)
     clearFields()
+    getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
   }
 
   const addAdmin = defaultDomain => {
@@ -112,34 +109,40 @@ const SubaccountAdministrators = props => {
 
   return (
     <div className={classes.root}>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Paper className={classes.paper}>
-          <CustomContainer>
-            <CustomBreadcrumbs />
-            <TitleBlock
-              titleData={titleData}
-              classes={classes}
-              handleOpen={showModal}
-            />
-          </CustomContainer>
-          {subaccountAdmins.length ? (
-            <AdministratorsTemplate
-              data={subaccountAdmins}
-              admin={subaccountAdmin}
-              updatedUser={updatedSubaccountAdmin}
-              getAdminInfo={getAdminInfo}
-              updateInfo={updateSubaccountAdminInfo}
-              isLoadingData={isLoadingData}
-              isDeleting={isDeletingSubaccountAdmin}
-              handleUpdate={handleUpdate}
-              handleDelete={handleDelete}
-              subject={t('subaccount_administrator')}
-            />
-          ) : (
-            <NoAvailableDataBlock />
-          )}
+      <Paper className={classes.paper}>
+        <CustomContainer>
+          <CustomBreadcrumbs />
+          <TitleBlock
+            titleData={titleData}
+            classes={classes}
+            handleOpen={showModal}
+          />
+        </CustomContainer>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Fragment>
+            {subaccountAdmins.length ? (
+              <AdministratorsTemplate
+                data={subaccountAdmins}
+                admin={subaccountAdmin}
+                updatedUser={updatedSubaccountAdmin}
+                getAdminInfo={getAdminInfo}
+                updateInfo={updateSubaccountAdminInfo}
+                isLoadingData={isLoadingData}
+                isDeleting={isDeletingSubaccountAdmin}
+                handleUpdate={handleUpdate}
+                handleDelete={handleDelete}
+                subject={t('subaccount_administrator')}
+              />
+            ) : (
+              <NoAvailableDataBlock
+                messageText={t('no_subadministrators_available')}
+              />
+            )}
+          </Fragment>
+        )}
+        {isOpened && (
           <AddCustomerAdministratorModal
             show={isOpened}
             handleClose={hideModal}
@@ -150,8 +153,8 @@ const SubaccountAdministrators = props => {
             getUserInfo={getSubaccount}
             isLoadingUserInfo={isLoadingSubaccount}
           />
-        </Paper>
-      )}
+        )}
+      </Paper>
     </div>
   )
 }

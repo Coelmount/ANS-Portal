@@ -14,6 +14,7 @@ export class EditDeleteAdminStore {
   }
   isDeletingAdmin = false
   sentAdmin = {}
+
   updateAdminInfo = (valueKey, value) => {
     for (let key in this.updatedAdmin) {
       if (valueKey === key) {
@@ -71,6 +72,7 @@ export class EditDeleteAdminStore {
         this.isLoadingData = false
       })
   }
+
   deleteAdmin = ({ id, closeModal, userId, getUsers }) => {
     this.isDeletingAdmin = true
     axios

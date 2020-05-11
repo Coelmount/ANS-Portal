@@ -8,6 +8,7 @@ import getErrorMessage from 'utils/getErrorMessage'
 export class SubaccountAdminsStore {
   subaccountAdmins = []
   isLoading = true
+  isAdding = false
   subaccountAdmin = {
     userId: '',
     firstName: '',
@@ -63,8 +64,7 @@ export class SubaccountAdminsStore {
     groupId,
     defaultDomain
   }) => {
-    this.isLoading = true
-
+    this.isAdding = true
     axios
       .post(`/tenants/${id}/groups/${groupId}/admins/`, {
         ...this.sentSubaccountAdmin,
@@ -74,7 +74,6 @@ export class SubaccountAdminsStore {
       })
       .then(res => {
         if (res.status === 201) {
-          this.isLoading = false
           getUsers({ id: id, groupId: groupId })
           this.subaccountAdmin = {
             userId: '',
@@ -83,7 +82,6 @@ export class SubaccountAdminsStore {
             language: '',
             password: ''
           }
-          this.isLoading = false
           closeModal()
         }
       })
@@ -95,12 +93,13 @@ export class SubaccountAdminsStore {
           }
         })
       )
-      .finally(() => (this.isLoading = false))
+      .finally(() => (this.isAdding = false))
   }
 }
 decorate(SubaccountAdminsStore, {
   subaccountAdmins: observable,
   isLoading: observable,
+  isAdding: observable,
   sentSubaccountAdmin: observable,
   subaccountAdmin: observable,
   getSubaccountAdmins: action,

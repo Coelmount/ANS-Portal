@@ -18,6 +18,7 @@ import LanguageIcon from '@material-ui/icons/Language'
 
 import CustomerAdministrators from 'stores/CustomerAdministrators'
 import CustomersStore from 'stores/Customers'
+import SubaccountAdminsStore from 'stores/SubaccountAdmins'
 import Loading from 'components/Loading'
 
 // import { SELECTLANGUAGE } from 'source/config'
@@ -41,12 +42,18 @@ const AddCustomerAdministrator = ({
   const match = useParams()
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatedPassword] = useState('')
+
   const {
     getCustomerAdminsLanguages,
     // clearFields,
     languagesList,
     isLanguagesLoading
   } = CustomerAdministrators
+
+  const { isAdding } = match.groupId
+    ? SubaccountAdminsStore
+    : CustomerAdministrators
+
   const {
     getCustomer,
     customer: { defaultDomain }
@@ -76,7 +83,7 @@ const AddCustomerAdministrator = ({
       open={show}
       onClose={handleClose}
     >
-      {isLanguagesLoading || isLoadingUserInfo ? (
+      {isAdding || isLanguagesLoading || isLoadingUserInfo ? (
         <Loading />
       ) : (
         <Fragment>

@@ -61,7 +61,7 @@ const DeleteModal = props => {
               <span>{t(`are_you_sure_you_want`)}</span>
               <span className={classes.boldText}> {action}</span>
               <span>{` ${extraDeleteSubject || deleteSubject}`}</span>
-              {id && name && (
+              {id && (
                 <span className={classes.boldText}>
                   {` ${name}${` id: ${id}`}?`}
                 </span>

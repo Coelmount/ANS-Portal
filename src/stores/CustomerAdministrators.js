@@ -82,7 +82,7 @@ export class CustomerAdminsStore {
   }
 
   addCustomerAdmin = ({ id, closeModal, getUsers }) => {
-    // this.isAdding = true
+    this.isAdding = true
     axios
       .post(`/tenants/${id}/admins/`, this.sentAdmin)
       .then(res => {
@@ -101,7 +101,7 @@ export class CustomerAdminsStore {
         })
       )
       .finally(() => {
-        // this.isAdding = false
+        this.isAdding = false
       })
   }
 }

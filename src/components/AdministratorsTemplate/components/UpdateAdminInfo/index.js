@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useParams } from 'react-router-dom'
 
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
@@ -14,6 +15,8 @@ import PersonOutlineIcon from '@material-ui/icons/PersonOutline'
 import LanguageIcon from '@material-ui/icons/Language'
 
 import CustomerAdministrators from 'stores/CustomerAdministrators'
+import EditDeleteAdminStore from 'stores/EditDeleteAdministrator'
+import EditDeleteSubaccountsAdmin from 'stores/EditDeleteSubaccountsAdmin'
 import Loading from 'components/Loading'
 
 // import { SELECTLANGUAGE } from 'source/config'
@@ -29,24 +32,19 @@ const UpdateAdminInfo = ({
   userId,
   user,
   updateInfo,
-  isLoadingData,
   handleUpdate,
   getAdminInfo,
-  editSubject
+  editSubject,
+  hideModal
 }) => {
   const classes = useStyles()
+  const match = useParams()
 
-  const {
-    getCustomerAdminsLanguages,
-    languagesList
-    // isLanguagesLoading
-  } = CustomerAdministrators
+  const { getCustomerAdminsLanguages, languagesList } = CustomerAdministrators
 
-  // const [changedSubaccountAdmin, setChangedSubaccountAdmin] = useState({
-  //   firstName: '',
-  //   lastName: '',
-  //   language: ''
-  // })
+  const { isLoadingData } = match.groupId
+    ? EditDeleteSubaccountsAdmin
+    : EditDeleteAdminStore
 
   useEffect(() => {
     getAdminInfo(userId)
@@ -131,7 +129,7 @@ const UpdateAdminInfo = ({
               </Typography>
             </Box>
             <Box
-              onClick={() => handleUpdate(userId)}
+              onClick={() => handleUpdate(userId, hideModal)}
               className={classes.editButtonWrap}
             >
               <Typography className={classes.editButtonTitle}>

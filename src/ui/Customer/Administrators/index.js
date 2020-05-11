@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
@@ -21,7 +21,7 @@ import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './styles'
 
-const Administrators = props => {
+const Administrators = ({ t }) => {
   const [isOpened, setIsOpened] = useState(false)
   const {
     admins,
@@ -43,19 +43,14 @@ const Administrators = props => {
     isDeletingAdmin
   } = EditDeleteAdminStore
 
-  const {
-    getCustomer,
-    // customer,
-    isLoadingCustomer
-  } = CustomersStore
+  const { getCustomer, isLoadingCustomer } = CustomersStore
 
-  const { t } = props
   const match = useParams()
   const classes = useStyles()
 
   useEffect(() => {
     getCustomerAdmins(match.customerId)
-  }, [getCustomerAdmins, match.customerId])
+  }, [])
 
   const titleData = {
     mainText: 'MTN ANS',
@@ -66,10 +61,13 @@ const Administrators = props => {
   const showModal = () => {
     setIsOpened(true)
   }
+
   const hideModal = () => {
     setIsOpened(false)
     clearFields()
+    getCustomerAdmins(match.customerId)
   }
+
   const addAdmin = () => {
     addCustomerAdmin({
       id: match.customerId,
@@ -85,10 +83,10 @@ const Administrators = props => {
       getUsers: getCustomerAdmins
     })
   }
-  const handleUpdate = adminId => {
+  const handleUpdate = (adminId, hideUpdateModal) => {
     updateCustomerAdmin({
       id: match.customerId,
-      closeModal: hideModal,
+      closeModal: hideUpdateModal,
       userId: adminId,
       getUsers: getCustomerAdmins
     })
@@ -102,35 +100,39 @@ const Administrators = props => {
   }
   return (
     <div className={classes.root}>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Paper className={classes.paper}>
-          <CustomContainer>
-            <CustomBreadcrumbs />
-            <TitleBlock
-              titleData={titleData}
-              classes={classes}
-              handleOpen={showModal}
-            />
-          </CustomContainer>
-          {admins.length ? (
-            <AdministratorsTemplate
-              data={admins}
-              admin={admin}
-              updatedUser={updatedAdmin}
-              getAdminInfo={getAdminInfoHandle}
-              updateInfo={updateAdminInfo}
-              isLoadingData={isLoadingData}
-              isDeleting={isDeletingAdmin}
-              handleDelete={handleDelete}
-              handleUpdate={handleUpdate}
-              subject={t('customer_administrator')}
-            />
-          ) : (
-            <NoAvailableDataBlock />
-          )}
-
+      <Paper className={classes.paper}>
+        <CustomContainer>
+          <CustomBreadcrumbs />
+          <TitleBlock
+            titleData={titleData}
+            classes={classes}
+            handleOpen={showModal}
+          />
+        </CustomContainer>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Fragment>
+            {admins.length ? (
+              <AdministratorsTemplate
+                data={admins}
+                admin={admin}
+                updatedUser={updatedAdmin}
+                getAdminInfo={getAdminInfoHandle}
+                updateInfo={updateAdminInfo}
+                isDeleting={isDeletingAdmin}
+                handleDelete={handleDelete}
+                handleUpdate={handleUpdate}
+                subject={t('customer_administrator')}
+              />
+            ) : (
+              <NoAvailableDataBlock
+                messageText={t('no_administrators_available')}
+              />
+            )}
+          </Fragment>
+        )}
+        {isOpened && (
           <AddCustomerAdministratorModal
             show={isOpened}
             handleClose={hideModal}
@@ -141,8 +143,8 @@ const Administrators = props => {
             getUserInfo={getCustomer}
             isLoadingUserInfo={isLoadingCustomer}
           />
-        </Paper>
-      )}
+        )}
+      </Paper>
     </div>
   )
 }
