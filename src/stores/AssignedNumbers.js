@@ -15,6 +15,7 @@ export class AssignedNumbers {
   currentEntitlement = null
   numbersToAssign = []
   numbersToDeassign = []
+  numbersToDisconnect = []
 
   setDefaultValues = () => {
     this.assignedNumbers = []
@@ -32,8 +33,8 @@ export class AssignedNumbers {
     this.numbersToAssign = numbers
   }
 
-  setNumbersToDeassign = numbers => {
-    this.numbersToDeassign = numbers
+  setNumbersToDisconnect = numbers => {
+    this.numbersToDisconnect = numbers
   }
 
   getEntitlementsAndFindCurrent = (customerId, numbersId) => {
@@ -101,13 +102,28 @@ export class AssignedNumbers {
       })
   }
 
-  deleteAssignedNumber = ({ customerId, callback }) => {
+  disconnectNumbers = ({ customerId, callback }) => {
+    console.log(this.numbersToDisconnect, 'numbers to disconnect')
     this.isDeletingAssignedNumber = true
+    const objectsWithRangesArr = phoneNumbersRangeFilter(
+      this.numbersToDisconnect
+    )
+    const sendSubject =
+      this.numbersToDisconnect.length > 1 ? 'numbers' : 'number'
+    console.log(objectsWithRangesArr, 'objectsWithRangesArr')
+    const arrToSend = []
+    objectsWithRangesArr.forEach(item => {
+      arrToSend.push({
+        range: item.phoneNumbers
+          ? [Number(item.rangeStart), Number(item.rangeEnd)]
+          : [Number(item.nsn)],
+        country_code: item.country_code
+      })
+    })
     axios
       .delete(`/tenants/${customerId}/numbers`, {
         data: {
-          range: [115050843, 115050844],
-          country_code: '+966'
+          ranges: arrToSend
         }
       })
       .then(() => {
@@ -197,11 +213,11 @@ decorate(AssignedNumbers, {
   currentEntitlement: observable,
   isPostAssignNumbers: observable,
   getAssignedNumbers: action,
-  deleteAssignedNumber: action,
+  disconnectNumbers: action,
   getEntitlementsAndFindCurrent: action,
   setDefaultValues: action,
   setNumbersToAssign: action,
-  setNumbersToDeassign: action,
+  setNumbersToDisconnect: action,
   postAssignToSubaccount: action,
   showErrorNotification: action
 })
