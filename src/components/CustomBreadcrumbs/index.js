@@ -8,21 +8,18 @@ import { Typography } from '@material-ui/core'
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 
-import AuthStore from 'stores/Auth'
 import DefaultLayoutStore from 'stores/DefaultLayout'
 
 import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ match, t }) => {
-  const { userLogin } = AuthStore
   const { handleCloseNav } = DefaultLayoutStore
   const classes = useStyles()
   const { url } = match
+  const ids = JSON.parse(localStorage.getItem('ids'))
 
-  const isCustomerActive =
-    userLogin.ids && userLogin.ids.tenant_id && !userLogin.ids.group_id
-  const isSubaccountActive =
-    userLogin.ids && userLogin.ids.tenant_id && userLogin.ids.group_id
+  const isCustomerActive = ids && ids.tenant_id && !ids.group_id
+  const isSubaccountActive = ids && ids.tenant_id && ids.group_id
 
   const breadcrumbsArr = url.split('/')
   if (isCustomerActive) {
