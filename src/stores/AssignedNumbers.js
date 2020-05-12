@@ -105,7 +105,12 @@ export class AssignedNumbers {
     this.isDeletingAssignedNumber = true
     console.log(this.numbersToDeassign, 'numbers to deassign')
     axios
-      .delete(`/tenants/${customerId}/numbers/`)
+      .delete(`/tenants/${customerId}/numbers`, {
+        data: {
+          range: [115050843, 115050844],
+          country_code: '+966'
+        }
+      })
       .then(() => {
         this.getAssignedNumbers()
         callback()
