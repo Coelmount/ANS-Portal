@@ -16,6 +16,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
+import FiltersModal from './components/FiltersModal'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
@@ -38,6 +39,8 @@ const PhoneNumbers = observer(({ t }) => {
   )
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
+
   const {
     transformedPhoneNumbers,
     setPhoneNumbers,
@@ -118,6 +121,14 @@ const PhoneNumbers = observer(({ t }) => {
     setNumbers(newNumbers)
   }
 
+  const handleFiltersButtonClick = () => {
+    setIsFiltersModalOpen(true)
+  }
+
+  const handleFiltersModalClose = () => {
+    setIsFiltersModalOpen(false)
+  }
+
   const titleData = {
     mainText: t('phone_numbers')
     // iconCapture: t('add'),
@@ -128,11 +139,14 @@ const PhoneNumbers = observer(({ t }) => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
         <Box className={classes.addCustomerWrap}>
-          <Box className={classes.addIconWrap}>
+          <Box
+            onClick={handleFiltersButtonClick}
+            className={classes.addIconWrap}
+          >
             <img
               className={classes.deleteIcon}
               src={filtersIcon}
-              alt='delete icon'
+              alt='fileters'
             />
           </Box>
           <Typography className={classes.addCustomerTitle}>
@@ -189,7 +203,7 @@ const PhoneNumbers = observer(({ t }) => {
                 onChange={() => selectNumbers(true, row.id)}
               />
             ) : (
-              i + 1
+              (page - 1) * rowsPerPage + i + 1
             )}
           </div>
         ),
@@ -225,7 +239,7 @@ const PhoneNumbers = observer(({ t }) => {
         <Fragment>
           {row.status !== 'free' ? (
             <Link
-              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.rangeStart}`}
+              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.phoneNumber}`}
             >
               <Typography className={classes.assignedTitle}>
                 {t(row.status)}
@@ -286,6 +300,12 @@ const PhoneNumbers = observer(({ t }) => {
           <AddPhoneNumbersModal
             open={isAddPhoneNumbersModalOpen}
             handleClose={handleAddModalClose}
+          />
+        )}
+        {isFiltersModalOpen && (
+          <FiltersModal
+            open={isFiltersModalOpen}
+            handleClose={handleFiltersModalClose}
           />
         )}
       </Paper>

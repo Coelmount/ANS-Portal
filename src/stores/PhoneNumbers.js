@@ -46,22 +46,22 @@ export class PhoneNumbers {
         const pagination = res.data.pagination
         const requestResult = res.data.numbers
         // -> this push part time solution for test range logic and state col colors(delete it when backend provide more data)
-        requestResult.push(
-          {
-            country_code: '+966',
-            id: 1,
-            nsn: '77777777',
-            connected_to: 'testaccount1',
-            type: 'geo'
-          },
-          {
-            country_code: '+966',
-            id: 2,
-            nsn: '888888888',
-            connected_to: null,
-            type: 'local'
-          }
-        )
+        // requestResult.push(
+        //   {
+        //     country_code: '+966',
+        //     id: 1,
+        //     nsn: '77777777',
+        //     connected_to: 'testaccount1',
+        //     type: 'geo'
+        //   },
+        //   {
+        //     country_code: '+966',
+        //     id: 2,
+        //     nsn: '888888888',
+        //     connected_to: null,
+        //     type: 'local'
+        //   }
+        // )
         // <-
         const transformedNumbers = requestResult.map(item => {
           const countryName = getCountryNameFromNumber(

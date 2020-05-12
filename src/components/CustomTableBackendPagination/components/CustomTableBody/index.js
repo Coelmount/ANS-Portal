@@ -28,6 +28,7 @@ const CustomTableBody = ({
     i++
   ) {
     row = list[i]
+
     rows.push(
       <TableRow
         className={`${defaultClasses.tableRow} ${classes.tableRow}`}
