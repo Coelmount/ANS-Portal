@@ -22,7 +22,6 @@ export class AuthStore {
           localStorage.setItem('token', res.data.token)
           this.token = res.data.token
           this.userLogin = res.data
-          console.log(this.userLogin)
           this.getLocal()
           if (res.data.ids) {
             localStorage.setItem('ids', JSON.stringify(res.data.ids))

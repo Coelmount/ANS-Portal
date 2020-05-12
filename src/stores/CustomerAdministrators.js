@@ -30,7 +30,6 @@ export class CustomerAdminsStore {
   }
 
   getCustomerAdmins = id => {
-    console.log('get admins')
     this.isLoading = true
     axios
       .get(`/tenants/${id}/admins/`)

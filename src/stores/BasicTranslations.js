@@ -26,7 +26,6 @@ export class BasicTranslations {
   }
 
   postDestinationNumber = (country, number) => {
-    //console.log(country, number, 'to post')
     this.changeStep(3)
   }
 
@@ -35,11 +34,6 @@ export class BasicTranslations {
   }
 
   postAccessNumber = callback => {
-    // console.log(
-    //   this.selectedInstance.accessCountry,
-    //   this.selectedInstance.accessNumber,
-    //   'to post'
-    // )
     callback && callback()
   }
 
