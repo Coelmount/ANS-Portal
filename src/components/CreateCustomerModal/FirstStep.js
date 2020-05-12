@@ -63,9 +63,9 @@ const FirstStep = props => {
   useEffect(() => {
     if (!isLoadingConfig) {
       if (isCreateSubaccount) {
-        changeCustomer('templateName', config.templates.group)
+        //changeCustomer('templateName', config.templates.group)
       } else {
-        changeCustomer('templateName', config.templates.tenant)
+        //changeCustomer('templateName', config.templates.tenant)
         changeCustomer('type', config.tenant_type)
       }
     }
