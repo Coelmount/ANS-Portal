@@ -103,7 +103,6 @@ export class AssignedNumbers {
 
   deleteAssignedNumber = ({ customerId, callback }) => {
     this.isDeletingAssignedNumber = true
-    console.log(this.numbersToDeassign, 'numbers to deassign')
     axios
       .delete(`/tenants/${customerId}/numbers/`)
       .then(() => {

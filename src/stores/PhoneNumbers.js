@@ -77,7 +77,6 @@ export class PhoneNumbers {
             hover: false
           }
         })
-        console.log(transformedNumbers, 'tn')
 
         this.transformedPhoneNumbers = transformedNumbers
         this.totalPages = pagination[2]
@@ -104,7 +103,6 @@ export class PhoneNumbers {
   }
 
   postPhoneNumbers = (number, amount, startNumber) => {
-    //console.log(number, amount, 'to post')
     this.changeStep(3)
     this.createAddedAndRejectedGroups(number.phoneNumbers, amount, startNumber)
   }
