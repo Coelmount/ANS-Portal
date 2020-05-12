@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import classnames from 'classnames'
@@ -64,14 +64,14 @@ const AccessNumbersItem = ({ t }) => {
 
   const isAssignEnabled =
     numberOfChecked > 0 &&
-    !selected.some(item => item.checked && item.subaccountId !== 'none')
+    !selected.some(item => item.checked && item.subaccount !== 'none')
 
   const isDeassignEnabled =
     numberOfChecked > 0 &&
     !selected.some(
       item =>
-        (item.checked && item.subaccountId === 'none') ||
-        (item.checked && item.status === 'in_use')
+        (item.checked && item.subaccount === 'none') ||
+        (item.checked && item.inUse !== 'no')
     )
 
   useEffect(() => {
@@ -311,33 +311,59 @@ const AccessNumbersItem = ({ t }) => {
       label: 'phone_numbers'
     },
     {
-      id: 'subaccountId',
-      label: 'subaccount_id'
-    },
-    {
-      id: 'usedBy',
-      label: 'used_by',
+      id: 'subaccount',
+      label: 'subaccount',
       getCellData: row => (
-        <Typography>
-          {row.connected_to ? row.connected_to : t('none')}
-        </Typography>
+        <Box className={classes.subaccountCell}>
+          <Typography className={classes.subaccountTitle}>
+            {t(row.subaccount)}
+          </Typography>
+          {row.subaccount !== 'none' && row.inUse === 'no' && (
+            <CloseOutlinedIcon
+              onClick={() => handleDeassignOneNumberClick(row)}
+              className={classes.deleteCustomerIcon}
+            />
+          )}
+        </Box>
       )
     },
     {
-      id: 'status',
-      label: 'status',
+      id: 'inUse',
+      label: 'in_use',
+      extraProps: {
+        className: classes.inUseCell
+      },
       getCellData: row => (
-        <Typography
-          className={
-            row.status === 'in_use'
-              ? classes.inUseTitle
-              : classes.avaliableTitle
-          }
-        >
-          {t(`${row.status}`)}
-        </Typography>
+        <Fragment>
+          {row.connected_to ? (
+            <Link
+              to={`/customers/${match.customerId}/subaccounts/${row.subaccountId}/ans_instances/basic/translations/${row.phoneNumber}`}
+            >
+              <Typography className={classes.usedTitle}>
+                {t(row.connected_to)}
+              </Typography>
+            </Link>
+          ) : (
+            t('no')
+          )}
+        </Fragment>
       )
     },
+    // {
+    //   id: 'status',
+    //   label: 'status',
+    //   getCellData: row => (
+    //     <Typography
+    //       className={
+    //         row.status === 'in_use'
+    //           ? classes.inUseTitle
+    //           : classes.avaliableTitle
+    //       }
+    //     >
+    //       {t(`${row.status}`)}
+    //     </Typography>
+    //   )
+    // },
     {
       id: 'delete',
       extraProps: {
@@ -347,9 +373,10 @@ const AccessNumbersItem = ({ t }) => {
       isSortAvailable: false,
       getCellData: row => (
         <Fragment>
-          {row.status === 'available' && row.subaccountId !== 'none' && (
+          {/* {row.status === 'available' && row.subaccount !== 'none' && ( */}
+          {row.subaccount === 'none' && (
             <CloseOutlinedIcon
-              onClick={() => handleDeassignOneNumberClick(row)}
+              // onClick={() => handleDeassignOneNumberClick(row)}
               className={classes.deleteCustomerIcon}
             />
           )}
@@ -380,12 +407,7 @@ const AccessNumbersItem = ({ t }) => {
               columns={columns}
               firstCell={false}
               rows={selected}
-              searchCriterias={[
-                'phoneNumber',
-                'subaccountId',
-                'usedBy',
-                'status'
-              ]}
+              searchCriterias={['phoneNumber', 'subaccount', 'inUse', 'status']}
               getSearchList={setSearchList}
               extraToolbarBlock={toolbarButtonsBlock}
               setCurrentPage={setCurrentPage}
