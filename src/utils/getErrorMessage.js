@@ -15,6 +15,9 @@ const getErrorMessage = error => {
   if (has(error, 'response.data.errors[0].details.errors[0].summary')) {
     return error.response.data.errors[0].details.errors[0].summary
   }
+  if (has(error, 'response.data.nims.body.error')) {
+    return error.response.data.nims.body.error
+  }
   if (has(error, 'response.data.message')) {
     return error.response.data.message
   }
