@@ -146,6 +146,23 @@ const useStyles = makeStyles(theme => ({
   },
   boldDeassignText: {
     fontWeight: 600
+  },
+  inUseCell: {
+    '& a': {
+      textDecoration: 'none'
+    }
+  },
+  usedTitle: {
+    color: theme.palette.active.blue,
+    fontSize: 14
+  },
+  subaccountCell: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  subaccountTitle: {
+    marginRight: 25,
+    fontSize: 14
   }
 }))
 

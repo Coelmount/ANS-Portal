@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withNamespaces } from 'react-i18next'
+import capitalize from 'lodash/capitalize'
 
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
@@ -49,7 +50,7 @@ const CustomTableHead = ({
                   <Box
                     className={`${defaultClasses.headCellWithCustomButtons} ${classes.headCellWithCustomButtons}`}
                   >
-                    <Typography>{t(`${label}`)}</Typography>
+                    <Typography>{capitalize(t(`${label}`))}</Typography>
                     <Box
                       className={`${defaultClasses.customHeadIconWrap} ${classes.customHeadIconWrap}`}
                       onClick={onIconClick}
@@ -75,7 +76,7 @@ const CustomTableHead = ({
                     }
                     hideSortIcon={isSortAvailable === false}
                   >
-                    {typeof label === 'object' ? label : t(label)}
+                    {typeof label === 'object' ? label : capitalize(t(label))}
                     {orderBy === id && (
                       <p
                         className={
