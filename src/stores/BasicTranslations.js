@@ -44,7 +44,7 @@ export class BasicTranslations {
       .then(res => {
         const transformedNumbers = res.data.ans_basic.map((item, index) => {
           return {
-            id: index,
+            id: item.id || index,
             checked: false,
             hover: false,
             enabled: true,
