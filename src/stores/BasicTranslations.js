@@ -42,8 +42,9 @@ export class BasicTranslations {
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
-        const transformedNumbers = res.data.ans_basic.map(item => {
+        const transformedNumbers = res.data.ans_basic.map((item, index) => {
           return {
+            id: index,
             checked: false,
             hover: false,
             enabled: true,
