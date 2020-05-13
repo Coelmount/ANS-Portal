@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
@@ -112,6 +113,22 @@ const CustomersTable = observer(({ t }) => {
         extraProps: {
           scope: 'row'
         }
+      },
+      {
+        id: 'manage_status',
+        label: 'manage status',
+        extraProps: {
+          align: 'center'
+        },
+        extraHeadProps: {
+          align: 'center'
+        },
+        getCellData: row => (
+          <EditOutlinedIcon
+            onClick={() => handleOpenDeleteModal(row.external_id, row.name)}
+            className={classes.deleteCustomerIcon}
+          />
+        )
       },
       {
         id: 'delete',
