@@ -27,10 +27,15 @@ export class AssignedNumbers {
     this.currentEntitlement = null
     this.numbersToAssign = []
     this.numbersToDeassign = []
+    this.numbersToDisconnect = []
   }
 
   setNumbersToAssign = numbers => {
     this.numbersToAssign = numbers
+  }
+
+  setNumbersToDeassign = numbers => {
+    this.numbersToDeassign = numbers
   }
 
   setNumbersToDisconnect = numbers => {
@@ -62,14 +67,15 @@ export class AssignedNumbers {
               }
               return {
                 inUse: item.connected_to ? item.connected_to : 'no',
-                // status: item.connected_to ? 'in_use' : 'available',
                 subaccount: item.customer_account
                   ? item.customer_account
                   : 'none',
-                checked: false,
-                hover: false,
                 phoneNumber: `${item.country_code} ${item.nsn}`,
                 subaccountId: subaccountId || null,
+                checked: false,
+                hover: false,
+                isSelectedToDeassign: false,
+                isSelectedToDisconnect: false,
                 ...item
               }
             })
@@ -101,6 +107,9 @@ export class AssignedNumbers {
         this.isLoadingEntitlements = false
       })
   }
+  deassignNumbers = ({ customerId, callback }) => {
+    console.log(this.numbersToDeassign, 'numbersToDeassign')
+  }
 
   disconnectNumbers = ({ customerId, callback }) => {
     console.log(this.numbersToDisconnect, 'numbers to disconnect')
@@ -110,7 +119,6 @@ export class AssignedNumbers {
     )
     const sendSubject =
       this.numbersToDisconnect.length > 1 ? 'numbers' : 'number'
-    console.log(objectsWithRangesArr, 'objectsWithRangesArr')
     const arrToSend = []
     objectsWithRangesArr.forEach(item => {
       arrToSend.push({
@@ -214,10 +222,12 @@ decorate(AssignedNumbers, {
   isPostAssignNumbers: observable,
   getAssignedNumbers: action,
   disconnectNumbers: action,
+  deassignNumbers: action,
   getEntitlementsAndFindCurrent: action,
   setDefaultValues: action,
   setNumbersToAssign: action,
   setNumbersToDisconnect: action,
+  setNumbersToDeassign: action,
   postAssignToSubaccount: action,
   showErrorNotification: action
 })
