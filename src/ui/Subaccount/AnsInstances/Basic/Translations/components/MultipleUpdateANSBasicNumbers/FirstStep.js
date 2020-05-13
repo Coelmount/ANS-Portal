@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
+import { CSVLink, CSVDownload } from 'react-csv'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -27,6 +28,16 @@ const FirstStep = props => {
     setStep(3)
   }
 
+  const downloadCSVFile = () => {
+    const pom = document.createElement('a')
+    const csvContent = 'foo;bar'
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    pom.href = url
+    pom.setAttribute('download', 'template.csv')
+    pom.click()
+  }
+
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -50,7 +61,7 @@ const FirstStep = props => {
               variant='contained'
               color='primary'
               className={classes.downloadButton}
-              onClick={() => setStep(2)}
+              onClick={downloadCSVFile}
             >
               <GetAppOutlinedIcon className={classes.downloadIcon} />
             </Button>

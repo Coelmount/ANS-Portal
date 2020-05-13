@@ -3,37 +3,28 @@ import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 import { withNamespaces } from 'react-i18next'
 
-import page404 from 'source/images/svg/404.svg'
+import page403 from 'source/images/svg/403.svg'
 import DefaultLayout from 'components/DefaultLayout'
 import './styles.css'
 
 const useStyles = makeStyles(theme => ({
-  goBackButtonWrapper: {
-    width: 140,
+  goBackButton: {
+    width: 160,
     height: 50,
-    background: 'white',
-    borderRadius: 30,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: `1px solid ${theme.palette.primary.main}`,
-    fontFamily: 'MTN',
-    fontStyle: 'normal',
-    fontWeight: 500,
-    marginRight: 30,
-    '&:hover': {
-      cursor: 'pointer'
-    }
+    borderRadius: 30
   },
   goBackButtonTitle: {
     fontFamily: 'MTN',
     fontStyle: 'normal',
-    fontWeight: 500
+    fontWeight: 500,
+    color: theme.palette.black
   }
 }))
-const NotFound = ({ t }) => {
+
+const AccesDenied = ({ t }) => {
   const history = useHistory()
   const classes = useStyles()
 
@@ -56,31 +47,37 @@ const NotFound = ({ t }) => {
   }
 
   return (
-    <div className='notFoundPageWrapper'>
+    <div className='AccessDeniedPageWrapper'>
       <DefaultLayout notFoundPage />
-      <div className='notFoundWrapper'>
-        <img src={page404} alt='no-ava' />
-        <h2 className='notFoundTitle'>{t('not_found')}</h2>
-        <Box className={classes.goBackButtonWrapper}>
-          {history.length >= 2 ? (
-            <Typography
-              onClick={history.goBack}
-              className={classes.goBackButtonTitle}
-            >
+      <div className='AccessDeniedWrapper'>
+        <img src={page403} alt='no-ava' />
+        <h2 className='AccessDeniedTitle'>{t('access_denied')}</h2>
+        {history.length >= 2 ? (
+          <Button
+            onClick={history.goBack}
+            variant='outlined'
+            color='primary'
+            className={classes.goBackButton}
+          >
+            <Typography className={classes.goBackButtonTitle}>
               {t('go_back')}
             </Typography>
-          ) : (
-            <Typography
-              onClick={goBackForShortHistory}
-              className={classes.goBackButtonTitle}
-            >
+          </Button>
+        ) : (
+          <Button
+            onClick={goBackForShortHistory}
+            variant='outlined'
+            color='primary'
+            className={classes.goBackButton}
+          >
+            <Typography className={classes.goBackButtonTitle}>
               {t('go_to_main_page')}
             </Typography>
-          )}
-        </Box>
+          </Button>
+        )}
       </div>
     </div>
   )
 }
 
-export default withNamespaces()(NotFound)
+export default withNamespaces()(AccesDenied)
