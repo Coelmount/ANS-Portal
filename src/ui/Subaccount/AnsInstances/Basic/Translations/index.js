@@ -380,6 +380,7 @@ const Translations = observer(({ t }) => {
           <MultipleUpdateNumbers
             open={showMultipleUpdateANSNumbers}
             handleClose={() => setShowMultipleUpdateANSNumbers(false)}
+            numbers={numbers}
           />
         )}
       </Paper>

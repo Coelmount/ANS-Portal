@@ -31,8 +31,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const CreateCustomer = props => {
-  const { open, handleClose } = props
+const MultipleUpdateNumbers = props => {
+  const { open, handleClose, numbers } = props
   const [step, setStep] = useState(1)
 
   const classes = useStyles()
@@ -45,7 +45,12 @@ const CreateCustomer = props => {
         [classes.thirdStepRoot]: step === 3
       })}
     >
-      <Steps step={step} handleClose={handleClose} setStep={setStep} />
+      <Steps
+        step={step}
+        handleClose={handleClose}
+        setStep={setStep}
+        numbers={numbers}
+      />
     </Dialog>
   )
 }
@@ -54,7 +59,11 @@ const Steps = props => {
   switch (props.step) {
     case 1:
       return (
-        <FirstStep handleClose={props.handleClose} setStep={props.setStep} />
+        <FirstStep
+          handleClose={props.handleClose}
+          setStep={props.setStep}
+          numbers={props.numbers}
+        />
       )
     case 2:
       return (
@@ -67,4 +76,4 @@ const Steps = props => {
   }
 }
 
-export default withNamespaces()(observer(CreateCustomer))
+export default withNamespaces()(observer(MultipleUpdateNumbers))

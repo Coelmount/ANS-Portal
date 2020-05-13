@@ -18,6 +18,7 @@
     "mobx-react-lite": "^1.5.2",
     "normalize.css": "^8.0.1",
     "notistack": "^0.9.11",
+    "papaparse": "^5.2.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.12.1",
     "react": "^16.12.0",
