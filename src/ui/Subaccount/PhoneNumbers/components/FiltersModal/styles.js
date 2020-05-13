@@ -1,5 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles'
 
+const SUBTITLE_LEFT_MARGIN = 70
+const CONTERN_LEFT_MARGIN = 94
+
 const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiDialog-paperWidthSm': {
@@ -36,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginTop: 58,
     marginBottom: 25,
-    marginLeft: 70
+    marginLeft: SUBTITLE_LEFT_MARGIN
   },
   subtitleText: {
     fontSize: 18,
@@ -58,7 +61,18 @@ const useStyles = makeStyles(theme => ({
   },
   countryInput: {
     width: 335,
-    marginLeft: 94
+    marginLeft: CONTERN_LEFT_MARGIN
+  },
+  checkboxesWrap: {
+    marginLeft: CONTERN_LEFT_MARGIN
+  },
+  checkboxRow: {
+    display: 'flex',
+    marginBottom: 15
+  },
+  nameTitle: {
+    marginLeft: 12,
+    marginRight: 5
   }
 }))
 

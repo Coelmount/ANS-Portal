@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
 
 import Input from 'components/Input'
+import Checkbox from 'components/Checkbox'
 // import SubaccountsStore from 'stores/Subaccounts'
 // import Loading from 'components/Loading'
 
@@ -21,6 +22,12 @@ import useStyles from './styles'
 
 const FiltersModal = ({ open, t, handleClose }) => {
   const classes = useStyles()
+
+  const checkboxRows = [
+    { name: 'local', amount: 23 },
+    { name: 'geo', amount: 18 },
+    { name: 'toll-free', amount: 54 }
+  ]
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
@@ -41,7 +48,11 @@ const FiltersModal = ({ open, t, handleClose }) => {
               {t('country')}
             </Typography>
           </Box>
-          <Input className={classes.countryInput} />
+          <Input
+            className={classes.countryInput}
+            label={t('country')}
+            variant='outlined'
+          />
         </Box>
 
         <Box>
@@ -50,7 +61,17 @@ const FiltersModal = ({ open, t, handleClose }) => {
               {t('type')}
             </Typography>
           </Box>
-          <div>content</div>
+          <Box className={classes.checkboxesWrap}>
+            {checkboxRows.map(item => (
+              <Box className={classes.checkboxRow}>
+                <Checkbox />
+                <Typography>
+                  <span className={classes.nameTitle}>{item.name}</span>
+                  <span>{`(${item.amount})`}</span>
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         </Box>
 
         <Box>
