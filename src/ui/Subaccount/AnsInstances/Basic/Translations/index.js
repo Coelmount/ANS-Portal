@@ -141,7 +141,7 @@ const Translations = observer(({ t }) => {
     }
   }
 
-  const changeHover = (newHover, number) => {
+  const changeHover = (newHover, id) => {
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
   }
