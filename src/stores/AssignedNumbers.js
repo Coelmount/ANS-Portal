@@ -15,6 +15,7 @@ export class AssignedNumbers {
   currentEntitlement = null
   numbersToAssign = []
   numbersToDeassign = []
+  numbersToDisconnect = []
 
   setDefaultValues = () => {
     this.assignedNumbers = []
@@ -26,6 +27,7 @@ export class AssignedNumbers {
     this.currentEntitlement = null
     this.numbersToAssign = []
     this.numbersToDeassign = []
+    this.numbersToDisconnect = []
   }
 
   setNumbersToAssign = numbers => {
@@ -34,6 +36,10 @@ export class AssignedNumbers {
 
   setNumbersToDeassign = numbers => {
     this.numbersToDeassign = numbers
+  }
+
+  setNumbersToDisconnect = numbers => {
+    this.numbersToDisconnect = numbers
   }
 
   getEntitlementsAndFindCurrent = (customerId, numbersId) => {
@@ -61,14 +67,15 @@ export class AssignedNumbers {
               }
               return {
                 inUse: item.connected_to ? item.connected_to : 'no',
-                // status: item.connected_to ? 'in_use' : 'available',
                 subaccount: item.customer_account
                   ? item.customer_account
                   : 'none',
-                checked: false,
-                hover: false,
                 phoneNumber: `${item.country_code} ${item.nsn}`,
                 subaccountId: subaccountId || null,
+                checked: false,
+                hover: false,
+                isSelectedToDeassign: false,
+                isSelectedToDisconnect: false,
                 ...item
               }
             })
@@ -100,11 +107,33 @@ export class AssignedNumbers {
         this.isLoadingEntitlements = false
       })
   }
+  deassignNumbers = ({ customerId, callback }) => {
+    console.log(this.numbersToDeassign, 'numbersToDeassign')
+  }
 
-  deleteAssignedNumber = ({ customerId, callback }) => {
+  disconnectNumbers = ({ customerId, callback }) => {
+    console.log(this.numbersToDisconnect, 'numbers to disconnect')
     this.isDeletingAssignedNumber = true
+    const objectsWithRangesArr = phoneNumbersRangeFilter(
+      this.numbersToDisconnect
+    )
+    const sendSubject =
+      this.numbersToDisconnect.length > 1 ? 'numbers' : 'number'
+    const arrToSend = []
+    objectsWithRangesArr.forEach(item => {
+      arrToSend.push({
+        range: item.phoneNumbers
+          ? [Number(item.rangeStart), Number(item.rangeEnd)]
+          : [Number(item.nsn)],
+        country_code: item.country_code
+      })
+    })
     axios
-      .delete(`/tenants/${customerId}/numbers/`)
+      .delete(`/tenants/${customerId}/numbers`, {
+        data: {
+          ranges: arrToSend
+        }
+      })
       .then(() => {
         this.getAssignedNumbers()
         callback()
@@ -192,10 +221,12 @@ decorate(AssignedNumbers, {
   currentEntitlement: observable,
   isPostAssignNumbers: observable,
   getAssignedNumbers: action,
-  deleteAssignedNumber: action,
+  disconnectNumbers: action,
+  deassignNumbers: action,
   getEntitlementsAndFindCurrent: action,
   setDefaultValues: action,
   setNumbersToAssign: action,
+  setNumbersToDisconnect: action,
   setNumbersToDeassign: action,
   postAssignToSubaccount: action,
   showErrorNotification: action

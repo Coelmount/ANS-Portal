@@ -53,27 +53,24 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center'
   },
-  addIconWrap: {
+  iconWrap: {
     width: 30,
     height: 30,
-    background: theme.palette.primary.main,
     borderRadius: 100,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
     color: theme.palette.black,
-    opacity: 0.5,
     '&:hover': {
       cursor: 'pointer'
     }
   },
-  enabledButton: {
-    opacity: 1
+  iconWrapBackground: {
+    background: theme.palette.primary.main
   },
-  deleteIcon: {
-    width: 14,
-    height: 16
+  disabledButton: {
+    opacity: 0.5
   },
   assignIcon: {
     width: 19,
@@ -139,10 +136,14 @@ const useStyles = makeStyles(theme => ({
   extraTitleWrap: {
     marginRight: 45
   },
-  disconnectIcon: {
+  deassignIcon: {
     width: 19,
     height: 19,
     marginRight: 1
+  },
+  disconnectIcon: {
+    width: 14,
+    height: 16
   },
   boldDeassignText: {
     fontWeight: 600

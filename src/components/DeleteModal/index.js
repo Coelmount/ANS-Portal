@@ -24,7 +24,7 @@ const DeleteModal = props => {
     extraDeleteSubject,
     action,
     titleAction,
-    deassignMessageBlock,
+    extraMessageBlock,
     t
   } = props
   const { name, id } = deleteInfo
@@ -66,7 +66,7 @@ const DeleteModal = props => {
                   {` ${name}${` id: ${id}`}?`}
                 </span>
               )}
-              {deassignMessageBlock}
+              {extraMessageBlock}
             </Box>
             <Box className={classes.deleteButtonsBlock}>
               <Box onClick={handleClose} className={classes.cancelButtonWrap}>
