@@ -49,40 +49,61 @@ const useStyles = makeStyles(theme => ({
     marginRight: 40,
     marginLeft: 40
   },
-  addCustomerWrap: {
+  buttonContainer: {
     display: 'flex',
     alignItems: 'center'
   },
-  iconWrap: {
+  mainIconWrap: {
+    background: theme.palette.primary.main,
     width: 30,
     height: 30,
-    borderRadius: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 0,
     marginRight: 8,
-    color: theme.palette.black,
     '&:hover': {
-      cursor: 'pointer'
+      backgroundColor: theme.palette.primary.main
     }
   },
-  iconWrapBackground: {
-    background: theme.palette.primary.main
-  },
   disabledButton: {
-    opacity: 0.5
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
+  },
+  tableIconWrap: {
+    padding: 0,
+    width: 30,
+    height: 30
+  },
+  btnBack: {
+    background: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  disconnectIcon: {
+    width: 14,
+    height: 16
+  },
+  deassignIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 2
   },
   assignIcon: {
     width: 19,
     height: 19,
     marginLeft: 2
   },
-  addCustomerTitle: {
+  iconTitle: {
     whiteSpace: 'nowrap',
     fontSize: 14,
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
+  },
+  disabledIconTitle: {
+    opacity: 0.5
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
@@ -136,15 +157,6 @@ const useStyles = makeStyles(theme => ({
   extraTitleWrap: {
     marginRight: 45
   },
-  deassignIcon: {
-    width: 19,
-    height: 19,
-    marginRight: 1
-  },
-  disconnectIcon: {
-    width: 14,
-    height: 16
-  },
   boldDeassignText: {
     fontWeight: 600
   },
@@ -169,6 +181,11 @@ const useStyles = makeStyles(theme => ({
     width: '20px !important',
     height: '20px !important',
     marginLeft: 5
+  },
+  tableRow: {
+    '& > th': {
+      height: 50
+    }
   }
 }))
 

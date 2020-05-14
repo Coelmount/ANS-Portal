@@ -8,6 +8,8 @@ import capitalize from 'lodash/capitalize'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import IconButton from '@material-ui/core/IconButton'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
@@ -28,10 +30,9 @@ import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import disconnectIcon from 'source/images/svg/delete-icon.svg'
-import deassignIcon from 'source/images/svg/disconnect-from-customer.svg'
+import deassignIcon from 'source/images/svg/deassign.svg'
 
 import useStyles from './styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 const AccessNumbersItem = ({ t }) => {
   const match = useParams()
@@ -235,10 +236,8 @@ const AccessNumbersItem = ({ t }) => {
       const checkedNumbers = numbers.filter(item => item.checked === true)
       setNumbersToAssign(checkedNumbers)
       setIsAssignModalOpen(true)
-    } else if (numberOfChecked === 0) {
-      showErrorNotification(t('no_numbers_selected'))
     } else {
-      showErrorNotification(t('unable_assign'))
+      showErrorNotification(t('no_numbers_selected_to_assign'))
     }
   }
 
@@ -251,10 +250,8 @@ const AccessNumbersItem = ({ t }) => {
       builtDisconnectMessage(selectedNumbers)
       buildDisconnectMessageBlock(selectedNumbers)
       setIsDisconnectModalOpen(true)
-    } else if (numberOfSelectedToDisconnect === 0) {
-      showErrorNotification(t('no_numbers_selected'))
     } else {
-      showErrorNotification(t('unable_disconnect'))
+      showErrorNotification(t('no_numbers_selected_to_disconnect'))
     }
   }
 
@@ -267,10 +264,8 @@ const AccessNumbersItem = ({ t }) => {
       builtDeassignMessage(selectedNumbers)
       buildDeassignMessageBlock(selectedNumbers)
       setIsDeassignModalOpen(true)
-    } else if (numberOfSelectedToDeassign === 0) {
-      showErrorNotification(t('no_numbers_selected'))
     } else {
-      showErrorNotification(t('unable_deassign'))
+      showErrorNotification(t('no_numbers_selected_to_deassign'))
     }
   }
 
@@ -309,21 +304,27 @@ const AccessNumbersItem = ({ t }) => {
 
   const extraTitleBlock = (
     <Box
-      className={classnames(classes.addCustomerWrap, classes.extraTitleWrap)}
+      className={classnames(classes.buttonContainer, classes.extraTitleWrap)}
     >
-      <Box
-        onClick={handleDisconnectButtonClick}
-        className={classnames(classes.iconWrap, classes.iconWrapBackground, {
+      <IconButton
+        aria-label='disconnect icon button'
+        component='span'
+        className={classnames(classes.mainIconWrap, {
           [classes.disabledButton]: !isDisconnectEnabled
         })}
+        onClick={handleDisconnectButtonClick}
       >
         <img
           className={classes.disconnectIcon}
           src={disconnectIcon}
           alt='disconnect from customer'
         />
-      </Box>
-      <Typography className={classes.addCustomerTitle}>
+      </IconButton>
+      <Typography
+        className={classnames(classes.iconTitle, {
+          [classes.disabledIconTitle]: !isDisconnectEnabled
+        })}
+      >
         {t('disconnect_from_customer')}
       </Typography>
     </Box>
@@ -339,41 +340,45 @@ const AccessNumbersItem = ({ t }) => {
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
-        <Box className={classes.addCustomerWrap}>
-          <Box
+        <Box className={classes.buttonContainer}>
+          <IconButton
+            aria-label='assign icon button'
+            component='span'
+            className={classnames(classes.mainIconWrap, {
+              [classes.disabledButton]: !isAssignEnabled
+            })}
             onClick={handleAssignButtonClick}
-            className={classnames(
-              classes.iconWrap,
-              classes.iconWrapBackground,
-              {
-                [classes.disabledButton]: !isAssignEnabled
-              }
-            )}
           >
             <DoneOutlinedIcon className={classes.assignIcon} />
-          </Box>
-          <Typography className={classes.addCustomerTitle}>
+          </IconButton>
+          <Typography
+            className={classnames(classes.iconTitle, {
+              [classes.disabledIconTitle]: !isAssignEnabled
+            })}
+          >
             {t('assign_to_subaccount')}
           </Typography>
         </Box>
-        <Box className={`${classes.addCustomerWrap} ${classes.deassignWrap}`}>
-          <Box
+        <Box className={`${classes.buttonContainer} ${classes.deassignWrap}`}>
+          <IconButton
+            aria-label='deassign icon button'
+            component='span'
+            className={classnames(classes.mainIconWrap, {
+              [classes.disabledButton]: !isDeassignEnabled
+            })}
             onClick={handleDeassignButtonClick}
-            className={classnames(
-              classes.iconWrap,
-              classes.iconWrapBackground,
-              {
-                [classes.disabledButton]: !isDeassignEnabled
-              }
-            )}
           >
             <img
               className={classes.deassignIcon}
               src={deassignIcon}
-              alt='delete icon'
+              alt='deassign from subaccount'
             />
-          </Box>
-          <Typography className={classes.addCustomerTitle}>
+          </IconButton>
+          <Typography
+            className={classnames(classes.iconTitle, {
+              [classes.disabledIconTitle]: !isDeassignEnabled
+            })}
+          >
             {t('deassign_from_subaccount')}
           </Typography>
         </Box>
@@ -438,7 +443,13 @@ const AccessNumbersItem = ({ t }) => {
               numbersToDisconnect.some(item => item.id === row.id) ? (
                 <CircularProgress className={classes.deleteLoading} />
               ) : (
-                <Box
+                <IconButton
+                  aria-label='upload picture'
+                  component='span'
+                  className={classnames(classes.tableIconWrap, {
+                    [classes.btnBack]:
+                      row.isSelectedToDisconnect && !isDisconnectingNumber
+                  })}
                   onClick={() =>
                     selectNumbers(
                       !row.isSelectedToDisconnect,
@@ -446,17 +457,13 @@ const AccessNumbersItem = ({ t }) => {
                       'isSelectedToDisconnect'
                     )
                   }
-                  className={classnames(classes.iconWrap, {
-                    [classes.iconWrapBackground]:
-                      row.isSelectedToDisconnect && !isDisconnectingNumber
-                  })}
                 >
                   <img
                     className={classes.disconnectIcon}
                     src={disconnectIcon}
                     alt='disconnect'
                   />
-                </Box>
+                </IconButton>
               )}
             </Fragment>
           )}
@@ -472,7 +479,32 @@ const AccessNumbersItem = ({ t }) => {
             {t(row.subaccount)}
           </Typography>
           {row.subaccount !== 'none' && row.inUse === 'no' && (
-            <Box
+            // <Box
+            //   onClick={() =>
+            //     selectNumbers(
+            //       !row.isSelectedToDeassign,
+            //       row.id,
+            //       'isSelectedToDeassign'
+            //     )
+            //   }
+            //   className={classnames(classes.tableIconWrap, {
+            //     [classes.btnBack]: row.isSelectedToDeassign
+            //     //  && !isDisconnectingNumber
+            //   })}
+            // >
+            //   <img
+            //     className={classes.deassignIcon}
+            //     src={deassignIcon}
+            //     alt='delete icon'
+            //   />
+            // </Box>
+            <IconButton
+              aria-label='deassign icon button'
+              component='span'
+              className={classnames(classes.tableIconWrap, {
+                [classes.btnBack]: row.isSelectedToDeassign
+                //  && !isDisconnectingNumber
+              })}
               onClick={() =>
                 selectNumbers(
                   !row.isSelectedToDeassign,
@@ -480,16 +512,13 @@ const AccessNumbersItem = ({ t }) => {
                   'isSelectedToDeassign'
                 )
               }
-              className={classnames(classes.iconWrap, {
-                [classes.iconWrapBackground]: row.isSelectedToDeassign
-              })}
             >
               <img
                 className={classes.deassignIcon}
                 src={deassignIcon}
-                alt='delete icon'
+                alt='deassign from subaccount'
               />
-            </Box>
+            </IconButton>
           )}
         </Box>
       )
