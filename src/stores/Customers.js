@@ -39,7 +39,7 @@ export class CustomersStore {
     axios
       .get(`/tenants`)
       .then(res => {
-        this.rows = res.data.customers
+        this.rows = res.data.tenants
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
