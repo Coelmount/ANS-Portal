@@ -30,6 +30,7 @@ import disconnectIcon from 'source/images/svg/delete-icon.svg'
 import deassignIcon from 'source/images/svg/disconnect-from-customer.svg'
 
 import useStyles from './styles'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const AccessNumbersItem = ({ t }) => {
   const match = useParams()
@@ -62,7 +63,7 @@ const AccessNumbersItem = ({ t }) => {
     assignedNumbers,
     isAssignedNumbersLoading,
     isLoadingEntitlements,
-    isDeletingAssignedNumber,
+    isDisconnectingNumber,
     disconnectNumbers,
     deassignNumbers,
     totalPagesServer,
@@ -72,7 +73,8 @@ const AccessNumbersItem = ({ t }) => {
     setNumbersToAssign,
     setNumbersToDisconnect,
     setNumbersToDeassign,
-    showErrorNotification
+    showErrorNotification,
+    numbersToDisconnect
   } = AssignedNumbersStore
 
   const isAssignEnabled =
@@ -92,6 +94,7 @@ const AccessNumbersItem = ({ t }) => {
     )
 
   const isDisconnectEnabled =
+    !isDisconnectingNumber &&
     numberOfSelectedToDisconnect > 0 &&
     !numbers.some(
       item =>
@@ -101,11 +104,14 @@ const AccessNumbersItem = ({ t }) => {
 
   useEffect(() => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
-    return () => setDefaultValues()
+    return () => {
+      setDefaultValues()
+    }
   }, [])
 
   useEffect(() => {
     setNumbers(assignedNumbers)
+    setNumberOfSelectedToDisconnect(0)
   }, [assignedNumbers])
 
   const handlePageChange = () => {
@@ -426,24 +432,32 @@ const AccessNumbersItem = ({ t }) => {
             {t(row.phoneNumber)}
           </Typography>
           {row.subaccount === 'none' && row.inUse === 'no' && (
-            <Box
-              onClick={() =>
-                selectNumbers(
-                  !row.isSelectedToDisconnect,
-                  row.id,
-                  'isSelectedToDisconnect'
-                )
-              }
-              className={classnames(classes.iconWrap, {
-                [classes.iconWrapBackground]: row.isSelectedToDisconnect
-              })}
-            >
-              <img
-                className={classes.disconnectIcon}
-                src={disconnectIcon}
-                alt='disconnect'
-              />
-            </Box>
+            <Fragment>
+              {isDisconnectingNumber &&
+              numbersToDisconnect.some(item => item.id === row.id) ? (
+                <CircularProgress className={classes.deleteLoading} />
+              ) : (
+                <Box
+                  onClick={() =>
+                    selectNumbers(
+                      !row.isSelectedToDisconnect,
+                      row.id,
+                      'isSelectedToDisconnect'
+                    )
+                  }
+                  className={classnames(classes.iconWrap, {
+                    [classes.iconWrapBackground]:
+                      row.isSelectedToDisconnect && !isDisconnectingNumber
+                  })}
+                >
+                  <img
+                    className={classes.disconnectIcon}
+                    src={disconnectIcon}
+                    alt='disconnect'
+                  />
+                </Box>
+              )}
+            </Fragment>
           )}
         </Box>
       )
@@ -501,31 +515,13 @@ const AccessNumbersItem = ({ t }) => {
         </Fragment>
       )
     }
-    // {
-    //   id: 'delete',
-    //   extraProps: {
-    //     className: classes.deleteCell,
-    //     align: 'right'
-    //   },
-    //   isSortAvailable: false,
-    //   getCellData: row => (
-    //     <Fragment>
-    //       {/* {row.status === 'available' && row.subaccount !== 'none' && ( */}
-    //       {row.subaccount === 'none' && (
-    //         <CloseOutlinedIcon
-    //           onClick={() => handleDisconnectOneNumberClick(row)}
-    //           className={classes.deleteCustomerIcon}
-    //         />
-    //       )}
-    //     </Fragment>
-    //   )
-    // }
   ]
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {isAssignedNumbersLoading || isLoadingEntitlements ? (
+        {(isLoadingEntitlements && !isDisconnectingNumber) ||
+        (isAssignedNumbersLoading && !isDisconnectingNumber) ? (
           <Loading />
         ) : (
           <Fragment>
@@ -578,7 +574,7 @@ const AccessNumbersItem = ({ t }) => {
             open={isDeassignModalOpen}
             handleClose={handleCloseDeassignModal}
             handleDelete={handleDeassign}
-            // isDeleting={isDeletingAssignedNumber}
+            // isDeleting={isDisconnectingNumber}
             deleteSubject={deassignSubject}
             extraDeleteSubject={deassignMessage}
             action={t('to_deassign')}
@@ -592,7 +588,6 @@ const AccessNumbersItem = ({ t }) => {
             open={isDisconnectModalOpen}
             handleClose={handleCloseDisconnectModal}
             handleDelete={handleDisconnect}
-            // isDeleting={isDeletingAssignedNumber}
             deleteSubject={disconnectSubject}
             extraDeleteSubject={disconnectMessage}
             action={t('to_disconnect')}

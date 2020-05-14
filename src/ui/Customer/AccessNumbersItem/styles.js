@@ -164,6 +164,11 @@ const useStyles = makeStyles(theme => ({
   subaccountTitle: {
     marginRight: 25,
     fontSize: 14
+  },
+  deleteLoading: {
+    width: '20px !important',
+    height: '20px !important',
+    marginLeft: 5
   }
 }))
 
