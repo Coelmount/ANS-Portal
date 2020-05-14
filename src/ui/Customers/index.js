@@ -88,7 +88,7 @@ const CustomersTable = observer(({ t }) => {
     }
     return [
       {
-        id: 'external_id',
+        id: 'tenantId',
         numeric: false,
         extraProps: {
           scope: 'row'
@@ -97,10 +97,10 @@ const CustomersTable = observer(({ t }) => {
         getCellData: row => {
           return (
             <Link
-              to={`/customers/${row.external_id}/access_numbers`}
+              to={`/customers/${row.tenantId}/access_numbers`}
               className={classes.link}
             >
-              {row.external_id}
+              {row.tenantId}
             </Link>
           )
         }
@@ -122,7 +122,7 @@ const CustomersTable = observer(({ t }) => {
         isSortAvailable: false,
         getCellData: row => (
           <CloseOutlinedIcon
-            onClick={() => handleOpenDeleteModal(row.external_id, row.name)}
+            onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
             className={classes.deleteCustomerIcon}
           />
         )
@@ -151,7 +151,7 @@ const CustomersTable = observer(({ t }) => {
           <CustomTable
             rows={rows}
             columns={columns}
-            searchCriterias={['external_id', 'name']}
+            searchCriterias={['tenantId', 'name']}
             noAvailableDataMessage={t('no_customers_available')}
           />
         )}
