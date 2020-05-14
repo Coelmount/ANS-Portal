@@ -112,6 +112,8 @@ export class AssignedNumbers {
   }
 
   disconnectNumbers = ({ customerId, callback }) => {
+    const amount = this.numbersToDisconnect.length
+    const disconnectSubject = amount > 1 ? 'numbers' : 'number'
     this.isDisconnectingNumber = true
     const objectsWithRangesArr = phoneNumbersRangeFilter(
       this.numbersToDisconnect
@@ -130,7 +132,7 @@ export class AssignedNumbers {
         .then(() => {
           if (index === objectsWithRangesArr.length - 1) {
             SnackbarStore.enqueueSnackbar({
-              message: `Phone number(s) disconnected successfully`,
+              message: `${amount} phone ${disconnectSubject} disconnected successfully`,
               options: {
                 variant: 'success'
               }
@@ -139,7 +141,9 @@ export class AssignedNumbers {
         })
         .catch(e => {
           SnackbarStore.enqueueSnackbar({
-            message: getErrorMessage(e) || 'Failed to disconnect number(s)',
+            message:
+              getErrorMessage(e) ||
+              `Failed to disconnect ${amount} ${disconnectSubject}`,
             options: {
               variant: 'error'
             }
