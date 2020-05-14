@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import classnames from 'classnames'
+import capitalize from 'lodash/capitalize'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -591,7 +592,7 @@ const AccessNumbersItem = ({ t }) => {
             deleteSubject={disconnectSubject}
             extraDeleteSubject={disconnectMessage}
             action={t('to_disconnect')}
-            titleAction={t(`disconnect`)}
+            titleAction={capitalize(t(`disconnect`))}
             extraMessageBlock={disconnectMessageBlock}
           />
         )}
