@@ -10,6 +10,7 @@ export class AssignedNumbers {
   isAssignedNumbersLoading = true
   isLoadingEntitlements = true
   isDisconnectingNumber = false
+  isDeassigningNumber = false
   isPostAssignNumbers = false
   totalPagesServer = 0
   currentEntitlement = null
@@ -22,6 +23,7 @@ export class AssignedNumbers {
     this.isAssignedNumbersLoading = true
     this.isLoadingEntitlements = true
     this.isDisconnectingNumber = false
+    this.isDeassigningNumber = false
     this.isPostAssignNumbers = false
     this.totalPagesServer = 0
     this.currentEntitlement = null
@@ -50,7 +52,7 @@ export class AssignedNumbers {
         return res.data.entitlments
       })
       .then(entitlements => {
-        //nested then
+        //chain then
         this.isAssignedNumbersLoading = true
         axios
           .get(`/tenants/${customerId}/entitlements/${numbersId}/numbers`)
@@ -108,7 +110,59 @@ export class AssignedNumbers {
       })
   }
   deassignNumbers = ({ customerId, callback }) => {
-    console.log(this.numbersToDeassign, 'numbersToDeassign')
+    axios
+      .get(`/tenants/${customerId}/groups?sensitiveGroupNameEquals=DevAccount`)
+      .then(res => {
+        return res.data.groups[0].groupId
+      })
+      .then(groupId => {
+        //chain then
+        console.log(groupId)
+
+        console.log(this.numbersToDeassign, 'numbersToDeassign')
+        const amount = this.numbersToDeassign.length
+        const deassignSubject = amount > 1 ? 'numbers' : 'number'
+        this.isDeassigningNumber = true
+        const objectsWithRangesArr = phoneNumbersRangeFilter(
+          this.numbersToDeassign
+        )
+        callback()
+        objectsWithRangesArr.forEach((item, index) => {
+          axios
+            .delete(`/tenants/${customerId}/groups/${groupId}/numbers`, {
+              data: {
+                range: item.phoneNumbers
+                  ? [Number(item.rangeStart), Number(item.rangeEnd)]
+                  : [Number(item.nsn), Number(item.nsn)],
+                country_code: item.country_code
+              }
+            })
+            .then(() => {
+              if (index === objectsWithRangesArr.length - 1) {
+                SnackbarStore.enqueueSnackbar({
+                  message: `${amount} phone ${deassignSubject} deassigned successfully`,
+                  options: {
+                    variant: 'success'
+                  }
+                })
+              }
+            })
+            .catch(e => {
+              SnackbarStore.enqueueSnackbar({
+                message:
+                  getErrorMessage(e) ||
+                  `Failed to deassign ${amount} ${deassignSubject}`,
+                options: {
+                  variant: 'error'
+                }
+              })
+            })
+            .finally(() => {
+              this.isDisconnectingNumber = false
+              this.numbersToDisconnect = []
+            })
+        })
+      })
   }
 
   disconnectNumbers = ({ customerId, callback }) => {
