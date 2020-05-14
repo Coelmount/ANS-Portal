@@ -1,8 +1,8 @@
 // require id field of object
-const transformOnChange = (array, checked, id) => {
+const transformOnChange = (array, newValue, id, fieldName = 'checked') => {
   const transformedArray = [...array]
   const index = array.findIndex(el => el.id === id)
-  transformedArray[index].checked = checked
+  transformedArray[index][fieldName] = newValue
   return transformedArray
 }
 
