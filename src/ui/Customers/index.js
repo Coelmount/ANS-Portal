@@ -31,7 +31,8 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer,
     isLoadingCustomers,
     isDeletingCustomer,
-    setDefaultTableValues
+    setDefaultTableValues,
+    getCustomer
   } = CustomersStore
 
   const { setDefaultValues: setDefaultValuesSubaccount } = CreateSubaccountStore
@@ -46,7 +47,7 @@ const CustomersTable = observer(({ t }) => {
   useEffect(() => {
     getCustomers()
     return () => setDefaultTableValues()
-  }, [getCustomers, setDefaultTableValues])
+  }, [setDefaultTableValues])
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
@@ -89,7 +90,7 @@ const CustomersTable = observer(({ t }) => {
     }
     return [
       {
-        id: 'external_id',
+        id: 'tenantId',
         numeric: false,
         extraProps: {
           scope: 'row'
@@ -98,10 +99,10 @@ const CustomersTable = observer(({ t }) => {
         getCellData: row => {
           return (
             <Link
-              to={`/customers/${row.external_id}/access_numbers`}
+              to={`/customers/${row.tenantId}/access_numbers`}
               className={classes.link}
             >
-              {row.external_id}
+              {row.tenantId}
             </Link>
           )
         }
@@ -123,12 +124,7 @@ const CustomersTable = observer(({ t }) => {
         extraHeadProps: {
           align: 'center'
         },
-        getCellData: row => (
-          <EditOutlinedIcon
-            onClick={() => handleOpenDeleteModal(row.external_id, row.name)}
-            className={classes.deleteCustomerIcon}
-          />
-        )
+        getCellData: row => editIcon(row, handleOpenDeleteModal)
       },
       {
         id: 'delete',
@@ -139,13 +135,23 @@ const CustomersTable = observer(({ t }) => {
         isSortAvailable: false,
         getCellData: row => (
           <CloseOutlinedIcon
-            onClick={() => handleOpenDeleteModal(row.external_id, row.name)}
+            onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
             className={classes.deleteCustomerIcon}
           />
         )
       }
     ]
   }, [classes.deleteCell, classes.deleteCustomerIcon, classes.link])
+
+  const editIcon = (row, handleOpenDeleteModal) => {
+    getCustomer(row.tenantId)
+    return (
+      <EditOutlinedIcon
+        onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
+        className={classes.deleteCustomerIcon}
+      />
+    )
+  }
 
   const titleData = {
     mainText: t('customers'),
@@ -168,7 +174,7 @@ const CustomersTable = observer(({ t }) => {
           <CustomTable
             rows={rows}
             columns={columns}
-            searchCriterias={['external_id', 'name']}
+            searchCriterias={['tenantId', 'name']}
             noAvailableDataMessage={t('no_customers_available')}
           />
         )}
