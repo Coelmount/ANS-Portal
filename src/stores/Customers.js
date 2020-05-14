@@ -31,6 +31,7 @@ export class CustomersStore {
   customer = defaultCustomerValue
   isLoadingCustomers = true
   isLoadingCustomer = true
+  isLoadingStatuses = true
   isDeletingCustomer = false
   addUpdateCustomer = false
 
@@ -40,6 +41,7 @@ export class CustomersStore {
       .get(`/tenants`)
       .then(res => {
         this.rows = res.data.tenants
+        this.getCustomersStatus(res.data.tenants)
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -49,9 +51,6 @@ export class CustomersStore {
           }
         })
       )
-      .finally(() => {
-        this.isLoadingCustomers = false
-      })
   }
 
   getCustomer = id => {
@@ -74,6 +73,30 @@ export class CustomersStore {
       })
       .finally(() => {
         this.isLoadingCustomer = false
+      })
+  }
+
+  getCustomersStatus = tenants => {
+    const promisArr = []
+    tenants.forEach(tenant => {
+      promisArr.push(
+        axios.get(`/tenants/${tenant.tenantId}/properties/suspension/`)
+      )
+    })
+
+    Promise.all(promisArr)
+      .then(res => {
+        res.forEach((response, i) => {
+          const newRows = [...this.rows]
+          newRows[i].status =
+            response.data.suspensionStatus === ''
+              ? 'Active'
+              : response.data.suspensionStatus
+          this.rows = [...newRows]
+        })
+      })
+      .finally(() => {
+        this.isLoadingCustomers = false
       })
   }
 
@@ -166,7 +189,8 @@ decorate(CustomersStore, {
   changeStep: action,
   changeCustomer: action,
   getCustomerDefaultValues: action,
-  setDefaultTableValues: action
+  setDefaultTableValues: action,
+  getCustomersStatus: action
 })
 
 export default new CustomersStore()
