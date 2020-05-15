@@ -34,6 +34,7 @@ export class CustomersStore {
   isLoadingStatuses = true
   isDeletingCustomer = false
   addUpdateCustomer = false
+  isUpdatingStatus = false
 
   getCustomers = () => {
     this.isLoadingCustomers = true
@@ -166,6 +167,32 @@ export class CustomersStore {
       })
   }
 
+  putUpdateCustomerStatus = (teantaId, data, callback) => {
+    this.isUpdatingStatus = true
+    axios
+      .put(`/tenants/${teantaId}/properties/suspension/`, data)
+      .then(() => {
+        callback && callback()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Customer status updated successfully',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update customer status',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isUpdatingStatus = false
+      })
+  }
+
   changeStep = step => {
     this.step = step
   }
@@ -182,6 +209,7 @@ decorate(CustomersStore, {
   isLoadingCustomers: observable,
   isLoadingCustomer: observable,
   isDeletingCustomer: observable,
+  isUpdatingStatus: observable,
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,
@@ -190,7 +218,8 @@ decorate(CustomersStore, {
   changeCustomer: action,
   getCustomerDefaultValues: action,
   setDefaultTableValues: action,
-  getCustomersStatus: action
+  getCustomersStatus: action,
+  putUpdateCustomerStatus: action
 })
 
 export default new CustomersStore()

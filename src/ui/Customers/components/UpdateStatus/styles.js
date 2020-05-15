@@ -23,6 +23,21 @@ const useStyles = makeStyles(theme => ({
     margin: '10px 30px 10px 0',
     color: theme.palette.black,
     fontFamily: 'MTN'
+  },
+  dialogContent: {
+    position: 'relative'
+  },
+  statusText: {
+    marginRight: 20
+  },
+  contentBox: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 

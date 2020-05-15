@@ -6,9 +6,12 @@ import getErrorMessage from 'utils/getErrorMessage'
 
 export class ConfigStore {
   config = {}
+  customerStatuses = []
   isLoadingConfig = true
+  isLoadingCustomerStatuses = true
 
   getConfig = () => {
+    this.isLoadingConfig = true
     axios
       .get(`/configs/applications/ANS_portal/config`)
       .then(res => {
@@ -18,7 +21,6 @@ export class ConfigStore {
           return
         }
         this.config = JSON.parse(res.data.data)
-        this.isLoadingConfig = false
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -28,13 +30,33 @@ export class ConfigStore {
           }
         })
       })
+      .finally(() => {
+        this.isLoadingConfig = false
+      })
+  }
+
+  getCustomerStatuses = () => {
+    this.isLoadingCustomerStatuses = true
+    axios
+      .get(`/configs/templates/categories/group_intercept`)
+      .then(res => {
+        this.customerStatuses = res.data.templates
+      })
+      .finally(() => {
+        console.log('finally', this.isLoadingCustomerStatuses)
+        this.isLoadingCustomerStatuses = false
+        console.log('finally1', this.isLoadingCustomerStatuses)
+      })
   }
 }
 
 decorate(ConfigStore, {
   config: observable,
+  customerStatuses: observable,
   isLoadingConfig: observable,
-  getConfig: action
+  isLoadingCustomerStatuses: observable,
+  getConfig: action,
+  getCustomerStatuses: action
 })
 
 export default new ConfigStore()
