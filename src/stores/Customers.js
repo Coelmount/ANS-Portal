@@ -60,20 +60,15 @@ export class CustomersStore {
       .get(`/tenants/${id}/`)
       .then(res => {
         merge(this.customer, res.data)
-        this.isLoadingCustomer = false
+        this.getCustomerStatus(res.data.tenantId)
       })
       .catch(e => {
-        this.isLoadingCustomer = false
-
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to fetch customer',
           options: {
             variant: 'error'
           }
         })
-      })
-      .finally(() => {
-        this.isLoadingCustomer = false
       })
   }
 
@@ -98,6 +93,24 @@ export class CustomersStore {
       })
       .finally(() => {
         this.isLoadingCustomers = false
+      })
+  }
+
+  getCustomerStatus = tenantId => {
+    axios
+      .get(`/tenants/${tenantId}/properties/suspension/`)
+      .then(
+        res =>
+          (this.customer = {
+            ...this.customer,
+            status:
+              res.data.suspensionStatus === ''
+                ? 'Active'
+                : res.data.suspensionStatus
+          })
+      )
+      .finally(() => {
+        this.isLoadingCustomer = false
       })
   }
 
