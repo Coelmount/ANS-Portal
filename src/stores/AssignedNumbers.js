@@ -117,9 +117,6 @@ export class AssignedNumbers {
       })
       .then(groupId => {
         //chain then
-        console.log(groupId)
-
-        console.log(this.numbersToDeassign, 'numbersToDeassign')
         const amount = this.numbersToDeassign.length
         const deassignSubject = amount > 1 ? 'numbers' : 'number'
         this.isDeassigningNumber = true

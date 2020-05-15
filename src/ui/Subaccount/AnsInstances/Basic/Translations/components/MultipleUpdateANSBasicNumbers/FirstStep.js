@@ -46,8 +46,6 @@ const FirstStep = props => {
     setStep(2)
   }
 
-  console.log(JSON.parse(JSON.stringify(numbers)))
-
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>

@@ -7,8 +7,10 @@ import getErrorMessage from 'utils/getErrorMessage'
 export class ConfigStore {
   config = {}
   customerStatuses = []
+  timeZones = []
   isLoadingConfig = true
   isLoadingCustomerStatuses = true
+  isLoadingTimeZones = true
 
   getConfig = () => {
     this.isLoadingConfig = true
@@ -43,9 +45,22 @@ export class ConfigStore {
         this.customerStatuses = res.data.templates
       })
       .finally(() => {
-        console.log('finally', this.isLoadingCustomerStatuses)
         this.isLoadingCustomerStatuses = false
-        console.log('finally1', this.isLoadingCustomerStatuses)
+      })
+  }
+
+  getTimeZones = () => {
+    this.isLoadingTimeZones = true
+    return axios
+      .get(`/system/timezones/`)
+      .then(res => {
+        this.timeZones = res.data.timeZones.map(el => ({
+          value: el.name,
+          label: el.description
+        }))
+      })
+      .finally(() => {
+        this.isLoadingTimeZones = false
       })
   }
 }
@@ -53,10 +68,13 @@ export class ConfigStore {
 decorate(ConfigStore, {
   config: observable,
   customerStatuses: observable,
+  timeZones: observable,
   isLoadingConfig: observable,
   isLoadingCustomerStatuses: observable,
+  isLoadingTimeZones: observable,
   getConfig: action,
-  getCustomerStatuses: action
+  getCustomerStatuses: action,
+  getTimeZones: action
 })
 
 export default new ConfigStore()
