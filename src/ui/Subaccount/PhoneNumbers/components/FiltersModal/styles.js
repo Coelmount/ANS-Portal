@@ -73,6 +73,15 @@ const useStyles = makeStyles(theme => ({
   nameTitle: {
     marginLeft: 12,
     marginRight: 5
+  },
+  statusContentContainer: {
+    marginLeft: CONTERN_LEFT_MARGIN
+  },
+  statusContentRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '60%'
   }
 }))
 

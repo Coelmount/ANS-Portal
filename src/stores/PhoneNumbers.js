@@ -18,6 +18,11 @@ export class PhoneNumbers {
   rejectedPhoneNumbers = []
   isPhoneNumbersLoading = true
   totalPages = 0
+  filterValues = {
+    country: '',
+    type: '',
+    status: ''
+  }
 
   changeStep = step => {
     this.step = step
@@ -36,12 +41,19 @@ export class PhoneNumbers {
     this.totalPages = 0
   }
 
-  getPhoneNumbers = (customerId, groupId, page, perPage) => {
+  getPhoneNumbers = (customerId, groupId, page, perPage, filterValues) => {
+    console.log(filterValues, 'in get')
+    const country = (filterValues && filterValues.country) || ''
+    const type = (filterValues && filterValues.type) || ''
+    const status = (filterValues && filterValues.status) || ''
     this.isPhoneNumbersLoading = true
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"] `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&type=${type} `
       )
+      // .get(
+      //   `/tenants/ans0001/groups/ans0001_grp2522/numbers?sorting=[{"field":"id","direction":"desc"}]&paging={"page_number": 1, "page_size": 50}&cols=["nsn","type","state", "country_code","connected_to"]&type=geo&country_code=+966&in_use=false&number_like=811`
+      // )
       .then(res => {
         const pagination = res.data.pagination
         const requestResult = res.data.numbers
@@ -92,6 +104,14 @@ export class PhoneNumbers {
       .finally(() => (this.isPhoneNumbersLoading = false))
   }
 
+  setFilterValues = (country, type, status) => {
+    this.filterValues.country = country
+    this.filterValues.type = type
+    this.filterValues.status = status
+    // this.getPhoneNumbers()
+    // console.log(country, type, status)
+  }
+
   setPhoneNumbers = phoneNumbers => {
     this.phoneNumbers = phoneNumbers
     const countries = phoneNumbers.map(item => item.country)
@@ -139,13 +159,15 @@ decorate(PhoneNumbers, {
   phoneNumbers: observable,
   totalPages: observable,
   isPhoneNumbersLoading: observable,
+  filterValues: observable,
   changeStep: action,
   setPhoneNumbers: action,
   setSelectedPhoneNumber: action,
   postPhoneNumbers: action,
   createGroupsSinglePhone: action,
   setDefaultValues: action,
-  getPhoneNumbers: action
+  getPhoneNumbers: action,
+  setFilterValues: action
 })
 
 export default new PhoneNumbers()

@@ -15,7 +15,8 @@ import CloseIcon from '@material-ui/icons/Close'
 
 import Input from 'components/Input'
 import Checkbox from 'components/Checkbox'
-// import SubaccountsStore from 'stores/Subaccounts'
+import Switch from 'components/Switch'
+import PhoneNumbersStore from 'stores/PhoneNumbers'
 // import Loading from 'components/Loading'
 
 import useStyles from './styles'
@@ -23,11 +24,31 @@ import useStyles from './styles'
 const FiltersModal = ({ open, t, handleClose }) => {
   const classes = useStyles()
 
+  const [selectedCountry, setSelectedCountry] = useState('')
+  const [selectedType, setSelectedType] = useState('')
+  const [selectedStatus, setSelectedStatus] = useState('')
+
+  const { setFilterValues } = PhoneNumbersStore
+  console.log(selectedType, 'selectedType')
+  console.log(selectedCountry, 'selectedCountry')
+  console.log(selectedStatus, 'selectedStatus')
+
   const checkboxRows = [
     { name: 'local', amount: 23 },
     { name: 'geo', amount: 18 },
     { name: 'toll-free', amount: 54 }
   ]
+
+  const switchRows = [
+    { name: 'all', amount: null },
+    { name: 'assigned', amount: 10 },
+    { name: 'available', amount: 17 }
+  ]
+
+  const handleFilterButtonClick = () => {
+    setFilterValues(selectedCountry, selectedType, selectedStatus)
+    handleClose()
+  }
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
@@ -52,6 +73,7 @@ const FiltersModal = ({ open, t, handleClose }) => {
             className={classes.countryInput}
             label={t('country')}
             variant='outlined'
+            onChange={e => setSelectedCountry(e.target.value)}
           />
         </Box>
 
@@ -63,8 +85,13 @@ const FiltersModal = ({ open, t, handleClose }) => {
           </Box>
           <Box className={classes.checkboxesWrap}>
             {checkboxRows.map(item => (
-              <Box className={classes.checkboxRow}>
-                <Checkbox />
+              <Box className={classes.checkboxRow} key={item.name}>
+                <Checkbox
+                  checked={item.name === selectedType}
+                  onChange={e =>
+                    setSelectedType(e.target.checked ? item.name : '')
+                  }
+                />
                 <Typography>
                   <span className={classes.nameTitle}>{item.name}</span>
                   <span>{`(${item.amount})`}</span>
@@ -80,7 +107,31 @@ const FiltersModal = ({ open, t, handleClose }) => {
               {t('status')}
             </Typography>
           </Box>
-          <div>content</div>
+          <Box className={classes.statusContentContainer}>
+            {switchRows.map(item => (
+              <Box className={classes.statusContentRow} key={item.name}>
+                <Typography>{t(item.name).toLowerCase()}</Typography>
+                <Switch
+                  checked={item.name === selectedStatus}
+                  handleChange={e =>
+                    setSelectedStatus(
+                      e.target.checked === true ? item.name : ''
+                    )
+                  }
+                />
+              </Box>
+            ))}
+          </Box>
+        </Box>
+        <Box>
+          <Button
+            variant='outlined'
+            color='primary'
+            className={classes.cancelButton}
+            onClick={handleClose}
+          >
+            {t('clear_all')}
+          </Button>
         </Box>
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
@@ -90,13 +141,13 @@ const FiltersModal = ({ open, t, handleClose }) => {
           className={classes.cancelButton}
           onClick={handleClose}
         >
-          {t('clear_all')}
+          {t('cancel')}
         </Button>
         <Button
           variant='contained'
           color='primary'
           className={classes.assignButton}
-          // onClick={handleAsignButtonClick}
+          onClick={handleFilterButtonClick}
           // disabled={!subaccountsList.some(item => item.checked === true)}
         >
           {t('filter')}

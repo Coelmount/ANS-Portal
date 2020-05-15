@@ -47,7 +47,8 @@ const PhoneNumbers = observer(({ t }) => {
     setDefaultValues,
     getPhoneNumbers,
     totalPages,
-    isPhoneNumbersLoading
+    isPhoneNumbersLoading,
+    filterValues
   } = PhoneNumbersStore
 
   // initial request
@@ -127,6 +128,14 @@ const PhoneNumbers = observer(({ t }) => {
 
   const handleFiltersModalClose = () => {
     setIsFiltersModalOpen(false)
+    getPhoneNumbers(
+      match.customerId,
+      match.groupId,
+      page,
+      rowsPerPage,
+      filterValues
+    )
+    console.log(filterValues, 'request')
   }
 
   const titleData = {
