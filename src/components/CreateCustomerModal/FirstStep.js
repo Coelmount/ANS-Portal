@@ -92,6 +92,13 @@ const FirstStep = props => {
     } else return t('add_customer')
   }
 
+  const changeTimeZone = () => {
+    setCheckedTimeZone(!checkedTimeZone)
+    if (checkedTimeZone === false) {
+      changeCustomer('timeZone', '')
+    }
+  }
+
   if (isLoadingTimeZones) {
     return <Loading />
   }
@@ -152,7 +159,7 @@ const FirstStep = props => {
             <Box className={classes.inputes}>
               <Switch
                 checked={checkedTimeZone}
-                handleChange={() => setCheckedTimeZone(!checkedTimeZone)}
+                handleChange={changeTimeZone}
                 label={'Default timezone'}
                 labelPlacement={'start'}
               />
