@@ -25,6 +25,7 @@ import Switch from 'components/Switch'
 import Select from 'components/Select'
 
 import useStyles from './styles'
+import Loading from 'components/Loading'
 
 const FirstStep = props => {
   const match = useParams()
@@ -41,23 +42,17 @@ const FirstStep = props => {
   const [checkedTimeZone, setCheckedTimeZone] = useState(
     customer.timeZone ? false : true
   )
-  const [timeZones, setTimeZones] = useState([])
 
-  const { config, isLoadingConfig } = ConfigStore
+  const {
+    config,
+    isLoadingConfig,
+    getTimeZones,
+    timeZones,
+    isLoadingTimeZones
+  } = ConfigStore
 
   useEffect(() => {
-    setTimeZones(
-      toArray(ct.getAllTimezones())
-        .sort((a, b) => {
-          if (a.name > b.name) return 1
-          if (a.name < b.name) return -1
-          return 0
-        })
-        .map(el => ({
-          value: el.name,
-          label: el.name
-        }))
-    )
+    getTimeZones()
   }, [])
 
   useEffect(() => {
@@ -95,6 +90,10 @@ const FirstStep = props => {
     } else if (isCreateSubaccount) {
       return t('add_subaccount')
     } else return t('add_customer')
+  }
+
+  if (isLoadingTimeZones) {
+    return <Loading />
   }
 
   return (

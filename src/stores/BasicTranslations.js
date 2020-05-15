@@ -64,9 +64,6 @@ export class BasicTranslations {
             variant: 'error'
           }
         })
-        if (e.response.status === 400) {
-          this.isDeletingCustomer = false
-        }
       })
       .finally(() => (this.isBasicTranslationsNumbersLoading = false))
   }

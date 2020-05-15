@@ -4,9 +4,11 @@ import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
@@ -19,6 +21,7 @@ import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import Loading from 'components/Loading'
+import UpdateStatus from './components/UpdateStatus'
 
 import useStyles from './styles'
 
@@ -30,7 +33,8 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer,
     isLoadingCustomers,
     isDeletingCustomer,
-    setDefaultTableValues
+    setDefaultTableValues,
+    getCustomer
   } = CustomersStore
 
   const { setDefaultValues: setDefaultValuesSubaccount } = CreateSubaccountStore
@@ -41,11 +45,13 @@ const CustomersTable = observer(({ t }) => {
   const [customerToDelete, setCustomerToDelete] = useState({})
   const [creationType, setCreationType] = useState('')
   const [isOpenCreateCustomer, setIsOpenCreateCustomer] = useState(false)
+  const [showUpdateStatus, setShowUpdateStatus] = useState(false)
+  const [tenantForUpdate, setTenantForUpdate] = useState({})
 
   useEffect(() => {
     getCustomers()
     return () => setDefaultTableValues()
-  }, [getCustomers, setDefaultTableValues])
+  }, [setDefaultTableValues])
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
@@ -81,6 +87,16 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer(payload)
   }
 
+  const handleOpenUpdateModal = row => {
+    setShowUpdateStatus(true)
+    setTenantForUpdate(row)
+  }
+
+  const handleCloseUpdateModal = () => {
+    setShowUpdateStatus(false)
+    getCustomers()
+  }
+
   const columns = useMemo(() => {
     const handleOpenDeleteModal = (id, name) => {
       setIsDeleteModalOpen(true)
@@ -112,6 +128,19 @@ const CustomersTable = observer(({ t }) => {
         extraProps: {
           scope: 'row'
         }
+      },
+      {
+        id: 'status',
+        label: 'status',
+        getCellData: row => (
+          <Box className={classes.statusCellBox}>
+            <Box className={classes.statusCell}>{row.status}</Box>
+            <EditOutlinedIcon
+              onClick={() => handleOpenUpdateModal(row)}
+              className={classes.deleteCustomerIcon}
+            />
+          </Box>
+        )
       },
       {
         id: 'delete',
@@ -180,6 +209,13 @@ const CustomersTable = observer(({ t }) => {
             }
             createSubaccount={createSubaccount}
             isCreateSubaccount={creationType === 'subaccount'}
+          />
+        )}
+        {showUpdateStatus && (
+          <UpdateStatus
+            open={showUpdateStatus}
+            tenant={tenantForUpdate}
+            handleClose={handleCloseUpdateModal}
           />
         )}
       </Paper>
