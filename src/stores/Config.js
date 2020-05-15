@@ -6,9 +6,14 @@ import getErrorMessage from 'utils/getErrorMessage'
 
 export class ConfigStore {
   config = {}
+  customerStatuses = []
+  timeZones = []
   isLoadingConfig = true
+  isLoadingCustomerStatuses = true
+  isLoadingTimeZones = true
 
   getConfig = () => {
+    this.isLoadingConfig = true
     axios
       .get(`/configs/applications/ANS_portal/config`)
       .then(res => {
@@ -18,7 +23,6 @@ export class ConfigStore {
           return
         }
         this.config = JSON.parse(res.data.data)
-        this.isLoadingConfig = false
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -28,13 +32,49 @@ export class ConfigStore {
           }
         })
       })
+      .finally(() => {
+        this.isLoadingConfig = false
+      })
+  }
+
+  getCustomerStatuses = () => {
+    this.isLoadingCustomerStatuses = true
+    axios
+      .get(`/configs/templates/categories/group_intercept`)
+      .then(res => {
+        this.customerStatuses = res.data.templates
+      })
+      .finally(() => {
+        this.isLoadingCustomerStatuses = false
+      })
+  }
+
+  getTimeZones = () => {
+    this.isLoadingTimeZones = true
+    return axios
+      .get(`/system/timezones/`)
+      .then(res => {
+        this.timeZones = res.data.timeZones.map(el => ({
+          value: el.name,
+          label: el.description
+        }))
+      })
+      .finally(() => {
+        this.isLoadingTimeZones = false
+      })
   }
 }
 
 decorate(ConfigStore, {
   config: observable,
+  customerStatuses: observable,
+  timeZones: observable,
   isLoadingConfig: observable,
-  getConfig: action
+  isLoadingCustomerStatuses: observable,
+  isLoadingTimeZones: observable,
+  getConfig: action,
+  getCustomerStatuses: action,
+  getTimeZones: action
 })
 
 export default new ConfigStore()

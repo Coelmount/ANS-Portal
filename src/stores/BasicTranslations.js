@@ -42,12 +42,15 @@ export class BasicTranslations {
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
-        const transformedNumbers = res.data.ans_basic.map(item => {
+        const transformedNumbers = res.data.ans_basic.map((item, index) => {
           return {
+            id: item.id || index,
             checked: false,
             hover: false,
             enabled: true,
-            accessCountry: getCountryNameFromNumber(item.access_number),
+            accessCountry:
+              item.access_number &&
+              getCountryNameFromNumber(item.access_number),
             destinationCountry: getCountryNameFromNumber(
               item.destination_number
             ),
@@ -63,9 +66,6 @@ export class BasicTranslations {
             variant: 'error'
           }
         })
-        if (e.response.status === 400) {
-          this.isDeletingCustomer = false
-        }
       })
       .finally(() => (this.isBasicTranslationsNumbersLoading = false))
   }

@@ -4,9 +4,11 @@ import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 import CustomersStore from 'stores/Customers'
 import CreateCustomerStore from 'stores/CreateCustomer'
@@ -19,8 +21,10 @@ import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import Loading from 'components/Loading'
+import UpdateStatus from './components/UpdateStatus'
 
 import useStyles from './styles'
+import { width } from '@material-ui/system'
 
 const CustomersTable = observer(({ t }) => {
   const classes = useStyles()
@@ -30,7 +34,8 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer,
     isLoadingCustomers,
     isDeletingCustomer,
-    setDefaultTableValues
+    setDefaultTableValues,
+    getCustomer
   } = CustomersStore
 
   const { setDefaultValues: setDefaultValuesSubaccount } = CreateSubaccountStore
@@ -41,11 +46,13 @@ const CustomersTable = observer(({ t }) => {
   const [customerToDelete, setCustomerToDelete] = useState({})
   const [creationType, setCreationType] = useState('')
   const [isOpenCreateCustomer, setIsOpenCreateCustomer] = useState(false)
+  const [showUpdateStatus, setShowUpdateStatus] = useState(false)
+  const [tenantForUpdate, setTenantForUpdate] = useState({})
 
   useEffect(() => {
     getCustomers()
     return () => setDefaultTableValues()
-  }, [getCustomers, setDefaultTableValues])
+  }, [setDefaultTableValues])
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
@@ -81,6 +88,16 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer(payload)
   }
 
+  const handleOpenUpdateModal = row => {
+    setShowUpdateStatus(true)
+    setTenantForUpdate(row)
+  }
+
+  const handleCloseUpdateModal = () => {
+    setShowUpdateStatus(false)
+    getCustomers()
+  }
+
   const columns = useMemo(() => {
     const handleOpenDeleteModal = (id, name) => {
       setIsDeleteModalOpen(true)
@@ -88,7 +105,7 @@ const CustomersTable = observer(({ t }) => {
     }
     return [
       {
-        id: 'external_id',
+        id: 'tenantId',
         numeric: false,
         extraProps: {
           scope: 'row'
@@ -97,10 +114,10 @@ const CustomersTable = observer(({ t }) => {
         getCellData: row => {
           return (
             <Link
-              to={`/customers/${row.external_id}/access_numbers`}
+              to={`/customers/${row.tenantId}/access_numbers`}
               className={classes.link}
             >
-              {row.external_id}
+              {row.tenantId}
             </Link>
           )
         }
@@ -114,6 +131,23 @@ const CustomersTable = observer(({ t }) => {
         }
       },
       {
+        id: 'status',
+        label: 'status',
+        extraHeadProps: {
+          align: 'center',
+          padding: '0',
+          width: '100px'
+        },
+        getCellData: row => (
+          <Box className={classes.statusCellBox}>
+            <EditOutlinedIcon
+              onClick={() => handleOpenUpdateModal(row)}
+              className={classes.deleteCustomerIcon}
+            />
+          </Box>
+        )
+      },
+      {
         id: 'delete',
         extraProps: {
           className: classes.deleteCell,
@@ -122,7 +156,7 @@ const CustomersTable = observer(({ t }) => {
         isSortAvailable: false,
         getCellData: row => (
           <CloseOutlinedIcon
-            onClick={() => handleOpenDeleteModal(row.external_id, row.name)}
+            onClick={() => handleOpenDeleteModal(row.tenantId, row.name)}
             className={classes.deleteCustomerIcon}
           />
         )
@@ -151,7 +185,7 @@ const CustomersTable = observer(({ t }) => {
           <CustomTable
             rows={rows}
             columns={columns}
-            searchCriterias={['external_id', 'name']}
+            searchCriterias={['tenantId', 'name']}
             noAvailableDataMessage={t('no_customers_available')}
           />
         )}
@@ -180,6 +214,13 @@ const CustomersTable = observer(({ t }) => {
             }
             createSubaccount={createSubaccount}
             isCreateSubaccount={creationType === 'subaccount'}
+          />
+        )}
+        {showUpdateStatus && (
+          <UpdateStatus
+            open={showUpdateStatus}
+            tenant={tenantForUpdate}
+            handleClose={handleCloseUpdateModal}
           />
         )}
       </Paper>

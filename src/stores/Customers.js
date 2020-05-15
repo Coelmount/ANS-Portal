@@ -31,15 +31,17 @@ export class CustomersStore {
   customer = defaultCustomerValue
   isLoadingCustomers = true
   isLoadingCustomer = true
+  isLoadingStatus = true
   isDeletingCustomer = false
   addUpdateCustomer = false
+  isUpdatingStatus = false
 
   getCustomers = () => {
     this.isLoadingCustomers = true
     axios
       .get(`/tenants`)
       .then(res => {
-        this.rows = res.data.customers
+        this.rows = res.data.tenants
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -60,11 +62,9 @@ export class CustomersStore {
       .get(`/tenants/${id}/`)
       .then(res => {
         merge(this.customer, res.data)
-        this.isLoadingCustomer = false
+        this.getCustomerStatus(res.data.tenantId)
       })
       .catch(e => {
-        this.isLoadingCustomer = false
-
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to fetch customer',
           options: {
@@ -72,7 +72,48 @@ export class CustomersStore {
           }
         })
       })
+  }
+
+  getCustomersStatus = tenants => {
+    const promisArr = []
+    tenants.forEach(tenant => {
+      promisArr.push(
+        axios.get(`/tenants/${tenant.tenantId}/properties/suspension/`)
+      )
+    })
+
+    Promise.all(promisArr)
+      .then(res => {
+        res.forEach((response, i) => {
+          const newRows = [...this.rows]
+          newRows[i].status =
+            response.data.suspensionStatus === ''
+              ? 'Active'
+              : response.data.suspensionStatus
+          this.rows = [...newRows]
+        })
+      })
       .finally(() => {
+        this.isLoadingCustomers = false
+      })
+  }
+
+  getCustomerStatus = tenantId => {
+    this.isLoadingStatus = true
+    axios
+      .get(`/tenants/${tenantId}/properties/suspension/`)
+      .then(
+        res =>
+          (this.customer = {
+            ...this.customer,
+            status:
+              res.data.suspensionStatus === ''
+                ? 'Active'
+                : res.data.suspensionStatus
+          })
+      )
+      .finally(() => {
+        this.isLoadingStatus = false
         this.isLoadingCustomer = false
       })
   }
@@ -143,6 +184,32 @@ export class CustomersStore {
       })
   }
 
+  putUpdateCustomerStatus = (teantaId, data, callback) => {
+    this.isUpdatingStatus = true
+    axios
+      .put(`/tenants/${teantaId}/properties/suspension/`, data)
+      .then(() => {
+        callback && callback()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Customer status updated successfully',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update customer status',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isUpdatingStatus = false
+      })
+  }
+
   changeStep = step => {
     this.step = step
   }
@@ -158,7 +225,9 @@ decorate(CustomersStore, {
   customer: observable,
   isLoadingCustomers: observable,
   isLoadingCustomer: observable,
+  isLoadingStatus: observable,
   isDeletingCustomer: observable,
+  isUpdatingStatus: observable,
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,
@@ -166,7 +235,10 @@ decorate(CustomersStore, {
   changeStep: action,
   changeCustomer: action,
   getCustomerDefaultValues: action,
-  setDefaultTableValues: action
+  setDefaultTableValues: action,
+  getCustomersStatus: action,
+  putUpdateCustomerStatus: action,
+  getCustomerStatus: action
 })
 
 export default new CustomersStore()

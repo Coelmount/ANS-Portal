@@ -9,23 +9,27 @@ export class AssignedNumbers {
   assignedNumbers = []
   isAssignedNumbersLoading = true
   isLoadingEntitlements = true
-  isDeletingAssignedNumber = false
+  isDisconnectingNumber = false
+  isDeassigningNumber = false
   isPostAssignNumbers = false
   totalPagesServer = 0
   currentEntitlement = null
   numbersToAssign = []
   numbersToDeassign = []
+  numbersToDisconnect = []
 
   setDefaultValues = () => {
     this.assignedNumbers = []
     this.isAssignedNumbersLoading = true
     this.isLoadingEntitlements = true
-    this.isDeletingAssignedNumber = false
+    this.isDisconnectingNumber = false
+    this.isDeassigningNumber = false
     this.isPostAssignNumbers = false
     this.totalPagesServer = 0
     this.currentEntitlement = null
     this.numbersToAssign = []
     this.numbersToDeassign = []
+    this.numbersToDisconnect = []
   }
 
   setNumbersToAssign = numbers => {
@@ -36,6 +40,10 @@ export class AssignedNumbers {
     this.numbersToDeassign = numbers
   }
 
+  setNumbersToDisconnect = numbers => {
+    this.numbersToDisconnect = numbers
+  }
+
   getEntitlementsAndFindCurrent = (customerId, numbersId) => {
     this.isLoadingEntitlements = true
     axios
@@ -44,7 +52,7 @@ export class AssignedNumbers {
         return res.data.entitlments
       })
       .then(entitlements => {
-        //nested then
+        //chain then
         this.isAssignedNumbersLoading = true
         axios
           .get(`/tenants/${customerId}/entitlements/${numbersId}/numbers`)
@@ -61,14 +69,15 @@ export class AssignedNumbers {
               }
               return {
                 inUse: item.connected_to ? item.connected_to : 'no',
-                // status: item.connected_to ? 'in_use' : 'available',
                 subaccount: item.customer_account
                   ? item.customer_account
                   : 'none',
-                checked: false,
-                hover: false,
                 phoneNumber: `${item.country_code} ${item.nsn}`,
                 subaccountId: subaccountId || null,
+                checked: false,
+                hover: false,
+                isSelectedToDeassign: false,
+                isSelectedToDisconnect: false,
                 ...item
               }
             })
@@ -100,32 +109,102 @@ export class AssignedNumbers {
         this.isLoadingEntitlements = false
       })
   }
-
-  deleteAssignedNumber = ({ customerId, callback }) => {
-    this.isDeletingAssignedNumber = true
+  deassignNumbers = ({ customerId, callback }) => {
     axios
-      .delete(`/tenants/${customerId}/numbers/`)
-      .then(() => {
-        this.getAssignedNumbers()
+      .get(`/tenants/${customerId}/groups?sensitiveGroupNameEquals=DevAccount`)
+      .then(res => {
+        return res.data.groups[0].groupId
+      })
+      .then(groupId => {
+        //chain then
+        const amount = this.numbersToDeassign.length
+        const deassignSubject = amount > 1 ? 'numbers' : 'number'
+        this.isDeassigningNumber = true
+        const objectsWithRangesArr = phoneNumbersRangeFilter(
+          this.numbersToDeassign
+        )
         callback()
-        SnackbarStore.enqueueSnackbar({
-          message: `${this.numbersToDeassign.length} phone number(s) deassigned successfully`,
-          options: {
-            variant: 'success'
-          }
+        objectsWithRangesArr.forEach((item, index) => {
+          axios
+            .delete(`/tenants/${customerId}/groups/${groupId}/numbers`, {
+              data: {
+                range: item.phoneNumbers
+                  ? [Number(item.rangeStart), Number(item.rangeEnd)]
+                  : [Number(item.nsn), Number(item.nsn)],
+                country_code: item.country_code
+              }
+            })
+            .then(() => {
+              if (index === objectsWithRangesArr.length - 1) {
+                SnackbarStore.enqueueSnackbar({
+                  message: `${amount} phone ${deassignSubject} deassigned successfully`,
+                  options: {
+                    variant: 'success'
+                  }
+                })
+              }
+            })
+            .catch(e => {
+              SnackbarStore.enqueueSnackbar({
+                message:
+                  getErrorMessage(e) ||
+                  `Failed to deassign ${amount} ${deassignSubject}`,
+                options: {
+                  variant: 'error'
+                }
+              })
+            })
+            .finally(() => {
+              this.isDisconnectingNumber = false
+              this.numbersToDisconnect = []
+            })
         })
       })
-      .catch(e => {
-        SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to deassign number(s)',
-          options: {
-            variant: 'error'
+  }
+
+  disconnectNumbers = ({ customerId, callback }) => {
+    const amount = this.numbersToDisconnect.length
+    const disconnectSubject = amount > 1 ? 'numbers' : 'number'
+    this.isDisconnectingNumber = true
+    const objectsWithRangesArr = phoneNumbersRangeFilter(
+      this.numbersToDisconnect
+    )
+    callback()
+    objectsWithRangesArr.forEach((item, index) => {
+      axios
+        .delete(`/tenants/${customerId}/numbers`, {
+          data: {
+            range: item.phoneNumbers
+              ? [Number(item.rangeStart), Number(item.rangeEnd)]
+              : [Number(item.nsn), Number(item.nsn)],
+            country_code: item.country_code
           }
         })
-      })
-      .finally(() => {
-        this.isDeletingAssignedNumber = false
-      })
+        .then(() => {
+          if (index === objectsWithRangesArr.length - 1) {
+            SnackbarStore.enqueueSnackbar({
+              message: `${amount} phone ${disconnectSubject} disconnected successfully`,
+              options: {
+                variant: 'success'
+              }
+            })
+          }
+        })
+        .catch(e => {
+          SnackbarStore.enqueueSnackbar({
+            message:
+              getErrorMessage(e) ||
+              `Failed to disconnect ${amount} ${disconnectSubject}`,
+            options: {
+              variant: 'error'
+            }
+          })
+        })
+        .finally(() => {
+          this.isDisconnectingNumber = false
+          this.numbersToDisconnect = []
+        })
+    })
   }
 
   postAssignToSubaccount = (customerId, subaccount, closeAsignModal) => {
@@ -177,7 +256,7 @@ export class AssignedNumbers {
     SnackbarStore.enqueueSnackbar({
       message: message,
       options: {
-        variant: 'error'
+        variant: 'info'
       }
     })
   }
@@ -187,15 +266,18 @@ decorate(AssignedNumbers, {
   assignedNumbers: observable,
   isAssignedNumbersLoading: observable,
   isLoadingEntitlements: observable,
-  isDeletingAssignedNumber: observable,
+  isDisconnectingNumber: observable,
   totalPagesServer: observable,
   currentEntitlement: observable,
   isPostAssignNumbers: observable,
+  numbersToDisconnect: observable,
   getAssignedNumbers: action,
-  deleteAssignedNumber: action,
+  disconnectNumbers: action,
+  deassignNumbers: action,
   getEntitlementsAndFindCurrent: action,
   setDefaultValues: action,
   setNumbersToAssign: action,
+  setNumbersToDisconnect: action,
   setNumbersToDeassign: action,
   postAssignToSubaccount: action,
   showErrorNotification: action

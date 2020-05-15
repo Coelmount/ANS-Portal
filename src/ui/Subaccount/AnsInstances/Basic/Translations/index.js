@@ -2,6 +2,7 @@ import React, { useEffect, useState, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams, Link } from 'react-router-dom'
+import classnames from 'classnames'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -9,6 +10,7 @@ import Box from '@material-ui/core/Box'
 import Popover from '@material-ui/core/Popover'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 
 import UpdateIcon from '@material-ui/icons/Update'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
@@ -51,7 +53,6 @@ const Translations = observer(({ t }) => {
     showMultipleUpdateANSNumbers,
     setShowMultipleUpdateANSNumbers
   ] = useState(false)
-
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
 
   const isAddPopoverOpen = Boolean(anchorEl)
@@ -141,9 +142,105 @@ const Translations = observer(({ t }) => {
     }
   }
 
-  const changeHover = (newHover, number) => {
+  const changeHover = (newHover, id) => {
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
+  }
+
+  const addPopoverItems = [
+    {
+      id: 1,
+      label: t('1_ans_basic_number'),
+      onClick: handleAddInstanceModalOpen
+    },
+    {
+      id: 2,
+      label: t('multiply_ans_basic_number'),
+      onClick: () => setShowAddMultipleANSNumbers(true)
+    }
+  ]
+
+  const titleData = {
+    mainText: t('basic_translations'),
+    buttonBlock: (
+      <Box className={classes.addCustomerWrap}>
+        <Box onClick={handlePopoverOpen} className={classes.addIconWrap}>
+          <AddOutlinedIcon />
+        </Box>
+        <Box className={classes.addTitleWrap}>
+          <Typography className={classes.addCustomerTitle}>
+            {t('add')}
+          </Typography>
+          <ArrowDropUpOutlinedIcon className={classes.upArrowIcon} />
+          <ArrowDropDownOutlinedIcon className={classes.downArrowIcon} />
+        </Box>
+        <Popover
+          id={id}
+          open={isAddPopoverOpen}
+          anchorEl={anchorEl}
+          onClose={handlePopoverClose}
+        >
+          <Box className={classes.addPopoverWrap}>
+            {addPopoverItems.map(item => (
+              <MenuItem
+                onClick={item.onClick}
+                value={item.label}
+                key={item.id}
+                className={classes.addPopoverItem}
+              >
+                <Typography className={classes.addPopoverItemText}>
+                  {item.label}
+                </Typography>
+              </MenuItem>
+            ))}
+          </Box>
+        </Popover>
+      </Box>
+    )
+  }
+
+  const toolbarButtonsBlock = () => {
+    return (
+      <Fragment>
+        <Box className={classes.toolbarButtonsBlockWrap}>
+          <Box className={classes.updateWrap}>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classnames(classes.toolbarButton, {
+                [classes.disabledButton]: !isAnyChecked
+              })}
+              onClick={() =>
+                isAnyChecked && setShowMultipleUpdateANSNumbers(true)
+              }
+            >
+              <UpdateIcon className={classes.updateIcon} />
+            </Button>
+            <Typography className={classes.addCustomerTitle}>
+              {t('update')}
+            </Typography>
+          </Box>
+          <Box className={classes.addCustomerWrap}>
+            <IconButton
+              aria-label='deassign icon button'
+              component='span'
+              className={classnames(classes.mainIconWrap, {
+                [classes.disabledButton]: !isAnyChecked
+              })}
+            >
+              <img
+                className={classes.deleteIcon}
+                src={deleteIcon}
+                alt='delete'
+              />
+            </IconButton>
+            <Typography className={classes.addCustomerTitle}>
+              {t('delete')}
+            </Typography>
+          </Box>
+        </Box>
+      </Fragment>
+    )
   }
 
   const columns = [
@@ -249,95 +346,6 @@ const Translations = observer(({ t }) => {
     }
   ]
 
-  const addPopoverItems = [
-    {
-      id: 1,
-      label: t('1_ans_basic_number'),
-      onClick: handleAddInstanceModalOpen
-    },
-    {
-      id: 2,
-      label: t('multiply_ans_basic_number'),
-      onClick: () => setShowAddMultipleANSNumbers(true)
-    }
-  ]
-
-  // to refactor
-  const titleData = {
-    mainText: t('basic_translations'),
-    buttonBlock: (
-      <Box className={classes.addCustomerWrap}>
-        <Box onClick={handlePopoverOpen} className={classes.addIconWrap}>
-          <AddOutlinedIcon />
-        </Box>
-        <Box className={classes.addTitleWrap}>
-          <Typography className={classes.addCustomerTitle}>
-            {t('add')}
-          </Typography>
-          <ArrowDropUpOutlinedIcon className={classes.upArrowIcon} />
-          <ArrowDropDownOutlinedIcon className={classes.downArrowIcon} />
-        </Box>
-        <Popover
-          id={id}
-          open={isAddPopoverOpen}
-          anchorEl={anchorEl}
-          onClose={handlePopoverClose}
-        >
-          <Box className={classes.addPopoverWrap}>
-            {addPopoverItems.map(item => (
-              <MenuItem
-                onClick={item.onClick}
-                value={item.label}
-                key={item.id}
-                className={classes.addPopoverItem}
-              >
-                <Typography className={classes.addPopoverItemText}>
-                  {item.label}
-                </Typography>
-              </MenuItem>
-            ))}
-          </Box>
-        </Popover>
-      </Box>
-    )
-  }
-
-  const toolbarButtonsBlock = () => {
-    return (
-      <Fragment>
-        {isAnyChecked && (
-          <Box className={classes.toolbarButtonsBlockWrap}>
-            <Box className={classes.addCustomerWrap}>
-              <Button
-                variant='contained'
-                color='primary'
-                className={classes.toolbarButton}
-                onClick={() => setShowMultipleUpdateANSNumbers(true)}
-              >
-                <UpdateIcon className={classes.updateIcon} />
-              </Button>
-              <Typography className={classes.addCustomerTitle}>
-                {t('update')}
-              </Typography>
-            </Box>
-            <Box className={classes.deleteBlockWrap}>
-              <Box className={classes.addIconWrap}>
-                <img
-                  className={classes.deleteIcon}
-                  src={deleteIcon}
-                  alt='delete icon'
-                />
-              </Box>
-              <Typography className={classes.addCustomerTitle}>
-                {t('delete')}
-              </Typography>
-            </Box>
-          </Box>
-        )}
-      </Fragment>
-    )
-  }
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -380,6 +388,7 @@ const Translations = observer(({ t }) => {
           <MultipleUpdateNumbers
             open={showMultipleUpdateANSNumbers}
             handleClose={() => setShowMultipleUpdateANSNumbers(false)}
+            numbers={numbers}
           />
         )}
       </Paper>

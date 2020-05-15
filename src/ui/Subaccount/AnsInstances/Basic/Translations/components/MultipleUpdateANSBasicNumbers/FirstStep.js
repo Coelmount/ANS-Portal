@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
+import Papa from 'papaparse'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -19,12 +20,30 @@ import useStyles from './styles'
 
 const FirstStep = props => {
   const match = useParams()
-  const { handleClose, setStep, t } = props
+  const { handleClose, setStep, numbers, t } = props
 
   const classes = useStyles()
 
-  const importFile = () => {
-    setStep(3)
+  const downloadCSVFile = () => {
+    const numbersToCSV = numbers
+      .filter(number => number.checked)
+      .map(number => ({
+        customerId: match.customerId,
+        subaccountId: match.groupId,
+        accessNumber: number.access_number,
+        destinationNumber: number.destination_number
+      }))
+    const pom = document.createElement('a')
+    const csvContent = Papa.unparse(JSON.stringify(numbersToCSV), {
+      delimiter: ';',
+      header: true
+    })
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    pom.href = url
+    pom.setAttribute('download', 'template.csv')
+    pom.click()
+    setStep(2)
   }
 
   return (
@@ -50,7 +69,7 @@ const FirstStep = props => {
               variant='contained'
               color='primary'
               className={classes.downloadButton}
-              onClick={() => setStep(2)}
+              onClick={downloadCSVFile}
             >
               <GetAppOutlinedIcon className={classes.downloadIcon} />
             </Button>

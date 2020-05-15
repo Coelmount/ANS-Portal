@@ -3,12 +3,14 @@ import { useParams, Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import classnames from 'classnames'
+import capitalize from 'lodash/capitalize'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import IconButton from '@material-ui/core/IconButton'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
@@ -26,8 +28,8 @@ import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
-import deleteIcon from 'source/images/svg/delete-icon.svg'
-import disconnectFromCustomerIcon from 'source/images/svg/disconnect-from-customer.svg'
+import disconnectIcon from 'source/images/svg/delete-icon.svg'
+import deassignIcon from 'source/images/svg/deassign.svg'
 
 import useStyles from './styles'
 
@@ -37,13 +39,22 @@ const AccessNumbersItem = ({ t }) => {
   const [showAddNumbers, setShowAddNumber] = useState(false)
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false)
   const [isDeassignModalOpen, setIsDeassignModalOpen] = useState(false)
+  const [isDisconnectModalOpen, setIsDisconnectModalOpen] = useState(false)
   const [step, setStep] = useState(1)
-  const [selected, setSelected] = useState([])
+  const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
+  const [
+    numberOfSelectedToDisconnect,
+    setNumberOfSelectedToDisconnect
+  ] = useState(0)
+  const [numberOfSelectedToDeassign, setNumberOfSelectedToDeassign] = useState(
+    0
+  )
   const [searchList, setSearchList] = useState([])
-  const [currentPage, setCurrentPage] = useState(0)
-  const [currentPerPage, setCurrentPerPage] = useState(10)
+  const [disconnectMessage, setDisconnectMessage] = useState('')
+  const [disconnectMessageBlock, setDisconnectMessageBlock] = useState(null)
+  const [disconnectSubject, setDisconnectSubject] = useState('')
   const [deassignMessage, setDeassignMessage] = useState('')
   const [deassignMessageBlock, setDeassignMessageBlock] = useState(null)
   const [deassignSubject, setDeassignSubject] = useState('')
@@ -51,41 +62,56 @@ const AccessNumbersItem = ({ t }) => {
     assignedNumbers,
     isAssignedNumbersLoading,
     isLoadingEntitlements,
-    isDeletingAssignedNumber,
-    deleteAssignedNumber,
+    isDisconnectingNumber,
+    disconnectNumbers,
+    deassignNumbers,
     totalPagesServer,
     getEntitlementsAndFindCurrent,
     currentEntitlement,
     setDefaultValues,
     setNumbersToAssign,
+    setNumbersToDisconnect,
     setNumbersToDeassign,
-    showErrorNotification
+    showErrorNotification,
+    numbersToDisconnect
   } = AssignedNumbersStore
 
   const isAssignEnabled =
     numberOfChecked > 0 &&
-    !selected.some(item => item.checked && item.subaccount !== 'none')
+    !numbers.some(
+      item =>
+        (item.checked && item.subaccount !== 'none') ||
+        (item.checked && item.inUse !== 'no')
+    )
 
   const isDeassignEnabled =
-    numberOfChecked > 0 &&
-    !selected.some(
+    numberOfSelectedToDeassign > 0 &&
+    !numbers.some(
       item =>
-        (item.checked && item.subaccount === 'none') ||
-        (item.checked && item.inUse !== 'no')
+        (item.isSelectedToDeassign && item.subaccount === 'none') ||
+        (item.isSelectedToDeassign && item.inUse !== 'no')
+    )
+
+  const isDisconnectEnabled =
+    !isDisconnectingNumber &&
+    numberOfSelectedToDisconnect > 0 &&
+    !numbers.some(
+      item =>
+        (item.isSelectedToDisconnect && item.subaccount !== 'none') ||
+        (item.isSelectedToDisconnect && item.inUse !== 'no')
     )
 
   useEffect(() => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
-    return () => setDefaultValues()
+    return () => {
+      setDefaultValues()
+    }
   }, [])
 
   useEffect(() => {
-    setSelected(assignedNumbers)
+    setNumbers(assignedNumbers)
+    setNumberOfSelectedToDisconnect(0)
   }, [assignedNumbers])
-
-  const handlePageChange = () => {
-    setNumberOfChecked(0)
-  }
 
   const handleCloseAssignModal = () => {
     setIsAssignModalOpen(false)
@@ -93,19 +119,35 @@ const AccessNumbersItem = ({ t }) => {
     setNumberOfChecked(0)
   }
 
-  const selectNumbers = (checked, id) => {
-    const newSelected = transformOnChange(selected, checked, id)
-    setSelected(newSelected)
+  const selectNumbers = (newValue, id, fieldName) => {
+    const newSelected = transformOnChange(numbers, newValue, id, fieldName)
+    setNumbers(newSelected)
     handleCheckedStates(newSelected)
-    checked
-      ? setNumberOfChecked(numberOfChecked + 1)
-      : setNumberOfChecked(numberOfChecked - 1)
+    switch (fieldName) {
+      case 'checked':
+        newValue
+          ? setNumberOfChecked(numberOfChecked + 1)
+          : setNumberOfChecked(numberOfChecked - 1)
+        break
+      case 'isSelectedToDeassign':
+        newValue
+          ? setNumberOfSelectedToDeassign(numberOfSelectedToDeassign + 1)
+          : setNumberOfSelectedToDeassign(numberOfSelectedToDeassign - 1)
+        break
+      case 'isSelectedToDisconnect':
+        newValue
+          ? setNumberOfSelectedToDisconnect(numberOfSelectedToDisconnect + 1)
+          : setNumberOfSelectedToDisconnect(numberOfSelectedToDisconnect - 1)
+        break
+      default:
+        return
+    }
   }
 
   const handleSelectAll = () => {
-    const newSelected = transformOnCheckAll(searchList, selected, selectAll)
+    const newSelected = transformOnCheckAll(searchList, numbers, selectAll)
     handleCheckedStates(newSelected)
-    setSelected(newSelected)
+    setNumbers(newSelected)
     setSelectAll(!selectAll)
     selectAll ? setNumberOfChecked(0) : setNumberOfChecked(searchList.length)
   }
@@ -126,23 +168,11 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const changeHover = (newHover, id) => {
-    const newSelected = transformOnHover(selected, newHover, id)
-    setSelected(newSelected)
+    const newSelected = transformOnHover(numbers, newHover, id)
+    setNumbers(newSelected)
   }
 
-  const handleAssignButtonClick = () => {
-    if (isAssignEnabled) {
-      const checkedNumbers = selected.filter(item => item.checked === true)
-      setNumbersToAssign(checkedNumbers)
-      setIsAssignModalOpen(true)
-    } else if (numberOfChecked === 0) {
-      showErrorNotification(t('no_numbers_selected'))
-    } else {
-      showErrorNotification(t('unable_assign'))
-    }
-  }
-
-  const buildDeassignMessage = numbers => {
+  const createDeassignMessage = numbers => {
     const amountOfNumbers = numbers.length
     const deassignText =
       amountOfNumbers > 1
@@ -153,7 +183,18 @@ const AccessNumbersItem = ({ t }) => {
     setDeassignMessage(totalMessage)
   }
 
-  const buildDeassignMessageBlock = numbers => {
+  const createDisconnectMessage = numbers => {
+    const amountOfNumbers = numbers.length
+    const disconnectText =
+      amountOfNumbers > 1
+        ? t('phone_numbers').toLowerCase()
+        : t('phone_number').toLowerCase()
+    setDisconnectSubject(disconnectText)
+    const totalMessage = `${amountOfNumbers} ${disconnectText}:`
+    setDisconnectMessage(totalMessage)
+  }
+
+  const createDeassignMessageBlock = numbers => {
     const numbersArr = numbers.map(item => item.phoneNumber)
     const splitedNumbersStr = numbersArr.join(', ')
     const totalMessage = `${splitedNumbersStr} ?`
@@ -168,25 +209,57 @@ const AccessNumbersItem = ({ t }) => {
     setDeassignMessageBlock(deassignMessageBlock)
   }
 
-  const handleDeassignButtonClick = () => {
-    if (isDeassignEnabled) {
-      const checkedNumbers = selected.filter(item => item.checked === true)
-      setNumbersToDeassign(checkedNumbers)
-      buildDeassignMessage(checkedNumbers)
-      buildDeassignMessageBlock(checkedNumbers)
-      setIsDeassignModalOpen(true)
-    } else if (numberOfChecked === 0) {
-      showErrorNotification(t('no_numbers_selected'))
+  const createDisconnectMessageBlock = numbers => {
+    const numbersArr = numbers.map(item => item.phoneNumber)
+    const splitedNumbersStr = numbersArr.join(', ')
+    const totalMessage = `${splitedNumbersStr} ?`
+    const disconnectMessageBlock = (
+      <Box>
+        <Typography className={classes.boldDeassignText}>
+          {totalMessage}
+        </Typography>
+        <Typography>{t('deassign_message_end')}</Typography>
+      </Box>
+    )
+    setDisconnectMessageBlock(disconnectMessageBlock)
+  }
+
+  const handleAssignButtonClick = () => {
+    if (isAssignEnabled) {
+      const checkedNumbers = numbers.filter(item => item.checked === true)
+      setNumbersToAssign(checkedNumbers)
+      setIsAssignModalOpen(true)
     } else {
-      showErrorNotification(t('unable_deassign'))
+      showErrorNotification(t('no_numbers_selected_to_assign'))
     }
   }
 
-  const handleDeassignOneNumberClick = row => {
-    setNumbersToDeassign(row)
-    buildDeassignMessage([row])
-    buildDeassignMessageBlock([row])
-    setIsDeassignModalOpen(true)
+  const handleDeassignButtonClick = () => {
+    if (isDeassignEnabled) {
+      const selectedNumbers = numbers.filter(
+        item => item.isSelectedToDeassign === true
+      )
+      setNumbersToDeassign(selectedNumbers)
+      createDeassignMessage(selectedNumbers)
+      createDeassignMessageBlock(selectedNumbers)
+      setIsDeassignModalOpen(true)
+    } else {
+      showErrorNotification(t('no_numbers_selected_to_deassign'))
+    }
+  }
+
+  const handleDisconnectButtonClick = () => {
+    if (isDisconnectEnabled) {
+      const selectedNumbers = numbers.filter(
+        item => item.isSelectedToDisconnect === true
+      )
+      setNumbersToDisconnect(selectedNumbers)
+      createDisconnectMessage(selectedNumbers)
+      createDisconnectMessageBlock(selectedNumbers)
+      setIsDisconnectModalOpen(true)
+    } else {
+      showErrorNotification(t('no_numbers_selected_to_disconnect'))
+    }
   }
 
   const handleCloseDeassignModal = () => {
@@ -194,26 +267,50 @@ const AccessNumbersItem = ({ t }) => {
     setIsDeassignModalOpen(false)
   }
 
+  const handleCloseDisconnectModal = () => {
+    getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
+    setIsDisconnectModalOpen(false)
+  }
+
+  const handleDisconnect = () => {
+    const payload = {
+      customerId: match.customerId,
+      callback: handleCloseDisconnectModal
+    }
+    disconnectNumbers(payload)
+  }
+
   const handleDeassign = () => {
     const payload = {
       customerId: match.customerId,
       callback: handleCloseDeassignModal
     }
-    deleteAssignedNumber(payload)
+    deassignNumbers(payload)
   }
 
   const extraTitleBlock = (
     <Box
-      className={classnames(classes.addCustomerWrap, classes.extraTitleWrap)}
+      className={classnames(classes.buttonContainer, classes.extraTitleWrap)}
     >
-      <Box className={classes.addIconWrap}>
+      <IconButton
+        aria-label='disconnect icon button'
+        component='span'
+        className={classnames(classes.mainIconWrap, {
+          [classes.disabledButton]: !isDisconnectEnabled
+        })}
+        onClick={handleDisconnectButtonClick}
+      >
         <img
           className={classes.disconnectIcon}
-          src={disconnectFromCustomerIcon}
+          src={disconnectIcon}
           alt='disconnect from customer'
         />
-      </Box>
-      <Typography className={classes.addCustomerTitle}>
+      </IconButton>
+      <Typography
+        className={classnames(classes.iconTitle, {
+          [classes.disabledIconTitle]: !isDisconnectEnabled
+        })}
+      >
         {t('disconnect_from_customer')}
       </Typography>
     </Box>
@@ -229,33 +326,45 @@ const AccessNumbersItem = ({ t }) => {
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
-        <Box className={classes.addCustomerWrap}>
-          <Box
-            onClick={handleAssignButtonClick}
-            className={classnames(classes.addIconWrap, {
-              [classes.enabledButton]: isAssignEnabled
+        <Box className={classes.buttonContainer}>
+          <IconButton
+            aria-label='assign icon button'
+            component='span'
+            className={classnames(classes.mainIconWrap, {
+              [classes.disabledButton]: !isAssignEnabled
             })}
+            onClick={handleAssignButtonClick}
           >
             <DoneOutlinedIcon className={classes.assignIcon} />
-          </Box>
-          <Typography className={classes.addCustomerTitle}>
+          </IconButton>
+          <Typography
+            className={classnames(classes.iconTitle, {
+              [classes.disabledIconTitle]: !isAssignEnabled
+            })}
+          >
             {t('assign_to_subaccount')}
           </Typography>
         </Box>
-        <Box className={`${classes.addCustomerWrap} ${classes.deassignWrap}`}>
-          <Box
-            onClick={handleDeassignButtonClick}
-            className={classnames(classes.addIconWrap, {
-              [classes.enabledButton]: isDeassignEnabled
+        <Box className={`${classes.buttonContainer} ${classes.deassignWrap}`}>
+          <IconButton
+            aria-label='deassign icon button'
+            component='span'
+            className={classnames(classes.mainIconWrap, {
+              [classes.disabledButton]: !isDeassignEnabled
             })}
+            onClick={handleDeassignButtonClick}
           >
             <img
-              className={classes.deleteIcon}
-              src={deleteIcon}
-              alt='delete icon'
+              className={classes.deassignIcon}
+              src={deassignIcon}
+              alt='deassign from subaccount'
             />
-          </Box>
-          <Typography className={classes.addCustomerTitle}>
+          </IconButton>
+          <Typography
+            className={classnames(classes.iconTitle, {
+              [classes.disabledIconTitle]: !isDeassignEnabled
+            })}
+          >
             {t('deassign_from_subaccount')}
           </Typography>
         </Box>
@@ -279,12 +388,12 @@ const AccessNumbersItem = ({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={() => selectNumbers(!row.checked, row.id)}
+            onChange={() => selectNumbers(!row.checked, row.id, 'checked')}
           />
         ) : (
           <div
             className={classes.indexHoverCheckbox}
-            onClick={() => selectNumbers(!row.checked, row.id)}
+            onClick={() => selectNumbers(!row.checked, row.id, 'checked')}
             onMouseLeave={() => changeHover(false, row.id)}
             onMouseEnter={() => changeHover(true, row.id)}
           >
@@ -292,10 +401,10 @@ const AccessNumbersItem = ({ t }) => {
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.id)}
+                onChange={() => selectNumbers(true, row.id, 'checked')}
               />
             ) : (
-              currentPage * currentPerPage + i + 1
+              i + 1
             )}
           </div>
         ),
@@ -308,7 +417,44 @@ const AccessNumbersItem = ({ t }) => {
     },
     {
       id: 'phoneNumber',
-      label: 'phone_numbers'
+      label: 'phone_numbers',
+      getCellData: row => (
+        <Box className={classes.subaccountCell}>
+          <Typography className={classes.subaccountTitle}>
+            {t(row.phoneNumber)}
+          </Typography>
+          {row.subaccount === 'none' && row.inUse === 'no' && (
+            <Fragment>
+              {isDisconnectingNumber &&
+              numbersToDisconnect.some(item => item.id === row.id) ? (
+                <CircularProgress className={classes.deleteLoading} />
+              ) : (
+                <IconButton
+                  aria-label='upload picture'
+                  component='span'
+                  className={classnames(classes.tableIconWrap, {
+                    [classes.btnBack]:
+                      row.isSelectedToDisconnect && !isDisconnectingNumber
+                  })}
+                  onClick={() =>
+                    selectNumbers(
+                      !row.isSelectedToDisconnect,
+                      row.id,
+                      'isSelectedToDisconnect'
+                    )
+                  }
+                >
+                  <img
+                    className={classes.disconnectIcon}
+                    src={disconnectIcon}
+                    alt='disconnect'
+                  />
+                </IconButton>
+              )}
+            </Fragment>
+          )}
+        </Box>
+      )
     },
     {
       id: 'subaccount',
@@ -319,10 +465,46 @@ const AccessNumbersItem = ({ t }) => {
             {t(row.subaccount)}
           </Typography>
           {row.subaccount !== 'none' && row.inUse === 'no' && (
-            <CloseOutlinedIcon
-              onClick={() => handleDeassignOneNumberClick(row)}
-              className={classes.deleteCustomerIcon}
-            />
+            // <Box
+            //   onClick={() =>
+            //     selectNumbers(
+            //       !row.isSelectedToDeassign,
+            //       row.id,
+            //       'isSelectedToDeassign'
+            //     )
+            //   }
+            //   className={classnames(classes.tableIconWrap, {
+            //     [classes.btnBack]: row.isSelectedToDeassign
+            //     //  && !isDisconnectingNumber
+            //   })}
+            // >
+            //   <img
+            //     className={classes.deassignIcon}
+            //     src={deassignIcon}
+            //     alt='delete icon'
+            //   />
+            // </Box>
+            <IconButton
+              aria-label='deassign icon button'
+              component='span'
+              className={classnames(classes.tableIconWrap, {
+                [classes.btnBack]: row.isSelectedToDeassign
+                //  && !isDisconnectingNumber
+              })}
+              onClick={() =>
+                selectNumbers(
+                  !row.isSelectedToDeassign,
+                  row.id,
+                  'isSelectedToDeassign'
+                )
+              }
+            >
+              <img
+                className={classes.deassignIcon}
+                src={deassignIcon}
+                alt='deassign from subaccount'
+              />
+            </IconButton>
           )}
         </Box>
       )
@@ -348,47 +530,14 @@ const AccessNumbersItem = ({ t }) => {
           )}
         </Fragment>
       )
-    },
-    // {
-    //   id: 'status',
-    //   label: 'status',
-    //   getCellData: row => (
-    //     <Typography
-    //       className={
-    //         row.status === 'in_use'
-    //           ? classes.inUseTitle
-    //           : classes.avaliableTitle
-    //       }
-    //     >
-    //       {t(`${row.status}`)}
-    //     </Typography>
-    //   )
-    // },
-    {
-      id: 'delete',
-      extraProps: {
-        className: classes.deleteCell,
-        align: 'right'
-      },
-      isSortAvailable: false,
-      getCellData: row => (
-        <Fragment>
-          {/* {row.status === 'available' && row.subaccount !== 'none' && ( */}
-          {row.subaccount === 'none' && (
-            <CloseOutlinedIcon
-              // onClick={() => handleDeassignOneNumberClick(row)}
-              className={classes.deleteCustomerIcon}
-            />
-          )}
-        </Fragment>
-      )
     }
   ]
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {isAssignedNumbersLoading || isLoadingEntitlements ? (
+        {(isLoadingEntitlements && !isDisconnectingNumber) ||
+        (isAssignedNumbersLoading && !isDisconnectingNumber) ? (
           <Loading />
         ) : (
           <Fragment>
@@ -406,14 +555,10 @@ const AccessNumbersItem = ({ t }) => {
               classes={classes}
               columns={columns}
               firstCell={false}
-              rows={selected}
+              rows={numbers}
               searchCriterias={['phoneNumber', 'subaccount', 'inUse', 'status']}
               getSearchList={setSearchList}
               extraToolbarBlock={toolbarButtonsBlock}
-              setCurrentPage={setCurrentPage}
-              setCurrentPerPage={setCurrentPerPage}
-              totalPagesServer={totalPagesServer}
-              onPageChangeActions={handlePageChange}
               noAvailableDataMessage={t('no_assigned_numbers_available')}
             />
           </Fragment>
@@ -441,12 +586,25 @@ const AccessNumbersItem = ({ t }) => {
             open={isDeassignModalOpen}
             handleClose={handleCloseDeassignModal}
             handleDelete={handleDeassign}
-            isDeleting={isDeletingAssignedNumber}
+            // isDeleting={isDisconnectingNumber}
             deleteSubject={deassignSubject}
             extraDeleteSubject={deassignMessage}
             action={t('to_deassign')}
             titleAction={t(`deassign`)}
-            deassignMessageBlock={deassignMessageBlock}
+            extraMessageBlock={deassignMessageBlock}
+          />
+        )}
+        {isDisconnectModalOpen && (
+          <DeleteModal
+            classes={classes}
+            open={isDisconnectModalOpen}
+            handleClose={handleCloseDisconnectModal}
+            handleDelete={handleDisconnect}
+            deleteSubject={disconnectSubject}
+            extraDeleteSubject={disconnectMessage}
+            action={t('to_disconnect')}
+            titleAction={capitalize(t(`disconnect`))}
+            extraMessageBlock={disconnectMessageBlock}
           />
         )}
       </Paper>

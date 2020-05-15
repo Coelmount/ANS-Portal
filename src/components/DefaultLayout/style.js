@@ -47,7 +47,9 @@ const useStyles = makeStyles(theme => ({
   },
   wrapper: {
     fontFamily: 'MTN',
-    fontSize: 16
+    fontSize: 16,
+    marginTop: 189,
+    zIndex: 3
   },
   menuItem: {
     display: 'flex',

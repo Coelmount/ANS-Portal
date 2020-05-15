@@ -49,43 +49,61 @@ const useStyles = makeStyles(theme => ({
     marginRight: 40,
     marginLeft: 40
   },
-  addCustomerWrap: {
+  buttonContainer: {
     display: 'flex',
     alignItems: 'center'
   },
-  addIconWrap: {
+  mainIconWrap: {
+    background: theme.palette.primary.main,
     width: 30,
     height: 30,
-    background: theme.palette.primary.main,
-    borderRadius: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 0,
     marginRight: 8,
-    color: theme.palette.black,
-    opacity: 0.5,
     '&:hover': {
-      cursor: 'pointer'
+      backgroundColor: theme.palette.primary.main
     }
   },
-  enabledButton: {
-    opacity: 1
+  disabledButton: {
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
   },
-  deleteIcon: {
+  tableIconWrap: {
+    padding: 0,
+    width: 30,
+    height: 30
+  },
+  btnBack: {
+    background: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  disconnectIcon: {
     width: 14,
     height: 16
+  },
+  deassignIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 2
   },
   assignIcon: {
     width: 19,
     height: 19,
     marginLeft: 2
   },
-  addCustomerTitle: {
+  iconTitle: {
     whiteSpace: 'nowrap',
     fontSize: 14,
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
+  },
+  disabledIconTitle: {
+    opacity: 0.5
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
@@ -139,11 +157,6 @@ const useStyles = makeStyles(theme => ({
   extraTitleWrap: {
     marginRight: 45
   },
-  disconnectIcon: {
-    width: 19,
-    height: 19,
-    marginRight: 1
-  },
   boldDeassignText: {
     fontWeight: 600
   },
@@ -163,6 +176,16 @@ const useStyles = makeStyles(theme => ({
   subaccountTitle: {
     marginRight: 25,
     fontSize: 14
+  },
+  deleteLoading: {
+    width: '20px !important',
+    height: '20px !important',
+    marginLeft: 5
+  },
+  tableRow: {
+    '& > th': {
+      height: 50
+    }
   }
 }))
 

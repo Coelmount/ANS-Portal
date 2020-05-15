@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
+import { useParams } from 'react-router-dom'
 
 import Loading from 'components/Loading'
 import Snackbar from 'components/Snackbar'
@@ -27,99 +28,121 @@ import Announcements from 'ui/Subaccount/Announcements'
 import SubaccountAdmins from 'ui/Subaccount/Administrators'
 import SubaccountDetails from 'ui/Subaccount/Details'
 import Schedules from 'ui/Subaccount/Schedules'
+import ResetPassword from 'ui/ResetPassword'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
 import NotFound from 'components/NotFound'
+import AccessDenied from 'components/AccessDenied'
 
 import useStyles from './styles'
 
 const userComponents = [
   {
     path: '/customers',
-    component: <Customers />
+    component: <Customers />,
+    accessLevel: 1 //admin
   },
   {
     path: '/search',
-    component: <Search />
+    component: <Search />,
+    accessLevel: 1
   },
   {
     path: '/customers/:customerId/access_numbers',
-    component: <AccessNumbers />
+    component: <AccessNumbers />,
+    accessLevel: 2 // customer admin
   },
   {
     path: '/customers/:customerId/access_numbers/:numbersId/numbers',
-    component: <AccessNumbersItem />
+    component: <AccessNumbersItem />,
+    accessLevel: 2
   },
   {
     path: '/customers/:customerId/subaccounts',
-    component: <Subaccounts />
+    component: <Subaccounts />,
+    accessLevel: 2
   },
   {
     path: '/customers/:customerId/administrators',
-    component: <Administrators />
+    component: <Administrators />,
+    accessLevel: 2
   },
   {
     path: '/customers/:customerId/details',
-    component: <Details />
+    component: <Details />,
+    accessLevel: 2
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/ans_instances',
-    component: <AnsInstances />
+    component: <AnsInstances />,
+    accessLevel: 3 // group admin
   },
   {
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/translations',
-    component: <Translations />
+    component: <Translations />,
+    accessLevel: 3
   },
   {
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/translations/:instanceNumber',
-    component: <TranslationsSingleNumber />
+    component: <TranslationsSingleNumber />,
+    accessLevel: 3
   },
   {
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/bulk_jobs',
-    component: <BulkJobs />
+    component: <BulkJobs />,
+    accessLevel: 3
   },
   {
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced/destinations',
-    component: <Destinations />
+    component: <Destinations />,
+    accessLevel: 3
   },
   {
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced/destination_groups',
-    component: <DestinationGroups />
+    component: <DestinationGroups />,
+    accessLevel: 3
   },
   {
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/time_based_routing',
-    component: <TimeBasedRouting />
+    component: <TimeBasedRouting />,
+    accessLevel: 3
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/ans_instances/ivr',
-    component: <IVR />
+    component: <IVR />,
+    accessLevel: 3
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/phone_numbers',
-    component: <PhoneNumbers />
+    component: <PhoneNumbers />,
+    accessLevel: 3
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/announcements',
-    component: <Announcements />
+    component: <Announcements />,
+    accessLevel: 3
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/schedules',
-    component: <Schedules />
+    component: <Schedules />,
+    accessLevel: 3
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/administrators',
-    component: <SubaccountAdmins />
+    component: <SubaccountAdmins />,
+    accessLevel: 3
   },
   {
     path: '/customers/:customerId/subaccounts/:groupId/details',
-    component: <SubaccountDetails />
+    component: <SubaccountDetails />,
+    accessLevel: 3
   }
 ]
 
@@ -127,15 +150,61 @@ const authComponents = [
   {
     path: '/',
     component: Auth
+  },
+  {
+    path: '/resetpassword',
+    component: ResetPassword
   }
 ]
 
+const checkAccesLevel = (pageLvl, userLvl, match) => {
+  if (pageLvl < userLvl) {
+    return false
+  } else if (!!localStorage.getItem('ids')) {
+    const ids = JSON.parse(localStorage.getItem('ids'))
+    if (
+      ids.tenant_id &&
+      ids.group_id &&
+      ids.tenant_id === match.customerId &&
+      ids.group_id === match.groupId
+    ) {
+      return true
+    } else if (ids.tenant_id && ids.tenant_id === match.customerId) {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return true
+  }
+}
+
 const Page = props => {
   const classes = useStyles()
+  const match = useParams()
+  let accessLevel = -1
+  if (!!localStorage.getItem('ids')) {
+    const ids = JSON.parse(localStorage.getItem('ids'))
+    if (ids.tenant_id && ids.group_id) {
+      accessLevel = 3 // group admin
+    }
+    if (ids.tenant_id) {
+      accessLevel = 2 // customer admin
+    }
+  } else {
+    accessLevel = 1 // admin
+  }
+
   return (
     <div className={classes.page}>
-      <DefaultLayout />
-      {props.diplayedComponent}
+      {checkAccesLevel(props.accessLevel, accessLevel, match) && (
+        <DefaultLayout />
+      )}
+      {checkAccesLevel(props.accessLevel, accessLevel, match) ? (
+        props.diplayedComponent
+      ) : (
+        <AccessDenied />
+      )}
     </div>
   )
 }
@@ -146,7 +215,7 @@ const UserPages = () => {
     <Switch>
       {userComponents.map(el => (
         <Route path={el.path} key={el.path} exact>
-          <Page diplayedComponent={el.component} />
+          <Page diplayedComponent={el.component} accessLevel={el.accessLevel} />
         </Route>
       ))}
       <Redirect path='/' to={'/customers'} exact />
