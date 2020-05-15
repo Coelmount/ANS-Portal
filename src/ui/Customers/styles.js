@@ -282,7 +282,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   statusCellBox: {
-    display: 'flex'
+    display: 'flex',
+    paddingLeft: 20
   },
   statusCell: {
     width: 100

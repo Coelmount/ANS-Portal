@@ -31,7 +31,7 @@ export class CustomersStore {
   customer = defaultCustomerValue
   isLoadingCustomers = true
   isLoadingCustomer = true
-  isLoadingStatuses = true
+  isLoadingStatus = true
   isDeletingCustomer = false
   addUpdateCustomer = false
   isUpdatingStatus = false
@@ -42,7 +42,6 @@ export class CustomersStore {
       .get(`/tenants`)
       .then(res => {
         this.rows = res.data.tenants
-        this.getCustomersStatus(res.data.tenants)
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -52,6 +51,9 @@ export class CustomersStore {
           }
         })
       )
+      .finally(() => {
+        this.isLoadingCustomers = false
+      })
   }
 
   getCustomer = id => {
@@ -97,6 +99,7 @@ export class CustomersStore {
   }
 
   getCustomerStatus = tenantId => {
+    this.isLoadingStatus = true
     axios
       .get(`/tenants/${tenantId}/properties/suspension/`)
       .then(
@@ -110,6 +113,7 @@ export class CustomersStore {
           })
       )
       .finally(() => {
+        this.isLoadingStatus = false
         this.isLoadingCustomer = false
       })
   }
@@ -221,6 +225,7 @@ decorate(CustomersStore, {
   customer: observable,
   isLoadingCustomers: observable,
   isLoadingCustomer: observable,
+  isLoadingStatus: observable,
   isDeletingCustomer: observable,
   isUpdatingStatus: observable,
   getCustomers: action,
@@ -232,7 +237,8 @@ decorate(CustomersStore, {
   getCustomerDefaultValues: action,
   setDefaultTableValues: action,
   getCustomersStatus: action,
-  putUpdateCustomerStatus: action
+  putUpdateCustomerStatus: action,
+  getCustomerStatus: action
 })
 
 export default new CustomersStore()

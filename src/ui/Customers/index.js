@@ -24,6 +24,7 @@ import Loading from 'components/Loading'
 import UpdateStatus from './components/UpdateStatus'
 
 import useStyles from './styles'
+import { width } from '@material-ui/system'
 
 const CustomersTable = observer(({ t }) => {
   const classes = useStyles()
@@ -132,9 +133,13 @@ const CustomersTable = observer(({ t }) => {
       {
         id: 'status',
         label: 'status',
+        extraHeadProps: {
+          align: 'center',
+          padding: '0',
+          width: '100px'
+        },
         getCellData: row => (
           <Box className={classes.statusCellBox}>
-            <Box className={classes.statusCell}>{row.status}</Box>
             <EditOutlinedIcon
               onClick={() => handleOpenUpdateModal(row)}
               className={classes.deleteCustomerIcon}

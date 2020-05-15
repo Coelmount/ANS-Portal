@@ -26,8 +26,14 @@ const UpdateStatusModal = props => {
     isLoadingCustomerStatuses,
     getCustomerStatuses
   } = ConfigStore
-  const { isUpdatingStatus, putUpdateCustomerStatus } = CustomersStore
-  const [status, setStatus] = useState(tenant.status)
+  const {
+    isUpdatingStatus,
+    putUpdateCustomerStatus,
+    customer,
+    getCustomerStatus,
+    isLoadingStatus
+  } = CustomersStore
+  const [status, setStatus] = useState('')
 
   const options = [
     { label: 'Active', value: 'Active' },
@@ -35,8 +41,13 @@ const UpdateStatusModal = props => {
   ]
 
   useEffect(() => {
+    getCustomerStatus(tenant.tenantId)
     getCustomerStatuses()
   }, [])
+
+  useEffect(() => {
+    setStatus(customer.status)
+  }, [customer.status])
 
   const updateStatus = () => {
     const data = {
@@ -45,7 +56,7 @@ const UpdateStatusModal = props => {
     putUpdateCustomerStatus(tenant.tenantId, data, handleClose)
   }
 
-  if (isLoadingCustomerStatuses) {
+  if (isLoadingCustomerStatuses || isLoadingStatus) {
     return (
       <Dialog className={classes.updateModal} open={open} onClose={handleClose}>
         <Loading />
