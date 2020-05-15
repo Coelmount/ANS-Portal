@@ -1,8 +1,7 @@
 .drawerHeader {
   height: 66px;
   background-color: #ffcc00;
-  position: relative;
-  margin-bottom: 90px;
+  position: fixed;
   width: 260px;
   z-index: 1;
 }
