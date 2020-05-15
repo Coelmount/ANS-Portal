@@ -11,7 +11,6 @@ import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
@@ -53,8 +52,6 @@ const AccessNumbersItem = ({ t }) => {
     0
   )
   const [searchList, setSearchList] = useState([])
-  const [currentPage, setCurrentPage] = useState(0)
-  const [currentPerPage, setCurrentPerPage] = useState(10)
   const [disconnectMessage, setDisconnectMessage] = useState('')
   const [disconnectMessageBlock, setDisconnectMessageBlock] = useState(null)
   const [disconnectSubject, setDisconnectSubject] = useState('')
@@ -116,10 +113,6 @@ const AccessNumbersItem = ({ t }) => {
     setNumberOfSelectedToDisconnect(0)
   }, [assignedNumbers])
 
-  const handlePageChange = () => {
-    setNumberOfChecked(0)
-  }
-
   const handleCloseAssignModal = () => {
     setIsAssignModalOpen(false)
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
@@ -179,18 +172,7 @@ const AccessNumbersItem = ({ t }) => {
     setNumbers(newSelected)
   }
 
-  const builtDisconnectMessage = numbers => {
-    const amountOfNumbers = numbers.length
-    const disconnectText =
-      amountOfNumbers > 1
-        ? t('phone_numbers').toLowerCase()
-        : t('phone_number').toLowerCase()
-    setDisconnectSubject(disconnectText)
-    const totalMessage = `${amountOfNumbers} ${disconnectText}:`
-    setDisconnectMessage(totalMessage)
-  }
-
-  const builtDeassignMessage = numbers => {
+  const createDeassignMessage = numbers => {
     const amountOfNumbers = numbers.length
     const deassignText =
       amountOfNumbers > 1
@@ -201,22 +183,18 @@ const AccessNumbersItem = ({ t }) => {
     setDeassignMessage(totalMessage)
   }
 
-  const buildDisconnectMessageBlock = numbers => {
-    const numbersArr = numbers.map(item => item.phoneNumber)
-    const splitedNumbersStr = numbersArr.join(', ')
-    const totalMessage = `${splitedNumbersStr} ?`
-    const disconnectMessageBlock = (
-      <Box>
-        <Typography className={classes.boldDeassignText}>
-          {totalMessage}
-        </Typography>
-        <Typography>{t('deassign_message_end')}</Typography>
-      </Box>
-    )
-    setDisconnectMessageBlock(disconnectMessageBlock)
+  const createDisconnectMessage = numbers => {
+    const amountOfNumbers = numbers.length
+    const disconnectText =
+      amountOfNumbers > 1
+        ? t('phone_numbers').toLowerCase()
+        : t('phone_number').toLowerCase()
+    setDisconnectSubject(disconnectText)
+    const totalMessage = `${amountOfNumbers} ${disconnectText}:`
+    setDisconnectMessage(totalMessage)
   }
 
-  const buildDeassignMessageBlock = numbers => {
+  const createDeassignMessageBlock = numbers => {
     const numbersArr = numbers.map(item => item.phoneNumber)
     const splitedNumbersStr = numbersArr.join(', ')
     const totalMessage = `${splitedNumbersStr} ?`
@@ -231,6 +209,21 @@ const AccessNumbersItem = ({ t }) => {
     setDeassignMessageBlock(deassignMessageBlock)
   }
 
+  const createDisconnectMessageBlock = numbers => {
+    const numbersArr = numbers.map(item => item.phoneNumber)
+    const splitedNumbersStr = numbersArr.join(', ')
+    const totalMessage = `${splitedNumbersStr} ?`
+    const disconnectMessageBlock = (
+      <Box>
+        <Typography className={classes.boldDeassignText}>
+          {totalMessage}
+        </Typography>
+        <Typography>{t('deassign_message_end')}</Typography>
+      </Box>
+    )
+    setDisconnectMessageBlock(disconnectMessageBlock)
+  }
+
   const handleAssignButtonClick = () => {
     if (isAssignEnabled) {
       const checkedNumbers = numbers.filter(item => item.checked === true)
@@ -241,49 +234,42 @@ const AccessNumbersItem = ({ t }) => {
     }
   }
 
-  const handleDisconnectButtonClick = () => {
-    if (isDisconnectEnabled) {
-      const selectedNumbers = numbers.filter(
-        item => item.isSelectedToDisconnect === true
-      )
-      setNumbersToDisconnect(selectedNumbers)
-      builtDisconnectMessage(selectedNumbers)
-      buildDisconnectMessageBlock(selectedNumbers)
-      setIsDisconnectModalOpen(true)
-    } else {
-      showErrorNotification(t('no_numbers_selected_to_disconnect'))
-    }
-  }
-
   const handleDeassignButtonClick = () => {
     if (isDeassignEnabled) {
       const selectedNumbers = numbers.filter(
         item => item.isSelectedToDeassign === true
       )
       setNumbersToDeassign(selectedNumbers)
-      builtDeassignMessage(selectedNumbers)
-      buildDeassignMessageBlock(selectedNumbers)
+      createDeassignMessage(selectedNumbers)
+      createDeassignMessageBlock(selectedNumbers)
       setIsDeassignModalOpen(true)
     } else {
       showErrorNotification(t('no_numbers_selected_to_deassign'))
     }
   }
 
-  const handleDisconnectOneNumberClick = row => {
-    setNumbersToDisconnect(row)
-    builtDisconnectMessage([row])
-    buildDisconnectMessageBlock([row])
-    setIsDisconnectModalOpen(true)
-  }
-
-  const handleCloseDisconnectModal = () => {
-    getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
-    setIsDisconnectModalOpen(false)
+  const handleDisconnectButtonClick = () => {
+    if (isDisconnectEnabled) {
+      const selectedNumbers = numbers.filter(
+        item => item.isSelectedToDisconnect === true
+      )
+      setNumbersToDisconnect(selectedNumbers)
+      createDisconnectMessage(selectedNumbers)
+      createDisconnectMessageBlock(selectedNumbers)
+      setIsDisconnectModalOpen(true)
+    } else {
+      showErrorNotification(t('no_numbers_selected_to_disconnect'))
+    }
   }
 
   const handleCloseDeassignModal = () => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDeassignModalOpen(false)
+  }
+
+  const handleCloseDisconnectModal = () => {
+    getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
+    setIsDisconnectModalOpen(false)
   }
 
   const handleDisconnect = () => {
@@ -418,7 +404,7 @@ const AccessNumbersItem = ({ t }) => {
                 onChange={() => selectNumbers(true, row.id, 'checked')}
               />
             ) : (
-              currentPage * currentPerPage + i + 1
+              i + 1
             )}
           </div>
         ),
@@ -573,10 +559,6 @@ const AccessNumbersItem = ({ t }) => {
               searchCriterias={['phoneNumber', 'subaccount', 'inUse', 'status']}
               getSearchList={setSearchList}
               extraToolbarBlock={toolbarButtonsBlock}
-              setCurrentPage={setCurrentPage}
-              setCurrentPerPage={setCurrentPerPage}
-              totalPagesServer={totalPagesServer}
-              onPageChangeActions={handlePageChange}
               noAvailableDataMessage={t('no_assigned_numbers_available')}
             />
           </Fragment>
