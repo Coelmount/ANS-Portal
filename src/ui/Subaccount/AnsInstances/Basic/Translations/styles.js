@@ -20,6 +20,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center'
   },
+  updateWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: 30
+  },
   deleteBlockWrap: {
     display: 'flex',
     alignItems: 'center',
@@ -41,6 +46,23 @@ const useStyles = makeStyles(theme => ({
   },
   addIcon: {
     color: theme.palette.black
+  },
+  mainIconWrap: {
+    background: theme.palette.primary.main,
+    width: 30,
+    height: 30,
+    padding: 0,
+    marginRight: 8,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  disabledButton: {
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
   },
   deleteIcon: {
     width: 14,
