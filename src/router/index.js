@@ -28,6 +28,7 @@ import Announcements from 'ui/Subaccount/Announcements'
 import SubaccountAdmins from 'ui/Subaccount/Administrators'
 import SubaccountDetails from 'ui/Subaccount/Details'
 import Schedules from 'ui/Subaccount/Schedules'
+import ResetPassword from 'ui/ResetPassword'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
@@ -149,6 +150,10 @@ const authComponents = [
   {
     path: '/',
     component: Auth
+  },
+  {
+    path: '/resetpassword',
+    component: ResetPassword
   }
 ]
 
