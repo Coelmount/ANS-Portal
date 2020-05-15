@@ -48,7 +48,10 @@ export class BasicTranslations {
             checked: false,
             hover: false,
             enabled: true,
-            accessCountry: getCountryNameFromNumber(item.access_number),
+            accessCountry:
+              (item.access_number &&
+                getCountryNameFromNumber(item.access_number)) ||
+              'none',
             destinationCountry: getCountryNameFromNumber(
               item.destination_number
             ),
