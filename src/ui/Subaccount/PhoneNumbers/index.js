@@ -41,7 +41,7 @@ const PhoneNumbers = observer(({ t }) => {
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [order, setOrder] = useState('asc')
-  const [orderBy, setOrderBy] = useState('phoneNumber')
+  const [orderBy, setOrderBy] = useState('id')
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
 
   const {
@@ -159,7 +159,9 @@ const PhoneNumbers = observer(({ t }) => {
       match.groupId,
       page,
       rowsPerPage,
-      filterValues
+      filterValues,
+      orderBy,
+      order
     )
   }
 

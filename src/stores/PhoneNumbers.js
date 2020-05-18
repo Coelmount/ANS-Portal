@@ -84,8 +84,7 @@ export class PhoneNumbers {
         break
       }
       default: {
-        orderByField = 'nsn'
-        return
+        orderByField = 'id'
       }
     }
     const orderField = order || 'asc'
