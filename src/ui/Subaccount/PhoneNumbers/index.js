@@ -72,7 +72,8 @@ const PhoneNumbers = observer(({ t }) => {
     match.groupId,
     getPhoneNumbers,
     filterValues.status,
-    filterValues.type
+    filterValues.type,
+    filterValues.country.label
   ])
 
   useEffect(() => {
@@ -179,6 +180,13 @@ const PhoneNumbers = observer(({ t }) => {
             <Chip
               label={filterValues.status}
               onDelete={() => handleDeleteSeachParam('status')}
+              color='primary'
+            />
+          )}
+          {filterValues.country && (
+            <Chip
+              label={filterValues.country.label}
+              onDelete={() => handleDeleteSeachParam('country')}
               color='primary'
             />
           )}

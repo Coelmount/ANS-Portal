@@ -50,10 +50,15 @@ export class PhoneNumbers {
       else return ''
     }
     const status = getStatus()
+    const countryCode =
+      (filterValues &&
+        filterValues.country &&
+        filterValues.country.phone.replace('+', '%2B')) ||
+      ''
     this.isPhoneNumbersLoading = true
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&type=${type}&in_use=${status} `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&country_code=${countryCode}&type=${type}&in_use=${status} `
       )
       // .get(
       //   `/tenants/ans0001/groups/ans0001_grp2522/numbers?sorting=[{"field":"id","direction":"desc"}]&paging={"page_number": 1, "page_size": 50}&cols=["nsn","type","state", "country_code","connected_to"]&type=geo&country_code=+966&in_use=false&number_like=811`
@@ -117,9 +122,7 @@ export class PhoneNumbers {
   }
 
   deleteSearchParam = field => {
-    field === 'type'
-      ? (this.filterValues.type = '')
-      : (this.filterValues.status = '')
+    this.filterValues[field] = ''
   }
 
   setPhoneNumbers = phoneNumbers => {

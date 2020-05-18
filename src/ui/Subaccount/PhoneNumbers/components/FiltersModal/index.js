@@ -13,11 +13,14 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
 
+import PhoneNumbersStore from 'stores/PhoneNumbers'
+import ConfigStore from 'stores/Config'
+
 import Input from 'components/Input'
 import Checkbox from 'components/Checkbox'
 import Switch from 'components/Switch'
-import PhoneNumbersStore from 'stores/PhoneNumbers'
-// import Loading from 'components/Loading'
+import Loading from 'components/Loading'
+import CountryInput from 'components/CountryInput'
 
 import useStyles from './styles'
 
@@ -29,9 +32,7 @@ const FiltersModal = ({ open, t, handleClose }) => {
   const [selectedStatus, setSelectedStatus] = useState('')
 
   const { setFilterValues } = PhoneNumbersStore
-  console.log(selectedType, 'selectedType')
-  console.log(selectedCountry, 'selectedCountry')
-  console.log(selectedStatus, 'selectedStatus')
+  const { getCountries, countries, isLoadingCountries } = ConfigStore
 
   const checkboxRows = [
     { name: 'local', amount: 23 },
@@ -44,6 +45,10 @@ const FiltersModal = ({ open, t, handleClose }) => {
     { name: 'assigned', amount: 10 },
     { name: 'available', amount: 17 }
   ]
+
+  useEffect(() => {
+    getCountries()
+  }, [])
 
   const handleFilterButtonClick = () => {
     setFilterValues(selectedCountry, selectedType, selectedStatus)
@@ -63,66 +68,72 @@ const FiltersModal = ({ open, t, handleClose }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <Box>
-          <Box className={classes.subtitle}>
-            <Typography className={classes.subtitleText}>
-              {t('country')}
-            </Typography>
-          </Box>
-          <Input
-            className={classes.countryInput}
-            label={t('country')}
-            variant='outlined'
-            onChange={e => setSelectedCountry(e.target.value)}
-          />
-        </Box>
-
-        <Box>
-          <Box className={classes.subtitle}>
-            <Typography className={classes.subtitleText}>
-              {t('type')}
-            </Typography>
-          </Box>
-          <Box className={classes.checkboxesWrap}>
-            {checkboxRows.map(item => (
-              <Box className={classes.checkboxRow} key={item.name}>
-                <Checkbox
-                  checked={item.name === selectedType}
-                  onChange={e =>
-                    setSelectedType(e.target.checked ? item.name : '')
-                  }
-                />
-                <Typography>
-                  <span className={classes.nameTitle}>{item.name}</span>
-                  <span>{`(${item.amount})`}</span>
+        {isLoadingCountries ? (
+          <Loading />
+        ) : (
+          <Fragment>
+            <Box>
+              <Box className={classes.subtitle}>
+                <Typography className={classes.subtitleText}>
+                  {t('country')}
                 </Typography>
               </Box>
-            ))}
-          </Box>
-        </Box>
+              <CountryInput
+                value={selectedCountry}
+                setValue={setSelectedCountry}
+                countries={countries}
+                className={classes.countryInput}
+              />
+            </Box>
 
-        <Box>
-          <Box className={classes.subtitle}>
-            <Typography className={classes.subtitleText}>
-              {t('status')}
-            </Typography>
-          </Box>
-          <Box className={classes.statusContentContainer}>
-            {switchRows.map(item => (
-              <Box className={classes.statusContentRow} key={item.name}>
-                <Typography>{t(item.name).toLowerCase()}</Typography>
-                <Switch
-                  checked={item.name === selectedStatus}
-                  handleChange={e =>
-                    setSelectedStatus(
-                      e.target.checked === true ? item.name : ''
-                    )
-                  }
-                />
+            <Box>
+              <Box className={classes.subtitle}>
+                <Typography className={classes.subtitleText}>
+                  {t('type')}
+                </Typography>
               </Box>
-            ))}
-          </Box>
-        </Box>
+              <Box className={classes.checkboxesWrap}>
+                {checkboxRows.map(item => (
+                  <Box className={classes.checkboxRow} key={item.name}>
+                    <Checkbox
+                      checked={item.name === selectedType}
+                      onChange={e =>
+                        setSelectedType(e.target.checked ? item.name : '')
+                      }
+                    />
+                    <Typography>
+                      <span className={classes.nameTitle}>{item.name}</span>
+                      <span>{`(${item.amount})`}</span>
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+
+            <Box>
+              <Box className={classes.subtitle}>
+                <Typography className={classes.subtitleText}>
+                  {t('status')}
+                </Typography>
+              </Box>
+              <Box className={classes.statusContentContainer}>
+                {switchRows.map(item => (
+                  <Box className={classes.statusContentRow} key={item.name}>
+                    <Typography>{t(item.name).toLowerCase()}</Typography>
+                    <Switch
+                      checked={item.name === selectedStatus}
+                      handleChange={e =>
+                        setSelectedStatus(
+                          e.target.checked === true ? item.name : ''
+                        )
+                      }
+                    />
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+          </Fragment>
+        )}
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
         <Button
@@ -138,7 +149,6 @@ const FiltersModal = ({ open, t, handleClose }) => {
           color='primary'
           className={classes.assignButton}
           onClick={handleFilterButtonClick}
-          // disabled={!subaccountsList.some(item => item.checked === true)}
         >
           {t('filter')}
         </Button>
