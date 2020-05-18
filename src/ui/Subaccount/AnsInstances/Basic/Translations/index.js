@@ -47,7 +47,7 @@ const Translations = observer(({ t }) => {
   const [searchList, setSearchList] = useState([])
   const [anchorEl, setAnchorEl] = useState(null)
   const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
-    false
+    true
   )
   const [
     showMultipleUpdateANSNumbers,
@@ -292,7 +292,7 @@ const Translations = observer(({ t }) => {
         <Box>
           <Link
             onClick={() => updateSelectedInstance(row)}
-            to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.access_number}`}
+            to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.access_number}`}
             className={classes.link}
           >
             {row.access_number}

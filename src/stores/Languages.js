@@ -41,9 +41,6 @@ export class LanguagesStore {
             variant: 'error'
           }
         })
-        if (e.response.status === 401) {
-          this.isLoadingLang = false
-        }
       })
   }
 }

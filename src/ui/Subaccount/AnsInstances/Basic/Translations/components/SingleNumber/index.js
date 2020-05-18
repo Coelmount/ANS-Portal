@@ -60,7 +60,7 @@ const SingleNumber = ({ t }) => {
       destinationNumber.length > 0
     ) {
       callback = history.push(
-        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`
+        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
       )
       postAccessNumber(callback)
     }
@@ -123,7 +123,7 @@ const SingleNumber = ({ t }) => {
             <Box className={classes.buttonsWrap}>
               <Box className={classes.buttonBlock}>
                 <Link
-                  to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`}
+                  to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`}
                 >
                   <Box
                     className={`${classes.iconWrap} ${classes.closeIconWrap}`}

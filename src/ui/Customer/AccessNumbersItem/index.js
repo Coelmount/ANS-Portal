@@ -519,7 +519,7 @@ const AccessNumbersItem = ({ t }) => {
         <Fragment>
           {row.connected_to ? (
             <Link
-              to={`/customers/${match.customerId}/subaccounts/${row.subaccountId}/ans_instances/basic/translations/${row.phoneNumber}`}
+              to={`/customers/${match.customerId}/subaccounts/${row.subaccountId}/ans_instances/basic/${row.phoneNumber}`}
             >
               <Typography className={classes.usedTitle}>
                 {t(row.connected_to)}

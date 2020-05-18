@@ -120,21 +120,9 @@ const DefaultLayout = ({ t, notFoundPage }) => {
       icon: SettingsPhoneOutlinedIcon,
       childLinks: [
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`,
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`,
           text: t('basic'),
-          name: 'basic',
-          childLinks: [
-            {
-              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations`,
-              text: t('translations'),
-              name: 'translations'
-            },
-            {
-              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/bulk_jobs`,
-              text: t('bulk_jobs'),
-              name: 'bulk_jobs'
-            }
-          ]
+          name: 'basic'
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`,

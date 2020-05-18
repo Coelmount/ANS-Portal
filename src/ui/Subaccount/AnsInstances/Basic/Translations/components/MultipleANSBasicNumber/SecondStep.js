@@ -40,7 +40,7 @@ const FirstStep = props => {
       </DialogTitle>
       <DialogContent>
         <Box className={classes.secondStepTitleBlock}>
-          <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
+          <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
           <Box className={classes.secondStepTitleInfo}>
             {t('list_of_resilts')}
           </Box>

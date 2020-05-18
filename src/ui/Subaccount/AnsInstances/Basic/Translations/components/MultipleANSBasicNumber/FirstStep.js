@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
+import Papa from 'papaparse'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -9,24 +10,190 @@ import DialogActions from '@material-ui/core/DialogActions'
 import IconButton from '@material-ui/core/IconButton'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
+import MaterialLink from '@material-ui/core/Link'
+import Alert from '@material-ui/lab/Alert'
+import AlertTitle from '@material-ui/lab/AlertTitle'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
+
+import BasicTranslationsStore from 'stores/BasicTranslations'
 
 import useStyles from './styles'
 
 const FirstStep = props => {
   const match = useParams()
   const { handleClose, setStep, t } = props
+  const [csvValue, setCSVValue] = useState([])
+  const [errorOdj, setErrorObj] = useState({
+    showError: false,
+    errorHeader: '',
+    errorText: ''
+  })
+  const [disabledUpload, setDisabledUpload] = useState(true)
+  const [file, setFile] = useState(null)
+  const [fileKey, setFileKey] = useState('')
+  const [uploading, setUploading] = useState(false)
+  const {
+    postAddMultipleANSBasic,
+    setMultipleCounter,
+    multipleCounter,
+    setDefaultValues
+  } = BasicTranslationsStore
 
   const classes = useStyles()
 
-  const importFile = () => {
-    setStep(2)
+  useEffect(() => {
+    if (csvValue.length !== 0) {
+      setDisabledUpload(errorOdj.showError)
+    }
+  }, [csvValue.length])
+
+  useEffect(() => {
+    if (
+      multipleCounter.total === multipleCounter.count &&
+      uploading &&
+      multipleCounter.total !== 0
+    ) {
+      setStep(2)
+    }
+  }, [multipleCounter.total, multipleCounter.count])
+
+  useEffect(() => {
+    setDefaultValues()
+  }, [])
+
+  const importFile = e => {
+    const target = e.target
+    if (!target.files.length) {
+      setCSVValue({ csvValue: [] })
+      return
+    }
+    if (
+      !(
+        target.files[0].type === 'application/vnd.ms-excel' ||
+        target.files[0].type === 'text/csv'
+      )
+    ) {
+      const errorHeader = 'Invalid type file'
+      const errorText = 'Accepted file formats: csv '
+      setErrorObj({
+        showError: true,
+        errorHeader,
+        errorText
+      })
+      setDisabledUpload(true)
+      return
+    }
+    let csvValueAfterParse
+    readFile(target.files[0]).then(res => {
+      csvValueAfterParse = csvParse(res)
+      setMultipleCounter('total', csvValueAfterParse.length - 1)
+      setFile(target.files[0])
+      setCSVValue(csvValueAfterParse)
+    })
   }
 
-  return (
+  const csvParse = file => {
+    const csvArray = Papa.parse(file)
+    if (csvArray.data[0].length !== 4) {
+      const errorHeader = 'Count header error'
+      const errorText = 'You must have four headers in the file'
+      setErrorObj({ showError: true, errorHeader, errorText })
+      setDisabledUpload(true)
+      return []
+    }
+    if (
+      csvArray.data[0].join() !==
+      [
+        'access_cc',
+        'access_number',
+        'destination_cc',
+        'destination_number'
+      ].join()
+    ) {
+      const errorHeader = 'Invalid headers'
+      const errorText =
+        'Your headers must be access_cc;access_number;destination_cc;destination_number'
+      setErrorObj({ showError: true, errorHeader, errorText })
+      setDisabledUpload(true)
+      return []
+    }
+    for (let i = 1; i < csvArray.data.length; i++) {
+      if (csvArray.data[i].length !== 4) {
+        const errorHeader = 'Count columns error'
+        const errorText = 'You must have four columns in the file'
+        setErrorObj({ showError: true, errorHeader, errorText })
+        setDisabledUpload(true)
+        return []
+      }
+    }
+    return csvArray.data
+  }
+
+  const readFile = file =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsText(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = error => reject(error)
+    })
+
+  const uploadFile = () => {
+    setUploading(true)
+    for (let i = 1; i < csvValue.length; i++) {
+      const data = {
+        cc_access_number: csvValue[i][0],
+        access_number: csvValue[i][1],
+        cc_destination_number: csvValue[i][2],
+        destination_number: csvValue[i][3]
+      }
+      postAddMultipleANSBasic(match.customerId, match.groupId, data)
+    }
+  }
+
+  console.log(csvValue)
+  console.log(disabledUpload)
+  console.log(multipleCounter)
+
+  return uploading ? (
+    <React.Fragment>
+      <DialogTitle className={classes.title}>
+        {t('add_multiple_ans_basic_instances')}
+        <IconButton
+          aria-label='close'
+          onClick={handleClose}
+          className={classes.closeButton}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <Box className={classes.loadingBox}>
+        <CircularProgress
+          variant='static'
+          value={(100 * multipleCounter.count) / multipleCounter.total}
+        />
+        <Box className={classes.processWrapper}>
+          <strong>{multipleCounter.count}</strong> done of{' '}
+          <strong>{`${multipleCounter.total} (${(100 * multipleCounter.count) /
+            multipleCounter.total}%)`}</strong>
+        </Box>
+        <Box className={classes.statusesWrapper}>
+          <Box
+            className={classes.success}
+          >{`Success: ${multipleCounter.success}`}</Box>
+          <Box
+            className={classes.refused}
+          >{`Refused: ${multipleCounter.refused}`}</Box>
+          <Box
+            className={classes.error}
+          >{`Error: ${multipleCounter.error}`}</Box>
+        </Box>
+      </Box>
+    </React.Fragment>
+  ) : (
     <React.Fragment>
       <DialogTitle className={classes.title}>
         {t('add_multiple_ans_basic_instances')}
@@ -44,14 +211,15 @@ const FirstStep = props => {
           <InfoOutlinedIcon />
           <Box className={classes.infoBoxContent}>
             <Box className={classes.infoTitle}>{t('required_file_format')}</Box>
-            <Box className={classes.infoTextTitle}>{`${t('header')}:`}</Box>
-            <Box
-              className={classes.infoTextRequirement}
-            >{`customerId, subaccountId, accessNumber, destinationNumber`}</Box>
-            <Box className={classes.infoTextTitle}>{`${t('rows')}:`}</Box>
-            <Box
-              className={classes.infoTextRequirement}
-            >{`value1, value2, value3, value4`}</Box>
+            <Box className={classes.infoTextTitle}>{`${t(
+              'required_separator'
+            )}: ;`}</Box>
+            <Box className={classes.infoTextTitle}>{`${t(
+              'header'
+            )}: access_cc;access_number;destination_cc;destination_number`}</Box>
+            <Box className={classes.infoTextTitle}>{`${t(
+              'rows'
+            )}: +27;848929921;+32;478604974`}</Box>
           </Box>
         </Box>
         <Box className={classes.uploadBoxWrapper}>
@@ -63,6 +231,7 @@ const FirstStep = props => {
               type='file'
               accept='text/csv'
               onChange={importFile}
+              key={fileKey}
             />
             <label htmlFor='contained-button-file'>
               <Button
@@ -79,26 +248,45 @@ const FirstStep = props => {
               </Button>
             </label>
           </Box>
+          {file && (
+            <Box className={classes.fileBox}>
+              <Box className={classes.fileName}>{file.name} </Box>
+              <MaterialLink
+                component='button'
+                variant='body2'
+                onClick={() => {
+                  setFileKey(new Date())
+                  setDisabledUpload(true)
+                  setErrorObj({ showError: false })
+                  setCSVValue([])
+                  setFile(null)
+                }}
+              >
+                x
+              </MaterialLink>
+            </Box>
+          )}
         </Box>
+        {errorOdj.showError && (
+          <Box>
+            <Alert severity='error'>
+              <AlertTitle>{errorOdj.errorHeader}</AlertTitle>
+              {errorOdj.errorText}
+            </Alert>
+          </Box>
+        )}
       </DialogContent>
-      {/* <DialogActions className={classes.dialogActionsSecond}>
-        <Button
-          variant='outlined'
-          color='primary'
-          className={classes.backButton}
-          onClick={() => handleClose()}
-        >
-          {t('cancel')}
-        </Button>
+      <DialogActions className={classes.dialogActionsFirst}>
         <Button
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          //onClick={() => changeStep(2)}
+          disabled={disabledUpload}
+          onClick={uploadFile}
         >
-          {t('next')}
+          {t('upload')}
         </Button>
-      </DialogActions> */}
+      </DialogActions>
     </React.Fragment>
   )
 }

@@ -79,21 +79,14 @@ const userComponents = [
     accessLevel: 3 // group admin
   },
   {
-    path:
-      '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/translations',
+    path: '/customers/:customerId/subaccounts/:groupId/ans_instances/basic',
     component: <Translations />,
     accessLevel: 3
   },
   {
     path:
-      '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/translations/:instanceNumber',
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/:instanceNumber',
     component: <TranslationsSingleNumber />,
-    accessLevel: 3
-  },
-  {
-    path:
-      '/customers/:customerId/subaccounts/:groupId/ans_instances/basic/bulk_jobs',
-    component: <BulkJobs />,
     accessLevel: 3
   },
   {

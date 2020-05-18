@@ -41,12 +41,12 @@ const FirstStep = props => {
         <Box className={classes.addedBulkJobTitle}>
           {t('bulk_job_launched')}
         </Box>
-        <Link
+        {/* <Link
           className={classes.addedBulkJobLink}
           to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/bulk_jobs`}
         >
           {t('to_bulk_jobs')}
-        </Link>
+        </Link> */}
       </Box>
     </DialogContent>
   )

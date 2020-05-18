@@ -1,4 +1,5 @@
 import { decorate, observable, action } from 'mobx'
+import set from 'lodash/set'
 
 import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
@@ -11,6 +12,8 @@ export class BasicTranslations {
   selectedInstance = null
   isBasicTranslationsNumbersLoading = true
   basicTranslationsNumbers = []
+  multipleCounter = { success: 0, refused: 0, error: 0, total: 0, count: 0 }
+  resultMultipleAddANSBasic = []
 
   changeStep = step => {
     this.step = step
@@ -19,6 +22,14 @@ export class BasicTranslations {
   setDefaultValues = () => {
     this.step = 1
     this.selectedPhoneNumber = null
+    this.multipleCounter = {
+      success: 0,
+      refused: 0,
+      error: 0,
+      total: 0,
+      count: 0
+    }
+    this.resultMultipleAddANSBasic = []
   }
 
   updateSelectedPhoneNumber = number => {
@@ -69,6 +80,25 @@ export class BasicTranslations {
       })
       .finally(() => (this.isBasicTranslationsNumbersLoading = false))
   }
+
+  postAddMultipleANSBasic = (tenantId, groupId, data) => {
+    axios
+      .post(`/tenants/${tenantId}/groups/${groupId}/services/ans_basic`, data)
+      .then(() => {
+        this.setMultipleCounter('success', this.multipleCounter.success + 1)
+      })
+      .catch(e => {
+        console.log(e.config.data)
+        this.setMultipleCounter('error', this.multipleCounter.error + 1)
+      })
+      .finally(() => {
+        this.setMultipleCounter('count', this.multipleCounter.count + 1)
+      })
+  }
+
+  setMultipleCounter = (variable, value) => {
+    set(this.multipleCounter, variable, value)
+  }
 }
 
 decorate(BasicTranslations, {
@@ -76,13 +106,17 @@ decorate(BasicTranslations, {
   selectedInstance: observable,
   isBasicTranslationsNumbersLoading: observable,
   basicTranslationsNumbers: observable,
+  multipleCounter: observable,
+  resultMultipleAddANSBasic: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
   postDestinationNumber: action,
   updateSelectedInstance: action,
   postAccessNumber: action,
-  getBasicTranslationsNumbers: action
+  getBasicTranslationsNumbers: action,
+  postAddMultipleANSBasic: action,
+  setMultipleCounter: action
 })
 
 export default new BasicTranslations()

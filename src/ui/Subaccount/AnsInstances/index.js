@@ -32,7 +32,7 @@ const AnsInstances = ({ t }) => {
     {
       label: t('basic'),
       iconSrc: basicIcon,
-      link: `${ansInstancesPrefix}/basic/translations`
+      link: `${ansInstancesPrefix}/basic`
     },
     {
       label: t('advanced'),
