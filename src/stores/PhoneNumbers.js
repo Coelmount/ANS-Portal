@@ -41,7 +41,15 @@ export class PhoneNumbers {
     this.totalPages = 0
   }
 
-  getPhoneNumbers = (customerId, groupId, page, perPage, filterValues) => {
+  getPhoneNumbers = (
+    customerId,
+    groupId,
+    page,
+    perPage,
+    filterValues,
+    orderBy,
+    order
+  ) => {
     const country = (filterValues && filterValues.country) || ''
     const type = (filterValues && filterValues.type) || ''
     const getStatus = () => {
@@ -56,12 +64,38 @@ export class PhoneNumbers {
         filterValues.country.phone.replace('+', '%2B')) ||
       ''
     this.isPhoneNumbersLoading = true
+
+    let orderByField
+    switch (orderBy) {
+      case 'phoneNumber': {
+        orderByField = 'nsn'
+        break
+      }
+      case 'status': {
+        orderByField = 'connected_to'
+        break
+      }
+      case 'countryName': {
+        orderByField = 'country_code'
+        break
+      }
+      case 'type': {
+        orderByField = 'type'
+        break
+      }
+      default: {
+        orderByField = 'nsn'
+        return
+      }
+    }
+    const orderField = order || 'asc'
+
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&country_code=${countryCode}&type=${type}&in_use=${status} `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&country_code=${countryCode}&type=${type}&in_use=${status}&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}] `
       )
       // .get(
-      //   `/tenants/ans0001/groups/ans0001_grp2522/numbers?sorting=[{"field":"id","direction":"desc"}]&paging={"page_number": 1, "page_size": 50}&cols=["nsn","type","state", "country_code","connected_to"]&type=geo&country_code=+966&in_use=false&number_like=811`
+      //   `/tenants/ans0001/groups/ans0001_grp2522/numbers?sorting=[{"field":"nsn","direction":"desc"}]&paging={"page_number": 1, "page_size": 10}&cols=["nsn","type","state", "country_code","connected_to"]&type=geo&country_code=%2B966&in_use=false`
       // )
       .then(res => {
         const pagination = res.data.pagination

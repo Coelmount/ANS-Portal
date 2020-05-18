@@ -40,6 +40,8 @@ const PhoneNumbers = observer(({ t }) => {
   )
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [order, setOrder] = useState('asc')
+  const [orderBy, setOrderBy] = useState('phoneNumber')
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
 
   const {
@@ -63,7 +65,9 @@ const PhoneNumbers = observer(({ t }) => {
       match.groupId,
       page,
       rowsPerPage,
-      filterValues
+      filterValues,
+      orderBy,
+      order
     )
   }, [
     page,
@@ -73,7 +77,9 @@ const PhoneNumbers = observer(({ t }) => {
     getPhoneNumbers,
     filterValues.status,
     filterValues.type,
-    filterValues.country.label
+    filterValues.country.label,
+    orderBy,
+    order
   ])
 
   useEffect(() => {
@@ -330,6 +336,10 @@ const PhoneNumbers = observer(({ t }) => {
             getSearchList={setSearchList}
             page={page}
             setPage={setPage}
+            order={order}
+            setOrder={setOrder}
+            orderBy={orderBy}
+            setOrderBy={setOrderBy}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             totalPages={totalPages}

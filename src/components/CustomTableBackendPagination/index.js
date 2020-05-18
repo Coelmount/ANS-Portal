@@ -63,7 +63,11 @@ const CustomTable = ({
   setPage,
   rowsPerPage,
   setRowsPerPage,
+  order,
+  setOrder,
   totalPages,
+  orderBy,
+  setOrderBy,
   onPageChangeActions,
   noAvailableDataMessage,
   isModal,
@@ -71,8 +75,8 @@ const CustomTable = ({
   t
 }) => {
   const defaultClasses = useStyles()
-  const [order, setOrder] = useState('asc')
-  const [orderBy, setOrderBy] = useState('id')
+  // const [order, setOrder] = useState('asc')
+  // const [orderBy, setOrderBy] = useState('id')
   const [query, setQuery] = useState(initialSearchQuery)
 
   const list = useMemo(() => {
@@ -89,9 +93,12 @@ const CustomTable = ({
     }
     if (!rows) return []
     const filteredRows = query ? rows.filter(row => getFilter(row)) : rows
-    const result = stableSort(filteredRows, getComparator(order, orderBy))
-    getSearchList && getSearchList(result)
-    return result
+    // const result = stableSort(filteredRows, getComparator(order, orderBy))
+    getSearchList && getSearchList(filteredRows)
+    return filteredRows
+    // const result = stableSort(filteredRows, getComparator(order, orderBy))
+    // getSearchList && getSearchList(result)
+    // return result
   }, [rows, query, order, orderBy, getSearchList])
 
   const handleRequestSort = (event, property) => {
