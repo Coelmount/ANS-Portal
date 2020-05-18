@@ -24,14 +24,14 @@ import CountryInput from 'components/CountryInput'
 
 import useStyles from './styles'
 
-const FiltersModal = ({ open, t, handleClose }) => {
+const FiltersModal = ({ open, t, handleClose, setPage }) => {
   const classes = useStyles()
 
   const [selectedCountry, setSelectedCountry] = useState('')
   const [selectedType, setSelectedType] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('')
 
-  const { setFilterValues } = PhoneNumbersStore
+  const { setFilterValues, clearFilterParams, filterValues } = PhoneNumbersStore
   const { getCountries, countries, isLoadingCountries } = ConfigStore
 
   const checkboxRows = [
@@ -50,8 +50,20 @@ const FiltersModal = ({ open, t, handleClose }) => {
     getCountries()
   }, [])
 
+  useEffect(() => {
+    filterValues.country && setSelectedCountry(filterValues.country)
+    filterValues.type && setSelectedType(filterValues.type)
+    filterValues.status && setSelectedStatus(filterValues.status)
+  }, [filterValues.country, filterValues.type, filterValues.status])
+
+  const handleClearButtonClick = () => {
+    handleClose()
+    clearFilterParams()
+  }
+
   const handleFilterButtonClick = () => {
     setFilterValues(selectedCountry, selectedType, selectedStatus)
+    setPage(1)
     handleClose()
   }
 
@@ -140,7 +152,7 @@ const FiltersModal = ({ open, t, handleClose }) => {
           variant='outlined'
           color='primary'
           className={classes.cancelButton}
-          onClick={handleClose}
+          onClick={handleClearButtonClick}
         >
           {t('clear_all')}
         </Button>

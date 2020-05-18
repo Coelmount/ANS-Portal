@@ -81,9 +81,22 @@ const PhoneNumbers = observer(({ t }) => {
     filterValues.type,
     filterValues.country.label,
     orderBy,
-    order,
-    debouncedNumberLike
+    order
   ])
+
+  useEffect(() => {
+    setPage(1)
+    getPhoneNumbers(
+      match.customerId,
+      match.groupId,
+      1,
+      rowsPerPage,
+      filterValues,
+      orderBy,
+      order,
+      debouncedNumberLike
+    )
+  }, [debouncedNumberLike])
 
   useEffect(() => {
     return () => {
@@ -367,6 +380,7 @@ const PhoneNumbers = observer(({ t }) => {
           <FiltersModal
             open={isFiltersModalOpen}
             handleClose={handleFiltersModalClose}
+            setPage={setPage}
           />
         )}
       </Paper>

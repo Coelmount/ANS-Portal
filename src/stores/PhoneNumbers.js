@@ -90,6 +90,7 @@ export class PhoneNumbers {
     }
     const orderField = order || 'asc'
     const numberLikeField = numberLike || ''
+
     axios
       .get(
         `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&country_code=${countryCode}&type=${type}&in_use=${status}&number_like=${numberLikeField} `
@@ -156,6 +157,14 @@ export class PhoneNumbers {
     this.filterValues[field] = ''
   }
 
+  clearFilterParams = () => {
+    this.filterValues = {
+      country: '',
+      type: '',
+      status: ''
+    }
+  }
+
   setPhoneNumbers = phoneNumbers => {
     this.phoneNumbers = phoneNumbers
     const countries = phoneNumbers.map(item => item.country)
@@ -212,7 +221,8 @@ decorate(PhoneNumbers, {
   setDefaultValues: action,
   getPhoneNumbers: action,
   setFilterValues: action,
-  deleteSearchParam: action
+  deleteSearchParam: action,
+  clearFilterParams: action
 })
 
 export default new PhoneNumbers()
