@@ -142,58 +142,60 @@ const CustomTable = ({
           {isLoadingData ? (
             <Loading />
           ) : (
-            <TableContainer>
-              <Table
-                className={`${classes.table} ${defaultClasses.table}`}
-                aria-labelledby='tableTitle'
-                size={'medium'}
-                aria-label='enhanced table'
-              >
-                <CustomTableHead
-                  classes={classes}
-                  defaultClasses={defaultClasses}
-                  order={order}
-                  orderBy={orderBy}
-                  onRequestSort={handleRequestSort}
-                  columns={columns}
-                  firstCell={firstCell}
-                />
-                {rows && rows.length ? (
-                  <CustomTableBody
+            <Fragment>
+              <TableContainer>
+                <Table
+                  className={`${classes.table} ${defaultClasses.table}`}
+                  aria-labelledby='tableTitle'
+                  size={'medium'}
+                  aria-label='enhanced table'
+                >
+                  <CustomTableHead
                     classes={classes}
                     defaultClasses={defaultClasses}
-                    rowsPerPage={rowsPerPage}
-                    page={clampedPage}
-                    rows={rows}
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
                     columns={columns}
                     firstCell={firstCell}
-                    showPagination={showPagination}
                   />
-                ) : (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell style={{ borderBottom: 'none' }}>
-                        <Typography
-                          className={`${classes.tableMessage} ${defaultClasses.tableMessage}`}
-                        >
-                          {t('no_search_result')}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          )}
-          {showPagination && (
-            <Pagination
-              classes={classes}
-              defaultClasses={defaultClasses}
-              page={page}
-              totalPages={totalPages}
-              rewindPage={rewindPage}
-              onPageChangeActions={onPageChangeActions}
-            />
+                  {rows && rows.length ? (
+                    <CustomTableBody
+                      classes={classes}
+                      defaultClasses={defaultClasses}
+                      rowsPerPage={rowsPerPage}
+                      page={clampedPage}
+                      rows={rows}
+                      columns={columns}
+                      firstCell={firstCell}
+                      showPagination={showPagination}
+                    />
+                  ) : (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell style={{ borderBottom: 'none' }}>
+                          <Typography
+                            className={`${classes.tableMessage} ${defaultClasses.tableMessage}`}
+                          >
+                            {t('no_search_result')}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </Table>
+              </TableContainer>
+              {showPagination && (
+                <Pagination
+                  classes={classes}
+                  defaultClasses={defaultClasses}
+                  page={page}
+                  totalPages={totalPages}
+                  rewindPage={rewindPage}
+                  onPageChangeActions={onPageChangeActions}
+                />
+              )}
+            </Fragment>
           )}
         </Fragment>
       ) : (

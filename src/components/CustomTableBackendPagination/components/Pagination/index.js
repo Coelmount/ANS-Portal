@@ -37,7 +37,7 @@ const Pagination = ({
           {page}
         </span>
         &nbsp;of&nbsp;
-        {totalPages}
+        {totalPages === 0 ? 1 : totalPages}
       </p>
       <div
         className={`${defaultClasses.paginationIconBlock} ${classes.paginationIconBlock}`}
