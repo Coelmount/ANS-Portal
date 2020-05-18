@@ -39,6 +39,11 @@ export class PhoneNumbers {
     this.rejectedPhoneNumbers = []
     this.isPhoneNumbersLoading = true
     this.totalPages = 0
+    this.filterValues = {
+      country: '',
+      type: '',
+      status: ''
+    }
   }
 
   getPhoneNumbers = (
