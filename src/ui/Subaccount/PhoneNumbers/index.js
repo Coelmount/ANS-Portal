@@ -2,13 +2,13 @@ import React, { useEffect, useState, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams, Link } from 'react-router-dom'
+import { useDebounce } from 'use-debounce'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Chip from '@material-ui/core/Chip'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-// import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import TitleBlock from 'components/TitleBlock'
@@ -24,7 +24,6 @@ import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
-// import deleteIcon from 'source/images/svg/delete-icon.svg'
 import filtersIcon from 'source/images/svg/filters.svg'
 import useStyles from './styles'
 
@@ -42,7 +41,9 @@ const PhoneNumbers = observer(({ t }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
+  const [numberLike, setNumberLike] = useState('')
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
+  const debouncedNumberLike = useDebounce(numberLike, 1000)[0]
 
   const {
     transformedPhoneNumbers,
@@ -67,7 +68,8 @@ const PhoneNumbers = observer(({ t }) => {
       rowsPerPage,
       filterValues,
       orderBy,
-      order
+      order,
+      debouncedNumberLike
     )
   }, [
     page,
@@ -79,7 +81,8 @@ const PhoneNumbers = observer(({ t }) => {
     filterValues.type,
     filterValues.country.label,
     orderBy,
-    order
+    order,
+    debouncedNumberLike
   ])
 
   useEffect(() => {
@@ -161,7 +164,9 @@ const PhoneNumbers = observer(({ t }) => {
       rowsPerPage,
       filterValues,
       orderBy,
-      order
+      order,
+      numberLike,
+      debouncedNumberLike
     )
   }
 
@@ -325,7 +330,7 @@ const PhoneNumbers = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
         </CustomContainer>
-        {isPhoneNumbersLoading && !isSearchParamsActive ? (
+        {isPhoneNumbersLoading && !isSearchParamsActive && !numberLike ? (
           <Loading />
         ) : (
           <CustomTable
@@ -338,13 +343,15 @@ const PhoneNumbers = observer(({ t }) => {
             getSearchList={setSearchList}
             page={page}
             setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
             order={order}
             setOrder={setOrder}
             orderBy={orderBy}
             setOrderBy={setOrderBy}
-            rowsPerPage={rowsPerPage}
-            setRowsPerPage={setRowsPerPage}
             totalPages={totalPages}
+            query={numberLike}
+            setQuery={setNumberLike}
             isSearchParamsActive={isSearchParamsActive}
             isLoadingData={isPhoneNumbersLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}

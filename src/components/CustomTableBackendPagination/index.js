@@ -68,6 +68,8 @@ const CustomTable = ({
   totalPages,
   orderBy,
   setOrderBy,
+  query,
+  setQuery,
   onPageChangeActions,
   noAvailableDataMessage,
   isModal,
@@ -77,29 +79,29 @@ const CustomTable = ({
   const defaultClasses = useStyles()
   // const [order, setOrder] = useState('asc')
   // const [orderBy, setOrderBy] = useState('id')
-  const [query, setQuery] = useState(initialSearchQuery)
+  // const [query, setQuery] = useState(initialSearchQuery)
 
-  const list = useMemo(() => {
-    const getFilter = row => {
-      for (let i = 0; i < searchCriterias.length; i++) {
-        if (
-          row[searchCriterias[i]] &&
-          row[searchCriterias[i]].toLowerCase().includes(query.toLowerCase())
-        ) {
-          return true
-        }
-      }
-      return false
-    }
-    if (!rows) return []
-    const filteredRows = query ? rows.filter(row => getFilter(row)) : rows
-    // const result = stableSort(filteredRows, getComparator(order, orderBy))
-    getSearchList && getSearchList(filteredRows)
-    return filteredRows
-    // const result = stableSort(filteredRows, getComparator(order, orderBy))
-    // getSearchList && getSearchList(result)
-    // return result
-  }, [rows, query, order, orderBy, getSearchList])
+  // const list = useMemo(() => {
+  //   const getFilter = row => {
+  //     for (let i = 0; i < searchCriterias.length; i++) {
+  //       if (
+  //         row[searchCriterias[i]] &&
+  //         row[searchCriterias[i]].toLowerCase().includes(query.toLowerCase())
+  //       ) {
+  //         return true
+  //       }
+  //     }
+  //     return false
+  //   }
+  //   if (!rows) return []
+  //   const filteredRows = query ? rows.filter(row => getFilter(row)) : rows
+  //   // const result = stableSort(filteredRows, getComparator(order, orderBy))
+  //   getSearchList && getSearchList(filteredRows)
+  //   return filteredRows
+  //   // const result = stableSort(filteredRows, getComparator(order, orderBy))
+  //   // getSearchList && getSearchList(result)
+  //   // return result
+  // }, [rows, query, order, orderBy, getSearchList])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -115,13 +117,13 @@ const CustomTable = ({
   }
 
   const changeRowsPerPage = newValue => {
-    if (newValue > list.length) setPage(1)
+    if (newValue > rows.length) setPage(1)
     setRowsPerPage(newValue)
   }
 
   return (
     <Fragment>
-      {rows.length > 0 || isSearchParamsActive ? (
+      {rows.length > 0 || isSearchParamsActive || query ? (
         <Fragment>
           {showToolBar && (
             <CustomTableToolbar
@@ -156,13 +158,13 @@ const CustomTable = ({
                   columns={columns}
                   firstCell={firstCell}
                 />
-                {list && list.length ? (
+                {rows && rows.length ? (
                   <CustomTableBody
                     classes={classes}
                     defaultClasses={defaultClasses}
                     rowsPerPage={rowsPerPage}
                     page={clampedPage}
-                    list={list}
+                    rows={rows}
                     columns={columns}
                     firstCell={firstCell}
                     showPagination={showPagination}

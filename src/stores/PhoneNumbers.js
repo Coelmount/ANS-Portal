@@ -48,7 +48,8 @@ export class PhoneNumbers {
     perPage,
     filterValues,
     orderBy,
-    order
+    order,
+    numberLike
   ) => {
     const country = (filterValues && filterValues.country) || ''
     const type = (filterValues && filterValues.type) || ''
@@ -88,14 +89,11 @@ export class PhoneNumbers {
       }
     }
     const orderField = order || 'asc'
-
+    const numberLikeField = numberLike || ''
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&country_code=${countryCode}&type=${type}&in_use=${status}&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}] `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&country_code=${countryCode}&type=${type}&in_use=${status}&number_like=${numberLikeField} `
       )
-      // .get(
-      //   `/tenants/ans0001/groups/ans0001_grp2522/numbers?sorting=[{"field":"nsn","direction":"desc"}]&paging={"page_number": 1, "page_size": 10}&cols=["nsn","type","state", "country_code","connected_to"]&type=geo&country_code=%2B966&in_use=false`
-      // )
       .then(res => {
         const pagination = res.data.pagination
         const requestResult = res.data.numbers
