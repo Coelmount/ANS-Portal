@@ -326,11 +326,7 @@ const PhoneNumbers = observer(({ t }) => {
         <Fragment>
           {row.status !== 'free' ? (
             <Link
-<<<<<<< HEAD
               to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.rangeStart}`}
-=======
-              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.phoneNumber}`}
->>>>>>> SUBACCOUNT-View-phonenumbers
             >
               <Typography className={classes.assignedTitle}>
                 {t(row.status)}
