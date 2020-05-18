@@ -49,6 +49,10 @@ const useStyles = makeStyles(theme => ({
   numbersAmount: {
     marginLeft: 10
   },
+  toolbarWrap: {
+    padding: '30px 33px 30px 68px',
+    height: 'auto'
+  },
   toolbarButtonsBlockWrap: {
     display: 'flex',
     width: '100%',
