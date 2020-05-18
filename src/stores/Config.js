@@ -8,9 +8,11 @@ export class ConfigStore {
   config = {}
   customerStatuses = []
   timeZones = []
+  countries = []
   isLoadingConfig = true
   isLoadingCustomerStatuses = true
   isLoadingTimeZones = true
+  isLoadingCountries = true
 
   getConfig = () => {
     this.isLoadingConfig = true
@@ -63,6 +65,24 @@ export class ConfigStore {
         this.isLoadingTimeZones = false
       })
   }
+
+  getCountries = () => {
+    this.isLoadingCountries = true
+    return axios
+      .get(`/configs/applications/ANS_portal/countries`)
+      .then(res => {
+        try {
+          JSON.parse(res.data.data)
+        } catch (e) {
+          return
+        }
+        const data = JSON.parse(res.data.data)
+        this.countries = data.countries
+      })
+      .finally(() => {
+        this.isLoadingCountries = false
+      })
+  }
 }
 
 decorate(ConfigStore, {
@@ -72,9 +92,12 @@ decorate(ConfigStore, {
   isLoadingConfig: observable,
   isLoadingCustomerStatuses: observable,
   isLoadingTimeZones: observable,
+  isLoadingCountries: observable,
+  countries: observable,
   getConfig: action,
   getCustomerStatuses: action,
-  getTimeZones: action
+  getTimeZones: action,
+  getCountries: action
 })
 
 export default new ConfigStore()

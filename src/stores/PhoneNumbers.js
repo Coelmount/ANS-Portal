@@ -18,6 +18,11 @@ export class PhoneNumbers {
   rejectedPhoneNumbers = []
   isPhoneNumbersLoading = true
   totalPages = 0
+  filterValues = {
+    country: '',
+    type: '',
+    status: ''
+  }
 
   changeStep = step => {
     this.step = step
@@ -36,32 +41,80 @@ export class PhoneNumbers {
     this.totalPages = 0
   }
 
-  getPhoneNumbers = (customerId, groupId, page, perPage) => {
+  getPhoneNumbers = (
+    customerId,
+    groupId,
+    page,
+    perPage,
+    filterValues,
+    orderBy,
+    order,
+    numberLike
+  ) => {
+    const country = (filterValues && filterValues.country) || ''
+    const type = (filterValues && filterValues.type) || ''
+    const getStatus = () => {
+      if (filterValues && filterValues.status === 'assigned') return true
+      else if (filterValues && filterValues.status === 'available') return false
+      else return ''
+    }
+    const status = getStatus()
+    const countryCode =
+      (filterValues &&
+        filterValues.country &&
+        filterValues.country.phone.replace('+', '%2B')) ||
+      ''
     this.isPhoneNumbersLoading = true
+
+    let orderByField
+    switch (orderBy) {
+      case 'phoneNumber': {
+        orderByField = 'nsn'
+        break
+      }
+      case 'status': {
+        orderByField = 'connected_to'
+        break
+      }
+      case 'countryName': {
+        orderByField = 'country_code'
+        break
+      }
+      case 'type': {
+        orderByField = 'type'
+        break
+      }
+      default: {
+        orderByField = 'id'
+      }
+    }
+    const orderField = order || 'asc'
+    const numberLikeField = numberLike || ''
+
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"] `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&country_code=${countryCode}&type=${type}&in_use=${status}&number_like=${numberLikeField} `
       )
       .then(res => {
         const pagination = res.data.pagination
         const requestResult = res.data.numbers
         // -> this push part time solution for test range logic and state col colors(delete it when backend provide more data)
-        requestResult.push(
-          {
-            country_code: '+966',
-            id: 1,
-            nsn: '77777777',
-            connected_to: 'testaccount1',
-            type: 'geo'
-          },
-          {
-            country_code: '+966',
-            id: 2,
-            nsn: '888888888',
-            connected_to: null,
-            type: 'local'
-          }
-        )
+        // requestResult.push(
+        //   {
+        //     country_code: '+966',
+        //     id: 1,
+        //     nsn: '77777777',
+        //     connected_to: 'testaccount1',
+        //     type: 'geo'
+        //   },
+        //   {
+        //     country_code: '+966',
+        //     id: 2,
+        //     nsn: '888888888',
+        //     connected_to: null,
+        //     type: 'local'
+        //   }
+        // )
         // <-
         const transformedNumbers = requestResult.map(item => {
           const countryName = getCountryNameFromNumber(
@@ -90,6 +143,24 @@ export class PhoneNumbers {
         })
       )
       .finally(() => (this.isPhoneNumbersLoading = false))
+  }
+
+  setFilterValues = (country, type, status) => {
+    this.filterValues.country = country
+    this.filterValues.type = type
+    this.filterValues.status = status
+  }
+
+  deleteSearchParam = field => {
+    this.filterValues[field] = ''
+  }
+
+  clearFilterParams = () => {
+    this.filterValues = {
+      country: '',
+      type: '',
+      status: ''
+    }
   }
 
   setPhoneNumbers = phoneNumbers => {
@@ -139,13 +210,17 @@ decorate(PhoneNumbers, {
   phoneNumbers: observable,
   totalPages: observable,
   isPhoneNumbersLoading: observable,
+  filterValues: observable,
   changeStep: action,
   setPhoneNumbers: action,
   setSelectedPhoneNumber: action,
   postPhoneNumbers: action,
   createGroupsSinglePhone: action,
   setDefaultValues: action,
-  getPhoneNumbers: action
+  getPhoneNumbers: action,
+  setFilterValues: action,
+  deleteSearchParam: action,
+  clearFilterParams: action
 })
 
 export default new PhoneNumbers()

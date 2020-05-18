@@ -2,12 +2,13 @@ import React, { useEffect, useState, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams, Link } from 'react-router-dom'
+import { useDebounce } from 'use-debounce'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import Chip from '@material-ui/core/Chip'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-// import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import TitleBlock from 'components/TitleBlock'
@@ -15,14 +16,11 @@ import CustomTable from 'components/CustomTableBackendPagination'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
-import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
+import FiltersModal from './components/FiltersModal'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
-import RightArrowIcon from 'source/images/svg/right-arrow.svg'
-// import deleteIcon from 'source/images/svg/delete-icon.svg'
 import filtersIcon from 'source/images/svg/filters.svg'
 import useStyles from './styles'
 
@@ -32,26 +30,98 @@ const PhoneNumbers = observer(({ t }) => {
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
-  const [searchList, setSearchList] = useState([])
-  const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
-    false
-  )
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [order, setOrder] = useState('asc')
+  const [orderBy, setOrderBy] = useState('id')
+  const [numberLike, setNumberLike] = useState('')
+  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
+  const debouncedNumberLike = useDebounce(numberLike, 1000)[0]
+
   const {
     transformedPhoneNumbers,
     setPhoneNumbers,
     setDefaultValues,
     getPhoneNumbers,
     totalPages,
-    isPhoneNumbersLoading
+    isPhoneNumbersLoading,
+    filterValues,
+    deleteSearchParam
   } = PhoneNumbersStore
+
+  // Filter params ? TRUE : FALSE
+  const isSearchParamsActive =
+    !!filterValues.type || !!filterValues.status || false
 
   // initial request
   useEffect(() => {
-    getPhoneNumbers(match.customerId, match.groupId, page, rowsPerPage)
-  }, [page, rowsPerPage, match.customerId, match.groupId, getPhoneNumbers])
+    setPage(1)
+    getPhoneNumbers(
+      match.customerId,
+      match.groupId,
+      1,
+      rowsPerPage,
+      filterValues,
+      orderBy,
+      order,
+      debouncedNumberLike
+    )
+  }, [
+    match.customerId,
+    match.groupId,
+    filterValues.status,
+    filterValues.type,
+    filterValues.country.label,
+    orderBy,
+    order,
+    debouncedNumberLike
+  ])
 
+  // request on pagination change
+  useEffect(() => {
+    getPhoneNumbers(
+      match.customerId,
+      match.groupId,
+      page,
+      rowsPerPage,
+      filterValues,
+      orderBy,
+      order,
+      debouncedNumberLike
+    )
+  }, [page, rowsPerPage])
+
+  // request on search input change
+  // useEffect(() => {
+  //   setPage(1)
+  //   getPhoneNumbers(
+  //     match.customerId,
+  //     match.groupId,
+  //     1,
+  //     rowsPerPage,
+  //     filterValues,
+  //     orderBy,
+  //     order,
+  //     debouncedNumberLike
+  //   )
+  // }, [debouncedNumberLike])
+
+  //
+  // useEffect(() => {
+  //   // setPage(1)
+  //   getPhoneNumbers(
+  //     match.customerId,
+  //     match.groupId,
+  //     1,
+  //     rowsPerPage,
+  //     filterValues,
+  //     orderBy,
+  //     order,
+  //     debouncedNumberLike
+  //   )
+  // }, [filterValues.status, filterValues.type, filterValues.country.label])
+
+  // Unmount clear
   useEffect(() => {
     return () => {
       setDefaultValues()
@@ -65,9 +135,9 @@ const PhoneNumbers = observer(({ t }) => {
 
   // handle search
   useEffect(() => {
-    handleCheckedStates(searchList)
-    setPhoneNumbers(searchList)
-  }, [searchList, setPhoneNumbers])
+    handleCheckedStates(numbers)
+    setPhoneNumbers(numbers)
+  }, [numbers, setPhoneNumbers])
 
   // handle check/uncheck
   const selectNumbers = (checked, id) => {
@@ -81,11 +151,13 @@ const PhoneNumbers = observer(({ t }) => {
 
   // handle check all
   const handleSelectAll = () => {
-    const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
+    const newNumbers = numbers.map(item => {
+      return { ...item, checked: !selectAll }
+    })
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
-    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(searchList.length)
+    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(numbers.length)
   }
 
   // handler of check states schema
@@ -104,55 +176,84 @@ const PhoneNumbers = observer(({ t }) => {
     }
   }
 
-  const handleAddModalClick = () => {
-    setIsAddPhoneNumbersModalOpen(true)
-  }
-
-  const handleAddModalClose = () => {
-    setIsAddPhoneNumbersModalOpen(false)
-    setDefaultValues()
-  }
-
+  // handle hovers
   const changeHover = (newHover, id) => {
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
   }
 
+  // Filters open
+  const handleFiltersButtonClick = () => {
+    setIsFiltersModalOpen(true)
+  }
+
+  // Filters close
+  const handleFiltersModalClose = () => {
+    setIsFiltersModalOpen(false)
+    getPhoneNumbers(
+      match.customerId,
+      match.groupId,
+      page,
+      rowsPerPage,
+      filterValues,
+      orderBy,
+      order,
+      numberLike,
+      debouncedNumberLike
+    )
+  }
+
+  // Filters param chip remove
+  const handleDeleteSeachParam = field => {
+    deleteSearchParam(field)
+  }
+
   const titleData = {
     mainText: t('phone_numbers')
-    // iconCapture: t('add'),
-    // Icon: <AddOutlinedIcon />
   }
 
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
+        <Box className={classes.filterChipsWrap}>
+          {filterValues.type && (
+            <Chip
+              label={filterValues.type}
+              onDelete={() => handleDeleteSeachParam('type')}
+              color='primary'
+            />
+          )}
+          {filterValues.status && (
+            <Chip
+              label={filterValues.status}
+              onDelete={() => handleDeleteSeachParam('status')}
+              color='primary'
+            />
+          )}
+          {filterValues.country && (
+            <Chip
+              label={filterValues.country.label}
+              onDelete={() => handleDeleteSeachParam('country')}
+              color='primary'
+            />
+          )}
+        </Box>
+
         <Box className={classes.addCustomerWrap}>
-          <Box className={classes.addIconWrap}>
+          <Box
+            onClick={handleFiltersButtonClick}
+            className={classes.addIconWrap}
+          >
             <img
               className={classes.deleteIcon}
               src={filtersIcon}
-              alt='delete icon'
+              alt='filters'
             />
           </Box>
           <Typography className={classes.addCustomerTitle}>
             {t('filters')}
           </Typography>
         </Box>
-        {/* {numberOfChecked > 1 && (
-          <Box className={classes.addCustomerWrap}>
-            <Box className={classes.addIconWrap}>
-              <img
-                className={classes.deleteIcon}
-                src={deleteIcon}
-                alt='delete icon'
-              />
-            </Box>
-            <Typography className={classes.addCustomerTitle}>
-              {t('delete')}
-            </Typography>
-          </Box>
-        )} */}
       </Box>
     )
   }
@@ -189,7 +290,7 @@ const PhoneNumbers = observer(({ t }) => {
                 onChange={() => selectNumbers(true, row.id)}
               />
             ) : (
-              i + 1
+              (page - 1) * rowsPerPage + i + 1
             )}
           </div>
         ),
@@ -225,7 +326,11 @@ const PhoneNumbers = observer(({ t }) => {
         <Fragment>
           {row.status !== 'free' ? (
             <Link
+<<<<<<< HEAD
               to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.rangeStart}`}
+=======
+              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/translations/${row.phoneNumber}`}
+>>>>>>> SUBACCOUNT-View-phonenumbers
             >
               <Typography className={classes.assignedTitle}>
                 {t(row.status)}
@@ -261,9 +366,9 @@ const PhoneNumbers = observer(({ t }) => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
+          <TitleBlock titleData={titleData} />
         </CustomContainer>
-        {isPhoneNumbersLoading ? (
+        {isPhoneNumbersLoading && !isSearchParamsActive && !numberLike ? (
           <Loading />
         ) : (
           <CustomTable
@@ -273,19 +378,27 @@ const PhoneNumbers = observer(({ t }) => {
             columns={columns}
             searchCriterias={['countryName', 'phoneNumber', 'type', 'state']}
             extraToolbarBlock={toolbarButtonsBlock}
-            getSearchList={setSearchList}
             page={page}
             setPage={setPage}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
+            order={order}
+            setOrder={setOrder}
+            orderBy={orderBy}
+            setOrderBy={setOrderBy}
             totalPages={totalPages}
+            query={numberLike}
+            setQuery={setNumberLike}
+            isSearchParamsActive={isSearchParamsActive}
+            isLoadingData={isPhoneNumbersLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
           />
         )}
-        {isAddPhoneNumbersModalOpen && (
-          <AddPhoneNumbersModal
-            open={isAddPhoneNumbersModalOpen}
-            handleClose={handleAddModalClose}
+        {isFiltersModalOpen && (
+          <FiltersModal
+            open={isFiltersModalOpen}
+            handleClose={handleFiltersModalClose}
+            setPage={setPage}
           />
         )}
       </Paper>

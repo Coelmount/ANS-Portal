@@ -11,24 +11,25 @@ const CustomTableBody = ({
   defaultClasses,
   rowsPerPage,
   page,
-  list,
+  rows,
   columns,
   firstCell,
   showPagination
 }) => {
-  const rows = []
+  const list = []
   for (
     let i = 0,
       length = showPagination
-        ? Math.min(i + rowsPerPage, list.length)
-        : list.length,
+        ? Math.min(i + rowsPerPage, rows.length)
+        : rows.length,
       row,
       labelId;
     i < length;
     i++
   ) {
-    row = list[i]
-    rows.push(
+    row = rows[i]
+
+    list.push(
       <TableRow
         className={`${defaultClasses.tableRow} ${classes.tableRow}`}
         tabIndex={-1}
@@ -56,7 +57,7 @@ const CustomTableBody = ({
   }
   return (
     <TableBody className={`${defaultClasses.tbody} ${classes.tbody}`}>
-      {rows}
+      {list}
     </TableBody>
   )
 }

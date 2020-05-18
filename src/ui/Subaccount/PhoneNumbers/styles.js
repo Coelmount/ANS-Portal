@@ -49,12 +49,14 @@ const useStyles = makeStyles(theme => ({
   numbersAmount: {
     marginLeft: 10
   },
+  toolbarWrap: {
+    padding: '30px 33px 30px 68px',
+    height: 'auto'
+  },
   toolbarButtonsBlockWrap: {
     display: 'flex',
-    justifyContent: 'space-between',
     width: '100%',
-    marginRight: 40,
-    marginLeft: 40
+    marginRight: 10
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
@@ -131,6 +133,12 @@ const useStyles = makeStyles(theme => ({
   statusCell: {
     '& > a': {
       textDecoration: 'none'
+    }
+  },
+  filterChipsWrap: {
+    marginRight: 25,
+    '& > div': {
+      marginRight: 10
     }
   }
 }))

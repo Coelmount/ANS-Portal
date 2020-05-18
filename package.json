@@ -3,10 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+<<<<<<< HEAD
     "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.53",
     "@material-ui/utils": "^4.9.12",
+=======
+    "@material-ui/core": "^4.9.10",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.53",
+>>>>>>> SUBACCOUNT-View-phonenumbers
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "countries-and-timezones": "^2.2.0",
@@ -29,7 +35,8 @@
     "react-input-mask": "^2.0.4",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.1"
+    "react-scripts": "3.3.1",
+    "use-debounce": "^3.4.2"
   },
   "scripts": {
     "start": "react-scripts start",

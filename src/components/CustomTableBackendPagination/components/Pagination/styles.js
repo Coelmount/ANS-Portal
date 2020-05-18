@@ -5,7 +5,7 @@ const useAdditionalStyles = makeStyles({
     color: page === 1 ? '#C4C4C4' : '#00678F'
   }),
   nextPaginationIcon: ({ page, totalPages }) => ({
-    color: page === totalPages ? '#C4C4C4' : '#00678F'
+    color: page > totalPages || page === totalPages ? '#C4C4C4' : '#00678F'
   })
 })
 
