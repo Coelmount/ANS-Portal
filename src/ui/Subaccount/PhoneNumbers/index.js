@@ -55,31 +55,6 @@ const PhoneNumbers = observer(({ t }) => {
 
   // initial request
   useEffect(() => {
-    getPhoneNumbers(
-      match.customerId,
-      match.groupId,
-      page,
-      rowsPerPage,
-      filterValues,
-      orderBy,
-      order,
-      debouncedNumberLike
-    )
-  }, [
-    page,
-    rowsPerPage,
-    match.customerId,
-    match.groupId,
-    getPhoneNumbers,
-    filterValues.status,
-    filterValues.type,
-    filterValues.country.label,
-    orderBy,
-    order
-  ])
-
-  // request on search input change
-  useEffect(() => {
     setPage(1)
     getPhoneNumbers(
       match.customerId,
@@ -91,7 +66,60 @@ const PhoneNumbers = observer(({ t }) => {
       order,
       debouncedNumberLike
     )
-  }, [debouncedNumberLike])
+  }, [
+    match.customerId,
+    match.groupId,
+    filterValues.status,
+    filterValues.type,
+    filterValues.country.label,
+    orderBy,
+    order,
+    debouncedNumberLike
+  ])
+
+  // request on pagination change
+  useEffect(() => {
+    getPhoneNumbers(
+      match.customerId,
+      match.groupId,
+      page,
+      rowsPerPage,
+      filterValues,
+      orderBy,
+      order,
+      debouncedNumberLike
+    )
+  }, [page, rowsPerPage])
+
+  // request on search input change
+  // useEffect(() => {
+  //   setPage(1)
+  //   getPhoneNumbers(
+  //     match.customerId,
+  //     match.groupId,
+  //     1,
+  //     rowsPerPage,
+  //     filterValues,
+  //     orderBy,
+  //     order,
+  //     debouncedNumberLike
+  //   )
+  // }, [debouncedNumberLike])
+
+  //
+  // useEffect(() => {
+  //   // setPage(1)
+  //   getPhoneNumbers(
+  //     match.customerId,
+  //     match.groupId,
+  //     1,
+  //     rowsPerPage,
+  //     filterValues,
+  //     orderBy,
+  //     order,
+  //     debouncedNumberLike
+  //   )
+  // }, [filterValues.status, filterValues.type, filterValues.country.label])
 
   // Unmount clear
   useEffect(() => {
