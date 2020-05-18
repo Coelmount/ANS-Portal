@@ -69,7 +69,7 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
-        {t('Filters')}
+        {t('filters')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
