@@ -123,16 +123,6 @@ const FiltersModal = ({ open, t, handleClose }) => {
             ))}
           </Box>
         </Box>
-        <Box>
-          <Button
-            variant='outlined'
-            color='primary'
-            className={classes.cancelButton}
-            onClick={handleClose}
-          >
-            {t('clear_all')}
-          </Button>
-        </Box>
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
         <Button
@@ -141,7 +131,7 @@ const FiltersModal = ({ open, t, handleClose }) => {
           className={classes.cancelButton}
           onClick={handleClose}
         >
-          {t('cancel')}
+          {t('clear_all')}
         </Button>
         <Button
           variant='contained'

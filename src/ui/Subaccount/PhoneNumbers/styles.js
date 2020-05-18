@@ -51,10 +51,8 @@ const useStyles = makeStyles(theme => ({
   },
   toolbarButtonsBlockWrap: {
     display: 'flex',
-    justifyContent: 'space-between',
     width: '100%',
-    marginRight: 40,
-    marginLeft: 40
+    marginRight: 10
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
@@ -132,6 +130,9 @@ const useStyles = makeStyles(theme => ({
     '& > a': {
       textDecoration: 'none'
     }
+  },
+  filterChipsWrap: {
+    marginRight: 25
   }
 }))
 

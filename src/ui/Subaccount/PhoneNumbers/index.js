@@ -6,6 +6,7 @@ import { useParams, Link } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import Chip from '@material-ui/core/Chip'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
@@ -48,13 +49,31 @@ const PhoneNumbers = observer(({ t }) => {
     getPhoneNumbers,
     totalPages,
     isPhoneNumbersLoading,
-    filterValues
+    filterValues,
+    deleteSearchParam
   } = PhoneNumbersStore
+
+  const isSearchParamsActive =
+    !!filterValues.type || !!filterValues.status || false
 
   // initial request
   useEffect(() => {
-    getPhoneNumbers(match.customerId, match.groupId, page, rowsPerPage)
-  }, [page, rowsPerPage, match.customerId, match.groupId, getPhoneNumbers])
+    getPhoneNumbers(
+      match.customerId,
+      match.groupId,
+      page,
+      rowsPerPage,
+      filterValues
+    )
+  }, [
+    page,
+    rowsPerPage,
+    match.customerId,
+    match.groupId,
+    getPhoneNumbers,
+    filterValues.status,
+    filterValues.type
+  ])
 
   useEffect(() => {
     return () => {
@@ -135,18 +154,36 @@ const PhoneNumbers = observer(({ t }) => {
       rowsPerPage,
       filterValues
     )
-    console.log(filterValues, 'request')
+  }
+
+  const handleDeleteSeachParam = field => {
+    deleteSearchParam(field)
   }
 
   const titleData = {
     mainText: t('phone_numbers')
-    // iconCapture: t('add'),
-    // Icon: <AddOutlinedIcon />
   }
 
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
+        <Box className={classes.filterChipsWrap}>
+          {filterValues.type && (
+            <Chip
+              label={filterValues.type}
+              onDelete={() => handleDeleteSeachParam('type')}
+              color='primary'
+            />
+          )}
+          {filterValues.status && (
+            <Chip
+              label={filterValues.status}
+              onDelete={() => handleDeleteSeachParam('status')}
+              color='primary'
+            />
+          )}
+        </Box>
+
         <Box className={classes.addCustomerWrap}>
           <Box
             onClick={handleFiltersButtonClick}
@@ -155,27 +192,13 @@ const PhoneNumbers = observer(({ t }) => {
             <img
               className={classes.deleteIcon}
               src={filtersIcon}
-              alt='fileters'
+              alt='filters'
             />
           </Box>
           <Typography className={classes.addCustomerTitle}>
             {t('filters')}
           </Typography>
         </Box>
-        {/* {numberOfChecked > 1 && (
-          <Box className={classes.addCustomerWrap}>
-            <Box className={classes.addIconWrap}>
-              <img
-                className={classes.deleteIcon}
-                src={deleteIcon}
-                alt='delete icon'
-              />
-            </Box>
-            <Typography className={classes.addCustomerTitle}>
-              {t('delete')}
-            </Typography>
-          </Box>
-        )} */}
       </Box>
     )
   }
@@ -286,7 +309,7 @@ const PhoneNumbers = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
         </CustomContainer>
-        {isPhoneNumbersLoading ? (
+        {isPhoneNumbersLoading && !isSearchParamsActive ? (
           <Loading />
         ) : (
           <CustomTable
@@ -302,6 +325,8 @@ const PhoneNumbers = observer(({ t }) => {
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             totalPages={totalPages}
+            isSearchParamsActive={isSearchParamsActive}
+            isLoadingData={isPhoneNumbersLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
           />
         )}
