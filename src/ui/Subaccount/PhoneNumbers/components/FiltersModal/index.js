@@ -33,15 +33,15 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
   const { getCountries, countries, isLoadingCountries } = ConfigStore
 
   const checkboxRows = [
-    { name: 'local', amount: 23 },
-    { name: 'geo', amount: 18 },
-    { name: 'toll-free', amount: 54 }
+    { name: 'local' },
+    { name: 'geo' },
+    { name: 'toll-free' }
   ]
 
   const switchRows = [
-    { name: 'all', amount: null },
-    { name: 'assigned', amount: 10 },
-    { name: 'available', amount: 17 }
+    { name: 'all' },
+    { name: 'assigned' },
+    { name: 'available' }
   ]
 
   useEffect(() => {
@@ -114,7 +114,6 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
                     />
                     <Typography>
                       <span className={classes.nameTitle}>{item.name}</span>
-                      <span>{`(${item.amount})`}</span>
                     </Typography>
                   </Box>
                 ))}
