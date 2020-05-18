@@ -210,7 +210,9 @@ const Translations = observer(({ t }) => {
               className={classnames(classes.toolbarButton, {
                 [classes.disabledButton]: !isAnyChecked
               })}
-              onClick={() => setShowMultipleUpdateANSNumbers(true)}
+              onClick={() =>
+                isAnyChecked && setShowMultipleUpdateANSNumbers(true)
+              }
             >
               <UpdateIcon className={classes.updateIcon} />
             </Button>
