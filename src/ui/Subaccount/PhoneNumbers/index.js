@@ -16,14 +16,11 @@ import CustomTable from 'components/CustomTableBackendPagination'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
-import AddPhoneNumbersModal from './components/AddPhoneNumbersModal'
 import FiltersModal from './components/FiltersModal'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
-import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 import filtersIcon from 'source/images/svg/filters.svg'
 import useStyles from './styles'
 
@@ -33,10 +30,6 @@ const PhoneNumbers = observer(({ t }) => {
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
-  const [searchList, setSearchList] = useState([])
-  const [isAddPhoneNumbersModalOpen, setIsAddPhoneNumbersModalOpen] = useState(
-    false
-  )
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [order, setOrder] = useState('asc')
@@ -56,6 +49,7 @@ const PhoneNumbers = observer(({ t }) => {
     deleteSearchParam
   } = PhoneNumbersStore
 
+  // Filter params ? TRUE : FALSE
   const isSearchParamsActive =
     !!filterValues.type || !!filterValues.status || false
 
@@ -84,6 +78,7 @@ const PhoneNumbers = observer(({ t }) => {
     order
   ])
 
+  // request on search input change
   useEffect(() => {
     setPage(1)
     getPhoneNumbers(
@@ -98,6 +93,7 @@ const PhoneNumbers = observer(({ t }) => {
     )
   }, [debouncedNumberLike])
 
+  // Unmount clear
   useEffect(() => {
     return () => {
       setDefaultValues()
@@ -111,9 +107,9 @@ const PhoneNumbers = observer(({ t }) => {
 
   // handle search
   useEffect(() => {
-    handleCheckedStates(searchList)
-    setPhoneNumbers(searchList)
-  }, [searchList, setPhoneNumbers])
+    handleCheckedStates(numbers)
+    setPhoneNumbers(numbers)
+  }, [numbers, setPhoneNumbers])
 
   // handle check/uncheck
   const selectNumbers = (checked, id) => {
@@ -127,11 +123,13 @@ const PhoneNumbers = observer(({ t }) => {
 
   // handle check all
   const handleSelectAll = () => {
-    const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
+    const newNumbers = numbers.map(item => {
+      return { ...item, checked: !selectAll }
+    })
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
-    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(searchList.length)
+    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(numbers.length)
   }
 
   // handler of check states schema
@@ -150,24 +148,18 @@ const PhoneNumbers = observer(({ t }) => {
     }
   }
 
-  const handleAddModalClick = () => {
-    setIsAddPhoneNumbersModalOpen(true)
-  }
-
-  const handleAddModalClose = () => {
-    setIsAddPhoneNumbersModalOpen(false)
-    setDefaultValues()
-  }
-
+  // handle hovers
   const changeHover = (newHover, id) => {
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
   }
 
+  // Filters open
   const handleFiltersButtonClick = () => {
     setIsFiltersModalOpen(true)
   }
 
+  // Filters close
   const handleFiltersModalClose = () => {
     setIsFiltersModalOpen(false)
     getPhoneNumbers(
@@ -183,6 +175,7 @@ const PhoneNumbers = observer(({ t }) => {
     )
   }
 
+  // Filters param chip remove
   const handleDeleteSeachParam = field => {
     deleteSearchParam(field)
   }
@@ -341,7 +334,7 @@ const PhoneNumbers = observer(({ t }) => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} handleOpen={handleAddModalClick} />
+          <TitleBlock titleData={titleData} />
         </CustomContainer>
         {isPhoneNumbersLoading && !isSearchParamsActive && !numberLike ? (
           <Loading />
@@ -353,7 +346,6 @@ const PhoneNumbers = observer(({ t }) => {
             columns={columns}
             searchCriterias={['countryName', 'phoneNumber', 'type', 'state']}
             extraToolbarBlock={toolbarButtonsBlock}
-            getSearchList={setSearchList}
             page={page}
             setPage={setPage}
             rowsPerPage={rowsPerPage}
@@ -368,12 +360,6 @@ const PhoneNumbers = observer(({ t }) => {
             isSearchParamsActive={isSearchParamsActive}
             isLoadingData={isPhoneNumbersLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
-          />
-        )}
-        {isAddPhoneNumbersModalOpen && (
-          <AddPhoneNumbersModal
-            open={isAddPhoneNumbersModalOpen}
-            handleClose={handleAddModalClose}
           />
         )}
         {isFiltersModalOpen && (

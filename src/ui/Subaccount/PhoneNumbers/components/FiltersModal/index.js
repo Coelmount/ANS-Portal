@@ -57,6 +57,7 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
   }, [filterValues.country, filterValues.type, filterValues.status])
 
   const handleClearButtonClick = () => {
+    setPage(1)
     handleClose()
     clearFilterParams()
   }

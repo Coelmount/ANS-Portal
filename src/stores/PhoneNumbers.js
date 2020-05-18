@@ -149,8 +149,6 @@ export class PhoneNumbers {
     this.filterValues.country = country
     this.filterValues.type = type
     this.filterValues.status = status
-    // this.getPhoneNumbers()
-    // console.log(country, type, status)
   }
 
   deleteSearchParam = field => {

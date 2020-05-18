@@ -71,7 +71,6 @@ export class ConfigStore {
     return axios
       .get(`/configs/applications/ANS_portal/countries`)
       .then(res => {
-        console.log(res)
         try {
           JSON.parse(res.data.data)
         } catch (e) {
