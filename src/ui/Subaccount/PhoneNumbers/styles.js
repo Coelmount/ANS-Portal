@@ -132,7 +132,10 @@ const useStyles = makeStyles(theme => ({
     }
   },
   filterChipsWrap: {
-    marginRight: 25
+    marginRight: 25,
+    '& > div': {
+      marginRight: 10
+    }
   }
 }))
 
