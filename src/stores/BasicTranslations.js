@@ -11,9 +11,12 @@ export class BasicTranslations {
   selectedPhoneNumber = null
   selectedInstance = null
   isBasicTranslationsNumbersLoading = true
+  isAvailableNumbersForAddInstanceLoading = true
   basicTranslationsNumbers = []
   multipleCounter = { success: 0, refused: 0, error: 0, total: 0, count: 0 }
   resultMultipleAddANSBasic = []
+  totalPagesAvailableNumbers = 0
+  availableNumbersForAddInstance = []
 
   changeStep = step => {
     this.step = step
@@ -99,6 +102,65 @@ export class BasicTranslations {
   setMultipleCounter = (variable, value) => {
     set(this.multipleCounter, variable, value)
   }
+
+  getAvailableNumbersForAddInstance = (
+    customerId,
+    groupId,
+    page,
+    perPage,
+    orderBy,
+    order,
+    numberLike
+  ) => {
+    this.isAvailableNumbersForAddInstanceLoading = true
+
+    let orderByField
+    switch (orderBy) {
+      case 'phoneNumber': {
+        orderByField = 'nsn'
+        break
+      }
+      case 'type': {
+        orderByField = 'type'
+        break
+      }
+      default: {
+        orderByField = 'id'
+      }
+    }
+    const orderField = order || 'asc'
+    const numberLikeField = numberLike || ''
+
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=basic&in_use=false&number_like=${numberLikeField} `
+      )
+      .then(res => {
+        const pagination = res.data.pagination
+        const requestResult = res.data.numbers
+
+        const transformedNumbers = requestResult.map(item => {
+          return {
+            ...item,
+            phoneNumber: `${item.country_code} ${item.nsn}`,
+            checked: false,
+            hover: false
+          }
+        })
+
+        this.availableNumbersForAddInstance = transformedNumbers
+        this.totalPagesAvailableNumbers = pagination[2]
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch phone numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => (this.isAvailableNumbersForAddInstanceLoading = false))
+  }
 }
 
 decorate(BasicTranslations, {
@@ -108,6 +170,9 @@ decorate(BasicTranslations, {
   basicTranslationsNumbers: observable,
   multipleCounter: observable,
   resultMultipleAddANSBasic: observable,
+  isAvailableNumbersForAddInstanceLoading: observable,
+  totalPagesAvailableNumbers: observable,
+  availableNumbersForAddInstance: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
@@ -116,7 +181,8 @@ decorate(BasicTranslations, {
   postAccessNumber: action,
   getBasicTranslationsNumbers: action,
   postAddMultipleANSBasic: action,
-  setMultipleCounter: action
+  setMultipleCounter: action,
+  getAvailableNumbersForAddInstance: action
 })
 
 export default new BasicTranslations()

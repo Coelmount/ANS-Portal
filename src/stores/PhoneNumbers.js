@@ -56,6 +56,7 @@ export class PhoneNumbers {
     order,
     numberLike
   ) => {
+    this.isPhoneNumbersLoading = true
     const country = (filterValues && filterValues.country) || ''
     const type = (filterValues && filterValues.type) || ''
     const getStatus = () => {
@@ -69,7 +70,6 @@ export class PhoneNumbers {
         filterValues.country &&
         filterValues.country.phone.replace('+', '%2B')) ||
       ''
-    this.isPhoneNumbersLoading = true
 
     let orderByField
     switch (orderBy) {

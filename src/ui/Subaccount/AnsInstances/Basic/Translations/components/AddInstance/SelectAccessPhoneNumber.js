@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useDebounce } from 'use-debounce'
+import { useParams } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -12,74 +14,86 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
-import CustomTable from 'components/CustomTable'
+import CustomTable from 'components/CustomTableBackendPagination'
 import Checkbox from 'components/Checkbox'
+import Loading from 'components/Loading'
 
 import useStyles from './styles'
 
-const PHONE_NUMBERS = [
-  {
-    id: 1,
-    country: 'South Africa',
-    phoneNumber: '+27 53423437',
-    type: 'local',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 2,
-    country: 'Ghana',
-    phoneNumber: '+31 53423467',
-    type: 'local',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 3,
-    country: 'South Africa',
-    phoneNumber: '+27 53424437',
-    type: 'geo',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 4,
-    country: 'South Africa',
-    phoneNumber: '+27 53423467',
-    type: 'local',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 5,
-    country: 'South Africa',
-    phoneNumber: '+27 53423438',
-    type: 'local',
-    checked: false,
-    hover: false
-  },
-  {
-    id: 6,
-    country: 'South Africa',
-    phoneNumber: '+27 53423431',
-    type: 'local',
-    checked: false,
-    hover: false
-  }
-]
-
 const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   const classes = useStyles()
+  const match = useParams()
 
-  const { step, changeStep, updateSelectedPhoneNumber } = BasicTranslationsStore
+  const {
+    step,
+    changeStep,
+    updateSelectedPhoneNumber,
+    getAvailableNumbersForAddInstance,
+    totalPagesAvailableNumbers,
+    isAvailableNumbersForAddInstanceLoading,
+    availableNumbersForAddInstance
+  } = BasicTranslationsStore
 
-  const [selectedList, setSelectedList] = useState(PHONE_NUMBERS)
+  const [numbers, setNumbers] = useState([])
   const [selectedNumber, setSelectedNumber] = useState(null)
-  const [isAnyChecked, setIsAnyChecked] = useState(false)
-  const [searchList, setSearchList] = useState([])
+  const [page, setPage] = useState(1)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [order, setOrder] = useState('asc')
+  const [orderBy, setOrderBy] = useState('id')
+  const [numberLike, setNumberLike] = useState('')
+  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
+  const debouncedNumberLike = useDebounce(numberLike, 1000)[0]
+
+  // Search params ? TRUE : FALSE
+  const isSearchParamsActive = !!debouncedNumberLike || false
+
+  // intial request
+  useEffect(() => {
+    getAvailableNumbersForAddInstance(
+      match.customerId,
+      match.groupId,
+      1,
+      rowsPerPage,
+      orderBy,
+      order,
+      debouncedNumberLike
+    )
+  }, [])
+
+  // set numbers in local state from store
+  useEffect(() => {
+    setNumbers(availableNumbersForAddInstance)
+  }, [availableNumbersForAddInstance])
+
+  // onUpdate search/sorting
+  useEffect(() => {
+    setPage(1)
+    getAvailableNumbersForAddInstance(
+      match.customerId,
+      match.groupId,
+      1,
+      rowsPerPage,
+      orderBy,
+      order,
+      debouncedNumberLike
+    )
+  }, [debouncedNumberLike, orderBy, order])
+
+  // onUpdate pagination
+  useEffect(() => {
+    getAvailableNumbersForAddInstance(
+      match.customerId,
+      match.groupId,
+      page,
+      rowsPerPage,
+      orderBy,
+      order,
+      debouncedNumberLike
+    )
+  }, [page, rowsPerPage])
 
   const selectInstance = (checked, id) => {
-    const newSelected = selectedList.map(item => {
+    const newSelected = numbers.map(item => {
       let result = {}
       if (item.id === id) {
         result = {
@@ -97,14 +111,14 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
       }
       return result
     })
-    setSelectedList(newSelected)
+    setNumbers(newSelected)
   }
 
   const changeHover = (newHover, id) => {
-    const newSelected = [...selectedList]
-    const index = selectedList.findIndex(el => el.id === id)
+    const newSelected = [...numbers]
+    const index = numbers.findIndex(el => el.id === id)
     newSelected[index].hover = newHover
-    setSelectedList(newSelected)
+    setNumbers(newSelected)
   }
 
   const handleNextButtonClick = () => {
@@ -138,7 +152,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
                 onChange={() => selectInstance(true, row.id)}
               />
             ) : (
-              i + 1
+              (page - 1) * rowsPerPage + i + 1
             )}
           </div>
         ),
@@ -156,10 +170,6 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
     {
       id: 'type',
       label: 'type'
-    },
-    {
-      id: 'country',
-      label: 'country'
     }
   ]
 
@@ -184,17 +194,34 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
             {t('select_access_ph_num')}
           </Typography>
         </Box>
-        <CustomTable
-          classes={classes}
-          columns={columns}
-          firstCell={false}
-          showPagination={true}
-          rows={selectedList}
-          searchCriterias={['phoneNumber', 'type', 'country']}
-          getSearchList={setSearchList}
-          noAvailableDataMessage={t('no_access_numbers_available')}
-          isModal={true}
-        />
+
+        {isAvailableNumbersForAddInstanceLoading &&
+        !isSearchParamsActive &&
+        !numberLike ? (
+          <Loading />
+        ) : (
+          <CustomTable
+            firstCell={false}
+            classes={classes}
+            rows={numbers}
+            columns={columns}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            order={order}
+            setOrder={setOrder}
+            orderBy={orderBy}
+            setOrderBy={setOrderBy}
+            totalPages={totalPagesAvailableNumbers}
+            query={numberLike}
+            setQuery={setNumberLike}
+            isSearchParamsActive={isSearchParamsActive}
+            isLoadingData={isAvailableNumbersForAddInstanceLoading}
+            noAvailableDataMessage={t('no_phone_numbers_available')}
+            isModal={true}
+          />
+        )}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
@@ -210,7 +237,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
           color='primary'
           className={classes.nextButton}
           onClick={handleNextButtonClick}
-          disabled={!selectedList.some(item => item.checked === true)}
+          disabled={!numbers.some(item => item.checked === true)}
         >
           {t('next')}
         </Button>
