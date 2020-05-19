@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiDialog-paperWidthSm': {
       width: '651px'

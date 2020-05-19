@@ -91,21 +91,17 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   checkbox: {
-    boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
-    width: '18px',
-    height: '18px',
-    marginRight: '9px',
-    padding: 0,
-    '& .MuiSvgIcon-root': {
-      color: theme.palette.primary.main
-    },
-    '& .MuiIconButton-root': {
-      padding: 0
-    }
+    paddingBottom: 0
   },
-  wrapper: {
+  countryInput: {
     width: 254,
-    marginTop: 40
+    marginTop: 40,
+    marginBottom: 30
+  },
+  destinationInput: {
+    width: 300,
+    height: 300,
+    background: 'red'
   },
   modalDialog: {
     minHeight: '100%',

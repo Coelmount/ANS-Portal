@@ -44,6 +44,7 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
     { name: 'available' }
   ]
 
+  // get countries array for CountryInput
   useEffect(() => {
     getCountries()
   }, [getCountries])

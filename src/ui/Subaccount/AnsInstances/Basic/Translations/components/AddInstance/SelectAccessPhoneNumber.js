@@ -17,6 +17,7 @@ import BasicTranslationsStore from 'stores/BasicTranslations'
 import CustomTable from 'components/CustomTableBackendPagination'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
+import usePreviousValue from 'utils/hooks/usePreviousValue'
 
 import useStyles from './styles'
 
@@ -44,21 +45,9 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
   const debouncedNumberLike = useDebounce(numberLike, 1000)[0]
 
+  const prevDebouncedNumberLike = usePreviousValue(debouncedNumberLike)
   // Search params ? TRUE : FALSE
   const isSearchParamsActive = !!debouncedNumberLike || false
-
-  // intial request
-  useEffect(() => {
-    getAvailableNumbersForAddInstance(
-      match.customerId,
-      match.groupId,
-      1,
-      rowsPerPage,
-      orderBy,
-      order,
-      debouncedNumberLike
-    )
-  }, [])
 
   // set numbers in local state from store
   useEffect(() => {
@@ -88,10 +77,12 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
       rowsPerPage,
       orderBy,
       order,
-      debouncedNumberLike
+      debouncedNumberLike,
+      getAvailableNumbersForAddInstance
     )
   }, [page, rowsPerPage])
 
+  // set/remove checked in state
   const selectInstance = (checked, id) => {
     const newSelected = numbers.map(item => {
       let result = {}
@@ -121,6 +112,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
     setNumbers(newSelected)
   }
 
+  // Next step
   const handleNextButtonClick = () => {
     updateSelectedPhoneNumber(selectedNumber)
     changeStep(2)
