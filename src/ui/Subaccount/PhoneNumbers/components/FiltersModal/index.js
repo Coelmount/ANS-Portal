@@ -10,6 +10,10 @@ import IconButton from '@material-ui/core/IconButton'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
 import CloseIcon from '@material-ui/icons/Close'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
@@ -32,11 +36,7 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
   const { setFilterValues, clearFilterParams, filterValues } = PhoneNumbersStore
   const { getCountries, countries, isLoadingCountries } = ConfigStore
 
-  const checkboxRows = [
-    { name: 'local' },
-    { name: 'geo' },
-    { name: 'toll-free' }
-  ]
+  const radioRows = [{ name: 'local' }, { name: 'geo' }, { name: 'toll-free' }]
 
   const switchRows = [
     { name: 'all' },
@@ -103,20 +103,28 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
                   {t('type')}
                 </Typography>
               </Box>
-              <Box className={classes.checkboxesWrap}>
-                {checkboxRows.map(item => (
-                  <Box className={classes.checkboxRow} key={item.name}>
-                    <Checkbox
-                      checked={item.name === selectedType}
+
+              <Box className={classes.radioWrap}>
+                <RadioGroup>
+                  {radioRows.map(item => (
+                    <FormControlLabel
+                      checked={selectedType === item.name}
                       onChange={e =>
                         setSelectedType(e.target.checked ? item.name : '')
                       }
+                      label={item.name}
+                      control={
+                        <Radio
+                          classes={{
+                            root: classes.radioButton,
+                            checked: classes.checked
+                          }}
+                        />
+                      }
+                      key={item.name}
                     />
-                    <Typography>
-                      <span className={classes.nameTitle}>{item.name}</span>
-                    </Typography>
-                  </Box>
-                ))}
+                  ))}
+                </RadioGroup>
               </Box>
             </Box>
 

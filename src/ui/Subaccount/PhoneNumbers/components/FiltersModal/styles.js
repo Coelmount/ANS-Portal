@@ -63,12 +63,8 @@ const useStyles = makeStyles(theme => ({
     width: 335,
     marginLeft: CONTERN_LEFT_MARGIN
   },
-  checkboxesWrap: {
+  radioWrap: {
     marginLeft: CONTERN_LEFT_MARGIN
-  },
-  checkboxRow: {
-    display: 'flex',
-    marginBottom: 15
   },
   nameTitle: {
     marginLeft: 12,
@@ -82,7 +78,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '60%'
-  }
+  },
+  radioButton: {
+    '&$checked': {
+      color: theme.palette.primary.main
+    }
+  },
+  checked: {}
 }))
 
 export default useStyles
