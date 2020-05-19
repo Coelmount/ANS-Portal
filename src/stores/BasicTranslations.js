@@ -62,9 +62,9 @@ export class BasicTranslations {
             accessCountry:
               item.access_number &&
               getCountryNameFromNumber(item.access_number),
-            destinationCountry: getCountryNameFromNumber(
-              item.destination_number
-            ),
+            destinationCountry:
+              item.destination_number &&
+              getCountryNameFromNumber(item.destination_number),
             ...item
           }
         })
