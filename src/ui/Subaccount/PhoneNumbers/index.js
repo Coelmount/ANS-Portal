@@ -49,9 +49,13 @@ const PhoneNumbers = observer(({ t }) => {
     deleteSearchParam
   } = PhoneNumbersStore
 
-  // Filter params ? TRUE : FALSE
+  // Filter or search params ? TRUE : FALSE
   const isSearchParamsActive =
-    !!filterValues.type || !!filterValues.status || false
+    !!filterValues.type ||
+    !!filterValues.status ||
+    !!filterValues.country.label ||
+    !!debouncedNumberLike ||
+    false
 
   // initial request
   useEffect(() => {
