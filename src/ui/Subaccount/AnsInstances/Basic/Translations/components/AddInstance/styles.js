@@ -8,17 +8,16 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     position: 'absolute',
     transform: 'translate(-50%, 0)',
-    background: '#F9F9F9',
-    marginTop: 40,
+    background: 'transparent',
+    margin: 0,
     alignItems: 'center',
-    marginBottom: 22,
     justifyContent: 'center'
   },
   toolbarWrap: {
     paddingLeft: 44
   },
   table: {
-    marginTop: 38
+    marginTop: 13
   },
   thead: {
     backgroundColor: 'white',
@@ -54,13 +53,24 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
+  // checkboxCell: {
+  //   display: 'flex',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   height: 'inherit',
+  //   padding: 0,
+  //   marginLeft: '30px'
+  // },
   checkboxCell: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: 'inherit',
     padding: 0,
-    marginLeft: '30px'
+    marginLeft: '30px',
+    '& > span': {
+      marginLeft: '3px !important'
+    }
   },
   bodyFirstCell: {
     paddingLeft: '37px'
