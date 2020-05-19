@@ -47,7 +47,7 @@ const Translations = observer(({ t }) => {
   const [searchList, setSearchList] = useState([])
   const [anchorEl, setAnchorEl] = useState(null)
   const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
-    false
+    true
   )
   const [
     showMultipleUpdateANSNumbers,
@@ -381,7 +381,10 @@ const Translations = observer(({ t }) => {
         {showAddMultipleANSNumbers && (
           <AddMultipleNumbers
             open={showAddMultipleANSNumbers}
-            handleClose={() => setShowAddMultipleANSNumbers(false)}
+            handleClose={() => {
+              setShowAddMultipleANSNumbers(false)
+              getBasicTranslationsNumbers(match.customerId, match.groupId)
+            }}
           />
         )}
         {showMultipleUpdateANSNumbers && (

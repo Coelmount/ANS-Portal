@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
+import Papa from 'papaparse'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -14,16 +15,37 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
 
+import BasicTranslationsStore from 'stores/BasicTranslations'
+
 import useStyles from './styles'
 
 const FirstStep = props => {
   const match = useParams()
   const { handleClose, setStep, t } = props
+  const {
+    successAdded,
+    refusedAdded,
+    errorAdded,
+    multipleCounter
+  } = BasicTranslationsStore
 
   const classes = useStyles()
 
   const importFile = () => {
     setStep(2)
+  }
+
+  const downloadNumbers = (numbers, name) => {
+    const pom = document.createElement('a')
+    const csvContent = Papa.unparse(JSON.stringify(numbers), {
+      delimiter: ';',
+      header: true
+    })
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    pom.href = url
+    pom.setAttribute('download', `${name}.csv`)
+    pom.click()
   }
 
   return (
@@ -45,15 +67,75 @@ const FirstStep = props => {
             {t('list_of_resilts')}
           </Box>
         </Box>
+        <Box className={classes.resultsListWrapper}>
+          <Box>{`${t('total_rows_processed')}: ${multipleCounter.count}`}</Box>
+          <Box className={classes.listBoxes}>
+            <Box className={classes.success}>{`${t('success')}: ${
+              multipleCounter.success
+            } (${(
+              (100 * multipleCounter.success) /
+              multipleCounter.total
+            ).toFixed(2)}%)`}</Box>
+            <Button
+              variant='outlined'
+              color='primary'
+              disabled={successAdded.length === 0}
+              onClick={() => downloadNumbers(successAdded, 'success')}
+            >
+              {t('download_csv_with_those_rows')}
+            </Button>
+          </Box>
+          <Box className={classes.listBoxes}>
+            <Box className={classes.refused}>{`${t('refused')}: ${
+              multipleCounter.refused
+            } (${(
+              (100 * multipleCounter.refused) /
+              multipleCounter.total
+            ).toFixed(2)}%)`}</Box>
+            <Button
+              variant='outlined'
+              color='primary'
+              disabled={refusedAdded.length === 0}
+              onClick={() => downloadNumbers(refusedAdded, 'refused')}
+            >
+              {t('download_csv_with_those_rows')}
+            </Button>
+          </Box>
+          <Box className={classes.listBoxes}>
+            <Box className={classes.error}>{`${t('error')}: ${
+              multipleCounter.error
+            } (${(
+              (100 * multipleCounter.error) /
+              multipleCounter.total
+            ).toFixed(2)}%)`}</Box>
+            <Button
+              variant='outlined'
+              color='primary'
+              disabled={errorAdded.length === 0}
+              onClick={() => downloadNumbers(errorAdded, 'error')}
+            >
+              {t('download_csv_with_those_rows')}
+            </Button>
+          </Box>
+        </Box>
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
           variant='outlined'
           color='primary'
           className={classes.backButton}
-          onClick={() => handleClose()}
+          onClick={() =>
+            downloadNumbers(
+              [
+                ...successAdded.map(el => ({ ...el, status: 'success' })),
+                ...refusedAdded.map(el => ({ ...el, status: 'refused' })),
+                ...errorAdded.map(el => ({ ...el, status: 'error' }))
+              ],
+              'output'
+            )
+          }
         >
-          {t('cancel')}
+          {t('see_detailed_output')}
         </Button>
         <Button
           variant='contained'
@@ -61,7 +143,7 @@ const FirstStep = props => {
           className={classes.nextButton}
           onClick={() => handleClose()}
         >
-          {`${t('add')}()`}
+          {`${t('done')}`}
         </Button>
       </DialogActions>
     </React.Fragment>

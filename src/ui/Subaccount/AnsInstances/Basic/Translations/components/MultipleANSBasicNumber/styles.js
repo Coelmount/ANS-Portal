@@ -25,11 +25,14 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.grey40
   },
   nextButton: {
-    width: '160px',
+    width: '190px',
     marginRight: '32px'
   },
+  updateButton: {
+    width: '190px'
+  },
   backButton: {
-    width: '160px',
+    width: '190px',
     marginLeft: '32px',
     color: theme.palette.black
   },
@@ -135,7 +138,21 @@ const useStyles = makeStyles(theme => ({
     color: 'blue',
     marginRight: 10
   },
-  error: { color: 'red', marginRight: 10 }
+  error: { color: theme.palette.darkRed, marginRight: 10 },
+  resultsListWrapper: {
+    marginLeft: 60,
+    marginRight: 60,
+    marginTop: 20,
+    fontFamily: 'MTN',
+    fontSize: 18,
+    fontWeight: 500
+  },
+  listBoxes: {
+    marginTop: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  }
 }))
 
 export default useStyles

@@ -13,7 +13,9 @@ export class BasicTranslations {
   isBasicTranslationsNumbersLoading = true
   basicTranslationsNumbers = []
   multipleCounter = { success: 0, refused: 0, error: 0, total: 0, count: 0 }
-  resultMultipleAddANSBasic = []
+  successAdded = []
+  refusedAdded = []
+  errorAdded = []
 
   changeStep = step => {
     this.step = step
@@ -29,7 +31,9 @@ export class BasicTranslations {
       total: 0,
       count: 0
     }
-    this.resultMultipleAddANSBasic = []
+    this.successAdded = []
+    this.refusedAdded = []
+    this.errorAdded = []
   }
 
   updateSelectedPhoneNumber = number => {
@@ -84,12 +88,20 @@ export class BasicTranslations {
   postAddMultipleANSBasic = (tenantId, groupId, data) => {
     axios
       .post(`/tenants/${tenantId}/groups/${groupId}/services/ans_basic`, data)
-      .then(() => {
+      .then(res => {
         this.setMultipleCounter('success', this.multipleCounter.success + 1)
+        this.successAdded = [...this.successAdded, data]
       })
       .catch(e => {
-        console.log(e.config.data)
         this.setMultipleCounter('error', this.multipleCounter.error + 1)
+        this.errorAdded = [
+          ...this.errorAdded,
+          data
+          // {
+          //   access_number: `${e.config.data.cc_access_number}${e.config.data.access_number}`,
+          //   destination_number: `${e.config.data.cc_destination_number}${e.config.data.destination_number}`
+          // }
+        ]
       })
       .finally(() => {
         this.setMultipleCounter('count', this.multipleCounter.count + 1)

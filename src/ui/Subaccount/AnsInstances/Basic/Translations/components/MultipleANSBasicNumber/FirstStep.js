@@ -77,8 +77,8 @@ const FirstStep = props => {
         target.files[0].type === 'text/csv'
       )
     ) {
-      const errorHeader = 'Invalid type file'
-      const errorText = 'Accepted file formats: csv '
+      const errorHeader = t('invalid_type_file')
+      const errorText = `${t('accepted_file_formats')}: csv`
       setErrorObj({
         showError: true,
         errorHeader,
@@ -97,10 +97,10 @@ const FirstStep = props => {
   }
 
   const csvParse = file => {
-    const csvArray = Papa.parse(file)
+    const csvArray = Papa.parse(file, { skipEmptyLines: true })
     if (csvArray.data[0].length !== 4) {
-      const errorHeader = 'Count header error'
-      const errorText = 'You must have four headers in the file'
+      const errorHeader = t('count_header_error')
+      const errorText = t('count_header_error_text')
       setErrorObj({ showError: true, errorHeader, errorText })
       setDisabledUpload(true)
       return []
@@ -114,17 +114,18 @@ const FirstStep = props => {
         'destination_number'
       ].join()
     ) {
-      const errorHeader = 'Invalid headers'
-      const errorText =
-        'Your headers must be access_cc;access_number;destination_cc;destination_number'
+      const errorHeader = t('invalid_headers')
+      const errorText = `${t(
+        'invalid_headers_text'
+      )}: access_cc;access_number;destination_cc;destination_number`
       setErrorObj({ showError: true, errorHeader, errorText })
       setDisabledUpload(true)
       return []
     }
     for (let i = 1; i < csvArray.data.length; i++) {
       if (csvArray.data[i].length !== 4) {
-        const errorHeader = 'Count columns error'
-        const errorText = 'You must have four columns in the file'
+        const errorHeader = t('count_columns_error')
+        const errorText = t('count_columns_error_text')
         setErrorObj({ showError: true, errorHeader, errorText })
         setDisabledUpload(true)
         return []
@@ -154,10 +155,6 @@ const FirstStep = props => {
     }
   }
 
-  console.log(csvValue)
-  console.log(disabledUpload)
-  console.log(multipleCounter)
-
   return uploading ? (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -172,24 +169,26 @@ const FirstStep = props => {
       </DialogTitle>
       <Box className={classes.loadingBox}>
         <CircularProgress
-          variant='static'
-          value={(100 * multipleCounter.count) / multipleCounter.total}
+        // variant='static'
+        // value={(100 * multipleCounter.count) / multipleCounter.total}
         />
         <Box className={classes.processWrapper}>
-          <strong>{multipleCounter.count}</strong> done of{' '}
-          <strong>{`${multipleCounter.total} (${(100 * multipleCounter.count) /
-            multipleCounter.total}%)`}</strong>
+          <strong>{multipleCounter.count}</strong> {t('done_of')}{' '}
+          <strong>{`${multipleCounter.total} (${(
+            (100 * multipleCounter.count) /
+            multipleCounter.total
+          ).toFixed(2)}%)`}</strong>
         </Box>
         <Box className={classes.statusesWrapper}>
-          <Box
-            className={classes.success}
-          >{`Success: ${multipleCounter.success}`}</Box>
-          <Box
-            className={classes.refused}
-          >{`Refused: ${multipleCounter.refused}`}</Box>
-          <Box
-            className={classes.error}
-          >{`Error: ${multipleCounter.error}`}</Box>
+          <Box className={classes.success}>{`${t('success')}: ${
+            multipleCounter.success
+          }`}</Box>
+          <Box className={classes.refused}>{`${t('refused')}: ${
+            multipleCounter.refused
+          }`}</Box>
+          <Box className={classes.error}>{`${t('error')}: ${
+            multipleCounter.error
+          }`}</Box>
         </Box>
       </Box>
     </React.Fragment>
@@ -219,7 +218,7 @@ const FirstStep = props => {
             )}: access_cc;access_number;destination_cc;destination_number`}</Box>
             <Box className={classes.infoTextTitle}>{`${t(
               'rows'
-            )}: +27;848929921;+32;478604974`}</Box>
+            )}: +27;111111111;+32;111111111`}</Box>
           </Box>
         </Box>
         <Box className={classes.uploadBoxWrapper}>
@@ -280,7 +279,7 @@ const FirstStep = props => {
         <Button
           variant='contained'
           color='primary'
-          className={classes.nextButton}
+          className={classes.updateButton}
           disabled={disabledUpload}
           onClick={uploadFile}
         >
