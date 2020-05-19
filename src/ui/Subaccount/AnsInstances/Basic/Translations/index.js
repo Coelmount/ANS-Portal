@@ -83,11 +83,13 @@ const Translations = observer(({ t }) => {
 
   const handleAddInstanceModalOpen = () => {
     setIsAddInstanceModalOpen(true)
+    setAnchorEl(null)
   }
 
   const handleAddInstanceModalClose = () => {
     setIsAddInstanceModalOpen(false)
     setDefaultValues()
+    getBasicTranslationsNumbers(match.customerId, match.groupId)
   }
 
   const handlePopoverOpen = event => {

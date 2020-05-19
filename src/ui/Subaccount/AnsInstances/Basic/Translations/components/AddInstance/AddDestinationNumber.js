@@ -1,96 +1,142 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useParams } from 'react-router-dom'
+import MuiPhoneInput from 'material-ui-phone-number'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
+import CloseIcon from '@material-ui/icons/Close'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
+import ConfigStore from 'stores/Config'
 import Input from 'components/Input'
+import CountryInput from 'components/CountryInput'
+import PhoneNumberInput from 'components/PhoneNumberInput'
+import Loading from 'components/Loading'
 
 import useStyles from './styles'
 
-// const selectCountries = [
-//   { value: 'africa', label: 'Africa' },
-//   { value: 'uganda', label: 'Uganda' }
-// ]
-
 const AddDestinationNumber = ({ handleClose, t }) => {
   const classes = useStyles()
+  const match = useParams()
 
-  const { changeStep, postDestinationNumber } = BasicTranslationsStore
+  const { changeStep, postInstance, isPostingInstance } = BasicTranslationsStore
+  const { getCountries, countries, isLoadingCountries } = ConfigStore
 
   const [selectedCountry, setSelectedCountry] = useState(null)
+  const [selectedCountryNameCode, setSelectedCountryNameCode] = useState('')
   const [destinationNumber, setDestinationNumber] = useState(null)
+  const [selectedNsn, setSelectedNsn] = useState(null)
+  const [selectedNumberCode, setSelectedNumberCode] = useState(null)
 
+  const isAddButtonDisabled =
+    !selectedNsn || !selectedCountryNameCode || selectedNsn.length < 5
+
+  // get countries array for CountryInput
+  useEffect(() => {
+    getCountries()
+  }, [getCountries])
+
+  // update country code after country selection
+  useEffect(() => {
+    selectedCountry &&
+      setSelectedCountryNameCode(selectedCountry.code.toLowerCase())
+  }, [selectedCountry])
+
+  // phone number input onChange; nsn/code => state
+  const handlePhoneInputChange = (value, data) => {
+    if (data.dialCode) {
+      const initValue = value.slice(data.dialCode.length + 1)
+      const formattedValue = initValue.replace(/\s/g, '')
+      setSelectedNsn(formattedValue)
+      setSelectedNumberCode(data.dialCode)
+    }
+  }
+
+  // triggers store POST request
   const handleAddButton = () => {
-    postDestinationNumber(selectedCountry, destinationNumber)
+    postInstance(
+      match.customerId,
+      match.groupId,
+      selectedNumberCode,
+      selectedNsn,
+      handleClose
+    )
   }
 
   return (
     <Fragment>
-      <DialogTitle className={classes.title}>
-        {t('add_ans_basic_instance')}
-        <IconButton
-          aria-label='close'
-          onClick={handleClose}
-          className={classes.closeButton}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent className={classes.entitlementsDialogContent}>
-        <Box className={classes.subtitle}>
-          <Typography className={classes.stepStyles}>{`${t(
-            'step'
-          )} 2/2`}</Typography>
-          <Typography className={classes.setEntitlementsTitle}>
-            {t('add_destination_number')}
-          </Typography>
-        </Box>
+      {isLoadingCountries || isPostingInstance ? (
+        <Loading />
+      ) : (
+        <Fragment>
+          <DialogTitle className={classes.title}>
+            {t('add_ans_basic_instance')}
+            <IconButton
+              aria-label='close'
+              onClick={handleClose}
+              className={classes.closeButton}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent className={classes.entitlementsDialogContent}>
+            <Box className={classes.subtitle}>
+              <Typography className={classes.stepStyles}>{`${t(
+                'step'
+              )} 2/2`}</Typography>
+              <Typography className={classes.setEntitlementsTitle}>
+                {t('add_destination_number')}
+              </Typography>
+            </Box>
 
-        <Box className={classes.inputsWrap}>
-          <Input
-            onChange={e => setSelectedCountry(e.target.value)}
-            className={classes.wrapper}
-            label={t('country')}
-          />
+            <Box className={classes.inputsWrap}>
+              <CountryInput
+                value={selectedCountry}
+                setValue={setSelectedCountry}
+                countries={countries}
+                className={classes.countryInput}
+              />
 
-          <Input
-            onChange={e => setDestinationNumber(e.target.value)}
-            className={classes.input}
-            label={t('destination_number')}
-          />
-        </Box>
-      </DialogContent>
-      <DialogActions className={classes.dialogActionsSecond}>
-        <Button
-          variant='outlined'
-          color='primary'
-          className={classes.backButton}
-          onClick={() => changeStep(1)}
-        >
-          <ChevronLeft />
-          {t('back')}
-        </Button>
-        <Button
-          variant='contained'
-          color='primary'
-          className={classes.nextButton}
-          onClick={handleAddButton}
-          disabled={!selectedCountry || !destinationNumber}
-        >
-          {t('add')}
-        </Button>
-      </DialogActions>
+              <MuiPhoneInput
+                defaultCountry={selectedCountryNameCode}
+                value={destinationNumber}
+                placeholder={t('enter_number')}
+                // containerClass={classes.destinationInput}
+                disabled={!selectedCountryNameCode}
+                onChange={(value, data) => handlePhoneInputChange(value, data)}
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions className={classes.dialogActionsSecond}>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.backButton}
+              onClick={() => changeStep(1)}
+            >
+              <ChevronLeft />
+              {t('back')}
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.nextButton}
+              onClick={handleAddButton}
+              disabled={isAddButtonDisabled}
+            >
+              {t('add')}
+            </Button>
+          </DialogActions>
+        </Fragment>
+      )}
     </Fragment>
   )
 }

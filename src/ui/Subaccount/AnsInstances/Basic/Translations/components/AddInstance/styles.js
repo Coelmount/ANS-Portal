@@ -8,17 +8,16 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     position: 'absolute',
     transform: 'translate(-50%, 0)',
-    background: '#F9F9F9',
-    marginTop: 40,
+    background: 'transparent',
+    margin: 0,
     alignItems: 'center',
-    marginBottom: 22,
     justifyContent: 'center'
   },
   toolbarWrap: {
     paddingLeft: 44
   },
   table: {
-    marginTop: 38
+    marginTop: 13
   },
   thead: {
     backgroundColor: 'white',
@@ -54,13 +53,24 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
+  // checkboxCell: {
+  //   display: 'flex',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   height: 'inherit',
+  //   padding: 0,
+  //   marginLeft: '30px'
+  // },
   checkboxCell: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: 'inherit',
     padding: 0,
-    marginLeft: '30px'
+    marginLeft: '30px',
+    '& > span': {
+      marginLeft: '3px !important'
+    }
   },
   bodyFirstCell: {
     paddingLeft: '37px'
@@ -81,21 +91,17 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   checkbox: {
-    boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
-    width: '18px',
-    height: '18px',
-    marginRight: '9px',
-    padding: 0,
-    '& .MuiSvgIcon-root': {
-      color: theme.palette.primary.main
-    },
-    '& .MuiIconButton-root': {
-      padding: 0
-    }
+    paddingBottom: 0
   },
-  wrapper: {
+  countryInput: {
     width: 254,
-    marginTop: 40
+    marginTop: 40,
+    marginBottom: 30
+  },
+  destinationInput: {
+    width: 300,
+    height: 300,
+    background: 'red'
   },
   modalDialog: {
     minHeight: '100%',
