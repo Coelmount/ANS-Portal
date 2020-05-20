@@ -246,7 +246,7 @@ const StepsNotFoundNumbers = props => {
       )
     default:
       return (
-        <FirstStep
+        <FirstStepNFN
           handleClose={props.handleClose}
           changeStep={props.changeStep}
         />
