@@ -211,6 +211,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
             isSearchParamsActive={isSearchParamsActive}
             isLoadingData={isAvailableNumbersForAddInstanceLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
+            placeholderText={t('search_by_phone_number')}
             isModal={true}
           />
         )}

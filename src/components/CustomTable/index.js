@@ -61,6 +61,7 @@ const CustomTable = ({
   initialSearchQuery,
   noAvailableDataMessage,
   isModal,
+  placeholderText,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -129,6 +130,7 @@ const CustomTable = ({
               showPagination={showPagination}
               extraToolbarBlock={extraToolbarBlock}
               initialSearchQuery={initialSearchQuery}
+              placeholderText={placeholderText}
             />
           )}
           {isLoadingData ? (
@@ -202,7 +204,8 @@ CustomTable.propTypes = {
   extraToolbarBlock: PropTypes.func,
   initialSearchQuery: PropTypes.string,
   noAvailableDataMessage: PropTypes.string.isRequired,
-  isModal: PropTypes.bool
+  isModal: PropTypes.bool,
+  placeholderText: PropTypes.string
 }
 
 CustomTable.defaultProps = {
@@ -212,7 +215,8 @@ CustomTable.defaultProps = {
   showToolBar: true,
   classes: {},
   initialSearchQuery: '',
-  isModal: false
+  isModal: false,
+  placeholderText: ''
 }
 
 export default withNamespaces()(CustomTable)

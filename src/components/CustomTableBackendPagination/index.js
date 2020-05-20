@@ -45,6 +45,7 @@ const CustomTable = ({
   noAvailableDataMessage,
   isModal,
   isSearchParamsActive,
+  placeholderText,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -83,6 +84,7 @@ const CustomTable = ({
               showPagination={showPagination}
               extraToolbarBlock={extraToolbarBlock}
               initialSearchQuery={initialSearchQuery}
+              placeholderText={placeholderText}
             />
           )}
           {isLoadingData ? (
@@ -166,7 +168,8 @@ CustomTable.propTypes = {
   totalPages: PropTypes.number.isRequired,
   noAvailableDataMessage: PropTypes.string.isRequired,
   isModal: PropTypes.bool,
-  isSearchParamsActive: PropTypes.bool
+  isSearchParamsActive: PropTypes.bool,
+  placeholderText: PropTypes.string
 }
 
 CustomTable.defaultProps = {
@@ -178,7 +181,8 @@ CustomTable.defaultProps = {
   initialSearchQuery: '',
   onPageChangeActions: () => {},
   isModal: false,
-  isSearchParamsActive: false
+  isSearchParamsActive: false,
+  placeholderText: ''
 }
 
 export default withNamespaces()(CustomTable)
