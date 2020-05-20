@@ -343,22 +343,22 @@ const PhoneNumbers = observer(({ t }) => {
           )}
         </Fragment>
       )
-    },
-    {
-      id: 'delete',
-      extraProps: {
-        className: classes.deleteCell,
-        align: 'right'
-      },
-      isSortAvailable: false,
-      getCellData: row => (
-        <Fragment>
-          {row.status === 'free' && (
-            <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
-          )}
-        </Fragment>
-      )
     }
+    // {
+    //   id: 'delete',
+    //   extraProps: {
+    //     className: classes.deleteCell,
+    //     align: 'right'
+    //   },
+    //   isSortAvailable: false,
+    //   getCellData: row => (
+    //     <Fragment>
+    //       {row.status === 'free' && (
+    //         <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
+    //       )}
+    //     </Fragment>
+    //   )
+    // }
   ]
 
   return (
@@ -391,6 +391,7 @@ const PhoneNumbers = observer(({ t }) => {
             isSearchParamsActive={isSearchParamsActive}
             isLoadingData={isPhoneNumbersLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
+            placeholderText={t('search_by_phone_number')}
           />
         )}
         {isFiltersModalOpen && (
