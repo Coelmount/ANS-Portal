@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
@@ -58,35 +58,47 @@ const useStyles = makeStyles((theme) => ({
   doneButtonBlock: {
     marginLeft: 22
   },
-  iconWrap: {
-    width: 30,
-    height: 30,
-    borderRadius: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-    '&:hover': {
-      cursor: 'pointer'
-    },
-    color: theme.palette.black
-  },
-  closeIconWrap: {
-    background: theme.palette.greyE8
-  },
-  doneIconWrap: {
-    background: theme.palette.primary.main
-  },
-  icon: {
-    width: 19,
-    height: 19
-  },
   doneIcon: {
     marginLeft: 2
   },
   buttonLabel: {
     fontSize: 14,
     fontFamily: 'MTN'
+  },
+  buttonIconWrap: {
+    width: 30,
+    height: 30,
+    padding: 0,
+    marginRight: 8
+  },
+  asignButtonWrap: {
+    background: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  cancelButtonWrap: {
+    background: theme.palette.black,
+    '&:hover': {
+      backgroundColor: theme.palette.black
+    }
+  },
+  disabledButton: {
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
+  },
+  assignIcon: {
+    width: 19,
+    height: 19,
+    marginLeft: 2
+  },
+  cancelIcon: {
+    width: 19,
+    height: 19,
+    color: 'white'
   }
 }))
 

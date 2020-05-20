@@ -1,4 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
+import MuiPhoneInput from 'material-ui-phone-number'
+import classnames from 'classnames'
+import { observer } from 'mobx-react-lite'
 import { useParams, useHistory } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -6,164 +9,224 @@ import { Link } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-
+import IconButton from '@material-ui/core/IconButton'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
+import ConfigStore from 'stores/Config'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import Input from 'components/Input'
 import EditAccessNumber from './components/EditAccessNumber'
+import CountryInput from 'components/CountryInput'
+import Loading from 'components/Loading'
+import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
+import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
+import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
 
 import editIcon from 'source/images/svg/edit-blue.svg'
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import useStyles from './styles'
 
-const SingleNumber = ({ t }) => {
+const SingleNumber = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
   const history = useHistory()
+  const accessNumber = match.instanceNumber
+  const accessCountry = getCountryNameFromNumber(accessNumber)
 
-  const { selectedInstance, postAccessNumber } = BasicTranslationsStore
-  const defaultDestinationNumber = '+1231231313'
-  const defaultOutboundCountry = 'USA'
+  const [currentInstance, setCurrentInstance] = useState(null)
+  const [destinationNumber, setDestinationNumber] = useState('')
+  const [destinationCountry, setDestinationCountry] = useState('')
+  const [destinationTwoLetterCode, setDestinationTwoLetterCode] = useState('')
+  const [destinationCountryCode, setDestinationCountryCode] = useState('')
+  const [codeToSend, setCodeToSend] = useState('')
+  const [nsnToSend, setNsnToSend] = useState('')
+  const isSaveEnabled = destinationNumber.length > 6
 
-  const [outboundCountry, setOutboundCountry] = useState(defaultOutboundCountry)
-  const [destinationNumber, setDestinationNumber] = useState(
-    defaultDestinationNumber
-  )
-  const [
-    isEditAccessNumberModalOpen,
-    setIsEditAccessNumberModalOpen
-  ] = useState(false)
+  const {
+    putInstance,
+    basicTranslationsNumbers,
+    getBasicTranslationsNumbers,
+    isBasicTranslationsNumbersLoading,
+    isPuttingInstance
+  } = BasicTranslationsStore
 
-  const titleData = {
-    mainText: match.instanceNumber
-  }
+  // data for country input
+  const { getCountries, countries, isLoadingCountries } = ConfigStore
 
-  const handleEditIconClick = () => {
-    setIsEditAccessNumberModalOpen(true)
-  }
+  // initial request
+  useEffect(() => {
+    getBasicTranslationsNumbers(match.customerId, match.groupId)
+    getCountries()
+  }, [
+    match.customerId,
+    match.groupId,
+    getBasicTranslationsNumbers,
+    getCountries
+  ])
 
-  const handleCloseModal = () => {
-    setIsEditAccessNumberModalOpen(false)
-  }
+  // find current object in array, set to state
+  useEffect(() => {
+    const currentNumber = basicTranslationsNumbers.find(
+      item => item.access_number === accessNumber
+    )
+    setCurrentInstance(currentNumber)
+    if (currentNumber) {
+      const currentDestinationNumber = currentNumber.destination_number
+      setDestinationCountry(currentNumber.destinationCountry)
+      setDestinationTwoLetterCode(currentNumber.destinationCountryTwoLetterCode)
+      setDestinationNumber(currentDestinationNumber)
 
-  const handleSaveButtonClick = () => {
-    let callback = null
-    if (
-      selectedInstance.accessNumber &&
-      selectedInstance.accessCountry &&
-      outboundCountry.length > 0 &&
-      destinationNumber.length > 0
-    ) {
-      callback = history.push(
-        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
-      )
-      postAccessNumber(callback)
+      const nsn = getNsnFromNumber(currentDestinationNumber)
+      setNsnToSend(nsn)
+      const code = getCountryCodeFromNumber(currentDestinationNumber)
+      setCodeToSend(code)
+    }
+  }, [basicTranslationsNumbers])
+
+  // onChange phone number input
+  const handlePhoneInputChange = (value, data) => {
+    if (data.dialCode) {
+      const initValue = value.slice(data.dialCode.length + 1)
+      const formattedValue = initValue.replace(/\s/g, '')
+      setDestinationNumber(value)
+      setNsnToSend(formattedValue)
+      setDestinationCountry(data.name)
+      setDestinationCountryCode(data.dialCode)
+      setCodeToSend(data.dialCode)
+      setDestinationTwoLetterCode(data.countryCode)
     }
   }
 
+  const handleSaveButtonClick = () => {
+    // console.log(destinationCountryCode, destinationNumber, 'comp')
+    // let callback = null
+    // if (isSaveEnabled) {
+    //   callback = history.push(
+    //     `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
+    //   )
+    //   putInstance(callback)
+    // }
+    if (isSaveEnabled) {
+      putInstance(
+        match.customerId,
+        match.groupId,
+        currentInstance.ans_id,
+        codeToSend,
+        nsnToSend
+      )
+    }
+  }
+
+  const titleData = {
+    mainText: accessNumber
+  }
+
   return (
-    <Box className={classes.root}>
-      <Paper>
-        <CustomContainer>
-          <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} />
-        </CustomContainer>
-        <Box className={classes.inputsWrap}>
-          <Box className={classes.leftBlock}>
-            <Box className={classes.accessNumberWrap}>
-              <Input
-                value={
-                  (selectedInstance && selectedInstance.accessNumber) ||
-                  match.instanceNumber
-                }
-                className={classes.input}
-                label={t('access_number')}
-                disabled
-              />
-              <Box
-                onClick={handleEditIconClick}
-                className={classes.editIconWrap}
-              >
-                <img src={editIcon} alt='edit icon'></img>
-              </Box>
-            </Box>
-
-            <Input
-              value={selectedInstance && selectedInstance.accessCountry}
-              className={`${classes.input} ${classes.bottomInput}`}
-              label={t('inbound_country')}
-              disabled
-            />
-          </Box>
-          <img
-            src={arrowsIcon}
-            className={classes.arrowsIcon}
-            alt='arrows icon'
-          />
-          <Box className={classes.rightBlock}>
-            <Input
-              defaultValue={destinationNumber}
-              onChange={e => setDestinationNumber(e.target.value)}
-              className={classes.input}
-              label={t('destination_phone_number')}
-            />
-
-            <Input
-              defaultValue={outboundCountry}
-              onChange={e => setOutboundCountry(e.target.value)}
-              className={`${classes.input} ${classes.bottomInput}`}
-              label={t('outbound_country')}
-            />
-
-            <Box className={classes.buttonsWrap}>
-              <Box className={classes.buttonBlock}>
-                <Link
-                  to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`}
-                >
-                  <Box
-                    className={`${classes.iconWrap} ${classes.closeIconWrap}`}
-                  >
-                    <CloseOutlinedIcon className={classes.icon} />
-                  </Box>
-                </Link>
-                <Typography className={classes.buttonLabel}>
-                  {t('cancel')}
-                </Typography>
-              </Box>
-
-              <Box
-                className={`${classes.buttonBlock} ${classes.doneButtonBlock}`}
-              >
-                <Box
-                  onClick={handleSaveButtonClick}
-                  className={`${classes.iconWrap} ${classes.doneIconWrap}`}
-                >
-                  <DoneOutlinedIcon
-                    className={`${classes.icon} ${classes.doneIcon}`}
+    <Fragment>
+      {isBasicTranslationsNumbersLoading ||
+      isLoadingCountries ||
+      isPuttingInstance ? (
+        <Loading />
+      ) : (
+        <Box className={classes.root}>
+          <Paper>
+            <CustomContainer>
+              <CustomBreadcrumbs />
+              <TitleBlock titleData={titleData} />
+            </CustomContainer>
+            <Box className={classes.inputsWrap}>
+              <Box className={classes.leftBlock}>
+                <Box className={classes.accessNumberWrap}>
+                  <Input
+                    value={accessNumber}
+                    className={classes.input}
+                    label={t('access_number')}
+                    disabled
                   />
                 </Box>
-                <Typography className={classes.buttonLabel}>
-                  {t('save')}
-                </Typography>
+
+                <Input
+                  value={accessCountry}
+                  className={`${classes.input} ${classes.bottomInput}`}
+                  label={t('inbound_country')}
+                  disabled
+                />
+              </Box>
+              <img
+                src={arrowsIcon}
+                className={classes.arrowsIcon}
+                alt='arrows icon'
+              />
+              <Box className={classes.rightBlock}>
+                <MuiPhoneInput
+                  defaultCountry={destinationTwoLetterCode}
+                  value={destinationNumber}
+                  placeholder={t('enter_number')}
+                  onChange={(value, data) =>
+                    handlePhoneInputChange(value, data)
+                  }
+                />
+                <Input
+                  value={destinationCountry}
+                  className={`${classes.input} ${classes.bottomInput}`}
+                  label={t('outbound_country')}
+                  disabled
+                />
+
+                <Box className={classes.buttonsWrap}>
+                  <Box className={classes.buttonBlock}>
+                    <Link
+                      to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`}
+                    >
+                      <IconButton
+                        aria-label='cancel icon button'
+                        component='span'
+                        className={classnames(
+                          classes.buttonIconWrap,
+                          classes.cancelButtonWrap
+                        )}
+                      >
+                        <CloseOutlinedIcon className={classes.cancelIcon} />
+                      </IconButton>
+                    </Link>
+                    <Typography className={classes.buttonLabel}>
+                      {t('cancel')}
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    className={`${classes.buttonBlock} ${classes.doneButtonBlock}`}
+                  >
+                    <IconButton
+                      aria-label='save icon button'
+                      component='span'
+                      className={classnames(
+                        classes.buttonIconWrap,
+                        classes.asignButtonWrap,
+                        {
+                          [classes.disabledButton]: !isSaveEnabled
+                        }
+                      )}
+                      onClick={handleSaveButtonClick}
+                    >
+                      <DoneOutlinedIcon className={classes.assignIcon} />
+                    </IconButton>
+                    <Typography className={classes.buttonLabel}>
+                      {t('save')}
+                    </Typography>
+                  </Box>
+                </Box>
               </Box>
             </Box>
-          </Box>
+          </Paper>
         </Box>
-        {isEditAccessNumberModalOpen && (
-          <EditAccessNumber
-            open={isEditAccessNumberModalOpen}
-            handleClose={handleCloseModal}
-            defaultInboundCountry={selectedInstance.accessCountry}
-          />
-        )}
-      </Paper>
-    </Box>
+      )}
+    </Fragment>
   )
-}
+})
 
 export default withNamespaces()(SingleNumber)

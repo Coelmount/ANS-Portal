@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react'
+import MuiPhoneInput from 'material-ui-phone-number'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
-import MuiPhoneInput from 'material-ui-phone-number'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'

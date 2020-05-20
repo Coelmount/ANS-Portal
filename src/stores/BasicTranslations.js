@@ -5,6 +5,7 @@ import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
+import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
 
 export class BasicTranslations {
   step = 1
@@ -13,6 +14,7 @@ export class BasicTranslations {
   isBasicTranslationsNumbersLoading = true
   isAvailableNumbersForAddInstanceLoading = true
   isPostingInstance = false
+  isPuttingInstance = false
   basicTranslationsNumbers = []
   multipleCounter = { success: 0, refused: 0, error: 0, total: 0, count: 0 }
   successAdded = []
@@ -90,8 +92,42 @@ export class BasicTranslations {
     this.selectedInstance = instance
   }
 
-  postAccessNumber = callback => {
-    callback && callback()
+  putInstance = (
+    customerId,
+    groupId,
+    ansId,
+    destinationCode,
+    destinationNsn
+  ) => {
+    this.isPuttingInstance = true
+    const destinationCodeWithPlus = `+${destinationCode}`
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_basic/${ansId}`,
+        {
+          cc_destination_number: destinationCodeWithPlus,
+          destination_number: destinationNsn
+        }
+      )
+      .then(() =>
+        SnackbarStore.enqueueSnackbar({
+          message: 'ANS instance edited successfully',
+          options: {
+            variant: 'success'
+          }
+        })
+      )
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to edit ANS instance',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isPuttingInstance = false
+      })
   }
 
   getBasicTranslationsNumbers = (customerId, groupId) => {
@@ -112,6 +148,10 @@ export class BasicTranslations {
               item.destination_number &&
               item.destination_number.length > 7 &&
               getCountryNameFromNumber(item.destination_number),
+            destinationCountryTwoLetterCode:
+              item.destination_number &&
+              item.destination_number.length > 7 &&
+              getCountryTwoLetterCodeFromNumber(item.destination_number),
             ...item
           }
         })
@@ -226,12 +266,13 @@ decorate(BasicTranslations, {
   totalPagesAvailableNumbers: observable,
   availableNumbersForAddInstance: observable,
   isPostingInstance: observable,
+  isPuttingInstance: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
   postInstance: action,
   updateSelectedInstance: action,
-  postAccessNumber: action,
+  putInstance: action,
   getBasicTranslationsNumbers: action,
   postAddMultipleANSBasic: action,
   setMultipleCounter: action,
