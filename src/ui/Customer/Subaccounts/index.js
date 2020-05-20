@@ -52,14 +52,16 @@ const SubaccountsTable = observer(({ t }) => {
         scope: 'row'
       },
       label: 'ID',
-      getCellData: row => (
-        <Link
-          to={`/customers/${match.customerId}/subaccounts/${row.groupId}/ans_instances`}
-          className={classes.link}
-        >
-          {row.groupId}
-        </Link>
-      ),
+      getCellData: row => {
+        return (
+          <Link
+            to={`/customers/${match.customerId}/subaccounts/${row.groupId}/ans_instances`}
+            className={classes.link}
+          >
+            {row.groupId}
+          </Link>
+        )
+      },
       extraHeadProps: {
         padding: 'default'
       }
