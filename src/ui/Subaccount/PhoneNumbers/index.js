@@ -376,7 +376,6 @@ const PhoneNumbers = observer(({ t }) => {
             classes={classes}
             rows={numbers}
             columns={columns}
-            searchCriterias={['countryName', 'phoneNumber', 'type', 'state']}
             extraToolbarBlock={toolbarButtonsBlock}
             page={page}
             setPage={setPage}

@@ -109,6 +109,7 @@ export class AssignedNumbers {
         this.isLoadingEntitlements = false
       })
   }
+
   deassignNumbers = ({ customerId, callback }) => {
     axios
       .get(`/tenants/${customerId}/groups?sensitiveGroupNameEquals=DevAccount`)
