@@ -119,8 +119,8 @@ const FirstStep = props => {
           </Box>
         </Box>
       </DialogContent>
-      <DialogActions className={classes.dialogActionsSecond}>
-        <Button
+      <DialogActions className={classes.dialogActionsFirst}>
+        {/* <Button
           variant='outlined'
           color='primary'
           className={classes.backButton}
@@ -136,11 +136,11 @@ const FirstStep = props => {
           }
         >
           {t('see_detailed_output')}
-        </Button>
+        </Button> */}
         <Button
           variant='contained'
           color='primary'
-          className={classes.nextButton}
+          className={classes.updateButton}
           onClick={() => handleClose()}
         >
           {`${t('done')}`}

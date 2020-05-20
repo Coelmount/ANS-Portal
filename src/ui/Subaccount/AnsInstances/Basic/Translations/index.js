@@ -47,7 +47,7 @@ const Translations = observer(({ t }) => {
   const [searchList, setSearchList] = useState([])
   const [anchorEl, setAnchorEl] = useState(null)
   const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
-    true
+    false
   )
   const [
     showMultipleUpdateANSNumbers,
@@ -158,7 +158,10 @@ const Translations = observer(({ t }) => {
     {
       id: 2,
       label: t('multiply_ans_basic_number'),
-      onClick: () => setShowAddMultipleANSNumbers(true)
+      onClick: () => {
+        setShowAddMultipleANSNumbers(true)
+        setAnchorEl(null)
+      }
     }
   ]
 

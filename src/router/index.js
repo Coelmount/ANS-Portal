@@ -180,9 +180,10 @@ const Page = props => {
     const ids = JSON.parse(localStorage.getItem('ids'))
     if (ids.tenant_id && ids.group_id) {
       accessLevel = 3 // group admin
-    }
-    if (ids.tenant_id) {
+    } else if (ids.tenant_id) {
       accessLevel = 2 // customer admin
+    } else {
+      accessLevel = 4 // error check user permissions
     }
   } else {
     accessLevel = 1 // admin
