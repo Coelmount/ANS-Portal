@@ -25,6 +25,8 @@ import Loading from 'components/Loading'
 import editSvg from 'source/images/svg/edit-blue.svg'
 import useStyles from './styles'
 
+import { adminAccessLvl, validateAccessLvl } from 'utils/checkPermissions'
+
 const AccessNumbers = ({ t }) => {
   const match = useParams()
   const classes = useStyles()
@@ -77,8 +79,12 @@ const AccessNumbers = ({ t }) => {
 
   const titleData = {
     mainText: t('access_numbers'),
-    iconCapture: t('add_entitlements'),
-    Icon: <AddOutlinedIcon />
+    iconCapture: validateAccessLvl(localStorage.getItem('ids'), adminAccessLvl)
+      ? t('add_entitlements')
+      : null,
+    Icon: validateAccessLvl(localStorage.getItem('ids'), adminAccessLvl) ? (
+      <AddOutlinedIcon />
+    ) : null
   }
 
   // const toolbarButtonsBlock = () => {

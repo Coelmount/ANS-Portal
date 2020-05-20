@@ -25,14 +25,14 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.grey40
   },
   nextButton: {
-    width: '190px',
+    width: '160px',
     marginRight: '32px'
   },
   updateButton: {
-    width: '190px'
+    width: '160px'
   },
   backButton: {
-    width: '190px',
+    width: '160px',
     marginLeft: '32px',
     color: theme.palette.black
   },

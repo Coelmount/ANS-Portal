@@ -158,7 +158,10 @@ const Translations = observer(({ t }) => {
     {
       id: 2,
       label: t('multiply_ans_basic_number'),
-      onClick: () => setShowAddMultipleANSNumbers(true)
+      onClick: () => {
+        setShowAddMultipleANSNumbers(true)
+        setAnchorEl(null)
+      }
     }
   ]
 
