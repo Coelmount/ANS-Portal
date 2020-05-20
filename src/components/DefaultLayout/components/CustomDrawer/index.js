@@ -120,7 +120,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
                           >
                             <Box
                               className={
-                                childLink.name === 'basic' ||
                                 childLink.name === 'advanced'
                                   ? classes.secondLevelTitleWithIcon
                                   : classes.secondLevelTitle
