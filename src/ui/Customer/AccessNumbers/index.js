@@ -142,7 +142,12 @@ const AccessNumbers = ({ t }) => {
       extraProps: {
         className: classes.textCenter
       },
-      headIcon: () => <img src={editSvg} alt='edit icon' />,
+      headIcon: validateAccessLvl(
+        localStorage.getItem('ids'),
+        adminAccessLvl
+      ) ? (
+        <img src={editSvg} alt='edit icon' />
+      ) : null,
       onIconClick: () => setShowEditEntitlements(true)
     },
     {
