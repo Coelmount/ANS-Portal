@@ -47,7 +47,7 @@ const Translations = observer(({ t }) => {
   const [searchList, setSearchList] = useState([])
   const [anchorEl, setAnchorEl] = useState(null)
   const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
-    true
+    false
   )
   const [
     showMultipleUpdateANSNumbers,
