@@ -23,7 +23,8 @@ const CustomTableToolbar = props => {
     t,
     showSearchBar,
     showPagination,
-    extraToolbarBlock
+    extraToolbarBlock,
+    placeholderText
   } = props
 
   const handleSearch = e => {
@@ -37,7 +38,7 @@ const CustomTableToolbar = props => {
           <input
             value={query}
             className={`${defaultClasses.searchInput} ${classes.searchInput}`}
-            placeholder={t('search_input_placeholder')}
+            placeholder={placeholderText || t('search_input_placeholder')}
             onChange={handleSearch}
           />
           {query.length ? (
