@@ -41,7 +41,8 @@ const CreateCustomer = props => {
     reservedNumbers,
     isLoadingReservedNumbers,
     postResevedNumbersToCustomer,
-    postAddedNumbersToSubaccaunt
+    postAddedNumbersToSubaccaunt,
+    setDefaultValue
   } = numbersStore
   const { currentEntitlement } = AssignedNumbersStore
   const classes = useStyles()
@@ -59,9 +60,9 @@ const CreateCustomer = props => {
   })
   const match = useParams()
 
-  const searchAvalibleNumbers = () => {
-    getAvailableNumbers(queryAvalibleNumbers).then(() => changeStep(2))
-  }
+  useEffect(() => {
+    setDefaultValue()
+  }, [])
 
   useEffect(() => {
     getReservedNumbers(
@@ -72,6 +73,10 @@ const CreateCustomer = props => {
       setNumbers(reservedNumbers)
     })
   }, [reservedNumbers.length])
+
+  const searchAvalibleNumbers = () => {
+    getAvailableNumbers(queryAvalibleNumbers).then(() => changeStep(2))
+  }
 
   const selectNumbers = (checked, number) => {
     const newNumbers = [...numbers]

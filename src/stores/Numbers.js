@@ -18,6 +18,15 @@ export class NumbersStore {
   reservedNumbers = []
   isLoadingReservedNumbers = false
 
+  setDefaultValue = () => {
+    this.availableNumbers = []
+    this.availableNumbersTable = []
+    this.params = {}
+    this.addedNumbers = []
+    this.rejectedNumbers = []
+    this.reservedNumbers = []
+  }
+
   getReservedNumbers = (tenantId, cc, type) => {
     this.isLoadingReservedNumbers = true
     return axios
@@ -110,7 +119,7 @@ export class NumbersStore {
     Promise.all(promiseArray)
       .then(res => {
         res.forEach(el => {
-          const response = JSON.parse(el.data.apio.body)
+          const response = el.data.apio.body
           this.addedNumbers.push(
             ...response.result
               .filter(el => el.status === 'added')
@@ -123,14 +132,14 @@ export class NumbersStore {
         setAddedNumber(this.addedNumbers)
         changeStep && changeStep(step)
       })
-      .catch(e =>
+      .catch(e => {
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to assign numbers',
           options: {
             variant: 'error'
           }
         })
-      )
+      })
       .finally(() => {
         this.isAddingNumbers = false
       })
@@ -147,7 +156,7 @@ export class NumbersStore {
     Promise.all(promiseArray)
       .then(res => {
         res.forEach(el => {
-          const response = JSON.parse(el.data.apio.body)
+          const response = el.data.apio.body
           this.addedNumbers.push(
             ...response.result.filter(el => el.status === 'added')
           )
@@ -157,14 +166,14 @@ export class NumbersStore {
         })
         changeStep && changeStep(step)
       })
-      .catch(e =>
+      .catch(e => {
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to assign numbers',
           options: {
             variant: 'error'
           }
         })
-      )
+      })
       .finally(() => {
         this.isAddingNumbers = false
       })
@@ -222,7 +231,8 @@ decorate(NumbersStore, {
   getAvailableNumbers: action,
   getReservedNumbers: action,
   postResevedNumbersToCustomer: action,
-  postAddedNumbersToSubaccaunt: action
+  postAddedNumbersToSubaccaunt: action,
+  setDefaultValue: action
 })
 
 export default new NumbersStore()
