@@ -173,18 +173,15 @@ export class BasicTranslations {
       .post(`/tenants/${tenantId}/groups/${groupId}/services/ans_basic`, data)
       .then(res => {
         this.setMultipleCounter('success', this.multipleCounter.success + 1)
-        this.successAdded = [...this.successAdded, data]
+        if (res.data.status === 'success') {
+          this.successAdded = [...this.successAdded, data]
+        } else if (res.data.status === 'error') {
+          this.refusedAdded = [...this.refusedAdded, data]
+        }
       })
       .catch(e => {
         this.setMultipleCounter('error', this.multipleCounter.error + 1)
-        this.errorAdded = [
-          ...this.errorAdded,
-          data
-          // {
-          //   access_number: `${e.config.data.cc_access_number}${e.config.data.access_number}`,
-          //   destination_number: `${e.config.data.cc_destination_number}${e.config.data.destination_number}`
-          // }
-        ]
+        this.errorAdded = [...this.errorAdded, data]
       })
       .finally(() => {
         this.setMultipleCounter('count', this.multipleCounter.count + 1)
