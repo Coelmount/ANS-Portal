@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Fragment } from 'react'
+import React, { useState, useMemo, Fragment, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import PropTypes from 'prop-types'
 import clamp from 'lodash/clamp'
@@ -37,10 +37,15 @@ const stableSort = (array, comparator) => {
 }
 
 const descendingComparator = (a, b, orderBy) => {
-  if (b[orderBy] < a[orderBy]) {
+  const compareA =
+    typeof a[orderBy] === 'string' ? a[orderBy].toLowerCase() : a[orderBy]
+  const compareB =
+    typeof b[orderBy] === 'string' ? b[orderBy].toLowerCase() : b[orderBy]
+
+  if (compareB < compareA) {
     return -1
   }
-  if (b[orderBy] > a[orderBy]) {
+  if (compareB > compareA) {
     return 1
   }
   return 0
@@ -71,6 +76,10 @@ const CustomTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [query, setQuery] = useState(initialSearchQuery)
 
+  useEffect(() => {
+    setPage(0)
+  }, [query])
+
   const list = useMemo(() => {
     const getFilter = row => {
       for (let i = 0; i < searchCriterias.length; i++) {
@@ -100,6 +109,7 @@ const CustomTable = ({
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
+    setPage(0)
   }
 
   const clampedPage = clamp(page, 0, totalPages)

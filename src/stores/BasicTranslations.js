@@ -20,7 +20,6 @@ export class BasicTranslations {
   errorAdded = []
   resultMultipleAddANSBasic = []
   totalPagesAvailableNumbers = 0
-  currentPage = 1
   availableNumbersForAddInstance = []
 
   changeStep = step => {
@@ -224,7 +223,6 @@ decorate(BasicTranslations, {
   totalPagesAvailableNumbers: observable,
   availableNumbersForAddInstance: observable,
   isPostingInstance: observable,
-  currentPage: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
