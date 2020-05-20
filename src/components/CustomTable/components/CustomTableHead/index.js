@@ -55,7 +55,7 @@ const CustomTableHead = ({
                       className={`${defaultClasses.customHeadIconWrap} ${classes.customHeadIconWrap}`}
                       onClick={onIconClick}
                     >
-                      {headIcon()}
+                      {headIcon}
                     </Box>
                   </Box>
                 ) : (
