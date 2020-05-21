@@ -54,7 +54,9 @@ const SingleNumber = observer(({ t }) => {
     basicTranslationsNumbers,
     getBasicTranslationsNumbers,
     isBasicTranslationsNumbersLoading,
-    isPuttingInstance
+    isPuttingInstance,
+    isRedirectAfterPut,
+    clearIsRedireactAfterPut
   } = BasicTranslationsStore
 
   // data for country input
@@ -89,6 +91,16 @@ const SingleNumber = observer(({ t }) => {
       setCodeToSend(code)
     }
   }, [basicTranslationsNumbers])
+
+  // redirect if put request successfull
+  useEffect(() => {
+    if (isRedirectAfterPut) {
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
+      )
+    }
+    return () => clearIsRedireactAfterPut()
+  }, [isRedirectAfterPut])
 
   // onChange phone number input
   const handlePhoneInputChange = (value, data) => {
