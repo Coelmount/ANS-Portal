@@ -86,7 +86,9 @@ const DeleteModal = props => {
                 </Typography>
               </Box>
               <Box
-                onClick={() => handleDelete && handleDelete(idArr || id)}
+                onClick={() =>
+                  handleDelete && handleDelete(idArr.length ? idArr : id)
+                }
                 className={classes.deleteButtonWrap}
               >
                 <Typography className={classes.buttonTitle}>
