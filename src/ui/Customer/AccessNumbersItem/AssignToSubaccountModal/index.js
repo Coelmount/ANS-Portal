@@ -174,7 +174,10 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
           color='primary'
           className={classes.assignButton}
           onClick={handleAsignButtonClick}
-          disabled={!subaccountsList.some(item => item.checked === true)}
+          disabled={
+            !subaccountsList.some(item => item.checked === true) ||
+            isPostAssignNumbers
+          }
         >
           {t('assign')}
         </Button>

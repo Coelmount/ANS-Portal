@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import MuiPhoneInput from 'material-ui-phone-number'
+import PhoneInput from 'react-phone-input-2'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -22,6 +23,7 @@ import PhoneNumberInput from 'components/PhoneNumberInput'
 import Loading from 'components/Loading'
 
 import useStyles from './styles'
+import './customPhoneInputStyles.css'
 
 const AddDestinationNumber = ({ handleClose, t }) => {
   const classes = useStyles()
@@ -32,12 +34,12 @@ const AddDestinationNumber = ({ handleClose, t }) => {
 
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [selectedCountryNameCode, setSelectedCountryNameCode] = useState('')
-  const [destinationNumber, setDestinationNumber] = useState(null)
+  const [destinationNumber, setDestinationNumber] = useState('')
   const [selectedNsn, setSelectedNsn] = useState(null)
   const [selectedNumberCode, setSelectedNumberCode] = useState(null)
+  const [isCountryCodeEditable, setIsCountryCodeEditable] = useState(true)
 
-  const isAddButtonDisabled =
-    !selectedNsn || !selectedCountryNameCode || selectedNsn.length < 5
+  const isAddButtonDisabled = !selectedNsn || selectedNsn.length < 5
 
   // get countries array for CountryInput
   useEffect(() => {
@@ -46,9 +48,17 @@ const AddDestinationNumber = ({ handleClose, t }) => {
 
   // update country code after country selection
   useEffect(() => {
-    selectedCountry &&
+    if (selectedCountry) {
       setSelectedCountryNameCode(selectedCountry.code.toLowerCase())
+    }
   }, [selectedCountry])
+
+  // lock country code after country choose
+  useEffect(() => {
+    if (selectedCountryNameCode) {
+      setIsCountryCodeEditable(false)
+    }
+  }, [selectedCountryNameCode])
 
   // phone number input onChange; nsn/code => state
   const handlePhoneInputChange = (value, data) => {
@@ -104,15 +114,19 @@ const AddDestinationNumber = ({ handleClose, t }) => {
                 countries={countries}
                 className={classes.countryInput}
               />
-
-              <MuiPhoneInput
-                defaultCountry={selectedCountryNameCode}
-                value={destinationNumber}
-                placeholder={t('enter_number')}
-                // containerClass={classes.destinationInput}
-                disabled={!selectedCountryNameCode}
-                onChange={(value, data) => handlePhoneInputChange(value, data)}
-              />
+              <Box className={classes.phoneInputWrap}>
+                <PhoneInput
+                  country={selectedCountryNameCode}
+                  value={destinationNumber}
+                  placeholder={t('enter_number')}
+                  disabled={!selectedCountryNameCode}
+                  onChange={(value, data) =>
+                    handlePhoneInputChange(value, data)
+                  }
+                  countryCodeEditable={isCountryCodeEditable}
+                  disableDropdown
+                />
+              </Box>
             </Box>
           </DialogContent>
           <DialogActions className={classes.dialogActionsSecond}>

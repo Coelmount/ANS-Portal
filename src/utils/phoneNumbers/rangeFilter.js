@@ -8,7 +8,8 @@ const phoneNumbersRangeFilter = phoneNumbers => {
       arrPN[arrPN.length - 1].prevNum - phone.nsn === -1 &&
       arrPN[arrPN.length - 1].type === phone.type &&
       arrPN[arrPN.length - 1].country_code === phone.country_code &&
-      arrPN[arrPN.length - 1].connected_to === phone.connected_to
+      arrPN[arrPN.length - 1].connected_to === phone.connected_to &&
+      arrPN[arrPN.length - 1].customer_account === phone.customer_account
     ) {
       if (count === 1) {
         arrPN[arrPN.length - 1] = {
