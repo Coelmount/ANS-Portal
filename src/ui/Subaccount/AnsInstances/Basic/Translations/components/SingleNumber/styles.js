@@ -26,8 +26,8 @@ const useStyles = makeStyles(theme => ({
     marginTop: 31
   },
   arrowsIcon: {
-    marginLeft: 14,
-    marginRight: 60,
+    marginLeft: 50,
+    marginRight: 50,
     marginBottom: 75
   },
   accessNumberWrap: {

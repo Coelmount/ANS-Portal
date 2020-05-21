@@ -22,6 +22,7 @@ export class BasicTranslations {
   errorAdded = []
   totalPagesAvailableNumbers = 0
   availableNumbersForAddInstance = []
+  isRedirectAfterPut = false
 
   changeStep = step => {
     this.step = step
@@ -108,14 +109,15 @@ export class BasicTranslations {
           destination_number: destinationNsn
         }
       )
-      .then(() =>
+      .then(() => {
+        this.isRedirectAfterPut = true
         SnackbarStore.enqueueSnackbar({
           message: 'ANS instance edited successfully',
           options: {
             variant: 'success'
           }
         })
-      )
+      })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to edit ANS instance',
@@ -127,6 +129,10 @@ export class BasicTranslations {
       .finally(() => {
         this.isPuttingInstance = false
       })
+  }
+
+  clearIsRedireactAfterPut = () => {
+    this.isRedirectAfterPut = false
   }
 
   getBasicTranslationsNumbers = (customerId, groupId) => {
@@ -297,6 +303,7 @@ decorate(BasicTranslations, {
   successAdded: observable,
   refusedAdded: observable,
   errorAdded: observable,
+  isRedirectAfterPut: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,

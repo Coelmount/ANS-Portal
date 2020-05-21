@@ -17,6 +17,8 @@ export class AssignedNumbers {
   numbersToAssign = []
   numbersToDeassign = []
   numbersToDisconnect = []
+  subaccountLinkId = ''
+  isSubaccountLinkIdLoading = false
 
   setDefaultValues = () => {
     this.assignedNumbers = []
@@ -44,6 +46,24 @@ export class AssignedNumbers {
     this.numbersToDisconnect = numbers
   }
 
+  getSubaccountId = (customerId, subaccountName) => {
+    this.isSubaccountLinkIdLoading = true
+    axios
+      .get(
+        `/tenants/${customerId}/groups?sensitiveGroupNameEquals=${subaccountName}`
+      )
+      .then(res => {
+        this.subaccountLinkId = res.data.groups[0].groupId
+      })
+      .finally(() => {
+        this.isSubaccountLinkIdLoading = false
+      })
+  }
+
+  clearSubaccountLinkId = () => {
+    this.subaccountLinkId = ''
+  }
+
   getEntitlementsAndFindCurrent = (customerId, numbersId) => {
     this.isLoadingEntitlements = true
     axios
@@ -58,22 +78,12 @@ export class AssignedNumbers {
           .get(`/tenants/${customerId}/entitlements/${numbersId}/numbers`)
           .then(res => {
             const transformedAssignedNumbers = res.data.numbers.map(item => {
-              let subaccountId
-              if (item.connected_to) {
-                const connectedToSub = item.connected_to
-                const connectedToSubSplitedArr = connectedToSub.split('_')
-                subaccountId =
-                  connectedToSubSplitedArr[0] +
-                  '_' +
-                  connectedToSubSplitedArr[1]
-              }
               return {
                 inUse: item.connected_to ? item.connected_to : 'no',
                 subaccount: item.customer_account
                   ? item.customer_account
                   : 'none',
-                phoneNumber: `${item.country_code} ${item.nsn}`,
-                subaccountId: subaccountId || null,
+                phoneNumber: `${item.country_code}${item.nsn}`,
                 checked: false,
                 hover: false,
                 isSelectedToDeassign: false,
@@ -272,6 +282,8 @@ decorate(AssignedNumbers, {
   currentEntitlement: observable,
   isPostAssignNumbers: observable,
   numbersToDisconnect: observable,
+  subaccountLinkId: observable,
+  isSubaccountLinkIdLoading: observable,
   getAssignedNumbers: action,
   disconnectNumbers: action,
   deassignNumbers: action,
@@ -281,7 +293,9 @@ decorate(AssignedNumbers, {
   setNumbersToDisconnect: action,
   setNumbersToDeassign: action,
   postAssignToSubaccount: action,
-  showErrorNotification: action
+  showErrorNotification: action,
+  getSubaccountId: action,
+  clearSubaccountLinkId: action
 })
 
 export default new AssignedNumbers()

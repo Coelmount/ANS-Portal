@@ -160,14 +160,10 @@ const useStyles = makeStyles(theme => ({
   boldDeassignText: {
     fontWeight: 600
   },
-  inUseCell: {
-    '& a': {
-      textDecoration: 'none'
-    }
-  },
   usedTitle: {
     color: theme.palette.active.blue,
-    fontSize: 14
+    fontSize: 14,
+    cursor: 'pointer'
   },
   subaccountCell: {
     display: 'flex',

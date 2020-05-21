@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import MuiPhoneInput from 'material-ui-phone-number'
+import PhoneInput from 'react-phone-input-2'
 import classnames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useParams, useHistory } from 'react-router-dom'
@@ -30,8 +30,7 @@ import editIcon from 'source/images/svg/edit-blue.svg'
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import useStyles from './styles'
 
-import PhoneInput from 'react-phone-input-2'
-import './e.css'
+import './customPhoneInputStyles.css'
 
 const SingleNumber = observer(({ t }) => {
   const classes = useStyles()
@@ -54,7 +53,9 @@ const SingleNumber = observer(({ t }) => {
     basicTranslationsNumbers,
     getBasicTranslationsNumbers,
     isBasicTranslationsNumbersLoading,
-    isPuttingInstance
+    isPuttingInstance,
+    isRedirectAfterPut,
+    clearIsRedireactAfterPut
   } = BasicTranslationsStore
 
   // data for country input
@@ -90,6 +91,16 @@ const SingleNumber = observer(({ t }) => {
     }
   }, [basicTranslationsNumbers])
 
+  // redirect if put request successfull
+  useEffect(() => {
+    if (isRedirectAfterPut) {
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
+      )
+    }
+    return () => clearIsRedireactAfterPut()
+  }, [isRedirectAfterPut])
+
   // onChange phone number input
   const handlePhoneInputChange = (value, data) => {
     if (data.dialCode) {
@@ -105,14 +116,6 @@ const SingleNumber = observer(({ t }) => {
   }
 
   const handleSaveButtonClick = () => {
-    // console.log(destinationCountryCode, destinationNumber, 'comp')
-    // let callback = null
-    // if (isSaveEnabled) {
-    //   callback = history.push(
-    //     `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
-    //   )
-    //   putInstance(callback)
-    // }
     if (isSaveEnabled) {
       putInstance(
         match.customerId,
@@ -172,14 +175,6 @@ const SingleNumber = observer(({ t }) => {
                   }
                   placeholder={t('enter_number')}
                 />
-                {/* <MuiPhoneInput
-                  defaultCountry={destinationTwoLetterCode}
-                  value={destinationNumber}
-                  placeholder={t('enter_number')}
-                  onChange={(value, data) =>
-                    handlePhoneInputChange(value, data)
-                  }
-                /> */}
                 <Input
                   value={destinationCountry}
                   className={`${classes.input} ${classes.bottomInput}`}
