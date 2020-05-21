@@ -24,6 +24,7 @@ export class BasicTranslations {
   availableNumbersForAddInstance = []
   isRedirectAfterPut = false
   isDeleting = false
+  amountOfBasicInstances = 0
 
   changeStep = step => {
     this.step = step
@@ -141,7 +142,10 @@ export class BasicTranslations {
     return axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
-        const transformedNumbers = res.data.ans_basic.map((item, index) => {
+        const basicInstances = res.data.ans_basic
+        this.amountOfBasicInstances = basicInstances.length
+
+        const transformedNumbers = basicInstances.map((item, index) => {
           return {
             id: item.id || index,
             checked: false,
@@ -322,6 +326,7 @@ decorate(BasicTranslations, {
   errorAdded: observable,
   isRedirectAfterPut: observable,
   isDeleting: observable,
+  amountOfBasicInstances: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
