@@ -41,9 +41,7 @@ const MultipleUpdateNumbers = props => {
     <Dialog
       open={open}
       onClose={handleClose}
-      className={classnames(classes.root, {
-        [classes.thirdStepRoot]: step === 3
-      })}
+      className={classnames(classes.root)}
     >
       <Steps
         step={step}

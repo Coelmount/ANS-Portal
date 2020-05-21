@@ -395,7 +395,10 @@ const Translations = observer(({ t }) => {
         {showMultipleUpdateANSNumbers && (
           <MultipleUpdateNumbers
             open={showMultipleUpdateANSNumbers}
-            handleClose={() => setShowMultipleUpdateANSNumbers(false)}
+            handleClose={() => {
+              setShowMultipleUpdateANSNumbers(false)
+              getBasicTranslationsNumbers(match.customerId, match.groupId)
+            }}
             numbers={numbers}
           />
         )}

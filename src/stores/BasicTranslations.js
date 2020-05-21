@@ -20,7 +20,6 @@ export class BasicTranslations {
   successAdded = []
   refusedAdded = []
   errorAdded = []
-  resultMultipleAddANSBasic = []
   totalPagesAvailableNumbers = 0
   availableNumbersForAddInstance = []
 
@@ -188,6 +187,38 @@ export class BasicTranslations {
       })
   }
 
+  putUpdateMultipleANSBasic = (tenantId, groupId, ans_id, data, accessObj) => {
+    axios
+      .put(
+        `/tenants/${tenantId}/groups/${groupId}/services/ans_basic/${ans_id}`,
+        data
+      )
+      .then(res => {
+        this.setMultipleCounter('success', this.multipleCounter.success + 1)
+        if (res.data.status === 'success') {
+          this.successAdded = [
+            ...this.successAdded,
+            { ...accessObj, ...data, ans_id: ans_id }
+          ]
+        } else if (res.data.status === 'error') {
+          this.refusedAdded = [
+            ...this.refusedAdded,
+            { ...accessObj, ...data, ans_id: ans_id }
+          ]
+        }
+      })
+      .catch(e => {
+        this.setMultipleCounter('error', this.multipleCounter.error + 1)
+        this.errorAdded = [
+          ...this.errorAdded,
+          { ...accessObj, ...data, ans_id }
+        ]
+      })
+      .finally(() => {
+        this.setMultipleCounter('count', this.multipleCounter.count + 1)
+      })
+  }
+
   setMultipleCounter = (variable, value) => {
     set(this.multipleCounter, variable, value)
   }
@@ -258,12 +289,14 @@ decorate(BasicTranslations, {
   isBasicTranslationsNumbersLoading: observable,
   basicTranslationsNumbers: observable,
   multipleCounter: observable,
-  resultMultipleAddANSBasic: observable,
   isAvailableNumbersForAddInstanceLoading: observable,
   totalPagesAvailableNumbers: observable,
   availableNumbersForAddInstance: observable,
   isPostingInstance: observable,
   isPuttingInstance: observable,
+  successAdded: observable,
+  refusedAdded: observable,
+  errorAdded: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
@@ -273,7 +306,8 @@ decorate(BasicTranslations, {
   getBasicTranslationsNumbers: action,
   postAddMultipleANSBasic: action,
   setMultipleCounter: action,
-  getAvailableNumbersForAddInstance: action
+  getAvailableNumbersForAddInstance: action,
+  putUpdateMultipleANSBasic: action
 })
 
 export default new BasicTranslations()

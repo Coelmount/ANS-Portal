@@ -3,6 +3,7 @@ import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import Papa from 'papaparse'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -28,10 +29,22 @@ const FirstStep = props => {
     const numbersToCSV = numbers
       .filter(number => number.checked)
       .map(number => ({
-        customerId: match.customerId,
-        subaccountId: match.groupId,
-        accessNumber: number.access_number,
-        destinationNumber: number.destination_number
+        access_cc: `+${
+          parsePhoneNumberFromString(number.access_number).countryCallingCode
+        }`,
+        access_number: number.access_number.slice(
+          parsePhoneNumberFromString(number.access_number).countryCallingCode
+            .length + 1
+        ),
+        destination_cc: `+${
+          parsePhoneNumberFromString(number.destination_number)
+            .countryCallingCode
+        }`,
+        destination_number: number.destination_number.slice(
+          parsePhoneNumberFromString(number.destination_number)
+            .countryCallingCode.length + 1
+        ),
+        ans_id: number.ans_id
       }))
     const pom = document.createElement('a')
     const csvContent = Papa.unparse(JSON.stringify(numbersToCSV), {
