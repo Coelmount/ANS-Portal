@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import classnames from 'classnames'
@@ -34,8 +34,10 @@ import deassignIcon from 'source/images/svg/deassign.svg'
 import useStyles from './styles'
 
 const AccessNumbersItem = ({ t }) => {
-  const match = useParams()
   const classes = useStyles()
+  const match = useParams()
+  const history = useHistory()
+
   const [showAddNumbers, setShowAddNumber] = useState(false)
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false)
   const [isDeassignModalOpen, setIsDeassignModalOpen] = useState(false)
@@ -58,6 +60,7 @@ const AccessNumbersItem = ({ t }) => {
   const [deassignMessage, setDeassignMessage] = useState('')
   const [deassignMessageBlock, setDeassignMessageBlock] = useState(null)
   const [deassignSubject, setDeassignSubject] = useState('')
+  const [phoneNumberToRedirect, setPhoneNumberToRedirect] = useState('')
   const {
     assignedNumbers,
     isAssignedNumbersLoading,
@@ -73,8 +76,17 @@ const AccessNumbersItem = ({ t }) => {
     setNumbersToDisconnect,
     setNumbersToDeassign,
     showErrorNotification,
-    numbersToDisconnect
+    numbersToDisconnect,
+    getSubaccountId,
+    clearSubaccountLinkId,
+    subaccountLinkId,
+    isSubaccountLinkIdLoading
   } = AssignedNumbersStore
+
+  const isLoading =
+    (isLoadingEntitlements && !isDisconnectingNumber) ||
+    (isAssignedNumbersLoading && !isDisconnectingNumber) ||
+    isSubaccountLinkIdLoading
 
   const isAssignEnabled =
     numberOfChecked > 0 &&
@@ -112,6 +124,16 @@ const AccessNumbersItem = ({ t }) => {
     setNumbers(assignedNumbers)
     setNumberOfSelectedToDisconnect(0)
   }, [assignedNumbers])
+
+  // do redirect when linkId received from store request
+  useEffect(() => {
+    if (subaccountLinkId && phoneNumberToRedirect) {
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${subaccountLinkId}/ans_instances/basic/${phoneNumberToRedirect}`
+      )
+    }
+    return () => clearSubaccountLinkId()
+  }, [subaccountLinkId])
 
   const handleCloseAssignModal = () => {
     setIsAssignModalOpen(false)
@@ -286,6 +308,11 @@ const AccessNumbersItem = ({ t }) => {
       callback: handleCloseDeassignModal
     }
     deassignNumbers(payload)
+  }
+
+  const handleInUseLinkClick = row => {
+    getSubaccountId(match.customerId, row.subaccount)
+    setPhoneNumberToRedirect(row.phoneNumber)
   }
 
   const extraTitleBlock = (
@@ -465,25 +492,6 @@ const AccessNumbersItem = ({ t }) => {
             {t(row.subaccount)}
           </Typography>
           {row.subaccount !== 'none' && row.inUse === 'no' && (
-            // <Box
-            //   onClick={() =>
-            //     selectNumbers(
-            //       !row.isSelectedToDeassign,
-            //       row.id,
-            //       'isSelectedToDeassign'
-            //     )
-            //   }
-            //   className={classnames(classes.tableIconWrap, {
-            //     [classes.btnBack]: row.isSelectedToDeassign
-            //     //  && !isDisconnectingNumber
-            //   })}
-            // >
-            //   <img
-            //     className={classes.deassignIcon}
-            //     src={deassignIcon}
-            //     alt='delete icon'
-            //   />
-            // </Box>
             <IconButton
               aria-label='deassign icon button'
               component='span'
@@ -512,19 +520,15 @@ const AccessNumbersItem = ({ t }) => {
     {
       id: 'inUse',
       label: 'in_use',
-      extraProps: {
-        className: classes.inUseCell
-      },
       getCellData: row => (
         <Fragment>
           {row.connected_to ? (
-            <Link
-              to={`/customers/${match.customerId}/subaccounts/${row.subaccountId}/ans_instances/basic/${row.phoneNumber}`}
+            <Typography
+              onClick={() => handleInUseLinkClick(row)}
+              className={classes.usedTitle}
             >
-              <Typography className={classes.usedTitle}>
-                {t(row.connected_to)}
-              </Typography>
-            </Link>
+              {t(row.connected_to)}
+            </Typography>
           ) : (
             t('no')
           )}
@@ -536,8 +540,7 @@ const AccessNumbersItem = ({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {(isLoadingEntitlements && !isDisconnectingNumber) ||
-        (isAssignedNumbersLoading && !isDisconnectingNumber) ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <Fragment>
