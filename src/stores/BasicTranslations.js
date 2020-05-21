@@ -20,10 +20,10 @@ export class BasicTranslations {
   successAdded = []
   refusedAdded = []
   errorAdded = []
-  resultMultipleAddANSBasic = []
   totalPagesAvailableNumbers = 0
   availableNumbersForAddInstance = []
   isRedirectAfterPut = false
+  isDeleting = false
 
   changeStep = step => {
     this.step = step
@@ -138,7 +138,7 @@ export class BasicTranslations {
 
   getBasicTranslationsNumbers = (customerId, groupId) => {
     this.isBasicTranslationsNumbersLoading = true
-    axios
+    return axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
         const transformedNumbers = res.data.ans_basic.map((item, index) => {
@@ -189,6 +189,56 @@ export class BasicTranslations {
       })
       .finally(() => {
         this.setMultipleCounter('count', this.multipleCounter.count + 1)
+      })
+  }
+
+  putUpdateMultipleANSBasic = (tenantId, groupId, ans_id, data, accessObj) => {
+    axios
+      .put(
+        `/tenants/${tenantId}/groups/${groupId}/services/ans_basic/${ans_id}`,
+        data
+      )
+      .then(res => {
+        this.setMultipleCounter('success', this.multipleCounter.success + 1)
+        if (res.data.status === 'success') {
+          this.successAdded = [
+            ...this.successAdded,
+            { ...accessObj, ...data, ans_id: ans_id }
+          ]
+        } else if (res.data.status === 'error') {
+          this.refusedAdded = [
+            ...this.refusedAdded,
+            { ...accessObj, ...data, ans_id: ans_id }
+          ]
+        }
+      })
+      .catch(e => {
+        this.setMultipleCounter('error', this.multipleCounter.error + 1)
+        this.errorAdded = [
+          ...this.errorAdded,
+          { ...accessObj, ...data, ans_id }
+        ]
+      })
+      .finally(() => {
+        this.setMultipleCounter('count', this.multipleCounter.count + 1)
+      })
+  }
+
+  deleteANSBasic = (tenantId, groupId, idArr, callback) => {
+    this.isDeleting = true
+    let promiseArr = []
+    idArr.forEach(el => {
+      promiseArr.push(
+        axios.delete(
+          `/tenants/${tenantId}/groups/${groupId}/services/ans_basic/${el}`
+        )
+      )
+    })
+
+    Promise.all(promiseArr)
+      .then(() => callback && callback())
+      .finally(() => {
+        this.isDeleting = false
       })
   }
 
@@ -262,13 +312,16 @@ decorate(BasicTranslations, {
   isBasicTranslationsNumbersLoading: observable,
   basicTranslationsNumbers: observable,
   multipleCounter: observable,
-  resultMultipleAddANSBasic: observable,
   isAvailableNumbersForAddInstanceLoading: observable,
   totalPagesAvailableNumbers: observable,
   availableNumbersForAddInstance: observable,
   isPostingInstance: observable,
   isPuttingInstance: observable,
+  successAdded: observable,
+  refusedAdded: observable,
+  errorAdded: observable,
   isRedirectAfterPut: observable,
+  isDeleting: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
@@ -278,7 +331,9 @@ decorate(BasicTranslations, {
   getBasicTranslationsNumbers: action,
   postAddMultipleANSBasic: action,
   setMultipleCounter: action,
-  getAvailableNumbersForAddInstance: action
+  getAvailableNumbersForAddInstance: action,
+  putUpdateMultipleANSBasic: action,
+  deleteANSBasic: action
 })
 
 export default new BasicTranslations()

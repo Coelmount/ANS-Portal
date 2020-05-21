@@ -30,6 +30,7 @@ import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import AddMultipleNumbers from './components/MultipleANSBasicNumber'
 import MultipleUpdateNumbers from './components/MultipleUpdateANSBasicNumbers'
+import DeleteModal from 'components/DeleteModal'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 
@@ -54,6 +55,8 @@ const Translations = observer(({ t }) => {
     setShowMultipleUpdateANSNumbers
   ] = useState(false)
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [instancesForDelete, setInstancesForDelete] = useState([])
 
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
@@ -63,7 +66,9 @@ const Translations = observer(({ t }) => {
     updateSelectedInstance,
     basicTranslationsNumbers,
     isBasicTranslationsNumbersLoading,
-    getBasicTranslationsNumbers
+    getBasicTranslationsNumbers,
+    deleteANSBasic,
+    isDeleting
     // getCountriesConfig,
     // setNumbersWithConfig
   } = BasicTranslationsStore
@@ -80,6 +85,29 @@ const Translations = observer(({ t }) => {
     handleCheckedStates(searchList)
     // setPhoneNumbers(searchList)
   }, [searchList])
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false)
+    getBasicTranslationsNumbers(match.customerId, match.groupId)
+  }
+
+  const handleMultipleDelete = () => {
+    setIsDeleteModalOpen(true)
+    setInstancesForDelete(
+      numbers.filter(num => num.checked).map(el => el.ans_id)
+    )
+  }
+
+  const handleDelete = id => {
+    deleteANSBasic(match.customerId, match.groupId, id, handleCloseDeleteModal)
+
+    // Promise.all(promiseArr).finally(() =>
+    //   getBasicTranslationsNumbers(match.customerId, match.groupId).then(() => {
+    //     setIsDeleteModalOpen(false)
+    //     setIsDeleting(false)
+    //   })
+    // )
+  }
 
   const handleAddInstanceModalOpen = () => {
     setIsAddInstanceModalOpen(true)
@@ -232,6 +260,7 @@ const Translations = observer(({ t }) => {
               className={classnames(classes.mainIconWrap, {
                 [classes.disabledButton]: !isAnyChecked
               })}
+              onClick={handleMultipleDelete}
             >
               <img
                 className={classes.deleteIcon}
@@ -248,108 +277,117 @@ const Translations = observer(({ t }) => {
     )
   }
 
-  const columns = [
-    {
-      id: 'checkbox',
-      label: (
-        <Checkbox
-          className={classes.headCheckbox}
-          checked={selectAll}
-          onChange={handleSelectAll}
-        />
-      ),
-      isSortAvailable: false,
-      getCellData: (row, i) =>
-        row.checked ? (
-          <Checkbox
-            checked={row.checked}
-            className={classes.checkbox}
-            onChange={e => selectNumbers(!row.checked, row.id)}
-          />
-        ) : (
-          <div
-            className={classes.indexHoverCheckbox}
-            onClick={() => selectNumbers(!row.checked, row.id)}
-            onMouseLeave={() => changeHover(false, row.id)}
-            onMouseEnter={() => changeHover(true, row.id)}
-          >
-            {row.hover ? (
-              <Checkbox
-                checked={row.checked}
-                className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.id)}
-              />
-            ) : (
-              i + 1
-            )}
-          </div>
-        ),
-      extraHeadProps: {
-        className: classes.checkboxCell
-      },
-      extraProps: {
-        className: classes.checkboxCell
-      }
-    },
-    {
-      id: 'access_number',
-      label: 'access_number',
-      isSortAvailable: false,
-      getCellData: row => (
-        <Box>
-          <Link
-            onClick={() => updateSelectedInstance(row)}
-            to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.access_number}`}
-            className={classes.link}
-          >
-            {row.access_number}
-          </Link>
-          <Typography>{row.accessCountry}</Typography>
-        </Box>
-      ),
-      extraHeadProps: {
-        className: classes.accessHeadCell
-      },
-      extraProps: {
-        className: classes.accessNumberCell
-      }
-    },
-    {
-      id: 'rightArrow',
-      isSortAvailable: false,
-      getCellData: row => (
-        <img
-          src={RightArrowIcon}
-          className={classes.rightArrowIcon}
-          alt='right icon'
-        />
-      )
-    },
-    {
-      id: 'destination_number',
-      label: 'destination_number',
-      isSortAvailable: false,
-      getCellData: row => (
-        <Box>
-          <Typography className={classes.destinationNumberText}>
-            {row.destination_number}
-          </Typography>
-          <Typography>{row.destinationCountry}</Typography>
-        </Box>
-      )
-    },
-    {
-      id: 'delete',
-      extraProps: {
-        className: classes.deleteCell,
-        align: 'right'
-      },
-      isSortAvailable: false,
-      getCellData: row => (
-        <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
-      )
+  const columns = () => {
+    const handleOpenDeleteModal = id => {
+      setIsDeleteModalOpen(true)
+      setInstancesForDelete([id])
     }
-  ]
+    return [
+      {
+        id: 'checkbox',
+        label: (
+          <Checkbox
+            className={classes.headCheckbox}
+            checked={selectAll}
+            onChange={handleSelectAll}
+          />
+        ),
+        isSortAvailable: false,
+        getCellData: (row, i) =>
+          row.checked ? (
+            <Checkbox
+              checked={row.checked}
+              className={classes.checkbox}
+              onChange={e => selectNumbers(!row.checked, row.id)}
+            />
+          ) : (
+            <div
+              className={classes.indexHoverCheckbox}
+              onClick={() => selectNumbers(!row.checked, row.id)}
+              onMouseLeave={() => changeHover(false, row.id)}
+              onMouseEnter={() => changeHover(true, row.id)}
+            >
+              {row.hover ? (
+                <Checkbox
+                  checked={row.checked}
+                  className={classes.checkbox}
+                  onChange={() => selectNumbers(true, row.id)}
+                />
+              ) : (
+                i + 1
+              )}
+            </div>
+          ),
+        extraHeadProps: {
+          className: classes.checkboxCell
+        },
+        extraProps: {
+          className: classes.checkboxCell
+        }
+      },
+      {
+        id: 'access_number',
+        label: 'access_number',
+        isSortAvailable: false,
+        getCellData: row => (
+          <Box>
+            <Link
+              onClick={() => updateSelectedInstance(row)}
+              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.access_number}`}
+              className={classes.link}
+            >
+              {row.access_number}
+            </Link>
+            <Typography>{row.accessCountry}</Typography>
+          </Box>
+        ),
+        extraHeadProps: {
+          className: classes.accessHeadCell
+        },
+        extraProps: {
+          className: classes.accessNumberCell
+        }
+      },
+      {
+        id: 'rightArrow',
+        isSortAvailable: false,
+        getCellData: row => (
+          <img
+            src={RightArrowIcon}
+            className={classes.rightArrowIcon}
+            alt='right icon'
+          />
+        )
+      },
+      {
+        id: 'destination_number',
+        label: 'destination_number',
+        isSortAvailable: false,
+        getCellData: row => (
+          <Box>
+            <Typography className={classes.destinationNumberText}>
+              {row.destination_number}
+            </Typography>
+            <Typography>{row.destinationCountry}</Typography>
+          </Box>
+        )
+      },
+      {
+        id: 'delete',
+        extraProps: {
+          className: classes.deleteCell,
+          align: 'right'
+        },
+        isSortAvailable: false,
+        getCellData: row => (
+          <CloseOutlinedIcon
+            className={classes.deleteCustomerIcon}
+            onClick={() => handleOpenDeleteModal(row.ans_id)}
+          />
+        )
+      }
+    ]
+  }
 
   return (
     <div className={classes.root}>
@@ -365,7 +403,7 @@ const Translations = observer(({ t }) => {
             firstCell={false}
             // classes={classes}
             rows={numbers}
-            columns={columns}
+            columns={columns()}
             searchCriterias={[
               'accessCountry',
               'destinationCountry',
@@ -395,8 +433,26 @@ const Translations = observer(({ t }) => {
         {showMultipleUpdateANSNumbers && (
           <MultipleUpdateNumbers
             open={showMultipleUpdateANSNumbers}
-            handleClose={() => setShowMultipleUpdateANSNumbers(false)}
+            handleClose={() => {
+              setShowMultipleUpdateANSNumbers(false)
+              getBasicTranslationsNumbers(match.customerId, match.groupId)
+            }}
             numbers={numbers}
+          />
+        )}
+        {isDeleteModalOpen && (
+          <DeleteModal
+            classes={classes}
+            open={isDeleteModalOpen}
+            handleClose={handleCloseDeleteModal}
+            handleDelete={handleDelete}
+            deleteInfo={instancesForDelete}
+            isDeleting={isDeleting}
+            deleteSubject={`${t('basic').toLowerCase()} ${t(
+              'phone_numbers'
+            ).toLowerCase()}`}
+            action={t('to_delete')}
+            titleAction={t(`delete`)}
           />
         )}
       </Paper>
