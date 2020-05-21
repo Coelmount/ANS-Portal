@@ -32,6 +32,7 @@ export class AssignedNumbers {
     this.numbersToAssign = []
     this.numbersToDeassign = []
     this.numbersToDisconnect = []
+    this.isNumbersDeassigned = false
   }
 
   setNumbersToAssign = numbers => {
@@ -121,21 +122,23 @@ export class AssignedNumbers {
   }
 
   deassignNumbers = ({ customerId, callback }) => {
-    axios
-      .get(`/tenants/${customerId}/groups?sensitiveGroupNameEquals=DevAccount`)
-      .then(res => {
-        return res.data.groups[0].groupId
-      })
-      .then(groupId => {
-        //chain then
-        const amount = this.numbersToDeassign.length
-        const deassignSubject = amount > 1 ? 'numbers' : 'number'
-        this.isDeassigningNumber = true
-        const objectsWithRangesArr = phoneNumbersRangeFilter(
-          this.numbersToDeassign
+    this.isDeassigningNumber = true
+    callback()
+
+    const amount = this.numbersToDeassign.length
+    const deassignSubject = amount > 1 ? 'numbers' : 'number'
+    const objectsWithRangesArr = phoneNumbersRangeFilter(this.numbersToDeassign)
+
+    objectsWithRangesArr.forEach((item, index) => {
+      const groupName = item.customer_account
+      axios
+        .get(
+          `/tenants/${customerId}/groups?sensitiveGroupNameEquals=${groupName}`
         )
-        callback()
-        objectsWithRangesArr.forEach((item, index) => {
+        .then(res => {
+          return res.data.groups[0].groupId
+        })
+        .then(groupId => {
           axios
             .delete(`/tenants/${customerId}/groups/${groupId}/numbers`, {
               data: {
@@ -166,21 +169,24 @@ export class AssignedNumbers {
               })
             })
             .finally(() => {
-              this.isDisconnectingNumber = false
-              this.numbersToDisconnect = []
+              this.isNumbersDeassigned = true
+              this.isDeassigningNumber = false
+              this.numbersToDeassign = []
             })
         })
-      })
+    })
   }
 
   disconnectNumbers = ({ customerId, callback }) => {
+    this.isDisconnectingNumber = true
+    callback()
+
     const amount = this.numbersToDisconnect.length
     const disconnectSubject = amount > 1 ? 'numbers' : 'number'
-    this.isDisconnectingNumber = true
     const objectsWithRangesArr = phoneNumbersRangeFilter(
       this.numbersToDisconnect
     )
-    callback()
+
     objectsWithRangesArr.forEach((item, index) => {
       axios
         .delete(`/tenants/${customerId}/numbers`, {
@@ -278,12 +284,15 @@ decorate(AssignedNumbers, {
   isAssignedNumbersLoading: observable,
   isLoadingEntitlements: observable,
   isDisconnectingNumber: observable,
+  isDeassigningNumber: observable,
   totalPagesServer: observable,
   currentEntitlement: observable,
   isPostAssignNumbers: observable,
   numbersToDisconnect: observable,
+  numbersToDeassign: observable,
   subaccountLinkId: observable,
   isSubaccountLinkIdLoading: observable,
+  isNumbersDeassigned: observable,
   getAssignedNumbers: action,
   disconnectNumbers: action,
   deassignNumbers: action,

@@ -77,15 +77,20 @@ const AccessNumbersItem = ({ t }) => {
     setNumbersToDeassign,
     showErrorNotification,
     numbersToDisconnect,
+    numbersToDeassign,
     getSubaccountId,
     clearSubaccountLinkId,
     subaccountLinkId,
-    isSubaccountLinkIdLoading
+    isSubaccountLinkIdLoading,
+    isDeassigningNumber,
+    isNumbersDeassigned
   } = AssignedNumbersStore
 
   const isLoading =
-    (isLoadingEntitlements && !isDisconnectingNumber) ||
-    (isAssignedNumbersLoading && !isDisconnectingNumber) ||
+    (isLoadingEntitlements && !isDisconnectingNumber && !isDeassigningNumber) ||
+    (isAssignedNumbersLoading &&
+      !isDisconnectingNumber &&
+      !isDeassigningNumber) ||
     isSubaccountLinkIdLoading
 
   const isAssignEnabled =
@@ -97,6 +102,7 @@ const AccessNumbersItem = ({ t }) => {
     )
 
   const isDeassignEnabled =
+    !isDeassigningNumber &&
     numberOfSelectedToDeassign > 0 &&
     !numbers.some(
       item =>
@@ -123,6 +129,7 @@ const AccessNumbersItem = ({ t }) => {
   useEffect(() => {
     setNumbers(assignedNumbers)
     setNumberOfSelectedToDisconnect(0)
+    setNumberOfSelectedToDeassign(0)
   }, [assignedNumbers])
 
   // do redirect when linkId received from store request
@@ -134,6 +141,13 @@ const AccessNumbersItem = ({ t }) => {
     }
     return () => clearSubaccountLinkId()
   }, [subaccountLinkId])
+
+  // update page after deassign
+  useEffect(() => {
+    if (isNumbersDeassigned) {
+      getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
+    }
+  }, [isNumbersDeassigned])
 
   const handleCloseAssignModal = () => {
     setIsAssignModalOpen(false)
@@ -492,27 +506,34 @@ const AccessNumbersItem = ({ t }) => {
             {t(row.subaccount)}
           </Typography>
           {row.subaccount !== 'none' && row.inUse === 'no' && (
-            <IconButton
-              aria-label='deassign icon button'
-              component='span'
-              className={classnames(classes.tableIconWrap, {
-                [classes.btnBack]: row.isSelectedToDeassign
-                //  && !isDisconnectingNumber
-              })}
-              onClick={() =>
-                selectNumbers(
-                  !row.isSelectedToDeassign,
-                  row.id,
-                  'isSelectedToDeassign'
-                )
-              }
-            >
-              <img
-                className={classes.deassignIcon}
-                src={deassignIcon}
-                alt='deassign from subaccount'
-              />
-            </IconButton>
+            <Fragment>
+              {isDeassigningNumber &&
+              numbersToDeassign.some(item => item.id === row.id) ? (
+                <CircularProgress className={classes.deleteLoading} />
+              ) : (
+                <IconButton
+                  aria-label='deassign icon button'
+                  component='span'
+                  className={classnames(classes.tableIconWrap, {
+                    [classes.btnBack]:
+                      row.isSelectedToDeassign && !isDeassigningNumber
+                  })}
+                  onClick={() =>
+                    selectNumbers(
+                      !row.isSelectedToDeassign,
+                      row.id,
+                      'isSelectedToDeassign'
+                    )
+                  }
+                >
+                  <img
+                    className={classes.deassignIcon}
+                    src={deassignIcon}
+                    alt='deassign from subaccount'
+                  />
+                </IconButton>
+              )}
+            </Fragment>
           )}
         </Box>
       )
