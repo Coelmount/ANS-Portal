@@ -100,7 +100,7 @@ const FirstStep = props => {
     const csvArray = Papa.parse(file, { skipEmptyLines: true })
     if (csvArray.data[0].length !== 4) {
       const errorHeader = t('count_header_error')
-      const errorText = t('count_header_error_text', { count: 5 })
+      const errorText = t('count_header_error_text', { count: 4 })
       setErrorObj({ showError: true, errorHeader, errorText })
       setDisabledUpload(true)
       return []
