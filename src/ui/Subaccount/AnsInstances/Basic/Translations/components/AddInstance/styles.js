@@ -94,14 +94,9 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: 0
   },
   countryInput: {
-    width: 254,
+    width: 240,
     marginTop: 40,
     marginBottom: 30
-  },
-  destinationInput: {
-    width: 300,
-    height: 300,
-    background: 'red'
   },
   modalDialog: {
     minHeight: '100%',

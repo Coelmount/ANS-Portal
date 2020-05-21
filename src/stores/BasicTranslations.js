@@ -152,11 +152,9 @@ export class BasicTranslations {
               getCountryNameFromNumber(item.access_number),
             destinationCountry:
               item.destination_number &&
-              item.destination_number.length > 7 &&
               getCountryNameFromNumber(item.destination_number),
             destinationCountryTwoLetterCode:
               item.destination_number &&
-              item.destination_number.length > 7 &&
               getCountryTwoLetterCodeFromNumber(item.destination_number),
             ...item
           }

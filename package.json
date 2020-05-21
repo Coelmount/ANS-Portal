@@ -15,7 +15,6 @@
     "libphonenumber-js": "^1.7.51",
     "lodash": "^4.17.15",
     "material-ui-icons": "^1.0.0-beta.36",
-    "material-ui-phone-number": "^2.2.6",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.4",
     "mobx-react-lite": "^1.5.2",
