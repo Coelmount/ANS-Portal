@@ -27,7 +27,18 @@ const DeleteModal = props => {
     extraMessageBlock,
     t
   } = props
-  const { name, id } = deleteInfo
+
+  let name = ''
+  let id = ''
+  let idArr = []
+  if (Array.isArray(deleteInfo)) {
+    deleteInfo.forEach(el => {
+      idArr.push(el)
+    })
+  } else {
+    name = deleteInfo.name
+    id = deleteInfo.id
+  }
 
   return (
     <Dialog
@@ -61,9 +72,9 @@ const DeleteModal = props => {
               <span>{t(`are_you_sure_you_want`)}</span>
               <span className={classes.boldText}> {action}</span>
               <span>{` ${extraDeleteSubject || deleteSubject}`}</span>
-              {id && (
+              {(idArr.length || id) && (
                 <span className={classes.boldText}>
-                  {` ${name}${` id: ${id}`}?`}
+                  {` ${name}${` id: ${idArr.length ? idArr.join(', ') : id}`}?`}
                 </span>
               )}
               {extraMessageBlock}
@@ -75,7 +86,7 @@ const DeleteModal = props => {
                 </Typography>
               </Box>
               <Box
-                onClick={() => handleDelete && handleDelete(id)}
+                onClick={() => handleDelete && handleDelete(idArr || id)}
                 className={classes.deleteButtonWrap}
               >
                 <Typography className={classes.buttonTitle}>
@@ -88,10 +99,6 @@ const DeleteModal = props => {
       )}
     </Dialog>
   )
-}
-
-DeleteModal.propTypes = {
-  deleteInfo: PropTypes.object
 }
 
 DeleteModal.defaultProps = {

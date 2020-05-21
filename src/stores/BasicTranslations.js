@@ -23,6 +23,7 @@ export class BasicTranslations {
   totalPagesAvailableNumbers = 0
   availableNumbersForAddInstance = []
   isRedirectAfterPut = false
+  isDeleting = false
 
   changeStep = step => {
     this.step = step
@@ -137,7 +138,7 @@ export class BasicTranslations {
 
   getBasicTranslationsNumbers = (customerId, groupId) => {
     this.isBasicTranslationsNumbersLoading = true
-    axios
+    return axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
         const transformedNumbers = res.data.ans_basic.map((item, index) => {
@@ -225,6 +226,24 @@ export class BasicTranslations {
       })
   }
 
+  deleteANSBasic = (tenantId, groupId, idArr, callback) => {
+    this.isDeleting = true
+    let promiseArr = []
+    idArr.forEach(el => {
+      promiseArr.push(
+        axios.delete(
+          `/tenants/${tenantId}/groups/${groupId}/services/ans_basic/${el}`
+        )
+      )
+    })
+
+    Promise.all(promiseArr)
+      .then(() => callback && callback())
+      .finally(() => {
+        this.isDeleting = false
+      })
+  }
+
   setMultipleCounter = (variable, value) => {
     set(this.multipleCounter, variable, value)
   }
@@ -304,6 +323,7 @@ decorate(BasicTranslations, {
   refusedAdded: observable,
   errorAdded: observable,
   isRedirectAfterPut: observable,
+  isDeleting: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
@@ -314,7 +334,8 @@ decorate(BasicTranslations, {
   postAddMultipleANSBasic: action,
   setMultipleCounter: action,
   getAvailableNumbersForAddInstance: action,
-  putUpdateMultipleANSBasic: action
+  putUpdateMultipleANSBasic: action,
+  deleteANSBasic: action
 })
 
 export default new BasicTranslations()
