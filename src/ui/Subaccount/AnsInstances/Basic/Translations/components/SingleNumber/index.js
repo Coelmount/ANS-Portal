@@ -30,6 +30,9 @@ import editIcon from 'source/images/svg/edit-blue.svg'
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import useStyles from './styles'
 
+import PhoneInput from 'react-phone-input-2'
+import './e.css'
+
 const SingleNumber = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
@@ -162,14 +165,21 @@ const SingleNumber = observer(({ t }) => {
                 alt='arrows icon'
               />
               <Box className={classes.rightBlock}>
-                <MuiPhoneInput
+                <PhoneInput
+                  value={destinationNumber}
+                  onChange={(value, data) =>
+                    handlePhoneInputChange(value, data)
+                  }
+                  placeholder={t('enter_number')}
+                />
+                {/* <MuiPhoneInput
                   defaultCountry={destinationTwoLetterCode}
                   value={destinationNumber}
                   placeholder={t('enter_number')}
                   onChange={(value, data) =>
                     handlePhoneInputChange(value, data)
                   }
-                />
+                /> */}
                 <Input
                   value={destinationCountry}
                   className={`${classes.input} ${classes.bottomInput}`}
