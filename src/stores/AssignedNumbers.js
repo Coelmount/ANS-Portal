@@ -221,8 +221,8 @@ export class AssignedNumbers {
         range: item.phoneNumbers
           ? [Number(item.rangeStart), Number(item.rangeEnd)]
           : [Number(item.nsn)],
-        country_code: item.country_code,
-        service_capabilities: 'basic'
+        country_code: item.country_code
+        // service_capabilities: 'basic'
       })
     })
     axios
