@@ -330,7 +330,7 @@ const PhoneNumbers = observer(({ t }) => {
         <Fragment>
           {row.status !== 'free' ? (
             <Link
-              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.rangeStart}`}
+              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.phoneNumber}`}
             >
               <Typography className={classes.assignedTitle}>
                 {t(row.status)}
