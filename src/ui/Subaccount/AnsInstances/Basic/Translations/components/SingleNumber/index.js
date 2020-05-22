@@ -102,7 +102,7 @@ const SingleNumber = observer(({ t }) => {
   // onChange phone number input
   const handlePhoneInputChange = (value, data) => {
     if (data.dialCode) {
-      const initValue = value.slice(data.dialCode.length + 1)
+      const initValue = value.slice(data.dialCode.length)
       const formattedValue = initValue.replace(/\s/g, '')
       setDestinationNumber(value)
       setNsnToSend(formattedValue)

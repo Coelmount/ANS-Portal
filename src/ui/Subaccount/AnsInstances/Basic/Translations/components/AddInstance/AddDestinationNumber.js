@@ -62,7 +62,7 @@ const AddDestinationNumber = ({ handleClose, t }) => {
   // phone number input onChange; nsn/code => state
   const handlePhoneInputChange = (value, data) => {
     if (data.dialCode) {
-      const initValue = value.slice(data.dialCode.length + 1)
+      const initValue = value.slice(data.dialCode.length)
       const formattedValue = initValue.replace(/\s/g, '')
       setSelectedNsn(formattedValue)
       setSelectedNumberCode(data.dialCode)
