@@ -52,7 +52,9 @@ const Results = ({ classes, t }) => {
                 </TableCell>
                 <TableCell className={classes.bodyCell}>
                   <Link
-                    to={`/customers/${searchResult.tenantId}/subaccounts/${searchResult.groupId}/ans_instances/basic`}
+                    to={`/customers/${searchResult.tenantId}/subaccounts/${
+                      searchResult.groupId
+                    }/ans_instances/basic/${ansInstance.trim()}`}
                     className={classes.link}
                   >
                     {ansInstance}
