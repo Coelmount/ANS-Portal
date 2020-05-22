@@ -461,7 +461,7 @@ const AccessNumbersItem = ({ t }) => {
       label: 'phone_numbers',
       getCellData: row => (
         <Box className={classes.subaccountCell}>
-          <Typography className={classes.subaccountTitle}>
+          <Typography className={classes.phoneTitle}>
             {t(row.phoneNumber)}
           </Typography>
           {row.subaccount === 'none' && row.inUse === 'no' && (
