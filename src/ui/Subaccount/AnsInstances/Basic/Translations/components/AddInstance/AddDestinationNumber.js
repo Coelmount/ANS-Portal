@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import MuiPhoneInput from 'material-ui-phone-number'
 import PhoneInput from 'react-phone-input-2'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
