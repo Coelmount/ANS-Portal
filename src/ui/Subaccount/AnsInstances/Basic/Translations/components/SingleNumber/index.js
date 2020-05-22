@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
+import SnackbarStore from 'stores/Snackbar'
 import BasicTranslationsStore from 'stores/BasicTranslations'
 import ConfigStore from 'stores/Config'
 import CustomContainer from 'components/CustomContainer'
@@ -76,6 +77,21 @@ const SingleNumber = observer(({ t }) => {
       item => item.access_number === accessNumber
     )
     setCurrentInstance(currentNumber)
+
+    // if no data from back and user open page by url enter
+    if (!basicTranslationsNumbers.length || !currentNumber) {
+      SnackbarStore.enqueueSnackbar({
+        // message: t('instance_not_exist'),
+        message: 'An instance does not exist',
+        options: {
+          variant: 'info'
+        }
+      })
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
+      )
+    }
+
     if (currentNumber) {
       const currentDestinationNumber = currentNumber.destination_number
       setDestinationCountry(currentNumber.destinationCountry)
@@ -114,7 +130,7 @@ const SingleNumber = observer(({ t }) => {
   }
 
   const handleSaveButtonClick = () => {
-    if (isSaveEnabled) {
+    if (isSaveEnabled && currentInstance) {
       putInstance(
         match.customerId,
         match.groupId,

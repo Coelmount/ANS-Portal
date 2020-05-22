@@ -10,7 +10,6 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
-
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import DefaultLayoutStore from 'stores/DefaultLayout'
@@ -18,6 +17,7 @@ import DefaultLayoutStore from 'stores/DefaultLayout'
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 
 const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
+  const history = useHistory()
   const {
     activeParentNav,
     activeChildNav,
@@ -26,12 +26,15 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
     handleActiveParentNav,
     handleActiveChildNav,
     handleActiveSubChildNav,
-    getActiveNavsAfterUpdate
+    getActiveNavsAfterUpdate,
+    setDefaultValues
   } = DefaultLayoutStore
-  const history = useHistory()
 
   useEffect(() => {
     getActiveNavsAfterUpdate(match.url)
+    return () => {
+      setDefaultValues()
+    }
   }, [getActiveNavsAfterUpdate, match.url])
 
   const redirectToMainPage = () => {

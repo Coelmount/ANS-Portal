@@ -13,6 +13,7 @@ import DefaultLayoutStore from 'stores/DefaultLayout'
 import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ match, t }) => {
+  // console.log(match, 'match')
   const { handleCloseNav } = DefaultLayoutStore
   const classes = useStyles()
   const { url } = match
@@ -31,6 +32,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
   }
 
   const systemLevel = (breadcrumb, index) => {
+    // console.log(breadcrumbsArr, breadcrumb, index, 'index')
     if (breadcrumbsArr.length > 2 && index === 0) {
       return (
         <Link to={`/${breadcrumb}`} className={classes.link} key={breadcrumb}>
@@ -64,7 +66,10 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
-    if (breadcrumbsArr.length > 4 && index === 3 && !match.params.numbersId) {
+    if (
+      (breadcrumbsArr.length > 4 && index === 3 && !match.params.numbersId) ||
+      (breadcrumbsArr.length > 5 && index === 4 && !match.params.numbersId)
+    ) {
       return (
         <Link
           to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
@@ -76,6 +81,24 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
+    if (
+      breadcrumbsArr.length > 6 &&
+      index === 5 &&
+      !match.params.numbersId &&
+      match.params.instanceNumber
+    ) {
+      return (
+        <Link
+          to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances/basic`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+
     return <Typography key={breadcrumb}>{t(breadcrumb)}</Typography>
   }
 

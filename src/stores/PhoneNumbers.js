@@ -130,7 +130,7 @@ export class PhoneNumbers {
             ...item,
             status: item.connected_to ? 'used' : 'free',
             countryName: countryName,
-            phoneNumber: `${item.country_code} ${item.nsn}`,
+            phoneNumber: `${item.country_code}${item.nsn}`,
             checked: false,
             hover: false
           }
