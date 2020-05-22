@@ -30,8 +30,6 @@ import editIcon from 'source/images/svg/edit-blue.svg'
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import useStyles from './styles'
 
-import './customPhoneInputStyles.css'
-
 const SingleNumber = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
