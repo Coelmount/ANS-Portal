@@ -7,6 +7,10 @@ export class DefaultLayoutStore {
   activeAdvancedSubChild = null
   isChildNavClosed = false
 
+  setDefaultValues = () => {
+    this.activeParentNav = null
+  }
+
   handleActiveParentNav = parent => {
     if (this.activeParentNav === parent) {
       this.activeParentNav = null
@@ -74,6 +78,9 @@ export class DefaultLayoutStore {
     } else if (urlArr[6] === 'time_based_routing') {
       this.activeParentNav = 'ans_instances'
       this.activeChildNav = 'time_based_routing'
+    } else if (urlArr[6] === 'basic') {
+      this.activeParentNav = 'ans_instances'
+      this.activeChildNav = 'basic'
     }
   }
 }
@@ -87,7 +94,8 @@ decorate(DefaultLayoutStore, {
   handleActiveChildNav: action,
   handleActiveSubChildNav: action,
   handleCloseNav: action,
-  getActiveNavsAfterUpdate: action
+  getActiveNavsAfterUpdate: action,
+  setDefaultValues: action
 })
 
 export default new DefaultLayoutStore()
