@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Chip from '@material-ui/core/Chip'
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+// import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import TitleBlock from 'components/TitleBlock'

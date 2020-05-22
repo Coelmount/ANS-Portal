@@ -13,13 +13,11 @@ import Button from '@material-ui/core/Button'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormControl from '@material-ui/core/FormControl'
 import CloseIcon from '@material-ui/icons/Close'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import ConfigStore from 'stores/Config'
 
-import Checkbox from 'components/Checkbox'
 import Switch from 'components/Switch'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'

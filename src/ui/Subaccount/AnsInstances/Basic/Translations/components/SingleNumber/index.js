@@ -20,14 +20,11 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
 import Input from 'components/Input'
-import EditAccessNumber from './components/EditAccessNumber'
-import CountryInput from 'components/CountryInput'
 import Loading from 'components/Loading'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
 import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
 
-import editIcon from 'source/images/svg/edit-blue.svg'
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import useStyles from './styles'
 
@@ -41,8 +38,6 @@ const SingleNumber = observer(({ t }) => {
   const [currentInstance, setCurrentInstance] = useState(null)
   const [destinationNumber, setDestinationNumber] = useState('')
   const [destinationCountry, setDestinationCountry] = useState('')
-  const [destinationTwoLetterCode, setDestinationTwoLetterCode] = useState('')
-  const [destinationCountryCode, setDestinationCountryCode] = useState('')
   const [codeToSend, setCodeToSend] = useState('')
   const [nsnToSend, setNsnToSend] = useState('')
   const isSaveEnabled = destinationNumber.length > 6
@@ -57,19 +52,10 @@ const SingleNumber = observer(({ t }) => {
     clearIsRedireactAfterPut
   } = BasicTranslationsStore
 
-  // data for country input
-  const { getCountries, countries, isLoadingCountries } = ConfigStore
-
   // initial request
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
-    getCountries()
-  }, [
-    match.customerId,
-    match.groupId,
-    getBasicTranslationsNumbers,
-    getCountries
-  ])
+  }, [match.customerId, match.groupId, getBasicTranslationsNumbers])
 
   // find current object in array, set to state
   useEffect(() => {
@@ -95,7 +81,6 @@ const SingleNumber = observer(({ t }) => {
     if (currentNumber) {
       const currentDestinationNumber = currentNumber.destination_number
       setDestinationCountry(currentNumber.destinationCountry)
-      setDestinationTwoLetterCode(currentNumber.destinationCountryTwoLetterCode)
       setDestinationNumber(currentDestinationNumber)
 
       const nsn = getNsnFromNumber(currentDestinationNumber)
@@ -123,9 +108,7 @@ const SingleNumber = observer(({ t }) => {
       setDestinationNumber(value)
       setNsnToSend(formattedValue)
       setDestinationCountry(data.name)
-      setDestinationCountryCode(data.dialCode)
       setCodeToSend(data.dialCode)
-      setDestinationTwoLetterCode(data.countryCode)
     }
   }
 
@@ -147,9 +130,7 @@ const SingleNumber = observer(({ t }) => {
 
   return (
     <Fragment>
-      {isBasicTranslationsNumbersLoading ||
-      isLoadingCountries ||
-      isPuttingInstance ? (
+      {isBasicTranslationsNumbersLoading || isPuttingInstance ? (
         <Loading />
       ) : (
         <Box className={classes.root}>

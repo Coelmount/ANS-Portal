@@ -24,7 +24,6 @@ import Loading from 'components/Loading'
 import UpdateStatus from './components/UpdateStatus'
 
 import useStyles from './styles'
-import { width } from '@material-ui/system'
 
 const CustomersTable = observer(({ t }) => {
   const classes = useStyles()
@@ -34,8 +33,7 @@ const CustomersTable = observer(({ t }) => {
     deleteCustomer,
     isLoadingCustomers,
     isDeletingCustomer,
-    setDefaultTableValues,
-    getCustomer
+    setDefaultTableValues
   } = CustomersStore
 
   const { setDefaultValues: setDefaultValuesSubaccount } = CreateSubaccountStore

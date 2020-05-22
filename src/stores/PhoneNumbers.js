@@ -4,7 +4,6 @@ import axios from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
-import phoneNumbersRangeFilter from 'utils/phoneNumbers/rangeFilter'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 
 export class PhoneNumbers {

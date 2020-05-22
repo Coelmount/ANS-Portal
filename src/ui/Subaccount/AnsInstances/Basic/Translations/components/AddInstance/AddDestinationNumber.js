@@ -16,9 +16,7 @@ import CloseIcon from '@material-ui/icons/Close'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 import ConfigStore from 'stores/Config'
-import Input from 'components/Input'
 import CountryInput from 'components/CountryInput'
-import PhoneNumberInput from 'components/PhoneNumberInput'
 import Loading from 'components/Loading'
 
 import useStyles from './styles'
