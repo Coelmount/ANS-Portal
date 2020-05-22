@@ -34,7 +34,7 @@ const AddDestinationNumber = ({ handleClose, t }) => {
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [selectedCountryNameCode, setSelectedCountryNameCode] = useState('')
   const [destinationNumber, setDestinationNumber] = useState('')
-  const [selectedNsn, setSelectedNsn] = useState(null)
+  const [selectedNsn, setSelectedNsn] = useState('')
   const [selectedNumberCode, setSelectedNumberCode] = useState(null)
   const [isCountryCodeEditable, setIsCountryCodeEditable] = useState(true)
 
@@ -58,6 +58,11 @@ const AddDestinationNumber = ({ handleClose, t }) => {
       setIsCountryCodeEditable(false)
     }
   }, [selectedCountryNameCode])
+
+  // clear nsn after request
+  useEffect(() => {
+    if (isPostingInstance) setSelectedNsn('')
+  }, [isPostingInstance])
 
   // phone number input onChange; nsn/code => state
   const handlePhoneInputChange = (value, data) => {
