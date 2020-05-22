@@ -171,7 +171,13 @@ const useStyles = makeStyles(theme => ({
   },
   subaccountTitle: {
     marginRight: 25,
-    fontSize: 14
+    fontSize: 14,
+    minWidth: 110
+  },
+  phoneTitle: {
+    marginRight: 25,
+    fontSize: 14,
+    minWidth: 140
   },
   deleteLoading: {
     width: '20px !important',
