@@ -23,15 +23,7 @@ import Loading from 'components/Loading'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 
 const FirstStep = props => {
-  const {
-    handleClose,
-    t,
-    isCreateSubaccount,
-    store,
-    isEditCustomer,
-    changeStep,
-    numbers
-  } = props
+  const { handleClose, t, changeStep, numbers } = props
   const classes = useStyles()
   const match = useParams()
 

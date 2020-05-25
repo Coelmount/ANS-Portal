@@ -19,6 +19,7 @@ import Select from 'components/Select'
 
 import CustomerStore from 'stores/Customers'
 import AccessNumbersStore from 'stores/AssignedNumbers'
+import NumbersStore from 'stores/Numbers'
 
 import useStyles from './styles'
 import Loading from 'components/Loading'
@@ -37,6 +38,7 @@ const FirstStepNFN = props => {
 
   const { customer, getCustomer, isLoadingCustomer } = CustomerStore
   const { currentEntitlement } = AccessNumbersStore
+  const { isLoadingAvailableNumbers } = NumbersStore
 
   useEffect(() => {
     getCustomer(match.customerId)
@@ -148,6 +150,7 @@ const FirstStepNFN = props => {
           variant='outlined'
           color='primary'
           className={classes.backButton}
+          disabled={isLoadingAvailableNumbers}
           onClick={() => handleClose()}
         >
           {t('cancel')}
@@ -156,6 +159,7 @@ const FirstStepNFN = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
+          disabled={isLoadingAvailableNumbers}
           onClick={searchAvalibleNumbers}
         >
           {t('search')}

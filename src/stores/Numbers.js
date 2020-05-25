@@ -17,6 +17,7 @@ export class NumbersStore {
   rejectedNumbers = []
   reservedNumbers = []
   isLoadingReservedNumbers = false
+  isLoadingAvailableNumbers = false
 
   setDefaultValue = () => {
     this.availableNumbers = []
@@ -48,6 +49,7 @@ export class NumbersStore {
   }
 
   getAvailableNumbers = params => {
+    this.isLoadingAvailableNumbers = true
     this.params = params
     return axios
       .get(
@@ -69,6 +71,7 @@ export class NumbersStore {
           }
         })
       )
+      .finally(() => (this.isLoadingAvailableNumbers = false))
   }
 
   postAddedNumbersToSubaccaunt = (
@@ -219,6 +222,8 @@ export class NumbersStore {
     })
     return parsedNumbers
   }
+
+  setAddedNumbers = (variable, number, value) => {}
 }
 
 decorate(NumbersStore, {
@@ -228,11 +233,13 @@ decorate(NumbersStore, {
   isAddingNumbers: observable,
   isLoadingReservedNumbers: observable,
   reservedNumbers: observable,
+  isLoadingAvailableNumbers: observable,
   getAvailableNumbers: action,
   getReservedNumbers: action,
   postResevedNumbersToCustomer: action,
   postAddedNumbersToSubaccaunt: action,
-  setDefaultValue: action
+  setDefaultValue: action,
+  setAddedNumbers: action
 })
 
 export default new NumbersStore()

@@ -36,6 +36,7 @@ export class AssignedNumbers {
   }
 
   setNumbersToAssign = numbers => {
+    console.log(numbers)
     this.numbersToAssign = numbers
   }
 
@@ -269,6 +270,42 @@ export class AssignedNumbers {
       })
   }
 
+  postAssignToSubaccountWithClearData = (
+    tenantId,
+    groupId,
+    data,
+    closeAsignModal
+  ) => {
+    this.isPostAssignNumbers = true
+
+    const sendSubject = data.length > 1 ? 'numbers' : 'number'
+
+    axios
+      .post(`tenants/${tenantId}/groups/${groupId}/numbers`, data)
+      .then(() => {
+        closeAsignModal()
+        SnackbarStore.enqueueSnackbar({
+          message: `${data.ranges.length} ${sendSubject} assigned to ${groupId} subaccount successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) ||
+            `Failed to assign ${data.ranges.length} ${sendSubject} to ${groupId} subaccount`,
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isPostAssignNumbers = false
+      })
+  }
+
   showErrorNotification = message => {
     SnackbarStore.enqueueSnackbar({
       message: message,
@@ -304,7 +341,8 @@ decorate(AssignedNumbers, {
   postAssignToSubaccount: action,
   showErrorNotification: action,
   getSubaccountId: action,
-  clearSubaccountLinkId: action
+  clearSubaccountLinkId: action,
+  postAssignToSubaccountWithClearData: action
 })
 
 export default new AssignedNumbers()
