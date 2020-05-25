@@ -61,6 +61,7 @@ const AccessNumbersItem = ({ t }) => {
   const [deassignMessageBlock, setDeassignMessageBlock] = useState(null)
   const [deassignSubject, setDeassignSubject] = useState('')
   const [phoneNumberToRedirect, setPhoneNumberToRedirect] = useState('')
+  const [isSubaccountLinkClicked, setIsSubaccountLinkClicked] = useState(false)
   const {
     assignedNumbers,
     isAssignedNumbersLoading,
@@ -132,14 +133,30 @@ const AccessNumbersItem = ({ t }) => {
     setNumberOfSelectedToDeassign(0)
   }, [assignedNumbers])
 
-  // do redirect when linkId received from store request
+  // In use column redirect
   useEffect(() => {
     if (subaccountLinkId && phoneNumberToRedirect) {
       history.push(
         `/customers/${match.customerId}/subaccounts/${subaccountLinkId}/ans_instances/basic/${phoneNumberToRedirect}`
       )
     }
-    return () => clearSubaccountLinkId()
+    return () => {
+      clearSubaccountLinkId()
+      setPhoneNumberToRedirect('')
+    }
+  }, [subaccountLinkId])
+
+  // Subaccount column redirect
+  useEffect(() => {
+    if (subaccountLinkId && isSubaccountLinkClicked) {
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${subaccountLinkId}`
+      )
+    }
+    return () => {
+      clearSubaccountLinkId()
+      setIsSubaccountLinkClicked(false)
+    }
   }, [subaccountLinkId])
 
   // update page after deassign
@@ -329,6 +346,13 @@ const AccessNumbersItem = ({ t }) => {
     setPhoneNumberToRedirect(row.phoneNumber)
   }
 
+  const handleSubaccountLinkClick = row => {
+    if (row.subaccount !== 'none') {
+      getSubaccountId(match.customerId, row.subaccount)
+      setIsSubaccountLinkClicked(true)
+    }
+  }
+
   const extraTitleBlock = (
     <Box
       className={classnames(classes.buttonContainer, classes.extraTitleWrap)}
@@ -502,7 +526,12 @@ const AccessNumbersItem = ({ t }) => {
       label: 'subaccount',
       getCellData: row => (
         <Box className={classes.subaccountCell}>
-          <Typography className={classes.subaccountTitle}>
+          <Typography
+            onClick={() => handleSubaccountLinkClick(row)}
+            className={classnames(classes.subaccountTitle, {
+              [classes.linkTitle]: row.subaccount !== 'none'
+            })}
+          >
             {t(row.subaccount)}
           </Typography>
           {row.subaccount !== 'none' && row.inUse === 'no' && (
@@ -546,7 +575,7 @@ const AccessNumbersItem = ({ t }) => {
           {row.connected_to ? (
             <Typography
               onClick={() => handleInUseLinkClick(row)}
-              className={classes.usedTitle}
+              className={classes.linkTitle}
             >
               {t(row.connected_to)}
             </Typography>

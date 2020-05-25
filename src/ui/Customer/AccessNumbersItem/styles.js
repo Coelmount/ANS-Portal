@@ -160,7 +160,7 @@ const useStyles = makeStyles(theme => ({
   boldDeassignText: {
     fontWeight: 600
   },
-  usedTitle: {
+  linkTitle: {
     color: theme.palette.active.blue,
     fontSize: 14,
     cursor: 'pointer'
