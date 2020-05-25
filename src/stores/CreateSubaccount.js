@@ -68,7 +68,7 @@ export class CreateSubaccountStore {
       .then(res => {
         this.createdCustomerStore = res.data.apio.body
         SnackbarStore.enqueueSnackbar({
-          message: 'Subaccaount successfully created',
+          message: 'Subaccount successfully created',
           options: {
             variant: 'success'
           }
