@@ -38,7 +38,6 @@ const Administrators = ({ t }) => {
     getAdminInfo,
     updateAdminInfo,
     deleteAdmin,
-    isLoadingData,
     updateCustomerAdmin,
     isDeletingAdmin
   } = EditDeleteAdminStore

@@ -4,7 +4,6 @@ import axios from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
-import phoneNumbersRangeFilter from 'utils/phoneNumbers/rangeFilter'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 
 export class PhoneNumbers {
@@ -98,29 +97,12 @@ export class PhoneNumbers {
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&country_code=${countryCode}&type=${type}&in_use=${status}&number_like=${numberLikeField} `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&country_code=${countryCode}&type=${type}&in_use=${status}&number_like=${numberLikeField} `
       )
       .then(res => {
         const pagination = res.data.pagination
         const requestResult = res.data.numbers
-        // -> this push part time solution for test range logic and state col colors(delete it when backend provide more data)
-        // requestResult.push(
-        //   {
-        //     country_code: '+966',
-        //     id: 1,
-        //     nsn: '77777777',
-        //     connected_to: 'testaccount1',
-        //     type: 'geo'
-        //   },
-        //   {
-        //     country_code: '+966',
-        //     id: 2,
-        //     nsn: '888888888',
-        //     connected_to: null,
-        //     type: 'local'
-        //   }
-        // )
-        // <-
+
         const transformedNumbers = requestResult.map(item => {
           const countryName = getCountryNameFromNumber(
             `${item.country_code}${item.nsn}`

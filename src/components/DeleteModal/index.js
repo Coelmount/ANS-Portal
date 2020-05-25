@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
