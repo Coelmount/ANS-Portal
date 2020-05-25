@@ -1,11 +1,19 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
+  marginBottom2: {
+    marginBottom: 20
+  },
   addedListStepDialogContent: {
     padding: 0
   },
   okButtonAddedList: {
-    width: 160
+    width: 200,
+    marginLeft: 32
+  },
+  assignButtonAddedList: {
+    width: 200,
+    marginRight: 32
   },
   dialogActionsAddedList: {
     padding: '30px 45px 30px'

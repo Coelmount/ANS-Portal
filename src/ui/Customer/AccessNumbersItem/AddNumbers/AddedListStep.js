@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useParams } from 'react-router-dom'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
@@ -15,17 +16,20 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import CustomTable from 'components/CustomTable'
 
-import sharp from 'source/images/svg/sharp.svg'
-import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
+import Group3Person from 'source/images/svg/Group3Person.svg'
 
-import Input from 'components/Input'
 import Checkbox from 'components/Checkbox'
+import Loading from 'components/Loading'
+import Select from 'components/Select'
 
 import NumbersStore from 'stores/Numbers'
+import SubaccountsStore from 'stores/Subaccounts'
+import AssignedNumbersStore from 'stores/AssignedNumbers'
+
+import capitalize from 'lodash/capitalize'
+import cloneDeep from 'lodash/cloneDeep'
 
 import useStyles from './styles'
-import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 
 function a11yProps(index) {
   return {
@@ -55,14 +59,127 @@ function TabPanel(props) {
 const AddedListStep = ({ handleClose, t }) => {
   const classes = useStyles()
   const [value, setValue] = useState(0)
+  const [selectedGroup, setSelectedGroup] = useState('')
+  const [addedNumbers, setAddedNumbers] = useState([])
+  const [selectAll, setSelectAll] = useState(false)
 
-  const { addedNumbers, rejectedNumbers } = NumbersStore
+  const { addedNumbers: addedNumbersStore, rejectedNumbers } = NumbersStore
+  const {
+    getSubaccounts,
+    selectGroups,
+    isLoadingSubaccounts
+  } = SubaccountsStore
+  const {
+    postAssignToSubaccountWithClearData,
+    isPostAssignNumbers,
+    setNumbersToAssign
+  } = AssignedNumbersStore
+
+  const match = useParams()
+
+  useEffect(() => {
+    getSubaccounts(match.customerId)
+  }, [])
+
+  useEffect(() => {
+    const deep = cloneDeep(addedNumbersStore)
+    setAddedNumbers(deep)
+  }, [addedNumbersStore])
+
+  const handleAssignNumbersToSubaccaunt = () => {
+    const checkedNumbers = addedNumbers
+      .filter(el => el.checked)
+      .map(num => ({
+        country_code: `+${
+          parsePhoneNumberFromString(num.phoneNumber).countryCallingCode
+        }`,
+        range: [
+          Number(
+            num.phoneNumber.slice(
+              parsePhoneNumberFromString(num.phoneNumber).countryCallingCode
+                .length + 1
+            )
+          )
+        ]
+      }))
+    postAssignToSubaccountWithClearData(
+      match.customerId,
+      selectedGroup,
+      { ranges: checkedNumbers },
+      handleClose
+    )
+  }
+
+  const handleSelectAll = () => {
+    const newNumbers = addedNumbers.map(el => ({
+      ...el,
+      checked: !selectAll,
+      hover: false
+    }))
+    setAddedNumbers(newNumbers)
+    setSelectAll(!selectAll)
+  }
+
+  const selectNumbers = (checked, number) => {
+    const newNumbers = [...addedNumbers]
+    const index = addedNumbers.findIndex(el => el.phoneNumber === number)
+    newNumbers[index].checked = checked
+    if (newNumbers.every(el => el.checked)) {
+      setSelectAll(true)
+    } else {
+      setSelectAll(false)
+    }
+    setAddedNumbers(newNumbers)
+  }
+
+  const changeHover = (newHover, number) => {
+    const newNumbers = [...addedNumbers]
+    const index = addedNumbers.findIndex(el => el.phoneNumber === number)
+    newNumbers[index].hover = newHover
+    setAddedNumbers(newNumbers)
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
 
-  const columns = [
+  const columnsAdded = [
+    {
+      id: 'checkbox',
+      label: <Checkbox checked={selectAll} onChange={handleSelectAll} />,
+      isSortAvailable: false,
+      getCellData: (row, i) =>
+        row.checked ? (
+          <Checkbox
+            checked={row.checked}
+            className={classes.checkbox}
+            onChange={() => selectNumbers(!row.checked, row.phoneNumber)}
+          />
+        ) : (
+          <div
+            className={classes.indexHoverCheckbox}
+            onClick={() => selectNumbers(!row.checked, row.phoneNumber)}
+            onMouseLeave={() => changeHover(false, row.phoneNumber)}
+            onMouseEnter={() => changeHover(true, row.phoneNumber)}
+          >
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectNumbers(true, row.phoneNumber)}
+              />
+            ) : (
+              i + 1
+            )}
+          </div>
+        ),
+      extraHeadProps: {
+        className: classes.checkboxCell
+      },
+      extraProps: {
+        className: classes.checkboxCell
+      }
+    },
     {
       id: 'phoneNumber',
       label: 'number',
@@ -93,6 +210,41 @@ const AddedListStep = ({ handleClose, t }) => {
     }
   ]
 
+  const columnsRejected = [
+    {
+      id: 'phoneNumber',
+      label: 'number',
+      getCellData: row => (
+        <Typography className={classes.phoneNumberCellText}>
+          {row.phoneNumber}
+        </Typography>
+      ),
+      isSortAvailable: false,
+      extraProps: { className: classes.numbersCell },
+      extraHeadProps: { className: classes.headNumbersCell }
+    },
+    {
+      id: 'addStatus',
+      label: 'status',
+      getCellData: row => (
+        <Typography
+          className={
+            row.status === 'added'
+              ? classes.addedStatusText
+              : classes.rejectedStatusText
+          }
+        >
+          {row.status}
+        </Typography>
+      ),
+      isSortAvailable: false
+    }
+  ]
+
+  if (isLoadingSubaccounts || isPostAssignNumbers) {
+    return <Loading />
+  }
+
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
@@ -122,14 +274,29 @@ const AddedListStep = ({ handleClose, t }) => {
           </Tabs>
         </AppBar>
         <TabPanel classes={classes} value={value} index={0}>
+          <Box className={classes.secondParagraphBox}>
+            <Box>
+              <Box>{t('select_subaccount')}</Box>
+              <Box className={classes.marginBottom2}>
+                <Select
+                  label={capitalize(t('subaccount'))}
+                  icon={<img src={Group3Person} alt='Group3Person' />}
+                  selectStyles={classes.select}
+                  wrapperStyles={classes.wrapper}
+                  options={selectGroups}
+                  value={selectedGroup}
+                  onChange={e => setSelectedGroup(e.target.value)}
+                />
+              </Box>
+            </Box>
+          </Box>
           <CustomTable
             classes={classes}
-            columns={columns}
+            columns={columnsAdded}
             firstCell={false}
             showPagination={false}
             rows={addedNumbers}
             showSearchBar={false}
-            firstCell={true}
             showToolBar={false}
             noAvailableDataMessage={t('no_phone_numbers_available')}
           />
@@ -137,18 +304,16 @@ const AddedListStep = ({ handleClose, t }) => {
         <TabPanel classes={classes} value={value} index={1}>
           <CustomTable
             classes={classes}
-            columns={columns}
-            firstCell={false}
+            columns={columnsRejected}
             showPagination={false}
             rows={rejectedNumbers}
             showSearchBar={false}
-            firstCell={true}
             showToolBar={false}
             noAvailableDataMessage={t('no_phone_numbers_available')}
           />
         </TabPanel>
       </DialogContent>
-      <DialogActions className={classes.dialogActionsAddedList}>
+      <DialogActions className={classes.dialogActionsSecond}>
         <Button
           variant='contained'
           color='primary'
@@ -156,6 +321,17 @@ const AddedListStep = ({ handleClose, t }) => {
           onClick={handleClose}
         >
           {'OK'}
+        </Button>
+        <Button
+          variant='contained'
+          color='primary'
+          className={classes.assignButtonAddedList}
+          onClick={handleAssignNumbersToSubaccaunt}
+          disabled={
+            !selectedGroup || !addedNumbers.filter(el => el.checked).length
+          }
+        >
+          {t('assign_to_subaccount')}
         </Button>
       </DialogActions>
     </React.Fragment>
