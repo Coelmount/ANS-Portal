@@ -13,40 +13,49 @@ import DefaultLayoutStore from 'stores/DefaultLayout'
 import useStyles from './styles'
 
 const CustomBreadcrumbs = ({ match, t }) => {
-  // console.log(match, 'match')
   const { handleCloseNav } = DefaultLayoutStore
   const classes = useStyles()
-  const { url } = match
+  const {
+    url,
+    params: { customerId, groupId, numbersId, instanceNumber }
+  } = match
   const ids = JSON.parse(localStorage.getItem('ids'))
 
   const isCustomerActive = ids && ids.tenant_id && !ids.group_id
   const isSubaccountActive = ids && ids.tenant_id && ids.group_id
 
+  let itemsAfterCollapseAmount
   const breadcrumbsArr = url.split('/')
+  const breadCrumbsAmount = breadcrumbsArr
+
   if (isCustomerActive) {
     breadcrumbsArr.splice(0, 2)
+    itemsAfterCollapseAmount = groupId
+      ? breadcrumbsArr.length - 2
+      : breadcrumbsArr.length
   } else if (isSubaccountActive) {
     breadcrumbsArr.splice(0, 4)
+    itemsAfterCollapseAmount = breadcrumbsArr.length
   } else {
     breadcrumbsArr.splice(0, 1)
+    itemsAfterCollapseAmount = groupId
+      ? breadcrumbsArr.length - 3
+      : breadcrumbsArr.length
   }
+  const breadcrumbsAmount = breadcrumbsArr.length
 
   const systemLevel = (breadcrumb, index) => {
-    // console.log(breadcrumbsArr, breadcrumb, index, 'index')
-    if (breadcrumbsArr.length > 2 && index === 0) {
+    if (breadcrumbsAmount > 2 && index === 0) {
       return (
         <Link to={`/${breadcrumb}`} className={classes.link} key={breadcrumb}>
           {t(breadcrumb)}
         </Link>
       )
     }
-    if (
-      index === 1 ||
-      (breadcrumbsArr.length > 4 && index === 2 && match.params.numbersId)
-    ) {
+    if (index === 1 || (breadcrumbsAmount > 4 && index === 2 && numbersId)) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/access_numbers`}
+          to={`/customers/${customerId}/access_numbers`}
           className={classes.link}
           key={breadcrumb}
         >
@@ -54,10 +63,10 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
-    if (breadcrumbsArr.length > 4 && index === 2) {
+    if (breadcrumbsAmount > 4 && index === 2) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/subaccounts`}
+          to={`/customers/${customerId}/subaccounts`}
           className={classes.link}
           key={breadcrumb}
           onClick={handleCloseNav}
@@ -67,12 +76,12 @@ const CustomBreadcrumbs = ({ match, t }) => {
       )
     }
     if (
-      (breadcrumbsArr.length > 4 && index === 3 && !match.params.numbersId) ||
-      (breadcrumbsArr.length > 5 && index === 4 && !match.params.numbersId)
+      (breadcrumbsAmount > 4 && index === 3 && !numbersId) ||
+      (breadcrumbsAmount > 5 && index === 4 && !numbersId)
     ) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances`}
           className={classes.link}
           key={breadcrumb}
           onClick={handleCloseNav}
@@ -81,15 +90,10 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
-    if (
-      breadcrumbsArr.length > 6 &&
-      index === 5 &&
-      !match.params.numbersId &&
-      match.params.instanceNumber
-    ) {
+    if (breadcrumbsAmount > 6 && index === 5 && !numbersId && instanceNumber) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances/basic`}
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic`}
           className={classes.link}
           key={breadcrumb}
           onClick={handleCloseNav}
@@ -106,7 +110,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
     if (index === 0) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/access_numbers`}
+          to={`/customers/${customerId}/access_numbers`}
           className={classes.link}
           key={breadcrumb}
         >
@@ -114,10 +118,10 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
-    if (index === 1 && breadcrumbsArr.length > 2) {
+    if (index === 1 && breadcrumbsAmount > 2 && numbersId) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/subaccounts`}
+          to={`/customers/${customerId}/access_numbers`}
           className={classes.link}
           key={breadcrumb}
         >
@@ -125,10 +129,35 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
-    if (index === 2 && breadcrumbsArr.length > 3) {
+    if (index === 1 && breadcrumbsAmount > 2 && groupId) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
+          to={`/customers/${customerId}/subaccounts`}
+          className={classes.link}
+          key={breadcrumb}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (
+      (index === 2 && breadcrumbsAmount > 3 && groupId) ||
+      (index === 3 && breadcrumbsAmount > 4 && groupId)
+    ) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances`}
+          className={classes.link}
+          key={breadcrumb}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (index === 4 && breadcrumbsAmount > 5 && groupId && instanceNumber) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic`}
           className={classes.link}
           key={breadcrumb}
         >
@@ -143,7 +172,31 @@ const CustomBreadcrumbs = ({ match, t }) => {
     if (index === 0) {
       return (
         <Link
-          to={`/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/ans_instances`}
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (index === 1 && breadcrumbsAmount > 2) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/${breadcrumb}`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (index === 2 && breadcrumbsAmount > 3 && instanceNumber) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic`}
           className={classes.link}
           key={breadcrumb}
           onClick={handleCloseNav}
@@ -157,11 +210,14 @@ const CustomBreadcrumbs = ({ match, t }) => {
 
   return (
     <Breadcrumbs
+      maxItems={itemsAfterCollapseAmount}
+      itemsAfterCollapse={itemsAfterCollapseAmount}
+      itemsBeforeCollapse={0}
       separator={<NavigateNextIcon fontSize='small' />}
       aria-label='breadcrumb'
       className={classes.breadcrumbsWrap}
     >
-      {breadcrumbsArr.length > 1 &&
+      {breadcrumbsAmount > 1 &&
         breadcrumbsArr.map((breadcrumb, index) => {
           if (isCustomerActive) return customerLevel(breadcrumb, index)
           else if (isSubaccountActive) return subaccountLevel(breadcrumb, index)
