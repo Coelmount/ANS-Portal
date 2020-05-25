@@ -343,6 +343,13 @@ const PhoneNumbers = observer(({ t }) => {
           )}
         </Fragment>
       )
+    },
+    {
+      id: 'service_capabilities',
+      label: 'service_capabilities',
+      getCellData: row => (
+        <Fragment>{t(row.service_capabilities).toLowerCase()}</Fragment>
+      )
     }
     // {
     //   id: 'delete',
