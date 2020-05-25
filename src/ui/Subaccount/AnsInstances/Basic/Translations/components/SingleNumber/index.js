@@ -63,21 +63,6 @@ const SingleNumber = observer(({ t }) => {
       item => item.access_number === accessNumber
     )
     setCurrentInstance(currentNumber)
-
-    // if no data from back and user open page by url enter
-    if (!basicTranslationsNumbers.length || !currentNumber) {
-      SnackbarStore.enqueueSnackbar({
-        // message: t('instance_not_exist'),
-        message: 'An instance does not exist',
-        options: {
-          variant: 'info'
-        }
-      })
-      history.push(
-        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
-      )
-    }
-
     if (currentNumber) {
       const currentDestinationNumber = currentNumber.destination_number
       setDestinationCountry(currentNumber.destinationCountry)
@@ -89,6 +74,21 @@ const SingleNumber = observer(({ t }) => {
       setCodeToSend(code)
     }
   }, [basicTranslationsNumbers])
+
+  // if instance not exist on back
+  useEffect(() => {
+    if (!isBasicTranslationsNumbersLoading && currentInstance === undefined) {
+      SnackbarStore.enqueueSnackbar({
+        message: t('instance_not_exist'),
+        options: {
+          variant: 'info'
+        }
+      })
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
+      )
+    }
+  }, [isBasicTranslationsNumbersLoading])
 
   // redirect if put request successfull
   useEffect(() => {
