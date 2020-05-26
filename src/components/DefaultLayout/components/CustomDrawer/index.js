@@ -60,7 +60,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   useEffect(() => {
     getActiveNavsAfterUpdate(match.url)
     return () => {
-      setDefaultValues()
+      // setDefaultValues()
     }
   }, [getActiveNavsAfterUpdate, match.url])
 
@@ -150,11 +150,12 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
                 activeClassName={classes.activeMenuItem}
                 component={NavLink}
                 to={link}
-                className={
-                  name === 'ans_instances'
-                    ? classes.menuItemAnsInstances
-                    : classes.menuItem
-                }
+                className={classnames(classes.menuItem, {
+                  [classes.menuItemAnsInstances]:
+                    name === 'ans_instances' || name === 'schedules',
+                  [classes.activeMenuItem]:
+                    name === 'schedules' && activeParentNav === 'schedules'
+                })}
                 onClick={() => handleActiveParentNav(name)}
                 button
               >

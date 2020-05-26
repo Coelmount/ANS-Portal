@@ -166,10 +166,22 @@ const DefaultLayout = ({ t, notFoundPage }) => {
       icon: PermPhoneMsgOutlinedIcon
     },
     {
-      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules`,
+      link: `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/week_schedules`,
       text: t('schedules'),
       name: 'schedules',
-      icon: SchedulesIcon
+      icon: SchedulesIcon,
+      childLinks: [
+        {
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/week_schedules`,
+          text: t('week_schedules'),
+          name: 'week_schedules'
+        },
+        {
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/holiday_schedules`,
+          text: t('holiday_schedules'),
+          name: 'holiday_schedules'
+        }
+      ]
     },
     {
       link: `/customers/${match.customerId}/subaccounts/${match.groupId}/administrators`,

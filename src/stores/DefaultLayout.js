@@ -14,6 +14,9 @@ export class DefaultLayoutStore {
   handleActiveParentNav = parent => {
     if (this.activeParentNav === parent) {
       this.activeParentNav = null
+    } else if (parent === 'schedules') {
+      this.activeParentNav = parent
+      this.activeChildNav = 'week_schedules'
     } else {
       this.activeParentNav = parent
       this.activeChildNav = null
