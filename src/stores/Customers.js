@@ -29,12 +29,14 @@ export class CustomersStore {
   rows = []
   step = 1
   customer = defaultCustomerValue
+  customerName = ''
   isLoadingCustomers = true
   isLoadingCustomer = true
   isLoadingStatus = true
   isDeletingCustomer = false
   addUpdateCustomer = false
   isUpdatingStatus = false
+  isLoadingCustomerName = true
 
   getCustomers = () => {
     this.isLoadingCustomers = true
@@ -72,6 +74,25 @@ export class CustomersStore {
           }
         })
       })
+      .finally(() => (this.isLoadingCustomer = false))
+  }
+
+  getCustomerName = id => {
+    this.isLoadingCustomerName = true
+    axios
+      .get(`/tenants/${id}/`)
+      .then(res => {
+        this.customerName = res.data.name
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch customer',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => (this.isLoadingCustomerName = false))
   }
 
   getCustomersStatus = tenants => {
@@ -228,6 +249,8 @@ decorate(CustomersStore, {
   isLoadingStatus: observable,
   isDeletingCustomer: observable,
   isUpdatingStatus: observable,
+  isLoadingCustomerName: observable,
+  customerName: observable,
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,
@@ -238,7 +261,8 @@ decorate(CustomersStore, {
   setDefaultTableValues: action,
   getCustomersStatus: action,
   putUpdateCustomerStatus: action,
-  getCustomerStatus: action
+  getCustomerStatus: action,
+  getCustomerName: action
 })
 
 export default new CustomersStore()

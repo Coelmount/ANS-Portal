@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     fontFamily: 'MTN',
     fontSize: 16,
-    marginTop: 189,
+    marginTop: 140,
     zIndex: 3
   },
   menuItem: {
@@ -108,6 +108,9 @@ const useStyles = makeStyles(theme => ({
         fontSize: 16
       }
     }
+  },
+  firstTab: {
+    marginTop: 35
   },
   mainActive: {
     background: theme.palette.active.main
@@ -258,6 +261,30 @@ const useStyles = makeStyles(theme => ({
       padding: 0
     },
     borderBottom: '1px solid #F9F9F9'
+  },
+  userWrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  userSubtitle: {
+    marginBottom: 3,
+    fontSize: 10,
+    fontFamily: 'MTN',
+    color: theme.palette.grey99
+  },
+  userNameWrap: {
+    background: theme.palette.active.main,
+    padding: '11px 13px',
+    borderRadius: 3
+  },
+  usersIcon: {
+    marginRight: 8
+  },
+  loadingIcon: {
+    width: '30px !important',
+    height: '30px !important',
+    marginLeft: 115
   }
 }))
 

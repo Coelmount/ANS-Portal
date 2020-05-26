@@ -81,6 +81,7 @@ export class SubaccountsStore {
           }
         })
       )
+      .finally(() => (this.isLoadingSubaccount = false))
   }
 
   deleteSubaccount = ({ tenantId, groupId, callback }) => {
