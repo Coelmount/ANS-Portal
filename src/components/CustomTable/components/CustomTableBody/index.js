@@ -14,7 +14,8 @@ const CustomTableBody = ({
   list,
   columns,
   firstCell,
-  showPagination
+  showPagination,
+  idColStyles
 }) => {
   const rows = []
   for (
@@ -35,8 +36,8 @@ const CustomTableBody = ({
         key={i}
         hover
       >
-        {firstCell && <IdCell cellValue={i} />}
-        {columns.map((column) => {
+        {firstCell && <IdCell cellValue={i} idColStyles={idColStyles} />}
+        {columns.map(column => {
           const extraProps = column.extraProps
           return (
             <TableCell

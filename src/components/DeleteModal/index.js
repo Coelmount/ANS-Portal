@@ -25,6 +25,7 @@ const DeleteModal = props => {
     action,
     titleAction,
     extraMessageBlock,
+    extraName,
     t
   } = props
 
@@ -72,6 +73,9 @@ const DeleteModal = props => {
               <span>{t(`are_you_sure_you_want`)}</span>
               <span className={classes.boldText}> {action}</span>
               <span>{` ${extraDeleteSubject || deleteSubject}`}</span>
+              {extraName && (
+                <span className={classes.boldText}>{`: '${extraName}'`}</span>
+              )}
               {(idArr.length || id) && (
                 <span className={classes.boldText}>
                   {` ${name}${` id: ${idArr.length ? idArr.join(', ') : id}`}?`}
@@ -107,7 +111,8 @@ DeleteModal.defaultProps = {
   deleteInfo: {
     name: '',
     id: null
-  }
+  },
+  extraName: null
 }
 
 export default withNamespaces()(DeleteModal)

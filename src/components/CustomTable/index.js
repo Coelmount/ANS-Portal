@@ -67,6 +67,7 @@ const CustomTable = ({
   noAvailableDataMessage,
   isModal,
   placeholderText,
+  idColStyles,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -172,6 +173,7 @@ const CustomTable = ({
                     columns={columns}
                     firstCell={firstCell}
                     showPagination={showPagination}
+                    idColStyles={idColStyles}
                   />
                 ) : (
                   <TableBody>
