@@ -63,6 +63,35 @@ const useStyles = makeStyles(theme => ({
       boxShadow: 'none'
     },
     backgroundColor: theme.palette.active.main
+  },
+  editIcon: {
+    height: 16,
+    width: 20
+  },
+  rootToolbar: {
+    marginLeft: 64,
+    paddingTop: 24,
+    paddingBottom: 34,
+    '& .MTableToolbar-searchField-81': {
+      paddingLeft: 0
+    },
+    '& .MuiFormControl-root': {
+      width: 'auto'
+    }
+  },
+  rootPagination: {
+    border: 0,
+    '& .MuiIconButton-root': {
+      backgroundColor: 'white',
+      width: 30,
+      height: 30,
+      borderRadius: 3,
+      boxShadow: '0px 2px 4px rgba(196, 196, 196, 0.25)',
+      margin: 10
+    },
+    '& .MuiTablePagination-input': {
+      display: 'none'
+    }
   }
 }))
 
