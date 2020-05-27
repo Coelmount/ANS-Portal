@@ -20,7 +20,8 @@ import SubaccountsStore from 'stores/Subaccounts'
 import CustomersStore from 'stores/Customers'
 
 import logo from 'source/images/svg/mtn-logo-nav.svg'
-import usersIcon from 'source/images/svg/blue-users.svg'
+import subaccountIcon from 'source/images/svg/users-subaccount.svg'
+import customerIcon from 'source/images/svg/users-customer.svg'
 
 const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   const history = useHistory()
@@ -127,7 +128,11 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
                 <Box className={classes.userNameWrap}>
                   <img
                     className={classes.usersIcon}
-                    src={usersIcon}
+                    src={
+                      userSubtitle === 'subaccount'
+                        ? subaccountIcon
+                        : customerIcon
+                    }
                     alt='users'
                   />
                   <span>{userName}</span>
