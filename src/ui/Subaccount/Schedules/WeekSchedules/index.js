@@ -71,6 +71,7 @@ const WeekSchedules = observer(({ t }) => {
 
   const handleCloseAddScheduleModal = () => {
     setIsAddScheduleModalOpen(false)
+    getSchedules(match.customerId, match.groupId)
   }
 
   const titleData = {
@@ -148,7 +149,7 @@ const WeekSchedules = observer(({ t }) => {
                 deleteSubject={`${t('week_schedule')}`}
                 action={t('to_delete')}
                 titleAction={t(`delete`)}
-                identifier={t('name').toLowerCase()}
+                identifier={' '}
               />
             )}
           </Paper>

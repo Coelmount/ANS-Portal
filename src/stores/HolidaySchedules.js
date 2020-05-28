@@ -8,6 +8,8 @@ import getErrorMessage from 'utils/getErrorMessage'
 export class HolidaySchedules {
   schedules = []
   isSchedulesLoading = true
+  isDeletingSchedule = false
+  isSchedulePosting = false
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -27,47 +29,69 @@ export class HolidaySchedules {
       .finally(() => (this.isSchedulesLoading = false))
   }
 
-  // getSchedules = (customerId, groupId) => {
-  //   this.isSchedulesLoading = true
-  //   axios
-  //     .post(`/tenants/${customerId}/groups/${groupId}/calendar_schedules/`, {
-  //       name: 'APIO Test Calendar Schedule',
-  //       periods: [
-  //         {
-  //           name: 'APIO Test Group Period 1',
-  //           type: 'Full days',
-  //           startDay: '2018-05-01',
-  //           stopDay: '2018-05-05'
-  //         },
-  //         {
-  //           name: 'APIO Test Group Period 2',
-  //           type: 'Partial days',
-  //           startDay: '2018-05-07',
-  //           stopDay: '2018-05-12',
-  //           startTime: '10:30',
-  //           stopTime: '18:30'
-  //         }
-  //       ]
-  //     })
-  //     .then(res => {
-  //       console.log('posted')
-  //     })
-  //     .catch(e => {
-  //       SnackbarStore.enqueueSnackbar({
-  //         message: getErrorMessage(e) || 'Failed to fetch schedules',
-  //         options: {
-  //           variant: 'error'
-  //         }
-  //       })
-  //     })
-  //     .finally(() => (this.isSchedulesLoading = false))
-  // }
+  deleteSchedule = ({ customerId, groupId, closeModal, name }) => {
+    this.isDeletingSchedule = true
+    axios
+      .delete(
+        `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${name}/`
+      )
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Schedule successfully deleted',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete event',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isDeletingSchedule = false
+      })
+  }
+
+  postSchedule = ({ customerId, groupId, closeModal, name }) => {
+    this.isSchedulePosting = true
+    axios
+      .post(`/tenants/${customerId}/groups/${groupId}/calendar_schedules/`, {
+        name
+      })
+      .then(res => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Schedule successfully created',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to create schedule',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => (this.isSchedulePosting = false))
+  }
 }
 
 decorate(HolidaySchedules, {
   schedules: observable,
   isSchedulesLoading: observable,
-  getSchedules: action
+  isDeletingSchedule: observable,
+  isSchedulePosting: observable,
+  getSchedules: action,
+  deleteSchedule: action,
+  postSchedule: action
 })
 
 export default new HolidaySchedules()
