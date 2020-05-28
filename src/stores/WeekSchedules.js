@@ -27,17 +27,14 @@ export class WeekSchedules {
       .finally(() => (this.isSchedulesLoading = false))
   }
 
-  deleteSchedule = ({ customerId, groupId, name, callback }) => {
+  deleteSchedule = ({ customerId, groupId, closeModal, name }) => {
     this.isDeletingSchedule = true
     axios
-      .delete(`/tenants/${customerId}/groups/${groupId}/time_schedules/`, {
-        data: {
-          schedules: [{ name: name }]
-        }
-      })
+      .delete(
+        `/tenants/${customerId}/groups/${groupId}/time_schedules/${name}/`
+      )
       .then(() => {
-        callback()
-        this.isDeletingSchedule = false
+        closeModal()
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -46,9 +43,6 @@ export class WeekSchedules {
             variant: 'error'
           }
         })
-        if (e.response.status === 400) {
-          this.isDeletingSchedule = false
-        }
       })
       .finally(() => {
         this.isDeletingSchedule = false
@@ -59,24 +53,24 @@ export class WeekSchedules {
   //   this.isSchedulesLoading = true
   //   axios
   //     .post(`/tenants/${customerId}/groups/${groupId}/time_schedules/`, {
-  //       name: 'Call Test Time Schedule',
-  //       periods: [
-  //         {
-  //           name: 'Call Task Period 4',
-  //           type: 'Day of the week',
-  //           dayOfWeek: 'Monday',
-  //           startTime: '10:30',
-  //           stopTime: '12:30'
-  //         },
-  //         {
-  //           name: 'Call Task Period 5',
-  //           type: 'Day of the month',
-  //           dayOfMonth: 12,
-  //           startTime: '12:45',
-  //           stopTime: '15:15',
-  //           active: false
-  //         }
-  //       ]
+  //       name: 'Time Schedule 3'
+  //       // periods: [
+  //       //   {
+  //       //     name: 'Call Task Period 4',
+  //       //     type: 'Day of the week',
+  //       //     dayOfWeek: 'Monday',
+  //       //     startTime: '10:30',
+  //       //     stopTime: '12:30'
+  //       //   },
+  //       //   {
+  //       //     name: 'Call Task Period 5',
+  //       //     type: 'Day of the month',
+  //       //     dayOfMonth: 12,
+  //       //     startTime: '12:45',
+  //       //     stopTime: '15:15',
+  //       //     active: false
+  //       //   }
+  //       // ]
   //     })
   //     .then(res => {
   //       console.log('posted')

@@ -25,7 +25,7 @@ const WeekSchedules = observer(({ t }) => {
   const match = useParams()
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState()
-  const [scheduleNameToDelete, setScheduleNameToDelete] = useState(null)
+  const [deleteInfo, setDeleteInfo] = useState({ name: '', id: null })
   const {
     getSchedules,
     schedules,
@@ -40,15 +40,22 @@ const WeekSchedules = observer(({ t }) => {
 
   const handleOpenDeleteModal = name => {
     setIsDeleteModalOpen(true)
-    setScheduleNameToDelete(name)
+    setDeleteInfo({ id: name, name: '' })
   }
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
+    getSchedules(match.customerId, match.groupId)
   }
 
-  const handleDelete = () => {
-    deleteSchedule()
+  const handleDelete = name => {
+    const payload = {
+      customerId: match.customerId,
+      groupId: match.groupId,
+      closeModal: handleCloseDeleteModal,
+      name
+    }
+    deleteSchedule(payload)
   }
 
   const titleData = {
@@ -106,11 +113,12 @@ const WeekSchedules = observer(({ t }) => {
                 open={isDeleteModalOpen}
                 handleClose={handleCloseDeleteModal}
                 handleDelete={handleDelete}
-                extraName={scheduleNameToDelete}
+                deleteInfo={deleteInfo}
                 isDeleting={isDeletingSchedule}
                 deleteSubject={`${t('week_schedule')}`}
                 action={t('to_delete')}
                 titleAction={t(`delete`)}
+                identifier={t('name')}
               />
             )}
           </Paper>
