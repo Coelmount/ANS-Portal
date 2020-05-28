@@ -38,13 +38,21 @@ const Announcements = props => {
   }, [])
 
   const columns = [
-    { title: '', field: 'count' },
+    {
+      title: '',
+      field: 'count',
+      cellStyle: { width: 50, textAlign: 'center' }
+    },
     {
       title: '',
       field: 'announcement',
       render: rowData => <AudioPlayer url={ImagineDragonsWarrior} />
     },
-    { title: '', field: 'size' }
+    {
+      title: '',
+      field: 'size',
+      cellStyle: { width: 300, textAlign: 'center' }
+    }
   ]
 
   const data = announcements.map((el, i) => ({
