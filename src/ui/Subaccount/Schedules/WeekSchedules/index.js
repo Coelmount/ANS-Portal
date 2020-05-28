@@ -12,11 +12,13 @@ import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
+import AddScheduleModal from '../components/AddScheduleModal'
 
 import useStyles from '../styles'
 
@@ -24,20 +26,24 @@ const WeekSchedules = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState()
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isAddScheduleModalOpen, setIsAddScheduleModalOpen] = useState(false)
   const [deleteInfo, setDeleteInfo] = useState({ name: '', id: null })
   const {
     getSchedules,
     schedules,
     isSchedulesLoading,
     deleteSchedule,
-    isDeletingSchedule
+    isDeletingSchedule,
+    postSchedule,
+    isSchedulePosting
   } = WeekSchedulesStore
 
   useEffect(() => {
     getSchedules(match.customerId, match.groupId)
   }, [])
 
+  // Delete modal handlers
   const handleOpenDeleteModal = name => {
     setIsDeleteModalOpen(true)
     setDeleteInfo({ id: name, name: '' })
@@ -58,8 +64,19 @@ const WeekSchedules = observer(({ t }) => {
     deleteSchedule(payload)
   }
 
+  // Add modal handlers
+  const handleOpenAddScheduleModal = () => {
+    setIsAddScheduleModalOpen(true)
+  }
+
+  const handleCloseAddScheduleModal = () => {
+    setIsAddScheduleModalOpen(false)
+  }
+
   const titleData = {
-    mainText: `${t('schedules')}: ${t('week_schedules')}`
+    mainText: `${t('schedules')}: ${t('week_schedules')}`,
+    iconCapture: t('add'),
+    Icon: <AddOutlinedIcon />
   }
 
   const columns = [
@@ -97,7 +114,10 @@ const WeekSchedules = observer(({ t }) => {
           <Paper>
             <CustomContainer>
               <CustomBreadcrumbs />
-              <TitleBlock titleData={titleData} />
+              <TitleBlock
+                titleData={titleData}
+                handleOpen={handleOpenAddScheduleModal}
+              />
             </CustomContainer>
             <CustomTable
               classes={classes}
@@ -107,6 +127,16 @@ const WeekSchedules = observer(({ t }) => {
               noAvailableDataMessage={t('no_schedules_available')}
               idColStyles={classes.idColStyles}
             />
+            {isAddScheduleModalOpen && (
+              <AddScheduleModal
+                open={isAddScheduleModalOpen}
+                handleClose={handleCloseAddScheduleModal}
+                title={t('add_week_schedule')}
+                postSchedule={postSchedule}
+                isSchedulePosting={isSchedulePosting}
+                closeModal={handleCloseAddScheduleModal}
+              />
+            )}
             {isDeleteModalOpen && (
               <DeleteModal
                 classes={classes}
@@ -118,7 +148,7 @@ const WeekSchedules = observer(({ t }) => {
                 deleteSubject={`${t('week_schedule')}`}
                 action={t('to_delete')}
                 titleAction={t(`delete`)}
-                identifier={t('name')}
+                identifier={t('name').toLowerCase()}
               />
             )}
           </Paper>

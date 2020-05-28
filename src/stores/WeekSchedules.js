@@ -8,6 +8,8 @@ import getErrorMessage from 'utils/getErrorMessage'
 export class WeekSchedules {
   schedules = []
   isSchedulesLoading = true
+  isDeletingSchedule = false
+  isSchedulePosting = false
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -35,6 +37,12 @@ export class WeekSchedules {
       )
       .then(() => {
         closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Schedule successfully deleted',
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -49,50 +57,41 @@ export class WeekSchedules {
       })
   }
 
-  // getSchedules = (customerId, groupId) => {
-  //   this.isSchedulesLoading = true
-  //   axios
-  //     .post(`/tenants/${customerId}/groups/${groupId}/time_schedules/`, {
-  //       name: 'Time Schedule 3'
-  //       // periods: [
-  //       //   {
-  //       //     name: 'Call Task Period 4',
-  //       //     type: 'Day of the week',
-  //       //     dayOfWeek: 'Monday',
-  //       //     startTime: '10:30',
-  //       //     stopTime: '12:30'
-  //       //   },
-  //       //   {
-  //       //     name: 'Call Task Period 5',
-  //       //     type: 'Day of the month',
-  //       //     dayOfMonth: 12,
-  //       //     startTime: '12:45',
-  //       //     stopTime: '15:15',
-  //       //     active: false
-  //       //   }
-  //       // ]
-  //     })
-  //     .then(res => {
-  //       console.log('posted')
-  //     })
-  //     .catch(e => {
-  //       SnackbarStore.enqueueSnackbar({
-  //         message: getErrorMessage(e) || 'Failed to fetch schedules',
-  //         options: {
-  //           variant: 'error'
-  //         }
-  //       })
-  //     })
-  //     .finally(() => (this.isSchedulesLoading = false))
-  // }
+  postSchedule = ({ customerId, groupId, closeModal, name }) => {
+    this.isSchedulePosting = true
+    axios
+      .post(`/tenants/${customerId}/groups/${groupId}/time_schedules/`, {
+        name
+      })
+      .then(res => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Schedule successfully created',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to create schedule',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => (this.isSchedulePosting = false))
+  }
 }
 
 decorate(WeekSchedules, {
   schedules: observable,
   isSchedulesLoading: observable,
   isDeletingSchedule: observable,
+  isSchedulePosting: observable,
   getSchedules: action,
-  deleteSchedule: action
+  deleteSchedule: action,
+  postSchedule: action
 })
 
 export default new WeekSchedules()
