@@ -90,8 +90,44 @@ const useStyles = makeStyles(theme => ({
       margin: 10
     },
     '& .MuiTablePagination-input': {
-      display: 'none'
+      //display: 'none'
     }
+  },
+  perPageWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    '& .MuiInput-underline:before': {
+      display: 'none'
+    },
+    '& .MuiInput-underline:after': {
+      display: 'none'
+    },
+    '& .MuiSelect-select:focus': {
+      background: 'none'
+    }
+  },
+  perPageSelect: {
+    display: 'flex',
+    alignItems: 'center',
+    width: 66,
+    height: 40,
+    background: 'white',
+    marginRight: 7,
+    '& div': {
+      paddingLeft: 16,
+      paddingTop: 8,
+      width: 66,
+      fontSize: 14
+    },
+    '& svg': {
+      color: theme.palette.active.blue,
+      top: 11,
+      right: 7
+    }
+  },
+  perPageText: {
+    fontSize: 14,
+    whiteSpace: 'nowrap'
   }
 }))
 

@@ -1,24 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import MaterialTable, {
-  MTableBody,
-  MTableToolbar,
-  MTablePagination
-} from 'material-table'
+import MaterialTable, { MTableToolbar, MTableBody } from 'material-table'
 
-import ClearIcon from '@material-ui/icons/Clear'
-import editIcon from 'source/images/svg/editIcon.svg'
 import TablePagination from '@material-ui/core/TablePagination'
 import Button from '@material-ui/core/Button'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import Typography from '@material-ui/core/Typography'
 
 import AnnouncementsStore from 'stores/Announcements'
 
+import AudioPlayer from 'components/AudioPlayer'
+
 import tableIcons from './tableIcons'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import ClearIcon from '@material-ui/icons/Clear'
+import editIcon from 'source/images/svg/editIcon.svg'
+import ImagineDragonsWarrior from 'source/Imagine-dragons-warrior.mp3'
+
 import useStyles from './styles'
-import { border } from '@material-ui/system'
 
 const Announcements = props => {
   const { t } = props
@@ -36,39 +39,19 @@ const Announcements = props => {
 
   const columns = [
     { title: '', field: 'count' },
-    { title: '', field: 'announcement' },
+    {
+      title: '',
+      field: 'announcement',
+      render: rowData => <AudioPlayer url={ImagineDragonsWarrior} />
+    },
     { title: '', field: 'size' }
   ]
 
-  const data = [
-    { count: '1', announcement: 'test', size: 48 },
-    { count: '2', announcement: 'test1', size: 34 },
-    { count: '3', announcement: 'test2', size: 56 },
-    { count: '4', announcement: 'test3', size: 12 },
-    { count: '5', announcement: 'test4', size: 48 },
-    { count: '1', announcement: 'test', size: 48 },
-    { count: '2', announcement: 'test1', size: 34 },
-    { count: '3', announcement: 'test2', size: 56 },
-    { count: '4', announcement: 'test3', size: 12 },
-    { count: '5', announcement: 'test34', size: 48 },
-    { count: '1', announcement: 'test', size: 48 },
-    { count: '2', announcement: 'test1', size: 34 },
-    { count: '3', announcement: 'test2', size: 56 },
-    { count: '4', announcement: 'test23', size: 12 },
-    { count: '5', announcement: 'test4', size: 48 },
-    { count: '1', announcement: 'test', size: 48 },
-    { count: '2', announcement: 'test1', size: 34 },
-    { count: '3', announcement: 'test2', size: 56 },
-    { count: '4', announcement: 'test3', size: 12 },
-    { count: '5', announcement: 'tes32t4', size: 48 },
-    { count: '1', announcement: 'test', size: 48 },
-    { count: '2', announcement: 'test1', size: 34 },
-    { count: '3', announcement: 'test2', size: 56 },
-    { count: '4', announcement: 'test3', size: 12 },
-    { count: '5', announcement: 'test4', size: 48 }
-  ]
-
-  // const data = announcements
+  const data = announcements.map((el, i) => ({
+    count: i + 1,
+    announcement: `${el.name}.${el.mediaType}`,
+    size: el.fileSize
+  }))
 
   const actions = [
     {
@@ -90,6 +73,7 @@ const Announcements = props => {
   ]
 
   const options = {
+    emptyRowsWhenPaging: false,
     search: true,
     showTitle: false,
     searchFieldAlignment: 'left',

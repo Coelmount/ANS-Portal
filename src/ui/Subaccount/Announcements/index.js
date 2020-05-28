@@ -18,6 +18,7 @@ import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Announcements from './Announcemnents'
+import UploadMediaFile from './UploadMediaFile'
 
 import useStyles from './styles'
 
@@ -25,6 +26,7 @@ const AnnouncementsPage = props => {
   const { t } = props
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState(null)
+  const [showUploadMedia, setShowUploadMedia] = useState(false)
 
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
@@ -40,7 +42,10 @@ const AnnouncementsPage = props => {
   const addPopoverItems = [
     {
       id: 1,
-      label: t('upload_media_file')
+      label: t('upload_media_file'),
+      onClick: () => {
+        setShowUploadMedia(true)
+      }
     },
     {
       id: 2,
@@ -110,6 +115,12 @@ const AnnouncementsPage = props => {
           <TitleBlock titleData={titleData} classes={classes} />
         </CustomContainer>
         <Announcements />
+        {showUploadMedia && (
+          <UploadMediaFile
+            open={showUploadMedia}
+            onClose={() => setShowUploadMedia(false)}
+          />
+        )}
       </Paper>
     </div>
   )

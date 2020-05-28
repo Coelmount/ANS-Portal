@@ -14,7 +14,7 @@ export class AnnouncementsStore {
     axios
       .get(`/tenants/${tenantId}/groups/${groupId}/announcements/`)
       .then(res => {
-        this.announcements = res.data.admins
+        this.announcements = res.data.announcements
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
