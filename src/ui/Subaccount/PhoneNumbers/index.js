@@ -12,7 +12,9 @@ import Chip from '@material-ui/core/Chip'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import TitleBlock from 'components/TitleBlock'
-import CustomTable from 'components/CustomTableBackendPagination'
+import CustomTable, {
+  DEFAULT_ROWS_PER_PAGE
+} from 'components/CustomTableBackendPagination'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
@@ -25,13 +27,20 @@ import filtersIcon from 'source/images/svg/filters.svg'
 import useStyles from './styles'
 
 const PhoneNumbers = observer(({ t }) => {
+  const storageRowsPerPage = localStorage.rowsPerPageScheme
+    ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
+        .subaccount_phone_numbers
+    : null
+
   const classes = useStyles()
   const match = useParams()
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [page, setPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(
+    storageRowsPerPage || DEFAULT_ROWS_PER_PAGE
+  )
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [numberLike, setNumberLike] = useState('')

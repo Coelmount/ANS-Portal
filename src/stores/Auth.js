@@ -80,6 +80,7 @@ export class AuthStore {
   logOut = () => {
     localStorage.removeItem('isAuthorized')
     localStorage.removeItem('token')
+    localStorage.removeItem('rowsPerPageScheme')
     this.user = {}
     this.token = ''
     this.isAuthorized = false

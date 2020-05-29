@@ -17,7 +17,7 @@ const CustomTableToolbar = props => {
     classes,
     defaultClasses,
     rowsPerPage,
-    setRowsPerPage,
+    changeRowsPerPage,
     query,
     setQuery,
     t,
@@ -58,7 +58,7 @@ const CustomTableToolbar = props => {
         <div className={`${defaultClasses.perPageWrap} ${classes.perPageWrap}`}>
           <Select
             value={rowsPerPage}
-            onChange={e => setRowsPerPage(e.target.value)}
+            onChange={e => changeRowsPerPage(e.target.value)}
             IconComponent={ArrowDropDownIcon}
             className={`${defaultClasses.perPageSelect} ${classes.perPageSelect}`}
           >

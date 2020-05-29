@@ -14,7 +14,9 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
-import CustomTable from 'components/CustomTableBackendPagination'
+import CustomTable, {
+  DEFAULT_ROWS_PER_PAGE
+} from 'components/CustomTableBackendPagination'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import usePreviousValue from 'utils/hooks/usePreviousValue'
@@ -22,6 +24,10 @@ import usePreviousValue from 'utils/hooks/usePreviousValue'
 import useStyles from './styles'
 
 const SelectAccessPhoneNumber = ({ handleClose, t }) => {
+  const storageRowsPerPage = localStorage.rowsPerPageScheme
+    ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
+        .basic_instance_select_access_numbers
+    : null
   const classes = useStyles()
   const match = useParams()
 
@@ -38,7 +44,9 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   const [numbers, setNumbers] = useState([])
   const [selectedNumber, setSelectedNumber] = useState(null)
   const [page, setPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(
+    storageRowsPerPage || DEFAULT_ROWS_PER_PAGE
+  )
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [numberLike, setNumberLike] = useState('')

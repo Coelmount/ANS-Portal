@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import PropTypes from 'prop-types'
 import clamp from 'lodash/clamp'
+import set from 'lodash/set'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -18,6 +19,8 @@ import Loading from 'components/Loading'
 import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './defaultStyles'
+
+export const DEFAULT_ROWS_PER_PAGE = 10
 
 const CustomTable = ({
   classes,
@@ -46,6 +49,7 @@ const CustomTable = ({
   isModal,
   isSearchParamsActive,
   placeholderText,
+  tableId,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -66,6 +70,20 @@ const CustomTable = ({
   const changeRowsPerPage = newValue => {
     if (newValue > rows.length) setPage(1)
     setRowsPerPage(newValue)
+    if (tableId) {
+      let rowsPerPageScheme = JSON.parse(
+        localStorage.getItem('rowsPerPageScheme')
+      )
+      if (rowsPerPageScheme) {
+        set(rowsPerPageScheme, tableId, newValue)
+      } else {
+        rowsPerPageScheme = { [tableId]: newValue }
+      }
+      localStorage.setItem(
+        'rowsPerPageScheme',
+        JSON.stringify(rowsPerPageScheme)
+      )
+    }
   }
 
   return (
@@ -85,6 +103,7 @@ const CustomTable = ({
               extraToolbarBlock={extraToolbarBlock}
               initialSearchQuery={initialSearchQuery}
               placeholderText={placeholderText}
+              changeRowsPerPage={changeRowsPerPage}
             />
           )}
           {isLoadingData ? (
