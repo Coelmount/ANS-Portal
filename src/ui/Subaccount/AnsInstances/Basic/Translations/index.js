@@ -413,6 +413,7 @@ const Translations = observer(({ t }) => {
             extraToolbarBlock={toolbarButtonsBlock}
             getSearchList={setSearchList}
             noAvailableDataMessage={t('no_translations_available')}
+            tableId={'ans_basic_translations'}
           />
         )}
         {isAddInstanceModalOpen && (

@@ -127,6 +127,7 @@ const WeekSchedules = observer(({ t }) => {
               searchCriterias={['name']}
               noAvailableDataMessage={t('no_schedules_available')}
               idColStyles={classes.idColStyles}
+              tableId={'week_schedules'}
             />
             {isAddScheduleModalOpen && (
               <AddScheduleModal

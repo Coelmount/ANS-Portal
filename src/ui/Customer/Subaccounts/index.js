@@ -147,6 +147,7 @@ const SubaccountsTable = observer(({ t }) => {
             columns={columns}
             searchCriterias={['groupId', 'groupName']}
             noAvailableDataMessage={t('no_subaccounts_available')}
+            tableId='subaccounts'
           />
         )}
         {isDeleteModalOpen && (

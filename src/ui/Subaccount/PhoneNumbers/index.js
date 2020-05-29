@@ -399,6 +399,7 @@ const PhoneNumbers = observer(({ t }) => {
             isLoadingData={isPhoneNumbersLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
             placeholderText={t('search_by_phone_number')}
+            tableId={'subaccount_phone_numbers'}
           />
         )}
         {isFiltersModalOpen && (

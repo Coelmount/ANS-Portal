@@ -131,6 +131,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
               columns={columns}
               rows={entitlements}
               isDataLoading={isSending}
+              tableId={'total_entitlements'}
             />
           </DialogContent>
           <DialogActions className={classes.dialogActionsSecond}>

@@ -299,6 +299,7 @@ const AddedListStep = ({ handleClose, t }) => {
             showSearchBar={false}
             showToolBar={false}
             noAvailableDataMessage={t('no_phone_numbers_available')}
+            tableId={'added_list_step_first_tab'}
           />
         </TabPanel>
         <TabPanel classes={classes} value={value} index={1}>
@@ -310,6 +311,7 @@ const AddedListStep = ({ handleClose, t }) => {
             showSearchBar={false}
             showToolBar={false}
             noAvailableDataMessage={t('no_phone_numbers_available')}
+            tableId={'added_list_step_second_tab'}
           />
         </TabPanel>
       </DialogContent>

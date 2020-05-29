@@ -179,6 +179,7 @@ const FirstStepNFN = props => {
           showToolBar={false}
           rows={numbers}
           noAvailableDataMessage={t('no_phone_numbers_available')}
+          tableId={'second_step_nfn_success'}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>

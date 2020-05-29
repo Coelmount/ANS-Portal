@@ -185,6 +185,7 @@ const CustomersTable = observer(({ t }) => {
             columns={columns}
             searchCriterias={['tenantId', 'name']}
             noAvailableDataMessage={t('no_customers_available')}
+            tableId='customers'
           />
         )}
         {isDeleteModalOpen && (

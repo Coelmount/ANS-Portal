@@ -173,6 +173,7 @@ const SetEntitlements = props => {
             getSearchList={setSearchList}
             noAvailableDataMessage={t('no_entitlements_available')}
             isModal={true}
+            tableId={'set_entitlements'}
           />
         )}
       </DialogContent>

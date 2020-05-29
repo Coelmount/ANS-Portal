@@ -2,6 +2,7 @@ import React, { useState, useMemo, Fragment, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import PropTypes from 'prop-types'
 import clamp from 'lodash/clamp'
+import set from 'lodash/set'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -18,6 +19,8 @@ import Loading from 'components/Loading'
 import NoAvailableDataBlock from 'components/NoAvailableDataBlock'
 
 import useStyles from './defaultStyles'
+
+const DEFAULT_ROWS_PER_PAGE = 10
 
 const getComparator = (order, orderBy) => {
   return order === 'desc'
@@ -68,13 +71,20 @@ const CustomTable = ({
   isModal,
   placeholderText,
   idColStyles,
+  tableId,
   t
 }) => {
+  const storageRowsPerPage = localStorage.rowsPerPageScheme
+    ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))[tableId]
+    : null
+
   const defaultClasses = useStyles()
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(
+    storageRowsPerPage || DEFAULT_ROWS_PER_PAGE
+  )
   const [query, setQuery] = useState(initialSearchQuery)
 
   useEffect(() => {
@@ -123,6 +133,20 @@ const CustomTable = ({
   const changeRowsPerPage = newValue => {
     if (newValue > list.length) setPage(0)
     setRowsPerPage(newValue)
+    if (tableId) {
+      let rowsPerPageScheme = JSON.parse(
+        localStorage.getItem('rowsPerPageScheme')
+      )
+      if (rowsPerPageScheme) {
+        set(rowsPerPageScheme, tableId, newValue)
+      } else {
+        rowsPerPageScheme = { [tableId]: newValue }
+      }
+      localStorage.setItem(
+        'rowsPerPageScheme',
+        JSON.stringify(rowsPerPageScheme)
+      )
+    }
   }
 
   return (
@@ -134,7 +158,7 @@ const CustomTable = ({
               classes={classes}
               defaultClasses={defaultClasses}
               rowsPerPage={rowsPerPage}
-              setRowsPerPage={changeRowsPerPage}
+              changeRowsPerPage={changeRowsPerPage}
               query={query}
               setQuery={setQuery}
               showSearchBar={showSearchBar}

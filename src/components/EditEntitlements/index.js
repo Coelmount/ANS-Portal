@@ -129,6 +129,7 @@ const EditEntitlements = props => {
           classes={classes}
           columns={columns}
           rows={entitlements}
+          tableId={'edit_entitlements'}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>

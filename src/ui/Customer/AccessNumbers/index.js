@@ -202,6 +202,7 @@ const AccessNumbers = ({ t }) => {
             searchCriterias={['name', 'number_type', 'service_capabilities']}
             noAvailableDataMessage={t('no_access_numbers_available')}
             // extraToolbarBlock={toolbarButtonsBlock}
+            tableId={'access_numbers'}
           />
         )}
 

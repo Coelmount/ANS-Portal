@@ -146,6 +146,7 @@ const SecondStep = props => {
           showToolBar={false}
           rows={addedNumbers}
           noAvailableDataMessage={t('no_phone_numbers_available')}
+          tableId={'first_step_sub'}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>

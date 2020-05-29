@@ -24,7 +24,8 @@ const CustomTableToolbar = props => {
     showSearchBar,
     showPagination,
     extraToolbarBlock,
-    placeholderText
+    placeholderText,
+    changeRowsPerPage
   } = props
 
   const handleSearch = e => {
@@ -58,7 +59,7 @@ const CustomTableToolbar = props => {
         <div className={`${defaultClasses.perPageWrap} ${classes.perPageWrap}`}>
           <Select
             value={rowsPerPage}
-            onChange={e => setRowsPerPage(e.target.value)}
+            onChange={e => changeRowsPerPage(e.target.value)}
             IconComponent={ArrowDropDownIcon}
             className={`${defaultClasses.perPageSelect} ${classes.perPageSelect}`}
           >

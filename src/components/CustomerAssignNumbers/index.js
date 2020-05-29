@@ -272,6 +272,7 @@ const AssignNumbers = props => {
           rows={numbers}
           searchCriterias={['number', 'type', 'country']}
           getSearchList={setSearchList}
+          tableId={'customer_assign_numbers'}
         />
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>

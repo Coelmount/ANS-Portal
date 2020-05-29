@@ -128,6 +128,7 @@ const HolidaySchedules = observer(({ t }) => {
               searchCriterias={['name']}
               noAvailableDataMessage={t('no_schedules_available')}
               idColStyles={classes.idColStyles}
+              tableId={'holiday_schedules'}
             />
             {isAddScheduleModalOpen && (
               <AddScheduleModal

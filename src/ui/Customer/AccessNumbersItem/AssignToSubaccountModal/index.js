@@ -155,6 +155,7 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
                 // getSearchList={setSearchList}
                 noAvailableDataMessage={t('no_subaccounts_available')}
                 isModal={true}
+                tableId={'access_item_assign_to_sub_modal'}
               />
             )}
           </Fragment>

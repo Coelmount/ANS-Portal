@@ -613,6 +613,7 @@ const AccessNumbersItem = ({ t }) => {
               getSearchList={setSearchList}
               extraToolbarBlock={toolbarButtonsBlock}
               noAvailableDataMessage={t('no_assigned_numbers_available')}
+              tableId={'access_number_item_list'}
             />
           </Fragment>
         )}
