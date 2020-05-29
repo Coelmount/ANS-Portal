@@ -407,8 +407,8 @@ const Translations = observer(({ t }) => {
             searchCriterias={[
               'accessCountry',
               'destinationCountry',
-              'accessNumber',
-              'destinationNumber'
+              'access_number',
+              'destination_number'
             ]}
             extraToolbarBlock={toolbarButtonsBlock}
             getSearchList={setSearchList}
