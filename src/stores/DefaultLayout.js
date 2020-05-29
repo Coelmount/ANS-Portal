@@ -36,7 +36,7 @@ export class DefaultLayoutStore {
       this.activeChildNav = child
       this.activeBasicSubChild = 'translations'
     } else if (this.activeChildNav === child) {
-      this.activeChildNav = null
+      // this.activeChildNav = null
       this.isChildNavClosed = true
     } else {
       this.activeChildNav = child
