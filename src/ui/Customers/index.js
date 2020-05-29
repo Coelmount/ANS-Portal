@@ -133,7 +133,7 @@ const CustomersTable = observer(({ t }) => {
         label: 'status',
         extraHeadProps: {
           align: 'center',
-          padding: '0',
+          padding: 'none',
           width: '100px'
         },
         getCellData: row => (
