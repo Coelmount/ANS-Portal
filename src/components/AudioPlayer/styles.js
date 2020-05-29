@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(theme => ({
   playerWrapper: {
     position: 'relative',
-    width: 650,
+    width: '100%',
     height: 50
   },
   fakePlayerLayout: {
@@ -20,17 +20,15 @@ const useStyles = makeStyles(theme => ({
   },
   seekBar: {
     width: '100%',
-    marginLeft: 20,
-    marginRight: 20,
-    '& .MuiSlider-rail': {
-      height: 6
-    },
-    '& .MuiSlider-thumb': {
-      marginTop: -3
-    },
-    '& .MuiSlider-track': {
-      height: 6
-    }
+    cursor: 'pointer'
+  },
+  pauseIcon: {
+    color: theme.palette.primary.main
+  },
+  playerBox: {
+    width: '100%',
+    paddingLeft: 20,
+    paddingRight: 20
   }
 }))
 

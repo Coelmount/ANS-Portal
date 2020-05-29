@@ -10,9 +10,20 @@ import PlayCircleOutlineOutlinedIcon from '@material-ui/icons/PlayCircleOutlineO
 import PauseCircleOutlineOutlinedIcon from '@material-ui/icons/PauseCircleOutlineOutlined'
 
 import useStyles from './styles'
+import './styles.css'
 
 const AudioPlayer = props => {
-  const { t, tReady, i18nOptions, defaultNS, reportNS, ...propsRP } = props
+  const {
+    t,
+    tReady,
+    i18nOptions,
+    defaultNS,
+    reportNS,
+    name,
+    getAnnouncement,
+    titleComponent,
+    ...propsRP
+  } = props
   const classes = useStyles()
   const [playing, setPlaying] = useState(false)
   const [seeking, setSeeking] = useState(false)
@@ -50,8 +61,6 @@ const AudioPlayer = props => {
     }
   }
 
-  console.log(propsRP.url)
-
   return (
     <div className={classes.playerWrapper}>
       <ReactPlayer
@@ -63,24 +72,33 @@ const AudioPlayer = props => {
         onProgress={handleProgress}
       />
       <div className={classes.fakePlayerLayout}>
-        <IconButton onClick={() => setPlaying(!playing)}>
+        <IconButton
+          onClick={() => {
+            getAnnouncement && getAnnouncement()
+            setPlaying(!playing)
+          }}
+        >
           {playing ? (
-            <PauseCircleOutlineOutlinedIcon />
+            <PauseCircleOutlineOutlinedIcon className={classes.pauseIcon} />
           ) : (
             <PlayCircleOutlineOutlinedIcon />
           )}
         </IconButton>
-        <input
-          className={classes.seekBar}
-          type='range'
-          min={0}
-          max={0.9999}
-          step='any'
-          value={played}
-          onMouseDown={handleSeekMouseDown}
-          onChange={handleSeekChange}
-          onMouseUp={handleSeekMouseUp}
-        />
+        <div className={classes.playerBox}>
+          {titleComponent}
+          <input
+            disabled={!propsRP.url}
+            className={classes.seekBar}
+            type='range'
+            min={0}
+            max={0.9999}
+            step='any'
+            value={played}
+            onMouseDown={handleSeekMouseDown}
+            onChange={handleSeekChange}
+            onMouseUp={handleSeekMouseUp}
+          />
+        </div>
       </div>
     </div>
   )

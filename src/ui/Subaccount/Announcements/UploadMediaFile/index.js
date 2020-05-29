@@ -25,12 +25,19 @@ const useStyles = makeStyles(theme => ({
 const UploadMediaFile = props => {
   const { open, handleClose } = props
   const [step, setStep] = useState(1)
+  const [announcements, setAnnouncements] = useState([])
 
   const classes = useStyles()
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
-      <Steps step={step} handleClose={handleClose} setStep={setStep} />
+      <Steps
+        step={step}
+        handleClose={handleClose}
+        setStep={setStep}
+        announcements={announcements}
+        setAnnouncements={setAnnouncements}
+      />
     </Dialog>
   )
 }
@@ -39,11 +46,21 @@ const Steps = props => {
   switch (props.step) {
     case 1:
       return (
-        <FirstStep handleClose={props.handleClose} setStep={props.setStep} />
+        <FirstStep
+          handleClose={props.handleClose}
+          setStep={props.setStep}
+          announcements={props.announcements}
+          setAnnouncements={props.setAnnouncements}
+        />
       )
     case 2:
       return (
-        <SecondStep handleClose={props.handleClose} setStep={props.setStep} />
+        <SecondStep
+          handleClose={props.handleClose}
+          setStep={props.setStep}
+          announcements={props.announcements}
+          setAnnouncements={props.setAnnouncements}
+        />
       )
     default:
       return <FirstStep handleClose={props.handleClose} />

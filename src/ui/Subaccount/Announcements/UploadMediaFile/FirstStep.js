@@ -25,19 +25,31 @@ import useStyles from './styles'
 
 const FirstStep = props => {
   const match = useParams()
-  const { handleClose, setStep, t } = props
+  const { handleClose, setStep, t, announcements, setAnnouncements } = props
 
   const classes = useStyles()
 
   const importFile = e => {
     const target = e.target
-    readFile(target.files[0]).then(res => {})
+    let promiseArr = []
+    let newAnnouncements = []
+    console.log(target.files)
+    for (let i = 0; i < target.files.length; i++) {
+      const file = target.files[i]
+      promiseArr.push(
+        readFile(target.files[i]).then(res => {
+          newAnnouncements.push({ url: res, file: file })
+          setAnnouncements(newAnnouncements)
+        })
+      )
+    }
+    Promise.all(promiseArr).finally(() => setStep(2))
   }
 
   const readFile = file =>
     new Promise((resolve, reject) => {
       const reader = new FileReader()
-      reader.readAsText(file)
+      reader.readAsDataURL(file)
       reader.onload = () => resolve(reader.result)
       reader.onerror = error => reject(error)
     })
@@ -62,8 +74,9 @@ const FirstStep = props => {
               className={classes.uploadInput}
               id='contained-button-file'
               type='file'
-              accept='text/csv'
+              accept='audio/mpeg, audio/vnd.wav, video/x-ms-wma'
               onChange={importFile}
+              multiple
             />
             <label htmlFor='contained-button-file'>
               <Button

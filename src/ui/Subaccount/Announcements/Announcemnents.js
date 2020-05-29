@@ -29,7 +29,8 @@ const Announcements = props => {
   const {
     announcements,
     isLoadingAnnouncements,
-    getAnnouncements
+    getAnnouncements,
+    getAnnouncementContent
   } = AnnouncementsStore
   const classes = useStyles()
 
@@ -41,24 +42,36 @@ const Announcements = props => {
     {
       title: '',
       field: 'count',
-      cellStyle: { width: 50, textAlign: 'center' }
+      cellStyle: { width: '10%', textAlign: 'center' }
     },
     {
       title: '',
       field: 'announcement',
-      render: rowData => <AudioPlayer url={ImagineDragonsWarrior} />
+      render: rowData => (
+        <AudioPlayer
+          titleComponent={<div>{rowData.announcement}</div>}
+          url={rowData.url}
+          height={50}
+          getAnnouncement={rowData.getAnnouncement}
+        />
+      ),
+      cellStyle: { width: '60%' }
     },
     {
       title: '',
       field: 'size',
-      cellStyle: { width: 300, textAlign: 'center' }
+      cellStyle: { width: '30%', textAlign: 'center' }
     }
   ]
 
   const data = announcements.map((el, i) => ({
+    ...el,
     count: i + 1,
     announcement: `${el.name}.${el.mediaType}`,
-    size: el.fileSize
+    size: el.fileSize,
+    getAnnouncement: () => {
+      getAnnouncementContent(match.customerId, match.groupId, el.name)
+    }
   }))
 
   const actions = [
@@ -81,7 +94,6 @@ const Announcements = props => {
   ]
 
   const options = {
-    emptyRowsWhenPaging: false,
     search: true,
     showTitle: false,
     searchFieldAlignment: 'left',

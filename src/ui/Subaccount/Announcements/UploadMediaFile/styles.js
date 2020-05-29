@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { borderRadius } from '@material-ui/system'
+import { borderRadius, textAlign } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -91,7 +91,8 @@ const useStyles = makeStyles(theme => ({
     display: 'none'
   },
   secondStepTitleBlock: {
-    display: 'flex'
+    display: 'flex',
+    flexDirection: 'column'
   },
   secondStepTitleInfo: {
     marginTop: '32px',
@@ -152,6 +153,29 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  inputName: {
+    width: '100%',
+    marginRight: 20,
+    marginBottom: 30
+  },
+  audioBoxWrapper: {
+    paddingTop: 40,
+    paddingBottom: 40,
+    borderBottom: `1px solid ${theme.palette.greyE8}`,
+    display: 'flex',
+    width: '100%'
+  },
+  inputAudio: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%'
+  },
+  indexBox: {
+    width: 40,
+    display: 'flex',
+    justifyContent: 'center',
+    paddingTop: 20
   }
 }))
 

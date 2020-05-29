@@ -1,0 +1,87 @@
+input[type='range'] {
+  -webkit-appearance: none;
+  overflow: hidden;
+  height: 10px;
+  width: 100%;
+  background: #e8e8e8;
+  border-radius: 5px;
+}
+input[type='range']:focus {
+  outline: none;
+}
+input[type='range']:disabled::-webkit-slider-thumb {
+  border: 1px solid #00678f;
+  background: #e8e8e8;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  border-radius: 1.3px;
+}
+input[type='range']::-webkit-slider-thumb {
+  border: 1px solid #00678f;
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -0.8px;
+  box-shadow: -5000px 0 0 4996px #00678f; /* I hope with of monitores not would be more than 5000px */
+}
+input[type='range']:focus::-webkit-slider-runnable-track {
+  /* background: #00678f; */
+}
+
+input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+input[type='range']::-moz-range-thumb {
+  border: 1px solid #00678f;
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  box-shadow: -5000px 0 0 4996px #00678f;
+  background: #ffffff;
+  cursor: pointer;
+}
+input[type='range']::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type='range']::-ms-fill-lower {
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+}
+input[type='range']::-ms-fill-upper {
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+}
+input[type='range']::-ms-thumb {
+  border: 1px solid #00678f;
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  box-shadow: -5000px 0 0 4996px #00678f;
+  background: #ffffff;
+  cursor: pointer;
+}
+input[type='range']:focus::-ms-fill-lower {
+  /* background: #00678f; */
+}
+input[type='range']:focus::-ms-fill-upper {
+  /* background: #00678f; */
+}

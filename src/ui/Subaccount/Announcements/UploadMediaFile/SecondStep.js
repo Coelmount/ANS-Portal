@@ -15,38 +15,21 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
 
-import BasicTranslationsStore from 'stores/BasicTranslations'
+import AnnouncementsStore from 'stores/Announcements'
+
+import AudioPlayer from 'components/AudioPlayer'
+import Input from 'components/Input'
 
 import useStyles from './styles'
+import { darken } from '@material-ui/core'
 
 const FirstStep = props => {
   const match = useParams()
-  const { handleClose, setStep, t } = props
-  const {
-    successAdded,
-    refusedAdded,
-    errorAdded,
-    multipleCounter
-  } = BasicTranslationsStore
+  const { handleClose, setStep, t, announcements, setAnnouncements } = props
 
   const classes = useStyles()
 
-  const importFile = () => {
-    setStep(2)
-  }
-
-  const downloadNumbers = (numbers, name) => {
-    const pom = document.createElement('a')
-    const csvContent = Papa.unparse(JSON.stringify(numbers), {
-      delimiter: ';',
-      header: true
-    })
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    pom.href = url
-    pom.setAttribute('download', `${name}.csv`)
-    pom.click()
-  }
+  console.log(announcements)
 
   return (
     <React.Fragment>
@@ -62,61 +45,19 @@ const FirstStep = props => {
       </DialogTitle>
       <DialogContent>
         <Box className={classes.secondStepTitleBlock}>
-          <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
-          <Box className={classes.secondStepTitleInfo}>
-            {t('list_of_resilts')}
-          </Box>
-        </Box>
-        <Box className={classes.resultsListWrapper}>
-          <Box>{`${t('total_rows_processed')}: ${multipleCounter.count}`}</Box>
-          <Box className={classes.listBoxes}>
-            <Box className={classes.success}>{`${t('success')}: ${
-              multipleCounter.success
-            } (${(
-              (100 * multipleCounter.success) /
-              multipleCounter.total
-            ).toFixed(2)}%)`}</Box>
-            <Button
-              variant='outlined'
-              color='primary'
-              disabled={successAdded.length === 0}
-              onClick={() => downloadNumbers(successAdded, 'success')}
-            >
-              {t('download_csv_with_those_rows')}
-            </Button>
-          </Box>
-          <Box className={classes.listBoxes}>
-            <Box className={classes.refused}>{`${t('refused')}: ${
-              multipleCounter.refused
-            } (${(
-              (100 * multipleCounter.refused) /
-              multipleCounter.total
-            ).toFixed(2)}%)`}</Box>
-            <Button
-              variant='outlined'
-              color='primary'
-              disabled={refusedAdded.length === 0}
-              onClick={() => downloadNumbers(refusedAdded, 'refused')}
-            >
-              {t('download_csv_with_those_rows')}
-            </Button>
-          </Box>
-          <Box className={classes.listBoxes}>
-            <Box className={classes.error}>{`${t('error')}: ${
-              multipleCounter.error
-            } (${(
-              (100 * multipleCounter.error) /
-              multipleCounter.total
-            ).toFixed(2)}%)`}</Box>
-            <Button
-              variant='outlined'
-              color='primary'
-              disabled={errorAdded.length === 0}
-              onClick={() => downloadNumbers(errorAdded, 'error')}
-            >
-              {t('download_csv_with_those_rows')}
-            </Button>
-          </Box>
+          {announcements.map((el, i) => (
+            <Box key={el.file.lastModified} className={classes.audioBoxWrapper}>
+              <Box className={classes.indexBox}>{i + 1}</Box>
+              <Box className={classes.inputAudio}>
+                <Input
+                  value={el.file.name}
+                  className={classes.inputName}
+                  label={t('audio_name')}
+                />
+                <AudioPlayer url={el.url} width={'100%'} />
+              </Box>
+            </Box>
+          ))}
         </Box>
       </DialogContent>
       <DialogActions className={classes.dialogActionsFirst}>
