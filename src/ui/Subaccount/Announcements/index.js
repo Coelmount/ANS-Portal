@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
@@ -20,13 +21,18 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Announcements from './Announcemnents'
 import UploadMediaFile from './UploadMediaFile'
 
+import AnnouncementsStore from 'stores/Announcements'
+
 import useStyles from './styles'
 
 const AnnouncementsPage = props => {
   const { t } = props
   const classes = useStyles()
+  const match = useParams()
   const [anchorEl, setAnchorEl] = useState(null)
   const [showUploadMedia, setShowUploadMedia] = useState(false)
+
+  const { getAnnouncements } = AnnouncementsStore
 
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
@@ -45,6 +51,7 @@ const AnnouncementsPage = props => {
       label: t('upload_media_file'),
       onClick: () => {
         setShowUploadMedia(true)
+        setAnchorEl(null)
       }
     },
     {
@@ -118,7 +125,10 @@ const AnnouncementsPage = props => {
         {showUploadMedia && (
           <UploadMediaFile
             open={showUploadMedia}
-            onClose={() => setShowUploadMedia(false)}
+            handleClose={() => {
+              setShowUploadMedia(false)
+              getAnnouncements(match.customerId, match.groupId)
+            }}
           />
         )}
       </Paper>

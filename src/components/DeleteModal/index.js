@@ -40,6 +40,8 @@ const DeleteModal = props => {
     id = deleteInfo.id
   }
 
+  console.log(deleteInfo)
+
   return (
     <Dialog
       className={classes.deleteModal}
@@ -74,7 +76,9 @@ const DeleteModal = props => {
               <span>{` ${extraDeleteSubject || deleteSubject}`}</span>
               {(idArr.length || id) && (
                 <span className={classes.boldText}>
-                  {` ${name}${` id: ${idArr.length ? idArr.join(', ') : id}`}?`}
+                  {` ${name ? name : ''}${` id: ${
+                    idArr.length ? idArr.join(', ') : id
+                  }`}?`}
                 </span>
               )}
               {extraMessageBlock}

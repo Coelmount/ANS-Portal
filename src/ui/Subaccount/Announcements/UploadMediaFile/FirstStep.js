@@ -38,7 +38,11 @@ const FirstStep = props => {
       const file = target.files[i]
       promiseArr.push(
         readFile(target.files[i]).then(res => {
-          newAnnouncements.push({ url: res, file: file })
+          newAnnouncements.push({
+            url: res,
+            file: file,
+            name: file.name
+          })
           setAnnouncements(newAnnouncements)
         })
       )
@@ -68,7 +72,9 @@ const FirstStep = props => {
       </DialogTitle>
       <DialogContent>
         <Box className={classes.uploadBoxWrapper}>
-          <Box className={classes.uploadFileTitle}>{t('upload_csv_file')}</Box>
+          <Box className={classes.uploadFileTitle}>
+            {t('upload_announcement')}
+          </Box>
           <Box>
             <input
               className={classes.uploadInput}
@@ -92,6 +98,9 @@ const FirstStep = props => {
                 />
               </Button>
             </label>
+          </Box>
+          <Box className={classes.uploadFileInfo}>
+            {t('upload_announcement_info')}
           </Box>
         </Box>
       </DialogContent>

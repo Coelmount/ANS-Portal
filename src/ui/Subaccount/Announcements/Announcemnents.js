@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import AnnouncementsStore from 'stores/Announcements'
 
 import AudioPlayer from 'components/AudioPlayer'
+import DeleteModal from 'components/DeleteModal'
 
 import tableIcons from './tableIcons'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
@@ -30,11 +31,16 @@ const Announcements = props => {
     announcements,
     isLoadingAnnouncements,
     getAnnouncements,
-    getAnnouncementContent
+    getAnnouncementContent,
+    isDeleting,
+    deleteAnnouncement
   } = AnnouncementsStore
   const classes = useStyles()
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [announcementForDelete, setAnnouncementForDelete] = useState({})
 
   useEffect(() => {
+    // getAnnouncementContent(match.customerId, match.groupId, 'test1')
     getAnnouncements(match.customerId, match.groupId)
   }, [])
 
@@ -87,8 +93,9 @@ const Announcements = props => {
     {
       icon: () => <ClearIcon />,
       tooltip: 'Delete announcement',
-      onClick: rowData => {
-        console.log('delete')
+      onClick: (event, rowData) => {
+        setIsDeleteModalOpen(true)
+        setAnnouncementForDelete({ id: rowData.name })
       }
     }
   ]
@@ -123,6 +130,18 @@ const Announcements = props => {
     body: {
       emptyDataSourceMessage: t('announcements_not_found')
     }
+  }
+
+  const handleDelete = id => {
+    deleteAnnouncement(match.customerId, match.groupId, id).then(() => {
+      setIsDeleteModalOpen(false)
+      getAnnouncements(match.customerId, match.groupId)
+    })
+  }
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false)
+    getAnnouncements(match.customerId, match.groupId)
   }
 
   return (
@@ -166,6 +185,19 @@ const Announcements = props => {
           )
         }}
       />
+      {isDeleteModalOpen && (
+        <DeleteModal
+          //classes={classes}
+          open={isDeleteModalOpen}
+          handleClose={handleCloseDeleteModal}
+          handleDelete={handleDelete}
+          deleteInfo={announcementForDelete}
+          isDeleting={isDeleting}
+          deleteSubject={`${t('announcement').toLowerCase()}`}
+          action={t('to_delete')}
+          titleAction={t(`delete`)}
+        />
+      )}
     </React.Fragment>
   )
 }

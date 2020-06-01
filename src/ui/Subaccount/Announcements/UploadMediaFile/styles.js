@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: '32px'
   },
   updateButton: {
-    width: '160px'
+    width: '160px',
+    marginRight: '32px'
   },
   backButton: {
     width: '160px',
@@ -72,13 +73,20 @@ const useStyles = makeStyles(theme => ({
   uploadBoxWrapper: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: 30,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(50%, -50%)',
+    right: '50%'
   },
   uploadFileTitle: {
     fontFamily: 'MTN',
     fontSize: 24,
     fontWeight: 600
+  },
+  uploadFileInfo: {
+    fontFamily: 'MTN',
+    marginTop: 30
   },
   uploadButton: {
     height: 44,

@@ -25,19 +25,48 @@ import { darken } from '@material-ui/core'
 
 const FirstStep = props => {
   const match = useParams()
-  const { handleClose, setStep, t, announcements, setAnnouncements } = props
+  const { handleClose, setStep, t, announcements } = props
+  const [isLoading, setIsLoading] = useState(false)
+  const [stateAnnouncements, setStateAnnouncements] = useState([])
 
   const classes = useStyles()
+  const { postAddAnnouncements } = AnnouncementsStore
 
-  console.log(announcements)
+  useEffect(() => {
+    const tempAnnouncements = JSON.parse(JSON.stringify(announcements))
+    setStateAnnouncements(tempAnnouncements)
+  }, [])
+
+  const changeName = (value, index) => {
+    const newAnnouncements = JSON.parse(JSON.stringify(stateAnnouncements))
+    newAnnouncements[index].name = value
+    setStateAnnouncements(newAnnouncements)
+  }
+
+  const addAnnouncements = () => {
+    const promiseArr = []
+    stateAnnouncements.map(el =>
+      promiseArr.push(
+        postAddAnnouncements(match.customerId, match.groupId, {
+          name: el.name,
+          content: el.url
+        })
+      )
+    )
+    setIsLoading(true)
+    Promise.all(promiseArr).finally(() => {
+      setIsLoading(false)
+      handleClose()
+    })
+  }
 
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        {t('add_multiple_ans_basic_instances')}
+        {t('add_announcements')}
         <IconButton
           aria-label='close'
-          onClick={handleClose}
+          onClick={!isLoading && handleClose}
           className={classes.closeButton}
         >
           <CloseIcon />
@@ -45,14 +74,18 @@ const FirstStep = props => {
       </DialogTitle>
       <DialogContent>
         <Box className={classes.secondStepTitleBlock}>
-          {announcements.map((el, i) => (
-            <Box key={el.file.lastModified} className={classes.audioBoxWrapper}>
+          {stateAnnouncements.map((el, i) => (
+            <Box
+              key={el.file.lastModified + Math.random()}
+              className={classes.audioBoxWrapper}
+            >
               <Box className={classes.indexBox}>{i + 1}</Box>
               <Box className={classes.inputAudio}>
                 <Input
-                  value={el.file.name}
+                  value={el.name}
                   className={classes.inputName}
                   label={t('audio_name')}
+                  onChange={e => changeName(e.target.value, i)}
                 />
                 <AudioPlayer url={el.url} width={'100%'} />
               </Box>
@@ -60,31 +93,24 @@ const FirstStep = props => {
           ))}
         </Box>
       </DialogContent>
-      <DialogActions className={classes.dialogActionsFirst}>
-        {/* <Button
+      <DialogActions className={classes.dialogActionsSecond}>
+        <Button
           variant='outlined'
           color='primary'
           className={classes.backButton}
-          onClick={() =>
-            downloadNumbers(
-              [
-                ...successAdded.map(el => ({ ...el, status: 'success' })),
-                ...refusedAdded.map(el => ({ ...el, status: 'refused' })),
-                ...errorAdded.map(el => ({ ...el, status: 'error' }))
-              ],
-              'output'
-            )
-          }
+          onClick={handleClose}
+          disabled={isLoading}
         >
-          {t('see_detailed_output')}
-        </Button> */}
+          {t('cancel')}
+        </Button>
         <Button
           variant='contained'
           color='primary'
           className={classes.updateButton}
-          onClick={() => handleClose()}
+          disabled={isLoading}
+          onClick={() => addAnnouncements()}
         >
-          {`${t('done')}`}
+          {`${t('add')}`}
         </Button>
       </DialogActions>
     </React.Fragment>
