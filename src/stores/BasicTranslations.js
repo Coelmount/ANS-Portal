@@ -189,7 +189,10 @@ export class BasicTranslations {
       })
       .catch(e => {
         this.setMultipleCounter('error', this.multipleCounter.error + 1)
-        this.errorAdded = [...this.errorAdded, data]
+        this.errorAdded = [
+          ...this.errorAdded,
+          { ...data, errorMessage: getErrorMessage(e) }
+        ]
       })
       .finally(() => {
         this.setMultipleCounter('count', this.multipleCounter.count + 1)
@@ -220,7 +223,7 @@ export class BasicTranslations {
         this.setMultipleCounter('error', this.multipleCounter.error + 1)
         this.errorAdded = [
           ...this.errorAdded,
-          { ...accessObj, ...data, ans_id }
+          { ...accessObj, ...data, ans_id, errorMessage: getErrorMessage(e) }
         ]
       })
       .finally(() => {
