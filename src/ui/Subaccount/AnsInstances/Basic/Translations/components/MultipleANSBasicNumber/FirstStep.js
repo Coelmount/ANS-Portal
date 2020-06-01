@@ -16,6 +16,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
+import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
 
@@ -64,6 +65,20 @@ const FirstStep = props => {
   useEffect(() => {
     setDefaultValues()
   }, [])
+
+  const downloadCSVFile = () => {
+    const pom = document.createElement('a')
+    const blob = new Blob(
+      [
+        'access_cc;access_number;destination_cc;destination_number\n+27;111111111;+32;111111111'
+      ],
+      { type: 'text/csv;charset=utf-8;' }
+    )
+    const url = URL.createObjectURL(blob)
+    pom.href = url
+    pom.setAttribute('download', 'template.csv')
+    pom.click()
+  }
 
   const importFile = e => {
     const target = e.target
@@ -222,6 +237,21 @@ const FirstStep = props => {
           </Box>
         </Box>
         <Box className={classes.uploadBoxWrapper}>
+          <Box className={classes.uploadFileTitle}>
+            {t('download_template_file')}
+          </Box>
+          <Box>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.uploadButton}
+              onClick={downloadCSVFile}
+            >
+              <GetAppOutlinedIcon className={classes.downloadIcon} />
+            </Button>
+          </Box>
+        </Box>
+        <Box className={classes.uploadBoxWrapper}>
           <Box className={classes.uploadFileTitle}>{t('upload_csv_file')}</Box>
           <Box>
             <input
@@ -240,6 +270,7 @@ const FirstStep = props => {
                 component='span'
               >
                 <img
+                  className={classes.downloadIcon}
                   src={uploadIcon}
                   alt='upload-icon'
                   //className={classes.accountNameIcon}
