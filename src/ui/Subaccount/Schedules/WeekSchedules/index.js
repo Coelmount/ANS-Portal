@@ -85,7 +85,10 @@ const WeekSchedules = observer(({ t }) => {
       id: 'name',
       label: 'name',
       getCellData: row => (
-        <Link to={`/customers`} className={classes.link}>
+        <Link
+          to={`/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/week_schedules/${row.name}`}
+          className={classes.link}
+        >
           {row.name}
         </Link>
       )

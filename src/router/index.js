@@ -28,6 +28,7 @@ import Announcements from 'ui/Subaccount/Announcements'
 import SubaccountAdmins from 'ui/Subaccount/Administrators'
 import SubaccountDetails from 'ui/Subaccount/Details'
 import WeekSchedules from 'ui/Subaccount/Schedules/WeekSchedules'
+import WeekSchedule from 'components/WeekSchedule'
 import HolidaySchedules from 'ui/Subaccount/Schedules/HolidaySchedules'
 import ResetPassword from 'ui/ResetPassword'
 
@@ -127,6 +128,12 @@ const userComponents = [
     path:
       '/customers/:customerId/subaccounts/:groupId/schedules/week_schedules',
     component: <WeekSchedules />,
+    accessLevel: 3
+  },
+  {
+    path:
+      '/customers/:customerId/subaccounts/:groupId/schedules/week_schedules/:weekScheduleName',
+    component: <WeekSchedule />,
     accessLevel: 3
   },
   {

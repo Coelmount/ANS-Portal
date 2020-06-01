@@ -4,12 +4,15 @@ import axios from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import transformWeekDateFormat from 'utils/schedules/transformWeekDateFormat'
 
 export class WeekSchedules {
   schedules = []
+  weekSchedulePeriods = []
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
+  isWeekScheduleLoading = true
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -61,7 +64,16 @@ export class WeekSchedules {
     this.isSchedulePosting = true
     axios
       .post(`/tenants/${customerId}/groups/${groupId}/time_schedules/`, {
-        name
+        name,
+        periods: [
+          {
+            name: 'APIO Test Group Period 1',
+            type: 'Day of the week',
+            dayOfWeek: 'Friday',
+            startTime: '10:30',
+            stopTime: '12:30'
+          }
+        ]
       })
       .then(res => {
         closeModal()
@@ -82,6 +94,37 @@ export class WeekSchedules {
       })
       .finally(() => (this.isSchedulePosting = false))
   }
+
+  getWeekSchedule = (customerId, groupId, scheduleName) => {
+    this.isWeekScheduleLoading = true
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/time_schedules/${scheduleName}`,
+        {
+          params: { full_list: true }
+        }
+      )
+      .then(res => {
+        const periods = res.data.periods
+        this.weekSchedulePeriods = periods.map((item, index) => {
+          return {
+            id: index,
+            title: item.name,
+            start: transformWeekDateFormat(item.dayOfWeek, item.startTime),
+            end: transformWeekDateFormat(item.dayOfWeek, item.stopTime)
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch week schedule',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => (this.isWeekScheduleLoading = false))
+  }
 }
 
 decorate(WeekSchedules, {
@@ -89,9 +132,13 @@ decorate(WeekSchedules, {
   isSchedulesLoading: observable,
   isDeletingSchedule: observable,
   isSchedulePosting: observable,
+  weekSchedulePeriods: observable,
+  isWeekScheduleLoading: observable,
+  isWeekScheduleLoading: observable,
   getSchedules: action,
   deleteSchedule: action,
-  postSchedule: action
+  postSchedule: action,
+  getWeekSchedule: action
 })
 
 export default new WeekSchedules()
