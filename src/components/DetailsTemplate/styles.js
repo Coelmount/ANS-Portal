@@ -84,6 +84,14 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down(740)]: {
       width: '100%'
     }
+  },
+  statusActive: {
+    color: theme.palette.lightGreen,
+    fontWeight: 600
+  },
+  statusNotActive: {
+    color: theme.palette.darkRed,
+    fontWeight: 600
   }
 }))
 

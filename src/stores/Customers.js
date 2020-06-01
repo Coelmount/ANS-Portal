@@ -74,7 +74,6 @@ export class CustomersStore {
           }
         })
       })
-      .finally(() => (this.isLoadingCustomer = false))
   }
 
   getCustomerName = id => {

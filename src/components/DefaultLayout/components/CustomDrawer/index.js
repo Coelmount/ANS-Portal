@@ -49,7 +49,10 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   const {
     getCustomerName,
     isLoadingCustomerName,
-    customerName
+    customerName,
+    customer,
+    isLoadingCustomer,
+    getCustomer
   } = CustomersStore
 
   const isUserLoading =
@@ -69,6 +72,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   useEffect(() => {
     if (match.params.customerId && !match.params.groupId) {
       getCustomerName(match.params.customerId)
+      getCustomer(match.params.customerId)
     }
     if (match.params.customerId && match.params.groupId) {
       getSubaccount(match.params.customerId, match.params.groupId)
@@ -105,6 +109,19 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
     }
   }
 
+  const redirectToDetailsPage = () => {
+    if (match.params.customerId && match.params.groupId) {
+      history.push(
+        `/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/details`
+      )
+      return
+    }
+    if (match.params.customerId) {
+      history.push(`/customers/${match.params.customerId}/details`)
+      return
+    }
+  }
+
   return (
     <Fragment>
       <Box className='drawerHeader'>
@@ -118,10 +135,10 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
       <List className={classes.wrapper}>
         {userSubtitle && (
           <Fragment>
-            {isUserLoading && !userName ? (
+            {isLoadingCustomer || (isUserLoading && !userName) ? (
               <CircularProgress className={classes.loadingIcon} />
             ) : (
-              <Box className={classes.userWrap}>
+              <Box className={classes.userWrap} onClick={redirectToDetailsPage}>
                 <Typography className={classes.userSubtitle}>
                   {userSubtitle.toUpperCase()}
                 </Typography>
@@ -137,6 +154,11 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
                   />
                   <span>{userName}</span>
                 </Box>
+                {match.params.customerId && !match.params.groupId && (
+                  <Box className={classes.statusBox}>
+                    {customer.status === 'Active' ? '' : t('account_suspended')}
+                  </Box>
+                )}
               </Box>
             )}
           </Fragment>
