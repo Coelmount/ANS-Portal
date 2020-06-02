@@ -163,9 +163,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between'
   },
   inputName: {
-    width: '100%',
-    marginRight: 20,
-    marginBottom: 30
+    width: 'calc(100% - 20px)',
+    '& .MuiOutlinedInput-root': {
+      paddingLeft: 40
+    }
   },
   audioBoxWrapper: {
     paddingTop: 40,
@@ -183,7 +184,25 @@ const useStyles = makeStyles(theme => ({
     width: 40,
     display: 'flex',
     justifyContent: 'center',
-    paddingTop: 20
+    paddingTop: 20,
+    margin: '0 10px'
+  },
+  sizeBox: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    width: 80,
+    marginBottom: 18
+  },
+  fakeInput: {
+    marginTop: 30,
+    backgroundColor: 'white',
+    width: 'calc(100% - 20px)',
+    height: 56,
+    display: 'flex',
+    alignItems: 'flex-end',
+    border: '1px solid #cbcbcb',
+    borderRadius: 4,
+    paddingLeft: 12
   }
 }))
 

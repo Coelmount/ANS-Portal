@@ -33,14 +33,14 @@ const FirstStep = props => {
     const target = e.target
     let promiseArr = []
     let newAnnouncements = []
-    console.log(target.files)
     for (let i = 0; i < target.files.length; i++) {
       const file = target.files[i]
       promiseArr.push(
         readFile(target.files[i]).then(res => {
           newAnnouncements.push({
+            lastModified: file.lastModified,
+            size: file.size,
             url: res,
-            file: file,
             name: file.name
           })
           setAnnouncements(newAnnouncements)

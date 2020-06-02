@@ -40,8 +40,6 @@ const DeleteModal = props => {
     id = deleteInfo.id
   }
 
-  console.log(deleteInfo)
-
   return (
     <Dialog
       className={classes.deleteModal}

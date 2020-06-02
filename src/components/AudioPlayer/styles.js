@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
+import { flexbox } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
   playerWrapper: {
@@ -27,8 +28,29 @@ const useStyles = makeStyles(theme => ({
   },
   playerBox: {
     width: '100%',
-    paddingLeft: 20,
-    paddingRight: 20
+    marginLeft: 20,
+    marginRight: 20
+  },
+  loadingIcon: {
+    animation: '$rotateLoadingIcon 1.5s linear infinite'
+  },
+  '@keyframes rotateLoadingIcon': {
+    '100%': { transform: 'rotate(360deg)' }
+  },
+  titleBox: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  timer: {
+    marginLeft: 'auto'
+  },
+  seekTimer: {
+    marginLeft: 20,
+    width: 36
+  },
+  seekAndTimer: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 

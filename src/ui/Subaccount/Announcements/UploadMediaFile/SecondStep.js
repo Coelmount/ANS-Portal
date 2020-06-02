@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
+import VolumeUpIcon from '@material-ui/icons/VolumeUp'
 
 import AnnouncementsStore from 'stores/Announcements'
 
@@ -33,13 +34,13 @@ const FirstStep = props => {
   const { postAddAnnouncements } = AnnouncementsStore
 
   useEffect(() => {
-    const tempAnnouncements = JSON.parse(JSON.stringify(announcements))
+    const tempAnnouncements = [...announcements]
     setStateAnnouncements(tempAnnouncements)
   }, [])
 
   const changeName = (value, index) => {
-    const newAnnouncements = JSON.parse(JSON.stringify(stateAnnouncements))
-    newAnnouncements[index].name = value
+    const newAnnouncements = [...stateAnnouncements]
+    stateAnnouncements[index].name = value
     setStateAnnouncements(newAnnouncements)
   }
 
@@ -75,19 +76,22 @@ const FirstStep = props => {
       <DialogContent>
         <Box className={classes.secondStepTitleBlock}>
           {stateAnnouncements.map((el, i) => (
-            <Box
-              key={el.file.lastModified + Math.random()}
-              className={classes.audioBoxWrapper}
-            >
+            <Box key={i} className={classes.audioBoxWrapper}>
               <Box className={classes.indexBox}>{i + 1}</Box>
               <Box className={classes.inputAudio}>
                 <Input
+                  icon={<VolumeUpIcon />}
                   value={el.name}
-                  className={classes.inputName}
                   label={t('audio_name')}
+                  className={classes.inputName}
                   onChange={e => changeName(e.target.value, i)}
                 />
-                <AudioPlayer url={el.url} width={'100%'} />
+                <Box className={classes.fakeInput}>
+                  <AudioPlayer url={el.url} width={'100%'} timerAlign='right' />
+                </Box>
+              </Box>
+              <Box className={classes.sizeBox}>
+                {(el.size / 1024 / 1024).toFixed(2) + ' MB'}
               </Box>
             </Box>
           ))}

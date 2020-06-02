@@ -44,8 +44,6 @@ const ThirdStep = props => {
     pom.click()
   }
 
-  console.log(successAdded, refusedAdded, errorAdded)
-
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>

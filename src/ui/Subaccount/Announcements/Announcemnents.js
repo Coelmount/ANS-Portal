@@ -40,7 +40,6 @@ const Announcements = props => {
   const [announcementForDelete, setAnnouncementForDelete] = useState({})
 
   useEffect(() => {
-    // getAnnouncementContent(match.customerId, match.groupId, 'test1')
     getAnnouncements(match.customerId, match.groupId)
   }, [])
 
@@ -57,6 +56,7 @@ const Announcements = props => {
         <AudioPlayer
           titleComponent={<div>{rowData.announcement}</div>}
           url={rowData.url}
+          isLoading={rowData.isLoading}
           height={50}
           getAnnouncement={rowData.getAnnouncement}
         />
@@ -74,22 +74,22 @@ const Announcements = props => {
     ...el,
     count: i + 1,
     announcement: `${el.name}.${el.mediaType}`,
-    size: el.fileSize,
+    size: `${el.fileSize} KB`,
     getAnnouncement: () => {
       getAnnouncementContent(match.customerId, match.groupId, el.name)
     }
   }))
 
   const actions = [
-    {
-      icon: () => (
-        <img src={editIcon} alt='editIcon' className={classes.editIcon} />
-      ),
-      tooltip: 'Edit announcement',
-      onClick: rowData => {
-        console.log('edit')
-      }
-    },
+    // {
+    //   icon: () => (
+    //     <img src={editIcon} alt='editIcon' className={classes.editIcon} />
+    //   ),
+    //   tooltip: 'Edit announcement',
+    //   onClick: rowData => {
+    //     console.log('edit')
+    //   }
+    // },
     {
       icon: () => <ClearIcon />,
       tooltip: 'Delete announcement',

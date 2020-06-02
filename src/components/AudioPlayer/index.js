@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ReactPlayer from 'react-player'
 import { withNamespaces } from 'react-i18next'
+import PropTypes from 'prop-types'
 
 import IconButton from '@material-ui/core/IconButton'
 
@@ -8,6 +9,9 @@ import Slider from '@material-ui/core/Slider'
 
 import PlayCircleOutlineOutlinedIcon from '@material-ui/icons/PlayCircleOutlineOutlined'
 import PauseCircleOutlineOutlinedIcon from '@material-ui/icons/PauseCircleOutlineOutlined'
+import LoopIcon from '@material-ui/icons/Autorenew'
+
+import Loading from 'components/Loading'
 
 import useStyles from './styles'
 import './styles.css'
@@ -22,6 +26,8 @@ const AudioPlayer = props => {
     name,
     getAnnouncement,
     titleComponent,
+    isLoading,
+    timerAlign,
     ...propsRP
   } = props
   const classes = useStyles()
@@ -29,6 +35,7 @@ const AudioPlayer = props => {
   const [seeking, setSeeking] = useState(false)
   const [played, setPlayed] = useState(0)
   const [playbackRate, setPlaybackRate] = useState(1)
+  const [loadedSeconds, setLoadedSeconds] = useState(0)
 
   let player = null
   const handleSeekMouseDown = e => {
@@ -46,19 +53,24 @@ const AudioPlayer = props => {
     player = refPlayer
   }
 
-  const load = url => {
-    this.setState({
-      url,
-      played: 0
-      //loaded: 0,
-      //pip: false
-    })
+  const getTimer = () => {
+    return `${Math.trunc(loadedSeconds / 60)}:${
+      Math.trunc(loadedSeconds - Math.trunc(loadedSeconds / 60) * 60) < 10
+        ? '0' + Math.trunc(loadedSeconds - Math.trunc(loadedSeconds / 60) * 60)
+        : Math.trunc(loadedSeconds - Math.trunc(loadedSeconds / 60) * 60)
+    }`
   }
 
   const handleProgress = state => {
+    setLoadedSeconds(state.loadedSeconds - state.playedSeconds)
     if (!seeking) {
       setPlayed(state.played)
     }
+  }
+
+  const handleEnded = () => {
+    setPlaying(false)
+    setPlayed(0)
   }
 
   return (
@@ -70,38 +82,77 @@ const AudioPlayer = props => {
         className={classes.playerLayout}
         playbackRate={playbackRate}
         onProgress={handleProgress}
+        onDuration={duration => setLoadedSeconds(duration)}
+        onEnded={handleEnded}
       />
       <div className={classes.fakePlayerLayout}>
-        <IconButton
-          onClick={() => {
-            getAnnouncement && getAnnouncement()
-            setPlaying(!playing)
-          }}
-        >
-          {playing ? (
+        {isLoading ? (
+          <IconButton
+            onClick={() => {
+              setPlaying(!playing)
+            }}
+          >
+            <LoopIcon className={classes.loadingIcon} />
+          </IconButton>
+        ) : playing ? (
+          <IconButton
+            onClick={() => {
+              setPlaying(false)
+            }}
+          >
             <PauseCircleOutlineOutlinedIcon className={classes.pauseIcon} />
-          ) : (
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => {
+              !propsRP.url && getAnnouncement && getAnnouncement()
+              setPlaying(true)
+            }}
+          >
             <PlayCircleOutlineOutlinedIcon />
-          )}
-        </IconButton>
+          </IconButton>
+        )}
+
         <div className={classes.playerBox}>
-          {titleComponent}
-          <input
-            disabled={!propsRP.url}
-            className={classes.seekBar}
-            type='range'
-            min={0}
-            max={0.9999}
-            step='any'
-            value={played}
-            onMouseDown={handleSeekMouseDown}
-            onChange={handleSeekChange}
-            onMouseUp={handleSeekMouseUp}
-          />
+          <div className={classes.titleBox}>
+            {titleComponent}
+            {timerAlign === 'top' && (
+              <div className={classes.timer}>
+                {loadedSeconds ? getTimer() : null}
+              </div>
+            )}
+          </div>
+          <div className={classes.seekAndTimer}>
+            <input
+              disabled={!propsRP.url}
+              className={classes.seekBar}
+              type='range'
+              min={0}
+              max={0.9999}
+              step='any'
+              value={played}
+              onMouseDown={handleSeekMouseDown}
+              onChange={handleSeekChange}
+              onMouseUp={handleSeekMouseUp}
+            />
+            {timerAlign === 'right' && (
+              <div className={classes.seekTimer}>
+                {loadedSeconds ? getTimer() : null}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   )
+}
+
+AudioPlayer.propTypes = {
+  timerAlign: PropTypes.string
+}
+
+AudioPlayer.defaultProps = {
+  timerAlign: 'top'
 }
 
 export default withNamespaces()(AudioPlayer)

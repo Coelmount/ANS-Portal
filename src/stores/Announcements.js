@@ -34,6 +34,12 @@ export class AnnouncementsStore {
   }
 
   getAnnouncementContent = (tenantId, groupId, announcementName) => {
+    const newAnnouncements = [...this.announcements]
+    const index = this.announcements.findIndex(
+      el => el.name === announcementName
+    )
+    newAnnouncements[index].isLoading = true
+    this.announcements = newAnnouncements
     axios
       .get(
         `/tenants/${tenantId}/groups/${groupId}/announcements/content/${announcementName}/`
@@ -43,8 +49,10 @@ export class AnnouncementsStore {
         const index = this.announcements.findIndex(
           el => el.name === announcementName
         )
-        newAnnouncements[index].announcement = res.data
-        newAnnouncements[index].isLodaing = false
+        newAnnouncements[
+          index
+        ].url = `data:audio/mpeg;base64,${res.data.content}`
+        newAnnouncements[index].isLoading = false
         this.announcements = newAnnouncements
       })
       .catch(e =>
@@ -55,6 +63,14 @@ export class AnnouncementsStore {
           }
         })
       )
+      .finally(() => {
+        const newAnnouncements = [...this.announcements]
+        const index = this.announcements.findIndex(
+          el => el.name === announcementName
+        )
+        newAnnouncements[index].isLoading = false
+        this.announcements = newAnnouncements
+      })
   }
 
   postAddAnnouncements = (tenantId, groupId, data) => {
