@@ -9,6 +9,14 @@ import transformWeekDateFormat from 'utils/schedules/transformWeekDateFormat'
 export class WeekSchedules {
   schedules = []
   weekSchedulePeriods = []
+  currentPeriods = []
+  period = {
+    weekDays: {
+      monday: true,
+      tuesday: false,
+      wednesday: false
+    }
+  }
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
@@ -69,10 +77,24 @@ export class WeekSchedules {
           {
             name: 'APIO Test Group Period 1',
             type: 'Day of the week',
-            dayOfWeek: 'Friday',
-            startTime: '10:30',
-            stopTime: '12:30'
+            dayOfWeek: 'Wednesday',
+            startTime: '15:30',
+            stopTime: '17:30'
+          },
+          {
+            name: 'APIO Test Group Period 2',
+            type: 'Day of the week',
+            dayOfWeek: 'Thursday',
+            startTime: '15:30',
+            stopTime: '17:30'
           }
+          // {
+          //   name: 'APIO Test Group Period 1',
+          //   type: 'Day of the week',
+          //   dayOfWeek: 'Friday',
+          //   startTime: '10:30',
+          //   stopTime: '12:30'
+          // }
         ]
       })
       .then(res => {
@@ -125,6 +147,12 @@ export class WeekSchedules {
       })
       .finally(() => (this.isWeekScheduleLoading = false))
   }
+
+  changePeriod = (day, status) => {
+    const newWeekDays = { ...this.period.weekDays }
+    newWeekDays[day] = status
+    this.period.weekDays = newWeekDays
+  }
 }
 
 decorate(WeekSchedules, {
@@ -134,11 +162,12 @@ decorate(WeekSchedules, {
   isSchedulePosting: observable,
   weekSchedulePeriods: observable,
   isWeekScheduleLoading: observable,
-  isWeekScheduleLoading: observable,
+  period: observable,
   getSchedules: action,
   deleteSchedule: action,
   postSchedule: action,
-  getWeekSchedule: action
+  getWeekSchedule: action,
+  changePeriod: action
 })
 
 export default new WeekSchedules()

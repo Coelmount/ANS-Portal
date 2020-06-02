@@ -3,12 +3,9 @@ import classnames from 'classnames'
 import { withNamespaces } from 'react-i18next'
 import { useParams, Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
-import {
-  Calendar,
-  Views,
-  momentLocalizer,
-  dateFnsLocalizer
-} from 'react-big-calendar'
+import globalize from 'globalize'
+import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
+import localizer from 'react-big-calendar/lib/localizers/globalize'
 
 import CustomContainer from 'components/CustomContainer'
 import TitleBlock from 'components/TitleBlock'
@@ -21,34 +18,34 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
+import AddPeriodModal from './components/AddPeriodModal'
 
-import useStyles from './styles'
 import * as dates from './dates'
-import localizer from 'react-big-calendar/lib/localizers/globalize'
-import globalize from 'globalize'
-import moment from 'moment'
+import useStyles from './styles'
 import 'react-big-calendar/lib/sass/styles.scss'
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import startOfWeek from 'date-fns/startOfWeek'
-import getDay from 'date-fns/getDay'
-const locales = {
-  'en-US': require('date-fns/locale/en-US')
-}
 
 const WeekSchedule = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
-  const isScheduleLoading = false
   const {
     getWeekSchedule,
     isWeekScheduleLoading,
     weekSchedulePeriods
   } = WeekSchedulesStore
-  console.log(weekSchedulePeriods, 'weekSchedulePeriods comp')
+
+  const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState()
+
   useEffect(() => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
   }, [])
+
+  const handleOpenAddPeriodModal = () => {
+    setIsAddPeriodModalOpen(true)
+  }
+
+  const handleCloseAddPeriodModal = () => {
+    setIsAddPeriodModalOpen(false)
+  }
 
   const titleData = {
     mainText: `${t('week_schedules')}: ${match.weekScheduleName}`,
@@ -90,7 +87,7 @@ const WeekSchedule = observer(({ t }) => {
               <CustomBreadcrumbs />
               <TitleBlock
                 titleData={titleData}
-                // handleOpen={handleOpenAddScheduleModal}
+                handleOpen={handleOpenAddPeriodModal}
               />
             </CustomContainer>
             <Calendar
@@ -111,6 +108,12 @@ const WeekSchedule = observer(({ t }) => {
               //   'hours'
               // )}
             />
+            {isAddPeriodModalOpen && (
+              <AddPeriodModal
+                open={isAddPeriodModalOpen}
+                handleClose={handleCloseAddPeriodModal}
+              />
+            )}
           </Paper>
         </Box>
       )}
