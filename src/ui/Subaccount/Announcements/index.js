@@ -20,6 +20,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Announcements from './Announcemnents'
 import UploadMediaFile from './UploadMediaFile'
+import SelectFromLibrary from './SelectFromLibrary'
 
 import AnnouncementsStore from 'stores/Announcements'
 
@@ -31,6 +32,7 @@ const AnnouncementsPage = props => {
   const match = useParams()
   const [anchorEl, setAnchorEl] = useState(null)
   const [showUploadMedia, setShowUploadMedia] = useState(false)
+  const [showSelectMedia, setShowSelectMedia] = useState(false)
 
   const { getAnnouncements } = AnnouncementsStore
 
@@ -60,7 +62,11 @@ const AnnouncementsPage = props => {
     },
     {
       id: 3,
-      label: t('select_from_our_library')
+      label: t('select_from_our_library'),
+      onClick: () => {
+        setShowSelectMedia(true)
+        setAnchorEl(null)
+      }
     }
   ]
 
@@ -127,6 +133,15 @@ const AnnouncementsPage = props => {
             open={showUploadMedia}
             handleClose={() => {
               setShowUploadMedia(false)
+              getAnnouncements(match.customerId, match.groupId)
+            }}
+          />
+        )}
+        {showSelectMedia && (
+          <SelectFromLibrary
+            open={showSelectMedia}
+            handleClose={() => {
+              setShowSelectMedia(false)
               getAnnouncements(match.customerId, match.groupId)
             }}
           />

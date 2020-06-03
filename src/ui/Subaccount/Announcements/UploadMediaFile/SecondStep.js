@@ -22,7 +22,6 @@ import AudioPlayer from 'components/AudioPlayer'
 import Input from 'components/Input'
 
 import useStyles from './styles'
-import { darken } from '@material-ui/core'
 
 const FirstStep = props => {
   const match = useParams()
@@ -87,6 +86,9 @@ const FirstStep = props => {
                   onChange={e => changeName(e.target.value, i)}
                 />
                 <Box className={classes.fakeInput}>
+                  <Box className={classes.fakeInputLabel}>
+                    {t('audio_content')}
+                  </Box>
                   <AudioPlayer url={el.url} width={'100%'} timerAlign='right' />
                 </Box>
               </Box>

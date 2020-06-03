@@ -203,6 +203,14 @@ const useStyles = makeStyles(theme => ({
     border: '1px solid #cbcbcb',
     borderRadius: 4,
     paddingLeft: 12
+  },
+  fakeInputLabel: {
+    position: 'absolute',
+    backgroundColor: '#f9f9f9',
+    transform: 'translate(-18px, -50px) scale(0.75)',
+    color: '#666666',
+    padding: '0 8px',
+    fontSize: 16
   }
 }))
 
