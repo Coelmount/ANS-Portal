@@ -1,4 +1,4 @@
-import { decorate, observable, action } from 'mobx'
+import { decorate, observable, action, toJS } from 'mobx'
 
 import axios from 'utils/axios'
 
@@ -6,17 +6,25 @@ import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import transformWeekDateFormat from 'utils/schedules/transformWeekDateFormat'
 
+const defaultWeekDays = {
+  sunday: false,
+  monday: false,
+  tuesday: false,
+  wednesday: false,
+  thursday: false,
+  friday: false,
+  saturday: false
+}
+
 export class WeekSchedules {
   schedules = []
   weekSchedulePeriods = []
-  currentPeriods = []
-  period = {
-    weekDays: {
-      monday: true,
-      tuesday: false,
-      wednesday: false
+  periods = [
+    {
+      id: 'default',
+      weekDays: defaultWeekDays
     }
-  }
+  ]
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
@@ -148,10 +156,32 @@ export class WeekSchedules {
       .finally(() => (this.isWeekScheduleLoading = false))
   }
 
-  changePeriod = (day, status) => {
-    const newWeekDays = { ...this.period.weekDays }
-    newWeekDays[day] = status
-    this.period.weekDays = newWeekDays
+  updatePeriod = (id, day, status) => {
+    // find period
+    const periodsCopy = this.periods.slice(0)
+    const index = this.periods.findIndex(period => period.id === id)
+    const periodCopy = { ...this.periods[index] }
+    // change period field and update periods array
+    periodCopy.weekDays[day] = status
+    periodsCopy[index] = periodCopy
+    this.periods = periodsCopy
+  }
+
+  removePeriod = id => {
+    const periodsCopy = this.periods.slice(0)
+    const index = this.periods.findIndex(period => period.id === id)
+    periodsCopy.splice(index, 1)
+    this.periods = periodsCopy
+  }
+
+  pushPeriod = () => {
+    const periodsCopy = this.periods.slice(0)
+    const key = performance.now().toString(36)
+    periodsCopy.push({
+      id: key,
+      weekDays: defaultWeekDays
+    })
+    this.periods = periodsCopy
   }
 }
 
@@ -162,12 +192,13 @@ decorate(WeekSchedules, {
   isSchedulePosting: observable,
   weekSchedulePeriods: observable,
   isWeekScheduleLoading: observable,
-  period: observable,
+  periods: observable,
   getSchedules: action,
   deleteSchedule: action,
   postSchedule: action,
   getWeekSchedule: action,
-  changePeriod: action
+  updatePeriod: action,
+  pushPeriod: action
 })
 
 export default new WeekSchedules()

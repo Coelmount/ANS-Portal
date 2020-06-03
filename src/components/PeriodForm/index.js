@@ -1,49 +1,62 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
+import capitalize from 'lodash/capitalize'
 
+import DateRangeIcon from '@material-ui/icons/DateRange'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import WeekSchedulesStore from 'stores/WeekSchedules'
 import Checkbox from 'components/Checkbox'
+import StartEndTime from 'components/StartEndTime'
 
 import useStyles from './styles.js'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
-const PeriodForm = ({ t }) => {
+const PeriodForm = ({ period: { id, weekDays } }) => {
   const classes = useStyles()
+  // store
+  const { updatePeriod, removePeriod } = WeekSchedulesStore
 
-  const {
-    changePeriod,
-    period: { weekDays }
-  } = WeekSchedulesStore
+  // components ------
+  const Header = () => (
+    <Box className={classes.header}>
+      <img src={deleteIcon} className={classes.deleteIcon} alt='delete' />
+    </Box>
+  )
 
-  const DaysRow = () => {
-    return (
-      <Box>
-        {Object.keys(weekDays).map(dayName => {
+  const DaysBlock = () => (
+    <Box className={classes.daysBlockWrap}>
+      <Box className={classes.dateIconWrap}>
+        <DateRangeIcon className={classes.dateIcon} />
+      </Box>
+      <Box key={id} className={classes.daysBlockRowWrap}>
+        {Object.keys(weekDays).map(day => {
           return (
-            <Box key={dayName}>
-              <Typography>{dayName}</Typography>
+            <Box key={day} className={classes.weekDay}>
+              <Typography className={classes.weekDayName}>
+                {capitalize(day.slice(0, 3))}
+              </Typography>
               <Checkbox
-                checked={weekDays[dayName]}
+                checked={weekDays[day]}
                 onChange={e => {
-                  changePeriod(dayName, e.target.checked)
+                  updatePeriod(id, day, e.target.checked)
                 }}
+                className={classes.checkbox}
               />
             </Box>
           )
         })}
       </Box>
-    )
-  }
+    </Box>
+  )
+  // ------
 
   return (
-    <Box className={classes.wrap}>
-      <Box className={classes.header}>
-        <img src={deleteIcon} alt='delete' />
-      </Box>
-      <DaysRow />
+    <Box className={classes.mainWrap}>
+      <Header />
+      <DaysBlock />
+      <StartEndTime />
     </Box>
   )
 }

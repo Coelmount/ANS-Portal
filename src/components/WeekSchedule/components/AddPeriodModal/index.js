@@ -12,8 +12,10 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
+import Typography from '@material-ui/core/Typography'
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
+import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import PeriodForm from 'components/PeriodForm'
 
@@ -24,6 +26,24 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
   const isSchedulePosting = false
+
+  const { periods, pushPeriod } = WeekSchedulesStore
+
+  // components -----
+  const AddPeriodButton = () => (
+    <Box className={classes.addPeriodButtonBlock}>
+      <IconButton
+        aria-label='add period icon button'
+        component='span'
+        className={classes.addPeriodIconWrap}
+        onClick={pushPeriod}
+      >
+        <AddOutlinedIcon className={classes.addPeriodIcon} />
+      </IconButton>
+      <Typography className={classes.addPeriodTitle}>{t('add')}</Typography>
+    </Box>
+  )
+  // ------
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
@@ -43,9 +63,12 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
           <Loading />
         ) : (
           <Fragment>
-            <PeriodForm
-            //  scheme={periodFormScheme}
-            />
+            <Box>
+              {periods.map(period => (
+                <PeriodForm period={period} key={period.id} />
+              ))}
+            </Box>
+            <AddPeriodButton />
           </Fragment>
         )}
       </DialogContent>
@@ -73,4 +96,4 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
   )
 }
 
-export default withNamespaces()(AddPeriodModal)
+export default withNamespaces()(observer(AddPeriodModal))

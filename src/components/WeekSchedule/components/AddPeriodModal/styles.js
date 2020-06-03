@@ -30,6 +30,26 @@ const useStyles = makeStyles(theme => ({
       height: 27
     }
   },
+  addPeriodButtonBlock: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 17
+  },
+  addPeriodIconWrap: {
+    width: 32,
+    height: 32,
+    padding: 3,
+    background: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+      opacity: 0.8
+    }
+  },
+  addPeriodTitle: {
+    fontSize: 14,
+    fontFamily: 'MTN',
+    marginLeft: 9
+  },
   dialogActions: {
     height: '110px',
     justifyContent: 'space-between'

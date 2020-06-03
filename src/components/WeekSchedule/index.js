@@ -33,7 +33,7 @@ const WeekSchedule = observer(({ t }) => {
     weekSchedulePeriods
   } = WeekSchedulesStore
 
-  const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState()
+  const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(true)
 
   useEffect(() => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
