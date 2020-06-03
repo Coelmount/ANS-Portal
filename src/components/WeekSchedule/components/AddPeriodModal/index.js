@@ -63,7 +63,7 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
           <Loading />
         ) : (
           <Fragment>
-            <Box>
+            <Box className={classes.periodFormsWrap}>
               {periods.map(period => (
                 <PeriodForm period={period} key={period.id} />
               ))}

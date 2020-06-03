@@ -6,6 +6,8 @@ import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import transformWeekDateFormat from 'utils/schedules/transformWeekDateFormat'
 
+const defaultStartTime = '08:00'
+const defaultStopTime = '09:00'
 const defaultWeekDays = {
   sunday: false,
   monday: false,
@@ -22,6 +24,8 @@ export class WeekSchedules {
   periods = [
     {
       id: 'default',
+      startTime: defaultStartTime,
+      stopTime: defaultStopTime,
       weekDays: defaultWeekDays
     }
   ]
@@ -96,13 +100,6 @@ export class WeekSchedules {
             startTime: '15:30',
             stopTime: '17:30'
           }
-          // {
-          //   name: 'APIO Test Group Period 1',
-          //   type: 'Day of the week',
-          //   dayOfWeek: 'Friday',
-          //   startTime: '10:30',
-          //   stopTime: '12:30'
-          // }
         ]
       })
       .then(res => {
@@ -156,7 +153,7 @@ export class WeekSchedules {
       .finally(() => (this.isWeekScheduleLoading = false))
   }
 
-  updatePeriod = (id, day, status) => {
+  updatePeriodDayStatus = (id, day, status) => {
     // find period
     const periodsCopy = this.periods.slice(0)
     const index = this.periods.findIndex(period => period.id === id)
@@ -164,6 +161,16 @@ export class WeekSchedules {
     // change period field and update periods array
     periodCopy.weekDays[day] = status
     periodsCopy[index] = periodCopy
+    this.periods = periodsCopy
+  }
+
+  updatePeriodTime = (id, field, value) => {
+    // find period
+    const periodsCopy = this.periods.slice(0)
+    const index = this.periods.findIndex(period => period.id === id)
+    const periodCopy = { ...this.periods[index] }
+    // changle time field and update periods array
+    periodCopy[field] = value
     this.periods = periodsCopy
   }
 
@@ -179,6 +186,8 @@ export class WeekSchedules {
     const key = performance.now().toString(36)
     periodsCopy.push({
       id: key,
+      startTime: defaultStartTime,
+      stopTime: defaultStopTime,
       weekDays: defaultWeekDays
     })
     this.periods = periodsCopy
@@ -197,8 +206,9 @@ decorate(WeekSchedules, {
   deleteSchedule: action,
   postSchedule: action,
   getWeekSchedule: action,
-  updatePeriod: action,
-  pushPeriod: action
+  updatePeriodDayStatus: action,
+  pushPeriod: action,
+  updatePeriodTime: action
 })
 
 export default new WeekSchedules()

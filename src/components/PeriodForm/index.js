@@ -13,15 +13,20 @@ import StartEndTime from 'components/StartEndTime'
 import useStyles from './styles.js'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
-const PeriodForm = ({ period: { id, weekDays } }) => {
+const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
   const classes = useStyles()
   // store
-  const { updatePeriod, removePeriod } = WeekSchedulesStore
+  const { updatePeriodDayStatus, removePeriod } = WeekSchedulesStore
 
   // components ------
   const Header = () => (
     <Box className={classes.header}>
-      <img src={deleteIcon} className={classes.deleteIcon} alt='delete' />
+      <img
+        onClick={() => removePeriod(id)}
+        src={deleteIcon}
+        className={classes.deleteIcon}
+        alt='delete'
+      />
     </Box>
   )
 
@@ -40,7 +45,7 @@ const PeriodForm = ({ period: { id, weekDays } }) => {
               <Checkbox
                 checked={weekDays[day]}
                 onChange={e => {
-                  updatePeriod(id, day, e.target.checked)
+                  updatePeriodDayStatus(id, day, e.target.checked)
                 }}
                 className={classes.checkbox}
               />
@@ -56,7 +61,7 @@ const PeriodForm = ({ period: { id, weekDays } }) => {
     <Box className={classes.mainWrap}>
       <Header />
       <DaysBlock />
-      <StartEndTime />
+      <StartEndTime periodId={id} startTime={startTime} stopTime={stopTime} />
     </Box>
   )
 }

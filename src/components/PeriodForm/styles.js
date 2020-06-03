@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     minWidth: 35,
-    marginRight: 26,
+    marginRight: 33,
     paddingBottom: 20,
     '&:last-child': {
       marginRight: 0

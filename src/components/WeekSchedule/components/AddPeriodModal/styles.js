@@ -30,10 +30,15 @@ const useStyles = makeStyles(theme => ({
       height: 27
     }
   },
+  periodFormsWrap: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
   addPeriodButtonBlock: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: 17
+    marginTop: 17,
+    marginLeft: 17
   },
   addPeriodIconWrap: {
     width: 32,
