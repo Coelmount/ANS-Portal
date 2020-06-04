@@ -25,9 +25,10 @@ import scheduleIcon from 'source/images/svg/schedule.svg'
 const AddPeriodModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
+  const { customerId, groupId, weekScheduleName } = match
   const isSchedulePosting = false
 
-  const { periods, pushPeriod } = WeekSchedulesStore
+  const { periods, pushPeriod, postPeriod } = WeekSchedulesStore
 
   // components -----
   const AddPeriodButton = () => (
@@ -86,7 +87,7 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          // onClick={handleGeneralAddButtonClick}
+          onClick={() => postPeriod(customerId, groupId, weekScheduleName)}
           // disabled={!name.length || isSchedulePosting}
         >
           {t('add')}

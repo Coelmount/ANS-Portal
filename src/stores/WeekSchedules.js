@@ -1,4 +1,5 @@
 import { decorate, observable, action, toJS } from 'mobx'
+import capitalize from 'lodash/capitalize'
 
 import axios from 'utils/axios'
 
@@ -171,6 +172,8 @@ export class WeekSchedules {
     const periodCopy = { ...this.periods[index] }
     // changle time field and update periods array
     periodCopy[field] = value
+    periodCopy.id = performance.now().toString(36)
+    periodsCopy[index] = periodCopy
     this.periods = periodsCopy
   }
 
@@ -192,6 +195,52 @@ export class WeekSchedules {
     })
     this.periods = periodsCopy
   }
+
+  postPeriod = (customerId, groupId, weekScheduleName) => {
+    const promiseArray = []
+    console.log(toJS(this.periods), 'periods')
+    this.periods.forEach(period => {
+      const periodDays = Object.keys(period.weekDays)
+      const checkedDays = periodDays.filter(
+        day => period.weekDays[day] === true
+      )
+      console.log(checkedDays, 'checkedDays')
+      checkedDays.forEach(day => {
+        promiseArray.push(
+          axios.post(
+            `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/`,
+            {
+              name: `${period.id} ${day}`,
+              type: 'Day of the week',
+              dayOfWeek: capitalize(day),
+              startTime: period.startTime,
+              stopTime: period.stopTime,
+              active: true
+            }
+          )
+        )
+      })
+    })
+    Promise.all(promiseArray)
+      .then(res => {
+        // closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Period successfully created',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to create period',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+    // .finally(() => (this.isSchedulePosting = false))
+  }
 }
 
 decorate(WeekSchedules, {
@@ -208,7 +257,8 @@ decorate(WeekSchedules, {
   getWeekSchedule: action,
   updatePeriodDayStatus: action,
   pushPeriod: action,
-  updatePeriodTime: action
+  updatePeriodTime: action,
+  postPeriod: action
 })
 
 export default new WeekSchedules()
