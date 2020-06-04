@@ -31,7 +31,7 @@ export class CustomersStore {
   customer = defaultCustomerValue
   customerName = ''
   isLoadingCustomers = true
-  isLoadingCustomer = true
+  isLoadingCustomer = false
   isLoadingStatus = true
   isDeletingCustomer = false
   addUpdateCustomer = false
@@ -147,7 +147,7 @@ export class CustomersStore {
     this.step = 1
     this.customer = defaultCustomerValue
     this.isLoadingCustomers = true
-    this.isLoadingCustomer = true
+    this.isLoadingCustomer = false
     this.isDeletingCustomer = false
     this.addUpdateCustomer = false
   }

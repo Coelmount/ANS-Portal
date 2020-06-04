@@ -290,7 +290,8 @@ const useStyles = makeStyles(theme => ({
   statusBox: {
     marginTop: 10,
     color: theme.palette.darkRed,
-    fontWeight: 600
+    fontWeight: 600,
+    minHeight: 22
   }
 }))
 
