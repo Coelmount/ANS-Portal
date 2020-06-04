@@ -26,9 +26,14 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId, weekScheduleName } = match
-  const isSchedulePosting = false
 
-  const { periods, pushPeriod, postPeriod } = WeekSchedulesStore
+  const {
+    periods,
+    pushPeriod,
+    postPeriod,
+    isPeriodPosting,
+    isPeriodsValid
+  } = WeekSchedulesStore
 
   // components -----
   const AddPeriodButton = () => (
@@ -60,7 +65,7 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent>
-        {isSchedulePosting ? (
+        {isPeriodPosting ? (
           <Loading />
         ) : (
           <Fragment>
@@ -87,8 +92,10 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => postPeriod(customerId, groupId, weekScheduleName)}
-          // disabled={!name.length || isSchedulePosting}
+          onClick={() =>
+            postPeriod(customerId, groupId, weekScheduleName, handleClose)
+          }
+          disabled={!isPeriodsValid}
         >
           {t('add')}
         </Button>

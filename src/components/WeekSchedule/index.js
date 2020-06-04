@@ -30,10 +30,11 @@ const WeekSchedule = observer(({ t }) => {
   const {
     getWeekSchedule,
     isWeekScheduleLoading,
-    weekSchedulePeriods
+    weekSchedulePeriods,
+    setDefaultPeriods
   } = WeekSchedulesStore
 
-  const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(true)
+  const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
 
   useEffect(() => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
@@ -45,6 +46,8 @@ const WeekSchedule = observer(({ t }) => {
 
   const handleCloseAddPeriodModal = () => {
     setIsAddPeriodModalOpen(false)
+    getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
+    setDefaultPeriods()
   }
 
   const titleData = {
@@ -53,15 +56,15 @@ const WeekSchedule = observer(({ t }) => {
     Icon: <AddOutlinedIcon />
   }
 
-  const events = [
-    {
-      id: 3,
-      title: 'Meeting',
-      start: new Date(2020, 5, 10, 10, 30),
-      end: new Date(2020, 5, 10, 12, 30),
-      desc: 'Pre-meeting meeting, to prepare for the meeting'
-    }
-  ]
+  // const events = [
+  //   {
+  //     id: 3,
+  //     title: 'Meeting',
+  //     start: new Date(2020, 5, 10, 10, 30),
+  //     end: new Date(2020, 5, 10, 12, 30),
+  //     desc: 'Pre-meeting meeting, to prepare for the meeting'
+  //   }
+  // ]
 
   const ColoredDateCellWrapper = ({ children }) =>
     React.cloneElement(React.Children.only(children), {

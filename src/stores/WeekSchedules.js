@@ -1,4 +1,4 @@
-import { decorate, observable, action, toJS } from 'mobx'
+import { decorate, observable, action, toJS, computed } from 'mobx'
 import capitalize from 'lodash/capitalize'
 
 import axios from 'utils/axios'
@@ -24,7 +24,7 @@ export class WeekSchedules {
   weekSchedulePeriods = []
   periods = [
     {
-      id: 'default',
+      id: performance.now().toString(36),
       startTime: defaultStartTime,
       stopTime: defaultStopTime,
       weekDays: defaultWeekDays
@@ -34,6 +34,7 @@ export class WeekSchedules {
   isDeletingSchedule = false
   isSchedulePosting = false
   isWeekScheduleLoading = true
+  isPeriodPosting = false
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -177,6 +178,26 @@ export class WeekSchedules {
     this.periods = periodsCopy
   }
 
+  // computed: if time and at least 1 day are set
+  get isPeriodsValid() {
+    return this.periods.every(period => {
+      const weekDays = Object.values(period.weekDays)
+      const isDaysValid = weekDays.some(day => day === true)
+      return isDaysValid && period.startTime && period.stopTime
+    })
+  }
+
+  setDefaultPeriods = () => {
+    this.periods = [
+      {
+        id: performance.now().toString(36),
+        startTime: defaultStartTime,
+        stopTime: defaultStopTime,
+        weekDays: defaultWeekDays
+      }
+    ]
+  }
+
   removePeriod = id => {
     const periodsCopy = this.periods.slice(0)
     const index = this.periods.findIndex(period => period.id === id)
@@ -196,15 +217,14 @@ export class WeekSchedules {
     this.periods = periodsCopy
   }
 
-  postPeriod = (customerId, groupId, weekScheduleName) => {
+  postPeriod = (customerId, groupId, weekScheduleName, closeModal) => {
+    this.isPeriodPosting = true
     const promiseArray = []
-    console.log(toJS(this.periods), 'periods')
     this.periods.forEach(period => {
       const periodDays = Object.keys(period.weekDays)
       const checkedDays = periodDays.filter(
         day => period.weekDays[day] === true
       )
-      console.log(checkedDays, 'checkedDays')
       checkedDays.forEach(day => {
         promiseArray.push(
           axios.post(
@@ -223,7 +243,6 @@ export class WeekSchedules {
     })
     Promise.all(promiseArray)
       .then(res => {
-        // closeModal()
         SnackbarStore.enqueueSnackbar({
           message: 'Period successfully created',
           options: {
@@ -239,15 +258,19 @@ export class WeekSchedules {
           }
         })
       })
-    // .finally(() => (this.isSchedulePosting = false))
+      .finally(() => {
+        this.isPeriodPosting = false
+        closeModal()
+      })
   }
 }
-
 decorate(WeekSchedules, {
+  isPeriodsValid: computed,
   schedules: observable,
   isSchedulesLoading: observable,
   isDeletingSchedule: observable,
   isSchedulePosting: observable,
+  isPeriodPosting: observable,
   weekSchedulePeriods: observable,
   isWeekScheduleLoading: observable,
   periods: observable,
@@ -258,7 +281,8 @@ decorate(WeekSchedules, {
   updatePeriodDayStatus: action,
   pushPeriod: action,
   updatePeriodTime: action,
-  postPeriod: action
+  postPeriod: action,
+  setDefaultPeriods: action
 })
 
 export default new WeekSchedules()
