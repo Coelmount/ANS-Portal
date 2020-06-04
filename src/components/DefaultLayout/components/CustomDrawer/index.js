@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import classnames from 'classnames'
-import { useHistory, NavLink } from 'react-router-dom'
+import { useHistory, NavLink, useParams } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 import { withRouter } from 'react-router'
 import { observer } from 'mobx-react-lite'
@@ -23,8 +23,9 @@ import logo from 'source/images/svg/mtn-logo-nav.svg'
 import subaccountIcon from 'source/images/svg/users-subaccount.svg'
 import customerIcon from 'source/images/svg/users-customer.svg'
 
-const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
+const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
   const history = useHistory()
+  const match = useParams()
   const [userName, setUserName] = useState('')
   const [userSubtitle, setUserSubtitle] = useState('')
 
@@ -56,36 +57,34 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   } = CustomersStore
 
   const isUserLoading =
-    (match.params.customerId &&
-      !match.params.groupId &&
-      isLoadingCustomerName) ||
-    (match.params.customerId && match.params.groupId && isLoadingSubaccount)
+    (match.customerId && !match.groupId && isLoadingCustomerName) ||
+    (match.customerId && match.groupId && isLoadingSubaccount)
 
   useEffect(() => {
-    getActiveNavsAfterUpdate(match.url)
+    getActiveNavsAfterUpdate(history.location.pathname)
     return () => {
       // setDefaultValues()
     }
-  }, [getActiveNavsAfterUpdate, match.url])
+  }, [getActiveNavsAfterUpdate, history.location.pathname])
 
   // get customer/subaccount data for sidebar user block
   useEffect(() => {
-    if (match.params.customerId && !match.params.groupId) {
-      getCustomerName(match.params.customerId)
-      getCustomer(match.params.customerId)
+    if (match.customerId && !match.groupId) {
+      getCustomerName(match.customerId)
+      getCustomer(match.customerId)
     }
-    if (match.params.customerId && match.params.groupId) {
-      getSubaccount(match.params.customerId, match.params.groupId)
+    if (match.customerId && match.groupId) {
+      getSubaccount(match.customerId, match.groupId)
     }
-  }, [match.params.customerId, match.params.groupId])
+  }, [match.customerId, match.groupId])
 
   // update user data if store updated
   useEffect(() => {
-    if (match.params.customerId && !match.params.groupId) {
+    if (match.customerId && !match.groupId) {
       setUserName(customerName)
       setUserSubtitle(t('customer'))
     }
-    if (match.params.customerId && match.params.groupId) {
+    if (match.customerId && match.groupId) {
       setUserName(subaccount.groupName)
       setUserSubtitle(t('subaccount'))
     }
@@ -110,14 +109,14 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
   }
 
   const redirectToDetailsPage = () => {
-    if (match.params.customerId && match.params.groupId) {
+    if (match.customerId && match.groupId) {
       history.push(
-        `/customers/${match.params.customerId}/subaccounts/${match.params.groupId}/details`
+        `/customers/${match.customerId}/subaccounts/${match.groupId}/details`
       )
       return
     }
-    if (match.params.customerId) {
-      history.push(`/customers/${match.params.customerId}/details`)
+    if (match.customerId) {
+      history.push(`/customers/${match.customerId}/details`)
       return
     }
   }
@@ -135,7 +134,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
       <List className={classes.wrapper}>
         {userSubtitle && (
           <Fragment>
-            {isLoadingCustomer || (isUserLoading && !userName) ? (
+            {isUserLoading && !userName ? (
               <CircularProgress className={classes.loadingIcon} />
             ) : (
               <Box className={classes.userWrap} onClick={redirectToDetailsPage}>
@@ -154,7 +153,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, match, t }) => {
                   />
                   <span>{userName}</span>
                 </Box>
-                {match.params.customerId && !match.params.groupId && (
+                {customer.status && match.customerId && !match.groupId && (
                   <Box className={classes.statusBox}>
                     {customer.status === 'Active' ? '' : t('account_suspended')}
                   </Box>
