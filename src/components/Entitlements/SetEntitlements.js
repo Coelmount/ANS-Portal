@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
+import { useParams } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -33,6 +34,7 @@ const SetEntitlements = props => {
   } = EntitlementsStore
 
   const classes = useStyles()
+  const match = useParams()
   const [selected, setSelected] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [searchList, setSearchList] = useState([])
@@ -42,7 +44,8 @@ const SetEntitlements = props => {
   }, [searchList])
 
   useEffect(() => {
-    getEntitlementTypes()
+    const isFilterNeeded = Boolean(match.customerId)
+    getEntitlementTypes(isFilterNeeded)
     return () => setDefaultEntitlementTypes()
   }, [getEntitlementTypes, setDefaultEntitlementTypes])
 

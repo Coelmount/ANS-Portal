@@ -71,16 +71,19 @@ export class Entitlements {
       })
   }
 
-  getEntitlementTypes = () => {
+  getEntitlementTypes = isFilterNeeded => {
     this.isLoadingEntitlementTypes = true
     axios
       .get(`/entitlement_types`)
       .then(res => {
-        const result = res.data.customer_licenses.filter(item => {
-          return !this.entitlementsIdArr.some(
-            entitlementId => entitlementId === item.id
-          )
-        })
+        // filter for customer level OR full result for system level
+        const result = isFilterNeeded
+          ? res.data.customer_licenses.filter(item => {
+              return !this.entitlementsIdArr.some(
+                entitlementId => entitlementId === item.id
+              )
+            })
+          : res.data.customer_licenses
         this.entitlementTypes = result.map(item => {
           return { checked: false, hover: false, ...item }
         })
