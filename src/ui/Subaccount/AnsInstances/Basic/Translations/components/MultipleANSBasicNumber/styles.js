@@ -2,6 +2,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import { borderRadius } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
+  downloadIcon: {
+    height: 34,
+    width: 34
+  },
   title: {
     '& > *': {
       fontFamily: 'MTN',

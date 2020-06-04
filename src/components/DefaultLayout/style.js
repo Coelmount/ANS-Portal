@@ -265,7 +265,8 @@ const useStyles = makeStyles(theme => ({
   userWrap: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    cursor: 'pointer'
   },
   userSubtitle: {
     marginBottom: 3,
@@ -285,6 +286,11 @@ const useStyles = makeStyles(theme => ({
     width: '30px !important',
     height: '30px !important',
     marginLeft: 115
+  },
+  statusBox: {
+    marginTop: 10,
+    color: theme.palette.darkRed,
+    fontWeight: 600
   }
 }))
 

@@ -14,7 +14,14 @@ const DetailsBlock = ({ classes, data, t }) => {
       value: data.tenantId || data.groupId || match.groupId || t('none')
     },
     { name: t('name'), value: data.name || data.groupName || t('none') },
-    { name: t('status'), value: data.status || t('none') }
+    {
+      name: t('account_status'),
+      value: data.status || t('none'),
+      styles:
+        data.status === 'Active'
+          ? classes.statusActive
+          : classes.statusNotActive
+    }
   ]
 
   return (
@@ -22,15 +29,17 @@ const DetailsBlock = ({ classes, data, t }) => {
       <Typography className={classes.detailsBlockTitle}>
         Customer Details
       </Typography>
-      {detailsFields.map((detailsField) => (
+      {detailsFields.map(detailsField => (
         <Box
           className={`${classes.detailsFieldsWrap} ${classes.firstBlockFields}`}
           key={detailsField.name}
         >
-          <Typography className={classes.fieldTitleBlock}>
+          <Typography className={`${classes.fieldTitleBlock} `}>
             {`${detailsField.name}:`}
           </Typography>
-          <Typography>{detailsField.value}</Typography>
+          <Typography className={`${detailsField.styles} `}>
+            {detailsField.value}
+          </Typography>
         </Box>
       ))}
     </Box>
