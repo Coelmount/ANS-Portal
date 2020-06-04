@@ -32,7 +32,8 @@ const useStyles = makeStyles(theme => ({
   },
   periodFormsWrap: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexDirection: 'column'
   },
   addPeriodButtonBlock: {
     display: 'flex',
