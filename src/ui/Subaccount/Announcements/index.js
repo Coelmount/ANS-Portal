@@ -21,6 +21,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Announcements from './Announcemnents'
 import UploadMediaFile from './UploadMediaFile'
 import SelectFromLibrary from './SelectFromLibrary'
+import RecordAudio from './RecordAudio'
 
 import AnnouncementsStore from 'stores/Announcements'
 
@@ -33,6 +34,7 @@ const AnnouncementsPage = props => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [showUploadMedia, setShowUploadMedia] = useState(false)
   const [showSelectMedia, setShowSelectMedia] = useState(false)
+  const [showRecordAudio, setShowRecordAudio] = useState(true)
 
   const { getAnnouncements } = AnnouncementsStore
 
@@ -58,7 +60,11 @@ const AnnouncementsPage = props => {
     },
     {
       id: 2,
-      label: t('record_announcements')
+      label: t('record_announcements'),
+      onClick: () => {
+        setShowRecordAudio(true)
+        setAnchorEl(null)
+      }
     },
     {
       id: 3,
@@ -142,6 +148,15 @@ const AnnouncementsPage = props => {
             open={showSelectMedia}
             handleClose={() => {
               setShowSelectMedia(false)
+              getAnnouncements(match.customerId, match.groupId)
+            }}
+          />
+        )}
+        {showRecordAudio && (
+          <RecordAudio
+            open={showRecordAudio}
+            handleClose={() => {
+              setShowRecordAudio(false)
               getAnnouncements(match.customerId, match.groupId)
             }}
           />
