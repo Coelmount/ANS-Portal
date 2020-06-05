@@ -3,13 +3,9 @@ import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import MaterialTable, { MTableToolbar, MTableBody } from 'material-table'
+import MaterialTable, { MTableToolbar } from 'material-table'
 
 import TablePagination from '@material-ui/core/TablePagination'
-import Button from '@material-ui/core/Button'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import Typography from '@material-ui/core/Typography'
 
 import AnnouncementsStore from 'stores/Announcements'
 
@@ -17,7 +13,6 @@ import AudioPlayer from 'components/AudioPlayer'
 import DeleteModal from 'components/DeleteModal'
 
 import tableIcons from './tableIcons'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import ClearIcon from '@material-ui/icons/Clear'
 import editIcon from 'source/images/svg/editIcon.svg'
 
@@ -186,7 +181,6 @@ const Announcements = props => {
       />
       {isDeleteModalOpen && (
         <DeleteModal
-          //classes={classes}
           open={isDeleteModalOpen}
           handleClose={handleCloseDeleteModal}
           handleDelete={handleDelete}

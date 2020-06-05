@@ -5,13 +5,9 @@ import PropTypes from 'prop-types'
 
 import IconButton from '@material-ui/core/IconButton'
 
-import Slider from '@material-ui/core/Slider'
-
 import PlayCircleOutlineOutlinedIcon from '@material-ui/icons/PlayCircleOutlineOutlined'
 import PauseCircleOutlineOutlinedIcon from '@material-ui/icons/PauseCircleOutlineOutlined'
 import LoopIcon from '@material-ui/icons/Autorenew'
-
-import Loading from 'components/Loading'
 
 import useStyles from './styles'
 import './styles.css'
