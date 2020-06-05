@@ -34,7 +34,7 @@ const AnnouncementsPage = props => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [showUploadMedia, setShowUploadMedia] = useState(false)
   const [showSelectMedia, setShowSelectMedia] = useState(false)
-  const [showRecordAudio, setShowRecordAudio] = useState(true)
+  const [showRecordAudio, setShowRecordAudio] = useState(false)
 
   const { getAnnouncements } = AnnouncementsStore
 
