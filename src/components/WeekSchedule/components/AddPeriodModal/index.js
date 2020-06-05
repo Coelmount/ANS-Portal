@@ -34,7 +34,6 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
     isPeriodPosting,
     isPeriodsValid
   } = WeekSchedulesStore
-
   // components -----
   const AddPeriodButton = () => (
     <Box className={classes.addPeriodButtonBlock}>

@@ -86,23 +86,7 @@ export class WeekSchedules {
     this.isSchedulePosting = true
     axios
       .post(`/tenants/${customerId}/groups/${groupId}/time_schedules/`, {
-        name,
-        periods: [
-          {
-            name: 'APIO Test Group Period 1',
-            type: 'Day of the week',
-            dayOfWeek: 'Wednesday',
-            startTime: '15:30',
-            stopTime: '17:30'
-          },
-          {
-            name: 'APIO Test Group Period 2',
-            type: 'Day of the week',
-            dayOfWeek: 'Thursday',
-            startTime: '15:30',
-            stopTime: '17:30'
-          }
-        ]
+        name
       })
       .then(res => {
         closeModal()
@@ -158,6 +142,9 @@ export class WeekSchedules {
   updatePeriodDayStatus = (id, day, status) => {
     // find period
     const periodsCopy = this.periods.slice(0)
+    console.log(toJS(this.periods), 'this periods')
+    console.log(toJS(this.weekSchedulePeriods), 'this weekSchedulePeriods')
+    console.log(id, 'id')
     const index = this.periods.findIndex(period => period.id === id)
     const periodCopy = { ...this.periods[index] }
     // change period field and update periods array

@@ -8,7 +8,7 @@ import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
 import localizer from 'react-big-calendar/lib/localizers/globalize'
 
 import CustomContainer from 'components/CustomContainer'
-import TitleBlock from 'components/TitleBlock'
+import ExtendedTitleBlock from 'components/ExtendedTitleBlock'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 
 import Paper from '@material-ui/core/Paper'
@@ -19,10 +19,12 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import AddPeriodModal from './components/AddPeriodModal'
+import EditScheduleModal from './components/EditScheduleModal'
 
 import * as dates from './dates'
 import useStyles from './styles'
 import 'react-big-calendar/lib/sass/styles.scss'
+import editSvg from 'source/images/svg/edit-blue.svg'
 
 const WeekSchedule = observer(({ t }) => {
   const classes = useStyles()
@@ -31,10 +33,12 @@ const WeekSchedule = observer(({ t }) => {
     getWeekSchedule,
     isWeekScheduleLoading,
     weekSchedulePeriods,
+    periods,
     setDefaultPeriods
   } = WeekSchedulesStore
 
   const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
+  const [isEditScheduleModalOpen, setIsEditScheduleModalOpen] = useState(false)
 
   useEffect(() => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
@@ -50,10 +54,27 @@ const WeekSchedule = observer(({ t }) => {
     setDefaultPeriods()
   }
 
+  const handleEditScheduleClick = () => {
+    setIsEditScheduleModalOpen(true)
+  }
+
+  const handleCloseEditScheduleModal = () => {
+    setIsEditScheduleModalOpen(false)
+  }
+
+  const ExtraTitleBlock = (
+    <Box className={classes.extraTitleBlock}>
+      <Box className={classes.editIconWrap}>
+        <img src={editSvg} className={classes.editIcon} alt='edit' />
+      </Box>
+    </Box>
+  )
+
   const titleData = {
     mainText: `${t('week_schedules')}: ${match.weekScheduleName}`,
     iconCapture: t('add_slot'),
-    Icon: <AddOutlinedIcon />
+    Icon: <AddOutlinedIcon />,
+    titleIcon: <img src={editSvg} className={classes.editIcon} alt='edit' />
   }
 
   // const events = [
@@ -88,9 +109,10 @@ const WeekSchedule = observer(({ t }) => {
           <Paper>
             <CustomContainer>
               <CustomBreadcrumbs />
-              <TitleBlock
+              <ExtendedTitleBlock
                 titleData={titleData}
-                handleOpen={handleOpenAddPeriodModal}
+                handleClick={handleOpenAddPeriodModal}
+                handleTitleIconClick={handleEditScheduleClick}
               />
             </CustomContainer>
             <Calendar
@@ -115,6 +137,12 @@ const WeekSchedule = observer(({ t }) => {
               <AddPeriodModal
                 open={isAddPeriodModalOpen}
                 handleClose={handleCloseAddPeriodModal}
+              />
+            )}
+            {isEditScheduleModalOpen && (
+              <EditScheduleModal
+                open={isEditScheduleModalOpen}
+                handleClose={handleCloseEditScheduleModal}
               />
             )}
           </Paper>
