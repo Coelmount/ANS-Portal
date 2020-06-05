@@ -32,7 +32,7 @@ const AudioRecorder = props => {
   let preview = useRef(null)
   let recording = useRef(null)
   const [currentTime, setCurrentTime] = useState(0)
-  const [isMediaAvalible, setIsMediaAvalible] = useState(true)
+  const [isMediaAvailable, setIsMediaAvailable] = useState(true)
   const [isRecoding, setIsRecording] = useState('notStarted')
   const [recordedTime, setRecordedTime] = useState(0)
   const [playingTime, setPlayingTime] = useState(0)
@@ -90,7 +90,7 @@ const AudioRecorder = props => {
         audio: true
       })
       .then(stream => {
-        setIsMediaAvalible(true)
+        setIsMediaAvailable(true)
         preview.current.srcObject = stream
         preview.current.captureStream =
           preview.current.captureStream || preview.current.mozCaptureStream
@@ -109,7 +109,7 @@ const AudioRecorder = props => {
         recording.current.src = URL.createObjectURL(recordedBlob)
       })
       .catch(e => {
-        setIsMediaAvalible(false)
+        setIsMediaAvailable(false)
       })
   }
 
@@ -143,9 +143,9 @@ const AudioRecorder = props => {
   }
 
   return (
-    <div className={classes.playerWraper}>
+    <div className={classes.playerWrapper}>
       {isRecoding === 'notStarted' &&
-        (isMediaAvalible ? (
+        (isMediaAvailable ? (
           <div className={classes.infoBox}>
             <div>Press button to start recording...</div>
             <Button
@@ -237,7 +237,7 @@ const AudioRecorder = props => {
           </div>
           <div className={classes.playerControls}>
             <Button
-              className={classes.playPauseBotton}
+              className={classes.playPauseButton}
               onClick={() => {
                 isPlaying ? handlePausePlaying() : handleStartPlaying()
               }}

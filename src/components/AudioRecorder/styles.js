@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { borderRadius } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
-  playerWraper: {
+  playerWrapper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
   saveButton: {
     width: 140
   },
-  playPauseBotton: {
+  playPauseButton: {
     minWidth: 44,
     width: 44,
     height: 44,

@@ -20,7 +20,6 @@ import tableIcons from './tableIcons'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import ClearIcon from '@material-ui/icons/Clear'
 import editIcon from 'source/images/svg/editIcon.svg'
-import ImagineDragonsWarrior from 'source/Imagine-dragons-warrior.mp3'
 
 import useStyles from './styles'
 
