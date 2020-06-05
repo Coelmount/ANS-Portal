@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
   closeButton: {
     position: 'absolute',
     right: '10px'
+  },
+  notSupprotedBrowserMessage: {
+    marginTop: 270,
+    textAlign: 'center'
   }
 }))
 
