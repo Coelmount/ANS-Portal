@@ -60,6 +60,8 @@ const WeekSchedule = observer(({ t }) => {
 
   const handleCloseEditScheduleModal = () => {
     setIsEditScheduleModalOpen(false)
+    getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
+    setDefaultPeriods()
   }
 
   const ExtraTitleBlock = (

@@ -19,6 +19,7 @@
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.4",
     "mobx-react-lite": "^1.5.2",
+    "node-sass": "^4.14.1",
     "normalize.css": "^8.0.1",
     "notistack": "^0.9.11",
     "papaparse": "^5.2.0",

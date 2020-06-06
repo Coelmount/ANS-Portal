@@ -38,16 +38,17 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
   const match = useParams()
   const { customerId, groupId, weekScheduleName } = match
 
-  const [editPeriods, setEditPeriods] = useState([])
-  console.log(editPeriods, 'editPeriods')
-
   const {
     weekSchedulePeriods,
     pushPeriod,
     postPeriod,
     isPeriodPosting,
-    isPeriodsValid,
-    periods
+    periods,
+    setEditPeriods,
+    putPeriods,
+    setInitPeriots,
+    isScheduleEditing,
+    setPeriodsBeforeUpdate
   } = WeekSchedulesStore
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
       let end
       let title
       let id
+      // to refactor
       weekSchedulePeriods.forEach(period => {
         if (period.title.split(' ')[0] === uniqueId) {
           const initStartHours = new Date(period.start).getHours()
@@ -108,10 +110,12 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
         weekDays: newWeekDays,
         startTime: start,
         stopTime: end,
-        id: title
+        id: title.split(' ')[0]
       })
     })
     setEditPeriods(transformedPeriods)
+    setInitPeriots(transformedPeriods)
+    setPeriodsBeforeUpdate(transformedPeriods)
   }, [])
 
   return (
@@ -128,7 +132,7 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
-        {isPeriodPosting ? (
+        {isScheduleEditing ? (
           <Loading />
         ) : (
           <Fragment>
@@ -136,12 +140,11 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
               icon={<DateRangeIcon />}
               label={t('schedule_name')}
               variant='outlined'
-              // disabled
               value={weekScheduleName}
               // className={classes.scheduleNameTitle}
             />
             <Box className={classes.periodFormsWrap}>
-              {editPeriods.map(period => (
+              {periods.map(period => (
                 <PeriodForm period={period} key={period.id} />
               ))}
             </Box>
@@ -163,9 +166,8 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
           color='primary'
           className={classes.nextButton}
           onClick={() =>
-            postPeriod(customerId, groupId, weekScheduleName, handleClose)
+            putPeriods(customerId, groupId, weekScheduleName, handleClose)
           }
-          disabled={!isPeriodsValid}
         >
           {t('save')}
         </Button>
