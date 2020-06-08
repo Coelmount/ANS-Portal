@@ -32,6 +32,7 @@ export class WeekSchedules {
     }
   ]
   initPeriods = []
+  initPeriod = []
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
@@ -266,7 +267,8 @@ export class WeekSchedules {
     this.isScheduleEditing = true
     let promiseArr = []
     const initPeriodsIds = this.periods.map(initPeriod => initPeriod.id)
-
+    console.log(toJS(this.initPeriod), 'init periods')
+    console.log(toJS(this.periods), 'periods')
     this.initPeriods.forEach(initPeriod => {
       const isPeriodActive = initPeriodsIds.some(id => id === initPeriod.id)
       // IF PERIOD REMOVED
@@ -323,6 +325,12 @@ export class WeekSchedules {
         }
 
         weekDaysArr.forEach(day => {
+          console.log(day, 'day')
+          console.log(initPeriod.weekDays[day], 'initPeriod.weekDays[day]')
+          console.log(
+            updatedPeriod.weekDays[day],
+            'updatedPeriod.weekDays[day]'
+          )
           const periodName = `${updatedPeriod.id} ${day}`
           // IF NEW DAY CHECKED (ADDED)
           if (
@@ -364,6 +372,18 @@ export class WeekSchedules {
         this.isScheduleEditing = false
       })
   }
+
+  findEventAndSetToEdit = event => {
+    // console.log(event, 'event')
+    const eventId = event.title.split(' ')[0]
+    // console.log(toJS(this.initPeriods), 'init per')
+    const eventInInitPeriods = this.initPeriods.find(
+      initPeriod => initPeriod.id === eventId
+    )
+    this.periods = [eventInInitPeriods]
+    // this.initPeriod = [eventInInitPeriods]
+    // console.log(eventInInitPeriods, 'eventInInitPeriods')
+  }
 }
 decorate(WeekSchedules, {
   isPeriodsValid: computed,
@@ -386,7 +406,8 @@ decorate(WeekSchedules, {
   updatePeriodTime: action,
   postPeriod: action,
   setDefaultPeriods: action,
-  putPeriods: action
+  putPeriods: action,
+  findEventAndSetToEdit: action
 })
 
 export default new WeekSchedules()

@@ -29,7 +29,12 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId, weekScheduleName } = match
-  const { periods, putPeriods, isScheduleEditing } = WeekSchedulesStore
+  const {
+    periods,
+    putPeriods,
+    isScheduleEditing,
+    putPeriod
+  } = WeekSchedulesStore
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
@@ -70,7 +75,7 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
           variant='outlined'
           color='primary'
           className={classes.backButton}
-          onClick={() => handleClose()}
+          onClick={handleClose}
         >
           {t('cancel')}
         </Button>
@@ -78,9 +83,13 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() =>
-            putPeriods(customerId, groupId, weekScheduleName, handleClose)
-          }
+          // onClick={() => {
+          //   if (flag) {
+          //     putPeriods(customerId, groupId, weekScheduleName, handleClose)
+          //   } else {
+          //     putPeriod(customerId, groupId, weekScheduleName, handleClose)
+          //   }
+          // }}
         >
           {t('save')}
         </Button>

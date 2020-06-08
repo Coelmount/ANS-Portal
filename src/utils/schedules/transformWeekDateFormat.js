@@ -22,8 +22,7 @@ const getDayNumberFromDayName = day => {
 
 const transformWeekDateFormat = (dayOfWeek, time) => {
   const dayNumber = getDayNumberFromDayName(dayOfWeek)
-  const hour = Number(time.split(':')[0])
-  const minutes = Number(time.split(':')[1])
+  const [hour, minutes] = time.split(':').map(Number)
   return new Date(DEFAULT_YEAR, DEFAULT_MONTH, dayNumber, hour, minutes)
 }
 

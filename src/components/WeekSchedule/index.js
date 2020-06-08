@@ -33,16 +33,19 @@ const WeekSchedule = observer(({ t }) => {
     getWeekSchedule,
     isWeekScheduleLoading,
     weekSchedulePeriods,
-    setDefaultPeriods
+    setDefaultPeriods,
+    findEventAndSetToEdit
   } = WeekSchedulesStore
 
   const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
   const [isEditScheduleModalOpen, setIsEditScheduleModalOpen] = useState(false)
+  const [isEditEventModalOpen, setIsEditEventModalOpen] = useState(false)
 
   useEffect(() => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
   }, [])
 
+  // Add period(s)
   const handleOpenAddPeriodModal = () => {
     setIsAddPeriodModalOpen(true)
     setDefaultPeriods()
@@ -53,6 +56,7 @@ const WeekSchedule = observer(({ t }) => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
   }
 
+  // Schedule(all events) edit
   const handleEditScheduleClick = () => {
     setIsEditScheduleModalOpen(true)
   }
@@ -61,6 +65,13 @@ const WeekSchedule = observer(({ t }) => {
     setIsEditScheduleModalOpen(false)
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
     setDefaultPeriods()
+  }
+
+  // Event edit
+  const handleEventClick = event => {
+    setIsEditScheduleModalOpen(true)
+    // setSingle
+    findEventAndSetToEdit(event)
   }
 
   const ExtraTitleBlock = (
@@ -126,6 +137,7 @@ const WeekSchedule = observer(({ t }) => {
                 timeSlotWrapper: ColoredDateCellWrapper
               }}
               localizer={globalizeLocalizer}
+              onSelectEvent={event => handleEventClick(event)}
               // step={60}
               // showMultiDayTimes={false}
               // max={dates.add(
