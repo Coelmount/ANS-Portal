@@ -34,12 +34,14 @@ const WeekSchedule = observer(({ t }) => {
     isWeekScheduleLoading,
     weekSchedulePeriods,
     setDefaultPeriods,
-    findEventAndSetToEdit
+    findPeriodAndSetToEdit
   } = WeekSchedulesStore
 
   const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
   const [isEditScheduleModalOpen, setIsEditScheduleModalOpen] = useState(false)
-  const [isEditEventModalOpen, setIsEditEventModalOpen] = useState(false)
+  const [isSinglePeriodEditActive, setIsSinglePeriodEditActive] = useState(
+    false
+  )
 
   useEffect(() => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
@@ -56,7 +58,7 @@ const WeekSchedule = observer(({ t }) => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
   }
 
-  // Schedule(all events) edit
+  // Periods and single edit modal open (isSinglePeriodEditActive === TRUE => open single)
   const handleEditScheduleClick = () => {
     setIsEditScheduleModalOpen(true)
   }
@@ -65,13 +67,14 @@ const WeekSchedule = observer(({ t }) => {
     setIsEditScheduleModalOpen(false)
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
     setDefaultPeriods()
+    setIsSinglePeriodEditActive(false)
   }
 
-  // Event edit
+  // Single event edit
   const handleEventClick = event => {
     setIsEditScheduleModalOpen(true)
-    // setSingle
-    findEventAndSetToEdit(event)
+    setIsSinglePeriodEditActive(true)
+    findPeriodAndSetToEdit(event)
   }
 
   const ExtraTitleBlock = (
@@ -156,6 +159,7 @@ const WeekSchedule = observer(({ t }) => {
               <EditScheduleModal
                 open={isEditScheduleModalOpen}
                 handleClose={handleCloseEditScheduleModal}
+                isSinglePeriodEditActive={isSinglePeriodEditActive}
               />
             )}
           </Paper>

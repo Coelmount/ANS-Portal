@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -25,7 +26,12 @@ import transformTime from 'utils/schedules/transformTime'
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
 
-const EditScheduleModal = ({ t, open, handleClose }) => {
+const EditScheduleModal = ({
+  t,
+  open,
+  handleClose,
+  isSinglePeriodEditActive
+}) => {
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId, weekScheduleName } = match
@@ -83,19 +89,27 @@ const EditScheduleModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          // onClick={() => {
-          //   if (flag) {
-          //     putPeriods(customerId, groupId, weekScheduleName, handleClose)
-          //   } else {
-          //     putPeriod(customerId, groupId, weekScheduleName, handleClose)
-          //   }
-          // }}
+          onClick={() => {
+            if (isSinglePeriodEditActive) {
+              putPeriod(customerId, groupId, weekScheduleName, handleClose)
+            } else {
+              putPeriods(customerId, groupId, weekScheduleName, handleClose)
+            }
+          }}
         >
           {t('save')}
         </Button>
       </DialogActions>
     </Dialog>
   )
+}
+
+EditScheduleModal.propTypes = {
+  isSinglePeriodEditActive: PropTypes.bool
+}
+
+EditScheduleModal.defaultProps = {
+  isSinglePeriodEditActive: false
 }
 
 export default withNamespaces()(observer(EditScheduleModal))
