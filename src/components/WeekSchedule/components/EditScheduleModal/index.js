@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { toJS } from 'mobx'
 import { useParams } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -21,102 +20,16 @@ import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import PeriodForm from 'components/PeriodForm'
+import transformTime from 'utils/schedules/transformTime'
 
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
-const DAYS = [
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday'
-]
+
 const EditScheduleModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId, weekScheduleName } = match
-
-  const {
-    weekSchedulePeriods,
-    pushPeriod,
-    postPeriod,
-    isPeriodPosting,
-    periods,
-    setEditPeriods,
-    putPeriods,
-    setInitPeriots,
-    isScheduleEditing,
-    setPeriodsBeforeUpdate
-  } = WeekSchedulesStore
-
-  useEffect(() => {
-    let transformedPeriods = []
-    const periodIds = weekSchedulePeriods.map(period => {
-      return period.title.split(' ')[0]
-    })
-    const uniquePeriodIds = Array.from(new Set(periodIds))
-
-    uniquePeriodIds.map(uniqueId => {
-      let newWeekDays = {
-        monday: false,
-        tuesday: false,
-        wednesday: false,
-        thursday: false,
-        friday: false,
-        saturday: false,
-        sunday: false
-      }
-      let start
-      let end
-      let title
-      let id
-      // to refactor
-      weekSchedulePeriods.forEach(period => {
-        if (period.title.split(' ')[0] === uniqueId) {
-          const initStartHours = new Date(period.start).getHours()
-          const initStartMinutes = new Date(period.start).getMinutes()
-          const startHours =
-            String(initStartHours).length === 2
-              ? String(initStartHours)
-              : `0${initStartHours}`
-          const startMinutes =
-            String(initStartMinutes).length === 2
-              ? String(initStartMinutes)
-              : `${initStartMinutes}0`
-
-          const initStopHours = new Date(period.end).getHours()
-          const initStopMinutes = new Date(period.end).getMinutes()
-          const endHours =
-            String(initStopHours).length === 2
-              ? String(initStopHours)
-              : `0${initStopHours}`
-          const endMinutes =
-            String(initStopMinutes).length === 2
-              ? String(initStopMinutes)
-              : `${initStopMinutes}0`
-
-          start = `${startHours}:${startMinutes}`
-          end = `${endHours}:${endMinutes}`
-          title = period.title
-          id = period.id
-
-          newWeekDays[period.title.split(' ')[1]] = true
-        }
-      })
-
-      transformedPeriods.push({
-        weekDays: newWeekDays,
-        startTime: start,
-        stopTime: end,
-        id: title.split(' ')[0]
-      })
-    })
-    setEditPeriods(transformedPeriods)
-    setInitPeriots(transformedPeriods)
-    setPeriodsBeforeUpdate(transformedPeriods)
-  }, [])
+  const { periods, putPeriods, isScheduleEditing } = WeekSchedulesStore
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>

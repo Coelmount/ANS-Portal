@@ -1,10 +1,12 @@
 import { decorate, observable, action, toJS, computed } from 'mobx'
 import capitalize from 'lodash/capitalize'
 
+import SnackbarStore from './Snackbar'
 import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
 import transformWeekDateFormat from 'utils/schedules/transformWeekDateFormat'
-import SnackbarStore from './Snackbar'
+import transformTime from 'utils/schedules/transformTime'
+import transformToCustomPeriodsFormat from 'utils/schedules/transformToCustomPeriodsFormat'
 
 const defaultStartTime = '08:00'
 const defaultStopTime = '09:00'
@@ -29,9 +31,7 @@ export class WeekSchedules {
       weekDays: defaultWeekDays
     }
   ]
-  periodsBeforeUpdate = []
   initPeriods = []
-  initRemovePeriods = []
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
@@ -122,7 +122,7 @@ export class WeekSchedules {
       )
       .then(res => {
         const periods = res.data.periods
-        this.weekSchedulePeriods = periods.map((item, index) => {
+        const transformedPeriods = periods.map((item, index) => {
           return {
             id: index,
             title: item.name,
@@ -130,6 +130,12 @@ export class WeekSchedules {
             end: transformWeekDateFormat(item.dayOfWeek, item.stopTime)
           }
         })
+        this.weekSchedulePeriods = transformedPeriods
+        const transformedToCustomFormatPeriods = transformToCustomPeriodsFormat(
+          transformedPeriods
+        )
+        this.periods = transformedToCustomFormatPeriods
+        this.initPeriods = transformedToCustomFormatPeriods
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -160,14 +166,14 @@ export class WeekSchedules {
     const index = this.periods.findIndex(period => period.id === id)
     const periodCopy = { ...this.periods[index] }
 
-    // changle time field and update periods array
+    // change time field and update periods array
     periodCopy[field] = value
     periodCopy.id = id
     periodsCopy[index] = periodCopy
     this.periods = periodsCopy
   }
 
-  // computed: === TRUE IF time and at least 1 day are set
+  // computed: === TRUE IF time and at least 1 day are setted
   get isPeriodsValid() {
     return this.periods.every(period => {
       const weekDays = Object.values(period.weekDays)
@@ -190,21 +196,10 @@ export class WeekSchedules {
   }
 
   removePeriod = id => {
-    this.initRemovePeriods = this.periods
-    // ADD MODAL
-    if (this.periods.length) {
-      const periodsCopy = this.periods.slice(0)
-      const index = this.periods.findIndex(period => period.id === id)
-      periodsCopy.splice(index, 1)
-      this.periods = periodsCopy
-    }
-    // EDIT MODAL
-    if (this.initPeriods.length) {
-      const periodsCopy = this.initPeriods.slice(0)
-      const index = this.initPeriods.findIndex(period => period.id === id)
-      periodsCopy.splice(index, 1)
-      this.initPeriods = periodsCopy
-    }
+    const periodsCopy = this.periods.slice(0)
+    const index = this.periods.findIndex(period => period.id === id)
+    periodsCopy.splice(index, 1)
+    this.periods = periodsCopy
   }
 
   pushPeriod = () => {
@@ -267,33 +262,19 @@ export class WeekSchedules {
       })
   }
 
-  setEditPeriods = periods => {
-    this.periods = periods
-  }
-
-  setInitPeriots = periods => {
-    this.initPeriods = periods
-  }
-
-  setPeriodsBeforeUpdate = periods => {
-    this.periodsBeforeUpdate = periods
-  }
-
   putPeriods = (customerId, groupId, weekScheduleName, closeModal) => {
     this.isScheduleEditing = true
     let promiseArr = []
-    const initPeriodsIds = this.initPeriods.map(initPeriod => initPeriod.id)
+    const initPeriodsIds = this.periods.map(initPeriod => initPeriod.id)
 
-    this.periodsBeforeUpdate.forEach(periodBeforeUpdate => {
-      const isPeriodActive = initPeriodsIds.some(
-        id => id === periodBeforeUpdate.id
-      )
+    this.initPeriods.forEach(initPeriod => {
+      const isPeriodActive = initPeriodsIds.some(id => id === initPeriod.id)
       // IF PERIOD REMOVED
       if (!isPeriodActive) {
-        const weekDays = Object.keys(periodBeforeUpdate.weekDays)
+        const weekDays = Object.keys(initPeriod.weekDays)
         weekDays.forEach(day => {
-          if (periodBeforeUpdate.weekDays[day] === true) {
-            const periodName = `${periodBeforeUpdate.id} ${day}`
+          if (initPeriod.weekDays[day] === true) {
+            const periodName = `${initPeriod.id} ${day}`
             promiseArr.push(
               axios.delete(
                 `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`
@@ -303,27 +284,56 @@ export class WeekSchedules {
         })
       }
     })
+
     this.initPeriods.forEach(initPeriod => {
       const weekDaysArr = Object.keys(initPeriod.weekDays)
       const updatedPeriod = this.periods.find(
         period => period.id === initPeriod.id
       )
-      // IF TIME UPDATED
-      if (
-        initPeriod.startTime !== updatedPeriod.startTime ||
-        initPeriod.stopTime !== updatedPeriod.stopTime
-      ) {
+
+      // NOT DELETED PERIOD SCENARIO
+      if (updatedPeriod !== undefined) {
+        // IF TIME UPDATED
+        if (
+          initPeriod.startTime !== updatedPeriod.startTime ||
+          initPeriod.stopTime !== updatedPeriod.stopTime
+        ) {
+          weekDaysArr.forEach(day => {
+            const periodName = `${initPeriod.id} ${day}`
+            if (
+              updatedPeriod !== undefined &&
+              updatedPeriod.weekDays &&
+              initPeriod.weekDays[day] === true &&
+              updatedPeriod.weekDays[day] === true
+            ) {
+              promiseArr.push(
+                axios.put(
+                  `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`,
+                  {
+                    name: `${initPeriod.id} ${day}`,
+                    type: 'Day of the week',
+                    dayOfWeek: capitalize(day),
+                    startTime: updatedPeriod.startTime,
+                    stopTime: updatedPeriod.stopTime
+                  }
+                )
+              )
+            }
+          })
+        }
+
         weekDaysArr.forEach(day => {
-          const periodName = `${initPeriod.id} ${day}`
+          const periodName = `${updatedPeriod.id} ${day}`
+          // IF NEW DAY CHECKED (ADDED)
           if (
-            initPeriod.weekDays[day] === true &&
+            initPeriod.weekDays[day] === false &&
             updatedPeriod.weekDays[day] === true
           ) {
             promiseArr.push(
-              axios.put(
-                `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`,
+              axios.post(
+                `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/`,
                 {
-                  name: `${initPeriod.id} ${day}`,
+                  name: periodName,
                   type: 'Day of the week',
                   dayOfWeek: capitalize(day),
                   startTime: updatedPeriod.startTime,
@@ -332,41 +342,19 @@ export class WeekSchedules {
               )
             )
           }
+          // IF DAY UNCHECKED (DELETED)
+          if (
+            initPeriod.weekDays[day] === true &&
+            updatedPeriod.weekDays[day] === false
+          ) {
+            promiseArr.push(
+              axios.delete(
+                `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`
+              )
+            )
+          }
         })
       }
-
-      weekDaysArr.forEach(day => {
-        const periodName = `${updatedPeriod.id} ${day}`
-        // IF NEW DAY CHECKED (ADDED)
-        if (
-          initPeriod.weekDays[day] === false &&
-          updatedPeriod.weekDays[day] === true
-        ) {
-          promiseArr.push(
-            axios.post(
-              `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/`,
-              {
-                name: periodName,
-                type: 'Day of the week',
-                dayOfWeek: capitalize(day),
-                startTime: updatedPeriod.startTime,
-                stopTime: updatedPeriod.stopTime
-              }
-            )
-          )
-        }
-        // IF DAY UNCHECKED (DELETED)
-        if (
-          initPeriod.weekDays[day] === true &&
-          updatedPeriod.weekDays[day] === false
-        ) {
-          promiseArr.push(
-            axios.delete(
-              `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`
-            )
-          )
-        }
-      })
     })
     Promise.all(promiseArr)
       .then(() => {
@@ -387,6 +375,7 @@ decorate(WeekSchedules, {
   weekSchedulePeriods: observable,
   isWeekScheduleLoading: observable,
   periods: observable,
+  initPeriods: observable,
   isScheduleEditing: observable,
   getSchedules: action,
   deleteSchedule: action,
@@ -397,10 +386,7 @@ decorate(WeekSchedules, {
   updatePeriodTime: action,
   postPeriod: action,
   setDefaultPeriods: action,
-  setEditPeriods: action,
-  putPeriods: action,
-  setInitPeriots: action,
-  setPeriodsBeforeUpdate: action
+  putPeriods: action
 })
 
 export default new WeekSchedules()

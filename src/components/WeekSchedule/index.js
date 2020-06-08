@@ -33,7 +33,6 @@ const WeekSchedule = observer(({ t }) => {
     getWeekSchedule,
     isWeekScheduleLoading,
     weekSchedulePeriods,
-    periods,
     setDefaultPeriods
   } = WeekSchedulesStore
 
@@ -46,12 +45,12 @@ const WeekSchedule = observer(({ t }) => {
 
   const handleOpenAddPeriodModal = () => {
     setIsAddPeriodModalOpen(true)
+    setDefaultPeriods()
   }
 
   const handleCloseAddPeriodModal = () => {
     setIsAddPeriodModalOpen(false)
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
-    setDefaultPeriods()
   }
 
   const handleEditScheduleClick = () => {
