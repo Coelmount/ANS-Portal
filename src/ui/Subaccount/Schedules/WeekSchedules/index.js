@@ -19,6 +19,7 @@ import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
 import AddScheduleModal from '../components/AddScheduleModal'
+import ComingSoon from 'components/ComingSoon'
 
 import useStyles from '../styles'
 
@@ -106,58 +107,59 @@ const WeekSchedules = observer(({ t }) => {
     }
   ]
 
-  return (
-    <Fragment>
-      {isSchedulesLoading ? (
-        <Loading />
-      ) : (
-        <Box className={classes.root}>
-          <Paper>
-            <CustomContainer>
-              <CustomBreadcrumbs />
-              <TitleBlock
-                titleData={titleData}
-                handleOpen={handleOpenAddScheduleModal}
-              />
-            </CustomContainer>
-            <CustomTable
-              classes={classes}
-              columns={columns}
-              rows={schedules}
-              searchCriterias={['name']}
-              noAvailableDataMessage={t('no_schedules_available')}
-              idColStyles={classes.idColStyles}
-              tableId={'week_schedules'}
-            />
-            {isAddScheduleModalOpen && (
-              <AddScheduleModal
-                open={isAddScheduleModalOpen}
-                handleClose={handleCloseAddScheduleModal}
-                title={t('add_week_schedule')}
-                postSchedule={postSchedule}
-                isSchedulePosting={isSchedulePosting}
-                closeModal={handleCloseAddScheduleModal}
-              />
-            )}
-            {isDeleteModalOpen && (
-              <DeleteModal
-                classes={classes}
-                open={isDeleteModalOpen}
-                handleClose={handleCloseDeleteModal}
-                handleDelete={handleDelete}
-                deleteInfo={deleteInfo}
-                isDeleting={isDeletingSchedule}
-                deleteSubject={`${t('week_schedule')}`}
-                action={t('to_delete')}
-                titleAction={t(`delete`)}
-                identifier={' '}
-              />
-            )}
-          </Paper>
-        </Box>
-      )}
-    </Fragment>
-  )
+  // return (
+  //   <Fragment>
+  //     {isSchedulesLoading ? (
+  //       <Loading />
+  //     ) : (
+  //       <Box className={classes.root}>
+  //         <Paper>
+  //           <CustomContainer>
+  //             <CustomBreadcrumbs />
+  //             <TitleBlock
+  //               titleData={titleData}
+  //               handleOpen={handleOpenAddScheduleModal}
+  //             />
+  //           </CustomContainer>
+  //           <CustomTable
+  //             classes={classes}
+  //             columns={columns}
+  //             rows={schedules}
+  //             searchCriterias={['name']}
+  //             noAvailableDataMessage={t('no_schedules_available')}
+  //             idColStyles={classes.idColStyles}
+  //             tableId={'week_schedules'}
+  //           />
+  //           {isAddScheduleModalOpen && (
+  //             <AddScheduleModal
+  //               open={isAddScheduleModalOpen}
+  //               handleClose={handleCloseAddScheduleModal}
+  //               title={t('add_week_schedule')}
+  //               postSchedule={postSchedule}
+  //               isSchedulePosting={isSchedulePosting}
+  //               closeModal={handleCloseAddScheduleModal}
+  //             />
+  //           )}
+  //           {isDeleteModalOpen && (
+  //             <DeleteModal
+  //               classes={classes}
+  //               open={isDeleteModalOpen}
+  //               handleClose={handleCloseDeleteModal}
+  //               handleDelete={handleDelete}
+  //               deleteInfo={deleteInfo}
+  //               isDeleting={isDeletingSchedule}
+  //               deleteSubject={`${t('week_schedule')}`}
+  //               action={t('to_delete')}
+  //               titleAction={t(`delete`)}
+  //               identifier={' '}
+  //             />
+  //           )}
+  //         </Paper>
+  //       </Box>
+  //     )}
+  //   </Fragment>
+  // )
+  return <ComingSoon />
 })
 
 export default withNamespaces()(WeekSchedules)
