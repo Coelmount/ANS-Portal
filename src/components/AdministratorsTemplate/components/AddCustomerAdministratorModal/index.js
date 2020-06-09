@@ -42,6 +42,7 @@ const AddCustomerAdministrator = ({
   const match = useParams()
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatedPassword] = useState('')
+  const [passwordError, setPasswordError] = useState(false)
 
   const {
     getCustomerAdminsLanguages,
@@ -60,8 +61,15 @@ const AddCustomerAdministrator = ({
   } = CustomersStore
 
   useEffect(() => {
-    if (password === repeatPassword) setUserInfo('password', password)
-  }, [repeatPassword])
+    if (repeatPassword) {
+      if (password === repeatPassword) {
+        setUserInfo('password', password)
+        setPasswordError(false)
+      } else {
+        setPasswordError(true)
+      }
+    }
+  }, [repeatPassword, password])
 
   useEffect(() => {
     getCustomer(match.customerId)
@@ -129,12 +137,14 @@ const AddCustomerAdministrator = ({
               </Box>
               <Box className={classes.inputes}>
                 <Input
+                  error={passwordError}
                   icon={<LockOutlinedIcon />}
                   label={t('repeat_password')}
                   variant='outlined'
                   value={repeatPassword}
                   onChange={handleRepeatPasswordChange}
                   type={'password'}
+                  helperText={passwordError ? 'Passwords is not match' : null}
                 />
               </Box>
               <Box className={classes.inputes}>
@@ -183,7 +193,7 @@ const AddCustomerAdministrator = ({
               color='primary'
               className={classes.nextButton}
               onClick={() => addAdmin(defaultDomain)}
-              disabled={!user.userId && !repeatPassword}
+              disabled={!user.userId || !repeatPassword || passwordError}
             >
               {t('add')}
             </Button>

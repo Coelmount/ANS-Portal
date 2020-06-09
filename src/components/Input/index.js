@@ -8,7 +8,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
+    '& .MuiFormHelperText-root': {
+      position: 'absolute',
+      top: 52
+    }
   },
   icon: {
     position: 'absolute',

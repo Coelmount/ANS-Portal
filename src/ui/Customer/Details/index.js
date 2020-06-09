@@ -57,7 +57,11 @@ const Details = observer(({ t }) => {
         <CustomBreadcrumbs />
         <TitleBlock titleData={titleData} handleOpen={handleOpenEdit} />
       </CustomContainer>
-      <DetailsTemplate data={customer} isLoading={isLoadingCustomer} />
+      <DetailsTemplate
+        data={customer}
+        isLoading={isLoadingCustomer}
+        showOnly={'tenant'}
+      />
       {showEdit && (
         <CreateCustomer
           open={showEdit}

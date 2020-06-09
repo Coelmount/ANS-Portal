@@ -18,7 +18,7 @@ import DetailsBlock from './components/DetailsBlock'
 
 import useStyles from './styles'
 
-const DetailsTemplate = ({ data, isLoading, t }) => {
+const DetailsTemplate = ({ data, isLoading, showOnly, t }) => {
   const classes = useStyles()
   const [isContactExpanded, setIsContactExpanded] = useState(true)
   const [isAddressExpanded, setIsAddressExpanded] = useState(true)
@@ -94,7 +94,7 @@ const DetailsTemplate = ({ data, isLoading, t }) => {
         <Loading />
       ) : (
         <Fragment>
-          <DetailsBlock classes={classes} data={data} />
+          <DetailsBlock classes={classes} data={data} showOnly={showOnly} />
           {expansionBlocks.map(expansionBlock => (
             <ExpansionPanel
               expanded={
