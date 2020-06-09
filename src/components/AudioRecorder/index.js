@@ -147,7 +147,7 @@ const AudioRecorder = props => {
   const handleSaveRecord = () => {
     postAddAnnouncements(match.customerId, match.groupId, {
       name: audioName,
-      content: base64
+      content: base64.split(',')[1]
     }).then(() => handleClose())
   }
 
