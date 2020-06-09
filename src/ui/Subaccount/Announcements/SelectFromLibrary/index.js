@@ -8,24 +8,16 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import IconButton from '@material-ui/core/IconButton'
-import Box from '@material-ui/core/Box'
 
-import MaterialTable, { MTableToolbar, MTableBody } from 'material-table'
+import MaterialTable, { MTableToolbar } from 'material-table'
 
 import AudioPlayer from 'components/AudioPlayer'
 import tableIcons from '../tableIcons'
 
 import TablePagination from '@material-ui/core/TablePagination'
 import Button from '@material-ui/core/Button'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import Typography from '@material-ui/core/Typography'
-
-import { makeStyles } from '@material-ui/core/styles'
 
 import CloseIcon from '@material-ui/icons/Close'
-
-import Loading from 'components/Loading'
 
 import AnnouncementsStore from 'stores/Announcements'
 
