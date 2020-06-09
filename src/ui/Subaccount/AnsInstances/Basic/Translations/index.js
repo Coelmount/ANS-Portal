@@ -37,6 +37,7 @@ import BasicTranslationsStore from 'stores/BasicTranslations'
 import useStyles from './styles'
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
+import notificationIcon from 'source/images/svg/no-numbers-notification.svg'
 
 const Translations = observer(({ t }) => {
   const classes = useStyles()
@@ -57,6 +58,7 @@ const Translations = observer(({ t }) => {
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [instancesForDelete, setInstancesForDelete] = useState([])
+  const [isUserSubaccount, setIsUserSubaccount] = useState(false)
 
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
@@ -68,14 +70,27 @@ const Translations = observer(({ t }) => {
     isBasicTranslationsNumbersLoading,
     getBasicTranslationsNumbers,
     deleteANSBasic,
-    isDeleting
+    isDeleting,
+    getAvailableNumbersForAddInstance,
+    availableNumbersForAddInstance,
+    isAvailableNumbersForAddInstanceLoading
     // getCountriesConfig,
     // setNumbersWithConfig
   } = BasicTranslationsStore
 
+  const isLoading =
+    isAvailableNumbersForAddInstanceLoading || isBasicTranslationsNumbersLoading
+  const isNumbersForAddInstanceAvailable = availableNumbersForAddInstance.length
+  const isNoNumbersNotificationVisible =
+    !isNumbersForAddInstanceAvailable && !isLoading && isUserSubaccount
+
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
-  }, [getBasicTranslationsNumbers, match.customerId, match.groupId])
+    getAvailableNumbersForAddInstance(match.customerId, match.groupId, 1, 10)
+
+    const ids = JSON.parse(localStorage.getItem('ids'))
+    setIsUserSubaccount(Boolean(ids && ids.tenant_id && ids.group_id))
+  }, [])
 
   useEffect(() => {
     setNumbers(basicTranslationsNumbers)
@@ -121,7 +136,7 @@ const Translations = observer(({ t }) => {
   }
 
   const handlePopoverOpen = event => {
-    setAnchorEl(event.currentTarget)
+    if (isNumbersForAddInstanceAvailable) setAnchorEl(event.currentTarget)
   }
 
   const handlePopoverClose = () => {
@@ -196,38 +211,59 @@ const Translations = observer(({ t }) => {
   const titleData = {
     mainText: t('basic_translations'),
     buttonBlock: (
-      <Box className={classes.addCustomerWrap}>
-        <Box onClick={handlePopoverOpen} className={classes.addIconWrap}>
-          <AddOutlinedIcon />
-        </Box>
-        <Box className={classes.addTitleWrap}>
-          <Typography className={classes.addCustomerTitle}>
-            {t('add')}
+      <Box className={classes.titleWrap}>
+        {isNoNumbersNotificationVisible && (
+          <Typography className={classes.titleNotification}>
+            <img
+              src={notificationIcon}
+              className={classes.notificationIcon}
+              alt='notification'
+            />
+            {t('no_numbers_notification')}
           </Typography>
-          <ArrowDropUpOutlinedIcon className={classes.upArrowIcon} />
-          <ArrowDropDownOutlinedIcon className={classes.downArrowIcon} />
-        </Box>
-        <Popover
-          id={id}
-          open={isAddPopoverOpen}
-          anchorEl={anchorEl}
-          onClose={handlePopoverClose}
-        >
-          <Box className={classes.addPopoverWrap}>
-            {addPopoverItems.map(item => (
-              <MenuItem
-                onClick={item.onClick}
-                value={item.label}
-                key={item.id}
-                className={classes.addPopoverItem}
-              >
-                <Typography className={classes.addPopoverItemText}>
-                  {item.label}
-                </Typography>
-              </MenuItem>
-            ))}
+        )}
+        <Box className={classes.addCustomerWrap}>
+          <Box
+            onClick={handlePopoverOpen}
+            className={classnames(classes.addIconWrap, {
+              [classes.disabledButton]: !isNumbersForAddInstanceAvailable
+            })}
+          >
+            <AddOutlinedIcon />
           </Box>
-        </Popover>
+          <Box className={classes.addTitleWrap}>
+            <Typography
+              className={classnames(classes.addCustomerTitle, {
+                [classes.disabledText]: !isNumbersForAddInstanceAvailable
+              })}
+            >
+              {t('add')}
+            </Typography>
+            <ArrowDropUpOutlinedIcon className={classes.upArrowIcon} />
+            <ArrowDropDownOutlinedIcon className={classes.downArrowIcon} />
+          </Box>
+          <Popover
+            id={id}
+            open={isAddPopoverOpen}
+            anchorEl={anchorEl}
+            onClose={handlePopoverClose}
+          >
+            <Box className={classes.addPopoverWrap}>
+              {addPopoverItems.map(item => (
+                <MenuItem
+                  onClick={item.onClick}
+                  value={item.label}
+                  key={item.id}
+                  className={classes.addPopoverItem}
+                >
+                  <Typography className={classes.addPopoverItemText}>
+                    {item.label}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Box>
+          </Popover>
+        </Box>
       </Box>
     )
   }
@@ -394,9 +430,9 @@ const Translations = observer(({ t }) => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} />
+          {!isLoading && <TitleBlock titleData={titleData} />}
         </CustomContainer>
-        {isBasicTranslationsNumbersLoading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <CustomTable

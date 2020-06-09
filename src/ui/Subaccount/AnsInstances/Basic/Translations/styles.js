@@ -44,6 +44,12 @@ const useStyles = makeStyles(theme => ({
     },
     color: theme.palette.black
   },
+  activeIcon: {
+    background: theme.palette.primary.main
+  },
+  disabledIcon: {
+    backgroundColor: theme.palette.lightGrey
+  },
   addIcon: {
     color: theme.palette.black
   },
@@ -63,6 +69,9 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.lightGrey,
       cursor: 'auto'
     }
+  },
+  disabledText: {
+    opacity: 0.5
   },
   deleteIcon: {
     width: 14,
@@ -219,6 +228,22 @@ const useStyles = makeStyles(theme => ({
   updateIcon: {
     width: 18,
     height: 18
+  },
+  titleWrap: {
+    display: 'flex'
+  },
+  titleNotification: {
+    padding: 23,
+    marginRight: 9,
+    fontSize: 14,
+    background: 'white',
+    border: `0.5px solid ${theme.palette.silver}`,
+    boxShadow:
+      '0px 4px 8px rgba(204, 204, 204, 0.25), inset 0px 2px 4px rgba(204, 204, 204, 0.25)',
+    borderRadius: 3
+  },
+  notificationIcon: {
+    marginRight: 5
   }
 }))
 
