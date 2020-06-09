@@ -170,7 +170,7 @@ const FirstStep = props => {
                   icon={<img src={TimeZoneMap} alt='TimeZoneMap' />}
                   options={timeZones}
                   value={customer.timeZone}
-                  label={'Time zone'}
+                  label={t('time_zone')}
                   onChange={e => changeCustomer('timeZone', e.target.value)}
                 />
               </Box>

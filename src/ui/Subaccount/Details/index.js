@@ -52,7 +52,11 @@ const Details = observer(({ t }) => {
         <CustomBreadcrumbs />
         <TitleBlock titleData={titleData} handleOpen={handleOpenEdit} />
       </CustomContainer>
-      <DetailsTemplate data={subaccount} isLoading={isLoadingSubaccount} />
+      <DetailsTemplate
+        data={subaccount}
+        isLoading={isLoadingSubaccount}
+        showOnly={'group'}
+      />
       {showEdit && (
         <CreateCustomer
           open={showEdit}
