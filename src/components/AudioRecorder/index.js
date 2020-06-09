@@ -29,6 +29,8 @@ const AudioRecorder = props => {
   const classes = useStyles()
   const match = useParams()
   const recordingTimeMS = 30000
+  let timer = null
+  let timerPlayingId = null
   let preview = useRef(null)
   let recording = useRef(null)
   const [currentTime, setCurrentTime] = useState(0)
@@ -40,14 +42,6 @@ const AudioRecorder = props => {
   const [audioName, setAudioName] = useState('')
   const [base64, setBase64] = useState('')
   const { postAddAnnouncements } = AnnouncementsStore
-
-  const timer = setInterval(() => {
-    setCurrentTime(preview.current ? preview.current.currentTime : 0)
-  })
-
-  const timerPlayingId = setInterval(() => {
-    setPlayingTime(recording.current ? recording.current.currentTime : 0)
-  })
 
   useEffect(() => {
     recording.current.onended = () => {
@@ -64,6 +58,9 @@ const AudioRecorder = props => {
   }, [])
 
   const startRecording = (stream, lengthInMS) => {
+    timer = setInterval(() => {
+      setCurrentTime(preview.current ? preview.current.currentTime : 0)
+    })
     const recorder = new MediaRecorder(stream)
     setIsRecording('recording')
     let data = []
@@ -129,12 +126,14 @@ const AudioRecorder = props => {
   }
 
   const handleStartPlaying = () => {
+    timerPlayingId = setInterval(() => {
+      setPlayingTime(recording.current ? recording.current.currentTime : 0)
+    })
     setIsPlaying(true)
     recording.current.play()
   }
 
   const handlePausePlaying = () => {
-    console.log(recording)
     setIsPlaying(false)
     recording.current.pause()
   }
