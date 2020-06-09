@@ -19,7 +19,7 @@ export class AnnouncementsStore {
       .then(res => {
         this.announcements = res.data.announcements.map(el => ({
           ...el,
-          isLodaing: false
+          isLoading: false
         }))
       })
       .catch(e =>
