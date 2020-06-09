@@ -50,6 +50,13 @@ const AudioRecorder = props => {
   })
 
   useEffect(() => {
+    recording.current.onended = () => {
+      setIsPlaying(false)
+      recording.current.currentTime = 0
+    }
+  }, [])
+
+  useEffect(() => {
     return () => {
       clearInterval(timer)
       clearInterval(timerPlayingId)
@@ -99,7 +106,8 @@ const AudioRecorder = props => {
         startRecording(preview.current.captureStream(), recordingTimeMS)
       )
       .then(recordedChunks => {
-        let recordedBlob = new Blob(recordedChunks, { type: 'audio/mpeg' })
+        window.recordedChunks = recordedChunks
+        let recordedBlob = new Blob(recordedChunks, { type: 'audio/vnd.wav' })
         let reader = new FileReader()
         reader.readAsDataURL(recordedBlob)
         reader.onloadend = () => {
@@ -126,6 +134,7 @@ const AudioRecorder = props => {
   }
 
   const handlePausePlaying = () => {
+    console.log(recording)
     setIsPlaying(false)
     recording.current.pause()
   }
