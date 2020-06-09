@@ -14,6 +14,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import Popover from '@material-ui/core/Popover'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import WeekSchedulesStore from 'stores/WeekSchedules'
@@ -42,6 +43,12 @@ const WeekSchedule = observer(({ t }) => {
   const [isSinglePeriodEditActive, setIsSinglePeriodEditActive] = useState(
     false
   )
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [currentPeriod, setCurrentPeriod] = useState(null)
+
+  const isPeriodPopoverOpen = Boolean(anchorEl)
+  const popoverId = isPeriodPopoverOpen ? 'period-popover' : undefined
+  console.log(isPeriodPopoverOpen, popoverId, 'pop data')
 
   useEffect(() => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
@@ -71,10 +78,20 @@ const WeekSchedule = observer(({ t }) => {
   }
 
   // Single event edit
-  const handleEventClick = event => {
-    setIsEditScheduleModalOpen(true)
-    setIsSinglePeriodEditActive(true)
-    findPeriodAndSetToEdit(event)
+  const handleEventClick = (event, e) => {
+    setAnchorEl(e.currentTarget)
+    // setIsEditScheduleModalOpen(true)
+    // setIsSinglePeriodEditActive(true)
+    // findPeriodAndSetToEdit(event)
+  }
+
+  const handlePopoverOpen = event => {
+    console.log(event, 'event')
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null)
   }
 
   const ExtraTitleBlock = (
@@ -84,6 +101,34 @@ const WeekSchedule = observer(({ t }) => {
       </Box>
     </Box>
   )
+
+  const EventComponent = ({ event, title }) => {
+    console.log(currentPeriod, 'currentPeriod')
+    console.log(title, 'title')
+    return (
+      <Box>
+        {/* {isPopoverOpen && (
+          <Box style={{ position: 'absolute', top: '50%', right: '50%' }}>
+            popover
+          </Box>
+        )} */}
+
+        {/* <Box>
+          <Popover
+            id={popoverId}
+            open={true}
+            anchorEl={anchorEl}
+            onClose={handlePopoverClose}
+          >
+            <Box>POPOVER MODAL</Box>
+          </Popover>
+        </Box> */}
+
+        <p>title</p>
+        {currentPeriod && title === currentPeriod && <div>modal</div>}
+      </Box>
+    )
+  }
 
   const titleData = {
     mainText: `${t('week_schedules')}: ${match.weekScheduleName}`,
@@ -120,7 +165,10 @@ const WeekSchedule = observer(({ t }) => {
       {isWeekScheduleLoading ? (
         <Loading />
       ) : (
-        <Box className={classes.root}>
+        <Box
+          onClick={event => console.log(event, 'click event')}
+          className={classes.root}
+        >
           <Paper>
             <CustomContainer>
               <CustomBreadcrumbs />
@@ -137,10 +185,17 @@ const WeekSchedule = observer(({ t }) => {
               formats={formats}
               defaultDate={new Date(2020, 5, 7)}
               components={{
-                timeSlotWrapper: ColoredDateCellWrapper
+                timeSlotWrapper: ColoredDateCellWrapper,
+                event: EventComponent
+                // event: EventWrapper
               }}
               localizer={globalizeLocalizer}
-              onSelectEvent={event => handleEventClick(event)}
+              onSelectEvent={(event, e) => {
+                handleEventClick(event, e)
+                setCurrentPeriod(event.title)
+              }}
+
+              // onSelectEvent={event => }
               // step={60}
               // showMultiDayTimes={false}
               // max={dates.add(
@@ -162,6 +217,11 @@ const WeekSchedule = observer(({ t }) => {
                 isSinglePeriodEditActive={isSinglePeriodEditActive}
               />
             )}
+            {/* {isPopoverOpen && (
+              <Box style={{ position: 'absolute', top: '50%', right: '50%' }}>
+                popover
+              </Box>
+            )} */}
           </Paper>
         </Box>
       )}

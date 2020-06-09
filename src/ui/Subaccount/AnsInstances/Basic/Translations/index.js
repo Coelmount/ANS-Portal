@@ -121,6 +121,7 @@ const Translations = observer(({ t }) => {
   }
 
   const handlePopoverOpen = event => {
+    console.log(event, 'event')
     setAnchorEl(event.currentTarget)
   }
 
