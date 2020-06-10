@@ -311,6 +311,9 @@ export class BasicTranslations {
       )
       .finally(() => (this.isAvailableNumbersForAddInstanceLoading = false))
   }
+  clearAvailableNumbersForAddInstance = () => {
+    this.availableNumbersForAddInstance = []
+  }
 }
 
 decorate(BasicTranslations, {
@@ -341,7 +344,8 @@ decorate(BasicTranslations, {
   setMultipleCounter: action,
   getAvailableNumbersForAddInstance: action,
   putUpdateMultipleANSBasic: action,
-  deleteANSBasic: action
+  deleteANSBasic: action,
+  clearAvailableNumbersForAddInstance: action
 })
 
 export default new BasicTranslations()

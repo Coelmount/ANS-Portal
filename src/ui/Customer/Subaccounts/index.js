@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
 import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import SubaccountsStore from 'stores/Subaccounts'
+import BasicTranslationsStore from 'stores/BasicTranslations'
 import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
@@ -17,12 +19,15 @@ import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Loading from 'components/Loading'
+import NoNumbersModal from './components/NoNumbersModal'
 
 import useStyles from './styles'
 
 const SubaccountsTable = observer(({ t }) => {
-  const match = useParams()
   const classes = useStyles()
+  const match = useParams()
+  const history = useHistory()
+
   const {
     rows,
     getSubaccounts,
@@ -31,18 +36,46 @@ const SubaccountsTable = observer(({ t }) => {
     isDeletingSubaccount,
     getDefaultValues
   } = SubaccountsStore
+
+  const {
+    getAvailableNumbersForAddInstance,
+    availableNumbersForAddInstance,
+    isAvailableNumbersForAddInstanceLoading,
+    clearAvailableNumbersForAddInstance
+  } = BasicTranslationsStore
+
   const { setDefaultValues } = CreateSubaccountStore
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [subaccountToDelete, setSubaccountToDelete] = useState({})
   const [isOpenCreateSubaccount, setIsOpenCreateSubaccount] = useState(false)
+  const [clickedGroupId, setClickedGroupId] = useState('')
+  const [isNoNumbersModalOpen, setIsNoNumbersModalOpen] = useState(false)
+
+  const isLoading =
+    isLoadingSubaccounts ||
+    (isAvailableNumbersForAddInstanceLoading && clickedGroupId)
 
   useEffect(() => {
     getSubaccounts(match.customerId)
   }, [getSubaccounts, match.customerId])
 
   useEffect(() => {
-    return () => getDefaultValues()
+    return () => {
+      getDefaultValues()
+      clearAvailableNumbersForAddInstance()
+    }
   }, [getDefaultValues])
+
+  useEffect(() => {
+    if (availableNumbersForAddInstance.length && clickedGroupId) {
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${clickedGroupId}/ans_instances`
+      )
+    } else if (clickedGroupId) {
+      setIsNoNumbersModalOpen(true)
+    }
+  }, [availableNumbersForAddInstance])
 
   const columns = [
     {
@@ -54,12 +87,12 @@ const SubaccountsTable = observer(({ t }) => {
       label: 'ID',
       getCellData: row => {
         return (
-          <Link
-            to={`/customers/${match.customerId}/subaccounts/${row.groupId}/ans_instances`}
+          <Typography
+            onClick={() => handleIdClick(row.groupId)}
             className={classes.link}
           >
             {row.groupId}
-          </Link>
+          </Typography>
         )
       },
       extraHeadProps: {
@@ -128,6 +161,15 @@ const SubaccountsTable = observer(({ t }) => {
     deleteSubaccount(payload)
   }
 
+  const handleIdClick = groupId => {
+    getAvailableNumbersForAddInstance(match.customerId, groupId, 1, 10)
+    setClickedGroupId(groupId)
+  }
+
+  const handleCloseNoNumbersModal = () => {
+    setIsNoNumbersModalOpen(false)
+  }
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -139,7 +181,7 @@ const SubaccountsTable = observer(({ t }) => {
           />
         </CustomContainer>
 
-        {isLoadingSubaccounts ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <CustomTable
@@ -170,6 +212,13 @@ const SubaccountsTable = observer(({ t }) => {
             successClose={handleCloseCreateSubaccountSuccess}
             isCreateSubaccount
             store={CreateSubaccountStore}
+          />
+        )}
+        {isNoNumbersModalOpen && (
+          <NoNumbersModal
+            open={isNoNumbersModalOpen}
+            handleClose={handleCloseNoNumbersModal}
+            clickedGroupId={clickedGroupId}
           />
         )}
       </Paper>
