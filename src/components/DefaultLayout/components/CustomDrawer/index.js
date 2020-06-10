@@ -153,7 +153,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                   />
                   <span>{userName}</span>
                 </Box>
-                {customer.status && match.customerId && !match.groupId && (
+                {customer.status && (
                   <Box className={classes.statusBox}>
                     {customer.status === 'Active' ? '' : t('account_suspended')}
                   </Box>
