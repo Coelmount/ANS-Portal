@@ -70,7 +70,7 @@ export class SubaccountsStore {
       .then(res => {
         if (res.status === 200) {
           merge(this.customer, res.data)
-          this.isLoadingSubaccount = false
+          this.getSubaccountStatus(customerId, groupId)
         }
       })
       .catch(e =>
@@ -81,7 +81,26 @@ export class SubaccountsStore {
           }
         })
       )
-      .finally(() => (this.isLoadingSubaccount = false))
+  }
+
+  getSubaccountStatus = (customerId, groupId) => {
+    this.isLoadingStatus = true
+    axios
+      .get(`/tenants/${customerId}/groups/${groupId}/properties/suspension/`)
+      .then(
+        res =>
+          (this.customer = {
+            ...this.customer,
+            status:
+              res.data.suspensionStatus === ''
+                ? 'Active'
+                : res.data.suspensionStatus
+          })
+      )
+      .finally(() => {
+        this.isLoadingStatus = false
+        this.isLoadingSubaccount = false
+      })
   }
 
   deleteSubaccount = ({ tenantId, groupId, callback }) => {

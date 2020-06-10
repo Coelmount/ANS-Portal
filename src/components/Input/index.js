@@ -8,11 +8,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    position: 'relative',
-    '& .MuiFormHelperText-root': {
-      position: 'absolute',
-      top: 52
-    }
+    position: 'relative'
   },
   icon: {
     position: 'absolute',
@@ -36,6 +32,10 @@ const useStyles = makeStyles(theme => ({
     },
     '& .MuiOutlinedInput-input': {
       padding: '18.5px 14px 18.5px 49px'
+    },
+    '& .MuiFormHelperText-root': {
+      position: 'absolute',
+      top: 52
     }
   },
   input: {
