@@ -195,7 +195,7 @@ const useStyles = makeStyles(theme => ({
   deleteLoading: {
     width: '20px !important',
     height: '20px !important',
-    marginLeft: 5
+    marginLeft: 15
   },
   tableRow: {
     '& > th': {

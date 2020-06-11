@@ -174,7 +174,7 @@ const AccessNumbersItem = ({ t }) => {
     setIsAssignModalOpen(false)
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setNumberOfChecked(0)
-    selectAll()
+    setSelectAll(false)
   }
 
   const selectNumbers = (newValue, id, fieldName) => {
@@ -206,7 +206,11 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const newSelected = transformOnCheckAll(searchList, numbers, selectAll)
+    // && row.subaccount === 'none' && row.inUse === 'no'
+    const filteredNumbers = searchList.filter(
+      number => number.subaccount === 'none' && number.inUse === 'no'
+    )
+    const newSelected = transformOnCheckAll(filteredNumbers, numbers, selectAll)
     handleCheckedStates(newSelected)
     setNumbers(newSelected)
     setSelectAll(!selectAll)
@@ -560,15 +564,21 @@ const AccessNumbersItem = ({ t }) => {
         ) : (
           <div
             className={classes.indexHoverCheckbox}
-            onClick={() => selectNumbers(!row.checked, row.id, 'checked')}
+            onClick={() => {
+              if (row.subaccount === 'none' && row.inUse === 'no')
+                selectNumbers(!row.checked, row.id, 'checked')
+            }}
             onMouseLeave={() => changeHover(false, row.id)}
             onMouseEnter={() => changeHover(true, row.id)}
           >
-            {row.hover ? (
+            {row.hover && row.subaccount === 'none' && row.inUse === 'no' ? (
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.id, 'checked')}
+                onChange={() => {
+                  if (row.subaccount === 'none' && row.inUse === 'no')
+                    selectNumbers(true, row.id, 'checked')
+                }}
               />
             ) : (
               i + 1
