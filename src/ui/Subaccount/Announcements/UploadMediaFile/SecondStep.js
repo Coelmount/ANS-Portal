@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
-import Papa from 'papaparse'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -23,7 +22,7 @@ import Input from 'components/Input'
 
 import useStyles from './styles'
 
-const FirstStep = props => {
+const SecondStep = props => {
   const match = useParams()
   const { handleClose, setStep, t, announcements } = props
   const [isLoading, setIsLoading] = useState(false)
@@ -123,4 +122,4 @@ const FirstStep = props => {
   )
 }
 
-export default withNamespaces()(observer(FirstStep))
+export default withNamespaces()(observer(SecondStep))
