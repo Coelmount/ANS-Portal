@@ -1,24 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
-import Popover from '@material-ui/core/Popover'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import Switch from 'components/Switch'
 
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-
 import CustomTable from 'components/CustomTable'
+import AddIVR from './AddIVR'
 
 import AddIcon from '@material-ui/icons/Add'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+
+import IVRStore from 'stores/IVR'
 
 import useStyles from './styles'
 
@@ -26,6 +25,13 @@ const IVR = props => {
   const { t } = props
   const classes = useStyles()
   const match = useParams()
+  const { ivrs, isLoadingIVRs, getIVRs, getCheckLicensesIVR } = IVRStore
+  const [showAddIVR, setShowAddIVR] = useState(true)
+
+  useEffect(() => {
+    getIVRs(match.customerId, match.groupId)
+    getCheckLicensesIVR(match.customerId, match.groupId)
+  }, [])
 
   const titleData = {
     mainText: 'IVR',
@@ -56,7 +62,17 @@ const IVR = props => {
       label: `${t('disable')}/${t('enable')}`,
       extraProps: {
         scope: 'row'
-      }
+      },
+      getCellData: row => (
+        <Switch
+          checked={row.active}
+          // handleChange={e =>
+          //   setSelectedStatus(
+          //     e.target.checked === true ? item.name : ''
+          //   )
+          // }
+        />
+      )
     },
     {
       id: 'delete',
@@ -66,28 +82,41 @@ const IVR = props => {
       },
       isSortAvailable: false,
       getCellData: row => (
-        <CloseOutlinedIcon
+        <IconButton>
+          <CloseOutlinedIcon
           //onClick={() => handleOpenDeleteModal(row.groupId, row.groupName)}
-          className={classes.deleteCustomerIcon}
-        />
+          //className={classes.deleteCustomerIcon}
+          />{' '}
+        </IconButton>
       )
     }
   ]
+
+  if (isLoadingIVRs) {
+    return <Loading />
+  }
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} classes={classes} />
+          <TitleBlock
+            titleData={titleData}
+            classes={classes}
+            handleOpen={() => setShowAddIVR(true)}
+          />
         </CustomContainer>
         <CustomTable
-          rows={[{ name: 'werterw', type: 'dsafd' }]}
+          rows={ivrs}
           columns={columns}
           searchCriterias={['name']}
           noAvailableDataMessage={t('no_ivrs_available')}
           tableId='ivrs'
         />
+        {showAddIVR && (
+          <AddIVR open={showAddIVR} handleClose={() => setShowAddIVR(false)} />
+        )}
       </Paper>
     </div>
   )
