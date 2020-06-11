@@ -63,7 +63,8 @@ const AccessNumbersItem = ({ t }) => {
   const [phoneNumberToRedirect, setPhoneNumberToRedirect] = useState('')
   const [isSubaccountLinkClicked, setIsSubaccountLinkClicked] = useState(false)
   const [isDisconnectAll, setIsDisconnectAll] = useState(false)
-  const classes = useStyles(isDisconnectAll)
+  const [isDeassignAll, setIsDeassignAll] = useState(false)
+  const classes = useStyles({ isDisconnectAll, isDeassignAll })
 
   const {
     assignedNumbers,
@@ -181,6 +182,7 @@ const AccessNumbersItem = ({ t }) => {
     setNumbers(newSelected)
     handleCheckedStates(newSelected)
     handleDisconnectedStates()
+    handleDeassignedStates()
 
     switch (fieldName) {
       case 'checked':
@@ -240,6 +242,21 @@ const AccessNumbersItem = ({ t }) => {
     }
     if (!possibleToDisconnectArr.length) {
       setIsDisconnectAll(false)
+    }
+  }
+
+  const handleDeassignedStates = () => {
+    const possibleToDeassignArr = numbers.filter(
+      number => number.subaccount !== 'none' && number.inUse === 'no'
+    )
+
+    if (possibleToDeassignArr.every(el => el.isSelectedToDeassign === true)) {
+      setIsDeassignAll(true)
+    } else {
+      setIsDeassignAll(false)
+    }
+    if (!possibleToDeassignArr.length) {
+      setIsDeassignAll(false)
     }
   }
 
@@ -341,6 +358,8 @@ const AccessNumbersItem = ({ t }) => {
   const handleCloseDeassignModal = () => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDeassignModalOpen(false)
+    setIsDeassignAll(false)
+    setNumberOfSelectedToDeassign(0)
   }
 
   const handleCloseDisconnectModal = () => {
@@ -405,6 +424,35 @@ const AccessNumbersItem = ({ t }) => {
       }
     })
     setNumbers(numbersWithChangedDisconnectFlag)
+  }
+
+  const handleDeassignAll = () => {
+    setIsDeassignAll(!isDeassignAll)
+    let counter = numberOfSelectedToDeassign
+    let localCounter = 0
+    const currentVisibleList = searchList.map(item => item.id)
+
+    const numbersWithChangedDeassignFlag = numbers.map(number => {
+      if (
+        number.subaccount !== 'none' &&
+        number.inUse === 'no' &&
+        currentVisibleList.includes(number.id)
+      ) {
+        if (number.isSelectedToDeassign === false) {
+          localCounter = localCounter + 1
+        }
+        setNumberOfSelectedToDeassign(
+          isDeassignAll ? 0 : localCounter + numberOfSelectedToDeassign
+        )
+        return {
+          ...number,
+          isSelectedToDeassign: !isDeassignAll
+        }
+      } else {
+        return { ...number }
+      }
+    })
+    setNumbers(numbersWithChangedDeassignFlag)
   }
 
   const extraTitleBlock = (
@@ -537,6 +585,9 @@ const AccessNumbersItem = ({ t }) => {
     {
       id: 'phoneNumber',
       label: 'phone_numbers',
+      extraHeadProps: {
+        className: classes.phoneNumberHeadCell
+      },
       headIcon: (
         <img
           className={classes.disconnectIcon}
@@ -544,6 +595,7 @@ const AccessNumbersItem = ({ t }) => {
           alt='disconnect'
         />
       ),
+      headIconWrapStyle: classes.customPhoneNumberHeadIconWrap,
       onIconClick: handleDisconnectAll,
       getCellData: row => (
         <Box className={classes.subaccountCell}>
@@ -586,6 +638,18 @@ const AccessNumbersItem = ({ t }) => {
     {
       id: 'subaccount',
       label: 'subaccount',
+      extraHeadProps: {
+        className: classes.subaccountHeadCell
+      },
+      headIcon: (
+        <img
+          className={classes.deassignIcon}
+          src={deassignIcon}
+          alt='deassign'
+        />
+      ),
+      headIconWrapStyle: classes.customSubaccountHeadIconWrap,
+      onIconClick: handleDeassignAll,
       getCellData: row => (
         <Box className={classes.subaccountCell}>
           <Typography

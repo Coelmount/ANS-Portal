@@ -35,7 +35,8 @@ const CustomTableHead = ({
             extraHeadProps,
             isSortAvailable,
             headIcon,
-            onIconClick
+            onIconClick,
+            headIconWrapStyle
           }) => {
             return (
               <TableCell
@@ -52,7 +53,7 @@ const CustomTableHead = ({
                   >
                     <Typography>{capitalize(t(`${label}`))}</Typography>
                     <Box
-                      className={`${defaultClasses.customHeadIconWrap} ${classes.customHeadIconWrap}`}
+                      className={`${classes.customHeadIconWrap} ${headIconWrapStyle}`}
                       onClick={onIconClick}
                     >
                       {headIcon}
