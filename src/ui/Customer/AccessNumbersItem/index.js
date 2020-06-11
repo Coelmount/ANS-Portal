@@ -32,9 +32,9 @@ import disconnectIcon from 'source/images/svg/delete-icon.svg'
 import deassignIcon from 'source/images/svg/deassign.svg'
 
 import useStyles from './styles'
+import { toJS } from 'mobx'
 
 const AccessNumbersItem = ({ t }) => {
-  const classes = useStyles()
   const match = useParams()
   const history = useHistory()
 
@@ -62,6 +62,9 @@ const AccessNumbersItem = ({ t }) => {
   const [deassignSubject, setDeassignSubject] = useState('')
   const [phoneNumberToRedirect, setPhoneNumberToRedirect] = useState('')
   const [isSubaccountLinkClicked, setIsSubaccountLinkClicked] = useState(false)
+  const [isDisconnectAll, setIsDisconnectAll] = useState(false)
+  const classes = useStyles(isDisconnectAll)
+
   const {
     assignedNumbers,
     isAssignedNumbersLoading,
@@ -170,12 +173,15 @@ const AccessNumbersItem = ({ t }) => {
     setIsAssignModalOpen(false)
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setNumberOfChecked(0)
+    selectAll()
   }
 
   const selectNumbers = (newValue, id, fieldName) => {
     const newSelected = transformOnChange(numbers, newValue, id, fieldName)
     setNumbers(newSelected)
     handleCheckedStates(newSelected)
+    handleDisconnectedStates()
+
     switch (fieldName) {
       case 'checked':
         newValue
@@ -217,6 +223,23 @@ const AccessNumbersItem = ({ t }) => {
     }
     if (!newSelected.length) {
       setSelectAll(false)
+    }
+  }
+
+  const handleDisconnectedStates = () => {
+    const possibleToDisconnectArr = numbers.filter(
+      number => number.subaccount === 'none' && number.inUse === 'no'
+    )
+
+    if (
+      possibleToDisconnectArr.every(el => el.isSelectedToDisconnect === true)
+    ) {
+      setIsDisconnectAll(true)
+    } else {
+      setIsDisconnectAll(false)
+    }
+    if (!possibleToDisconnectArr.length) {
+      setIsDisconnectAll(false)
     }
   }
 
@@ -323,6 +346,8 @@ const AccessNumbersItem = ({ t }) => {
   const handleCloseDisconnectModal = () => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDisconnectModalOpen(false)
+    setIsDisconnectAll(false)
+    setNumberOfSelectedToDisconnect(0)
   }
 
   const handleDisconnect = () => {
@@ -351,6 +376,35 @@ const AccessNumbersItem = ({ t }) => {
       getSubaccountId(match.customerId, row.subaccount)
       setIsSubaccountLinkClicked(true)
     }
+  }
+
+  const handleDisconnectAll = () => {
+    setIsDisconnectAll(!isDisconnectAll)
+    let counter = numberOfSelectedToDisconnect
+    let localCounter = 0
+    const currentVisibleList = searchList.map(item => item.id)
+
+    const numbersWithChangedDisconnectFlag = numbers.map(number => {
+      if (
+        number.subaccount === 'none' &&
+        number.inUse === 'no' &&
+        currentVisibleList.includes(number.id)
+      ) {
+        if (number.isSelectedToDisconnect === false) {
+          localCounter = localCounter + 1
+        }
+        setNumberOfSelectedToDisconnect(
+          isDisconnectAll ? 0 : localCounter + numberOfSelectedToDisconnect
+        )
+        return {
+          ...number,
+          isSelectedToDisconnect: !isDisconnectAll
+        }
+      } else {
+        return { ...number }
+      }
+    })
+    setNumbers(numbersWithChangedDisconnectFlag)
   }
 
   const extraTitleBlock = (
@@ -483,6 +537,14 @@ const AccessNumbersItem = ({ t }) => {
     {
       id: 'phoneNumber',
       label: 'phone_numbers',
+      headIcon: (
+        <img
+          className={classes.disconnectIcon}
+          src={disconnectIcon}
+          alt='disconnect'
+        />
+      ),
+      onIconClick: handleDisconnectAll,
       getCellData: row => (
         <Box className={classes.subaccountCell}>
           <Typography className={classes.phoneTitle}>

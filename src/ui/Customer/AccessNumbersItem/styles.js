@@ -30,18 +30,18 @@ const useStyles = makeStyles(theme => ({
   assignedDoneIcon: {
     color: theme.palette.active.blue
   },
-  customHeadIconWrap: {
+  customHeadIconWrap: isDisconnectAll => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     width: 30,
     height: 30,
     marginLeft: 11,
-    background: 'white',
+    background: isDisconnectAll ? theme.palette.primary.main : 'white',
     borderRadius: 100,
     boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
     cursor: 'pointer'
-  },
+  }),
   toolbarButtonsBlockWrap: {
     display: 'flex',
     justifyContent: 'flex-end',
