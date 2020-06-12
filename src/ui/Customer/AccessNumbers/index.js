@@ -142,6 +142,7 @@ const AccessNumbers = ({ t }) => {
       extraProps: {
         className: classes.textCenter
       },
+      headCellInsideWrapStyles: classes.headCellInsideWrap,
       headIcon: validateAccessLvl(
         localStorage.getItem('ids'),
         adminAccessLvl

@@ -204,7 +204,7 @@ const useStyles = makeStyles(theme => ({
   },
   phoneNumberHeadCell: {
     padding: 0,
-    '& p': {
+    '& span': {
       fontSize: 16,
       fontWeight: 600,
       whiteSpace: 'nowrap',
@@ -213,12 +213,15 @@ const useStyles = makeStyles(theme => ({
   },
   subaccountHeadCell: {
     padding: 0,
-    '& p': {
+    '& span': {
       fontSize: 16,
       fontWeight: 600,
       whiteSpace: 'nowrap',
       minWidth: 140
     }
+  },
+  headCellInsideWrap: {
+    display: 'flex'
   }
 }))
 

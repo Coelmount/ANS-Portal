@@ -605,7 +605,8 @@ const AccessNumbersItem = ({ t }) => {
           alt='disconnect'
         />
       ),
-      headIconWrapStyle: classes.customPhoneNumberHeadIconWrap,
+      headIconWrapStyles: classes.customPhoneNumberHeadIconWrap,
+      headCellInsideWrapStyles: classes.headCellInsideWrap,
       onIconClick: handleDisconnectAll,
       getCellData: row => (
         <Box className={classes.subaccountCell}>
@@ -658,7 +659,8 @@ const AccessNumbersItem = ({ t }) => {
           alt='deassign'
         />
       ),
-      headIconWrapStyle: classes.customSubaccountHeadIconWrap,
+      headIconWrapStyles: classes.customSubaccountHeadIconWrap,
+      headCellInsideWrapStyles: classes.headCellInsideWrap,
       onIconClick: handleDeassignAll,
       getCellData: row => (
         <Box className={classes.subaccountCell}>

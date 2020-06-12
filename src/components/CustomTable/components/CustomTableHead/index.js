@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Box from '@material-ui/core/Box'
-import { Typography } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 
 const CustomTableHead = ({
   classes,
@@ -36,7 +36,8 @@ const CustomTableHead = ({
             isSortAvailable,
             headIcon,
             onIconClick,
-            headIconWrapStyle
+            headIconWrapStyles,
+            headCellInsideWrapStyles
           }) => {
             return (
               <TableCell
@@ -47,19 +48,9 @@ const CustomTableHead = ({
                 // component={'th'}
                 {...extraHeadProps}
               >
-                {headIcon ? (
-                  <Box
-                    className={`${defaultClasses.headCellWithCustomButtons} ${classes.headCellWithCustomButtons}`}
-                  >
-                    <Typography>{capitalize(t(`${label}`))}</Typography>
-                    <Box
-                      className={`${classes.customHeadIconWrap} ${headIconWrapStyle}`}
-                      onClick={onIconClick}
-                    >
-                      {headIcon}
-                    </Box>
-                  </Box>
-                ) : (
+                <Box
+                  className={`${defaultClasses.headCellInsideWrap} ${headCellInsideWrapStyles}`}
+                >
                   <TableSortLabel
                     active={orderBy === id && isSortAvailable !== false}
                     direction={orderBy === id ? order : 'asc'}
@@ -92,7 +83,16 @@ const CustomTableHead = ({
                       </p>
                     )}
                   </TableSortLabel>
-                )}
+
+                  {headIcon && (
+                    <Box
+                      className={`${classes.customHeadIconWrap} ${headIconWrapStyles}`}
+                      onClick={onIconClick}
+                    >
+                      {headIcon}
+                    </Box>
+                  )}
+                </Box>
               </TableCell>
             )
           }
