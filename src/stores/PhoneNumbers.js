@@ -16,6 +16,7 @@ export class PhoneNumbers {
   addedPhoneNumbers = []
   rejectedPhoneNumbers = []
   isPhoneNumbersLoading = true
+  isGetPhoneNumbersRequestDone = null
   totalPages = 0
   filterValues = {
     country: '',
@@ -56,6 +57,7 @@ export class PhoneNumbers {
     numberLike
   ) => {
     this.isPhoneNumbersLoading = true
+    this.isGetPhoneNumbersRequestDone = null
     const country = (filterValues && filterValues.country) || ''
     const type = (filterValues && filterValues.type) || ''
     const getStatus = () => {
@@ -101,6 +103,7 @@ export class PhoneNumbers {
         `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&country_code=${countryCode}&type=${type}&in_use=${status}&number_like=${numberLikeField} `
       )
       .then(res => {
+        this.isGetPhoneNumbersRequestDone = true
         const pagination = res.data.pagination
         const requestResult = res.data.numbers
 
@@ -130,7 +133,9 @@ export class PhoneNumbers {
           }
         })
       )
-      .finally(() => (this.isPhoneNumbersLoading = false))
+      .finally(() => {
+        this.isPhoneNumbersLoading = false
+      })
   }
 
   setFilterValues = (country, type, status) => {
@@ -189,7 +194,10 @@ export class PhoneNumbers {
   createGroupsSinglePhone = addedPhone =>
     (this.addedPhoneNumbers = [addedPhone])
 
-  clearPhoneNumbers = () => (this.transformedPhoneNumbers = [])
+  clearPhoneNumbers = () => {
+    this.isPhoneNumbersLoading = null
+    this.transformedPhoneNumbers = []
+  }
 }
 
 decorate(PhoneNumbers, {
@@ -201,6 +209,7 @@ decorate(PhoneNumbers, {
   totalPages: observable,
   isPhoneNumbersLoading: observable,
   filterValues: observable,
+  isGetPhoneNumbersRequestDone: observable,
   changeStep: action,
   setPhoneNumbers: action,
   setSelectedPhoneNumber: action,

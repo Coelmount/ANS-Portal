@@ -41,7 +41,8 @@ const SubaccountsTable = observer(({ t }) => {
     getPhoneNumbers,
     transformedPhoneNumbers,
     isPhoneNumbersLoading,
-    clearPhoneNumbers
+    clearPhoneNumbers,
+    isGetPhoneNumbersRequestDone
   } = PhoneNumbersStore
 
   const { setDefaultValues } = CreateSubaccountStore
@@ -64,14 +65,14 @@ const SubaccountsTable = observer(({ t }) => {
       getDefaultValues()
       clearPhoneNumbers()
     }
-  }, [getDefaultValues])
+  }, [])
 
   useEffect(() => {
     if (transformedPhoneNumbers.length && clickedGroupId) {
       history.push(
         `/customers/${match.customerId}/subaccounts/${clickedGroupId}/ans_instances`
       )
-    } else if (clickedGroupId) {
+    } else if (clickedGroupId && isGetPhoneNumbersRequestDone === true) {
       setIsNoNumbersModalOpen(true)
     }
   }, [transformedPhoneNumbers])
