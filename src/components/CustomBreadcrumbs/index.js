@@ -212,7 +212,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
     <Breadcrumbs
       maxItems={itemsAfterCollapseAmount}
       itemsAfterCollapse={itemsAfterCollapseAmount}
-      itemsBeforeCollapse={0}
+      itemsBeforeCollapse={1}
       separator={<NavigateNextIcon fontSize='small' />}
       aria-label='breadcrumb'
       className={classes.breadcrumbsWrap}
