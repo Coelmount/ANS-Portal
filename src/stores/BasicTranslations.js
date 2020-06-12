@@ -176,6 +176,10 @@ export class BasicTranslations {
       .finally(() => (this.isBasicTranslationsNumbersLoading = false))
   }
 
+  clearBasicNumbers = () => {
+    this.basicTranslationsNumbers = []
+  }
+
   postAddMultipleANSBasic = (tenantId, groupId, data) => {
     axios
       .post(`/tenants/${tenantId}/groups/${groupId}/services/ans_basic`, data)
@@ -345,7 +349,8 @@ decorate(BasicTranslations, {
   getAvailableNumbersForAddInstance: action,
   putUpdateMultipleANSBasic: action,
   deleteANSBasic: action,
-  clearAvailableNumbersForAddInstance: action
+  clearAvailableNumbersForAddInstance: action,
+  clearBasicNumbers: action
 })
 
 export default new BasicTranslations()

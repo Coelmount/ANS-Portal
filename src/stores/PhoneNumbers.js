@@ -187,6 +187,8 @@ export class PhoneNumbers {
 
   createGroupsSinglePhone = addedPhone =>
     (this.addedPhoneNumbers = [addedPhone])
+
+  clearPhoneNumbers = () => (this.transformedPhoneNumbers = [])
 }
 
 decorate(PhoneNumbers, {
@@ -207,7 +209,8 @@ decorate(PhoneNumbers, {
   getPhoneNumbers: action,
   setFilterValues: action,
   deleteSearchParam: action,
-  clearFilterParams: action
+  clearFilterParams: action,
+  clearPhoneNumbers: action
 })
 
 export default new PhoneNumbers()
