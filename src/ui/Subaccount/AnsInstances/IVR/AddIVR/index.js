@@ -23,6 +23,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import NameIVRIcon from 'source/images/svg/nameIVRIcon.svg'
 
 import IVRStore from 'stores/IVR'
+import CustomersStore from 'stores/Customers'
 
 import useStyles from './styles'
 
@@ -38,30 +39,29 @@ const AddIVR = props => {
     postAddIVR,
     addIVR
   } = IVRStore
+  const { getCustomer, customer, isLoadingCustomer } = CustomersStore
   const [type, setType] = useState(
     !singleLvl && multiLvl ? 'Standard' : 'Basic'
-  )
-  const [serviceUserId, setServiceUserId] = useState(
-    `${match.groupId}_ivr${(Math.floor(Math.random() * 10000) + 10000)
-      .toString()
-      .substring(1)}`
   )
   const [name, setName] = useState('')
 
   useEffect(() => {
     getCheckLicensesIVR(match.customerId, match.groupId)
+    getCustomer(match.customerId)
   }, [])
 
   const handleAddIVR = () => {
     postAddIVR(match.customerId, match.groupId, {
-      serviceUserId,
-      templateName: 'ANS_IVR',
-      type,
-      serviceInstanceProfile: { name }
-    })
+      ivrInstance: {
+        serviceUserId: `${match.groupId}_ivr${name}@${customer.defaultDomain}`,
+        templateName: 'ANS_IVR',
+        type,
+        serviceInstanceProfile: { cliFirstName: 'IVR', cliLastName: name, name }
+      }
+    }).then(() => handleClose())
   }
 
-  if (isLoadingLicenses) {
+  if (isLoadingLicenses || isLoadingCustomer) {
     return (
       <Dialog open={open} onClose={handleClose}>
         <Loading />
@@ -133,6 +133,7 @@ const AddIVR = props => {
           color='primary'
           className={classes.cancelButton}
           disabled={addIVR}
+          onClick={handleClose}
         >
           {t('cancel')}
         </Button>

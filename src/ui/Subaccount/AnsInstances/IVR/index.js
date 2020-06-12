@@ -25,7 +25,15 @@ const IVR = props => {
   const { t } = props
   const classes = useStyles()
   const match = useParams()
-  const { ivrs, isLoadingIVRs, getIVRs, getCheckLicensesIVR } = IVRStore
+  const {
+    ivrs,
+    isLoadingIVRs,
+    getIVRs,
+    singleLvl,
+    multiLvl,
+    getCheckLicensesIVR,
+    isLoadingLicenses
+  } = IVRStore
   const [showAddIVR, setShowAddIVR] = useState(true)
 
   useEffect(() => {
@@ -115,7 +123,13 @@ const IVR = props => {
           tableId='ivrs'
         />
         {showAddIVR && (
-          <AddIVR open={showAddIVR} handleClose={() => setShowAddIVR(false)} />
+          <AddIVR
+            open={showAddIVR}
+            handleClose={() => {
+              setShowAddIVR(false)
+              getIVRs(match.customerId, match.groupId)
+            }}
+          />
         )}
       </Paper>
     </div>

@@ -72,7 +72,7 @@ class IVR {
 
   postAddIVR = (tenantId, groupId, data) => {
     this.addIVR = true
-    axios
+    return axios
       .post(`/tenants/${tenantId}/groups/${groupId}/services/ivrs/`, data)
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
