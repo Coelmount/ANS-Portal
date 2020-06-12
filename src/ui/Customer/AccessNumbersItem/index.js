@@ -132,7 +132,7 @@ const AccessNumbersItem = ({ t }) => {
   }, [])
 
   useEffect(() => {
-    setNumbers(assignedNumbers)
+    if (assignedNumbers.length > 0) setNumbers(assignedNumbers)
     setNumberOfSelectedToDisconnect(0)
     setNumberOfSelectedToDeassign(0)
   }, [assignedNumbers])
