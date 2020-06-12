@@ -155,13 +155,25 @@ export class BasicTranslations {
             enabled: true,
             accessCountry:
               item.access_number &&
-              getCountryNameFromNumber(item.access_number),
+              getCountryNameFromNumber(
+                item.access_number[0] === '+'
+                  ? item.access_number
+                  : `+${item.access_number}`
+              ),
             destinationCountry:
               item.destination_number &&
-              getCountryNameFromNumber(item.destination_number),
+              getCountryNameFromNumber(
+                item.destination_number[0] === '+'
+                  ? item.destination_number
+                  : `+${item.destination_number}`
+              ),
             destinationCountryTwoLetterCode:
               item.destination_number &&
-              getCountryTwoLetterCodeFromNumber(item.destination_number),
+              getCountryTwoLetterCodeFromNumber(
+                item.destination_number[0] === '+'
+                  ? item.destination_number
+                  : `+${item.destination_number}`
+              ),
             ...item
           }
         })
