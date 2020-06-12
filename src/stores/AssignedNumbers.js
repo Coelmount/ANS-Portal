@@ -36,7 +36,6 @@ export class AssignedNumbers {
   }
 
   setNumbersToAssign = numbers => {
-    console.log(numbers)
     this.numbersToAssign = numbers
   }
 

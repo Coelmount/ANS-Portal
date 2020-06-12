@@ -32,9 +32,9 @@ import disconnectIcon from 'source/images/svg/delete-icon.svg'
 import deassignIcon from 'source/images/svg/deassign.svg'
 
 import useStyles from './styles'
+import { toJS } from 'mobx'
 
 const AccessNumbersItem = ({ t }) => {
-  const classes = useStyles()
   const match = useParams()
   const history = useHistory()
 
@@ -62,6 +62,10 @@ const AccessNumbersItem = ({ t }) => {
   const [deassignSubject, setDeassignSubject] = useState('')
   const [phoneNumberToRedirect, setPhoneNumberToRedirect] = useState('')
   const [isSubaccountLinkClicked, setIsSubaccountLinkClicked] = useState(false)
+  const [isDisconnectAll, setIsDisconnectAll] = useState(false)
+  const [isDeassignAll, setIsDeassignAll] = useState(false)
+  const classes = useStyles({ isDisconnectAll, isDeassignAll })
+
   const {
     assignedNumbers,
     isAssignedNumbersLoading,
@@ -170,12 +174,16 @@ const AccessNumbersItem = ({ t }) => {
     setIsAssignModalOpen(false)
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setNumberOfChecked(0)
+    setSelectAll(false)
   }
 
   const selectNumbers = (newValue, id, fieldName) => {
     const newSelected = transformOnChange(numbers, newValue, id, fieldName)
     setNumbers(newSelected)
     handleCheckedStates(newSelected)
+    handleDisconnectedStates()
+    handleDeassignedStates()
+
     switch (fieldName) {
       case 'checked':
         newValue
@@ -198,7 +206,11 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const newSelected = transformOnCheckAll(searchList, numbers, selectAll)
+    // && row.subaccount === 'none' && row.inUse === 'no'
+    const filteredNumbers = searchList.filter(
+      number => number.subaccount === 'none' && number.inUse === 'no'
+    )
+    const newSelected = transformOnCheckAll(filteredNumbers, numbers, selectAll)
     handleCheckedStates(newSelected)
     setNumbers(newSelected)
     setSelectAll(!selectAll)
@@ -217,6 +229,38 @@ const AccessNumbersItem = ({ t }) => {
     }
     if (!newSelected.length) {
       setSelectAll(false)
+    }
+  }
+
+  const handleDisconnectedStates = () => {
+    const possibleToDisconnectArr = numbers.filter(
+      number => number.subaccount === 'none' && number.inUse === 'no'
+    )
+
+    if (
+      possibleToDisconnectArr.every(el => el.isSelectedToDisconnect === true)
+    ) {
+      setIsDisconnectAll(true)
+    } else {
+      setIsDisconnectAll(false)
+    }
+    if (!possibleToDisconnectArr.length) {
+      setIsDisconnectAll(false)
+    }
+  }
+
+  const handleDeassignedStates = () => {
+    const possibleToDeassignArr = numbers.filter(
+      number => number.subaccount !== 'none' && number.inUse === 'no'
+    )
+
+    if (possibleToDeassignArr.every(el => el.isSelectedToDeassign === true)) {
+      setIsDeassignAll(true)
+    } else {
+      setIsDeassignAll(false)
+    }
+    if (!possibleToDeassignArr.length) {
+      setIsDeassignAll(false)
     }
   }
 
@@ -318,11 +362,15 @@ const AccessNumbersItem = ({ t }) => {
   const handleCloseDeassignModal = () => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDeassignModalOpen(false)
+    setIsDeassignAll(false)
+    setNumberOfSelectedToDeassign(0)
   }
 
   const handleCloseDisconnectModal = () => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDisconnectModalOpen(false)
+    setIsDisconnectAll(false)
+    setNumberOfSelectedToDisconnect(0)
   }
 
   const handleDisconnect = () => {
@@ -351,6 +399,64 @@ const AccessNumbersItem = ({ t }) => {
       getSubaccountId(match.customerId, row.subaccount)
       setIsSubaccountLinkClicked(true)
     }
+  }
+
+  const handleDisconnectAll = () => {
+    setIsDisconnectAll(!isDisconnectAll)
+    let counter = numberOfSelectedToDisconnect
+    let localCounter = 0
+    const currentVisibleList = searchList.map(item => item.id)
+
+    const numbersWithChangedDisconnectFlag = numbers.map(number => {
+      if (
+        number.subaccount === 'none' &&
+        number.inUse === 'no' &&
+        currentVisibleList.includes(number.id)
+      ) {
+        if (number.isSelectedToDisconnect === false) {
+          localCounter = localCounter + 1
+        }
+        setNumberOfSelectedToDisconnect(
+          isDisconnectAll ? 0 : localCounter + numberOfSelectedToDisconnect
+        )
+        return {
+          ...number,
+          isSelectedToDisconnect: !isDisconnectAll
+        }
+      } else {
+        return { ...number }
+      }
+    })
+    setNumbers(numbersWithChangedDisconnectFlag)
+  }
+
+  const handleDeassignAll = () => {
+    setIsDeassignAll(!isDeassignAll)
+    let counter = numberOfSelectedToDeassign
+    let localCounter = 0
+    const currentVisibleList = searchList.map(item => item.id)
+
+    const numbersWithChangedDeassignFlag = numbers.map(number => {
+      if (
+        number.subaccount !== 'none' &&
+        number.inUse === 'no' &&
+        currentVisibleList.includes(number.id)
+      ) {
+        if (number.isSelectedToDeassign === false) {
+          localCounter = localCounter + 1
+        }
+        setNumberOfSelectedToDeassign(
+          isDeassignAll ? 0 : localCounter + numberOfSelectedToDeassign
+        )
+        return {
+          ...number,
+          isSelectedToDeassign: !isDeassignAll
+        }
+      } else {
+        return { ...number }
+      }
+    })
+    setNumbers(numbersWithChangedDeassignFlag)
   }
 
   const extraTitleBlock = (
@@ -458,15 +564,21 @@ const AccessNumbersItem = ({ t }) => {
         ) : (
           <div
             className={classes.indexHoverCheckbox}
-            onClick={() => selectNumbers(!row.checked, row.id, 'checked')}
+            onClick={() => {
+              if (row.subaccount === 'none' && row.inUse === 'no')
+                selectNumbers(!row.checked, row.id, 'checked')
+            }}
             onMouseLeave={() => changeHover(false, row.id)}
             onMouseEnter={() => changeHover(true, row.id)}
           >
-            {row.hover ? (
+            {row.hover && row.subaccount === 'none' && row.inUse === 'no' ? (
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.id, 'checked')}
+                onChange={() => {
+                  if (row.subaccount === 'none' && row.inUse === 'no')
+                    selectNumbers(true, row.id, 'checked')
+                }}
               />
             ) : (
               i + 1
@@ -483,6 +595,19 @@ const AccessNumbersItem = ({ t }) => {
     {
       id: 'phoneNumber',
       label: 'phone_numbers',
+      extraHeadProps: {
+        className: classes.phoneNumberHeadCell
+      },
+      headIcon: (
+        <img
+          className={classes.disconnectIcon}
+          src={disconnectIcon}
+          alt='disconnect'
+        />
+      ),
+      headIconWrapStyles: classes.customPhoneNumberHeadIconWrap,
+      headCellInsideWrapStyles: classes.headCellInsideWrap,
+      onIconClick: handleDisconnectAll,
       getCellData: row => (
         <Box className={classes.subaccountCell}>
           <Typography className={classes.phoneTitle}>
@@ -524,6 +649,19 @@ const AccessNumbersItem = ({ t }) => {
     {
       id: 'subaccount',
       label: 'subaccount',
+      extraHeadProps: {
+        className: classes.subaccountHeadCell
+      },
+      headIcon: (
+        <img
+          className={classes.deassignIcon}
+          src={deassignIcon}
+          alt='deassign'
+        />
+      ),
+      headIconWrapStyles: classes.customSubaccountHeadIconWrap,
+      headCellInsideWrapStyles: classes.headCellInsideWrap,
+      onIconClick: handleDeassignAll,
       getCellData: row => (
         <Box className={classes.subaccountCell}>
           <Typography

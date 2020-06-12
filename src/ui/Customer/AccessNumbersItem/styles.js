@@ -30,18 +30,30 @@ const useStyles = makeStyles(theme => ({
   assignedDoneIcon: {
     color: theme.palette.active.blue
   },
-  customHeadIconWrap: {
+  customPhoneNumberHeadIconWrap: ({ isDisconnectAll }) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     width: 30,
     height: 30,
     marginLeft: 11,
-    background: 'white',
+    background: isDisconnectAll ? theme.palette.primary.main : 'white',
     borderRadius: 100,
     boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
     cursor: 'pointer'
-  },
+  }),
+  customSubaccountHeadIconWrap: ({ isDeassignAll }) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
+    height: 30,
+    marginLeft: 11,
+    background: isDeassignAll ? theme.palette.primary.main : 'white',
+    borderRadius: 100,
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    cursor: 'pointer'
+  }),
   toolbarButtonsBlockWrap: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -73,7 +85,8 @@ const useStyles = makeStyles(theme => ({
   tableIconWrap: {
     padding: 0,
     width: 30,
-    height: 30
+    height: 30,
+    marginLeft: 11
   },
   btnBack: {
     background: theme.palette.primary.main,
@@ -170,24 +183,45 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   subaccountTitle: {
-    marginRight: 25,
-    fontSize: 14,
-    minWidth: 110
-  },
-  phoneTitle: {
-    marginRight: 25,
+    // marginRight: 25,
     fontSize: 14,
     minWidth: 140
+  },
+  phoneTitle: {
+    // marginRight: 25,
+    fontSize: 14,
+    minWidth: 160
   },
   deleteLoading: {
     width: '20px !important',
     height: '20px !important',
-    marginLeft: 5
+    marginLeft: 15
   },
   tableRow: {
     '& > th': {
       height: 50
     }
+  },
+  phoneNumberHeadCell: {
+    padding: 0,
+    '& span': {
+      fontSize: 16,
+      fontWeight: 600,
+      whiteSpace: 'nowrap',
+      minWidth: 160
+    }
+  },
+  subaccountHeadCell: {
+    padding: 0,
+    '& span': {
+      fontSize: 16,
+      fontWeight: 600,
+      whiteSpace: 'nowrap',
+      minWidth: 140
+    }
+  },
+  headCellInsideWrap: {
+    display: 'flex'
   }
 }))
 

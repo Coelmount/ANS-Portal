@@ -168,6 +168,7 @@ const SubaccountsTable = observer(({ t }) => {
 
   const handleCloseNoNumbersModal = () => {
     setIsNoNumbersModalOpen(false)
+    getSubaccounts(match.customerId)
   }
 
   return (

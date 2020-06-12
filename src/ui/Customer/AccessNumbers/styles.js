@@ -110,6 +110,10 @@ const useStyles = makeStyles(theme => ({
   },
   disableDeleteCustomerIcon: {
     color: theme.palette.lightGrey
+  },
+  headCellInsideWrap: {
+    display: 'flex',
+    justifyContent: 'center'
   }
 }))
 
