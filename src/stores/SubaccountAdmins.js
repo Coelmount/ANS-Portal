@@ -30,6 +30,7 @@ export class SubaccountAdminsStore {
 
   getSubaccountAdmins = ({ id, groupId }) => {
     this.isLoading = true
+    this.subaccountAdmins = []
     axios
       .get(`/tenants/${id}/groups/${groupId}/admins/`)
       .then(res => {

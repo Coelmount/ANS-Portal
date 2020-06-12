@@ -40,6 +40,7 @@ export class CustomersStore {
 
   getCustomers = () => {
     this.isLoadingCustomers = true
+    this.rows = []
     axios
       .get(`/tenants`)
       .then(res => {
@@ -60,6 +61,7 @@ export class CustomersStore {
 
   getCustomer = id => {
     this.isLoadingCustomer = true
+    this.customer = defaultCustomerValue
     axios
       .get(`/tenants/${id}/`)
       .then(res => {
@@ -78,6 +80,7 @@ export class CustomersStore {
 
   getCustomerName = id => {
     this.isLoadingCustomerName = true
+    this.customerName = ''
     axios
       .get(`/tenants/${id}/`)
       .then(res => {

@@ -63,6 +63,7 @@ export class CreateSubaccountStore {
   createCustomer = (customerId, callback) => {
     this.addUpdateCustomer = true
     const data = { ...this.customer }
+    this.createdCustomerStore = {}
     return axios
       .post(`/tenants/${customerId}/groups`, removeEmpty(data))
       .then(res => {

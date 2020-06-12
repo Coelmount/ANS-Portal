@@ -58,6 +58,7 @@ export class CreateCustomerStore {
   createCustomer = () => {
     this.addUpdateCustomer = true
     const data = { ...this.customer }
+    this.createdCustomerStore = {}
     return axios
       .post(`/tenants`, removeEmpty(data))
       .then(res => {

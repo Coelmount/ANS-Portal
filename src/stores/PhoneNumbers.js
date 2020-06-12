@@ -94,7 +94,8 @@ export class PhoneNumbers {
     }
     const orderField = order || 'asc'
     const numberLikeField = numberLike || ''
-
+    this.transformedPhoneNumbers = []
+    this.totalPages = 0
     axios
       .get(
         `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&country_code=${countryCode}&type=${type}&in_use=${status}&number_like=${numberLikeField} `

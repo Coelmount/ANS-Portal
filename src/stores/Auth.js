@@ -15,6 +15,8 @@ export class AuthStore {
   username = ''
 
   postLogin = (data, history) => {
+    this.token = localStorage.getItem('token')
+    this.userLogin = {}
     axios
       .post(`${BASE_URL}/auth/login`, data)
       .then(res => {
@@ -52,6 +54,8 @@ export class AuthStore {
   }
 
   getLocal = () => {
+    this.user = {}
+    this.username = ''
     axios
       .get(`${BASE_URL}/system/users/local`, {
         headers: { Authorization: `Bearer ${this.token}` }

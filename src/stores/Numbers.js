@@ -30,6 +30,7 @@ export class NumbersStore {
 
   getReservedNumbers = (tenantId, cc, type) => {
     this.isLoadingReservedNumbers = true
+    this.reservedNumbers = []
     return axios
       .get(
         `/tenants/${tenantId}/reserved_numbers?country_code=${cc.replace(
@@ -51,6 +52,8 @@ export class NumbersStore {
   getAvailableNumbers = params => {
     this.isLoadingAvailableNumbers = true
     this.params = params
+    this.availableNumbers = []
+    this.availableNumbersTable = []
     return axios
       .get(
         `/available_numbers?${queryString.stringify(params, {
@@ -119,6 +122,8 @@ export class NumbersStore {
     dataForPost.forEach(data => {
       promiseArray.push(axios.post(`/tenants/${tenantId}/numbers`, data))
     })
+    this.addedNumbers = []
+    this.rejectedNumbers = []
     Promise.all(promiseArray)
       .then(res => {
         res.forEach(el => {
@@ -156,6 +161,8 @@ export class NumbersStore {
     dataForPost.forEach(data => {
       promiseArray.push(axios.post(`/tenants/${tenantId}/numbers`, data))
     })
+    this.addedNumbers = []
+    this.rejectedNumbers = []
     Promise.all(promiseArray)
       .then(res => {
         res.forEach(el => {

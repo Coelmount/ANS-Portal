@@ -26,7 +26,11 @@ export class EditDeleteAdminStore {
 
   getAdminInfo = ({ id, userId }) => {
     this.isLoadingData = true
-
+    this.updatedAdmin = {
+      firstName: '',
+      lastName: '',
+      language: ''
+    }
     axios
       .get(`/tenants/${id}/admins/${userId}`)
       .then(res => {

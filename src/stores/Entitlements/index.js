@@ -50,6 +50,8 @@ export class Entitlements {
 
   getEntitlements = id => {
     this.isLoadingEntitlements = true
+    this.entitlements = []
+    this.entitlementsIdArr = []
     axios
       .get(`/tenants/${id}/entitlements`)
       .then(res => {
@@ -73,6 +75,7 @@ export class Entitlements {
 
   getEntitlementTypes = isFilterNeeded => {
     this.isLoadingEntitlementTypes = true
+    this.entitlementTypes = []
     axios
       .get(`/entitlement_types`)
       .then(res => {

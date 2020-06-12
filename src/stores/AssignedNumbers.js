@@ -50,6 +50,7 @@ export class AssignedNumbers {
 
   getSubaccountId = (customerId, subaccountName) => {
     this.isSubaccountLinkIdLoading = true
+    this.subaccountLinkId = ''
     axios
       .get(
         `/tenants/${customerId}/groups?sensitiveGroupNameEquals=${subaccountName}`
@@ -68,6 +69,8 @@ export class AssignedNumbers {
 
   getEntitlementsAndFindCurrent = (customerId, numbersId) => {
     this.isLoadingEntitlements = true
+    this.assignedNumbers = []
+    this.currentEntitlement = null
     axios
       .get(`/tenants/${customerId}/entitlements`)
       .then(res => {

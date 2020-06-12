@@ -139,6 +139,8 @@ export class BasicTranslations {
 
   getBasicTranslationsNumbers = (customerId, groupId) => {
     this.isBasicTranslationsNumbersLoading = true
+    this.amountOfBasicInstances = 0
+    this.basicTranslationsNumbers = []
     return axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
@@ -177,6 +179,12 @@ export class BasicTranslations {
   }
 
   postAddMultipleANSBasic = (tenantId, groupId, data) => {
+    this.errorAdded = []
+    this.successAdded = []
+    this.refusedAdded = []
+    this.multipleCounter.success = 0
+    this.multipleCounter.error = 0
+    this.multipleCounter.count = 0
     axios
       .post(`/tenants/${tenantId}/groups/${groupId}/services/ans_basic`, data)
       .then(res => {
@@ -200,6 +208,12 @@ export class BasicTranslations {
   }
 
   putUpdateMultipleANSBasic = (tenantId, groupId, ans_id, data, accessObj) => {
+    this.errorAdded = []
+    this.successAdded = []
+    this.refusedAdded = []
+    this.multipleCounter.success = 0
+    this.multipleCounter.error = 0
+    this.multipleCounter.count = 0
     axios
       .put(
         `/tenants/${tenantId}/groups/${groupId}/services/ans_basic/${ans_id}`,

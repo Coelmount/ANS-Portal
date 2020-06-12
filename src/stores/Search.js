@@ -16,7 +16,8 @@ export class SearchStore {
       this.clearSearchResult()
     } else {
       this.isLoading = true
-
+      this.searchResult = null
+      this.ansInstance = null
       axios
         .get(`/search/numbers/usages/${phoneNumber}/`)
         .then(res => {
