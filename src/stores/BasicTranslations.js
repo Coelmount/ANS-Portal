@@ -139,6 +139,8 @@ export class BasicTranslations {
 
   getBasicTranslationsNumbers = (customerId, groupId) => {
     this.isBasicTranslationsNumbersLoading = true
+    this.amountOfBasicInstances = 0
+    this.basicTranslationsNumbers = []
     return axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
@@ -153,13 +155,25 @@ export class BasicTranslations {
             enabled: true,
             accessCountry:
               item.access_number &&
-              getCountryNameFromNumber(item.access_number),
+              getCountryNameFromNumber(
+                item.access_number[0] === '+'
+                  ? item.access_number
+                  : `+${item.access_number}`
+              ),
             destinationCountry:
               item.destination_number &&
-              getCountryNameFromNumber(item.destination_number),
+              getCountryNameFromNumber(
+                item.destination_number[0] === '+'
+                  ? item.destination_number
+                  : `+${item.destination_number}`
+              ),
             destinationCountryTwoLetterCode:
               item.destination_number &&
-              getCountryTwoLetterCodeFromNumber(item.destination_number),
+              getCountryTwoLetterCodeFromNumber(
+                item.destination_number[0] === '+'
+                  ? item.destination_number
+                  : `+${item.destination_number}`
+              ),
             ...item
           }
         })
@@ -181,6 +195,12 @@ export class BasicTranslations {
   }
 
   postAddMultipleANSBasic = (tenantId, groupId, data) => {
+    this.errorAdded = []
+    this.successAdded = []
+    this.refusedAdded = []
+    this.multipleCounter.success = 0
+    this.multipleCounter.error = 0
+    this.multipleCounter.count = 0
     axios
       .post(`/tenants/${tenantId}/groups/${groupId}/services/ans_basic`, data)
       .then(res => {
@@ -204,6 +224,12 @@ export class BasicTranslations {
   }
 
   putUpdateMultipleANSBasic = (tenantId, groupId, ans_id, data, accessObj) => {
+    this.errorAdded = []
+    this.successAdded = []
+    this.refusedAdded = []
+    this.multipleCounter.success = 0
+    this.multipleCounter.error = 0
+    this.multipleCounter.count = 0
     axios
       .put(
         `/tenants/${tenantId}/groups/${groupId}/services/ans_basic/${ans_id}`,

@@ -33,6 +33,8 @@ export class SubaccountsStore {
 
   getSubaccounts = tenantId => {
     this.isLoadingSubaccounts = true
+    this.rows = []
+    this.selectGroups = []
     axios
       .get(`/tenants/${tenantId}/groups`)
       .then(res => {
@@ -65,6 +67,22 @@ export class SubaccountsStore {
 
   getSubaccount = (customerId, groupId) => {
     this.isLoadingSubaccount = true
+    this.customer = {
+      groupId: '',
+      groupName: '',
+      defaultDomain: '',
+      contactInformation: {
+        name: '',
+        phoneNumber: '',
+        emailAddress: ''
+      },
+      addressInformation: {
+        addressLine1: '',
+        postalCode: '',
+        city: '',
+        country: ''
+      }
+    }
     axios
       .get(`/tenants/${customerId}/groups/${groupId}`)
       .then(res => {

@@ -68,9 +68,17 @@ const SingleNumber = observer(({ t }) => {
       setDestinationCountry(currentNumber.destinationCountry)
       setDestinationNumber(currentDestinationNumber)
 
-      const nsn = getNsnFromNumber(currentDestinationNumber)
+      const nsn = getNsnFromNumber(
+        currentDestinationNumber[0] === '+'
+          ? currentDestinationNumber
+          : `+${currentDestinationNumber}`
+      )
       setNsnToSend(nsn)
-      const code = getCountryCodeFromNumber(currentDestinationNumber)
+      const code = getCountryCodeFromNumber(
+        currentDestinationNumber[0] === '+'
+          ? currentDestinationNumber
+          : `+${currentDestinationNumber}`
+      )
       setCodeToSend(code)
     }
   }, [basicTranslationsNumbers])

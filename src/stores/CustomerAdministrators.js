@@ -31,6 +31,7 @@ export class CustomerAdminsStore {
 
   getCustomerAdmins = id => {
     this.isLoading = true
+    this.admins = []
     axios
       .get(`/tenants/${id}/admins/`)
       .then(res => {
@@ -54,6 +55,7 @@ export class CustomerAdminsStore {
 
   getCustomerAdminsLanguages = () => {
     this.isLanguagesLoading = true
+    this.languagesList = []
     axios
       .get(`/system/languages/`)
       .then(res => {

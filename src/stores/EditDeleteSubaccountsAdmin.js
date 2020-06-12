@@ -34,7 +34,11 @@ export class EditDeleteSubaccountAdminStore {
 
   getSubaccountAdminInfo = ({ id, userId, groupId }) => {
     this.isLoadingData = true
-
+    this.updatedSubaccountAdmin = {
+      firstName: '',
+      lastName: '',
+      language: ''
+    }
     axios
       .get(`/tenants/${id}/groups/${groupId}/admins/${userId}`)
       .then(res => {
