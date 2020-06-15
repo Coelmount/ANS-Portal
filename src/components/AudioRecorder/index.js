@@ -31,6 +31,7 @@ const AudioRecorder = props => {
   const recordingTimeMS = 30000
   let timer = null
   let timerPlayingId = null
+  let waitTimer = null
   let preview = useRef(null)
   let recording = useRef(null)
   const [currentTime, setCurrentTime] = useState(0)
@@ -54,6 +55,7 @@ const AudioRecorder = props => {
     return () => {
       clearInterval(timer)
       clearInterval(timerPlayingId)
+      clearTimeout(waitTimer)
     }
   }, [])
 
@@ -89,7 +91,9 @@ const AudioRecorder = props => {
   }
 
   const wait = delayInMS => {
-    return new Promise(resolve => setTimeout(resolve, delayInMS))
+    return new Promise(resolve => {
+      waitTimer = setTimeout(resolve, delayInMS)
+    })
   }
 
   const handleStartRecord = () => {
@@ -107,7 +111,6 @@ const AudioRecorder = props => {
         startRecording(preview.current.captureStream(), recordingTimeMS)
       )
       .then(recordedChunks => {
-        window.recordedChunks = recordedChunks
         let recordedBlob = new Blob(recordedChunks, { type: 'audio/vnd.wav' })
         let reader = new FileReader()
         reader.readAsDataURL(recordedBlob)
@@ -125,8 +128,9 @@ const AudioRecorder = props => {
   const handleStopRecord = () => {
     stop(preview.current.srcObject)
     setIsRecording('recorded')
-    setRecordedTime(currentTime)
+    setRecordedTime(preview.current.currentTime)
     clearInterval(timer)
+    clearTimeout(waitTimer)
   }
 
   const handleStartPlaying = () => {
