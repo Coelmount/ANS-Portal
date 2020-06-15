@@ -73,8 +73,12 @@ const AudioRecorder = props => {
       recorder.onerror = event => reject(event.name)
     })
 
-    const recorded = wait(lengthInMS).then(() => {
-      recorder.state == 'recording' && recorder.stop()
+    const recorded = new Promise((resolve, reject) => {
+      wait(lengthInMS).then(() => {
+        recorder.state == 'recording' && handleStopRecord()
+        recorder.onstop = resolve
+        recorder.onerror = event => reject(event.name)
+      })
     })
 
     return Promise.race([stopped, recorded]).then(() => data)
