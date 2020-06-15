@@ -12,6 +12,7 @@ class IVR {
   multiLvl = false
   isLoadingLicenses = false
   addIVR = false
+  isUpdatingIVR = false
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -86,6 +87,29 @@ class IVR {
         this.addIVR = false
       })
   }
+
+  putUpdateIVR = (tenantId, groupId, ivrId, data, callback) => {
+    this.isUpdatingIVR = true
+    axios
+      .put(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}`,
+        data
+      )
+      .then(() => {
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update ivr',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isUpdatingIVR = false
+      })
+  }
 }
 
 decorate(IVR, {
@@ -95,9 +119,11 @@ decorate(IVR, {
   singleLvl: observable,
   multiLvl: observable,
   addIVR: observable,
+  isUpdatingIVR: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
-  postAddIVR: action
+  postAddIVR: action,
+  putUpdateIVR: action
 })
 
 export default new IVR()

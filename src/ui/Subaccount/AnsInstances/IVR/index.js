@@ -13,6 +13,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CustomTable from 'components/CustomTable'
 import AddIVR from './AddIVR'
+import DisableEnableIVR from 'components/DeleteModal'
 
 import AddIcon from '@material-ui/icons/Add'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
@@ -32,14 +33,39 @@ const IVR = props => {
     singleLvl,
     multiLvl,
     getCheckLicensesIVR,
-    isLoadingLicenses
+    isLoadingLicenses,
+    isUpdatingIVR,
+    putUpdateIVR
   } = IVRStore
-  const [showAddIVR, setShowAddIVR] = useState(true)
+  const [showAddIVR, setShowAddIVR] = useState(false)
+  const [ivrForSwitchStatus, setIVRForSwitchStatus] = useState(null)
 
   useEffect(() => {
     getIVRs(match.customerId, match.groupId)
     getCheckLicensesIVR(match.customerId, match.groupId)
   }, [])
+
+  const handleSwitchStatus = () => {
+    putUpdateIVR(
+      match.customerId,
+      match.groupId,
+      ivrForSwitchStatus.serviceUserId,
+      {
+        ivrInstance: {
+          active: !ivrForSwitchStatus.active,
+          serviceUserId: ivrForSwitchStatus.serviceUserId
+        }
+      },
+      handleClose
+    )
+  }
+
+  const handleClose = () => {
+    setShowAddIVR(false)
+    setIVRForSwitchStatus(null)
+    getIVRs(match.customerId, match.groupId)
+    getCheckLicensesIVR(match.customerId, match.groupId)
+  }
 
   const titleData = {
     mainText: 'IVR',
@@ -62,7 +88,8 @@ const IVR = props => {
       label: t('type'),
       extraProps: {
         scope: 'row'
-      }
+      },
+      getCellData: row => (row.type === 'Basic' ? 'Single level' : 'Multilevel')
     },
     {
       id: 'disEn',
@@ -74,11 +101,7 @@ const IVR = props => {
       getCellData: row => (
         <Switch
           checked={row.active}
-          // handleChange={e =>
-          //   setSelectedStatus(
-          //     e.target.checked === true ? item.name : ''
-          //   )
-          // }
+          handleChange={() => setIVRForSwitchStatus(row)}
         />
       )
     },
@@ -94,7 +117,7 @@ const IVR = props => {
           <CloseOutlinedIcon
           //onClick={() => handleOpenDeleteModal(row.groupId, row.groupName)}
           //className={classes.deleteCustomerIcon}
-          />{' '}
+          />
         </IconButton>
       )
     }
@@ -122,13 +145,27 @@ const IVR = props => {
           noAvailableDataMessage={t('no_ivrs_available')}
           tableId='ivrs'
         />
-        {showAddIVR && (
-          <AddIVR
-            open={showAddIVR}
-            handleClose={() => {
-              setShowAddIVR(false)
-              getIVRs(match.customerId, match.groupId)
+        {showAddIVR && <AddIVR open={showAddIVR} handleClose={handleClose} />}
+        {ivrForSwitchStatus && (
+          <DisableEnableIVR
+            open={ivrForSwitchStatus}
+            action={
+              ivrForSwitchStatus.active ? t('to_disable') : t('to_enable')
+            }
+            titleAction={ivrForSwitchStatus.active ? t('disable') : t('enable')}
+            handleClose={handleClose}
+            deleteSubject={t('ans_ivr_instance')}
+            extraDeleteSubject={'ANS IVR'}
+            deleteInfo={{
+              name: `${ivrForSwitchStatus.name}, ${
+                ivrForSwitchStatus.type === 'Basic'
+                  ? 'Single level'
+                  : 'Multilevel'
+              }`
             }}
+            handleDelete={handleSwitchStatus}
+            isDeleting={isUpdatingIVR}
+            handleDelete={handleSwitchStatus}
           />
         )}
       </Paper>
