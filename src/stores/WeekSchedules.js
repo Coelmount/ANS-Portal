@@ -40,6 +40,9 @@ export class WeekSchedules {
   isWeekScheduleLoading = true
   isPeriodPosting = false
   isScheduleEditing = false
+  isPeriodDeleting = false
+  isThisSlotDeleting = false
+  isAllPeriodsDeleting = false
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -362,6 +365,87 @@ export class WeekSchedules {
         this.isScheduleEditing = false
       })
   }
+
+  deletePeriod = (
+    customerId,
+    groupId,
+    weekScheduleName,
+    periodName,
+    closeModal
+  ) => {
+    this.isPeriodDeleting = true
+    let promiseArr = []
+
+    this.periods.forEach(period => {
+      if (period.id === periodName) {
+        const weekDays = Object.keys(period.weekDays)
+        weekDays.forEach(day => {
+          if (period.weekDays[day] === true) {
+            promiseArr.push(
+              axios.delete(
+                `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName} ${day}/`
+              )
+            )
+          }
+        })
+      }
+    })
+
+    Promise.all(promiseArr)
+      .then(() => {
+        closeModal()
+      })
+      .finally(() => {
+        this.isPeriodDeleting = false
+      })
+  }
+
+  deleteThisTimeSlot = (
+    customerId,
+    groupId,
+    weekScheduleName,
+    fullPeriodId,
+    closeModal
+  ) => {
+    this.isThisSlotDeleting = true
+
+    axios
+      .delete(
+        `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${fullPeriodId}/`
+      )
+      .then(() => {
+        closeModal()
+      })
+      .finally(() => {
+        this.isThisSlotDeleting = false
+      })
+  }
+
+  deleteAllPeriods = (customerId, groupId, weekScheduleName, closeModal) => {
+    this.isAllPeriodsDeleting = true
+    let promiseArr = []
+
+    this.periods.forEach(period => {
+      const weekDays = Object.keys(period.weekDays)
+      weekDays.forEach(day => {
+        if (period.weekDays[day] === true) {
+          promiseArr.push(
+            axios.delete(
+              `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${period.id} ${day}/`
+            )
+          )
+        }
+      })
+    })
+
+    Promise.all(promiseArr)
+      .then(() => {
+        closeModal()
+      })
+      .finally(() => {
+        this.isAllPeriodsDeleting = false
+      })
+  }
 }
 decorate(WeekSchedules, {
   isPeriodsValid: computed,
@@ -375,6 +459,9 @@ decorate(WeekSchedules, {
   periods: observable,
   initPeriods: observable,
   isScheduleEditing: observable,
+  isPeriodDeleting: observable,
+  isThisSlotDeleting: observable,
+  isAllPeriodsDeleting: observable,
   getSchedules: action,
   deleteSchedule: action,
   postSchedule: action,
@@ -386,7 +473,10 @@ decorate(WeekSchedules, {
   setDefaultPeriods: action,
   putPeriods: action,
   findPeriodAndSetToEdit: action,
-  putPeriod: action
+  putPeriod: action,
+  deletePeriod: action,
+  deleteThisTimeSlot: action,
+  deleteAllPeriods: action
 })
 
 export default new WeekSchedules()

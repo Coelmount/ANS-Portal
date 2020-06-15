@@ -21,11 +21,14 @@ import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import AddPeriodModal from './components/AddPeriodModal'
 import EditScheduleModal from './components/EditScheduleModal'
+import DeletePeriodsModal from './components/DeletePeriodsModal'
 
 import * as dates from './dates'
 import useStyles from './styles'
 import 'react-big-calendar/lib/sass/styles.scss'
-import editSvg from 'source/images/svg/edit-blue.svg'
+import blueEditIcon from 'source/images/svg/edit-blue.svg'
+import editIcon from 'source/images/svg/edit.svg'
+import deleteIcon from 'source/images/svg/delete-icon.svg'
 
 const WeekSchedule = observer(({ t }) => {
   const classes = useStyles()
@@ -35,7 +38,13 @@ const WeekSchedule = observer(({ t }) => {
     isWeekScheduleLoading,
     weekSchedulePeriods,
     setDefaultPeriods,
-    findPeriodAndSetToEdit
+    findPeriodAndSetToEdit,
+    deletePeriod,
+    isPeriodDeleting,
+    deleteThisTimeSlot,
+    isThisSlotDeleting,
+    deleteAllPeriods,
+    isAllPeriodsDeleting
   } = WeekSchedulesStore
 
   const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
@@ -43,12 +52,15 @@ const WeekSchedule = observer(({ t }) => {
   const [isSinglePeriodEditActive, setIsSinglePeriodEditActive] = useState(
     false
   )
+  const [isDeletePeriodsModalOpen, setIsDeletePeriodsModalOpen] = useState(
+    false
+  )
   const [anchorEl, setAnchorEl] = useState(null)
+  const [currentClickEvent, setCurrentClickEvent] = useState(null)
   const [currentPeriod, setCurrentPeriod] = useState(null)
 
   const isPeriodPopoverOpen = Boolean(anchorEl)
   const popoverId = isPeriodPopoverOpen ? 'period-popover' : undefined
-  console.log(isPeriodPopoverOpen, popoverId, 'pop data')
 
   useEffect(() => {
     getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
@@ -77,16 +89,8 @@ const WeekSchedule = observer(({ t }) => {
     setIsSinglePeriodEditActive(false)
   }
 
-  // Single event edit
-  const handleEventClick = (event, e) => {
-    setAnchorEl(e.currentTarget)
-    // setIsEditScheduleModalOpen(true)
-    // setIsSinglePeriodEditActive(true)
-    // findPeriodAndSetToEdit(event)
-  }
-
+  // POPOVER
   const handlePopoverOpen = event => {
-    console.log(event, 'event')
     setAnchorEl(event.currentTarget)
   }
 
@@ -94,81 +98,89 @@ const WeekSchedule = observer(({ t }) => {
     setAnchorEl(null)
   }
 
-  const ExtraTitleBlock = (
-    <Box className={classes.extraTitleBlock}>
-      <Box className={classes.editIconWrap}>
-        <img src={editSvg} className={classes.editIcon} alt='edit' />
-      </Box>
-    </Box>
-  )
+  // POPOVER EDIT
+  const handleEditPeriodModalOpen = () => {
+    setIsEditScheduleModalOpen(true)
+    setIsSinglePeriodEditActive(true)
+    findPeriodAndSetToEdit(currentPeriod)
+  }
 
-  const EventComponent = ({ event, title }) => {
-    console.log(currentPeriod, 'currentPeriod')
-    console.log(title, 'title')
-    return (
-      <Box>
-        {/* {isPopoverOpen && (
-          <Box style={{ position: 'absolute', top: '50%', right: '50%' }}>
-            popover
-          </Box>
-        )} */}
+  // POPOVER  DELETE
+  const handleDeletePeriodModalOpen = () => {
+    setIsDeletePeriodsModalOpen(true)
+  }
 
-        {/* <Box>
-          <Popover
-            id={popoverId}
-            open={true}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-          >
-            <Box>POPOVER MODAL</Box>
-          </Popover>
-        </Box> */}
+  const handleDeletePeriodsModalClose = () => {
+    setIsDeletePeriodsModalOpen(false)
+    setAnchorEl(null)
+    getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
+  }
 
-        <p>title</p>
-        {currentPeriod && title === currentPeriod && <div>modal</div>}
-      </Box>
+  // DELETE HANDLERS
+  const handleDeleteThisPeriod = () => {
+    const periodName = currentPeriod.title.split(' ')[0]
+    deletePeriod(
+      match.customerId,
+      match.groupId,
+      match.weekScheduleName,
+      periodName,
+      handleDeletePeriodsModalClose
     )
+  }
+  const handleDeleteThisTimeSlot = () => {
+    const fullPeriodName = currentPeriod.title // check clear
+    deleteThisTimeSlot(
+      match.customerId,
+      match.groupId,
+      match.weekScheduleName,
+      fullPeriodName,
+      handleDeletePeriodsModalClose
+    )
+  }
+
+  const handleDeleteAllPeriods = () => {
+    deleteAllPeriods(
+      match.customerId,
+      match.groupId,
+      match.weekScheduleName,
+      handleDeletePeriodsModalClose
+    )
+  }
+
+  // DATA
+  const globalizeLocalizer = localizer(globalize)
+  let formats = {
+    dayFormat: 'ddd'
   }
 
   const titleData = {
     mainText: `${t('week_schedules')}: ${match.weekScheduleName}`,
     iconCapture: t('add_slot'),
     Icon: <AddOutlinedIcon />,
-    titleIcon: <img src={editSvg} className={classes.editIcon} alt='edit' />
+    titleIcon: (
+      <img src={blueEditIcon} className={classes.editIcon} alt='edit' />
+    )
   }
 
-  // const events = [
-  //   {
-  //     id: 3,
-  //     title: 'Meeting',
-  //     start: new Date(2020, 5, 10, 10, 30),
-  //     end: new Date(2020, 5, 10, 12, 30),
-  //     desc: 'Pre-meeting meeting, to prepare for the meeting'
-  //   }
-  // ]
-
-  const ColoredDateCellWrapper = ({ children }) =>
-    React.cloneElement(React.Children.only(children), {
-      style: {
-        // backgroundColor: 'lightblue'
-      }
-    })
-
-  const globalizeLocalizer = localizer(globalize)
-
-  let formats = {
-    dayFormat: 'ddd'
-  }
+  const popoverButtons = [
+    {
+      Icon: editIcon,
+      label: t('edit'),
+      handleClick: handleEditPeriodModalOpen
+    },
+    {
+      Icon: deleteIcon,
+      label: t('delete'),
+      handleClick: handleDeletePeriodModalOpen
+    }
+  ]
 
   return (
     <Fragment>
       {isWeekScheduleLoading ? (
         <Loading />
       ) : (
-        <Box
-          onClick={event => console.log(event, 'click event')}
-          className={classes.root}
-        >
+        <Box className={classes.root}>
           <Paper>
             <CustomContainer>
               <CustomBreadcrumbs />
@@ -179,20 +191,17 @@ const WeekSchedule = observer(({ t }) => {
               />
             </CustomContainer>
             <Calendar
+              selectable
               events={weekSchedulePeriods}
               view='week'
               toolbar={false}
               formats={formats}
               defaultDate={new Date(2020, 5, 7)}
-              components={{
-                timeSlotWrapper: ColoredDateCellWrapper,
-                event: EventComponent
-                // event: EventWrapper
-              }}
               localizer={globalizeLocalizer}
               onSelectEvent={(event, e) => {
-                handleEventClick(event, e)
-                setCurrentPeriod(event.title)
+                setCurrentClickEvent(e)
+                setCurrentPeriod(event)
+                setAnchorEl(e.currentTarget)
               }}
 
               // onSelectEvent={event => }
@@ -217,11 +226,46 @@ const WeekSchedule = observer(({ t }) => {
                 isSinglePeriodEditActive={isSinglePeriodEditActive}
               />
             )}
-            {/* {isPopoverOpen && (
-              <Box style={{ position: 'absolute', top: '50%', right: '50%' }}>
-                popover
-              </Box>
-            )} */}
+            {isDeletePeriodsModalOpen && (
+              <DeletePeriodsModal
+                open={isDeletePeriodsModalOpen}
+                handleClose={handleDeletePeriodsModalClose}
+                handleDeleteThisPeriod={handleDeleteThisPeriod}
+                isPeriodDeleting={isPeriodDeleting}
+                handleDeleteThisTimeSlot={handleDeleteThisTimeSlot}
+                isThisSlotDeleting={isThisSlotDeleting}
+                handleDeleteAllPeriods={handleDeleteAllPeriods}
+                isAllPeriodsDeleting={isAllPeriodsDeleting}
+              />
+            )}
+            <Box>
+              <Popover
+                id={popoverId}
+                open={isPeriodPopoverOpen}
+                anchorEl={anchorEl}
+                onClose={handlePopoverClose}
+                anchorOrigin={{
+                  vertical: 'bottom'
+                }}
+              >
+                <Box className={classes.popoverWrap}>
+                  {popoverButtons.map(({ Icon, label, handleClick }) => (
+                    <Box
+                      onClick={handleClick}
+                      className={classes.popoverButtonWrap}
+                      key={label}
+                    >
+                      <img
+                        src={Icon}
+                        className={classes.popoverIcon}
+                        alt={`${label}`}
+                      />
+                      <span className={classes.popoverLabel}>{label}</span>
+                    </Box>
+                  ))}
+                </Box>
+              </Popover>
+            </Box>
           </Paper>
         </Box>
       )}
