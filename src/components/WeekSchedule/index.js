@@ -14,11 +14,11 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-import Popover from '@material-ui/core/Popover'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
+import PopoverBlock from './components/PopoverBlock/index.jsx'
 import AddPeriodModal from './components/AddPeriodModal'
 import EditScheduleModal from './components/EditScheduleModal'
 import DeletePeriodsModal from './components/DeletePeriodsModal'
@@ -56,7 +56,6 @@ const WeekSchedule = observer(({ t }) => {
     false
   )
   const [anchorEl, setAnchorEl] = useState(null)
-  const [currentClickEvent, setCurrentClickEvent] = useState(null)
   const [currentPeriod, setCurrentPeriod] = useState(null)
 
   const isPeriodPopoverOpen = Boolean(anchorEl)
@@ -128,7 +127,7 @@ const WeekSchedule = observer(({ t }) => {
     )
   }
   const handleDeleteThisTimeSlot = () => {
-    const fullPeriodName = currentPeriod.title // check clear
+    const fullPeriodName = currentPeriod.title
     deleteThisTimeSlot(
       match.customerId,
       match.groupId,
@@ -199,7 +198,6 @@ const WeekSchedule = observer(({ t }) => {
               defaultDate={new Date(2020, 5, 7)}
               localizer={globalizeLocalizer}
               onSelectEvent={(event, e) => {
-                setCurrentClickEvent(e)
                 setCurrentPeriod(event)
                 setAnchorEl(e.currentTarget)
               }}
@@ -212,6 +210,14 @@ const WeekSchedule = observer(({ t }) => {
               //   -1,
               //   'hours'
               // )}
+            />
+            <PopoverBlock
+              popoverId={popoverId}
+              isPeriodPopoverOpen={isPeriodPopoverOpen}
+              anchorEl={anchorEl}
+              handlePopoverClose={handlePopoverClose}
+              classes={classes}
+              popoverButtons={popoverButtons}
             />
             {isAddPeriodModalOpen && (
               <AddPeriodModal
@@ -238,34 +244,6 @@ const WeekSchedule = observer(({ t }) => {
                 isAllPeriodsDeleting={isAllPeriodsDeleting}
               />
             )}
-            <Box>
-              <Popover
-                id={popoverId}
-                open={isPeriodPopoverOpen}
-                anchorEl={anchorEl}
-                onClose={handlePopoverClose}
-                anchorOrigin={{
-                  vertical: 'bottom'
-                }}
-              >
-                <Box className={classes.popoverWrap}>
-                  {popoverButtons.map(({ Icon, label, handleClick }) => (
-                    <Box
-                      onClick={handleClick}
-                      className={classes.popoverButtonWrap}
-                      key={label}
-                    >
-                      <img
-                        src={Icon}
-                        className={classes.popoverIcon}
-                        alt={`${label}`}
-                      />
-                      <span className={classes.popoverLabel}>{label}</span>
-                    </Box>
-                  ))}
-                </Box>
-              </Popover>
-            </Box>
           </Paper>
         </Box>
       )}

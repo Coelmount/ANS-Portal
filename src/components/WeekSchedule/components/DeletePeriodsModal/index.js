@@ -38,6 +38,7 @@ const DeletePeriodsModal = ({
     setRadioButtonValue(event.target.value)
   }
 
+  // ACTION HANDLERS
   const handleCancelButtonClick = () => {
     handleClose()
   }
@@ -58,6 +59,7 @@ const DeletePeriodsModal = ({
     }
   }
 
+  // DATA
   const contentMenu = [
     {
       value: 'thisTimeSlot',
@@ -88,6 +90,41 @@ const DeletePeriodsModal = ({
     }
   ]
 
+  // SMALL COMPONENTS
+  const ContentMenu = () => {
+    return (
+      <Fragment>
+        {contentMenu.map(({ value, label }) => (
+          <FormControlLabel
+            value={value}
+            control={<Radio />}
+            label={label}
+            key={label}
+          />
+        ))}
+      </Fragment>
+    )
+  }
+
+  const DialogActionsBlock = () => {
+    return (
+      <DialogActions className={classes.dialogActionsWrap}>
+        {dialogActions.map(({ label, classname, handleClick, disabled }) => (
+          <Button
+            variant='contained'
+            color='primary'
+            className={classname}
+            onClick={handleClick}
+            key={label}
+            disabled={disabled}
+          >
+            {label}
+          </Button>
+        ))}
+      </DialogActions>
+    )
+  }
+
   return (
     <Dialog open={open} onClose={handleClose} className={classes.dialogWrap}>
       {isLoading ? (
@@ -114,33 +151,11 @@ const DeletePeriodsModal = ({
               value={radioButtonValue}
               onChange={handleRadioButtonChange}
             >
-              {contentMenu.map(({ value, label }) => (
-                <FormControlLabel
-                  value={value}
-                  control={<Radio />}
-                  label={label}
-                  key={label}
-                />
-              ))}
+              <ContentMenu />
             </RadioGroup>
           </DialogContent>
 
-          <DialogActions className={classes.dialogActionsWrap}>
-            {dialogActions.map(
-              ({ label, classname, handleClick, disabled }) => (
-                <Button
-                  variant='contained'
-                  color='primary'
-                  className={classname}
-                  onClick={handleClick}
-                  key={label}
-                  disabled={disabled}
-                >
-                  {label}
-                </Button>
-              )
-            )}
-          </DialogActions>
+          <DialogActionsBlock />
         </Fragment>
       )}
     </Dialog>
