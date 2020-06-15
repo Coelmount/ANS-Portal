@@ -16,6 +16,7 @@ export class ConfigStore {
 
   getConfig = () => {
     this.isLoadingConfig = true
+    this.config = {}
     axios
       .get(`/configs/applications/ANS_portal/config`)
       .then(res => {
@@ -41,6 +42,7 @@ export class ConfigStore {
 
   getCustomerStatuses = () => {
     this.isLoadingCustomerStatuses = true
+    this.customerStatuses = []
     axios
       .get(`/configs/templates/categories/group_intercept`)
       .then(res => {
@@ -53,6 +55,7 @@ export class ConfigStore {
 
   getTimeZones = () => {
     this.isLoadingTimeZones = true
+    this.timeZones = []
     return axios
       .get(`/system/timezones/`)
       .then(res => {
@@ -68,6 +71,7 @@ export class ConfigStore {
 
   getCountries = () => {
     this.isLoadingCountries = true
+    this.countries = []
     return axios
       .get(`/configs/applications/ANS_portal/countries`)
       .then(res => {

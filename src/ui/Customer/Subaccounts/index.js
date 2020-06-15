@@ -10,7 +10,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import SubaccountsStore from 'stores/Subaccounts'
-import BasicTranslationsStore from 'stores/BasicTranslations'
+import PhoneNumbersStore from 'stores/PhoneNumbers'
 import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
@@ -38,11 +38,12 @@ const SubaccountsTable = observer(({ t }) => {
   } = SubaccountsStore
 
   const {
-    getAvailableNumbersForAddInstance,
-    availableNumbersForAddInstance,
-    isAvailableNumbersForAddInstanceLoading,
-    clearAvailableNumbersForAddInstance
-  } = BasicTranslationsStore
+    getPhoneNumbers,
+    transformedPhoneNumbers,
+    isPhoneNumbersLoading,
+    clearPhoneNumbers,
+    isGetPhoneNumbersRequestDone
+  } = PhoneNumbersStore
 
   const { setDefaultValues } = CreateSubaccountStore
 
@@ -53,8 +54,7 @@ const SubaccountsTable = observer(({ t }) => {
   const [isNoNumbersModalOpen, setIsNoNumbersModalOpen] = useState(false)
 
   const isLoading =
-    isLoadingSubaccounts ||
-    (isAvailableNumbersForAddInstanceLoading && clickedGroupId)
+    isLoadingSubaccounts || (isPhoneNumbersLoading && clickedGroupId)
 
   useEffect(() => {
     getSubaccounts(match.customerId)
@@ -63,19 +63,19 @@ const SubaccountsTable = observer(({ t }) => {
   useEffect(() => {
     return () => {
       getDefaultValues()
-      clearAvailableNumbersForAddInstance()
+      clearPhoneNumbers()
     }
-  }, [getDefaultValues])
+  }, [])
 
   useEffect(() => {
-    if (availableNumbersForAddInstance.length && clickedGroupId) {
+    if (transformedPhoneNumbers.length && clickedGroupId) {
       history.push(
         `/customers/${match.customerId}/subaccounts/${clickedGroupId}/ans_instances`
       )
-    } else if (clickedGroupId) {
+    } else if (clickedGroupId && isGetPhoneNumbersRequestDone === true) {
       setIsNoNumbersModalOpen(true)
     }
-  }, [availableNumbersForAddInstance])
+  }, [transformedPhoneNumbers])
 
   const columns = [
     {
@@ -162,12 +162,13 @@ const SubaccountsTable = observer(({ t }) => {
   }
 
   const handleIdClick = groupId => {
-    getAvailableNumbersForAddInstance(match.customerId, groupId, 1, 10)
+    getPhoneNumbers(match.customerId, groupId, 1, 10)
     setClickedGroupId(groupId)
   }
 
   const handleCloseNoNumbersModal = () => {
     setIsNoNumbersModalOpen(false)
+    getSubaccounts(match.customerId)
   }
 
   return (

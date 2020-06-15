@@ -43,6 +43,7 @@ const AddCustomerAdministrator = ({
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatedPassword] = useState('')
   const [passwordError, setPasswordError] = useState(false)
+  const [isPasswordInputActive, setIsPasswordInputActive] = useState(false)
 
   const {
     getCustomerAdminsLanguages,
@@ -64,12 +65,17 @@ const AddCustomerAdministrator = ({
     if (repeatPassword) {
       if (password === repeatPassword) {
         setUserInfo('password', password)
-        setPasswordError(false)
-      } else {
-        setPasswordError(true)
       }
     }
   }, [repeatPassword, password])
+
+  useEffect(() => {
+    setPasswordError(
+      password !== repeatPassword &&
+        Boolean(repeatPassword) &&
+        !isPasswordInputActive
+    )
+  }, [isPasswordInputActive])
 
   useEffect(() => {
     getCustomer(match.customerId)
@@ -132,6 +138,12 @@ const AddCustomerAdministrator = ({
                   variant='outlined'
                   value={password}
                   onChange={handlePasswordChange}
+                  onFocus={() => {
+                    setIsPasswordInputActive(true)
+                  }}
+                  onBlur={() => {
+                    setIsPasswordInputActive(false)
+                  }}
                   type={'password'}
                 />
               </Box>
@@ -143,6 +155,12 @@ const AddCustomerAdministrator = ({
                   variant='outlined'
                   value={repeatPassword}
                   onChange={handleRepeatPasswordChange}
+                  onFocus={() => {
+                    setIsPasswordInputActive(true)
+                  }}
+                  onBlur={() => {
+                    setIsPasswordInputActive(false)
+                  }}
                   type={'password'}
                   helperText={passwordError ? 'Passwords is not match' : null}
                 />

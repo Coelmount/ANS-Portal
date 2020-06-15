@@ -110,7 +110,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   firstTab: {
-    marginTop: 35
+    marginTop: 60
   },
   mainActive: {
     background: theme.palette.active.main
@@ -263,6 +263,7 @@ const useStyles = makeStyles(theme => ({
     borderBottom: '1px solid #F9F9F9'
   },
   userWrap: {
+    height: 50,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

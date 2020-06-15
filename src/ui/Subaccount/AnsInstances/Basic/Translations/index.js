@@ -55,6 +55,7 @@ const Translations = observer(({ t }) => {
     showMultipleUpdateANSNumbers,
     setShowMultipleUpdateANSNumbers
   ] = useState(false)
+
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [instancesForDelete, setInstancesForDelete] = useState([])
@@ -73,7 +74,9 @@ const Translations = observer(({ t }) => {
     isDeleting,
     getAvailableNumbersForAddInstance,
     availableNumbersForAddInstance,
-    isAvailableNumbersForAddInstanceLoading
+    isAvailableNumbersForAddInstanceLoading,
+    clearAvailableNumbersForAddInstance,
+    clearBasicNumbers
     // getCountriesConfig,
     // setNumbersWithConfig
   } = BasicTranslationsStore
@@ -90,6 +93,11 @@ const Translations = observer(({ t }) => {
 
     const ids = JSON.parse(localStorage.getItem('ids'))
     setIsUserSubaccount(Boolean(ids && ids.tenant_id && ids.group_id))
+
+    return () => {
+      clearAvailableNumbersForAddInstance()
+      clearBasicNumbers()
+    }
   }, [])
 
   useEffect(() => {
