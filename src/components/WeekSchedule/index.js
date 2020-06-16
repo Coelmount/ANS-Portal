@@ -27,7 +27,7 @@ import transformTime from 'utils/schedules/transformTime'
 
 import * as dates from './dates'
 import useStyles from './styles'
-import 'react-big-calendar/lib/sass/styles.scss'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
 import blueEditIcon from 'source/images/svg/edit-blue.svg'
 import editIcon from 'source/images/svg/edit.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
@@ -187,6 +187,12 @@ const WeekSchedule = observer(({ t }) => {
     }
   ]
 
+  // To show empty periods on view with only time (by default)
+  const EventComponent = () => null
+
+  // To disable lib warning
+  const handleOnViewChange = () => null
+
   return (
     <Fragment>
       {isWeekScheduleLoading ? (
@@ -203,26 +209,23 @@ const WeekSchedule = observer(({ t }) => {
               />
             </CustomContainer>
             <Calendar
-              selectable
-              events={weekSchedulePeriods}
               view='week'
+              events={weekSchedulePeriods}
+              onView={handleOnViewChange}
               toolbar={false}
               formats={formats}
               defaultDate={new Date(2020, 5, 7)}
               localizer={globalizeLocalizer}
+              className={classes.testCalendar}
               onSelectEvent={(event, e) => {
                 setCurrentPeriod(event)
                 setAnchorEl(e.currentTarget)
               }}
               onSelectSlot={handleSelectSlot}
-              // step={60}
-              // onSelectEvent={event => }
-              // showMultiDayTimes={false}
-              // max={dates.add(
-              //   dates.endOf(new Date(2015, 17, 1), 'day'),
-              //   -1,
-              //   'hours'
-              // )}
+              components={{
+                event: EventComponent
+              }}
+              selectable
             />
             <PopoverBlock
               popoverId={popoverId}

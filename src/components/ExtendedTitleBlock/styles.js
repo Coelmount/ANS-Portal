@@ -32,7 +32,8 @@ const useStyles = makeStyles(theme => ({
     height: 30,
     borderRadius: 20,
     marginRight: 8,
-    paddingLeft: 1
+    paddingLeft: 1,
+    cursor: 'pointer'
   },
   rightBlock: {
     display: 'flex',
