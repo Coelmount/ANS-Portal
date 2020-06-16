@@ -200,6 +200,24 @@ export class WeekSchedules {
     this.initPeriods = []
   }
 
+  // SET DAY ON EMPTY TIMESLOT SELECT
+  setPeriodToAdd = (day, start, stop) => {
+    const updatedWeekDays = {
+      ...defaultWeekDays
+    }
+    updatedWeekDays[day] = true
+
+    this.periods = [
+      {
+        id: performance.now().toString(36),
+        startTime: start,
+        stopTime: stop,
+        weekDays: updatedWeekDays
+      }
+    ]
+    this.initPeriods = []
+  }
+
   removePeriod = id => {
     const periodsCopy = this.periods.slice(0)
     const index = this.periods.findIndex(period => period.id === id)
@@ -476,7 +494,8 @@ decorate(WeekSchedules, {
   putPeriod: action,
   deletePeriod: action,
   deleteThisTimeSlot: action,
-  deleteAllPeriods: action
+  deleteAllPeriods: action,
+  setPeriodToAdd: action
 })
 
 export default new WeekSchedules()

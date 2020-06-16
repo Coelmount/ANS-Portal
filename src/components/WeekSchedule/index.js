@@ -22,6 +22,8 @@ import PopoverBlock from './components/PopoverBlock/index.jsx'
 import AddPeriodModal from './components/AddPeriodModal'
 import EditScheduleModal from './components/EditScheduleModal'
 import DeletePeriodsModal from './components/DeletePeriodsModal'
+import { WEEK_DAYS_ARR } from 'utils/schedules/weekDaysArr'
+import transformTime from 'utils/schedules/transformTime'
 
 import * as dates from './dates'
 import useStyles from './styles'
@@ -44,7 +46,8 @@ const WeekSchedule = observer(({ t }) => {
     deleteThisTimeSlot,
     isThisSlotDeleting,
     deleteAllPeriods,
-    isAllPeriodsDeleting
+    isAllPeriodsDeleting,
+    setPeriodToAdd
   } = WeekSchedulesStore
 
   const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
@@ -146,6 +149,16 @@ const WeekSchedule = observer(({ t }) => {
     )
   }
 
+  const handleSelectSlot = event => {
+    // week day
+    const clickedWeekDayIndex = new Date(event.start).getDay()
+    const clickedWeekDay = WEEK_DAYS_ARR[clickedWeekDayIndex].toLowerCase()
+    // start/end time
+    const transformedTime = transformTime(event.start, event.end)
+    setPeriodToAdd(clickedWeekDay, transformedTime.start, transformedTime.stop) // e.g. monday, 02:00, 02:30
+    setIsAddPeriodModalOpen(true)
+  }
+
   // DATA
   const globalizeLocalizer = localizer(globalize)
   let formats = {
@@ -201,9 +214,9 @@ const WeekSchedule = observer(({ t }) => {
                 setCurrentPeriod(event)
                 setAnchorEl(e.currentTarget)
               }}
-
-              // onSelectEvent={event => }
+              onSelectSlot={handleSelectSlot}
               // step={60}
+              // onSelectEvent={event => }
               // showMultiDayTimes={false}
               // max={dates.add(
               //   dates.endOf(new Date(2015, 17, 1), 'day'),
