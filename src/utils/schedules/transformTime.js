@@ -1,6 +1,6 @@
 const transformTime = (initStart, initStop) => {
   const initStartHours = new Date(initStart).getHours()
-  const initStartMinutes = new Date(initStop).getMinutes()
+  const initStartMinutes = new Date(initStart).getMinutes()
   const startHours =
     String(initStartHours).length === 2
       ? String(initStartHours)
