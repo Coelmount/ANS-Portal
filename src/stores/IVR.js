@@ -13,9 +13,13 @@ class IVR {
   isLoadingLicenses = false
   addIVR = false
   isUpdatingIVR = false
+  isDeletingIVR = false
+  ivr = {}
+  isUpdatingIVR = false
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
+    this.ivrs = []
     axios
       .get(`/tenants/${tenantId}/groups/${groupId}/services/ivrs/`)
       .then(res => (this.ivrs = res.data.ivrs))
@@ -24,6 +28,8 @@ class IVR {
 
   getCheckLicensesIVR = (tenantId, groupId) => {
     this.isLoadingLicenses = true
+    this.singleLvl = false
+    this.multiLvl = false
     axios
       .get(`/tenants/${tenantId}/groups/${groupId}/licenses/`)
       .then(res => {
@@ -110,6 +116,47 @@ class IVR {
         this.isUpdatingIVR = false
       })
   }
+
+  deleteIVR = (tenantId, groupId, ivrId, callback) => {
+    this.isDeletingIVR = true
+    axios
+      .delete(`/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/`)
+      .then(() => {
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete ivr',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isDeletingIVR = false
+      })
+  }
+
+  getIVR = (tenantId, groupId, ivrId) => {
+    this.isLoadingIVR = true
+    this.ivr = {}
+    axios
+      .get(`/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/`)
+      .then(res => {
+        this.ivr = res.data.ivrInstance
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch ivr',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isLoadingIVR = false
+      })
+  }
 }
 
 decorate(IVR, {
@@ -120,10 +167,15 @@ decorate(IVR, {
   multiLvl: observable,
   addIVR: observable,
   isUpdatingIVR: observable,
+  isDeletingIVR: observable,
+  ivr: observable,
+  isLoadingIVR: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
-  putUpdateIVR: action
+  putUpdateIVR: action,
+  deleteIVR: action,
+  getIVR: action
 })
 
 export default new IVR()

@@ -30,6 +30,7 @@ import SubaccountDetails from 'ui/Subaccount/Details'
 import WeekSchedules from 'ui/Subaccount/Schedules/WeekSchedules'
 import HolidaySchedules from 'ui/Subaccount/Schedules/HolidaySchedules'
 import ResetPassword from 'ui/ResetPassword'
+import IVRPage from 'ui/Subaccount/AnsInstances/IVR/IVRPage'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
@@ -143,6 +144,11 @@ const userComponents = [
   {
     path: '/customers/:customerId/subaccounts/:groupId/details',
     component: <SubaccountDetails />,
+    accessLevel: 3
+  },
+  {
+    path: '/customers/:customerId/subaccounts/:groupId/ivr/:ivrId',
+    component: <IVRPage />,
     accessLevel: 3
   }
 ]

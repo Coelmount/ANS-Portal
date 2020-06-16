@@ -103,26 +103,34 @@ const AddIVR = props => {
               value={type}
               onChange={e => setType(e.target.value)}
             >
-              <FormControlLabel
-                value='Basic'
-                control={
-                  <Radio
-                    checkedIcon={<span className={classes.checkedRadioIcon} />}
-                    icon={<span className={classes.radioIcon} />}
-                  />
-                }
-                label={t('single_lvl')}
-              />
-              <FormControlLabel
-                value='Standard'
-                control={
-                  <Radio
-                    checkedIcon={<span className={classes.checkedRadioIcon} />}
-                    icon={<span className={classes.radioIcon} />}
-                  />
-                }
-                label={t('multi_lvl')}
-              />
+              {singleLvl && (
+                <FormControlLabel
+                  value='Basic'
+                  control={
+                    <Radio
+                      checkedIcon={
+                        <span className={classes.checkedRadioIcon} />
+                      }
+                      icon={<span className={classes.radioIcon} />}
+                    />
+                  }
+                  label={t('single_lvl')}
+                />
+              )}
+              {multiLvl && (
+                <FormControlLabel
+                  value='Standard'
+                  control={
+                    <Radio
+                      checkedIcon={
+                        <span className={classes.checkedRadioIcon} />
+                      }
+                      icon={<span className={classes.radioIcon} />}
+                    />
+                  }
+                  label={t('multi_lvl')}
+                />
+              )}
             </RadioGroup>
           </Box>
         </Box>

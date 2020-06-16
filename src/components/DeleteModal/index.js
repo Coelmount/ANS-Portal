@@ -46,7 +46,7 @@ const DeleteModal = props => {
     <Dialog
       className={classes.deleteModal}
       disableAutoFocus={true}
-      open={open}
+      open={!!open}
       onClose={handleClose}
     >
       {isDeleting ? (
