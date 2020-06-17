@@ -65,10 +65,10 @@ const DeletePeriodsModal = ({
       value: 'thisTimeSlot',
       label: t('this_time_slot')
     },
-    {
-      value: 'thisPeriod',
-      label: t('this_period')
-    },
+    // {
+    //   value: 'thisPeriod',
+    //   label: t('this_period')
+    // },
     {
       value: 'allPeriods',
       label: t('all_periods')

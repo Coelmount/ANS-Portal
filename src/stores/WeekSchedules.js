@@ -128,11 +128,13 @@ export class WeekSchedules {
       .then(res => {
         const periods = res.data.periods
         const transformedPeriods = periods.map((item, index) => {
+          const generatedKey = performance.now().toString(36)
           return {
             id: index,
-            title: item.name,
+            title: `${generatedKey} ${item.dayOfWeek.toLowerCase()}`,
             start: transformWeekDateFormat(item.dayOfWeek, item.startTime),
-            end: transformWeekDateFormat(item.dayOfWeek, item.stopTime)
+            end: transformWeekDateFormat(item.dayOfWeek, item.stopTime),
+            initName: item.name
           }
         })
         this.weekSchedulePeriods = transformedPeriods
@@ -251,7 +253,7 @@ export class WeekSchedules {
           axios.post(
             `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/`,
             {
-              name: `${period.id} ${day}`,
+              name: `blabla 12 ${period.id} ${day}`,
               type: 'Day of the week',
               dayOfWeek: capitalize(day),
               startTime: period.startTime,
@@ -297,7 +299,7 @@ export class WeekSchedules {
         const weekDays = Object.keys(initPeriod.weekDays)
         weekDays.forEach(day => {
           if (initPeriod.weekDays[day] === true) {
-            const periodName = `${initPeriod.id} ${day}`
+            const periodName = initPeriod.initName
             promiseArr.push(
               axios.delete(
                 `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`
@@ -355,7 +357,7 @@ export class WeekSchedules {
       const weekDays = Object.keys(initPeriod.weekDays)
       weekDays.forEach(day => {
         if (initPeriod.weekDays[day] === true) {
-          const periodName = `${initPeriod.id} ${day}`
+          const periodName = initPeriod.initName
           promiseArr.push(
             axios.delete(
               `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`
@@ -401,7 +403,7 @@ export class WeekSchedules {
           if (period.weekDays[day] === true) {
             promiseArr.push(
               axios.delete(
-                `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName} ${day}/`
+                `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${period.initName}/`
               )
             )
           }
@@ -449,7 +451,7 @@ export class WeekSchedules {
         if (period.weekDays[day] === true) {
           promiseArr.push(
             axios.delete(
-              `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${period.id} ${day}/`
+              `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${period.initName}/`
             )
           )
         }

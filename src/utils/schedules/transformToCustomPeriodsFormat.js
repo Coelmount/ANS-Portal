@@ -22,6 +22,7 @@ const transformToCustomPeriodsFormat = periods => {
     let end
     let title
     let id
+    let initName
 
     periods.forEach(period => {
       if (period.title.split(' ')[0] === uniqueId) {
@@ -31,6 +32,7 @@ const transformToCustomPeriodsFormat = periods => {
         end = transformedTime.stop
         title = period.title
         id = period.id
+        initName = period.initName
 
         newWeekDays[period.title.split(' ')[1]] = true
       }
@@ -40,7 +42,8 @@ const transformToCustomPeriodsFormat = periods => {
       weekDays: newWeekDays,
       startTime: start,
       stopTime: end,
-      id: title.split(' ')[0]
+      id: title.split(' ')[0],
+      initName
     })
   })
   return transformedPeriods

@@ -18,7 +18,7 @@ const getPromiseArrComparedPeriods = (
     initPeriod.stopTime !== updatedPeriod.stopTime
   ) {
     weekDaysArr.forEach(day => {
-      const periodName = `${initPeriod.id} ${day}`
+      const periodName = updatedPeriod.initName
       if (
         initPeriod.weekDays[day] === true &&
         updatedPeriod.weekDays[day] === true
@@ -27,7 +27,7 @@ const getPromiseArrComparedPeriods = (
           axios.put(
             `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`,
             {
-              name: `${initPeriod.id} ${day}`,
+              name: periodName,
               type: 'Day of the week',
               dayOfWeek: capitalize(day),
               startTime: updatedPeriod.startTime,
@@ -50,7 +50,7 @@ const getPromiseArrComparedPeriods = (
         axios.post(
           `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/`,
           {
-            name: periodName,
+            name: `fook the system ${periodName}`,
             type: 'Day of the week',
             dayOfWeek: capitalize(day),
             startTime: updatedPeriod.startTime,
@@ -66,7 +66,7 @@ const getPromiseArrComparedPeriods = (
     ) {
       promiseArr.push(
         axios.delete(
-          `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`
+          `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${updatedPeriod.initName}/`
         )
       )
     }

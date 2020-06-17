@@ -130,7 +130,7 @@ const WeekSchedule = observer(({ t }) => {
     )
   }
   const handleDeleteThisTimeSlot = () => {
-    const fullPeriodName = currentPeriod.title
+    const fullPeriodName = currentPeriod.initName
     deleteThisTimeSlot(
       match.customerId,
       match.groupId,
