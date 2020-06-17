@@ -10,6 +10,7 @@ export class HolidaySchedules {
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
+  isHolidayScheduleLoading = true
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -82,6 +83,46 @@ export class HolidaySchedules {
       })
       .finally(() => (this.isSchedulePosting = false))
   }
+
+  getHolidaySchedule = (customerId, groupId, scheduleName) => {
+    this.isHolidayScheduleLoading = true
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${scheduleName}/`,
+        {
+          params: { full_list: true }
+        }
+      )
+      .then(res => {
+        console.log(res.data, 'res.data')
+        // const periods = res.data.periods
+        // const transformedPeriods = periods.map((item, index) => {
+        //   const generatedKey = performance.now().toString(36)
+        //   return {
+        //     id: index,
+        //     title: `${generatedKey} ${item.dayOfWeek.toLowerCase()}`,
+        //     start: transformWeekDateFormat(item.dayOfWeek, item.startTime),
+        //     end: transformWeekDateFormat(item.dayOfWeek, item.stopTime),
+        //     initName: item.name
+        //   }
+        // })
+        // this.weekSchedulePeriods = transformedPeriods
+        // const transformedToCustomFormatPeriods = transformToCustomPeriodsFormat(
+        //   transformedPeriods
+        // )
+        // this.periods = transformedToCustomFormatPeriods
+        // this.initPeriods = transformedToCustomFormatPeriods
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch holiday schedule',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => (this.isHolidayScheduleLoading = false))
+  }
 }
 
 decorate(HolidaySchedules, {
@@ -89,9 +130,11 @@ decorate(HolidaySchedules, {
   isSchedulesLoading: observable,
   isDeletingSchedule: observable,
   isSchedulePosting: observable,
+  isHolidayScheduleLoading: observable,
   getSchedules: action,
   deleteSchedule: action,
-  postSchedule: action
+  postSchedule: action,
+  getHolidaySchedule: action
 })
 
 export default new HolidaySchedules()

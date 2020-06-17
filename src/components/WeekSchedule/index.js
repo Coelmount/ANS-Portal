@@ -4,7 +4,7 @@ import { withNamespaces } from 'react-i18next'
 import { useParams, Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import globalize from 'globalize'
-import { Calendar, Views } from 'react-big-calendar'
+import { Calendar } from 'react-big-calendar'
 import localizer from 'react-big-calendar/lib/localizers/globalize'
 
 import Paper from '@material-ui/core/Paper'
@@ -160,7 +160,7 @@ const WeekSchedule = observer(({ t }) => {
 
   // DATA
   const globalizeLocalizer = localizer(globalize)
-  let formats = {
+  const formats = {
     dayFormat: 'ddd',
     timeGutterFormat: 'HH:mm',
     eventTimeRangeFormat: ({ start, end }) => {
