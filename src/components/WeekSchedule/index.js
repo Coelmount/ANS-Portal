@@ -4,7 +4,7 @@ import { withNamespaces } from 'react-i18next'
 import { useParams, Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import globalize from 'globalize'
-import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import localizer from 'react-big-calendar/lib/localizers/globalize'
 
 import Paper from '@material-ui/core/Paper'
@@ -161,7 +161,14 @@ const WeekSchedule = observer(({ t }) => {
   // DATA
   const globalizeLocalizer = localizer(globalize)
   let formats = {
-    dayFormat: 'ddd'
+    dayFormat: 'ddd',
+    timeGutterFormat: 'HH:mm',
+    eventTimeRangeFormat: ({ start, end }) => {
+      const startTime = new Date(start)
+      const stopTime = new Date(end)
+      const transformedTime = transformTime(startTime, stopTime)
+      return `${transformedTime.start} : ${transformedTime.stop}`
+    }
   }
 
   const titleData = {
@@ -215,7 +222,7 @@ const WeekSchedule = observer(({ t }) => {
               formats={formats}
               defaultDate={new Date(2020, 5, 7)}
               localizer={globalizeLocalizer}
-              className={classes.testCalendar}
+              className={classes.calendarCustomStyles}
               onSelectEvent={(event, e) => {
                 setCurrentPeriod(event)
                 setAnchorEl(e.currentTarget)
@@ -225,6 +232,7 @@ const WeekSchedule = observer(({ t }) => {
                 event: EventComponent
               }}
               tooltipAccessor={null}
+              showMultiDayTimes={null}
               selectable
             />
             <PopoverBlock

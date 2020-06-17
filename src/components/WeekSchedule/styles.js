@@ -34,8 +34,20 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'MTN',
     color: theme.palette.black
   },
-  testCalendar: {
-    margin: '0px 33px 33px 68px !important'
+  calendarCustomStyles: {
+    margin: '0px 33px 33px 68px !important',
+    '& .rbc-allday-cell': {
+      display: 'none'
+    },
+    '& .rbc-header': {
+      borderBottom: 'none',
+      paddingTop: 10,
+      paddingBottom: 10,
+      fontSize: 14
+    },
+    '& .rbc-event-label': {
+      fontSize: 13
+    }
   }
 }))
 
