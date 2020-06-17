@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 import has from 'lodash/has'
+import classnames from 'classnames'
 
 import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs'
@@ -13,11 +14,14 @@ import Grow from '@material-ui/core/Grow'
 import Popper from '@material-ui/core/Popper'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
+import BusinessHoursMenu from './Tabs/BHM/BusinessHoursMenu'
 
 import IVRStore from 'stores/IVR'
 
@@ -43,7 +47,7 @@ const IVRPage = props => {
       ivr.serviceInstanceProfile.name}`
   }
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event, newValue, hash) => {
     setActiveTab(newValue)
     switch (newValue) {
       case 0:
@@ -62,7 +66,10 @@ const IVRPage = props => {
         history.push('#details')
         break
       case 5:
-        history.push('#ivr_menu')
+        history.push(hash || '#ivr_menus')
+        break
+      case 6:
+        history.push('#submenus')
         break
     }
   }
@@ -80,7 +87,12 @@ const IVRPage = props => {
       case '#details':
         return 4
       case '#ivr_menus':
+      case '#ivr_menus_bhm':
+      case '#ivr_menus_ahm':
+      case '#ivr_menus_hm':
         return 5
+      case '#submenus':
+        return 6
       default:
         return 0
     }
@@ -90,11 +102,11 @@ const IVRPage = props => {
     setOpen(prevOpen => !prevOpen)
   }
 
-  const handleClose = (event, newValue) => {
+  const handleClose = (event, newValue, hash) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return
     }
-    handleChange(event, newValue)
+    handleChange(event, newValue, hash)
     setOpen(false)
   }
 
@@ -105,7 +117,7 @@ const IVRPage = props => {
     }
   }
 
-  const prevOpen = React.useRef(open)
+  const prevOpen = useRef(open)
   useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus()
@@ -141,21 +153,35 @@ const IVRPage = props => {
           className={classes.tab}
           onClick={handleToggle}
           ref={anchorRef}
+          className={classnames(classes.tab, {
+            [classes.displayNone]: ivr.type !== 'Standard'
+          })}
         />
-        {has(ivr, 'businessHoursMenu') && ivr.type === 'Standard' && (
-          <Tab
-            value={1}
-            label={t('business_hours_menu')}
-            className={classes.tab}
-          />
-        )}
-        {has(ivr, 'afterHoursMenu') && ivr.type === 'Basic' && (
-          <Tab
-            value={2}
-            label={t('after_hours_menu')}
-            className={classes.tab}
-          />
-        )}
+        <Tab
+          value={6}
+          label={t('submenus')}
+          className={classnames(classes.tab, {
+            [classes.displayNone]: ivr.type !== 'Standard'
+          })}
+        />
+        <Tab
+          value={1}
+          label={t('business_hours_menu')}
+          className={classnames(classes.tab, {
+            [classes.displayNone]: !(
+              has(ivr, 'businessHoursMenu') && ivr.type === 'Basic'
+            )
+          })}
+        />
+        <Tab
+          value={2}
+          label={t('after_hours_menu')}
+          className={classnames(classes.tab, {
+            [classes.displayNone]: !(
+              has(ivr, 'afterHoursMenu') && ivr.type === 'Basic'
+            )
+          })}
+        />
         <Tab
           value={3}
           label={`${t('whitelist')}/${t('blacklist')}`}
@@ -163,6 +189,13 @@ const IVRPage = props => {
         />
         <Tab value={4} label={t('details')} className={classes.lastTab} />
       </Tabs>
+      <TabPanel value={returnActiveTab()} index={0}>
+        Item One
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={1}>
+        <BusinessHoursMenu />
+      </TabPanel>
+
       <Popper
         open={open}
         anchorEl={anchorRef.current}
@@ -182,13 +215,13 @@ const IVRPage = props => {
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={open} onKeyDown={handleListKeyDown}>
-                  <MenuItem onClick={e => handleClose(e, 5)}>
+                  <MenuItem onClick={e => handleClose(e, 5, '#ivr_menus_bhm')}>
                     {t('business_hours_menu')}
                   </MenuItem>
-                  <MenuItem onClick={e => handleClose(e, 5)}>
+                  <MenuItem onClick={e => handleClose(e, 5, '#ivr_menus_ahm')}>
                     {t('after_hours_menu')}
                   </MenuItem>
-                  <MenuItem onClick={e => handleClose(e, 5)}>
+                  <MenuItem onClick={e => handleClose(e, 5, '#ivr_menus_hm')}>
                     {t('holiday_menu')}
                   </MenuItem>
                 </MenuList>
@@ -197,6 +230,24 @@ const IVRPage = props => {
           </Grow>
         )}
       </Popper>
+    </div>
+  )
+}
+
+const TabPanel = props => {
+  const { children, value, index, ...other } = props
+  const classes = useStyles()
+
+  return (
+    <div
+      className={classes.tabs}
+      role='tabpanel'
+      hidden={value !== index}
+      id={`wrapped-tabpanel-${index}`}
+      aria-labelledby={`wrapped-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
     </div>
   )
 }
