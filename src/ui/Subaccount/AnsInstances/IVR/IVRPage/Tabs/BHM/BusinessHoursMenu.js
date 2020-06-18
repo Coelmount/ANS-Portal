@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button'
 import SchedulerIcon from 'source/images/svg/schedules.svg'
 import EditIcon from 'source/images/svg/edit-blue.svg'
 
+import MenuTemplate from 'components/MenuTemplate'
+
 import IVRStore from 'stores/IVR'
 import useStyles from './styles'
 
@@ -47,6 +49,7 @@ const BusinessHoursMenu = props => {
           <img src={EditIcon} alt='EditIcon' />
         </Button>
       </Box>
+      <MenuTemplate menu={ivr.businessHoursMenu} schedule={ivr.businessHours} />
     </React.Fragment>
   )
 }
