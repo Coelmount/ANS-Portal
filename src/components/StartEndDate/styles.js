@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 50,
     background: 'white'
   },
-  timeIcon: {
+  dateIcon: {
     width: 22,
     height: 24
   },

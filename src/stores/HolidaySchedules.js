@@ -5,12 +5,17 @@ import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 
+const defaultTime = '00:00'
+
 export class HolidaySchedules {
   schedules = []
+  periods = []
+  periodToAdd = {}
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
   isHolidayScheduleLoading = true
+  isPeriodPosting = false
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -94,19 +99,20 @@ export class HolidaySchedules {
         }
       )
       .then(res => {
-        console.log(res.data, 'res.data')
-        // const periods = res.data.periods
-        // const transformedPeriods = periods.map((item, index) => {
-        //   const generatedKey = performance.now().toString(36)
-        //   return {
-        //     id: index,
-        //     title: `${generatedKey} ${item.dayOfWeek.toLowerCase()}`,
-        //     start: transformWeekDateFormat(item.dayOfWeek, item.startTime),
-        //     end: transformWeekDateFormat(item.dayOfWeek, item.stopTime),
-        //     initName: item.name
-        //   }
-        // })
-        // this.weekSchedulePeriods = transformedPeriods
+        const periods = res.data.periods
+        const transformedPeriods = periods.map(
+          ({ name, startDay, stopDay }) => {
+            const generatedKey = performance.now().toString(36)
+            return {
+              id: generatedKey,
+              title: name,
+              type: 'Full days',
+              start: startDay,
+              end: stopDay
+            }
+          }
+        )
+        this.periods = transformedPeriods
         // const transformedToCustomFormatPeriods = transformToCustomPeriodsFormat(
         //   transformedPeriods
         // )
@@ -123,6 +129,61 @@ export class HolidaySchedules {
       })
       .finally(() => (this.isHolidayScheduleLoading = false))
   }
+
+  // SET DAY ON EMPTY TIMESLOT SELECT
+  setPeriodToAdd = () => {
+    this.periodToAdd = {
+      id: performance.now().toString(36),
+      startTime: defaultTime,
+      stopTime: defaultTime
+    }
+  }
+
+  updatePeriodName = name => {
+    this.periodToAdd.name = name
+  }
+
+  updatePeriodDate = (field, value) => {
+    this.periodToAdd[field] = value
+  }
+
+  updatePeriodTime = ({ field, value }) => {
+    this.periodToAdd[field] = value
+  }
+
+  postPeriod = ({ customerId, groupId, holidayScheduleName, closeModal }) => {
+    this.isPeriodPosting = true
+    axios
+      .post(
+        `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${holidayScheduleName}/`,
+        {
+          name: this.periodToAdd.name,
+          type: 'Full days',
+          startDay: this.periodToAdd.startDate,
+          stopDay: this.periodToAdd.stopDate
+        }
+      )
+      .then(() => {
+        SnackbarStore.enqueueSnackbar({
+          message: 'Period successfully created',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to create period',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isPeriodPosting = false
+        closeModal()
+      })
+  }
 }
 
 decorate(HolidaySchedules, {
@@ -131,10 +192,16 @@ decorate(HolidaySchedules, {
   isDeletingSchedule: observable,
   isSchedulePosting: observable,
   isHolidayScheduleLoading: observable,
+  periods: observable,
   getSchedules: action,
   deleteSchedule: action,
   postSchedule: action,
-  getHolidaySchedule: action
+  getHolidaySchedule: action,
+  setPeriodToAdd: action,
+  updatePeriodName: action,
+  updatePeriodDate: action,
+  updatePeriodTime: action,
+  postPeriod: action
 })
 
 export default new HolidaySchedules()

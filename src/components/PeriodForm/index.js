@@ -16,7 +16,11 @@ import deleteIcon from 'source/images/svg/delete-icon.svg'
 const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
   const classes = useStyles()
   // store
-  const { updatePeriodDayStatus, removePeriod } = WeekSchedulesStore
+  const {
+    updatePeriodDayStatus,
+    removePeriod,
+    updatePeriodTime
+  } = WeekSchedulesStore
 
   // components ------
   const Header = () => (
@@ -61,7 +65,12 @@ const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
     <Box className={classes.mainWrap}>
       <Header />
       <DaysBlock />
-      <StartEndTime periodId={id} startTime={startTime} stopTime={stopTime} />
+      <StartEndTime
+        periodId={id}
+        startTime={startTime}
+        stopTime={stopTime}
+        updatePeriodTime={updatePeriodTime}
+      />
     </Box>
   )
 }

@@ -7,11 +7,15 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 
-import WeekSchedulesStore from 'stores/WeekSchedules'
-
 import useStyles from './styles.js'
 
-const StartEndTime = ({ t, periodId, startTime, stopTime }) => {
+const StartEndTime = ({
+  t,
+  periodId,
+  startTime,
+  stopTime,
+  updatePeriodTime
+}) => {
   const classes = useStyles()
   const timeBlocks = [
     {
@@ -26,9 +30,6 @@ const StartEndTime = ({ t, periodId, startTime, stopTime }) => {
     }
   ]
 
-  // store
-  const { updatePeriodTime } = WeekSchedulesStore
-
   // components ------
   const TimeBlock = ({ timeBlock: { label, id, defaultValue } }) => (
     <Box className={classes.timeFieldWrap}>
@@ -39,7 +40,14 @@ const StartEndTime = ({ t, periodId, startTime, stopTime }) => {
         type='time'
         format={'HH/MM'}
         defaultValue={defaultValue}
-        onChange={e => updatePeriodTime(periodId, id, e.target.value)}
+        onChange={e => {
+          const payload = {
+            id: periodId,
+            field: id,
+            value: e.target.value
+          }
+          updatePeriodTime(payload)
+        }}
         className={classes.timeField}
         InputLabelProps={{
           shrink: true

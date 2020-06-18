@@ -167,7 +167,7 @@ export class WeekSchedules {
     this.periods = periodsCopy
   }
 
-  updatePeriodTime = (id, field, value) => {
+  updatePeriodTime = ({ id, field, value }) => {
     // find period
     const periodsCopy = this.periods.slice(0)
     const index = this.periods.findIndex(period => period.id === id)
