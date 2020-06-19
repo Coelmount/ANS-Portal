@@ -11,14 +11,21 @@ import SchedulerIcon from 'source/images/svg/schedules.svg'
 import EditIcon from 'source/images/svg/edit-blue.svg'
 
 import MenuTemplate from 'components/MenuTemplate'
+import Loading from 'components/Loading'
 
 import IVRStore from 'stores/IVR'
 import useStyles from './styles'
 
 const BusinessHoursMenu = props => {
   const { t } = props
-  const { ivr } = IVRStore
+  const { ivr, isLoadingIVR } = IVRStore
   const classes = useStyles()
+
+  if (isLoadingIVR) {
+    return <Loading />
+  }
+
+  console.log(ivr)
   return (
     <React.Fragment>
       <Box className={classes.title}>
