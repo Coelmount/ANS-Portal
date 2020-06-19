@@ -1,11 +1,16 @@
-import { decorate, observable, action } from 'mobx'
-
-import axios from 'utils/axios'
+import { decorate, observable, action, computed } from 'mobx'
 
 import SnackbarStore from './Snackbar'
+import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
+import extendTimeFormat from 'utils/schedules/extendTimeFormat'
+import {
+  FULL_DAYS,
+  PARTIAL_DAYS
+} from 'components/HolidaySchedule/periodTypes.js'
 
-const defaultTime = '00:00'
+const defaultStartTime = '00:00'
+const defaultStopTime = '01:00'
 
 export class HolidaySchedules {
   schedules = []
@@ -101,23 +106,26 @@ export class HolidaySchedules {
       .then(res => {
         const periods = res.data.periods
         const transformedPeriods = periods.map(
-          ({ name, startDay, stopDay }) => {
+          ({ name, type, startDay, stopDay, startTime, stopTime }) => {
             const generatedKey = performance.now().toString(36)
-            return {
+            const transformedPeriod = {
               id: generatedKey,
               title: name,
-              type: 'Full days',
+              type: type,
               start: startDay,
               end: stopDay
+            }
+            if (startTime)
+              transformedPeriod.startTime = extendTimeFormat(startTime)
+            if (stopTime)
+              transformedPeriod.stopTime = extendTimeFormat(stopTime)
+
+            return {
+              ...transformedPeriod
             }
           }
         )
         this.periods = transformedPeriods
-        // const transformedToCustomFormatPeriods = transformToCustomPeriodsFormat(
-        //   transformedPeriods
-        // )
-        // this.periods = transformedToCustomFormatPeriods
-        // this.initPeriods = transformedToCustomFormatPeriods
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -134,36 +142,77 @@ export class HolidaySchedules {
   setPeriodToAdd = () => {
     this.periodToAdd = {
       id: performance.now().toString(36),
-      startTime: defaultTime,
-      stopTime: defaultTime
+      type: PARTIAL_DAYS,
+      startTime: defaultStartTime,
+      stopTime: defaultStopTime
     }
   }
 
-  updatePeriodName = name => {
-    this.periodToAdd.name = name
-  }
-
-  updatePeriodDate = (field, value) => {
+  updatePeriod = ({ field, value }) => {
     this.periodToAdd[field] = value
   }
 
-  updatePeriodTime = ({ field, value }) => {
-    this.periodToAdd[field] = value
+  updatePeriodType = isFullDayPeriod => {
+    this.periodToAdd.type = isFullDayPeriod ? FULL_DAYS : PARTIAL_DAYS
+  }
+
+  // computed: Period is valid if all fields exist for PARTIAL_DAYS type or name and dates exist for FULL_DAYS type
+  get isPeriodValid() {
+    const {
+      name,
+      type,
+      startDate,
+      stopDate,
+      startTime,
+      stopTime
+    } = this.periodToAdd
+
+    return Boolean(
+      (type === PARTIAL_DAYS &&
+        name &&
+        startDate &&
+        stopDate &&
+        startTime &&
+        stopTime) ||
+        (type === FULL_DAYS && name && startDate && stopDate)
+    )
   }
 
   postPeriod = ({ customerId, groupId, holidayScheduleName, closeModal }) => {
     this.isPeriodPosting = true
+    const {
+      name,
+      type,
+      startDate,
+      stopDate,
+      startTime,
+      stopTime
+    } = this.periodToAdd
+
+    const periodToPost =
+      type === FULL_DAYS
+        ? {
+            name: name,
+            type: FULL_DAYS,
+            startDay: startDate,
+            stopDay: stopDate
+          }
+        : {
+            name: name,
+            type: PARTIAL_DAYS,
+            startDay: startDate,
+            stopDay: stopDate,
+            startTime,
+            stopTime
+          }
+
     axios
       .post(
         `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${holidayScheduleName}/`,
-        {
-          name: this.periodToAdd.name,
-          type: 'Full days',
-          startDay: this.periodToAdd.startDate,
-          stopDay: this.periodToAdd.stopDate
-        }
+        { ...periodToPost }
       )
       .then(() => {
+        closeModal()
         SnackbarStore.enqueueSnackbar({
           message: 'Period successfully created',
           options: {
@@ -181,26 +230,26 @@ export class HolidaySchedules {
       })
       .finally(() => {
         this.isPeriodPosting = false
-        closeModal()
       })
   }
 }
 
 decorate(HolidaySchedules, {
+  isPeriodValid: computed,
   schedules: observable,
   isSchedulesLoading: observable,
   isDeletingSchedule: observable,
   isSchedulePosting: observable,
   isHolidayScheduleLoading: observable,
+  isPeriodPosting: observable,
   periods: observable,
+  periodToAdd: observable,
   getSchedules: action,
   deleteSchedule: action,
   postSchedule: action,
   getHolidaySchedule: action,
   setPeriodToAdd: action,
-  updatePeriodName: action,
-  updatePeriodDate: action,
-  updatePeriodTime: action,
+  updatePeriod: action,
   postPeriod: action
 })
 

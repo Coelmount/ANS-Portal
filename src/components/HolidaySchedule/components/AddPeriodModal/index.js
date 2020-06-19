@@ -22,75 +22,68 @@ import PeriodForm from '../PeriodForm'
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
 
+// components -----
+
+// ------
+
 const AddPeriodModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId, holidayScheduleName } = match
-
-  const {
-    periodToAdd,
-    postPeriod
-    // isPeriodPosting,
-    // isPeriodsValid
-  } = HolidaySchedulesStore
-  const isPeriodPosting = false
-
-  // components -----
-
-  // ------
+  const { postPeriod, isPeriodPosting, isPeriodValid } = HolidaySchedulesStore
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
-      <DialogTitle className={classes.title}>
-        {t('add_period')}
-        <IconButton
-          aria-label='close'
-          onClick={handleClose}
-          className={classes.closeButton}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+      {isPeriodPosting ? (
+        <Loading />
+      ) : (
+        <Fragment>
+          <DialogTitle className={classes.title}>
+            {t('add_period')}
+            <IconButton
+              aria-label='close'
+              onClick={handleClose}
+              className={classes.closeButton}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
 
-      <DialogContent>
-        {isPeriodPosting ? (
-          <Loading />
-        ) : (
-          <Fragment>
+          <DialogContent>
             <Box className={classes.periodFormsWrap}>
-              <PeriodForm period={periodToAdd} key={periodToAdd.id} />
+              <PeriodForm />
             </Box>
-          </Fragment>
-        )}
-      </DialogContent>
+          </DialogContent>
 
-      <DialogActions className={classes.dialogActions}>
-        <Button
-          variant='outlined'
-          color='primary'
-          className={classes.backButton}
-          onClick={() => handleClose()}
-        >
-          {t('cancel')}
-        </Button>
-        <Button
-          variant='contained'
-          color='primary'
-          className={classes.nextButton}
-          onClick={() => {
-            const payload = {
-              customerId,
-              groupId,
-              holidayScheduleName,
-              closeModal: handleClose
-            }
-            postPeriod(payload)
-          }}
-          // disabled={!isPeriodsValid}
-        >
-          {t('add')}
-        </Button>
-      </DialogActions>
+          <DialogActions className={classes.dialogActions}>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.backButton}
+              onClick={() => handleClose()}
+            >
+              {t('cancel')}
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.nextButton}
+              onClick={() => {
+                const payload = {
+                  customerId,
+                  groupId,
+                  holidayScheduleName,
+                  closeModal: handleClose
+                }
+                postPeriod(payload)
+              }}
+              disabled={!isPeriodValid}
+            >
+              {t('add')}
+            </Button>
+          </DialogActions>
+        </Fragment>
+      )}
     </Dialog>
   )
 }

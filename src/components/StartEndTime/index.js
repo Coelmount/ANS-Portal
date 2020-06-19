@@ -9,13 +9,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime'
 
 import useStyles from './styles.js'
 
-const StartEndTime = ({
-  t,
-  periodId,
-  startTime,
-  stopTime,
-  updatePeriodTime
-}) => {
+const StartEndTime = ({ t, periodId, startTime, stopTime, updatePeriod }) => {
   const classes = useStyles()
   const timeBlocks = [
     {
@@ -46,7 +40,7 @@ const StartEndTime = ({
             field: id,
             value: e.target.value
           }
-          updatePeriodTime(payload)
+          updatePeriod(payload)
         }}
         className={classes.timeField}
         InputLabelProps={{

@@ -23,7 +23,11 @@ const useStyles = makeStyles(theme => ({
   timeFieldsWrap: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
+    paddingBottom: 20
+  },
+  bottomBorder: {
+    borderBottom: `1px solid ${theme.palette.silver}`
   },
   timeFieldWrap: {
     display: 'flex',

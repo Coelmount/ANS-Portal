@@ -40,7 +40,7 @@ const HolidaySchedule = observer(({ t }) => {
     isHolidayScheduleLoading,
     periods,
     setPeriodToAdd,
-    updatePeriodDate,
+    updatePeriod,
     // setDefaultPeriods,
     // findPeriodAndSetToEdit,
     // deletePeriod,
@@ -153,7 +153,11 @@ const HolidaySchedule = observer(({ t }) => {
   const handleSelectSlot = event => {
     const formatedClickedDate = formatPeriodDateFormat(event)
     setPeriodToAdd()
-    updatePeriodDate('startDate', formatedClickedDate)
+    const payload = {
+      field: 'startDate',
+      value: formatedClickedDate
+    }
+    updatePeriod(payload)
     setIsAddPeriodModalOpen(true)
   }
 

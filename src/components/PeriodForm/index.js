@@ -19,7 +19,7 @@ const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
   const {
     updatePeriodDayStatus,
     removePeriod,
-    updatePeriodTime
+    updatePeriod
   } = WeekSchedulesStore
 
   // components ------
@@ -69,7 +69,7 @@ const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
         periodId={id}
         startTime={startTime}
         stopTime={stopTime}
-        updatePeriodTime={updatePeriodTime}
+        updatePeriod={updatePeriod}
       />
     </Box>
   )

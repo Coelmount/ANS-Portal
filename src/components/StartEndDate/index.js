@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import classnames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
@@ -11,7 +13,7 @@ import HolidaySchedulesStore from 'stores/HolidaySchedules'
 
 import useStyles from './styles.js'
 
-const StartEndDate = ({ t, startDate, stopDate }) => {
+const StartEndDate = ({ t, isBottomBorderVisible, startDate, stopDate }) => {
   const classes = useStyles()
   const dateBlocks = [
     {
@@ -27,7 +29,7 @@ const StartEndDate = ({ t, startDate, stopDate }) => {
   ]
 
   // store
-  const { updatePeriodDate } = HolidaySchedulesStore
+  const { updatePeriod, periodToAdd } = HolidaySchedulesStore
 
   // components ------
   const DateBlock = ({ dateBlock: { label, id, defaultValue } }) => {
@@ -39,16 +41,15 @@ const StartEndDate = ({ t, startDate, stopDate }) => {
           id={id}
           label=''
           type='date'
-          // format={'HH/MM'}
           defaultValue={defaultValue}
-          onChange={e => updatePeriodDate(id, e.target.value)}
+          onChange={e => {
+            const payload = {
+              field: id,
+              value: e.target.value
+            }
+            updatePeriod(payload)
+          }}
           className={classes.timeField}
-          // InputLabelProps={{
-          //   shrink: true
-          // }}
-          // inputProps={{
-          //   step: 300
-          // }}
         />
       </Box>
     )
@@ -60,13 +61,21 @@ const StartEndDate = ({ t, startDate, stopDate }) => {
       <Box className={classes.timeIconWrap}>
         <DateRangeIcon className={classes.dateIcon} />
       </Box>
-      <Box className={classes.timeFieldsWrap}>
+      <Box
+        className={classnames(classes.timeFieldsWrap, {
+          [classes.bottomBorder]: isBottomBorderVisible
+        })}
+      >
         {dateBlocks.map(dateBlock => (
           <DateBlock key={dateBlock.id} dateBlock={dateBlock} />
         ))}
       </Box>
     </Box>
   )
+}
+
+StartEndDate.defaultProps = {
+  isBottomBorderVisible: false
 }
 
 export default withNamespaces()(observer(StartEndDate))

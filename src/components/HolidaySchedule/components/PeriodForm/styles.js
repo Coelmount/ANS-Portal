@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     paddingRight: 31,
     paddingLeft: 31,
+    marginBottom: 36,
     background: 'white',
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
   },
