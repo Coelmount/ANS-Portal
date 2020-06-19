@@ -49,7 +49,11 @@ const BusinessHoursMenu = props => {
           <img src={EditIcon} alt='EditIcon' />
         </Button>
       </Box>
-      <MenuTemplate menu={ivr.businessHoursMenu} schedule={ivr.businessHours} />
+      <MenuTemplate
+        menu={ivr.businessHoursMenu}
+        schedule={ivr.businessHours}
+        showTitle
+      />
     </React.Fragment>
   )
 }

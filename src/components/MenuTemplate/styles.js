@@ -16,6 +16,19 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 10,
     borderLeft: '4px solid #00678F',
     paddingLeft: 10
+  },
+  greetingBox: {
+    width: '100%',
+    height: 94,
+    borderBottom: '1px solid #E8E8E8',
+    paddingLeft: 44
+  },
+  audioBox: {
+    width: 476,
+    height: 46,
+    background: 'white',
+    marginRight: 16,
+    marginLeft: 16
   }
 }))
 
