@@ -33,7 +33,7 @@ const TextFieldWithStyles = withStyles({
 })(TextField)
 
 // components ------
-const Header = ({ t, classes, updatePeriod, removePeriod, id, name }) => (
+const Header = ({ t, classes, updatePeriod, id, name }) => (
   <Box className={classes.header}>
     <TextFieldWithStyles
       value={name}
@@ -47,12 +47,6 @@ const Header = ({ t, classes, updatePeriod, removePeriod, id, name }) => (
       className={classes.margin}
       id='custom-css-standard-input'
       label={t('name')}
-    />
-    <img
-      onClick={() => removePeriod(id)}
-      src={deleteIcon}
-      className={classes.deleteIcon}
-      alt='delete'
     />
   </Box>
 )
@@ -76,7 +70,6 @@ const PeriodForm = ({ t }) => {
 
   // store
   const {
-    removePeriod,
     updatePeriod,
     updatePeriodType,
     periodToAdd: period
@@ -89,7 +82,6 @@ const PeriodForm = ({ t }) => {
       <Header
         classes={classes}
         updatePeriod={updatePeriod}
-        removePeriod={removePeriod}
         name={name}
         id={id}
         t={t}

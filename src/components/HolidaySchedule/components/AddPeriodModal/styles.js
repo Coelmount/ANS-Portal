@@ -19,11 +19,11 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 24px'
+    padding: '20px 40px'
   },
   closeButton: {
     position: 'absolute',
-    right: '10px',
+    right: '28px',
     top: 21,
     '& svg': {
       width: 27,
@@ -33,7 +33,8 @@ const useStyles = makeStyles(theme => ({
   periodFormsWrap: {
     display: 'flex',
     justifyContent: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    paddingLeft: 16
   },
   addPeriodButtonBlock: {
     display: 'flex',
