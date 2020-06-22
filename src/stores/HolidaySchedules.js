@@ -8,6 +8,7 @@ import {
   FULL_DAYS,
   PARTIAL_DAYS
 } from 'components/HolidaySchedule/periodTypes.js'
+import { toJS } from 'mobx'
 
 const defaultStartTime = '00:00'
 const defaultStopTime = '01:00'
@@ -15,12 +16,13 @@ const defaultStopTime = '01:00'
 export class HolidaySchedules {
   schedules = []
   periods = []
-  periodToAdd = {}
+  modalPeriod = {}
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
   isHolidayScheduleLoading = true
   isPeriodPosting = false
+  isPeriodPuting = false
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -57,7 +59,7 @@ export class HolidaySchedules {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to delete event',
+          message: getErrorMessage(e) || 'Failed to delete schedule',
           options: {
             variant: 'error'
           }
@@ -140,7 +142,7 @@ export class HolidaySchedules {
 
   // SET DAY ON EMPTY TIMESLOT SELECT
   setPeriodToAdd = () => {
-    this.periodToAdd = {
+    this.modalPeriod = {
       id: performance.now().toString(36),
       type: PARTIAL_DAYS,
       startTime: defaultStartTime,
@@ -149,11 +151,13 @@ export class HolidaySchedules {
   }
 
   updatePeriod = ({ field, value }) => {
-    this.periodToAdd[field] = value
+    this.modalPeriod[field] = value
   }
 
   updatePeriodType = isFullDayPeriod => {
-    this.periodToAdd.type = isFullDayPeriod ? FULL_DAYS : PARTIAL_DAYS
+    this.modalPeriod.type = isFullDayPeriod ? FULL_DAYS : PARTIAL_DAYS
+    console.log(isFullDayPeriod, 'isFullDayPeriod')
+    console.log(toJS(this.modalPeriod), 'this.modalPeriod')
   }
 
   // computed: Period is valid if all fields exist for PARTIAL_DAYS type or name and dates exist for FULL_DAYS type
@@ -165,7 +169,7 @@ export class HolidaySchedules {
       stopDate,
       startTime,
       stopTime
-    } = this.periodToAdd
+    } = this.modalPeriod
 
     return Boolean(
       (type === PARTIAL_DAYS &&
@@ -187,7 +191,7 @@ export class HolidaySchedules {
       stopDate,
       startTime,
       stopTime
-    } = this.periodToAdd
+    } = this.modalPeriod
 
     const periodToPost =
       type === FULL_DAYS
@@ -232,6 +236,69 @@ export class HolidaySchedules {
         this.isPeriodPosting = false
       })
   }
+
+  setPeriodToEdit = event => {
+    this.modalPeriod = {
+      startDate: event.start,
+      stopDate: event.end,
+      name: event.title,
+      ...event
+    }
+  }
+
+  // CLEAR DATA AFTER MODALS CLOSE
+  setDefaultPeriods = () => {
+    this.periods = []
+    this.initPeriods = []
+  }
+
+  putPeriod = ({ customerId, groupId, holidayScheduleName, closeModal }) => {
+    this.isPeriodPuting = true
+    const {
+      name,
+      startDate,
+      stopDate,
+      type,
+      startTime,
+      stopTime
+    } = this.modalPeriod
+
+    const periodToSend = {
+      startDay: startDate,
+      stopDay: stopDate,
+      name,
+      type
+    }
+    if (type === PARTIAL_DAYS) {
+      periodToSend.startTime = startTime
+      periodToSend.stopTime = stopTime
+    }
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${holidayScheduleName}/${name}/`,
+        { ...periodToSend }
+      )
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Period successfully edited',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to edit period',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isPeriodPuting = false
+      })
+  }
 }
 
 decorate(HolidaySchedules, {
@@ -242,15 +309,19 @@ decorate(HolidaySchedules, {
   isSchedulePosting: observable,
   isHolidayScheduleLoading: observable,
   isPeriodPosting: observable,
+  isPeriodPuting: observable,
   periods: observable,
-  periodToAdd: observable,
+  modalPeriod: observable,
   getSchedules: action,
   deleteSchedule: action,
   postSchedule: action,
   getHolidaySchedule: action,
   setPeriodToAdd: action,
   updatePeriod: action,
-  postPeriod: action
+  postPeriod: action,
+  setPeriodToEdit: action,
+  setDefaultPeriods: action,
+  putPeriod: action
 })
 
 export default new HolidaySchedules()

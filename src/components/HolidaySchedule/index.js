@@ -17,16 +17,17 @@ import CustomContainer from 'components/CustomContainer'
 import ExtendedTitleBlock from 'components/ExtendedTitleBlock'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Loading from 'components/Loading'
-// import PopoverBlock from './components/PopoverBlock/index.jsx'
+import PopoverBlock from 'components/PopoverBlock/index.jsx'
 import AddPeriodModal from './components/AddPeriodModal'
-// import EditScheduleModal from './components/EditScheduleModal'
+import EditPeriodModal from './components/EditPeriodModal'
 // import DeletePeriodsModal from './components/DeletePeriodsModal'
 // import { WEEK_DAYS_ARR } from 'utils/schedules/weekDaysArr'
 import transformTime from 'utils/schedules/transformTime'
 import formatPeriodDateFormat from 'utils/schedules/formatPeriodDateFormat'
 
 // import blueEditIcon from 'source/images/svg/edit-blue.svg'
-// import deleteIcon from 'source/images/svg/delete-icon.svg'
+import editIcon from 'source/images/svg/edit.svg'
+import deleteIcon from 'source/images/svg/delete-icon.svg'
 import useStyles from './styles'
 // import 'react-big-calendar/lib/css/react-big-calendar.css'
 
@@ -41,8 +42,8 @@ const HolidaySchedule = observer(({ t }) => {
     periods,
     setPeriodToAdd,
     updatePeriod,
-    // setDefaultPeriods,
-    // findPeriodAndSetToEdit,
+    setDefaultPeriods,
+    setPeriodToEdit,
     // deletePeriod,
     // isPeriodDeleting,
     // deleteThisTimeSlot,
@@ -53,18 +54,15 @@ const HolidaySchedule = observer(({ t }) => {
   } = HolidaySchedulesStore
 
   const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
-  // const [isEditScheduleModalOpen, setIsEditScheduleModalOpen] = useState(false)
-  // const [isSinglePeriodEditActive, setIsSinglePeriodEditActive] = useState(
-  //   false
-  // )
-  // const [isDeletePeriodsModalOpen, setIsDeletePeriodsModalOpen] = useState(
-  //   false
-  // )
-  // const [anchorEl, setAnchorEl] = useState(null)
-  // const [currentPeriod, setCurrentPeriod] = useState(null)
+  const [isEditPeriodModalOpen, setIsEditPeriodModalOpen] = useState(false)
+  const [isDeletePeriodsModalOpen, setIsDeletePeriodsModalOpen] = useState(
+    false
+  )
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [currentPeriod, setCurrentPeriod] = useState(null)
 
-  // const isPeriodPopoverOpen = Boolean(anchorEl)
-  // const popoverId = isPeriodPopoverOpen ? 'period-popover' : undefined
+  const isPeriodPopoverOpen = Boolean(anchorEl)
+  const popoverId = isPeriodPopoverOpen ? 'period-popover' : undefined
 
   useEffect(() => {
     // postPeriod(match.customerId, match.groupId)
@@ -84,34 +82,32 @@ const HolidaySchedule = observer(({ t }) => {
     )
   }
 
-  // const handleCloseEditScheduleModal = () => {
-  //   setIsEditScheduleModalOpen(false)
-  //   getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
-  //   setDefaultPeriods()
-  //   setIsSinglePeriodEditActive(false)
-  // }
+  const handleCloseEditScheduleModal = () => {
+    setIsEditPeriodModalOpen(false)
+    getHolidaySchedule(
+      match.customerId,
+      match.groupId,
+      match.holidayScheduleName
+    )
+    setDefaultPeriods()
+  }
 
-  // // POPOVER
-  // const handlePopoverOpen = event => {
-  //   setAnchorEl(event.currentTarget)
-  // }
+  // POPOVER CLOSE
+  const handlePopoverClose = () => {
+    setAnchorEl(null)
+  }
 
-  // const handlePopoverClose = () => {
-  //   setAnchorEl(null)
-  // }
+  // POPOVER EDIT
+  const handleEditPeriodModalOpen = () => {
+    setIsEditPeriodModalOpen(true)
+    setPeriodToEdit(currentPeriod)
+    setAnchorEl(null)
+  }
 
-  // // POPOVER EDIT
-  // const handleEditPeriodModalOpen = () => {
-  //   setIsEditScheduleModalOpen(true)
-  //   setIsSinglePeriodEditActive(true)
-  //   findPeriodAndSetToEdit(currentPeriod)
-  //   setAnchorEl(null)
-  // }
-
-  // // POPOVER  DELETE
-  // const handleDeletePeriodModalOpen = () => {
-  //   setIsDeletePeriodsModalOpen(true)
-  // }
+  // POPOVER  DELETE
+  const handleDeletePeriodModalOpen = () => {
+    setIsDeletePeriodsModalOpen(true)
+  }
 
   // const handleDeletePeriodsModalClose = () => {
   //   setIsDeletePeriodsModalOpen(false)
@@ -178,47 +174,24 @@ const HolidaySchedule = observer(({ t }) => {
     mainText: `${t('holiday_schedules')}: ${match.holidayScheduleName}`
   }
 
-  // const popoverButtons = [
-  //   {
-  //     Icon: editIcon,
-  //     label: t('edit'),
-  //     handleClick: handleEditPeriodModalOpen
-  //   },
-  //   {
-  //     Icon: deleteIcon,
-  //     label: t('delete'),
-  //     handleClick: handleDeletePeriodModalOpen
-  //   }
-  // ]
+  const popoverButtons = [
+    {
+      Icon: editIcon,
+      label: t('edit'),
+      handleClick: handleEditPeriodModalOpen
+    },
+    {
+      Icon: deleteIcon,
+      label: t('delete'),
+      handleClick: handleDeletePeriodModalOpen
+    }
+  ]
 
   // // To show empty periods on view with only time (by default)
   // const EventComponent = () => null
 
   // To disable lib warning
   const handleOnViewChange = () => null
-
-  // const holidaySchedulePeriods = [
-  //   {
-  //     id: 0,
-  //     title: 'All Day Event very long title',
-  //     allDay: true,
-  //     start: new Date(2020, 5, 1),
-  //     end: new Date(2020, 5, 2)
-  //   },
-  //   {
-  //     id: 1,
-  //     title: 'Long Event',
-  //     start: new Date(2020, 5, 20),
-  //     end: new Date(2020, 5, 22)
-  //   },
-
-  //   {
-  //     id: 2,
-  //     title: 'DTS STARTS',
-  //     start: new Date(2020, 5, 13),
-  //     end: new Date(2020, 5, 19)
-  //   }
-  // ]
 
   return (
     <Fragment>
@@ -238,13 +211,13 @@ const HolidaySchedule = observer(({ t }) => {
               formats={formats}
               localizer={globalizeLocalizer}
               className={classes.calendarCustomStyles}
+              onSelectEvent={(event, e) => {
+                setCurrentPeriod(event)
+                setAnchorEl(e.currentTarget)
+              }}
               onSelectSlot={handleSelectSlot}
               // toolbar={false}
               // defaultDate={new Date(2020, 5, 7)}
-              // onSelectEvent={(event, e) => {
-              //   setCurrentPeriod(event)
-              //   setAnchorEl(e.currentTarget)
-              // }}
               // components={{
               //   event: EventComponent
               // }}
@@ -252,10 +225,24 @@ const HolidaySchedule = observer(({ t }) => {
               // showMultiDayTimes={null}
               selectable
             />
+            <PopoverBlock
+              popoverId={popoverId}
+              isPeriodPopoverOpen={isPeriodPopoverOpen}
+              anchorEl={anchorEl}
+              handlePopoverClose={handlePopoverClose}
+              classes={classes}
+              popoverButtons={popoverButtons}
+            />
             {isAddPeriodModalOpen && (
               <AddPeriodModal
                 open={isAddPeriodModalOpen}
                 handleClose={handleCloseAddPeriodModal}
+              />
+            )}
+            {isEditPeriodModalOpen && (
+              <EditPeriodModal
+                open={isEditPeriodModalOpen}
+                handleClose={handleCloseEditScheduleModal}
               />
             )}
           </Paper>

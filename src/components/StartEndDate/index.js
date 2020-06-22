@@ -29,11 +29,10 @@ const StartEndDate = ({ t, isBottomBorderVisible, startDate, stopDate }) => {
   ]
 
   // store
-  const { updatePeriod, periodToAdd } = HolidaySchedulesStore
+  const { updatePeriod } = HolidaySchedulesStore
 
   // components ------
   const DateBlock = ({ dateBlock: { label, id, defaultValue } }) => {
-    console.log('date block')
     return (
       <Box className={classes.timeFieldWrap}>
         <Typography className={classes.timeBlockLabel}>{label}</Typography>

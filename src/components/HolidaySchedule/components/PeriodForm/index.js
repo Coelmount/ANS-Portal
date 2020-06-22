@@ -33,7 +33,7 @@ const TextFieldWithStyles = withStyles({
 })(TextField)
 
 // components ------
-const Header = ({ t, classes, updatePeriod, id, name }) => (
+const Header = ({ t, classes, updatePeriod, id, name, isNameEditable }) => (
   <Box className={classes.header}>
     <TextFieldWithStyles
       value={name}
@@ -42,7 +42,7 @@ const Header = ({ t, classes, updatePeriod, id, name }) => (
           field: 'name',
           value: e.target.value
         }
-        updatePeriod(payload)
+        if (isNameEditable) updatePeriod(payload)
       }}
       className={classes.margin}
       id='custom-css-standard-input'
@@ -65,14 +65,14 @@ const AllDayBlock = ({ t, classes, type, updatePeriodType }) => (
 // ------
 
 // MAIN COMPONENT
-const PeriodForm = ({ t }) => {
+const PeriodForm = ({ t, isNameEditable }) => {
   const classes = useStyles()
 
   // store
   const {
     updatePeriod,
     updatePeriodType,
-    periodToAdd: period
+    modalPeriod: period
   } = HolidaySchedulesStore
 
   const { id, type, name, startTime, stopTime, startDate, stopDate } = period
@@ -84,6 +84,7 @@ const PeriodForm = ({ t }) => {
         updatePeriod={updatePeriod}
         name={name}
         id={id}
+        isNameEditable={isNameEditable}
         t={t}
       />
       <StartEndDate
@@ -107,6 +108,10 @@ const PeriodForm = ({ t }) => {
       )}
     </Box>
   )
+}
+
+PeriodForm.defaultProps = {
+  isNameEditable: true
 }
 
 export default withNamespaces()(observer(PeriodForm))

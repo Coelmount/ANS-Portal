@@ -17,7 +17,7 @@ import CustomContainer from 'components/CustomContainer'
 import ExtendedTitleBlock from 'components/ExtendedTitleBlock'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Loading from 'components/Loading'
-import PopoverBlock from './components/PopoverBlock/index.jsx'
+import PopoverBlock from 'components/PopoverBlock/index.jsx'
 import AddPeriodModal from './components/AddPeriodModal'
 import EditScheduleModal from './components/EditScheduleModal'
 import DeletePeriodsModal from './components/DeletePeriodsModal'
@@ -89,11 +89,7 @@ const WeekSchedule = observer(({ t }) => {
     setIsSinglePeriodEditActive(false)
   }
 
-  // POPOVER
-  const handlePopoverOpen = event => {
-    setAnchorEl(event.currentTarget)
-  }
-
+  // POPOVER CLOSE
   const handlePopoverClose = () => {
     setAnchorEl(null)
   }

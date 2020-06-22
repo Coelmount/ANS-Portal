@@ -79,7 +79,7 @@ export class WeekSchedules {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to delete event',
+          message: getErrorMessage(e) || 'Failed to delete schedule',
           options: {
             variant: 'error'
           }
