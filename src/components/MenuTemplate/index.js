@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { withNamespaces } from 'react-i18next'
 import { useSpring, animated } from 'react-spring'
 import has from 'lodash/has'
 import classnames from 'classnames'
+import { observer } from 'mobx-react'
+import { toJS } from 'mobx'
+import { useParams } from 'react-router-dom'
 
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -24,6 +27,10 @@ import VolumeUpOutlinedIcon from '@material-ui/icons/VolumeUpOutlined'
 import ClearIcon from '@material-ui/icons/Clear'
 import RemoveIcon from '@material-ui/icons/Remove'
 import AddIcon from '@material-ui/icons/Add'
+import CheckIcon from '@material-ui/icons/Check'
+
+import ConfigStore from 'stores/Config'
+import IVRStore from 'stores/IVR'
 
 import useStyles from './styles'
 import Loading from 'components/Loading'
@@ -87,7 +94,17 @@ const TransitionComponent = props => {
 }
 
 const StyledTreeItem = props => {
-  const { classes, menuItem, index, t, ...rest } = props
+  const {
+    classes,
+    menuItem,
+    actions,
+    index,
+    changeKeysMenu,
+    t,
+    disabledFields,
+    ...rest
+  } = props
+
   return (
     <TreeItem
       {...rest}
@@ -104,6 +121,8 @@ const StyledTreeItem = props => {
               variant='outlined'
               value={menuItem.key}
               className={classes.keyInput}
+              disabled={disabledFields}
+              onChange={e => changeKeysMenu(index, 'key', e.target.value)}
             />
           </Grid>
           <Grid item xs={'auto'} className={classes.gridItem}>
@@ -113,6 +132,10 @@ const StyledTreeItem = props => {
               variant='outlined'
               value={menuItem.description}
               className={classes.descriptionInput}
+              disabled={disabledFields}
+              onChange={e =>
+                changeKeysMenu(index, 'description', e.target.value)
+              }
             />
           </Grid>
           <Grid item xs={'auto'} className={classes.gridItem}>
@@ -121,20 +144,31 @@ const StyledTreeItem = props => {
               value={menuItem.action}
               variant='outlined'
               className={classes.actionSelect}
-            ></Select>
+              disabled={disabledFields}
+              onChange={e => changeKeysMenu(index, 'action', e.target.value)}
+            >
+              {actions.map(act => (
+                <MenuItem key={act.action} value={act.action}>
+                  {act.action}
+                </MenuItem>
+              ))}
+            </Select>
           </Grid>
           <Grid item xs={'auto'} className={classes.gridItem}>
             {index === 0 && t('action_data')}
-            <Select
+            {/* <Select
               value={menuItem.parameter}
               variant='outlined'
+              disabled={disabledFields}
               className={classes.actionDataSelect}
-            ></Select>
-            {/* <TextField
-            value={menuItem.parameter}
-            variant='outlined'
-            className={classes.actionDataSelect}
-          /> */}
+            ></Select> */}
+            <TextField
+              value={menuItem.parameter}
+              variant='outlined'
+              className={classes.descriptionInput}
+              disabled={disabledFields}
+              onChange={e => changeKeysMenu(index, 'parameter', e.target.value)}
+            />
           </Grid>
         </Grid>
       }
@@ -143,27 +177,112 @@ const StyledTreeItem = props => {
 }
 
 const MenuTemplate = props => {
-  const { t, menu, showTitle } = props
+  const { t, menu, showTitle, menuType } = props
   const classes = useStyles()
+  const [stateMenu, setStateMenu] = useState({})
+  const [isEdit, setIsEdit] = useState(false)
+
+  const match = useParams()
+
+  const { getConfig, isLoadingConfig, config } = ConfigStore
+  const { putUpdateIVRMenu } = IVRStore
+
+  useEffect(() => {
+    getConfig()
+    setStateMenu(toJS(menu))
+  }, [])
+
+  const changeKeysMenu = (index, field, value) => {
+    if (field === 'key' && !/^[\d\#\*]$/.test(value) && value !== '') {
+      return
+    }
+    const newMenu = { ...stateMenu }
+    newMenu.keys[index][field] = value
+    setStateMenu(newMenu)
+  }
+
+  const updateMenu = () => {
+    let data = {}
+    switch (menuType) {
+      case 'business_hours':
+        data = {
+          businessHoursMenu: { ...stateMenu }
+        }
+        break
+      case 'after_hours':
+        data = {
+          afterHoursMenu: { ...stateMenu }
+        }
+        break
+      case 'holidays':
+        data = {
+          holidayMenu: { ...stateMenu }
+        }
+        break
+      default:
+        return
+    }
+    putUpdateIVRMenu(
+      match.customerId,
+      match.groupId,
+      match.ivrId,
+      menuType,
+      data
+    )
+  }
+
+  if (isLoadingConfig) {
+    return <Loading />
+  }
 
   return (
     <React.Fragment>
       {showTitle && (
         <Box className={classes.titleBox}>
           <Input />
-          <Button
-            variant={'contained'}
-            color={'primary'}
-            className={classes.roundButton}
-          >
-            <img src={EditIcon} alt='EditIcon' />
-          </Button>
+          {isEdit ? (
+            <Box className={classes.editControlsButtons}>
+              <Box className={classes.editControlsButtons}>
+                <Button
+                  variant={'contained'}
+                  className={classes.roundEditControlsButton}
+                  onClick={() => {
+                    setIsEdit(false)
+                    setStateMenu(toJS(menu))
+                  }}
+                >
+                  <ClearIcon />
+                </Button>
+                <Box>{t('cancel')}</Box>
+              </Box>
+              <Box className={classes.editControlsButtons}>
+                <Button
+                  variant={'contained'}
+                  color={'primary'}
+                  className={classes.roundEditControlsButton}
+                  onClick={() => updateMenu()}
+                >
+                  <CheckIcon />
+                </Button>
+                <Box>{t('save')}</Box>
+              </Box>
+            </Box>
+          ) : (
+            <Button
+              variant={'contained'}
+              color={'primary'}
+              className={classes.roundButton}
+              onClick={() => setIsEdit(true)}
+            >
+              <img src={EditIcon} alt='EditIcon' />
+            </Button>
+          )}
         </Box>
       )}
       <Box className={classes.greetingBox}>
         <VolumeUpOutlinedIcon className={classes.volumeIcon} />
         <Box>{t('greeting')}:</Box>
-        <Box className={classes.audioBox}></Box>
+        <Box className={classes.audioBox}>{menu.announcementSelection}</Box>
         <Button className={classes.roundButtonEdit}>
           <img src={EditIcon} alt='EditIcon' />
         </Button>
@@ -176,16 +295,19 @@ const MenuTemplate = props => {
           defaultExpandIcon={<PlusSquare />}
           defaultEndIcon={<CloseSquare />}
         >
-          {has(menu, 'keys') &&
-            menu.keys.map((el, i) => (
+          {has(stateMenu, 'keys') &&
+            stateMenu.keys.map((el, i) => (
               <StyledTreeItem
+                disabledFields={!isEdit}
                 t={t}
                 index={i}
                 classes={classes}
                 menuItem={el}
                 nodeId={el.key}
                 label={el.key}
-                key={new Date().getTime() + Math.random()}
+                key={i}
+                actions={config.group.ivr.allowed_actions}
+                changeKeysMenu={changeKeysMenu}
               ></StyledTreeItem>
             ))}
         </TreeView>
@@ -198,4 +320,4 @@ MenuTemplate.defaultProps = {
   showTitle: false
 }
 
-export default withNamespaces()(MenuTemplate)
+export default withNamespaces()(observer(MenuTemplate))

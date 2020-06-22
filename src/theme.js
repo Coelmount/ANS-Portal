@@ -71,7 +71,10 @@ const theme = createMuiTheme({
         textTransform: 'none'
       },
       contained: {
-        boxShadow: 'none'
+        boxShadow: 'none',
+        '&:hover': {
+          boxShadow: '0px 6px 5px rgba(204,204,204,0.25)'
+        }
       },
       containedPrimary: {
         '&:hover': {

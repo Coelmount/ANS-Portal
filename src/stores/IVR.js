@@ -157,6 +157,29 @@ class IVR {
         this.isLoadingIVR = false
       })
   }
+
+  putUpdateIVRMenu = (tenantId, groupId, ivrId, menuType, data, callback) => {
+    this.isUpdatingIVRMenu = true
+    axios
+      .put(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/menus/${menuType}/`,
+        data
+      )
+      .then(() => {
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update ivr menu',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isUpdatingIVRMenu = false
+      })
+  }
 }
 
 decorate(IVR, {
@@ -175,7 +198,8 @@ decorate(IVR, {
   postAddIVR: action,
   putUpdateIVR: action,
   deleteIVR: action,
-  getIVR: action
+  getIVR: action,
+  putUpdateIVRMenu: action
 })
 
 export default new IVR()

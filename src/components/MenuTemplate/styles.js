@@ -33,7 +33,9 @@ const useStyles = makeStyles(theme => ({
     height: 46,
     background: 'white',
     marginRight: 16,
-    marginLeft: 16
+    marginLeft: 16,
+    display: 'flex',
+    alignItems: 'center'
   },
   roundButtonEdit: {
     width: 30,
@@ -74,7 +76,8 @@ const useStyles = makeStyles(theme => ({
   actionSelect: {
     '&.MuiInputBase-root': {
       width: 254,
-      height: 50
+      height: 50,
+      backgroundColor: 'white'
     }
   },
   actionDataSelect: {
@@ -102,6 +105,19 @@ const useStyles = makeStyles(theme => ({
     '& .MuiTreeItem-iconContainer': {
       marginTop: 22
     }
+  },
+  editControlsButtons: {
+    display: 'flex',
+    fontFamily: 'MTN',
+    alignItems: 'center',
+    marginLeft: 30
+  },
+  roundEditControlsButton: {
+    width: 30,
+    height: 30,
+    minWidth: 30,
+    padding: 0,
+    marginRight: 5
   }
 }))
 
