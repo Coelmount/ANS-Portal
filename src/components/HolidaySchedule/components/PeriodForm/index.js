@@ -46,7 +46,7 @@ const Header = ({ t, classes, updatePeriod, removePeriod, id, name }) => (
       }}
       className={classes.margin}
       id='custom-css-standard-input'
-      label={t('title')}
+      label={t('name')}
     />
     <img
       onClick={() => removePeriod(id)}

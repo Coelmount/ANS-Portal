@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(theme => ({
   mainWrap: {
     width: 564,
-    height: 244,
     marginTop: 27,
     borderRadius: 3,
     border: `1px solid ${theme.palette.silver}`,
@@ -69,7 +68,7 @@ const useStyles = makeStyles(theme => ({
   },
   allDayWrap: {
     display: 'flex',
-    padding: '0px 28px'
+    padding: '0px 28px 20px 28px'
   },
   allDayTitle: {
     marginLeft: 14,
