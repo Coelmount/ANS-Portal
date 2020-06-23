@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from 'react'
-// import classnames from 'classnames'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
@@ -10,7 +9,6 @@ import localizer from 'react-big-calendar/lib/localizers/globalize'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-// import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import HolidaySchedulesStore from 'stores/HolidaySchedules'
 import CustomContainer from 'components/CustomContainer'
@@ -21,11 +19,10 @@ import DeleteModal from 'components/DeleteModal'
 import PopoverBlock from 'components/PopoverBlock/index.jsx'
 import AddPeriodModal from './components/AddPeriodModal'
 import EditPeriodModal from './components/EditPeriodModal'
-// import { WEEK_DAYS_ARR } from 'utils/schedules/weekDaysArr'
+import CustomToolbar from './components/CustomToolbar'
 import transformTime from 'utils/schedules/transformTime'
 import formatPeriodDateFormat from 'utils/schedules/formatPeriodDateFormat'
 
-// import blueEditIcon from 'source/images/svg/edit-blue.svg'
 import editIcon from 'source/images/svg/edit.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import useStyles from './styles'
@@ -48,10 +45,6 @@ const HolidaySchedule = observer(({ t }) => {
     setPeriodToEdit,
     deletePeriod,
     isPeriodDeleting,
-    // deleteThisTimeSlot,
-    // isThisSlotDeleting,
-    // deleteAllPeriods,
-    // isAllPeriodsDeleting,
     postPeriod
   } = HolidaySchedulesStore
 
@@ -65,7 +58,6 @@ const HolidaySchedule = observer(({ t }) => {
   const popoverId = isPeriodPopoverOpen ? 'period-popover' : undefined
 
   useEffect(() => {
-    // postPeriod(customerId, groupId)
     getHolidaySchedule(customerId, groupId, holidayScheduleName)
   }, [])
 
@@ -128,16 +120,6 @@ const HolidaySchedule = observer(({ t }) => {
 
   // DATA
   const globalizeLocalizer = localizer(globalize)
-  const formats = {
-    // dayFormat: 'ddd'
-    // timeGutterFormat: 'HH:mm',
-    // eventTimeRangeFormat: ({ start, end }) => {
-    //   const startTime = new Date(start)
-    //   const stopTime = new Date(end)
-    //   const transformedTime = transformTime(startTime, stopTime)
-    //   return `${transformedTime.start} : ${transformedTime.stop}`
-    // }
-  }
 
   const titleData = {
     mainText: `${t('holiday_schedules')}: ${holidayScheduleName}`
@@ -155,9 +137,6 @@ const HolidaySchedule = observer(({ t }) => {
       handleClick: handleDeletePeriodModalOpen
     }
   ]
-
-  // // To show empty periods on view with only time (by default)
-  // const EventComponent = () => null
 
   // To disable lib warning
   const handleOnViewChange = () => null
@@ -177,7 +156,6 @@ const HolidaySchedule = observer(({ t }) => {
               view='month'
               events={periods}
               onView={handleOnViewChange}
-              formats={formats}
               localizer={globalizeLocalizer}
               className={classes.calendarCustomStyles}
               onSelectEvent={(event, e) => {
@@ -185,11 +163,11 @@ const HolidaySchedule = observer(({ t }) => {
                 setAnchorEl(e.currentTarget)
               }}
               onSelectSlot={handleSelectSlot}
+              components={{
+                toolbar: CustomToolbar
+              }}
               // toolbar={false}
               // defaultDate={new Date(2020, 5, 7)}
-              // components={{
-              //   event: EventComponent
-              // }}
               // tooltipAccessor={null}
               // showMultiDayTimes={null}
               selectable

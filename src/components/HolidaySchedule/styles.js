@@ -10,7 +10,8 @@ const useStyles = makeStyles(theme => ({
     boxShadow: 'none'
   },
   calendarCustomStyles: {
-    height: 731
+    height: 731,
+    margin: '0px 33px 33px 68px !important'
   }
 }))
 
