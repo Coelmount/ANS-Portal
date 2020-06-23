@@ -330,6 +330,20 @@ export class WeekSchedules {
     Promise.all(promiseArr)
       .then(() => {
         closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Periods successfully edited',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to edit periods',
+          options: {
+            variant: 'error'
+          }
+        })
       })
       .finally(() => {
         this.isScheduleEditing = false
@@ -360,7 +374,7 @@ export class WeekSchedules {
           const periodName = initPeriod.initName
           promiseArr.push(
             axios.delete(
-              `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`
+              `/tenants/${customerId}/groups/${groupId}/time_schedule1s/${weekScheduleName}/${periodName}/`
             )
           )
         }
@@ -380,6 +394,20 @@ export class WeekSchedules {
     Promise.all(promiseArr)
       .then(() => {
         closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Period successfully edited',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to edit period',
+          options: {
+            variant: 'error'
+          }
+        })
       })
       .finally(() => {
         this.isScheduleEditing = false
@@ -435,6 +463,20 @@ export class WeekSchedules {
       )
       .then(() => {
         closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Timeslot successfully deleted',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete timeslot',
+          options: {
+            variant: 'error'
+          }
+        })
       })
       .finally(() => {
         this.isThisSlotDeleting = false
@@ -461,6 +503,20 @@ export class WeekSchedules {
     Promise.all(promiseArr)
       .then(() => {
         closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'All timeslots successfully deleted',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete all timeslots',
+          options: {
+            variant: 'error'
+          }
+        })
       })
       .finally(() => {
         this.isAllPeriodsDeleting = false

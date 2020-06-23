@@ -17,10 +17,10 @@ import CustomContainer from 'components/CustomContainer'
 import ExtendedTitleBlock from 'components/ExtendedTitleBlock'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Loading from 'components/Loading'
+import DeleteModal from 'components/DeleteModal'
 import PopoverBlock from 'components/PopoverBlock/index.jsx'
 import AddPeriodModal from './components/AddPeriodModal'
 import EditPeriodModal from './components/EditPeriodModal'
-// import DeletePeriodsModal from './components/DeletePeriodsModal'
 // import { WEEK_DAYS_ARR } from 'utils/schedules/weekDaysArr'
 import transformTime from 'utils/schedules/transformTime'
 import formatPeriodDateFormat from 'utils/schedules/formatPeriodDateFormat'
@@ -36,6 +36,8 @@ import useStyles from './styles'
 const HolidaySchedule = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
+  const { customerId, groupId, holidayScheduleName } = match
+
   const {
     getHolidaySchedule,
     isHolidayScheduleLoading,
@@ -44,8 +46,8 @@ const HolidaySchedule = observer(({ t }) => {
     updatePeriod,
     setDefaultPeriods,
     setPeriodToEdit,
-    // deletePeriod,
-    // isPeriodDeleting,
+    deletePeriod,
+    isPeriodDeleting,
     // deleteThisTimeSlot,
     // isThisSlotDeleting,
     // deleteAllPeriods,
@@ -55,9 +57,7 @@ const HolidaySchedule = observer(({ t }) => {
 
   const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
   const [isEditPeriodModalOpen, setIsEditPeriodModalOpen] = useState(false)
-  const [isDeletePeriodsModalOpen, setIsDeletePeriodsModalOpen] = useState(
-    false
-  )
+  const [isDeletePeriodModalOpen, setIsDeletePeriodModalOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const [currentPeriod, setCurrentPeriod] = useState(null)
 
@@ -65,30 +65,18 @@ const HolidaySchedule = observer(({ t }) => {
   const popoverId = isPeriodPopoverOpen ? 'period-popover' : undefined
 
   useEffect(() => {
-    // postPeriod(match.customerId, match.groupId)
-    getHolidaySchedule(
-      match.customerId,
-      match.groupId,
-      match.holidayScheduleName
-    )
+    // postPeriod(customerId, groupId)
+    getHolidaySchedule(customerId, groupId, holidayScheduleName)
   }, [])
 
   const handleCloseAddPeriodModal = () => {
     setIsAddPeriodModalOpen(false)
-    getHolidaySchedule(
-      match.customerId,
-      match.groupId,
-      match.holidayScheduleName
-    )
+    getHolidaySchedule(customerId, groupId, holidayScheduleName)
   }
 
   const handleCloseEditScheduleModal = () => {
     setIsEditPeriodModalOpen(false)
-    getHolidaySchedule(
-      match.customerId,
-      match.groupId,
-      match.holidayScheduleName
-    )
+    getHolidaySchedule(customerId, groupId, holidayScheduleName)
     setDefaultPeriods()
   }
 
@@ -106,45 +94,26 @@ const HolidaySchedule = observer(({ t }) => {
 
   // POPOVER  DELETE
   const handleDeletePeriodModalOpen = () => {
-    setIsDeletePeriodsModalOpen(true)
+    setIsDeletePeriodModalOpen(true)
   }
 
-  // const handleDeletePeriodsModalClose = () => {
-  //   setIsDeletePeriodsModalOpen(false)
-  //   setAnchorEl(null)
-  //   getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
-  // }
+  const handleDeletePeriodModalClose = () => {
+    setIsDeletePeriodModalOpen(false)
+    setAnchorEl(null)
+    getHolidaySchedule(customerId, groupId, holidayScheduleName)
+  }
 
-  // // DELETE HANDLERS
-  // const handleDeleteThisPeriod = () => {
-  //   const periodName = currentPeriod.title.split(' ')[0]
-  //   deletePeriod(
-  //     match.customerId,
-  //     match.groupId,
-  //     match.weekScheduleName,
-  //     periodName,
-  //     handleDeletePeriodsModalClose
-  //   )
-  // }
-  // const handleDeleteThisTimeSlot = () => {
-  //   const fullPeriodName = currentPeriod.initName
-  //   deleteThisTimeSlot(
-  //     match.customerId,
-  //     match.groupId,
-  //     match.weekScheduleName,
-  //     fullPeriodName,
-  //     handleDeletePeriodsModalClose
-  //   )
-  // }
-
-  // const handleDeleteAllPeriods = () => {
-  //   deleteAllPeriods(
-  //     match.customerId,
-  //     match.groupId,
-  //     match.weekScheduleName,
-  //     handleDeletePeriodsModalClose
-  //   )
-  // }
+  // DELETE HANDLER
+  const handleDeletePeriod = () => {
+    const payload = {
+      customerId,
+      groupId,
+      holidayScheduleName,
+      periodId: currentPeriod.title,
+      closeModal: handleDeletePeriodModalClose
+    }
+    deletePeriod(payload)
+  }
 
   const handleSelectSlot = event => {
     const formatedClickedDate = formatPeriodDateFormat(event)
@@ -171,7 +140,7 @@ const HolidaySchedule = observer(({ t }) => {
   }
 
   const titleData = {
-    mainText: `${t('holiday_schedules')}: ${match.holidayScheduleName}`
+    mainText: `${t('holiday_schedules')}: ${holidayScheduleName}`
   }
 
   const popoverButtons = [
@@ -243,6 +212,19 @@ const HolidaySchedule = observer(({ t }) => {
               <EditPeriodModal
                 open={isEditPeriodModalOpen}
                 handleClose={handleCloseEditScheduleModal}
+              />
+            )}
+            {isDeletePeriodModalOpen && (
+              <DeleteModal
+                open={isDeletePeriodModalOpen}
+                handleClose={handleDeletePeriodModalClose}
+                handleDelete={handleDeletePeriod}
+                isDeleting={isPeriodDeleting}
+                deleteInfo={{ name: '', id: currentPeriod.title }}
+                deleteSubject={`${t('holiday_schedule_period')}`}
+                action={t('to_delete')}
+                titleAction={t(`delete`)}
+                identifier={' '}
               />
             )}
           </Paper>

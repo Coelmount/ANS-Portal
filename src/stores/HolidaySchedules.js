@@ -23,6 +23,7 @@ export class HolidaySchedules {
   isHolidayScheduleLoading = true
   isPeriodPosting = false
   isPeriodPuting = false
+  isPeriodDeleting = false
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -156,8 +157,6 @@ export class HolidaySchedules {
 
   updatePeriodType = isFullDayPeriod => {
     this.modalPeriod.type = isFullDayPeriod ? FULL_DAYS : PARTIAL_DAYS
-    console.log(isFullDayPeriod, 'isFullDayPeriod')
-    console.log(toJS(this.modalPeriod), 'this.modalPeriod')
   }
 
   // computed: Period is valid if all fields exist for PARTIAL_DAYS type or name and dates exist for FULL_DAYS type
@@ -299,6 +298,41 @@ export class HolidaySchedules {
         this.isPeriodPuting = false
       })
   }
+
+  deletePeriod = ({
+    customerId,
+    groupId,
+    holidayScheduleName,
+    periodId,
+    closeModal
+  }) => {
+    this.isPeriodDeleting = true
+
+    axios
+      .delete(
+        `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${holidayScheduleName}/${periodId}/`
+      )
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Period successfully deleted',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete period',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isPeriodDeleting = false
+      })
+  }
 }
 
 decorate(HolidaySchedules, {
@@ -310,6 +344,7 @@ decorate(HolidaySchedules, {
   isHolidayScheduleLoading: observable,
   isPeriodPosting: observable,
   isPeriodPuting: observable,
+  isPeriodDeleting: observable,
   periods: observable,
   modalPeriod: observable,
   getSchedules: action,
@@ -321,7 +356,8 @@ decorate(HolidaySchedules, {
   postPeriod: action,
   setPeriodToEdit: action,
   setDefaultPeriods: action,
-  putPeriod: action
+  putPeriod: action,
+  deletePeriod: action
 })
 
 export default new HolidaySchedules()
