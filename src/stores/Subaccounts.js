@@ -87,6 +87,7 @@ export class SubaccountsStore {
       .get(`/tenants/${customerId}/groups/${groupId}`)
       .then(res => {
         if (res.status === 200) {
+          this.customer.groupId = groupId
           merge(this.customer, res.data)
           this.getSubaccountStatus(customerId, groupId)
         }

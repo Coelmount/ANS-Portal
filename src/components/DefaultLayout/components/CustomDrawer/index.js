@@ -70,13 +70,17 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
   // get customer/subaccount data for sidebar user block
   useEffect(() => {
     if (match.customerId && !match.groupId) {
-      getCustomerName(match.customerId)
-      getCustomer(match.customerId)
+      if (customer.tenantId !== match.customerId) {
+        getCustomerName(match.customerId)
+        getCustomer(match.customerId)
+      }
     }
     if (match.customerId && match.groupId) {
-      getSubaccount(match.customerId, match.groupId)
+      if (subaccount.groupId !== match.groupId) {
+        getSubaccount(match.customerId, match.groupId)
+      }
     }
-  }, [match.customerId, match.groupId])
+  }, [match.groupId, match.customerId])
 
   // update user data if store updated
   useEffect(() => {
