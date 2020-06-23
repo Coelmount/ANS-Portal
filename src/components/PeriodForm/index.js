@@ -14,11 +14,9 @@ import { WEEK_DAYS_ARR } from 'utils/schedules/weekDaysArr'
 import useStyles from './styles.js'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
-const PeriodForm = ({
-  isRemoveEnabled,
-  period: { id, weekDays, startTime, stopTime }
-}) => {
+const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
   const classes = useStyles()
+
   // store
   const {
     updatePeriodDayStatus,
@@ -29,14 +27,12 @@ const PeriodForm = ({
   // components ------
   const Header = () => (
     <Box className={classes.header}>
-      {isRemoveEnabled && (
-        <img
-          onClick={() => removePeriod(id)}
-          src={deleteIcon}
-          className={classes.deleteIcon}
-          alt='delete'
-        />
-      )}
+      <img
+        onClick={() => removePeriod(id)}
+        src={deleteIcon}
+        className={classes.deleteIcon}
+        alt='delete'
+      />
     </Box>
   )
 
@@ -82,10 +78,6 @@ const PeriodForm = ({
       />
     </Box>
   )
-}
-
-PeriodForm.defaultProps = {
-  isRemoveEnabled: true
 }
 
 export default observer(PeriodForm)

@@ -68,11 +68,7 @@ const EditScheduleModal = ({
             />
             <Box className={classes.periodFormsWrap}>
               {periods.map(period => (
-                <PeriodForm
-                  isRemoveEnabled={false}
-                  period={period}
-                  key={period.id}
-                />
+                <PeriodForm period={period} key={period.id} />
               ))}
             </Box>
           </Fragment>

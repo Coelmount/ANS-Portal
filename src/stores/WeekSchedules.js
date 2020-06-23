@@ -374,7 +374,7 @@ export class WeekSchedules {
           const periodName = initPeriod.initName
           promiseArr.push(
             axios.delete(
-              `/tenants/${customerId}/groups/${groupId}/time_schedule1s/${weekScheduleName}/${periodName}/`
+              `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/${periodName}/`
             )
           )
         }
