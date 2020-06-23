@@ -31,7 +31,7 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
   const { getLocale } = LanguagesStore
 
   const changeLanguage = lng => {
-    getLocale(lng)
+    getLocale(lng, true)
     i18n.changeLanguage(lng)
   }
 

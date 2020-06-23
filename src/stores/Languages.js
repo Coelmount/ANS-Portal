@@ -12,34 +12,37 @@ export class LanguagesStore {
   isLoadingLang = true
   lang = ''
 
-  getLocale = lang => {
+  getLocale = (lang, provideError) => {
     this.lang = lang
     this.isLoadingLang = true
-    axios.get(`/configs/applications/ANS_portal/${lang}`).then(res => {
-      try {
-        JSON.parse(res.data.data)
-      } catch (e) {
-        localStorage.setItem('i18nextLng', 'en')
+    axios
+      .get(`/configs/applications/ANS_portal/${lang}`)
+      .then(res => {
+        try {
+          JSON.parse(res.data.data)
+        } catch (e) {
+          localStorage.setItem('i18nextLng', 'en')
+          this.isLoadingLang = false
+          return
+        }
+        i18n.addResourceBundle(
+          lang,
+          'translation',
+          JSON.parse(res.data.data),
+          true,
+          true
+        )
         this.isLoadingLang = false
-        return
-      }
-      i18n.addResourceBundle(
-        lang,
-        'translation',
-        JSON.parse(res.data.data),
-        true,
-        true
-      )
-      this.isLoadingLang = false
-    })
-    // .catch(e => {
-    //   SnackbarStore.enqueueSnackbar({
-    //     message: getErrorMessage(e) || `Failed to get ${lang} localization`,
-    //     options: {
-    //       variant: 'error'
-    //     }
-    //   })
-    // })
+      })
+      .catch(e => {
+        provideError &&
+          SnackbarStore.enqueueSnackbar({
+            message: getErrorMessage(e) || `Failed to get ${lang} localization`,
+            options: {
+              variant: 'error'
+            }
+          })
+      })
   }
 }
 
