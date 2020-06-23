@@ -9,11 +9,15 @@ import Typography from '@material-ui/core/Typography'
 import WeekSchedulesStore from 'stores/WeekSchedules'
 import Checkbox from 'components/Checkbox'
 import StartEndTime from 'components/StartEndTime'
+import { WEEK_DAYS_ARR } from 'utils/schedules/weekDaysArr'
 
 import useStyles from './styles.js'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
-const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
+const PeriodForm = ({
+  isRemoveEnabled,
+  period: { id, weekDays, startTime, stopTime }
+}) => {
   const classes = useStyles()
   // store
   const {
@@ -25,12 +29,14 @@ const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
   // components ------
   const Header = () => (
     <Box className={classes.header}>
-      <img
-        onClick={() => removePeriod(id)}
-        src={deleteIcon}
-        className={classes.deleteIcon}
-        alt='delete'
-      />
+      {isRemoveEnabled && (
+        <img
+          onClick={() => removePeriod(id)}
+          src={deleteIcon}
+          className={classes.deleteIcon}
+          alt='delete'
+        />
+      )}
     </Box>
   )
 
@@ -40,21 +46,24 @@ const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
         <DateRangeIcon className={classes.dateIcon} />
       </Box>
       <Box key={id} className={classes.daysBlockRowWrap}>
-        {Object.keys(weekDays).map(day => {
-          return (
-            <Box key={day} className={classes.weekDay}>
-              <Typography className={classes.weekDayName}>
-                {capitalize(day.slice(0, 3))}
-              </Typography>
-              <Checkbox
-                checked={weekDays[day]}
-                onChange={e => {
-                  updatePeriodDayStatus(id, day, e.target.checked)
-                }}
-                className={classes.checkbox}
-              />
-            </Box>
-          )
+        {WEEK_DAYS_ARR.map(initDay => {
+          const day = initDay.toLowerCase()
+          {
+            return (
+              <Box key={day} className={classes.weekDay}>
+                <Typography className={classes.weekDayName}>
+                  {capitalize(day.slice(0, 3))}
+                </Typography>
+                <Checkbox
+                  checked={weekDays[day]}
+                  onChange={e => {
+                    updatePeriodDayStatus(id, day, e.target.checked)
+                  }}
+                  className={classes.checkbox}
+                />
+              </Box>
+            )
+          }
         })}
       </Box>
     </Box>
@@ -73,6 +82,10 @@ const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
       />
     </Box>
   )
+}
+
+PeriodForm.defaultProps = {
+  isRemoveEnabled: true
 }
 
 export default observer(PeriodForm)
