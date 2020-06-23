@@ -67,10 +67,10 @@ const FirstStep = props => {
   }, [isLoadingConfig, config])
 
   const changeId = value => {
-    if (isCreateSubaccount) {
-      changeCustomer('groupId', value)
-    } else {
+    if (/^[\w\@\-\/]{1,30}$/.test(value)) {
       changeCustomer('tenantId', value)
+    } else {
+      return
     }
   }
 
