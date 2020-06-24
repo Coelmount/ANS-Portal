@@ -9,6 +9,10 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
     boxShadow: 'none'
   },
+  main: {
+    background: theme.palette.active.main,
+    paddingTop: 24
+  },
   calendarCustomStyles: {
     margin: '0px 33px 33px 68px !important',
     '& .rbc-allday-cell': {

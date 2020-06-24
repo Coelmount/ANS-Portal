@@ -210,60 +210,62 @@ const WeekSchedule = observer(({ t }) => {
                 handleTitleIconClick={handleEditScheduleClick}
               />
             </CustomContainer>
-            <Calendar
-              view='week'
-              events={weekSchedulePeriods}
-              onView={handleOnViewChange}
-              toolbar={false}
-              formats={formats}
-              defaultDate={new Date(2020, 5, 7)}
-              localizer={globalizeLocalizer}
-              className={classes.calendarCustomStyles}
-              onSelectEvent={(event, e) => {
-                setCurrentPeriod(event)
-                setAnchorEl(e.currentTarget)
-              }}
-              onSelectSlot={handleSelectSlot}
-              components={{
-                event: EventComponent
-              }}
-              tooltipAccessor={null}
-              showMultiDayTimes={null}
-              selectable
-            />
-            <PopoverBlock
-              popoverId={popoverId}
-              isPeriodPopoverOpen={isPeriodPopoverOpen}
-              anchorEl={anchorEl}
-              handlePopoverClose={handlePopoverClose}
-              classes={classes}
-              popoverButtons={popoverButtons}
-            />
-            {isAddPeriodModalOpen && (
-              <AddPeriodModal
-                open={isAddPeriodModalOpen}
-                handleClose={handleCloseAddPeriodModal}
+            <Box className={classes.main}>
+              <Calendar
+                view='week'
+                events={weekSchedulePeriods}
+                onView={handleOnViewChange}
+                toolbar={false}
+                formats={formats}
+                defaultDate={new Date(2020, 5, 7)}
+                localizer={globalizeLocalizer}
+                className={classes.calendarCustomStyles}
+                onSelectEvent={(event, e) => {
+                  setCurrentPeriod(event)
+                  setAnchorEl(e.currentTarget)
+                }}
+                onSelectSlot={handleSelectSlot}
+                components={{
+                  event: EventComponent
+                }}
+                tooltipAccessor={null}
+                showMultiDayTimes={null}
+                selectable
               />
-            )}
-            {isEditScheduleModalOpen && (
-              <EditScheduleModal
-                open={isEditScheduleModalOpen}
-                handleClose={handleCloseEditScheduleModal}
-                isSinglePeriodEditActive={isSinglePeriodEditActive}
+              <PopoverBlock
+                popoverId={popoverId}
+                isPeriodPopoverOpen={isPeriodPopoverOpen}
+                anchorEl={anchorEl}
+                handlePopoverClose={handlePopoverClose}
+                classes={classes}
+                popoverButtons={popoverButtons}
               />
-            )}
-            {isDeletePeriodsModalOpen && (
-              <DeletePeriodsModal
-                open={isDeletePeriodsModalOpen}
-                handleClose={handleDeletePeriodsModalClose}
-                handleDeleteThisPeriod={handleDeleteThisPeriod}
-                isPeriodDeleting={isPeriodDeleting}
-                handleDeleteThisTimeSlot={handleDeleteThisTimeSlot}
-                isThisSlotDeleting={isThisSlotDeleting}
-                handleDeleteAllPeriods={handleDeleteAllPeriods}
-                isAllPeriodsDeleting={isAllPeriodsDeleting}
-              />
-            )}
+              {isAddPeriodModalOpen && (
+                <AddPeriodModal
+                  open={isAddPeriodModalOpen}
+                  handleClose={handleCloseAddPeriodModal}
+                />
+              )}
+              {isEditScheduleModalOpen && (
+                <EditScheduleModal
+                  open={isEditScheduleModalOpen}
+                  handleClose={handleCloseEditScheduleModal}
+                  isSinglePeriodEditActive={isSinglePeriodEditActive}
+                />
+              )}
+              {isDeletePeriodsModalOpen && (
+                <DeletePeriodsModal
+                  open={isDeletePeriodsModalOpen}
+                  handleClose={handleDeletePeriodsModalClose}
+                  handleDeleteThisPeriod={handleDeleteThisPeriod}
+                  isPeriodDeleting={isPeriodDeleting}
+                  handleDeleteThisTimeSlot={handleDeleteThisTimeSlot}
+                  isThisSlotDeleting={isThisSlotDeleting}
+                  handleDeleteAllPeriods={handleDeleteAllPeriods}
+                  isAllPeriodsDeleting={isAllPeriodsDeleting}
+                />
+              )}
+            </Box>
           </Paper>
         </Box>
       )}

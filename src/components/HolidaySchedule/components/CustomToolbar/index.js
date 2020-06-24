@@ -23,6 +23,7 @@ const CustomToolbar = toolbar => {
     toolbar.onNavigate('next')
   }
 
+  // Probably to add feature later
   // const goToCurrent = () => {
   //   const now = new Date()
   //   toolbar.date.setMonth(now.getMonth())
@@ -32,24 +33,15 @@ const CustomToolbar = toolbar => {
 
   return (
     <div className={classes.wrap}>
-      {/* <button className={['btn-back']} onClick={goToBack}>
-        &#8249;
-      </button> */}
-      <div className={classes.buttonWrap}>
+      <div onClick={goToBack} className={classes.buttonWrap}>
         <ArrowBackIosIcon className={classes.buttonIcon} />
       </div>
-      {/* <button className={['btn-current']} onClick={goToCurrent}>
-          today
-        </button> */}
       <Typography className={classes.currentMonthTitle}>
         {fullCurrentMonth}
       </Typography>
-      <div className={classes.buttonWrap}>
+      <div onClick={goToNext} className={classes.buttonWrap}>
         <ArrowForwardIosIcon className={classes.buttonIcon} />
       </div>
-      {/* <button className={['btn-next']} onClick={goToNext}>
-        &#8250;
-      </button> */}
     </div>
   )
 }

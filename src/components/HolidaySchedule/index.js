@@ -152,59 +152,61 @@ const HolidaySchedule = observer(({ t }) => {
               <CustomBreadcrumbs />
               <ExtendedTitleBlock titleData={titleData} />
             </CustomContainer>
-            <Calendar
-              view='month'
-              events={periods}
-              onView={handleOnViewChange}
-              localizer={globalizeLocalizer}
-              className={classes.calendarCustomStyles}
-              onSelectEvent={(event, e) => {
-                setCurrentPeriod(event)
-                setAnchorEl(e.currentTarget)
-              }}
-              onSelectSlot={handleSelectSlot}
-              components={{
-                toolbar: CustomToolbar
-              }}
-              // toolbar={false}
-              // defaultDate={new Date(2020, 5, 7)}
-              // tooltipAccessor={null}
-              // showMultiDayTimes={null}
-              selectable
-            />
-            <PopoverBlock
-              popoverId={popoverId}
-              isPeriodPopoverOpen={isPeriodPopoverOpen}
-              anchorEl={anchorEl}
-              handlePopoverClose={handlePopoverClose}
-              classes={classes}
-              popoverButtons={popoverButtons}
-            />
-            {isAddPeriodModalOpen && (
-              <AddPeriodModal
-                open={isAddPeriodModalOpen}
-                handleClose={handleCloseAddPeriodModal}
+            <Box className={classes.main}>
+              <Calendar
+                view='month'
+                events={periods}
+                onView={handleOnViewChange}
+                localizer={globalizeLocalizer}
+                className={classes.calendarCustomStyles}
+                onSelectEvent={(event, e) => {
+                  setCurrentPeriod(event)
+                  setAnchorEl(e.currentTarget)
+                }}
+                onSelectSlot={handleSelectSlot}
+                components={{
+                  toolbar: CustomToolbar
+                }}
+                // toolbar={false}
+                // defaultDate={new Date(2020, 5, 7)}
+                // tooltipAccessor={null}
+                // showMultiDayTimes={null}
+                selectable
               />
-            )}
-            {isEditPeriodModalOpen && (
-              <EditPeriodModal
-                open={isEditPeriodModalOpen}
-                handleClose={handleCloseEditScheduleModal}
+              <PopoverBlock
+                popoverId={popoverId}
+                isPeriodPopoverOpen={isPeriodPopoverOpen}
+                anchorEl={anchorEl}
+                handlePopoverClose={handlePopoverClose}
+                classes={classes}
+                popoverButtons={popoverButtons}
               />
-            )}
-            {isDeletePeriodModalOpen && (
-              <DeleteModal
-                open={isDeletePeriodModalOpen}
-                handleClose={handleDeletePeriodModalClose}
-                handleDelete={handleDeletePeriod}
-                isDeleting={isPeriodDeleting}
-                deleteInfo={{ name: '', id: currentPeriod.title }}
-                deleteSubject={`${t('holiday_schedule_period')}`}
-                action={t('to_delete')}
-                titleAction={t(`delete`)}
-                identifier={' '}
-              />
-            )}
+              {isAddPeriodModalOpen && (
+                <AddPeriodModal
+                  open={isAddPeriodModalOpen}
+                  handleClose={handleCloseAddPeriodModal}
+                />
+              )}
+              {isEditPeriodModalOpen && (
+                <EditPeriodModal
+                  open={isEditPeriodModalOpen}
+                  handleClose={handleCloseEditScheduleModal}
+                />
+              )}
+              {isDeletePeriodModalOpen && (
+                <DeleteModal
+                  open={isDeletePeriodModalOpen}
+                  handleClose={handleDeletePeriodModalClose}
+                  handleDelete={handleDeletePeriod}
+                  isDeleting={isPeriodDeleting}
+                  deleteInfo={{ name: '', id: currentPeriod.title }}
+                  deleteSubject={`${t('holiday_schedule_period')}`}
+                  action={t('to_delete')}
+                  titleAction={t(`delete`)}
+                  identifier={' '}
+                />
+              )}
+            </Box>
           </Paper>
         </Box>
       )}

@@ -9,9 +9,32 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
     boxShadow: 'none'
   },
+  main: {
+    background: theme.palette.active.main,
+    paddingTop: 24
+  },
   calendarCustomStyles: {
     height: 731,
-    margin: '0px 33px 33px 68px !important'
+    margin: '0px 33px 33px 68px !important',
+    padding: '0px 27px 27px 27px',
+    background: 'white',
+    '& .rbc-event': {
+      background: theme.palette.mattePink
+    },
+    '& .rbc-date-cell': {
+      textAlign: 'center'
+    },
+    '& .rbc-off-range-bg': {
+      background: 'white'
+    },
+    '& .rbc-header': {
+      borderBottom: 'none',
+      fontWeight: 'normal',
+      '& > span': {
+        fontSize: 16,
+        color: theme.palette.grey99
+      }
+    }
   }
 }))
 
