@@ -76,7 +76,7 @@ const WeekSchedules = observer(({ t }) => {
 
   const titleData = {
     mainText: `${t('schedules')}: ${t('week_schedules')}`,
-    iconCapture: t('add'),
+    iconCapture: t('add_schedule'),
     Icon: <AddOutlinedIcon />
   }
 

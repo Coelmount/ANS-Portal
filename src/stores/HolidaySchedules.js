@@ -333,6 +333,17 @@ export class HolidaySchedules {
         this.isPeriodDeleting = false
       })
   }
+
+  postImport = (customerId, groupId, holidayScheduleName) => {
+    axios.post(
+      `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${holidayScheduleName}/public_holidays/`,
+      {
+        country: 'BE',
+        year: 2020,
+        type: 'public'
+      }
+    )
+  }
 }
 
 decorate(HolidaySchedules, {
@@ -357,7 +368,8 @@ decorate(HolidaySchedules, {
   setPeriodToEdit: action,
   setDefaultPeriods: action,
   putPeriod: action,
-  deletePeriod: action
+  deletePeriod: action,
+  postImport: action
 })
 
 export default new HolidaySchedules()

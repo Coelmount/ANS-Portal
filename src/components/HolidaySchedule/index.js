@@ -6,6 +6,7 @@ import globalize from 'globalize'
 import { Calendar } from 'react-big-calendar'
 import localizer from 'react-big-calendar/lib/localizers/globalize'
 
+import DateRangeIcon from '@material-ui/icons/DateRange'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
@@ -17,6 +18,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Loading from 'components/Loading'
 import DeleteModal from 'components/DeleteModal'
 import PopoverBlock from 'components/PopoverBlock/index.jsx'
+import ImportHolidaysModal from './components/ImportHolidaysModal'
 import AddPeriodModal from './components/AddPeriodModal'
 import EditPeriodModal from './components/EditPeriodModal'
 import CustomToolbar from './components/CustomToolbar'
@@ -48,6 +50,9 @@ const HolidaySchedule = observer(({ t }) => {
     postPeriod
   } = HolidaySchedulesStore
 
+  const [isImportHolidaysModalOpen, setIsImportHolidaysModalOpen] = useState(
+    false
+  )
   const [isAddPeriodModalOpen, setIsAddPeriodModalOpen] = useState(false)
   const [isEditPeriodModalOpen, setIsEditPeriodModalOpen] = useState(false)
   const [isDeletePeriodModalOpen, setIsDeletePeriodModalOpen] = useState(false)
@@ -118,11 +123,37 @@ const HolidaySchedule = observer(({ t }) => {
     setIsAddPeriodModalOpen(true)
   }
 
+  const handleImportClick = () => {
+    setIsImportHolidaysModalOpen(true)
+  }
+
+  const handleImportModalClose = () => {
+    setIsImportHolidaysModalOpen(false)
+  }
+
+  // To disable lib warning
+  const handleOnViewChange = () => null
+
+  // Small components ------
+  const extraTitleBlock = (
+    <Box className={classes.extraTitleBlockWrap}>
+      <Box className={classes.extraTitleBlockIconWrap}>
+        <DateRangeIcon />
+      </Box>
+      <Typography className={classes.extraTitleBlockTitle}>
+        {t('import_holidays')}
+      </Typography>
+    </Box>
+  )
+  // -----------------
+
   // DATA
   const globalizeLocalizer = localizer(globalize)
 
   const titleData = {
-    mainText: `${t('holiday_schedules')}: ${holidayScheduleName}`
+    mainText: `${t('holiday_schedules')}: ${holidayScheduleName}`,
+    iconCapture: t('import_holidays'),
+    Icon: <DateRangeIcon />
   }
 
   const popoverButtons = [
@@ -138,9 +169,6 @@ const HolidaySchedule = observer(({ t }) => {
     }
   ]
 
-  // To disable lib warning
-  const handleOnViewChange = () => null
-
   return (
     <Fragment>
       {isHolidayScheduleLoading ? (
@@ -150,7 +178,10 @@ const HolidaySchedule = observer(({ t }) => {
           <Paper>
             <CustomContainer>
               <CustomBreadcrumbs />
-              <ExtendedTitleBlock titleData={titleData} />
+              <ExtendedTitleBlock
+                titleData={titleData}
+                handleClick={handleImportClick}
+              />
             </CustomContainer>
             <Box className={classes.main}>
               <Calendar
@@ -204,6 +235,12 @@ const HolidaySchedule = observer(({ t }) => {
                   action={t('to_delete')}
                   titleAction={t(`delete`)}
                   identifier={' '}
+                />
+              )}
+              {isImportHolidaysModalOpen && (
+                <ImportHolidaysModal
+                  open={isImportHolidaysModalOpen}
+                  handleClose={handleImportModalClose}
                 />
               )}
             </Box>

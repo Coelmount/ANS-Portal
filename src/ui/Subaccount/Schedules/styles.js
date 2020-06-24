@@ -30,6 +30,36 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  extraTitleBlockWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: 20
+  },
+  extraTitleBlockIconWrap: {
+    width: 30,
+    height: 30,
+    background: theme.palette.primary.main,
+    borderRadius: 100,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+    color: theme.palette.black,
+    '&:hover': {
+      cursor: 'pointer'
+    },
+    '& > svg': {
+      width: 18,
+      height: 18
+    }
+  },
+  extraTitleBlockTitle: {
+    whiteSpace: 'nowrap',
+    fontSize: 14,
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500
   }
 }))
 
