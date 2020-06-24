@@ -128,7 +128,7 @@ export class WeekSchedules {
       .then(res => {
         const periods = res.data.periods
         const transformedPeriods = periods.map((item, index) => {
-          const generatedKey = performance.now().toString(36)
+          const generatedKey = index
           return {
             id: index,
             title: `${generatedKey} ${item.dayOfWeek.toLowerCase()}`,
@@ -487,6 +487,7 @@ export class WeekSchedules {
     this.isAllPeriodsDeleting = true
     let promiseArr = []
 
+    console.log(this.periods, 'this.periods')
     this.periods.forEach(period => {
       const weekDays = Object.keys(period.weekDays)
       weekDays.forEach(day => {
