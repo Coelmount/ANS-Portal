@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { useHistory } from 'react-router-dom'
 import i18n from 'i18n'
 import { observer } from 'mobx-react'
+import { withNamespaces } from 'react-i18next'
 
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -9,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import LinkMaterial from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
+import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Box from '@material-ui/core/Box'
 
@@ -21,7 +23,7 @@ import LanguagesStore from 'stores/Languages'
 
 import { LANGUAGES } from 'source/config'
 
-const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
+const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle, t }) => {
   const history = useHistory()
   const {
     // user,
@@ -29,10 +31,19 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
     username
   } = AuthStore
   const { getLocale } = LanguagesStore
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const changeLanguage = lng => {
     getLocale(lng, true)
     i18n.changeLanguage(lng)
+  }
+
+  const handleOpenProfileMenu = event => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleCloseProfileMenu = () => {
+    setAnchorEl(null)
   }
 
   return (
@@ -51,19 +62,32 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
             </IconButton>
           )}
           <Box className={classes.header}>
-            <LinkMaterial
-              component='button'
-              onClick={() => {
-                logOut()
-                history.push('/')
-              }}
-            >
+            <LinkMaterial component='button' onClick={handleOpenProfileMenu}>
               <Box className={classes.headerBlock}>
                 <AccountCircleIcon className={classes.userIcon} />
                 <Typography className={classes.userName}>{username}</Typography>
                 <ExpandMoreOutlinedIcon className={classes.expandMoreIcon} />
               </Box>
             </LinkMaterial>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleCloseProfileMenu}
+              className={classes.profileMenu}
+            >
+              <MenuItem onClick={handleCloseProfileMenu}>
+                {t('change_password')}
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  logOut()
+                  history.push('/')
+                }}
+              >
+                {t('logout')}
+              </MenuItem>
+            </Menu>
             <Box className={classes.headerBlock}>
               <Select
                 className={classes.langBlock}
@@ -94,4 +118,4 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle }) => {
   )
 }
 
-export default observer(CustomDrawer)
+export default withNamespaces()(observer(CustomDrawer))
