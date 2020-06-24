@@ -22,6 +22,9 @@ import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import BusinessHoursMenu from './Tabs/BHM/BusinessHoursMenu'
+import AfterHoursMenu from './Tabs/AHM/AfterHoursMenu'
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import IVRStore from 'stores/IVR'
 
@@ -37,6 +40,7 @@ const IVRPage = props => {
   const [activeTab, setActiveTab] = useState(0)
   const [open, setOpen] = useState(false)
   const anchorRef = useRef(null)
+  const [ivrMenuName, setIVRMenuName] = useState(t('ivr_menus'))
 
   useEffect(() => {
     getIVR(match.customerId, match.groupId, match.ivrId)
@@ -52,24 +56,30 @@ const IVRPage = props => {
     switch (newValue) {
       case 0:
         history.push('#access_numbers')
+        setIVRMenuName(t('ivr_menus'))
         break
       case 1:
         history.push('#business_hours_menu')
+        setIVRMenuName(t('ivr_menus'))
         break
       case 2:
         history.push('#after_hours_menu')
+        setIVRMenuName(t('ivr_menus'))
         break
       case 3:
         history.push('#whitelist_blacklist')
+        setIVRMenuName(t('ivr_menus'))
         break
       case 4:
         history.push('#details')
+        setIVRMenuName(t('ivr_menus'))
         break
       case 5:
         history.push(hash || '#ivr_menus')
         break
       case 6:
         history.push('#submenus')
+        setIVRMenuName(t('ivr_menus'))
         break
     }
   }
@@ -106,7 +116,26 @@ const IVRPage = props => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return
     }
-    handleChange(event, newValue, hash)
+    if (hash) {
+      switch (hash) {
+        case '#ivr_menus':
+          setIVRMenuName(t('ivr_menus'))
+          break
+        case '#ivr_menus_bhm':
+          setIVRMenuName(t('business_hours_menu'))
+          break
+        case '#ivr_menus_ahm':
+          setIVRMenuName(t('after_hours_menu'))
+          break
+        case '#ivr_menus_hm':
+          setIVRMenuName(t('holiday_hours_menu'))
+          break
+      }
+      handleChange(event, newValue, hash)
+    } else {
+      handleChange(event, 5, '#ivr_menus_bhm')
+      setIVRMenuName(t('business_hours_menu'))
+    }
     setOpen(false)
   }
 
@@ -149,7 +178,11 @@ const IVRPage = props => {
         <Tab value={0} label={t('access_numbers')} className={classes.tab} />
         <Tab
           value={5}
-          label={t('ivr_menus')}
+          label={
+            <Box className={classes.ivrMenuLabel}>
+              {ivrMenuName} <ExpandMoreIcon />
+            </Box>
+          }
           className={classes.tab}
           onClick={handleToggle}
           ref={anchorRef}
@@ -189,11 +222,20 @@ const IVRPage = props => {
         />
         <Tab value={4} label={t('details')} className={classes.lastTab} />
       </Tabs>
-      <TabPanel value={returnActiveTab()} index={0}>
-        Item One
-      </TabPanel>
       <TabPanel value={returnActiveTab()} index={1}>
         <BusinessHoursMenu />
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={2}>
+        <AfterHoursMenu />
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={5}>
+        {location.hash === '#ivr_menus_bhm' ? (
+          <BusinessHoursMenu />
+        ) : location.hash === '#ivr_menus_ahm' ? (
+          <AfterHoursMenu />
+        ) : (
+          <Loading />
+        )}
       </TabPanel>
 
       <Popper

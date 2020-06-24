@@ -89,7 +89,10 @@ const useStyles = makeStyles(theme => ({
   treeItem: {
     marginTop: 14,
     '&.MuiTreeItem-root.Mui-selected > .MuiTreeItem-content .MuiTreeItem-label': {
-      backgroundColor: 'rgba(255, 255, 255, 0)'
+      backgroundColor: 'rgba(0, 0, 0, 0)'
+    },
+    '& .MuiTreeItem-label:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0)'
     },
     '& .MuiTreeItem-group': {
       marginLeft: 7,
@@ -118,6 +121,18 @@ const useStyles = makeStyles(theme => ({
     minWidth: 30,
     padding: 0,
     marginRight: 5
+  },
+  deleteKeyButton: {
+    width: 30,
+    height: 30,
+    minWidth: 30,
+    padding: 0,
+    background: 'white',
+    marginLeft: 12
+  },
+  deleteBox: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 

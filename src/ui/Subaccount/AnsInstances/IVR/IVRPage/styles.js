@@ -36,6 +36,11 @@ const useStyles = makeStyles(theme => ({
   },
   displayNone: {
     display: 'none'
+  },
+  ivrMenuLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   }
 }))
 

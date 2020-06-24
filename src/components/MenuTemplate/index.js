@@ -156,19 +156,26 @@ const StyledTreeItem = props => {
           </Grid>
           <Grid item xs={'auto'} className={classes.gridItem}>
             {index === 0 && t('action_data')}
-            {/* <Select
+            <Box className={classes.deleteBox}>
+              {/* <Select
               value={menuItem.parameter}
               variant='outlined'
               disabled={disabledFields}
               className={classes.actionDataSelect}
             ></Select> */}
-            <TextField
-              value={menuItem.parameter}
-              variant='outlined'
-              className={classes.descriptionInput}
-              disabled={disabledFields}
-              onChange={e => changeKeysMenu(index, 'parameter', e.target.value)}
-            />
+              <TextField
+                value={menuItem.parameter}
+                variant='outlined'
+                className={classes.descriptionInput}
+                disabled={disabledFields}
+                onChange={e =>
+                  changeKeysMenu(index, 'parameter', e.target.value)
+                }
+              />
+              <Button variant={'contained'} className={classes.deleteKeyButton}>
+                <ClearIcon />
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       }

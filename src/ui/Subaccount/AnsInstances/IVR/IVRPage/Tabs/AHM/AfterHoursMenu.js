@@ -16,7 +16,7 @@ import Loading from 'components/Loading'
 import IVRStore from 'stores/IVR'
 import useStyles from './styles'
 
-const BusinessHoursMenu = props => {
+const AfterHoursMenu = props => {
   const { t } = props
   const { ivr, isLoadingIVR } = IVRStore
   const classes = useStyles()
@@ -27,7 +27,7 @@ const BusinessHoursMenu = props => {
 
   return (
     <React.Fragment>
-      <Box className={classes.title}>
+      {/* <Box className={classes.title}>
         <img
           src={SchedulerIcon}
           alt='SchedulerIcon'
@@ -54,9 +54,9 @@ const BusinessHoursMenu = props => {
         <Button className={classes.roundButtonEdit}>
           <img src={EditIcon} alt='EditIcon' />
         </Button>
-      </Box>
+      </Box> */}
       <MenuTemplate
-        menu={ivr.businessHoursMenu}
+        menu={ivr.afterHoursMenu}
         menuType={'business_hours'}
         showTitle
       />
@@ -64,4 +64,4 @@ const BusinessHoursMenu = props => {
   )
 }
 
-export default withNamespaces()(observer(BusinessHoursMenu))
+export default withNamespaces()(observer(AfterHoursMenu))
