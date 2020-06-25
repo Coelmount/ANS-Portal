@@ -28,8 +28,6 @@ import formatPeriodDateFormat from 'utils/schedules/formatPeriodDateFormat'
 import editIcon from 'source/images/svg/edit.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import useStyles from './styles'
-// import 'react-big-calendar/lib/css/react-big-calendar.css'
-
 // import { toJS } from 'mobx'
 
 const HolidaySchedule = observer(({ t }) => {
@@ -47,7 +45,8 @@ const HolidaySchedule = observer(({ t }) => {
     setPeriodToEdit,
     deletePeriod,
     isPeriodDeleting,
-    postPeriod
+    postPeriod,
+    clearImportData
   } = HolidaySchedulesStore
 
   const [isImportHolidaysModalOpen, setIsImportHolidaysModalOpen] = useState(
@@ -129,6 +128,8 @@ const HolidaySchedule = observer(({ t }) => {
 
   const handleImportModalClose = () => {
     setIsImportHolidaysModalOpen(false)
+    getHolidaySchedule(customerId, groupId, holidayScheduleName)
+    clearImportData()
   }
 
   // To disable lib warning
@@ -198,10 +199,6 @@ const HolidaySchedule = observer(({ t }) => {
                 components={{
                   toolbar: CustomToolbar
                 }}
-                // toolbar={false}
-                // defaultDate={new Date(2020, 5, 7)}
-                // tooltipAccessor={null}
-                // showMultiDayTimes={null}
                 selectable
               />
               <PopoverBlock

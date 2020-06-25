@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.active.blue
   },
   currentMonthTitle: {
-    minWidth: 120,
+    minWidth: 160,
     textAlign: 'center',
     marginLeft: 10,
     marginRight: 10,

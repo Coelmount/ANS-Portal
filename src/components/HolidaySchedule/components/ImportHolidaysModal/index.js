@@ -13,33 +13,72 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import HolidaySchedulesStore from 'stores/HolidaySchedules'
+import ConfigStore from 'stores/Config'
 import Loading from 'components/Loading'
+import CountryInput from 'components/CountryInput'
+import Select from 'components/Select'
 import PeriodForm from '../PeriodForm'
 
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
-
-// components -----
-
-// ------
 
 const ImportHolidaysModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId, holidayScheduleName } = match
   const {
-    // putPeriod,
-    // isHolidaysImporting,
-    // isPeriodValid
+    importData: { country, year },
+    updateImportData,
+    importPublicHolidays,
+    isHolidaysImporting,
+    isImportButtonActive
   } = HolidaySchedulesStore
-  const isHolidaysImporting = false
+
+  const { getCountries, countries, isLoadingCountries } = ConfigStore
+
+  const isLoading = isHolidaysImporting || isHolidaysImporting
+
+  useEffect(() => {
+    getCountries()
+  }, [])
+
+  const handleYearChange = e => {
+    const payload = {
+      field: 'year',
+      value: e.target.value
+    }
+    updateImportData(payload)
+  }
+
+  const handleCountryChange = e => {
+    const payload = {
+      field: 'country',
+      value: e
+    }
+    updateImportData(payload)
+  }
+
+  const handleImportClick = () => {
+    const payload = {
+      customerId,
+      groupId,
+      holidayScheduleName,
+      closeModal: handleClose
+    }
+    importPublicHolidays(payload)
+  }
+
+  const yearOptions = [
+    { label: '2020', value: '2020' },
+    { label: '2021', value: '2021' },
+    { label: '2022', value: '2022' }
+  ]
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
-      {isHolidaysImporting ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Fragment>
@@ -54,8 +93,20 @@ const ImportHolidaysModal = ({ t, open, handleClose }) => {
             </IconButton>
           </DialogTitle>
 
-          <DialogContent>
-            <div>content</div>
+          <DialogContent className={classes.contentWrap}>
+            <CountryInput
+              value={country}
+              setValue={handleCountryChange}
+              countries={countries}
+              className={classes.countryInput}
+            />
+            <Select
+              label={t('choose_year')}
+              selectStyles={classes.select}
+              options={yearOptions}
+              value={year}
+              onChange={handleYearChange}
+            />
           </DialogContent>
 
           <DialogActions className={classes.dialogActions}>
@@ -71,16 +122,8 @@ const ImportHolidaysModal = ({ t, open, handleClose }) => {
               variant='contained'
               color='primary'
               className={classes.nextButton}
-              // onClick={() => {
-              //   const payload = {
-              //     customerId,
-              //     groupId,
-              //     holidayScheduleName,
-              //     closeModal: handleClose
-              //   }
-              //   putPeriod(payload)
-              // }}
-              // disabled={!isPeriodValid}
+              onClick={handleImportClick}
+              disabled={!isImportButtonActive}
             >
               {t('import')}
             </Button>

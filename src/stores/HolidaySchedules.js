@@ -12,11 +12,21 @@ import { toJS } from 'mobx'
 
 const defaultStartTime = '00:00'
 const defaultStopTime = '01:00'
+const defaultImportData = {
+  country: {
+    code: '',
+    label: '',
+    phone: ''
+  },
+  year: ''
+}
 
 export class HolidaySchedules {
   schedules = []
   periods = []
   modalPeriod = {}
+  importData = defaultImportData
+
   isSchedulesLoading = true
   isDeletingSchedule = false
   isSchedulePosting = false
@@ -24,6 +34,7 @@ export class HolidaySchedules {
   isPeriodPosting = false
   isPeriodPuting = false
   isPeriodDeleting = false
+  isHolidaysImporting = false
 
   getSchedules = (customerId, groupId) => {
     this.isSchedulesLoading = true
@@ -334,20 +345,63 @@ export class HolidaySchedules {
       })
   }
 
-  postImport = (customerId, groupId, holidayScheduleName) => {
-    axios.post(
-      `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${holidayScheduleName}/public_holidays/`,
-      {
-        country: 'BE',
-        year: 2020,
-        type: 'public'
-      }
-    )
+  updateImportData = ({ field, value }) => {
+    this.importData[field] = value
+  }
+
+  importPublicHolidays = ({
+    customerId,
+    groupId,
+    holidayScheduleName,
+    closeModal
+  }) => {
+    this.isHolidaysImporting = true
+    const {
+      year,
+      country: { code }
+    } = this.importData
+
+    axios
+      .post(
+        `/tenants/${customerId}/groups/${groupId}/calendar_schedules/${holidayScheduleName}/public_holidays/`,
+        {
+          country: code,
+          year: Number(year),
+          type: 'public'
+        }
+      )
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Public holidays successfully imported',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to import public holidays',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => (this.isHolidaysImporting = false))
+  }
+
+  clearImportData = () => {
+    this.importData = defaultImportData
+  }
+
+  get isImportButtonActive() {
+    const { year, country } = this.importData
+    return Boolean(year && country)
   }
 }
 
 decorate(HolidaySchedules, {
-  isPeriodValid: computed,
+  isImportButtonActive: computed,
   schedules: observable,
   isSchedulesLoading: observable,
   isDeletingSchedule: observable,
@@ -358,6 +412,8 @@ decorate(HolidaySchedules, {
   isPeriodDeleting: observable,
   periods: observable,
   modalPeriod: observable,
+  importData: observable,
+  isHolidaysImporting: observable,
   getSchedules: action,
   deleteSchedule: action,
   postSchedule: action,
@@ -369,7 +425,10 @@ decorate(HolidaySchedules, {
   setDefaultPeriods: action,
   putPeriod: action,
   deletePeriod: action,
-  postImport: action
+  postImport: action,
+  updateImportData: action,
+  importPublicHolidays: action,
+  clearImportData: action
 })
 
 export default new HolidaySchedules()
