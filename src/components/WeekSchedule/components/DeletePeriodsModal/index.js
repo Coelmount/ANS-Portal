@@ -32,7 +32,7 @@ const DeletePeriodsModal = ({
   const classes = useStyles()
   const isLoading =
     isPeriodDeleting || isThisSlotDeleting || isAllPeriodsDeleting
-  const [radioButtonValue, setRadioButtonValue] = useState(null)
+  const [radioButtonValue, setRadioButtonValue] = useState('thisTimeSlot')
 
   const handleRadioButtonChange = event => {
     setRadioButtonValue(event.target.value)
