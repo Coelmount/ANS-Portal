@@ -8,6 +8,7 @@ import {
   FULL_DAYS,
   PARTIAL_DAYS
 } from 'components/HolidaySchedule/periodTypes.js'
+import getFullCountryNameFromCode from 'utils/schedules/getFullCountryNameFromCode'
 import { toJS } from 'mobx'
 
 const defaultStartTime = '00:00'
@@ -25,6 +26,8 @@ export class HolidaySchedules {
   schedules = []
   periods = []
   modalPeriod = {}
+  importCountriesList = []
+  importYearsList = []
   importData = defaultImportData
 
   isSchedulesLoading = true
@@ -34,6 +37,8 @@ export class HolidaySchedules {
   isPeriodPosting = false
   isPeriodPuting = false
   isPeriodDeleting = false
+  isImportCountriesListLoading = true
+  isImportYearsListLoading = true
   isHolidaysImporting = false
 
   getSchedules = (customerId, groupId) => {
@@ -349,6 +354,39 @@ export class HolidaySchedules {
     this.importData[field] = value
   }
 
+  getImportCountriesList = () => {
+    this.isImportCountriesListLoading = true
+    axios
+      .get(`/generic/holidays/countries`)
+      .then(res => {
+        this.importCountriesList = res.data.countries.map(countryCode => {
+          return {
+            code: countryCode,
+            label: getFullCountryNameFromCode(countryCode)
+          }
+        })
+      })
+      .finally(() => {
+        this.isImportCountriesListLoading = false
+      })
+  }
+
+  getImportYearsList = () => {
+    this.isImportYearsListLoading = true
+    const country = this.importData.country.code
+    axios
+      .get(`/generic/holidays/countries/SA/years`)
+      .then(res => {
+        this.importYearsList = res.data.years.map(year => {
+          return {
+            label: year,
+            value: year
+          }
+        })
+      })
+      .finally(() => (this.isImportYearsListLoading = false))
+  }
+
   importPublicHolidays = ({
     customerId,
     groupId,
@@ -390,13 +428,14 @@ export class HolidaySchedules {
       .finally(() => (this.isHolidaysImporting = false))
   }
 
-  clearImportData = () => {
-    this.importData = defaultImportData
-  }
-
   get isImportButtonActive() {
     const { year, country } = this.importData
     return Boolean(year && country)
+  }
+
+  // Clear input data on close import modal
+  clearImportData = () => {
+    this.importData = defaultImportData
   }
 }
 
@@ -410,10 +449,14 @@ decorate(HolidaySchedules, {
   isPeriodPosting: observable,
   isPeriodPuting: observable,
   isPeriodDeleting: observable,
+  isImportCountriesListLoading: observable,
+  isImportYearsListLoading: observable,
   periods: observable,
   modalPeriod: observable,
   importData: observable,
   isHolidaysImporting: observable,
+  importCountriesList: observable,
+  importYearsList: observable,
   getSchedules: action,
   deleteSchedule: action,
   postSchedule: action,
@@ -428,7 +471,9 @@ decorate(HolidaySchedules, {
   postImport: action,
   updateImportData: action,
   importPublicHolidays: action,
-  clearImportData: action
+  clearImportData: action,
+  getImportCountriesList: action,
+  getImportYearsList: action
 })
 
 export default new HolidaySchedules()

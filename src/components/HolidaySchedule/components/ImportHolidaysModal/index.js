@@ -15,7 +15,6 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
 import HolidaySchedulesStore from 'stores/HolidaySchedules'
-import ConfigStore from 'stores/Config'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import Select from 'components/Select'
@@ -29,19 +28,27 @@ const ImportHolidaysModal = ({ t, open, handleClose }) => {
   const match = useParams()
   const { customerId, groupId, holidayScheduleName } = match
   const {
+    getImportCountriesList,
+    getImportYearsList,
+    importCountriesList,
+    importYearsList,
     importData: { country, year },
     updateImportData,
     importPublicHolidays,
     isHolidaysImporting,
-    isImportButtonActive
+    isImportButtonActive,
+    isImportCountriesListLoading,
+    isImportYearsListLoading
   } = HolidaySchedulesStore
 
-  const { getCountries, countries, isLoadingCountries } = ConfigStore
-
-  const isLoading = isHolidaysImporting || isHolidaysImporting
+  const isLoading =
+    isHolidaysImporting ||
+    isImportCountriesListLoading ||
+    isImportYearsListLoading
 
   useEffect(() => {
-    getCountries()
+    getImportCountriesList()
+    getImportYearsList()
   }, [])
 
   const handleYearChange = e => {
@@ -70,12 +77,6 @@ const ImportHolidaysModal = ({ t, open, handleClose }) => {
     importPublicHolidays(payload)
   }
 
-  const yearOptions = [
-    { label: '2020', value: '2020' },
-    { label: '2021', value: '2021' },
-    { label: '2022', value: '2022' }
-  ]
-
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       {isLoading ? (
@@ -97,13 +98,13 @@ const ImportHolidaysModal = ({ t, open, handleClose }) => {
             <CountryInput
               value={country}
               setValue={handleCountryChange}
-              countries={countries}
+              countries={importCountriesList}
               className={classes.countryInput}
             />
             <Select
               label={t('choose_year')}
               selectStyles={classes.select}
-              options={yearOptions}
+              options={importYearsList}
               value={year}
               onChange={handleYearChange}
             />
