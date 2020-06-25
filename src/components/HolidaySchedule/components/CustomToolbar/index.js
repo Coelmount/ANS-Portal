@@ -11,6 +11,7 @@ import { Typography } from '@material-ui/core'
 const CustomToolbar = toolbar => {
   const classes = useStyles()
   const currentMonthIndex = toolbar.date.getMonth()
+  const currentYear = toolbar.date.getFullYear()
   const fullCurrentMonth = MONTHS_ARR[currentMonthIndex]
 
   const goToBack = () => {
@@ -37,7 +38,7 @@ const CustomToolbar = toolbar => {
         <ArrowBackIosIcon className={classes.buttonIcon} />
       </div>
       <Typography className={classes.currentMonthTitle}>
-        {fullCurrentMonth}
+        {`${fullCurrentMonth} ${currentYear}`}
       </Typography>
       <div onClick={goToNext} className={classes.buttonWrap}>
         <ArrowForwardIosIcon className={classes.buttonIcon} />
