@@ -102,9 +102,11 @@ const StyledTreeItem = props => {
     changeKeysMenu,
     t,
     disabledFields,
+    deleteItemFromKeys,
+    id,
     ...rest
   } = props
-
+  console.log(id)
   return (
     <TreeItem
       {...rest}
@@ -122,7 +124,7 @@ const StyledTreeItem = props => {
               value={menuItem.key}
               className={classes.keyInput}
               disabled={disabledFields}
-              onChange={e => changeKeysMenu(index, 'key', e.target.value)}
+              onChange={e => changeKeysMenu(id, 'key', e.target.value)}
             />
           </Grid>
           <Grid item xs={'auto'} className={classes.gridItem}>
@@ -133,9 +135,7 @@ const StyledTreeItem = props => {
               value={menuItem.description}
               className={classes.descriptionInput}
               disabled={disabledFields}
-              onChange={e =>
-                changeKeysMenu(index, 'description', e.target.value)
-              }
+              onChange={e => changeKeysMenu(id, 'description', e.target.value)}
             />
           </Grid>
           <Grid item xs={'auto'} className={classes.gridItem}>
@@ -145,7 +145,7 @@ const StyledTreeItem = props => {
               variant='outlined'
               className={classes.actionSelect}
               disabled={disabledFields}
-              onChange={e => changeKeysMenu(index, 'action', e.target.value)}
+              onChange={e => changeKeysMenu(id, 'action', e.target.value)}
             >
               {actions.map(act => (
                 <MenuItem key={act.action} value={act.action}>
@@ -168,13 +168,17 @@ const StyledTreeItem = props => {
                 variant='outlined'
                 className={classes.descriptionInput}
                 disabled={disabledFields}
-                onChange={e =>
-                  changeKeysMenu(index, 'parameter', e.target.value)
-                }
+                onChange={e => changeKeysMenu(id, 'parameter', e.target.value)}
               />
-              <Button variant={'contained'} className={classes.deleteKeyButton}>
-                <ClearIcon />
-              </Button>
+              {!disabledFields && (
+                <Button
+                  variant={'contained'}
+                  className={classes.deleteKeyButton}
+                  onClick={() => deleteItemFromKeys(id)}
+                >
+                  <ClearIcon />
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>
@@ -186,7 +190,7 @@ const StyledTreeItem = props => {
 const MenuTemplate = props => {
   const { t, menu, showTitle, menuType } = props
   const classes = useStyles()
-  const [stateMenu, setStateMenu] = useState({})
+  const [stateMenu, setStateMenu] = useState(null)
   const [isEdit, setIsEdit] = useState(false)
 
   const match = useParams()
@@ -196,17 +200,15 @@ const MenuTemplate = props => {
 
   useEffect(() => {
     getConfig()
-    setStateMenu(toJS(menu))
-  }, [])
-
-  const changeKeysMenu = (index, field, value) => {
-    if (field === 'key' && !/^[\d\#\*]$/.test(value) && value !== '') {
-      return
+    if (menu) {
+      setStateMenu(
+        toJS({
+          ...menu,
+          keys: menu.keys.map((el, i) => ({ ...el, id: el.id ? el.id : i }))
+        })
+      )
     }
-    const newMenu = { ...stateMenu }
-    newMenu.keys[index][field] = value
-    setStateMenu(newMenu)
-  }
+  }, [])
 
   const updateMenu = () => {
     let data = {}
@@ -236,6 +238,34 @@ const MenuTemplate = props => {
       menuType,
       data
     )
+  }
+
+  const changeKeysMenu = (id, field, value) => {
+    if (
+      (field === 'key' && !/^[\d\#\*]$/.test(value) && value !== '') ||
+      (stateMenu.keys.some(el => el.key === value) &&
+        stateMenu.keys[id] !== null)
+    ) {
+      return
+    }
+    const keysMenu = toJS(stateMenu.keys)
+    const index = keysMenu.findIndex(el => el.id === id)
+    keysMenu[index][field] = value
+    setStateMenu({ ...stateMenu, keys: keysMenu })
+  }
+
+  const addKey = () => {
+    const keysMenu = toJS(stateMenu.keys)
+    const id = keysMenu.length + 1 + Math.random()
+    keysMenu.push({ key: '', description: '', action: '', parameter: '', id })
+    setStateMenu({ ...stateMenu, keys: keysMenu })
+  }
+
+  const deleteItemFromKeys = id => {
+    const keysMenu = toJS(stateMenu.keys)
+    const index = keysMenu.findIndex(el => el.id === id)
+    keysMenu[index].action = null
+    setStateMenu({ ...stateMenu, keys: keysMenu })
   }
 
   if (isLoadingConfig) {
@@ -303,21 +333,48 @@ const MenuTemplate = props => {
           defaultEndIcon={<CloseSquare />}
         >
           {has(stateMenu, 'keys') &&
-            stateMenu.keys.map((el, i) => (
-              <StyledTreeItem
-                disabledFields={!isEdit}
-                t={t}
-                index={i}
-                classes={classes}
-                menuItem={el}
-                nodeId={el.key}
-                label={el.key}
-                key={i}
-                actions={config.group.ivr.allowed_actions}
-                changeKeysMenu={changeKeysMenu}
-              ></StyledTreeItem>
-            ))}
+            stateMenu.keys
+              .filter(el => el.action !== null)
+              .map((el, i) => (
+                <StyledTreeItem
+                  disabledFields={!isEdit}
+                  t={t}
+                  index={i}
+                  classes={classes}
+                  menuItem={el}
+                  nodeId={el.key}
+                  label={el.key}
+                  key={el.id}
+                  id={el.id}
+                  actions={
+                    has(config, 'group.ivr.allowed_actions')
+                      ? config.group.ivr.allowed_actions
+                      : []
+                  }
+                  changeKeysMenu={changeKeysMenu}
+                  deleteItemFromKeys={deleteItemFromKeys}
+                ></StyledTreeItem>
+              ))}
         </TreeView>
+        {isEdit && (
+          <Box className={classes.addItemBlock}>
+            <Box>
+              <Button
+                variant={'contained'}
+                color={'primary'}
+                className={classes.roundEditControlsButton}
+                onClick={addKey}
+                disabled={
+                  stateMenu.keys.filter(el => el.action !== null).length >= 12
+                }
+              >
+                <AddIcon />
+              </Button>
+              {t('add')}
+            </Box>
+            <Box className={classes.keyInfoBox}>{t('add_key_info')}</Box>
+          </Box>
+        )}
       </Box>
     </React.Fragment>
   )

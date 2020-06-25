@@ -133,6 +133,13 @@ const useStyles = makeStyles(theme => ({
   deleteBox: {
     display: 'flex',
     alignItems: 'center'
+  },
+  addItemBlock: {
+    marginLeft: 24,
+    marginTop: 24
+  },
+  keyInfoBox: {
+    marginTop: 20
   }
 }))
 
