@@ -487,7 +487,6 @@ export class WeekSchedules {
     this.isAllPeriodsDeleting = true
     let promiseArr = []
 
-    console.log(this.periods, 'this.periods')
     this.periods.forEach(period => {
       const weekDays = Object.keys(period.weekDays)
       weekDays.forEach(day => {
