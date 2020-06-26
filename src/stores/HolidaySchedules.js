@@ -452,7 +452,7 @@ export class HolidaySchedules {
   // computed: Import button is valid if year and country inputs are filled
   get isImportButtonActive() {
     const { year, country } = this.importData
-    return Boolean(year && country)
+    return country && country.label.length && year
   }
 
   // Clear input data on close import modal
