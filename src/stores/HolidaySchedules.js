@@ -388,7 +388,7 @@ export class HolidaySchedules {
     this.isImportYearsListLoading = true
     const country = this.importData.country.code
     axios
-      .get(`/generic/holidays/countries/SA/years`)
+      .get(`/generic/holidays/years`)
       .then(res => {
         this.importYearsList = res.data.years.map(year => {
           return {
