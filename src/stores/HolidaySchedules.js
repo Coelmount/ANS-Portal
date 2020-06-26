@@ -171,6 +171,10 @@ export class HolidaySchedules {
 
   updatePeriodType = isFullDayPeriod => {
     this.modalPeriod.type = isFullDayPeriod ? FULL_DAYS : PARTIAL_DAYS
+    if (isFullDayPeriod === false) {
+      this.modalPeriod.startTime = defaultStartTime
+      this.modalPeriod.stopTime = defaultStopTime
+    }
   }
 
   // computed: Period is valid if all fields exist for PARTIAL_DAYS type or name and dates exist for FULL_DAYS type

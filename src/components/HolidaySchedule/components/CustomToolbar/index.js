@@ -15,13 +15,11 @@ const CustomToolbar = toolbar => {
   const fullCurrentMonth = MONTHS_ARR[currentMonthIndex]
 
   const goToBack = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() - 1)
-    toolbar.onNavigate('prev')
+    toolbar.onNavigate('PREV')
   }
 
   const goToNext = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() + 1)
-    toolbar.onNavigate('next')
+    toolbar.onNavigate('NEXT')
   }
 
   // PROBABLY TODO LATER
@@ -29,7 +27,7 @@ const CustomToolbar = toolbar => {
   //   const now = new Date()
   //   toolbar.date.setMonth(now.getMonth())
   //   toolbar.date.setYear(now.getFullYear())
-  //   toolbar.onNavigate('current')
+  //   toolbar.onNavigate('TODAY')
   // }
 
   return (
