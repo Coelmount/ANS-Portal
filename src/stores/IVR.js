@@ -98,10 +98,11 @@ class IVR {
     this.isUpdatingIVR = true
     axios
       .put(
-        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}`,
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/`,
         data
       )
-      .then(() => {
+      .then(res => {
+        this.ivr = res.data.ivrInstance
         callback && callback()
       })
       .catch(e =>

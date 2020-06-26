@@ -23,6 +23,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import BusinessHoursMenu from './Tabs/BHM/BusinessHoursMenu'
 import AfterHoursMenu from './Tabs/AHM/AfterHoursMenu'
+import Details from './Tabs/Details'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
@@ -227,6 +228,9 @@ const IVRPage = props => {
       </TabPanel>
       <TabPanel value={returnActiveTab()} index={2}>
         <AfterHoursMenu />
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={4}>
+        <Details />
       </TabPanel>
       <TabPanel value={returnActiveTab()} index={5}>
         {location.hash === '#ivr_menus_bhm' ? (
