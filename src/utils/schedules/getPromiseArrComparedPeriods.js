@@ -1,6 +1,5 @@
 import capitalize from 'lodash/capitalize'
 import axios from 'utils/axios'
-import { toJS } from 'mobx'
 
 const getPromiseArrComparedPeriods = (
   initPeriod,

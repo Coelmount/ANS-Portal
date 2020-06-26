@@ -28,7 +28,6 @@ import formatPeriodDateFormat from 'utils/schedules/formatPeriodDateFormat'
 import editIcon from 'source/images/svg/edit.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import useStyles from './styles'
-// import { toJS } from 'mobx'
 
 const HolidaySchedule = observer(({ t }) => {
   const classes = useStyles()

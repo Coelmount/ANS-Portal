@@ -32,8 +32,8 @@ const TextFieldWithStyles = withStyles({
   }
 })(TextField)
 
-// components ------
-const Header = ({ t, classes, updatePeriod, id, name, isNameEditable }) => (
+// Small components ------
+const Header = ({ t, classes, updatePeriod, name, isNameEditable }) => (
   <Box className={classes.header}>
     <TextFieldWithStyles
       value={name}
@@ -47,6 +47,9 @@ const Header = ({ t, classes, updatePeriod, id, name, isNameEditable }) => (
       className={classes.margin}
       id='custom-css-standard-input'
       label={t('name')}
+      inputProps={{
+        autoComplete: 'off' // disable autocomplete and autofill
+      }}
     />
   </Box>
 )

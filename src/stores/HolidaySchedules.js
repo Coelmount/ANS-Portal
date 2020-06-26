@@ -9,15 +9,13 @@ import {
   PARTIAL_DAYS
 } from 'components/HolidaySchedule/periodTypes.js'
 import getFullCountryNameFromCode from 'utils/schedules/getFullCountryNameFromCode'
-import { toJS } from 'mobx'
 
 const defaultStartTime = '00:00'
 const defaultStopTime = '01:00'
 const defaultImportData = {
   country: {
     code: '',
-    label: '',
-    phone: ''
+    label: ''
   },
   year: ''
 }
@@ -354,6 +352,7 @@ export class HolidaySchedules {
     this.importData[field] = value
   }
 
+  // get list for country input
   getImportCountriesList = () => {
     this.isImportCountriesListLoading = true
     axios
@@ -371,6 +370,7 @@ export class HolidaySchedules {
       })
   }
 
+  // get list for year input
   getImportYearsList = () => {
     this.isImportYearsListLoading = true
     const country = this.importData.country.code
@@ -428,6 +428,7 @@ export class HolidaySchedules {
       .finally(() => (this.isHolidaysImporting = false))
   }
 
+  // computed: Import button is valid if year and country inputs are filled
   get isImportButtonActive() {
     const { year, country } = this.importData
     return Boolean(year && country)

@@ -22,10 +22,6 @@ import PeriodForm from '../PeriodForm'
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
 
-// components -----
-
-// ------
-
 const AddPeriodModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()

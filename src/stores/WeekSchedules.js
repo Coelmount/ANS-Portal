@@ -1,4 +1,4 @@
-import { decorate, observable, action, toJS, computed } from 'mobx'
+import { decorate, observable, action, computed } from 'mobx'
 import capitalize from 'lodash/capitalize'
 
 import SnackbarStore from './Snackbar'

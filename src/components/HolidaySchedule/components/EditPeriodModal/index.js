@@ -4,6 +4,7 @@ import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -13,7 +14,6 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import HolidaySchedulesStore from 'stores/HolidaySchedules'
 import Loading from 'components/Loading'
@@ -21,10 +21,6 @@ import PeriodForm from '../PeriodForm'
 
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
-
-// components -----
-
-// ------
 
 const EditPeriodModal = ({ t, open, handleClose }) => {
   const classes = useStyles()

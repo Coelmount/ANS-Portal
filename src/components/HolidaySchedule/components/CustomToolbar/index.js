@@ -2,11 +2,11 @@ import React from 'react'
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import Typography from '@material-ui/core/Typography'
 
 import { MONTHS_ARR } from 'utils/schedules/monthsArr'
 
 import useStyles from './styles'
-import { Typography } from '@material-ui/core'
 
 const CustomToolbar = toolbar => {
   const classes = useStyles()
@@ -24,7 +24,7 @@ const CustomToolbar = toolbar => {
     toolbar.onNavigate('next')
   }
 
-  // Probably to add feature later
+  // PROBABLY TODO LATER
   // const goToCurrent = () => {
   //   const now = new Date()
   //   toolbar.date.setMonth(now.getMonth())
