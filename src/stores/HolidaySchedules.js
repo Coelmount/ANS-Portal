@@ -369,6 +369,15 @@ export class HolidaySchedules {
           }
         })
       })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) || 'Failed to fetch import countries list',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
       .finally(() => {
         this.isImportCountriesListLoading = false
       })
@@ -385,6 +394,14 @@ export class HolidaySchedules {
           return {
             label: year,
             value: year
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch import years list',
+          options: {
+            variant: 'error'
           }
         })
       })
@@ -446,6 +463,7 @@ export class HolidaySchedules {
 
 decorate(HolidaySchedules, {
   isImportButtonActive: computed,
+  isPeriodValid: computed,
   schedules: observable,
   isSchedulesLoading: observable,
   isDeletingSchedule: observable,
