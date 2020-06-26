@@ -33,6 +33,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 const WeekSchedule = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
+  const { customerId, groupId, weekScheduleName } = match
+
   const {
     getWeekSchedule,
     isWeekScheduleLoading,
@@ -63,7 +65,7 @@ const WeekSchedule = observer(({ t }) => {
   const popoverId = isPeriodPopoverOpen ? 'period-popover' : undefined
 
   useEffect(() => {
-    getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
+    getWeekSchedule(customerId, groupId, weekScheduleName)
   }, [])
 
   // Add period(s)
@@ -74,7 +76,7 @@ const WeekSchedule = observer(({ t }) => {
 
   const handleCloseAddPeriodModal = () => {
     setIsAddPeriodModalOpen(false)
-    getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
+    getWeekSchedule(customerId, groupId, weekScheduleName)
   }
 
   // Periods and single edit modal open (isSinglePeriodEditActive === TRUE => open single)
@@ -84,7 +86,7 @@ const WeekSchedule = observer(({ t }) => {
 
   const handleCloseEditScheduleModal = () => {
     setIsEditScheduleModalOpen(false)
-    getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
+    getWeekSchedule(customerId, groupId, weekScheduleName)
     setDefaultPeriods()
     setIsSinglePeriodEditActive(false)
   }
@@ -110,16 +112,16 @@ const WeekSchedule = observer(({ t }) => {
   const handleDeletePeriodsModalClose = () => {
     setIsDeletePeriodsModalOpen(false)
     setAnchorEl(null)
-    getWeekSchedule(match.customerId, match.groupId, match.weekScheduleName)
+    getWeekSchedule(customerId, groupId, weekScheduleName)
   }
 
   // DELETE HANDLERS
   const handleDeleteThisPeriod = () => {
     const periodName = currentPeriod.title.split(' ')[0]
     deletePeriod(
-      match.customerId,
-      match.groupId,
-      match.weekScheduleName,
+      customerId,
+      groupId,
+      weekScheduleName,
       periodName,
       handleDeletePeriodsModalClose
     )
@@ -127,9 +129,9 @@ const WeekSchedule = observer(({ t }) => {
   const handleDeleteThisTimeSlot = () => {
     const fullPeriodName = currentPeriod.initName
     deleteThisTimeSlot(
-      match.customerId,
-      match.groupId,
-      match.weekScheduleName,
+      customerId,
+      groupId,
+      weekScheduleName,
       fullPeriodName,
       handleDeletePeriodsModalClose
     )
@@ -137,9 +139,9 @@ const WeekSchedule = observer(({ t }) => {
 
   const handleDeleteAllPeriods = () => {
     deleteAllPeriods(
-      match.customerId,
-      match.groupId,
-      match.weekScheduleName,
+      customerId,
+      groupId,
+      weekScheduleName,
       handleDeletePeriodsModalClose
     )
   }
@@ -168,7 +170,7 @@ const WeekSchedule = observer(({ t }) => {
   }
 
   const titleData = {
-    mainText: `${t('week_schedules')}: ${match.weekScheduleName}`,
+    mainText: `${t('week_schedules')}: ${weekScheduleName}`,
     iconCapture: t('add_slot'),
     Icon: <AddOutlinedIcon />,
     titleIcon: (
