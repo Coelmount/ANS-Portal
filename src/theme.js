@@ -150,7 +150,8 @@ const theme = createMuiTheme({
     },
     MuiTableCell: {
       root: {
-        padding: '9px 16px'
+        padding: '9px 16px',
+        borderBottom: 'none'
       }
     },
     MuiOutlinedInput: {

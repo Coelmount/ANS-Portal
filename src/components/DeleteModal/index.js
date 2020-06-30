@@ -75,7 +75,7 @@ const DeleteModal = props => {
               <span>{` ${extraDeleteSubject || deleteSubject}`}</span>
               {(idArr.length || id) && (
                 <span className={classes.boldText}>
-                  {` ${name}${` ${identifier}: ${
+                  {` ${name ? name : ''}${` id: ${
                     idArr.length ? idArr.join(', ') : id
                   }`}?`}
                 </span>
