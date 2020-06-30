@@ -68,7 +68,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const CustomSelect = (props) => {
+const CustomSelect = props => {
   const classes = useStyles(props)
   const { wrapperStyles, selectStyles, ...otherProps } = props
 
@@ -96,7 +96,7 @@ const CustomSelect = (props) => {
             </MenuItem>
           )}
           {has(props, 'options')
-            ? props.options.map((opt) => (
+            ? props.options.map(opt => (
                 <MenuItem key={opt.value} value={opt.value}>
                   {opt.label}
                 </MenuItem>
