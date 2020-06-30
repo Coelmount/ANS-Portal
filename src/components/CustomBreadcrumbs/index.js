@@ -17,7 +17,14 @@ const CustomBreadcrumbs = ({ match, t }) => {
   const classes = useStyles()
   const {
     url,
-    params: { customerId, groupId, numbersId, instanceNumber }
+    params: {
+      customerId,
+      groupId,
+      numbersId,
+      instanceNumber,
+      weekScheduleName,
+      holidayScheduleName
+    }
   } = match
   const ids = JSON.parse(localStorage.getItem('ids'))
 
@@ -77,7 +84,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
     }
     if (
       (breadcrumbsAmount > 4 && index === 3 && !numbersId) ||
-      (breadcrumbsAmount > 5 && index === 4 && !numbersId)
+      (breadcrumb === 'ans_instances' && breadcrumbsAmount > 5)
     ) {
       return (
         <Link
@@ -94,6 +101,33 @@ const CustomBreadcrumbs = ({ match, t }) => {
       return (
         <Link
           to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (
+      (breadcrumbsAmount > 6 && index === 5 && weekScheduleName) ||
+      (breadcrumbsAmount > 5 && index === 4 && !numbersId)
+    ) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/schedules/week_schedules`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (breadcrumbsAmount > 6 && index === 5 && holidayScheduleName) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/schedules/holiday_schedules`}
           className={classes.link}
           key={breadcrumb}
           onClick={handleCloseNav}
