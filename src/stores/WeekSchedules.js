@@ -253,7 +253,7 @@ export class WeekSchedules {
           axios.post(
             `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/`,
             {
-              name: `blabla 12 ${period.id} ${day}`,
+              name: `${period.id} ${day}`,
               type: 'Day of the week',
               dayOfWeek: capitalize(day),
               startTime: period.startTime,

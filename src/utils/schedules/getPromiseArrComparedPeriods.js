@@ -49,7 +49,7 @@ const getPromiseArrComparedPeriods = (
         axios.post(
           `/tenants/${customerId}/groups/${groupId}/time_schedules/${weekScheduleName}/`,
           {
-            name: `fook the system ${periodName}`,
+            name: `${periodName}`,
             type: 'Day of the week',
             dayOfWeek: capitalize(day),
             startTime: updatedPeriod.startTime,

@@ -107,6 +107,7 @@ const WeekSchedule = observer(({ t }) => {
   // POPOVER  DELETE
   const handleDeletePeriodModalOpen = () => {
     setIsDeletePeriodsModalOpen(true)
+    setAnchorEl(null)
   }
 
   const handleDeletePeriodsModalClose = () => {

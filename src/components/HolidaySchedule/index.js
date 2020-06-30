@@ -90,6 +90,7 @@ const HolidaySchedule = observer(({ t }) => {
   // POPOVER  DELETE
   const handleDeletePeriodModalOpen = () => {
     setIsDeletePeriodModalOpen(true)
+    setAnchorEl(null)
   }
 
   const handleDeletePeriodModalClose = () => {
