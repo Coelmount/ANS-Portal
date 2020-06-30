@@ -12,7 +12,7 @@ export class LanguagesStore {
   isLoadingLang = true
   lang = ''
 
-  getLocale = lang => {
+  getLocale = (lang, provideError) => {
     this.lang = lang
     this.isLoadingLang = true
     axios
@@ -35,12 +35,13 @@ export class LanguagesStore {
         this.isLoadingLang = false
       })
       .catch(e => {
-        SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || `Failed to get ${lang} localization`,
-          options: {
-            variant: 'error'
-          }
-        })
+        provideError &&
+          SnackbarStore.enqueueSnackbar({
+            message: getErrorMessage(e) || `Failed to get ${lang} localization`,
+            options: {
+              variant: 'error'
+            }
+          })
       })
   }
 }

@@ -293,6 +293,11 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.darkRed,
     fontWeight: 600,
     minHeight: 22
+  },
+  profileMenu: {
+    '& .MuiPopover-paper': {
+      top: '50px !important'
+    }
   }
 }))
 

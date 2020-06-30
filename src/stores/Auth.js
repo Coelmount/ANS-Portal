@@ -71,14 +71,14 @@ export class AuthStore {
           this.isAuthorized = false
         }
       })
-      .catch(e =>
-        SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to get user local data',
-          options: {
-            variant: 'error'
-          }
-        })
-      )
+    // .catch(e =>
+    //   SnackbarStore.enqueueSnackbar({
+    //     message: getErrorMessage(e) || 'Failed to get user local data',
+    //     options: {
+    //       variant: 'error'
+    //     }
+    //   })
+    // )
   }
 
   logOut = () => {
