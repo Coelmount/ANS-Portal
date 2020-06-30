@@ -36,7 +36,7 @@ export class DefaultLayoutStore {
       this.activeChildNav = child
       this.activeBasicSubChild = 'translations'
     } else if (this.activeChildNav === child) {
-      // this.activeChildNav = null
+      this.activeChildNav = null
       this.isChildNavClosed = true
     } else {
       this.activeChildNav = child
@@ -84,6 +84,12 @@ export class DefaultLayoutStore {
     } else if (urlArr[6] === 'basic') {
       this.activeParentNav = 'ans_instances'
       this.activeChildNav = 'basic'
+    } else if (urlArr[6] === 'week_schedules') {
+      this.activeParentNav = 'schedules'
+      this.activeChildNav = 'week_schedules'
+    } else if (urlArr[6] === 'holiday_schedules') {
+      this.activeParentNav = 'schedules'
+      this.activeChildNav = 'holiday_schedules'
     }
   }
 }
