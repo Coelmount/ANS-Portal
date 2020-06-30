@@ -16,6 +16,8 @@ class IVR {
   isDeletingIVR = false
   ivr = {}
   isUpdatingIVR = false
+  isLoadingAnnouncement = false
+  announcement = ''
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -181,6 +183,30 @@ class IVR {
         this.isUpdatingIVRMenu = false
       })
   }
+
+  getGreetingAnnouncement = (tenantId, groupId, announcementName) => {
+    this.isLoadingAnnouncement = true
+    this.announcement = ''
+    axios
+      .get(
+        `/tenants/${tenantId}/groups/${groupId}/announcements/content/${announcementName}/`
+      )
+      .then(res => {
+        this.isLoadingAnnouncement = false
+        this.announcement = `data:audio/mpeg;base64,${res.data.content}`
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch announcement',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isLoadingAnnouncement = false
+      })
+  }
 }
 
 decorate(IVR, {
@@ -194,13 +220,16 @@ decorate(IVR, {
   isDeletingIVR: observable,
   ivr: observable,
   isLoadingIVR: observable,
+  announcement: observable,
+  isLoadingAnnouncement: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
   putUpdateIVR: action,
   deleteIVR: action,
   getIVR: action,
-  putUpdateIVRMenu: action
+  putUpdateIVRMenu: action,
+  getGreetingAnnouncement: action
 })
 
 export default new IVR()

@@ -33,6 +33,8 @@ import ConfigStore from 'stores/Config'
 import IVRStore from 'stores/IVR'
 
 import useStyles from './styles'
+
+import AudioPlayer from 'components/AudioPlayer'
 import Loading from 'components/Loading'
 
 const MinusSquare = props => {
@@ -196,7 +198,12 @@ const MenuTemplate = props => {
   const match = useParams()
 
   const { getConfig, isLoadingConfig, config } = ConfigStore
-  const { putUpdateIVRMenu } = IVRStore
+  const {
+    putUpdateIVRMenu,
+    getGreetingAnnouncement,
+    announcement,
+    isLoadingAnnouncement
+  } = IVRStore
 
   useEffect(() => {
     getConfig()
@@ -319,7 +326,21 @@ const MenuTemplate = props => {
       <Box className={classes.greetingBox}>
         <VolumeUpOutlinedIcon className={classes.volumeIcon} />
         <Box>{t('greeting')}:</Box>
-        <Box className={classes.audioBox}>{menu.announcementSelection}</Box>
+        <Box className={classes.audioBox}>
+          <AudioPlayer
+            titleComponent={<div>{menu.announcementSelection}</div>}
+            url={announcement}
+            isLoading={isLoadingAnnouncement}
+            height={50}
+            getAnnouncement={() =>
+              getGreetingAnnouncement(
+                match.customerId,
+                match.groupId,
+                menu.announcementSelection
+              )
+            }
+          />
+        </Box>
         <Button className={classes.roundButtonEdit}>
           <img src={EditIcon} alt='EditIcon' />
         </Button>

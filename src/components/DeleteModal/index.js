@@ -10,6 +10,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
 import Loading from 'components/Loading'
+
 import useStyles from './styles'
 
 const DeleteModal = props => {
