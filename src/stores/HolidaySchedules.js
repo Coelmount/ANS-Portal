@@ -40,6 +40,7 @@ export class HolidaySchedules {
   isHolidaysImporting = false
 
   getSchedules = (customerId, groupId) => {
+    this.schedules = []
     this.isSchedulesLoading = true
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/calendar_schedules/`)
@@ -112,6 +113,7 @@ export class HolidaySchedules {
   }
 
   getHolidaySchedule = (customerId, groupId, scheduleName) => {
+    this.periods = []
     this.isHolidayScheduleLoading = true
     axios
       .get(
@@ -358,6 +360,7 @@ export class HolidaySchedules {
 
   // get list for country input
   getImportCountriesList = () => {
+    this.importCountriesList = []
     this.isImportCountriesListLoading = true
     axios
       .get(`/generic/holidays/countries`)
@@ -385,6 +388,7 @@ export class HolidaySchedules {
 
   // get list for year input
   getImportYearsList = () => {
+    this.importYearsList = []
     this.isImportYearsListLoading = true
     const country = this.importData.country.code
     axios

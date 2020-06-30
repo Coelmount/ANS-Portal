@@ -8,6 +8,7 @@ import transformWeekDateFormat from 'utils/schedules/transformWeekDateFormat'
 import transformTime from 'utils/schedules/transformTime'
 import transformToCustomPeriodsFormat from 'utils/schedules/transformToCustomPeriodsFormat'
 import getPromiseArrComparedPeriods from 'utils/schedules/getPromiseArrComparedPeriods'
+import { DAY_OF_WEEK } from 'components/WeekSchedule/periodTypes'
 
 const defaultStartTime = '08:00'
 const defaultStopTime = '09:00'
@@ -45,6 +46,7 @@ export class WeekSchedules {
   isAllPeriodsDeleting = false
 
   getSchedules = (customerId, groupId) => {
+    this.schedules = []
     this.isSchedulesLoading = true
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/time_schedules/`)
@@ -117,6 +119,16 @@ export class WeekSchedules {
   }
 
   getWeekSchedule = (customerId, groupId, scheduleName) => {
+    this.weekSchedulePeriods = []
+    this.initPeriods = []
+    this.periods = [
+      {
+        id: performance.now().toString(36),
+        startTime: defaultStartTime,
+        stopTime: defaultStopTime,
+        weekDays: defaultWeekDays
+      }
+    ]
     this.isWeekScheduleLoading = true
     axios
       .get(
@@ -126,7 +138,9 @@ export class WeekSchedules {
         }
       )
       .then(res => {
-        const periods = res.data.periods
+        const periods = res.data.periods.filter(
+          period => period.type === DAY_OF_WEEK
+        )
         const transformedPeriods = periods.map((item, index) => {
           const generatedKey = index
           return {
@@ -137,6 +151,7 @@ export class WeekSchedules {
             initName: item.name
           }
         })
+
         this.weekSchedulePeriods = transformedPeriods
         const transformedToCustomFormatPeriods = transformToCustomPeriodsFormat(
           transformedPeriods
