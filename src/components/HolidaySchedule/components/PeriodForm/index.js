@@ -23,6 +23,7 @@ import deleteIcon from 'source/images/svg/delete-icon.svg'
 
 const TextFieldWithStyles = withStyles({
   root: {
+    marginTop: 10,
     '& label.Mui-focused': {
       color: 'black'
     },
@@ -44,7 +45,6 @@ const Header = ({ t, classes, updatePeriod, name, isNameEditable }) => (
         }
         if (isNameEditable) updatePeriod(payload)
       }}
-      className={classes.margin}
       id='custom-css-standard-input'
       label={t('name')}
       inputProps={{

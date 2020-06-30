@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   header: {
-    height: 50,
+    height: 70,
     display: 'flex',
     justifyContent: 'space-between',
     paddingRight: 31,
