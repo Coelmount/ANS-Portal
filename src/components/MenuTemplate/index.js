@@ -108,7 +108,7 @@ const StyledTreeItem = props => {
     id,
     ...rest
   } = props
-  console.log(id)
+
   return (
     <TreeItem
       {...rest}
@@ -327,19 +327,23 @@ const MenuTemplate = props => {
         <VolumeUpOutlinedIcon className={classes.volumeIcon} />
         <Box>{t('greeting')}:</Box>
         <Box className={classes.audioBox}>
-          <AudioPlayer
-            titleComponent={<div>{menu.announcementSelection}</div>}
-            url={announcement}
-            isLoading={isLoadingAnnouncement}
-            height={50}
-            getAnnouncement={() =>
-              getGreetingAnnouncement(
-                match.customerId,
-                match.groupId,
-                menu.announcementSelection
-              )
-            }
-          />
+          {menu.announcementSelection === 'Default' ? (
+            <div>{menu.announcementSelection}</div>
+          ) : (
+            <AudioPlayer
+              titleComponent={<div>{menu.audioFile.name}</div>}
+              url={announcement}
+              isLoading={isLoadingAnnouncement}
+              height={50}
+              getAnnouncement={() =>
+                getGreetingAnnouncement(
+                  match.customerId,
+                  match.groupId,
+                  menu.announcementSelection
+                )
+              }
+            />
+          )}
         </Box>
         <Button className={classes.roundButtonEdit}>
           <img src={EditIcon} alt='EditIcon' />

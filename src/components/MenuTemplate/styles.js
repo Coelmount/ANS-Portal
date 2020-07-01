@@ -35,7 +35,9 @@ const useStyles = makeStyles(theme => ({
     marginRight: 16,
     marginLeft: 16,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10
   },
   roundButtonEdit: {
     width: 30,

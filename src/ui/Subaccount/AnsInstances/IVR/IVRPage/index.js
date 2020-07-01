@@ -24,12 +24,14 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import BusinessHoursMenu from './Tabs/BHM/BusinessHoursMenu'
 import AfterHoursMenu from './Tabs/AHM/AfterHoursMenu'
 import Details from './Tabs/Details'
+import HolidayMenu from './Tabs/HolidayMenu/HolidayMenu'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import IVRStore from 'stores/IVR'
 
 import useStyles from './styles'
+import WhiteBlackList from './Tabs/WhiteBlackList/WhiteBlackList'
 
 const IVRPage = props => {
   const { t } = props
@@ -229,6 +231,9 @@ const IVRPage = props => {
       <TabPanel value={returnActiveTab()} index={2}>
         <AfterHoursMenu />
       </TabPanel>
+      <TabPanel value={returnActiveTab()} index={3}>
+        <WhiteBlackList />
+      </TabPanel>
       <TabPanel value={returnActiveTab()} index={4}>
         <Details />
       </TabPanel>
@@ -237,6 +242,8 @@ const IVRPage = props => {
           <BusinessHoursMenu />
         ) : location.hash === '#ivr_menus_ahm' ? (
           <AfterHoursMenu />
+        ) : location.hash === '#ivr_menus_hm' ? (
+          <HolidayMenu />
         ) : (
           <Loading />
         )}

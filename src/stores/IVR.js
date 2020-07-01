@@ -18,6 +18,8 @@ class IVR {
   isUpdatingIVR = false
   isLoadingAnnouncement = false
   announcement = ''
+  isLoadingWhiteBlackList = false
+  whiteBlackList = {}
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -207,6 +209,30 @@ class IVR {
         this.isLoadingAnnouncement = false
       })
   }
+
+  getWhiteBlackList = (tenantId, groupId, ivrId) => {
+    this.isLoadingWhiteBlackList = true
+    this.whiteBlackList = {}
+    axios
+      .get(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/call_blocking/`
+      )
+      .then(res => {
+        this.isLoadingWhiteBlackList = false
+        this.whiteBlackList = res.data
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch announcement',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isLoadingWhiteBlackList = false
+      })
+  }
 }
 
 decorate(IVR, {
@@ -222,6 +248,8 @@ decorate(IVR, {
   isLoadingIVR: observable,
   announcement: observable,
   isLoadingAnnouncement: observable,
+  isLoadingWhiteBlackList: observable,
+  whiteBlackList: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -229,7 +257,8 @@ decorate(IVR, {
   deleteIVR: action,
   getIVR: action,
   putUpdateIVRMenu: action,
-  getGreetingAnnouncement: action
+  getGreetingAnnouncement: action,
+  getWhiteBlackList: action
 })
 
 export default new IVR()
