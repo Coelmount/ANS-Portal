@@ -172,22 +172,10 @@ const AvailableNumbers = ({ t }) => {
     {
       id: 'phoneNumber',
       label: 'Phonenumber'
-      // extraHeadProps: {
-      //   className: classes.accessHeadCell
-      // },
-      // extraProps: {
-      //   className: classes.accessNumberCell
-      // }
     },
     {
       id: 'type',
       label: 'type'
-      // extraHeadProps: {
-      //   className: classes.accessHeadCell
-      // },
-      // extraProps: {
-      //   className: classes.accessNumberCell
-      // }
     },
     {
       id: 'status',
@@ -208,7 +196,6 @@ const AvailableNumbers = ({ t }) => {
     {
       id: 'configure',
       extraProps: {
-        // className: classes.deleteCell,
         align: 'right'
       },
       isSortAvailable: false,
@@ -218,7 +205,7 @@ const AvailableNumbers = ({ t }) => {
           color='primary'
           onClick={() => handleSingleConfigure(row)}
         >
-          {t('congfigure_now')}
+          {t('configure_now')}
         </Button>
       )
     }
