@@ -321,7 +321,12 @@ export class BasicTranslations {
         const transformedNumbers = requestResult.map(item => {
           return {
             ...item,
-            phoneNumber: `${item.country_code} ${item.nsn}`,
+            phoneNumber: `${item.country_code}${item.nsn}`,
+            country: getCountryNameFromNumber(
+              `${item.country_code}${item.nsn}`
+            ),
+            status: 'free',
+            service_capabilities: 'basic',
             checked: false,
             hover: false
           }

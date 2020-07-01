@@ -1,508 +1,126 @@
-import React, { useEffect, useState, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
+import React, { useState, useEffect, useRef } from 'react'
+import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 import classnames from 'classnames'
 
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import Popover from '@material-ui/core/Popover'
-import MenuItem from '@material-ui/core/MenuItem'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
+import Grow from '@material-ui/core/Grow'
+import Popper from '@material-ui/core/Popper'
+import MenuItem from '@material-ui/core/MenuItem'
+import MenuList from '@material-ui/core/MenuList'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
-import UpdateIcon from '@material-ui/icons/Update'
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
-import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
-
+import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
-import CustomTable from 'components/CustomTable'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import Checkbox from 'components/Checkbox'
-import AddInstance from './components/AddInstance'
-import Loading from 'components/Loading'
-import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
-import transformOnHover from 'utils/tableCheckbox/transformOnHover'
-import AddMultipleNumbers from './components/MultipleANSBasicNumber'
-import MultipleUpdateNumbers from './components/MultipleUpdateANSBasicNumbers'
-import DeleteModal from 'components/DeleteModal'
-
-import BasicTranslationsStore from 'stores/BasicTranslations'
+import TranslationNumbers from './components/TranslationNumbers'
+import AvailableNumbers from './components/AvailableNumbers'
 
 import useStyles from './styles'
-import RightArrowIcon from 'source/images/svg/right-arrow.svg'
-import deleteIcon from 'source/images/svg/delete-icon.svg'
-import notificationIcon from 'source/images/svg/no-numbers-notification.svg'
 
-const Translations = observer(({ t }) => {
-  const classes = useStyles()
+const Translations = props => {
+  const { t } = props
   const match = useParams()
+  const history = useHistory()
+  const location = useLocation()
+  const classes = useStyles()
 
-  const [numbers, setNumbers] = useState([])
-  const [selectAll, setSelectAll] = useState(false)
-  const [isAnyChecked, setIsAnyChecked] = useState(false)
-  const [searchList, setSearchList] = useState([])
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
-    false
+  const [activeTab, setActiveTab] = useState(0)
+  const [open, setOpen] = useState(false)
+  const anchorRef = useRef(null)
+  const [translationsMenuName, setTranslationsMenuName] = useState(
+    t('translations_menus')
   )
-  const [
-    showMultipleUpdateANSNumbers,
-    setShowMultipleUpdateANSNumbers
-  ] = useState(false)
-
-  const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [instancesForDelete, setInstancesForDelete] = useState([])
-  const [isUserSubaccount, setIsUserSubaccount] = useState(false)
-
-  const isAddPopoverOpen = Boolean(anchorEl)
-  const id = isAddPopoverOpen ? 'simple-popover' : undefined
-
-  const {
-    setDefaultValues,
-    updateSelectedInstance,
-    basicTranslationsNumbers,
-    isBasicTranslationsNumbersLoading,
-    getBasicTranslationsNumbers,
-    deleteANSBasic,
-    isDeleting,
-    getAvailableNumbersForAddInstance,
-    availableNumbersForAddInstance,
-    isAvailableNumbersForAddInstanceLoading,
-    clearAvailableNumbersForAddInstance,
-    clearBasicNumbers
-    // getCountriesConfig,
-    // setNumbersWithConfig
-  } = BasicTranslationsStore
-
-  const isLoading =
-    isAvailableNumbersForAddInstanceLoading || isBasicTranslationsNumbersLoading
-  const isNumbersForAddInstanceAvailable = availableNumbersForAddInstance.length
-  const isNoNumbersNotificationVisible =
-    !isNumbersForAddInstanceAvailable && !isLoading && isUserSubaccount
-
-  useEffect(() => {
-    getBasicTranslationsNumbers(match.customerId, match.groupId)
-    getAvailableNumbersForAddInstance(match.customerId, match.groupId, 1, 10)
-
-    const ids = JSON.parse(localStorage.getItem('ids'))
-    setIsUserSubaccount(Boolean(ids && ids.tenant_id && ids.group_id))
-
-    return () => {
-      clearAvailableNumbersForAddInstance()
-      clearBasicNumbers()
-    }
-  }, [])
-
-  useEffect(() => {
-    setNumbers(basicTranslationsNumbers)
-  }, [basicTranslationsNumbers])
-
-  useEffect(() => {
-    handleCheckedStates(searchList)
-    // setPhoneNumbers(searchList)
-  }, [searchList])
-
-  const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false)
-    getBasicTranslationsNumbers(match.customerId, match.groupId)
-  }
-
-  const handleMultipleDelete = () => {
-    setIsDeleteModalOpen(true)
-    setInstancesForDelete(
-      numbers.filter(num => num.checked).map(el => el.ans_id)
-    )
-  }
-
-  const handleDelete = id => {
-    deleteANSBasic(match.customerId, match.groupId, id, handleCloseDeleteModal)
-
-    // Promise.all(promiseArr).finally(() =>
-    //   getBasicTranslationsNumbers(match.customerId, match.groupId).then(() => {
-    //     setIsDeleteModalOpen(false)
-    //     setIsDeleting(false)
-    //   })
-    // )
-  }
-
-  const handleAddInstanceModalOpen = () => {
-    setIsAddInstanceModalOpen(true)
-    setAnchorEl(null)
-  }
-
-  const handleAddInstanceModalClose = () => {
-    setIsAddInstanceModalOpen(false)
-    setDefaultValues()
-    getBasicTranslationsNumbers(match.customerId, match.groupId)
-  }
-
-  const handlePopoverOpen = event => {
-    if (isNumbersForAddInstanceAvailable) setAnchorEl(event.currentTarget)
-  }
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null)
-  }
-
-  const selectNumbers = (checked, id) => {
-    const newNumbers = transformOnChange(numbers, checked, id)
-    setNumbers(newNumbers)
-    handleCheckedStates(newNumbers)
-  }
-
-  // const enableNumbers = (enabled, id) => {
-  //   const newNumbers = [...numbers]
-  //   const index = numbers.findIndex(el => el.id === id)
-  //   newNumbers[index].enabled = enabled
-  //   setNumbers(newNumbers)
-  //   handleCheckedStates(newNumbers)
-  // }
-
-  const handleSelectAll = () => {
-    const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
-    handleCheckedStates(newNumbers)
-    setNumbers(newNumbers)
-    setSelectAll(!selectAll)
-    setIsAnyChecked(!selectAll)
-  }
-
-  const handleCheckedStates = newNumbers => {
-    if (
-      newNumbers.every(el => {
-        return el.checked
-      })
-    ) {
-      setSelectAll(true)
-      setIsAnyChecked(true)
-    } else {
-      setSelectAll(false)
-      if (newNumbers.some(el => el.checked)) {
-        setIsAnyChecked(true)
-      } else {
-        setIsAnyChecked(false)
-      }
-    }
-    if (!newNumbers.length) {
-      setSelectAll(false)
-      setIsAnyChecked(false)
-    }
-  }
-
-  const changeHover = (newHover, id) => {
-    const newNumbers = transformOnHover(numbers, newHover, id)
-    setNumbers(newNumbers)
-  }
-
-  const addPopoverItems = [
-    {
-      id: 1,
-      label: t('1_ans_basic_number'),
-      onClick: handleAddInstanceModalOpen
-    },
-    {
-      id: 2,
-      label: t('multiply_ans_basic_number'),
-      onClick: () => {
-        setShowAddMultipleANSNumbers(true)
-        setAnchorEl(null)
-      }
-    }
-  ]
 
   const titleData = {
-    mainText: t('basic_translations'),
-    buttonBlock: (
-      <Box className={classes.titleWrap}>
-        {isNoNumbersNotificationVisible && (
-          <Typography className={classes.titleNotification}>
-            <img
-              src={notificationIcon}
-              className={classes.notificationIcon}
-              alt='notification'
-            />
-            {t('no_numbers_notification')}
-          </Typography>
-        )}
-        <Box className={classes.addCustomerWrap}>
-          <Box
-            onClick={handlePopoverOpen}
-            className={classnames(classes.addIconWrap, {
-              [classes.disabledButton]: !isNumbersForAddInstanceAvailable
-            })}
-          >
-            <AddOutlinedIcon />
-          </Box>
-          <Box className={classes.addTitleWrap}>
-            <Typography
-              className={classnames(classes.addCustomerTitle, {
-                [classes.disabledText]: !isNumbersForAddInstanceAvailable
-              })}
-            >
-              {t('add')}
-            </Typography>
-            <ArrowDropUpOutlinedIcon className={classes.upArrowIcon} />
-            <ArrowDropDownOutlinedIcon className={classes.downArrowIcon} />
-          </Box>
-          <Popover
-            id={id}
-            open={isAddPopoverOpen}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-          >
-            <Box className={classes.addPopoverWrap}>
-              {addPopoverItems.map(item => (
-                <MenuItem
-                  onClick={item.onClick}
-                  value={item.label}
-                  key={item.id}
-                  className={classes.addPopoverItem}
-                >
-                  <Typography className={classes.addPopoverItemText}>
-                    {item.label}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Box>
-          </Popover>
-        </Box>
-      </Box>
-    )
+    mainText: t(`${location.hash ? location.hash.slice(1) : 'translations'}`)
   }
 
-  const toolbarButtonsBlock = () => {
-    return (
-      <Fragment>
-        <Box className={classes.toolbarButtonsBlockWrap}>
-          <Box className={classes.updateWrap}>
-            <Button
-              variant='contained'
-              color='primary'
-              className={classnames(classes.toolbarButton, {
-                [classes.disabledButton]: !isAnyChecked
-              })}
-              onClick={() =>
-                isAnyChecked && setShowMultipleUpdateANSNumbers(true)
-              }
-            >
-              <UpdateIcon className={classes.updateIcon} />
-            </Button>
-            <Typography className={classes.addCustomerTitle}>
-              {t('update')}
-            </Typography>
-          </Box>
-          <Box className={classes.addCustomerWrap}>
-            <IconButton
-              aria-label='deassign icon button'
-              component='span'
-              className={classnames(classes.mainIconWrap, {
-                [classes.disabledButton]: !isAnyChecked
-              })}
-              onClick={handleMultipleDelete}
-            >
-              <img
-                className={classes.deleteIcon}
-                src={deleteIcon}
-                alt='delete'
-              />
-            </IconButton>
-            <Typography className={classes.addCustomerTitle}>
-              {t('delete')}
-            </Typography>
-          </Box>
-        </Box>
-      </Fragment>
-    )
-  }
-
-  const columns = () => {
-    const handleOpenDeleteModal = id => {
-      setIsDeleteModalOpen(true)
-      setInstancesForDelete([id])
+  const handleChange = (event, newValue) => {
+    setActiveTab(newValue)
+    switch (newValue) {
+      case 0:
+        history.push('#translations')
+        setTranslationsMenuName(t('translations_menus'))
+        break
+      case 1:
+        history.push('#available_numbers')
+        setTranslationsMenuName(t('translations_menus'))
+        break
     }
-    return [
-      {
-        id: 'checkbox',
-        label: (
-          <Checkbox
-            className={classes.headCheckbox}
-            checked={selectAll}
-            onChange={handleSelectAll}
-          />
-        ),
-        isSortAvailable: false,
-        getCellData: (row, i) =>
-          row.checked ? (
-            <Checkbox
-              checked={row.checked}
-              className={classes.checkbox}
-              onChange={e => selectNumbers(!row.checked, row.id)}
-            />
-          ) : (
-            <div
-              className={classes.indexHoverCheckbox}
-              onClick={() => selectNumbers(!row.checked, row.id)}
-              onMouseLeave={() => changeHover(false, row.id)}
-              onMouseEnter={() => changeHover(true, row.id)}
-            >
-              {row.hover ? (
-                <Checkbox
-                  checked={row.checked}
-                  className={classes.checkbox}
-                  onChange={() => selectNumbers(true, row.id)}
-                />
-              ) : (
-                i + 1
-              )}
-            </div>
-          ),
-        extraHeadProps: {
-          className: classes.checkboxCell
-        },
-        extraProps: {
-          className: classes.checkboxCell
-        }
-      },
-      {
-        id: 'access_number',
-        label: 'access_number',
-        isSortAvailable: false,
-        getCellData: row => (
-          <Box>
-            <Link
-              onClick={() => updateSelectedInstance(row)}
-              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.access_number}`}
-              className={classes.link}
-            >
-              {row.access_number}
-            </Link>
-            <Typography>{row.accessCountry}</Typography>
-          </Box>
-        ),
-        extraHeadProps: {
-          className: classes.accessHeadCell
-        },
-        extraProps: {
-          className: classes.accessNumberCell
-        }
-      },
-      {
-        id: 'rightArrow',
-        isSortAvailable: false,
-        getCellData: row => (
-          <img
-            src={RightArrowIcon}
-            className={classes.rightArrowIcon}
-            alt='right icon'
-          />
-        )
-      },
-      {
-        id: 'destination_number',
-        label: 'destination_number',
-        isSortAvailable: false,
-        getCellData: row => (
-          <Box>
-            <Typography className={classes.destinationNumberText}>
-              {row.destination_number}
-            </Typography>
-            <Typography>{row.destinationCountry}</Typography>
-          </Box>
-        )
-      },
-      {
-        id: 'delete',
-        extraProps: {
-          className: classes.deleteCell,
-          align: 'right'
-        },
-        isSortAvailable: false,
-        getCellData: row => (
-          <CloseOutlinedIcon
-            className={classes.deleteCustomerIcon}
-            onClick={() => handleOpenDeleteModal(row.ans_id)}
-          />
-        )
-      }
-    ]
   }
+
+  const returnActiveTab = () => {
+    switch (location.hash) {
+      case '#translations':
+        return 0
+      case '#available_numbers':
+        return 1
+      default:
+        return 0
+    }
+  }
+
+  const prevOpen = useRef(open)
+  useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus()
+    }
+    prevOpen.current = open
+  }, [open])
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          {!isLoading && <TitleBlock titleData={titleData} />}
+          <TitleBlock titleData={titleData} classes={classes} />
         </CustomContainer>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <CustomTable
-            firstCell={false}
-            // classes={classes}
-            rows={numbers}
-            columns={columns()}
-            searchCriterias={[
-              'accessCountry',
-              'destinationCountry',
-              'access_number',
-              'destination_number'
-            ]}
-            extraToolbarBlock={toolbarButtonsBlock}
-            getSearchList={setSearchList}
-            noAvailableDataMessage={t('no_translations_available')}
-            tableId={'ans_basic_translations'}
-          />
-        )}
-        {isAddInstanceModalOpen && (
-          <AddInstance
-            open={isAddInstanceModalOpen}
-            handleClose={handleAddInstanceModalClose}
-          />
-        )}
-        {showAddMultipleANSNumbers && (
-          <AddMultipleNumbers
-            open={showAddMultipleANSNumbers}
-            handleClose={() => {
-              setShowAddMultipleANSNumbers(false)
-              getBasicTranslationsNumbers(match.customerId, match.groupId)
-            }}
-          />
-        )}
-        {showMultipleUpdateANSNumbers && (
-          <MultipleUpdateNumbers
-            open={showMultipleUpdateANSNumbers}
-            handleClose={() => {
-              setShowMultipleUpdateANSNumbers(false)
-              getBasicTranslationsNumbers(match.customerId, match.groupId)
-            }}
-            numbers={numbers}
-          />
-        )}
-        {isDeleteModalOpen && (
-          <DeleteModal
-            classes={classes}
-            open={isDeleteModalOpen}
-            handleClose={handleCloseDeleteModal}
-            handleDelete={handleDelete}
-            deleteInfo={instancesForDelete}
-            isDeleting={isDeleting}
-            deleteSubject={`${t('basic').toLowerCase()} ${t(
-              'phone_numbers'
-            ).toLowerCase()}`}
-            action={t('to_delete')}
-            titleAction={t(`delete`)}
-          />
-        )}
       </Paper>
+      <Tabs
+        className={classes.tabs}
+        value={returnActiveTab()}
+        indicatorColor='primary'
+        onChange={handleChange}
+        variant='scrollable'
+        scrollButtons='auto'
+      >
+        <Tab value={0} label={t('translations')} className={classes.tab} />
+        <Tab value={1} label={t('available_numbers')} className={classes.tab} />
+      </Tabs>
+      <TabPanel value={returnActiveTab()} index={0}>
+        <TranslationNumbers />
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={1}>
+        <AvailableNumbers />
+      </TabPanel>
     </div>
   )
-})
+}
 
-export default withNamespaces()(Translations)
+const TabPanel = props => {
+  const { children, value, index, ...other } = props
+  const classes = useStyles()
+
+  return (
+    <div
+      className={classes.tabs}
+      role='tabpanel'
+      hidden={value !== index}
+      id={`wrapped-tabpanel-${index}`}
+      aria-labelledby={`wrapped-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  )
+}
+
+export default withNamespaces()(observer(Translations))
