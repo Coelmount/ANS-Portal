@@ -295,7 +295,7 @@ export class BasicTranslations {
     perPage,
     orderBy,
     order,
-    numberLike
+    query
   ) => {
     this.isAvailableNumbersForAddInstanceLoading = true
     let orderByField
@@ -313,11 +313,11 @@ export class BasicTranslations {
       }
     }
     const orderField = order || 'asc'
-    const numberLikeField = numberLike || ''
+    const queryField = query || ''
     const searchValue =
-      this.searchParam === COUNTRY_CODE && numberLikeField.length > 1
-        ? numberLikeField.replace('+', '%2B')
-        : numberLikeField
+      this.searchParam === COUNTRY_CODE && queryField.length > 1
+        ? queryField.replace('+', '%2B')
+        : queryField
 
     axios
       .get(

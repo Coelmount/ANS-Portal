@@ -108,8 +108,7 @@ const AvailableNumbers = ({ t }) => {
       rowsPerPage,
       orderBy,
       order,
-      debouncedNumberLike,
-      getAvailableNumbersForAddInstance
+      debouncedNumberLike
     )
   }, [page, rowsPerPage])
 
