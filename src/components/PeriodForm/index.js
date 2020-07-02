@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
 import capitalize from 'lodash/capitalize'
 
@@ -44,22 +44,20 @@ const PeriodForm = ({ period: { id, weekDays, startTime, stopTime } }) => {
       <Box key={id} className={classes.daysBlockRowWrap}>
         {WEEK_DAYS_ARR.map(initDay => {
           const day = initDay.toLowerCase()
-          {
-            return (
-              <Box key={day} className={classes.weekDay}>
-                <Typography className={classes.weekDayName}>
-                  {capitalize(day.slice(0, 3))}
-                </Typography>
-                <Checkbox
-                  checked={weekDays[day]}
-                  onChange={e => {
-                    updatePeriodDayStatus(id, day, e.target.checked)
-                  }}
-                  className={classes.checkbox}
-                />
-              </Box>
-            )
-          }
+          return (
+            <Box key={day} className={classes.weekDay}>
+              <Typography className={classes.weekDayName}>
+                {capitalize(day.slice(0, 3))}
+              </Typography>
+              <Checkbox
+                checked={weekDays[day]}
+                onChange={e => {
+                  updatePeriodDayStatus(id, day, e.target.checked)
+                }}
+                className={classes.checkbox}
+              />
+            </Box>
+          )
         })}
       </Box>
     </Box>

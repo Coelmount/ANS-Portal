@@ -15,7 +15,6 @@ import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
 import SnackbarStore from 'stores/Snackbar'
 import BasicTranslationsStore from 'stores/BasicTranslations'
-import ConfigStore from 'stores/Config'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TitleBlock from 'components/TitleBlock'
@@ -81,6 +80,7 @@ const SingleNumber = observer(({ t }) => {
       )
       setCodeToSend(code)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basicTranslationsNumbers])
 
   // if instance not exist on back
@@ -96,6 +96,7 @@ const SingleNumber = observer(({ t }) => {
         `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
       )
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isBasicTranslationsNumbersLoading])
 
   // redirect if put request successfull
@@ -106,6 +107,7 @@ const SingleNumber = observer(({ t }) => {
       )
     }
     return () => clearIsRedireactAfterPut()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRedirectAfterPut])
 
   // onChange phone number input

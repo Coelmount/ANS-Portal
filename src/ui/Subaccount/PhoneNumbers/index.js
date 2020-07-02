@@ -17,7 +17,6 @@ import CustomTable, {
 } from 'components/CustomTableBackendPagination'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import Checkbox from 'components/Checkbox'
 import FiltersModal from './components/FiltersModal'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
@@ -79,6 +78,7 @@ const PhoneNumbers = observer(({ t }) => {
       order,
       debouncedNumberLike
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     match.customerId,
     match.groupId,
@@ -102,6 +102,7 @@ const PhoneNumbers = observer(({ t }) => {
       order,
       debouncedNumberLike
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage])
 
   // request on search input change
@@ -153,25 +154,25 @@ const PhoneNumbers = observer(({ t }) => {
   }, [numbers, setPhoneNumbers])
 
   // handle check/uncheck
-  const selectNumbers = (checked, id) => {
-    const newNumbers = transformOnChange(numbers, checked, id)
-    setNumbers(newNumbers)
-    handleCheckedStates(newNumbers)
-    checked
-      ? setNumberOfChecked(numberOfChecked + 1)
-      : setNumberOfChecked(numberOfChecked - 1)
-  }
+  // const selectNumbers = (checked, id) => {
+  //   const newNumbers = transformOnChange(numbers, checked, id)
+  //   setNumbers(newNumbers)
+  //   handleCheckedStates(newNumbers)
+  //   checked
+  //     ? setNumberOfChecked(numberOfChecked + 1)
+  //     : setNumberOfChecked(numberOfChecked - 1)
+  // }
 
   // handle check all
-  const handleSelectAll = () => {
-    const newNumbers = numbers.map(item => {
-      return { ...item, checked: !selectAll }
-    })
-    handleCheckedStates(newNumbers)
-    setNumbers(newNumbers)
-    setSelectAll(!selectAll)
-    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(numbers.length)
-  }
+  // const handleSelectAll = () => {
+  //   const newNumbers = numbers.map(item => {
+  //     return { ...item, checked: !selectAll }
+  //   })
+  //   handleCheckedStates(newNumbers)
+  //   setNumbers(newNumbers)
+  //   setSelectAll(!selectAll)
+  //   selectAll ? setNumberOfChecked(0) : setNumberOfChecked(numbers.length)
+  // }
 
   // handler of check states schema
   const handleCheckedStates = newNumbers => {
@@ -190,10 +191,10 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   // handle hovers
-  const changeHover = (newHover, id) => {
-    const newNumbers = transformOnHover(numbers, newHover, id)
-    setNumbers(newNumbers)
-  }
+  // const changeHover = (newHover, id) => {
+  //   const newNumbers = transformOnHover(numbers, newHover, id)
+  //   setNumbers(newNumbers)
+  // }
 
   // Filters open
   const handleFiltersButtonClick = () => {

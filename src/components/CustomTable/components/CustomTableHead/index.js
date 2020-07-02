@@ -8,7 +8,6 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 
 const CustomTableHead = ({
   classes,

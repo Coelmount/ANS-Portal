@@ -1,7 +1,7 @@
 import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { Link, useHistory, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -14,7 +14,6 @@ import noAccessNumbersIcon from 'source/images/svg/no-access-numbers.svg'
 import useStyles from './styles'
 
 const NoNumbersModal = ({ t, open, handleClose, clickedGroupId }) => {
-  const history = useHistory()
   const match = useParams()
   const classes = useStyles()
 

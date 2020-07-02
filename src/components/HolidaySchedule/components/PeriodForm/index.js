@@ -1,10 +1,9 @@
-import React, { Fragment, useState } from 'react'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
-import capitalize from 'lodash/capitalize'
 import { withNamespaces } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles'
-import DateRangeIcon from '@material-ui/icons/DateRange'
+
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
@@ -13,13 +12,9 @@ import HolidaySchedulesStore from 'stores/HolidaySchedules'
 import Checkbox from 'components/Checkbox'
 import StartEndTime from 'components/StartEndTime'
 import StartEndDate from 'components/StartEndDate'
-import {
-  FULL_DAYS,
-  PARTIAL_DAYS
-} from 'components/HolidaySchedule/periodTypes.js'
+import { FULL_DAYS, PARTIAL_DAYS } from 'components/HolidaySchedule/periodTypes'
 
 import useStyles from './styles.js'
-import deleteIcon from 'source/images/svg/delete-icon.svg'
 
 const TextFieldWithStyles = withStyles({
   root: {

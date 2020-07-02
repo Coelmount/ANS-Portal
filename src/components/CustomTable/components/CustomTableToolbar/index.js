@@ -17,7 +17,6 @@ const CustomTableToolbar = props => {
     classes,
     defaultClasses,
     rowsPerPage,
-    setRowsPerPage,
     query,
     setQuery,
     t,

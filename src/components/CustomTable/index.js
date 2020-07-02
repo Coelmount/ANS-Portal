@@ -108,6 +108,7 @@ const CustomTable = ({
     const result = stableSort(filteredRows, getComparator(order, orderBy))
     getSearchList && getSearchList(result)
     return result
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, query, order, orderBy, getSearchList])
 
   const totalPages = useMemo(() => {
