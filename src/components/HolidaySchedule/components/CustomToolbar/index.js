@@ -1,48 +1,56 @@
 import React from 'react'
+import { withNamespaces } from 'react-i18next'
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import { MONTHS_ARR } from 'utils/schedules/monthsArr'
 
 import useStyles from './styles'
 
-const CustomToolbar = toolbar => {
+const CustomToolbar = ({ t, onNavigate, date }) => {
   const classes = useStyles()
-  const currentMonthIndex = toolbar.date.getMonth()
-  const currentYear = toolbar.date.getFullYear()
+  const currentMonthIndex = date.getMonth()
+  const currentYear = date.getFullYear()
   const fullCurrentMonth = MONTHS_ARR[currentMonthIndex]
 
   const goToBack = () => {
-    toolbar.onNavigate('PREV')
+    onNavigate('PREV')
   }
 
   const goToNext = () => {
-    toolbar.onNavigate('NEXT')
+    onNavigate('NEXT')
   }
 
-  // PROBABLY TODO LATER
-  // const goToCurrent = () => {
-  //   const now = new Date()
-  //   toolbar.date.setMonth(now.getMonth())
-  //   toolbar.date.setYear(now.getFullYear())
-  //   toolbar.onNavigate('TODAY')
-  // }
+  const goToCurrent = () => {
+    const now = new Date()
+    date.setMonth(now.getMonth())
+    date.setYear(now.getFullYear())
+    onNavigate('TODAY')
+  }
 
   return (
-    <div className={classes.wrap}>
-      <div onClick={goToBack} className={classes.buttonWrap}>
-        <ArrowBackIosIcon className={classes.buttonIcon} />
-      </div>
-      <Typography className={classes.currentMonthTitle}>
-        {`${fullCurrentMonth} ${currentYear}`}
-      </Typography>
-      <div onClick={goToNext} className={classes.buttonWrap}>
-        <ArrowForwardIosIcon className={classes.buttonIcon} />
-      </div>
-    </div>
+    <Box className={classes.wrap}>
+      <Box className={classes.changeMonthWrap}>
+        <Box onClick={goToBack} className={classes.buttonWrap}>
+          <ArrowBackIosIcon className={classes.buttonIcon} />
+        </Box>
+        <Typography className={classes.currentMonthTitle}>
+          {`${fullCurrentMonth} ${currentYear}`}
+        </Typography>
+        <Box onClick={goToNext} className={classes.buttonWrap}>
+          <ArrowForwardIosIcon className={classes.buttonIcon} />
+        </Box>
+      </Box>
+      <Box onClick={goToCurrent} className={classes.currentButton}>
+        <Typography className={classes.currentButtonTitle}>
+          {t('current')}
+        </Typography>
+      </Box>
+    </Box>
   )
 }
 
-export default CustomToolbar
+export default withNamespaces()(CustomToolbar)

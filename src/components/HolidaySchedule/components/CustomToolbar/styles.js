@@ -2,9 +2,23 @@ import { makeStyles } from '@material-ui/core/styles/'
 
 const useStyles = makeStyles(theme => ({
   wrap: {
+    display: 'flex',
+    alignItems: 'center',
     marginBottom: 20,
-    marginTop: 20,
+    marginTop: 20
+  },
+  changeMonthWrap: {
     display: 'flex'
+  },
+  currentButton: {
+    marginLeft: 36,
+    padding: '3px 22px',
+    border: `1.5px solid ${theme.palette.active.blue}`,
+    borderRadius: 2,
+    cursor: 'pointer'
+  },
+  currentButtonTitle: {
+    fontFamily: 'MTN'
   },
   buttonWrap: {
     display: 'flex',
