@@ -19,7 +19,10 @@ const useStyles = makeStyles(theme => ({
     padding: '0px 27px 27px 27px',
     background: 'white',
     '& .rbc-event': {
-      background: theme.palette.mattePink
+      background: theme.palette.mattePink,
+      '&:hover': {
+        opacity: 0.8
+      }
     },
     '& .rbc-date-cell': {
       textAlign: 'center'

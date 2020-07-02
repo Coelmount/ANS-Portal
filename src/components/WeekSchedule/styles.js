@@ -24,6 +24,11 @@ const useStyles = makeStyles(theme => ({
       paddingBottom: 10,
       fontSize: 14
     },
+    '& .rbc-event': {
+      '&:hover': {
+        opacity: 0.9
+      }
+    },
     '& .rbc-event-label': {
       fontSize: 13
     }
