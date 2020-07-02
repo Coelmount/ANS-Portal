@@ -240,8 +240,6 @@ const MenuTemplate = props => {
       clearData.push(stateMenu.keys[i])
     }
 
-    console.log(clearData)
-
     putUpdateIVRMenu(match.customerId, match.groupId, match.ivrId, menuType, {
       ...stateMenu,
       keys: clearData
