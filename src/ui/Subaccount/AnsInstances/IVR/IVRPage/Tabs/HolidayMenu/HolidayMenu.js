@@ -55,7 +55,12 @@ const HolidayMenu = props => {
           <img src={EditIcon} alt='EditIcon' />
         </Button>
       </Box>
-      <MenuTemplate menu={ivr.holidayMenu} menuType={'holidays'} showTitle />
+      <MenuTemplate
+        menuLvl={'menus'}
+        menuType={'holiday'}
+        showTitle
+        route={'main'}
+      />
     </React.Fragment>
   )
 }

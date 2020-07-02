@@ -56,9 +56,10 @@ const AfterHoursMenu = props => {
         </Button>
       </Box> */}
       <MenuTemplate
-        menu={ivr.afterHoursMenu}
-        menuType={'after_hours'}
+        menuType={'afterHours'}
+        menuLvl={'menus'}
         showTitle
+        route={'main'}
       />
     </React.Fragment>
   )

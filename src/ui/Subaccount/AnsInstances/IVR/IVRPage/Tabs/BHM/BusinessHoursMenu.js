@@ -56,9 +56,10 @@ const BusinessHoursMenu = props => {
         </Button>
       </Box>
       <MenuTemplate
-        menu={ivr.businessHoursMenu}
-        menuType={'business_hours'}
+        menuLvl={'menus'}
+        menuType={'businessHours'}
         showTitle
+        route={'main'}
       />
     </React.Fragment>
   )

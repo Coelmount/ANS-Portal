@@ -20,6 +20,7 @@ class IVR {
   announcement = ''
   isLoadingWhiteBlackList = false
   whiteBlackList = {}
+  menu = {}
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -233,6 +234,42 @@ class IVR {
         this.isLoadingWhiteBlackList = false
       })
   }
+
+  getMenu = (tenantId, groupId, ivrId, menuLvl, typeMenu, route) => {
+    if (route === 'main') {
+      this.menu = {}
+    }
+    if (Object.keys(this.menu).some(el => el === route)) {
+      return
+    }
+    this.menu = { ...this.menu, [route]: { isLoading: true } }
+    axios
+      .get(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/${menuLvl}/${typeMenu}/`
+      )
+      .then(res => {
+        const menuWithId = {
+          ...res.data,
+          keys: res.data.keys.map((el, i) => ({
+            ...el,
+            id: el.id ? el.id : i
+          })),
+          isLoading: false
+        }
+        this.menu = { ...this.menu, [route]: menuWithId }
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch menu',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.menu[route].isLoading = false
+      })
+  }
 }
 
 decorate(IVR, {
@@ -250,6 +287,8 @@ decorate(IVR, {
   isLoadingAnnouncement: observable,
   isLoadingWhiteBlackList: observable,
   whiteBlackList: observable,
+  isLoadingMenu: observable,
+  menu: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -258,7 +297,8 @@ decorate(IVR, {
   getIVR: action,
   putUpdateIVRMenu: action,
   getGreetingAnnouncement: action,
-  getWhiteBlackList: action
+  getWhiteBlackList: action,
+  getMenu: action
 })
 
 export default new IVR()

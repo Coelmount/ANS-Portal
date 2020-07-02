@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { withNamespaces } from 'react-i18next'
 import { useSpring, animated } from 'react-spring'
 import has from 'lodash/has'
+import cloneDeep from 'lodash/cloneDeep'
 import classnames from 'classnames'
 import { observer } from 'mobx-react'
 import { toJS } from 'mobx'
@@ -79,7 +80,6 @@ const CloseSquare = props => {
 }
 
 const TransitionComponent = props => {
-  console.log(1, props)
   const style = useSpring({
     from: { opacity: 0, transform: 'translate3d(20px,0,0)' },
     to: {
@@ -190,9 +190,9 @@ const StyledTreeItem = props => {
 }
 
 const MenuTemplate = props => {
-  const { t, menu, showTitle, menuType } = props
+  const { t, showTitle, menuType, menuLvl, route } = props
   const classes = useStyles()
-  const [stateMenu, setStateMenu] = useState(null)
+  const [stateMenu, setStateMenu] = useState({})
   const [isEdit, setIsEdit] = useState(false)
 
   const match = useParams()
@@ -202,80 +202,99 @@ const MenuTemplate = props => {
     putUpdateIVRMenu,
     getGreetingAnnouncement,
     announcement,
-    isLoadingAnnouncement
+    isLoadingAnnouncement,
+    isLoadingMenu,
+    menu,
+    getMenu
   } = IVRStore
 
   useEffect(() => {
-    getConfig()
-    if (menu) {
-      setStateMenu(
-        toJS({
-          ...menu,
-          keys: menu.keys.map((el, i) => ({ ...el, id: el.id ? el.id : i }))
-        })
-      )
+    if (!has(config, 'group.ivr.allowed_actions')) {
+      getConfig()
     }
-  }, [])
-
-  const updateMenu = () => {
-    let data = {}
-    switch (menuType) {
-      case 'business_hours':
-        data = {
-          businessHoursMenu: { ...stateMenu }
-        }
-        break
-      case 'after_hours':
-        data = {
-          afterHoursMenu: { ...stateMenu }
-        }
-        break
-      case 'holidays':
-        data = {
-          holidayMenu: { ...stateMenu }
-        }
-        break
-      default:
-        return
-    }
-    putUpdateIVRMenu(
+    getMenu(
       match.customerId,
       match.groupId,
       match.ivrId,
+      menuLvl,
       menuType,
-      data
+      route
     )
+  }, [])
+
+  useEffect(() => {
+    setStateMenu(cloneDeep(menu[route]))
+  }, [menu])
+
+  const updateMenu = () => {
+    const clearData = []
+    for (let i = 0; i < stateMenu.keys.length; i++) {
+      if (clearData.some(el => el.key === stateMenu.keys[i].key)) {
+        const index = clearData.findIndex(
+          el => el.key === stateMenu.keys[i].key
+        )
+        clearData.splice(index, 1)
+        clearData.push(stateMenu.keys[i])
+        continue
+      }
+      clearData.push(stateMenu.keys[i])
+    }
+
+    console.log(clearData)
+
+    putUpdateIVRMenu(match.customerId, match.groupId, match.ivrId, menuType, {
+      ...stateMenu,
+      keys: clearData
+    })
   }
 
   const changeKeysMenu = (id, field, value) => {
+    const indexByKey = stateMenu.keys.findIndex(el => el.key === value)
     if (
       (field === 'key' && !/^[\d\#\*]$/.test(value) && value !== '') ||
       (stateMenu.keys.some(el => el.key === value) &&
-        stateMenu.keys[id] !== null)
+        stateMenu.keys[indexByKey].action !== null)
     ) {
       return
     }
-    const keysMenu = toJS(stateMenu.keys)
-    const index = keysMenu.findIndex(el => el.id === id)
+    const index = stateMenu.keys.findIndex(el => el.id === id)
+    const keysMenu = cloneDeep(stateMenu.keys)
+    if (field === 'key' && stateMenu.keys[index].key) {
+      const prevKey = { ...keysMenu[index] }
+      keysMenu[index].action = null
+      keysMenu.splice(index, 0, {
+        ...prevKey,
+        key: value,
+        id: keysMenu.length + 1 + Math.random()
+      })
+      setStateMenu({
+        ...stateMenu,
+        keys: keysMenu
+      })
+      return
+    }
     keysMenu[index][field] = value
-    setStateMenu({ ...stateMenu, keys: keysMenu })
+    setStateMenu({
+      ...stateMenu,
+      keys: keysMenu
+    })
   }
 
   const addKey = () => {
-    const keysMenu = toJS(stateMenu.keys)
+    const keysMenu = cloneDeep(stateMenu.keys)
     const id = keysMenu.length + 1 + Math.random()
     keysMenu.push({ key: '', description: '', action: '', parameter: '', id })
     setStateMenu({ ...stateMenu, keys: keysMenu })
   }
 
   const deleteItemFromKeys = id => {
-    const keysMenu = toJS(stateMenu.keys)
+    const keysMenu = cloneDeep(stateMenu.keys)
     const index = keysMenu.findIndex(el => el.id === id)
     keysMenu[index].action = null
     setStateMenu({ ...stateMenu, keys: keysMenu })
   }
 
-  if (isLoadingConfig) {
+  if (isLoadingConfig || !stateMenu || stateMenu.isLoading) {
     return <Loading />
   }
 
@@ -292,7 +311,7 @@ const MenuTemplate = props => {
                   className={classes.roundEditControlsButton}
                   onClick={() => {
                     setIsEdit(false)
-                    setStateMenu(toJS(menu))
+                    setStateMenu(cloneDeep(menu[route]))
                   }}
                 >
                   <ClearIcon />
@@ -323,35 +342,44 @@ const MenuTemplate = props => {
           )}
         </Box>
       )}
-      <Box className={classes.greetingBox}>
-        <VolumeUpOutlinedIcon className={classes.volumeIcon} />
-        <Box>{t('greeting')}:</Box>
-        <Box className={classes.audioBox}>
-          {menu.announcementSelection === 'Default' ? (
-            <div>{menu.announcementSelection}</div>
-          ) : (
-            <AudioPlayer
-              titleComponent={<div>{menu.audioFile.name}</div>}
-              url={announcement}
-              isLoading={isLoadingAnnouncement}
-              height={50}
-              getAnnouncement={() =>
-                getGreetingAnnouncement(
-                  match.customerId,
-                  match.groupId,
-                  menu.announcementSelection
-                )
-              }
-            />
-          )}
+      {has(stateMenu, 'announcementSelection') && (
+        <Box className={classes.greetingBox}>
+          <VolumeUpOutlinedIcon className={classes.volumeIcon} />
+          <Box>{t('greeting')}:</Box>
+          <Box className={classes.audioBox}>
+            {has(stateMenu, 'announcementSelection') &&
+            stateMenu.announcementSelection === 'Default' ? (
+              <div>{stateMenu.announcementSelection}</div>
+            ) : (
+              <AudioPlayer
+                titleComponent={
+                  <div>
+                    {has(stateMenu, 'audioFile.name') &&
+                      stateMenu.audioFile.name}
+                  </div>
+                }
+                url={announcement}
+                isLoading={isLoadingAnnouncement}
+                height={50}
+                getAnnouncement={() =>
+                  getGreetingAnnouncement(
+                    match.customerId,
+                    match.groupId,
+                    stateMenu.audioFile.name
+                  )
+                }
+              />
+            )}
+          </Box>
+          <Button className={classes.roundButtonEdit}>
+            <img src={EditIcon} alt='EditIcon' />
+          </Button>
         </Box>
-        <Button className={classes.roundButtonEdit}>
-          <img src={EditIcon} alt='EditIcon' />
-        </Button>
-      </Box>
+      )}
       <Box></Box>
       <Box>
         <TreeView
+          key={route}
           className={classes.root}
           defaultCollapseIcon={<MinusSquare />}
           defaultExpandIcon={<PlusSquare />}
@@ -378,7 +406,16 @@ const MenuTemplate = props => {
                   }
                   changeKeysMenu={changeKeysMenu}
                   deleteItemFromKeys={deleteItemFromKeys}
-                ></StyledTreeItem>
+                >
+                  {el.action === 'Go To Submenu' && el.parameter && (
+                    <MenuTemplate
+                      menuLvl={'submenus'}
+                      menuType={el.parameter}
+                      route={route + el.key}
+                      t={t}
+                    />
+                  )}
+                </StyledTreeItem>
               ))}
         </TreeView>
         {isEdit && (
