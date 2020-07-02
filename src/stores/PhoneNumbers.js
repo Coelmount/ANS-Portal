@@ -5,6 +5,9 @@ import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
+import types from 'utils/types/basicSearchParams'
+
+const { COUNTRY_CODE, TYPE, NSN, CONNECTED_TO, ID } = types
 
 export class PhoneNumbers {
   step = 1
@@ -75,23 +78,23 @@ export class PhoneNumbers {
     let orderByField
     switch (orderBy) {
       case 'phoneNumber': {
-        orderByField = 'nsn'
+        orderByField = NSN
         break
       }
       case 'status': {
-        orderByField = 'connected_to'
+        orderByField = CONNECTED_TO
         break
       }
       case 'countryName': {
-        orderByField = 'country_code'
+        orderByField = COUNTRY_CODE
         break
       }
       case 'type': {
-        orderByField = 'type'
+        orderByField = TYPE
         break
       }
       default: {
-        orderByField = 'id'
+        orderByField = ID
       }
     }
     const orderField = order || 'asc'

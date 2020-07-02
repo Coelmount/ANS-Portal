@@ -5,6 +5,7 @@ import { useDebounce } from 'use-debounce'
 import { useParams } from 'react-router-dom'
 import classnames from 'classnames'
 
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -15,6 +16,8 @@ import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 import CustomTable, {
@@ -28,10 +31,15 @@ import usePreviousValue from 'utils/hooks/usePreviousValue'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
+import types from 'utils/types/basicSearchParams'
 
 import useStyles from './styles'
 
+const { COUNTRY_CODE, NUMBER_LIKE, TYPE } = types
+
 const AvailableNumbers = ({ t }) => {
+  const searchParamsList = [COUNTRY_CODE, NUMBER_LIKE, TYPE]
+
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
         .basic_instance_select_access_numbers
@@ -46,13 +54,14 @@ const AvailableNumbers = ({ t }) => {
     getAvailableNumbersForAddInstance,
     totalPagesAvailableNumbers,
     isAvailableNumbersForAddInstanceLoading,
-    availableNumbersForAddInstance
+    availableNumbersForAddInstance,
+    searchParam,
+    updateSearchParam
   } = BasicTranslationsStore
 
   const [numbers, setNumbers] = useState([])
   const [selectedNumber, setSelectedNumber] = useState(null)
   const [selectAll, setSelectAll] = useState(false)
-  // const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(
@@ -88,7 +97,7 @@ const AvailableNumbers = ({ t }) => {
       order,
       debouncedNumberLike
     )
-  }, [debouncedNumberLike, orderBy, order])
+  }, [debouncedNumberLike, orderBy, order, searchParam])
 
   // onUpdate pagination
   useEffect(() => {
@@ -146,20 +155,47 @@ const AvailableNumbers = ({ t }) => {
     )
   }
 
+  const changeSearchParam = value => {
+    updateSearchParam(value)
+  }
+
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
-        <IconButton
-          aria-label='assign icon button'
-          component='span'
-          className={classes.mainIconWrap}
-          onClick={handleMultipleConfigure}
-        >
-          <AddOutlinedIcon />
-        </IconButton>
-        <Typography className={classes.iconTitle}>
-          {t('configure_now')}
-        </Typography>
+        <Box className={classes.searchParamWrap}>
+          <Select
+            value={searchParam}
+            onChange={e => changeSearchParam(e.target.value)}
+            IconComponent={ArrowDropDownIcon}
+            className={classes.searchParamSelect}
+          >
+            {searchParamsList.map(paramItem => (
+              <MenuItem
+                value={paramItem}
+                key={`${paramItem}`}
+                className={classes.selectItem}
+              >
+                {t(paramItem)}
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography className={classes.searchParamsTitle}>
+            {t('search_param')}
+          </Typography>
+        </Box>
+        <Box className={classes.toolbarConfigureWrap}>
+          <IconButton
+            aria-label='assign icon button'
+            component='span'
+            className={classes.mainIconWrap}
+            onClick={handleMultipleConfigure}
+          >
+            <AddOutlinedIcon />
+          </IconButton>
+          <Typography className={classes.iconTitle}>
+            {t('configure_now')}
+          </Typography>
+        </Box>
       </Box>
     )
   }
@@ -204,6 +240,7 @@ const AvailableNumbers = ({ t }) => {
           variant='contained'
           color='primary'
           onClick={() => handleSingleConfigure(row)}
+          className={classes.configureButton}
         >
           {t('configure_now')}
         </Button>
@@ -237,7 +274,7 @@ const AvailableNumbers = ({ t }) => {
             isSearchParamsActive={isSearchParamsActive}
             isLoadingData={isAvailableNumbersForAddInstanceLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
-            placeholderText={t('search_by_phone_number')}
+            placeholderText={t('search_available_numbers')}
             tableId={'ans_basic_available_numbers'}
           />
         )}

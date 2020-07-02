@@ -89,7 +89,10 @@ const useStyles = makeStyles(theme => ({
     width: 44,
     minWidth: 44,
     borderRadius: 100,
-    marginTop: 30
+    marginTop: 30,
+    '& span': {
+      width: 20
+    }
   },
   uploadInput: {
     display: 'none'

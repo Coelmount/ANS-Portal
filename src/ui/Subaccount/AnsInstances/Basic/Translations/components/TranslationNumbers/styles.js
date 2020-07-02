@@ -100,9 +100,8 @@ const useStyles = makeStyles(theme => ({
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
-    width: '18px',
     height: '18px',
-    marginRight: '9px',
+    marginLeft: '2px',
     '& .MuiSvgIcon-root': {
       color: theme.palette.primary.main
     },

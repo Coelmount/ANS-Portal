@@ -52,11 +52,32 @@ const useStyles = makeStyles(theme => ({
   },
   toolbarButtonsBlockWrap: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     marginRight: 40,
-    marginLeft: 40
+    marginLeft: 20
+  },
+  searchParamWrap: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  searchParamsTitle: {
+    fontFamily: 'MTN',
+    fontSize: 14,
+    marginLeft: 10
+  },
+  searchParamSelect: {
+    '& div': {
+      fontSize: 14
+    }
+  },
+  selectItem: {
+    fontSize: 14
+  },
+  toolbarConfigureWrap: {
+    display: 'flex',
+    alignItems: 'center'
   },
   mainIconWrap: {
     background: theme.palette.primary.main,
@@ -89,6 +110,11 @@ const useStyles = makeStyles(theme => ({
   },
   disabledIconTitle: {
     opacity: 0.5
+  },
+  configureButton: {
+    '& > span': {
+      fontSize: 14
+    }
   }
 }))
 
