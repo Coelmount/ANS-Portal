@@ -174,7 +174,7 @@ const AvailableNumbers = ({ t }) => {
                 key={`${paramItem}`}
                 className={classes.selectItem}
               >
-                {t(paramItem)}
+                {t(paramItem).toLowerCase()}
               </MenuItem>
             ))}
           </Select>

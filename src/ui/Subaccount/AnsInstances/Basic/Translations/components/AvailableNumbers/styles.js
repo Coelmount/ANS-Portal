@@ -68,8 +68,18 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 10
   },
   searchParamSelect: {
+    background: 'white',
     '& div': {
+      marginLeft: 5,
       fontSize: 14
+    },
+    '& svg': {
+      color: theme.palette.active.blue,
+      top: 6,
+      right: 3
+    },
+    '&:before': {
+      display: 'none'
     }
   },
   selectItem: {
