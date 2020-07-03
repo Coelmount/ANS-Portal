@@ -1,4 +1,4 @@
-import { decorate, observable, action } from 'mobx'
+import { decorate, observable, action, computed } from 'mobx'
 import set from 'lodash/set'
 
 import axios from 'utils/axios'
@@ -356,6 +356,12 @@ export class BasicTranslations {
       .finally(() => (this.isAvailableNumbersForAddInstanceLoading = false))
   }
 
+  get isAnyAvailableNumbersSelected() {
+    return this.availableNumbersForAddInstance.some(
+      number => number.checked === true
+    )
+  }
+
   clearAvailableNumbersForAddInstance = () => {
     this.availableNumbersForAddInstance = []
   }
@@ -366,6 +372,7 @@ export class BasicTranslations {
 }
 
 decorate(BasicTranslations, {
+  isAnyAvailableNumbersSelected: computed,
   step: observable,
   selectedInstance: observable,
   isBasicTranslationsNumbersLoading: observable,
