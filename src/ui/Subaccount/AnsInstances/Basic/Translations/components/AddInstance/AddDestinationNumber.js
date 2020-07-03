@@ -101,9 +101,6 @@ const AddDestinationNumber = ({ handleClose, t }) => {
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
             <Box className={classes.subtitle}>
-              <Typography className={classes.stepStyles}>{`${t(
-                'step'
-              )} 2/2`}</Typography>
               <Typography className={classes.setEntitlementsTitle}>
                 {t('add_destination_number')}
               </Typography>
@@ -136,10 +133,9 @@ const AddDestinationNumber = ({ handleClose, t }) => {
               variant='outlined'
               color='primary'
               className={classes.backButton}
-              onClick={() => changeStep(1)}
+              onClick={handleClose}
             >
-              <ChevronLeft />
-              {t('back')}
+              {t('cancel')}
             </Button>
             <Button
               variant='contained'

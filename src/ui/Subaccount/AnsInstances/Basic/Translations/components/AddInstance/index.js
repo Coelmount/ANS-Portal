@@ -37,13 +37,11 @@ const AddInstance = ({ open, handleClose }) => {
 const Steps = ({ step, handleClose }) => {
   switch (step) {
     case 1:
-      return <SelectAccessPhoneNumber handleClose={handleClose} />
-    case 2:
       return <AddDestinationNumber handleClose={handleClose} />
-    case 3:
+    case 2:
       return <AddInstanceSuccess handleClose={handleClose} />
     default:
-      return <SelectAccessPhoneNumber handleClose={handleClose} />
+      return <AddDestinationNumber handleClose={handleClose} />
   }
 }
 

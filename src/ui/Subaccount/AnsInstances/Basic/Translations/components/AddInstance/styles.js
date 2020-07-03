@@ -314,6 +314,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   setEntitlementsTitle: {
+    marginLeft: 44,
     fontSize: 18,
     fontWeight: 600,
     fontFamily: 'MTN'
