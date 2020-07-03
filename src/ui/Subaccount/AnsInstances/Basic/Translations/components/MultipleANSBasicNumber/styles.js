@@ -162,6 +162,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  disabledTitle: {
+    opacity: 0.5
   }
 }))
 

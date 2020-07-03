@@ -3,6 +3,7 @@ import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import Papa from 'papaparse'
+import classnames from 'classnames'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -42,7 +43,8 @@ const FirstStep = props => {
     postAddMultipleANSBasic,
     setMultipleCounter,
     multipleCounter,
-    setDefaultValues
+    setDefaultValues,
+    isAnyAvailableNumbersSelected
   } = BasicTranslationsStore
 
   const classes = useStyles()
@@ -260,7 +262,11 @@ const FirstStep = props => {
         </Box>
 
         <Box className={classes.uploadBoxWrapper}>
-          <Box className={classes.uploadFileTitle}>
+          <Box
+            className={classnames(classes.uploadFileTitle, {
+              [classes.disabledTitle]: !isAnyAvailableNumbersSelected
+            })}
+          >
             {t('download_selected_templete')}
           </Box>
           <Box>
@@ -269,6 +275,7 @@ const FirstStep = props => {
               color='primary'
               className={classes.uploadButton}
               onClick={downloadCSVFileWithSelected}
+              disabled={!isAnyAvailableNumbersSelected}
             >
               <GetAppOutlinedIcon className={classes.downloadIcon} />
             </Button>
