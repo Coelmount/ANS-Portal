@@ -2,7 +2,18 @@ import { fade, makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    marginBottom: 20
+  },
+  secondTree: {
+    marginTop: 10,
+    padding: 10,
+    background: '#F4F4F4'
+  },
+  tree: {
+    padding: 10,
+    marginTop: 10,
+    background: '#F9F9F9'
   },
   roundButton: {
     width: 30,
@@ -12,18 +23,15 @@ const useStyles = makeStyles(theme => ({
   },
   titleBox: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     height: 25,
     alignItems: 'center',
-    marginTop: 10,
     marginBottom: 10,
-    borderLeft: '4px solid #00678F',
     paddingLeft: 10
   },
   greetingBox: {
     width: '100%',
-    height: 94,
-    borderBottom: '1px solid #E8E8E8',
+    height: 84,
     paddingLeft: 44,
     display: 'flex',
     alignItems: 'center'

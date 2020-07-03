@@ -164,11 +164,19 @@ class IVR {
       })
   }
 
-  putUpdateIVRMenu = (tenantId, groupId, ivrId, menuType, data, callback) => {
+  putUpdateIVRMenu = (
+    tenantId,
+    groupId,
+    ivrId,
+    menuLvl,
+    menuType,
+    data,
+    callback
+  ) => {
     this.isUpdatingIVRMenu = true
     axios
       .put(
-        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/menus/${menuType}/`,
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/${menuLvl}/${menuType}/`,
         data
       )
       .then(() => {
@@ -240,7 +248,9 @@ class IVR {
       this.menu = {}
     }
     if (Object.keys(this.menu).some(el => el === route)) {
-      return
+      if (this.menu[route].name === typeMenu) {
+        return
+      }
     }
     this.menu = { ...this.menu, [route]: { isLoading: true } }
     axios
@@ -254,6 +264,7 @@ class IVR {
             ...el,
             id: el.id ? el.id : i
           })),
+          name: typeMenu,
           isLoading: false
         }
         this.menu = { ...this.menu, [route]: menuWithId }

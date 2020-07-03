@@ -121,6 +121,9 @@ const StyledTreeItem = props => {
           <Grid item xs={'auto'} className={classes.gridItem}>
             {index === 0 && t('keys')}
             <TextField
+              onClick={e => {
+                e.stopPropagation()
+              }}
               color='primary'
               variant='outlined'
               value={menuItem.key}
@@ -132,6 +135,9 @@ const StyledTreeItem = props => {
           <Grid item xs={'auto'} className={classes.gridItem}>
             {index === 0 && t('description')}
             <TextField
+              onClick={e => {
+                e.stopPropagation()
+              }}
               color='primary'
               variant='outlined'
               value={menuItem.description}
@@ -143,6 +149,9 @@ const StyledTreeItem = props => {
           <Grid item xs={'auto'} className={classes.gridItem}>
             {index === 0 && t('action')}
             <Select
+              onClick={e => {
+                e.stopPropagation()
+              }}
               value={menuItem.action}
               variant='outlined'
               className={classes.actionSelect}
@@ -166,6 +175,9 @@ const StyledTreeItem = props => {
               className={classes.actionDataSelect}
             ></Select> */}
               <TextField
+                onClick={e => {
+                  e.stopPropagation()
+                }}
                 value={menuItem.parameter}
                 variant='outlined'
                 className={classes.descriptionInput}
@@ -190,7 +202,15 @@ const StyledTreeItem = props => {
 }
 
 const MenuTemplate = props => {
-  const { t, showTitle, menuType, menuLvl, route } = props
+  const {
+    t,
+    showTitle,
+    menuType,
+    menuLvl,
+    route,
+    countChild,
+    refreshThree
+  } = props
   const classes = useStyles()
   const [stateMenu, setStateMenu] = useState({})
   const [isEdit, setIsEdit] = useState(false)
@@ -240,10 +260,31 @@ const MenuTemplate = props => {
       clearData.push(stateMenu.keys[i])
     }
 
-    putUpdateIVRMenu(match.customerId, match.groupId, match.ivrId, menuType, {
-      ...stateMenu,
-      keys: clearData
-    })
+    putUpdateIVRMenu(
+      match.customerId,
+      match.groupId,
+      match.ivrId,
+      menuLvl,
+      menuType,
+      {
+        ...stateMenu,
+        keys: clearData
+      },
+      successEdit
+    )
+  }
+
+  const successEdit = () => {
+    setIsEdit(false)
+    getMenu(
+      match.customerId,
+      match.groupId,
+      match.ivrId,
+      menuLvl,
+      menuType,
+      route
+    )
+    refreshThree && refreshThree()
   }
 
   const changeKeysMenu = (id, field, value) => {
@@ -297,10 +338,10 @@ const MenuTemplate = props => {
   }
 
   return (
-    <React.Fragment>
+    <Box className={!(countChild % 2) ? classes.secondTree : classes.tree}>
       {showTitle && (
         <Box className={classes.titleBox}>
-          <Input />
+          {/* <Input /> */}
           {isEdit ? (
             <Box className={classes.editControlsButtons}>
               <Box className={classes.editControlsButtons}>
@@ -411,6 +452,9 @@ const MenuTemplate = props => {
                       menuType={el.parameter}
                       route={route + el.key}
                       t={t}
+                      countChild={countChild + 1}
+                      showTitle
+                      refreshThree={successEdit}
                     />
                   )}
                 </StyledTreeItem>
@@ -436,7 +480,7 @@ const MenuTemplate = props => {
           </Box>
         )}
       </Box>
-    </React.Fragment>
+    </Box>
   )
 }
 

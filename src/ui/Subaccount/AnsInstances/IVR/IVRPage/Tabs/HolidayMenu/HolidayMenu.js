@@ -60,6 +60,7 @@ const HolidayMenu = props => {
         menuType={'holiday'}
         showTitle
         route={'main'}
+        countChild={1}
       />
     </React.Fragment>
   )

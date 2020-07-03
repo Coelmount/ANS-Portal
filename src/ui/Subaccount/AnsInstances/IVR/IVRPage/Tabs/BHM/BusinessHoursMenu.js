@@ -60,6 +60,7 @@ const BusinessHoursMenu = props => {
         menuType={'businessHours'}
         showTitle
         route={'main'}
+        countChild={1}
       />
     </React.Fragment>
   )

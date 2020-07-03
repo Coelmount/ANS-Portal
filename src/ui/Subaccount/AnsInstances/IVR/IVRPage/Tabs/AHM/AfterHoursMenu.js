@@ -60,6 +60,7 @@ const AfterHoursMenu = props => {
         menuLvl={'menus'}
         showTitle
         route={'main'}
+        countChild={1}
       />
     </React.Fragment>
   )
