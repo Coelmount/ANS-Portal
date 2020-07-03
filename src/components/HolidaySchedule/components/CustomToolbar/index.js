@@ -5,6 +5,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 
 import { MONTHS_ARR } from 'utils/schedules/monthsArr'
 
@@ -44,11 +45,14 @@ const CustomToolbar = ({ t, onNavigate, date }) => {
           <ArrowForwardIosIcon className={classes.buttonIcon} />
         </Box>
       </Box>
-      <Box onClick={goToCurrent} className={classes.currentButton}>
-        <Typography className={classes.currentButtonTitle}>
-          {t('current')}
-        </Typography>
-      </Box>
+      <Button
+        variant='outlined'
+        color='primary'
+        className={classes.currentButton}
+        onClick={goToCurrent}
+      >
+        {t('current')}
+      </Button>
     </Box>
   )
 }

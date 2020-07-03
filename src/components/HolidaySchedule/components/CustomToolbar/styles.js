@@ -11,11 +11,17 @@ const useStyles = makeStyles(theme => ({
     display: 'flex'
   },
   currentButton: {
-    marginLeft: 36,
-    padding: '3px 22px',
-    border: `1.5px solid ${theme.palette.active.blue}`,
-    borderRadius: 2,
-    cursor: 'pointer'
+    height: 45,
+    marginLeft: 20,
+    paddingLeft: 27,
+    paddingRight: 27,
+    border: `2px solid ${theme.palette.primary.main}`,
+    '&:hover': {
+      border: `2px solid ${theme.palette.primary.main}`
+    },
+    '& span': {
+      color: theme.palette.black
+    }
   },
   currentButtonTitle: {
     fontFamily: 'MTN'
