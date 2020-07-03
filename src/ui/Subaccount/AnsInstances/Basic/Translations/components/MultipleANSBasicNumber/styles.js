@@ -77,12 +77,15 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     marginTop: 30,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginLeft: 16,
+    marginRight: 16
   },
   uploadFileTitle: {
     fontFamily: 'MTN',
     fontSize: 24,
-    fontWeight: 600
+    fontWeight: 600,
+    textAlign: 'center'
   },
   uploadButton: {
     height: 44,
