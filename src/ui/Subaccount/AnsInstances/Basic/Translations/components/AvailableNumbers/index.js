@@ -158,6 +158,49 @@ const AvailableNumbers = ({ t }) => {
     updateSearchParam(value)
   }
 
+  // handle check/uncheck
+  const selectNumbers = (checked, id) => {
+    const newNumbers = transformOnChange(numbers, checked, id)
+    setNumbers(newNumbers)
+    handleCheckedStates(newNumbers)
+    checked
+      ? setNumberOfChecked(numberOfChecked + 1)
+      : setNumberOfChecked(numberOfChecked - 1)
+  }
+
+  // handle check all
+  const handleSelectAll = () => {
+    const newNumbers = numbers.map(item => {
+      return { ...item, checked: !selectAll }
+    })
+    handleCheckedStates(newNumbers)
+    setNumbers(newNumbers)
+    setSelectAll(!selectAll)
+    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(numbers.length)
+  }
+
+  // handler of check states schema
+  const handleCheckedStates = newNumbers => {
+    if (
+      newNumbers.every(el => {
+        return el.checked
+      })
+    ) {
+      setSelectAll(true)
+    } else {
+      setSelectAll(false)
+    }
+    if (!newNumbers.length) {
+      setSelectAll(false)
+    }
+  }
+
+  // handle hovers
+  const changeHover = (newHover, id) => {
+    const newNumbers = transformOnHover(numbers, newHover, id)
+    setNumbers(newNumbers)
+  }
+
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
@@ -200,6 +243,48 @@ const AvailableNumbers = ({ t }) => {
   }
 
   const columns = [
+    {
+      id: 'checkbox',
+      label: (
+        <Checkbox
+          className={classes.headCheckbox}
+          checked={selectAll}
+          onChange={handleSelectAll}
+        />
+      ),
+      isSortAvailable: false,
+      getCellData: (row, i) =>
+        row.checked ? (
+          <Checkbox
+            checked={row.checked}
+            className={classes.checkbox}
+            onChange={e => selectNumbers(!row.checked, row.id)}
+          />
+        ) : (
+          <div
+            className={classes.indexHoverCheckbox}
+            onClick={() => selectNumbers(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
+          >
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectNumbers(true, row.id)}
+              />
+            ) : (
+              (page - 1) * rowsPerPage + i + 1
+            )}
+          </div>
+        ),
+      extraHeadProps: {
+        className: classes.checkboxCell
+      },
+      extraProps: {
+        className: classes.checkboxCell
+      }
+    },
     {
       id: 'country',
       label: 'country'
@@ -254,7 +339,7 @@ const AvailableNumbers = ({ t }) => {
           <Loading />
         ) : (
           <CustomTable
-            firstCell={true}
+            firstCell={false}
             classes={classes}
             rows={numbers}
             columns={columns}
@@ -287,6 +372,7 @@ const AvailableNumbers = ({ t }) => {
           <AddMultipleNumbers
             open={showAddMultipleANSNumbers}
             handleClose={handleMultipleConfigureClose}
+            numbers={numbers}
           />
         )}
       </Paper>

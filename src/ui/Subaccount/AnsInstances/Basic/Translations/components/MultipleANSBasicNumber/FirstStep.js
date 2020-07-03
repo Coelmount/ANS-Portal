@@ -21,12 +21,13 @@ import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
+import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
 
 import useStyles from './styles'
 
 const FirstStep = props => {
   const match = useParams()
-  const { handleClose, setStep, t } = props
+  const { handleClose, setStep, numbers, t } = props
   const [csvValue, setCSVValue] = useState([])
   const [errorOdj, setErrorObj] = useState({
     showError: false,
@@ -74,6 +75,27 @@ const FirstStep = props => {
       ],
       { type: 'text/csv;charset=utf-8;' }
     )
+    const url = URL.createObjectURL(blob)
+    pom.href = url
+    pom.setAttribute('download', 'template.csv')
+    pom.click()
+  }
+
+  const downloadCSVFileWithSelected = () => {
+    const selectedNumbers = numbers.filter(number => number.checked)
+    const numbersToCSV = selectedNumbers.map(number => ({
+      access_cc: number.country_code,
+      access_number: getNsnFromNumber(number.phoneNumber),
+      destination_cc: '',
+      destination_number: ''
+    }))
+
+    const pom = document.createElement('a')
+    const csvContent = Papa.unparse(JSON.stringify(numbersToCSV), {
+      delimiter: ';',
+      header: true
+    })
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     pom.href = url
     pom.setAttribute('download', 'template.csv')
@@ -236,6 +258,23 @@ const FirstStep = props => {
             )}: +27;111111111;+32;111111111`}</Box>
           </Box>
         </Box>
+
+        <Box className={classes.uploadBoxWrapper}>
+          <Box className={classes.uploadFileTitle}>
+            {t('download_selected_templete')}
+          </Box>
+          <Box>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.uploadButton}
+              onClick={downloadCSVFileWithSelected}
+            >
+              <GetAppOutlinedIcon className={classes.downloadIcon} />
+            </Button>
+          </Box>
+        </Box>
+
         <Box className={classes.uploadBoxWrapper}>
           <Box className={classes.uploadFileTitle}>
             {t('download_template_file')}
@@ -251,6 +290,7 @@ const FirstStep = props => {
             </Button>
           </Box>
         </Box>
+
         <Box className={classes.uploadBoxWrapper}>
           <Box className={classes.uploadFileTitle}>{t('upload_csv_file')}</Box>
           <Box>
