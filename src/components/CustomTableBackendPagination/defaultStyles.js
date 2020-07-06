@@ -292,6 +292,7 @@ const useStyles = makeStyles(theme => ({
     border: 'none',
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
     borderRadius: 3,
+    paddingRight: 45,
     '&:focus': {
       border: `2px solid ${theme.palette.primary.main}`,
       borderRadius: 3,

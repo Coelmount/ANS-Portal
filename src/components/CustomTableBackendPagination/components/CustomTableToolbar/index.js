@@ -24,7 +24,8 @@ const CustomTableToolbar = props => {
     showSearchBar,
     showPagination,
     extraToolbarBlock,
-    placeholderText
+    placeholderText,
+    searchSelector
   } = props
 
   const handleSearch = e => {
@@ -41,6 +42,7 @@ const CustomTableToolbar = props => {
             placeholder={placeholderText || t('search_input_placeholder')}
             onChange={handleSearch}
           />
+          {searchSelector}
           {query.length ? (
             <img
               src={clearResultIcon}
