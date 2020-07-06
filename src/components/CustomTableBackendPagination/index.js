@@ -50,6 +50,7 @@ const CustomTable = ({
   isSearchParamsActive,
   placeholderText,
   tableId,
+  searchSelector,
   t
 }) => {
   const defaultClasses = useStyles()
@@ -104,6 +105,7 @@ const CustomTable = ({
               initialSearchQuery={initialSearchQuery}
               placeholderText={placeholderText}
               changeRowsPerPage={changeRowsPerPage}
+              searchSelector={searchSelector}
             />
           )}
           {isLoadingData ? (
@@ -201,7 +203,8 @@ CustomTable.defaultProps = {
   onPageChangeActions: () => {},
   isModal: false,
   isSearchParamsActive: false,
-  placeholderText: ''
+  placeholderText: '',
+  searchSelector: null
 }
 
 export default withNamespaces()(CustomTable)

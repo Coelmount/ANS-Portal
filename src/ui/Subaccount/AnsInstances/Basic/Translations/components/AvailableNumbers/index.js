@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment, useRef } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useDebounce } from 'use-debounce'
@@ -44,7 +44,9 @@ const AvailableNumbers = ({ t }) => {
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
         .basic_instance_select_access_numbers
     : null
-  const classes = useStyles()
+  const [widthOffset, setWidthOffset] = useState('153px')
+  const calcInput = useRef(null)
+  const classes = useStyles({ widthOffset })
   const match = useParams()
 
   const {
@@ -74,7 +76,6 @@ const AvailableNumbers = ({ t }) => {
   const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
     false
   )
-
   const debouncedNumberLike = useDebounce(numberLike, 1000)[0]
 
   // Search params ? TRUE : FALSE
@@ -111,6 +112,13 @@ const AvailableNumbers = ({ t }) => {
       debouncedNumberLike
     )
   }, [page, rowsPerPage])
+
+  // Listener of params selector width
+  useEffect(() => {
+    if (calcInput.current) {
+      setWidthOffset(`${+calcInput.current.clientWidth + 15}px`)
+    }
+  }, [calcInput.current, searchParam])
 
   const handleSingleConfigure = row => {
     const { country_code, nsn } = row
@@ -201,30 +209,29 @@ const AvailableNumbers = ({ t }) => {
     setNumbers(newNumbers)
   }
 
+  const SearchSelector = (
+    <Select
+      value={searchParam}
+      ref={calcInput}
+      onChange={e => changeSearchParam(e.target.value)}
+      IconComponent={ArrowDropDownIcon}
+      className={classes.searchParamSelect}
+    >
+      {searchParamsList.map(paramItem => (
+        <MenuItem
+          value={paramItem}
+          key={`${paramItem}`}
+          className={classes.selectItem}
+        >
+          {t(paramItem).toLowerCase()}
+        </MenuItem>
+      ))}
+    </Select>
+  )
+
   const toolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarButtonsBlockWrap}>
-        <Box className={classes.searchParamWrap}>
-          <Select
-            value={searchParam}
-            onChange={e => changeSearchParam(e.target.value)}
-            IconComponent={ArrowDropDownIcon}
-            className={classes.searchParamSelect}
-          >
-            {searchParamsList.map(paramItem => (
-              <MenuItem
-                value={paramItem}
-                key={`${paramItem}`}
-                className={classes.selectItem}
-              >
-                {t(paramItem).toLowerCase()}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography className={classes.searchParamsTitle}>
-            {t('search_param')}
-          </Typography>
-        </Box>
         <Box className={classes.toolbarConfigureWrap}>
           <IconButton
             aria-label='assign icon button'
@@ -358,8 +365,8 @@ const AvailableNumbers = ({ t }) => {
             isSearchParamsActive={isSearchParamsActive}
             isLoadingData={isAvailableNumbersForAddInstanceLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
-            placeholderText={t('search_available_numbers')}
             tableId={'ans_basic_available_numbers'}
+            searchSelector={SearchSelector}
           />
         )}
         {isAddInstanceModalOpen && (

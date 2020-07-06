@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
   toolbarButtonsBlockWrap: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
     marginRight: 40,
@@ -68,6 +68,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 10
   },
   searchParamSelect: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
     background: 'white',
     '& div': {
       marginLeft: 5,
@@ -79,6 +82,9 @@ const useStyles = makeStyles(theme => ({
       right: 3
     },
     '&:before': {
+      display: 'none'
+    },
+    '&:after': {
       display: 'none'
     }
   },
@@ -125,6 +131,9 @@ const useStyles = makeStyles(theme => ({
     '& > span': {
       fontSize: 14
     }
+  },
+  searchInput: {
+    paddingLeft: props => props.widthOffset
   }
 }))
 
