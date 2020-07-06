@@ -31,6 +31,13 @@ const useStyles = makeStyles(theme => ({
     },
     '& .rbc-event-label': {
       fontSize: 13
+    },
+    '& .rbc-time-content': {
+      '& .rbc-day-slot': {
+        '&:hover': {
+          cursor: 'pointer'
+        }
+      }
     }
   }
 }))

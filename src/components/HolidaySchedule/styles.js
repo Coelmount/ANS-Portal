@@ -37,6 +37,11 @@ const useStyles = makeStyles(theme => ({
         fontSize: 16,
         color: theme.palette.grey99
       }
+    },
+    '& .rbc-month-row': {
+      '&:hover': {
+        cursor: 'pointer'
+      }
     }
   }
 }))
