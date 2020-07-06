@@ -81,14 +81,7 @@ const AvailableNumbers = ({ t }) => {
   // Search params ? TRUE : FALSE
   const isSearchParamsActive = !!debouncedNumberLike || false
 
-  // set numbers in local state from store
   useEffect(() => {
-    setNumbers(availableNumbersForAddInstance)
-  }, [availableNumbersForAddInstance])
-
-  // onUpdate search/sorting
-  useEffect(() => {
-    setPage(1)
     getAvailableNumbersForAddInstance(
       match.customerId,
       match.groupId,
@@ -98,19 +91,40 @@ const AvailableNumbers = ({ t }) => {
       order,
       debouncedNumberLike
     )
+  }, [])
+
+  // set numbers in local state from store
+  useEffect(() => {
+    setNumbers(availableNumbersForAddInstance)
+  }, [availableNumbersForAddInstance])
+
+  // onUpdate search/sorting
+  useEffect(() => {
+    setPage(1)
+    if (!isAvailableNumbersForAddInstanceLoading)
+      getAvailableNumbersForAddInstance(
+        match.customerId,
+        match.groupId,
+        1,
+        rowsPerPage,
+        orderBy,
+        order,
+        debouncedNumberLike
+      )
   }, [debouncedNumberLike, orderBy, order, searchParam])
 
   // onUpdate pagination
   useEffect(() => {
-    getAvailableNumbersForAddInstance(
-      match.customerId,
-      match.groupId,
-      page,
-      rowsPerPage,
-      orderBy,
-      order,
-      debouncedNumberLike
-    )
+    if (!isAvailableNumbersForAddInstanceLoading)
+      getAvailableNumbersForAddInstance(
+        match.customerId,
+        match.groupId,
+        page,
+        rowsPerPage,
+        orderBy,
+        order,
+        debouncedNumberLike
+      )
   }, [page, rowsPerPage])
 
   // Listener of params selector width
