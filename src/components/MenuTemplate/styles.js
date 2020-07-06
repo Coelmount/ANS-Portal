@@ -108,17 +108,22 @@ const useStyles = makeStyles(theme => ({
       marginLeft: 7,
       paddingLeft: 18,
       borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`
+    },
+    '&:first-child': {
+      '& .MuiTreeItem-iconContainer': {
+        marginTop: 22
+      }
     }
   },
   gridItem: {
     display: 'flex',
     flexDirection: 'column'
   },
-  firstTreeIconItem: {
-    '& .MuiTreeItem-iconContainer': {
-      marginTop: 22
-    }
-  },
+  // firstTreeIconItem: {
+  //   '& .MuiTreeItem-iconContainer': {
+  //     marginTop: 22
+  //   }
+  // },
   editControlsButtons: {
     display: 'flex',
     fontFamily: 'MTN',
@@ -150,6 +155,83 @@ const useStyles = makeStyles(theme => ({
   },
   keyInfoBox: {
     marginTop: 20
+  },
+  rootEditGreeting: {
+    '& .MuiDialog-paperWidthSm': {
+      width: '650px'
+    },
+    '& .MuiDialog-paperScrollPaper': {
+      height: 540
+    }
+  },
+  title: {
+    '& > *': {
+      fontFamily: 'MTN',
+      fontWeight: 700,
+      fontSize: '24px',
+      color: theme.palette.black
+    },
+    height: '90px',
+    padding: '25px 44px'
+  },
+  closeButton: {
+    position: 'absolute',
+    right: 10,
+    top: 20,
+    '& > span > svg': {
+      width: 25,
+      height: 25
+    }
+  },
+  dialogContent: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  dialogActions: {
+    height: '110px',
+    justifyContent: 'space-between'
+  },
+  cancelButton: {
+    width: '160px',
+    width: '160px',
+    marginLeft: '32px',
+    color: theme.palette.black
+  },
+  assignButton: {
+    width: '160px',
+    marginRight: '32px'
+  },
+  radioForm: {
+    background: 'transparent'
+  },
+  radioIcon: {
+    width: 16,
+    height: 16,
+    backgroundColor: 'white',
+    borderRadius: 100,
+    boxShadow: '0px 2px 4px #C4C4C4'
+  },
+  checkedRadioIcon: {
+    width: 16,
+    height: 16,
+    backgroundColor: 'white',
+    borderRadius: 100,
+    boxShadow: '0px 2px 4px #C4C4C4',
+    '&:before': {
+      display: 'block',
+      width: 16,
+      height: 16,
+      backgroundImage: 'radial-gradient(#FFCC00,#FFCC00 40%,transparent 50%)',
+      content: '""'
+    }
+  },
+  select: {
+    width: 254
+  },
+  personalBox: {
+    display: 'flex'
   }
 }))
 

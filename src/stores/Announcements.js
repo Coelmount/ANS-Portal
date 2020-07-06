@@ -14,6 +14,7 @@ export class AnnouncementsStore {
 
   getAnnouncements = (tenantId, groupId) => {
     this.isLoadingAnnouncements = true
+    this.announcements = []
     axios
       .get(`/tenants/${tenantId}/groups/${groupId}/announcements/`)
       .then(res => {

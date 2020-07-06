@@ -37,6 +37,7 @@ import useStyles from './styles'
 
 import AudioPlayer from 'components/AudioPlayer'
 import Loading from 'components/Loading'
+import EditGreeting from './EditGreeting'
 
 const MinusSquare = props => {
   const classes = useStyles()
@@ -214,6 +215,7 @@ const MenuTemplate = props => {
   const classes = useStyles()
   const [stateMenu, setStateMenu] = useState({})
   const [isEdit, setIsEdit] = useState(false)
+  const [isEditGreeting, setIsEditGreeting] = useState(false)
 
   const match = useParams()
 
@@ -333,6 +335,20 @@ const MenuTemplate = props => {
     setStateMenu({ ...stateMenu, keys: keysMenu })
   }
 
+  const closeEditGreeting = () => {
+    refreshThree
+      ? refreshThree()
+      : getMenu(
+          match.customerId,
+          match.groupId,
+          match.ivrId,
+          menuLvl,
+          menuType,
+          route
+        )
+    setIsEditGreeting(false)
+  }
+
   if (isLoadingConfig || !stateMenu || stateMenu.isLoading) {
     return <Loading />
   }
@@ -410,9 +426,24 @@ const MenuTemplate = props => {
               />
             )}
           </Box>
-          <Button className={classes.roundButtonEdit}>
+          <Button
+            className={classes.roundButtonEdit}
+            onClick={() => setIsEditGreeting(true)}
+          >
             <img src={EditIcon} alt='EditIcon' />
           </Button>
+          {isEditGreeting && (
+            <EditGreeting
+              open={isEditGreeting}
+              handleClose={closeEditGreeting}
+              menuLvl={menuLvl}
+              menuType={menuType}
+              defaultGreeting={stateMenu.announcementSelection}
+              defaultAudioFile={
+                has(stateMenu, 'audioFile.name') ? stateMenu.audioFile.name : ''
+              }
+            />
+          )}
         </Box>
       )}
       <Box></Box>
