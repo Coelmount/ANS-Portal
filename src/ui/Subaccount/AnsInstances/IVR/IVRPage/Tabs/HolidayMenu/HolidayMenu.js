@@ -12,14 +12,18 @@ import EditIcon from 'source/images/svg/edit-blue.svg'
 
 import MenuTemplate from 'components/MenuTemplate'
 import Loading from 'components/Loading'
+import EditSchedules from '../../../EditSchedules'
 
 import IVRStore from 'stores/IVR'
 import useStyles from './styles'
 
 const HolidayMenu = props => {
   const { t } = props
-  const { ivr, isLoadingIVR } = IVRStore
+  const { ivr, isLoadingIVR, getIVR } = IVRStore
   const classes = useStyles()
+  const match = useParams()
+  const history = useHistory()
+  const [showEditSchedules, setShowEditSchedules] = useState(false)
 
   if (isLoadingIVR) {
     return <Loading />
@@ -44,6 +48,12 @@ const HolidayMenu = props => {
           variant={'contained'}
           color={'primary'}
           className={classes.roundButton}
+          disabled={!has(ivr, 'holidaySchedule.name')}
+          onClick={() =>
+            history.push(
+              `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/holiday_schedules/${ivr.holidaySchedule.name}`
+            )
+          }
         >
           <img
             src={SchedulerIcon}
@@ -51,9 +61,26 @@ const HolidayMenu = props => {
             className={classes.scheduleIcon}
           />
         </Button>
-        <Button className={classes.roundButtonEdit}>
+        <Button
+          className={classes.roundButtonEdit}
+          onClick={() => setShowEditSchedules(true)}
+        >
           <img src={EditIcon} alt='EditIcon' />
         </Button>
+        {showEditSchedules && (
+          <EditSchedules
+            open={showEditSchedules}
+            handleClose={() => {
+              setShowEditSchedules(false)
+              getIVR(match.customerId, match.groupId, match.ivrId)
+            }}
+            menuLvl={'menus'}
+            menuType={'holiday'}
+            defaultSchedule={
+              has(ivr, 'holidaySchedule.name') ? ivr.holidaySchedule.name : ''
+            }
+          />
+        )}
       </Box>
       <MenuTemplate
         menuLvl={'menus'}

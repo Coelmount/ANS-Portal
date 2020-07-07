@@ -109,10 +109,8 @@ const useStyles = makeStyles(theme => ({
       paddingLeft: 18,
       borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`
     },
-    '&:first-child': {
-      '& .MuiTreeItem-iconContainer': {
-        marginTop: 22
-      }
+    '&:first-child > .MuiTreeItem-content > .MuiTreeItem-iconContainer': {
+      marginTop: 22
     }
   },
   gridItem: {

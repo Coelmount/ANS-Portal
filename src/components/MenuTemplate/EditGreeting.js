@@ -19,6 +19,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 
 import CloseIcon from '@material-ui/icons/Close'
+import VolumeUpOutlinedIcon from '@material-ui/icons/VolumeUpOutlined'
 
 import AnnouncementsStore from 'stores/Announcements'
 import IVRStore from 'stores/IVR'
@@ -138,7 +139,8 @@ const EditGreeting = props => {
               label={t('personal_greeting')}
             />
             <Select
-              className={classes.select}
+              icon={<VolumeUpOutlinedIcon />}
+              selectStyles={classes.select}
               disabled={announcementSelection !== 'Personal'}
               options={announcements.map(el => ({
                 value: el.name,

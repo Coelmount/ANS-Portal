@@ -28,7 +28,7 @@ export class HolidaySchedules {
   importYearsList = []
   importData = defaultImportData
 
-  isSchedulesLoading = true
+  isSchedulesLoading = false
   isDeletingSchedule = false
   isSchedulePosting = false
   isHolidayScheduleLoading = true

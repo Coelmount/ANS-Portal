@@ -35,7 +35,7 @@ export class WeekSchedules {
   ]
   initPeriods = []
   currentPeriodId = ''
-  isSchedulesLoading = true
+  isSchedulesLoading = false
   isDeletingSchedule = false
   isSchedulePosting = false
   isWeekScheduleLoading = true

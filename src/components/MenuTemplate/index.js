@@ -113,9 +113,7 @@ const StyledTreeItem = props => {
   return (
     <TreeItem
       {...rest}
-      className={classnames(classes.treeItem, {
-        [classes.firstTreeIconItem]: index === 0
-      })}
+      className={classes.treeItem}
       TransitionComponent={TransitionComponent}
       label={
         <Grid container spacing={1}>
