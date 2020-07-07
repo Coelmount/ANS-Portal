@@ -98,7 +98,11 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     width: 30,
     height: 30,
-    marginLeft: 11
+    marginLeft: 11,
+    opacity: 0.3
+  },
+  enabledColumnButton: {
+    opacity: 1
   },
   btnBack: {
     background: theme.palette.primary.main,
@@ -159,8 +163,9 @@ const useStyles = makeStyles(theme => ({
   inUseTitle: {
     color: theme.palette.active.blue
   },
-  avaliableTitle: {
-    color: theme.palette.lightGreen
+  availableTitle: {
+    color: theme.palette.lightGreen,
+    fontSize: 14
   },
   //delete cell without icon
   deleteCustomerIcon: {

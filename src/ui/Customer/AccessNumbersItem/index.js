@@ -699,36 +699,37 @@ const AccessNumbersItem = ({ t }) => {
           >
             {t(row.subaccount)}
           </Typography>
-          {row.subaccount !== 'none' && row.inUse === 'no' && (
-            <Fragment>
-              {isDeassigningNumber &&
-              numbersToDeassign.some(item => item.id === row.id) ? (
-                <CircularProgress className={classes.deleteLoading} />
-              ) : (
-                <IconButton
-                  aria-label='deassign icon button'
-                  component='span'
-                  className={classnames(classes.tableIconWrap, {
-                    [classes.btnBack]:
-                      row.isSelectedToDeassign && !isDeassigningNumber
-                  })}
-                  onClick={() =>
-                    selectNumbers(
-                      !row.isSelectedToDeassign,
-                      row.id,
-                      'isSelectedToDeassign'
-                    )
-                  }
-                >
-                  <img
-                    className={classes.deassignIcon}
-                    src={deassignIcon}
-                    alt='deassign from subaccount'
-                  />
-                </IconButton>
-              )}
-            </Fragment>
-          )}
+          <Fragment>
+            {isDeassigningNumber &&
+            numbersToDeassign.some(item => item.id === row.id) ? (
+              <CircularProgress className={classes.deleteLoading} />
+            ) : (
+              <IconButton
+                aria-label='deassign icon button'
+                component='span'
+                disabled={row.subaccount === 'none' || row.inUse !== 'no'}
+                className={classnames(classes.tableIconWrap, {
+                  [classes.btnBack]:
+                    row.isSelectedToDeassign && !isDeassigningNumber,
+                  [classes.enabledColumnButton]:
+                    row.subaccount !== 'none' && row.inUse === 'no'
+                })}
+                onClick={() =>
+                  selectNumbers(
+                    !row.isSelectedToDeassign,
+                    row.id,
+                    'isSelectedToDeassign'
+                  )
+                }
+              >
+                <img
+                  className={classes.deassignIcon}
+                  src={deassignIcon}
+                  alt='deassign from subaccount'
+                />
+              </IconButton>
+            )}
+          </Fragment>
         </Box>
       )
     },
@@ -771,7 +772,7 @@ const AccessNumbersItem = ({ t }) => {
     },
     {
       id: 'inUse',
-      label: 'in_use',
+      label: 'status',
       getCellData: row => (
         <Fragment>
           {row.connected_to ? (
@@ -779,10 +780,12 @@ const AccessNumbersItem = ({ t }) => {
               onClick={() => handleInUseLinkClick(row)}
               className={classes.linkTitle}
             >
-              {t(row.connected_to)}
+              {t('used')}
             </Typography>
           ) : (
-            t('no')
+            <Typography className={classes.availableTitle}>
+              {t('free')}
+            </Typography>
           )}
         </Fragment>
       )
