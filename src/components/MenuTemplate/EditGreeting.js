@@ -33,7 +33,8 @@ const EditGreeting = props => {
     menuLvl,
     menuType,
     defaultGreeting,
-    defaultAudioFile
+    defaultAudioFile,
+    keys
   } = props
   const classes = useStyles()
   const match = useParams()
@@ -58,11 +59,13 @@ const EditGreeting = props => {
     let data = {}
     if (announcementSelection === 'Default') {
       data = {
-        announcementSelection: 'Default'
+        announcementSelection: 'Default',
+        keys: keys
       }
     } else if (announcementSelection === 'Personal') {
       data = {
         announcementSelection: 'Personal',
+        keys: keys,
         audioFile: {
           name: audioFile
         }

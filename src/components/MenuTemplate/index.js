@@ -442,6 +442,7 @@ const MenuTemplate = props => {
               defaultAudioFile={
                 has(stateMenu, 'audioFile.name') ? stateMenu.audioFile.name : ''
               }
+              keys={stateMenu.keys}
             />
           )}
         </Box>
@@ -453,7 +454,7 @@ const MenuTemplate = props => {
           className={classes.root}
           defaultCollapseIcon={<MinusSquare />}
           defaultExpandIcon={<PlusSquare />}
-          defaultEndIcon={<CloseSquare />}
+          defaultEndIcon={null}
         >
           {has(stateMenu, 'keys') &&
             stateMenu.keys
