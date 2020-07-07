@@ -54,6 +54,18 @@ const useStyles = makeStyles(theme => ({
     boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
     cursor: 'pointer'
   }),
+  customAsignHeadIconWrap: ({ selectAll }) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
+    height: 30,
+    marginLeft: 11,
+    background: selectAll ? theme.palette.primary.main : 'white',
+    borderRadius: 100,
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    cursor: 'pointer'
+  }),
   toolbarButtonsBlockWrap: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -217,6 +229,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   subaccountHeadCell: {
+    width: 200,
     padding: 0,
     '& span': {
       fontSize: 16,
@@ -227,6 +240,15 @@ const useStyles = makeStyles(theme => ({
   },
   headCellInsideWrap: {
     display: 'flex'
+  },
+  asignCell: {
+    paddingLeft: '28px !important'
+  },
+  phoneNumberColumn: {
+    width: 400
+  },
+  idColumn: {
+    width: 100
   }
 }))
 

@@ -10,9 +10,11 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
+import { withStyles } from '@material-ui/core/styles'
 
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 import TitleBlock from 'components/TitleBlock'
@@ -33,6 +35,12 @@ import deassignIcon from 'source/images/svg/deassign.svg'
 
 import useStyles from './styles'
 import { toJS } from 'mobx'
+
+const StyledTooltip = withStyles({
+  tooltip: {
+    textAlign: 'center'
+  }
+})(Tooltip)
 
 const AccessNumbersItem = ({ t }) => {
   const match = useParams()
@@ -64,7 +72,7 @@ const AccessNumbersItem = ({ t }) => {
   const [isSubaccountLinkClicked, setIsSubaccountLinkClicked] = useState(false)
   const [isDisconnectAll, setIsDisconnectAll] = useState(false)
   const [isDeassignAll, setIsDeassignAll] = useState(false)
-  const classes = useStyles({ isDisconnectAll, isDeassignAll })
+  const classes = useStyles({ isDisconnectAll, isDeassignAll, selectAll })
 
   const {
     assignedNumbers,
@@ -362,8 +370,10 @@ const AccessNumbersItem = ({ t }) => {
   const handleCloseDeassignModal = () => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     setIsDeassignModalOpen(false)
-    setIsDeassignAll(false)
     setNumberOfSelectedToDeassign(0)
+    setSelectAll(false)
+    setIsDisconnectAll(false)
+    setIsDeassignAll(false)
   }
 
   const handleCloseDisconnectModal = () => {
@@ -371,6 +381,8 @@ const AccessNumbersItem = ({ t }) => {
     setIsDisconnectModalOpen(false)
     setIsDisconnectAll(false)
     setNumberOfSelectedToDisconnect(0)
+    setSelectAll(false)
+    setIsDisconnectAll(false)
   }
 
   const handleDisconnect = () => {
@@ -544,66 +556,71 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const columns = [
-    {
-      id: 'checkbox',
-      label: (
-        <Checkbox
-          className={classes.headCheckbox}
-          checked={selectAll}
-          onChange={handleSelectAll}
-        />
-      ),
-      isSortAvailable: false,
-      getCellData: (row, i) =>
-        row.checked ? (
-          <Checkbox
-            checked={row.checked}
-            className={classes.checkbox}
-            onChange={() => selectNumbers(!row.checked, row.id, 'checked')}
-          />
-        ) : (
-          <div
-            className={classes.indexHoverCheckbox}
-            onClick={() => {
-              if (row.subaccount === 'none' && row.inUse === 'no')
-                selectNumbers(!row.checked, row.id, 'checked')
-            }}
-            onMouseLeave={() => changeHover(false, row.id)}
-            onMouseEnter={() => changeHover(true, row.id)}
-          >
-            {row.hover && row.subaccount === 'none' && row.inUse === 'no' ? (
-              <Checkbox
-                checked={row.checked}
-                className={classes.checkbox}
-                onChange={() => {
-                  if (row.subaccount === 'none' && row.inUse === 'no')
-                    selectNumbers(true, row.id, 'checked')
-                }}
-              />
-            ) : (
-              i + 1
-            )}
-          </div>
-        ),
-      extraHeadProps: {
-        className: classes.checkboxCell
-      },
-      extraProps: {
-        className: classes.checkboxCell
-      }
-    },
+    // {
+    //   id: 'checkbox',
+    //   label: (
+    //     <Checkbox
+    //       className={classes.headCheckbox}
+    //       checked={selectAll}
+    //       onChange={handleSelectAll}
+    //     />
+    //   ),
+    //   isSortAvailable: false,
+    //   getCellData: (row, i) =>
+    //     row.checked ? (
+    //       <Checkbox
+    //         checked={row.checked}
+    //         className={classes.checkbox}
+    //         onChange={() => selectNumbers(!row.checked, row.id, 'checked')}
+    //       />
+    //     ) : (
+    //       <div
+    //         className={classes.indexHoverCheckbox}
+    //         onClick={() => {
+    //           if (row.subaccount === 'none' && row.inUse === 'no')
+    //             selectNumbers(!row.checked, row.id, 'checked')
+    //         }}
+    //         onMouseLeave={() => changeHover(false, row.id)}
+    //         onMouseEnter={() => changeHover(true, row.id)}
+    //       >
+    //         {row.hover && row.subaccount === 'none' && row.inUse === 'no' ? (
+    //           <Checkbox
+    //             checked={row.checked}
+    //             className={classes.checkbox}
+    //             onChange={() => {
+    //               if (row.subaccount === 'none' && row.inUse === 'no')
+    //                 selectNumbers(true, row.id, 'checked')
+    //             }}
+    //           />
+    //         ) : (
+    //           i + 1
+    //         )}
+    //       </div>
+    //     ),
+    //   extraHeadProps: {
+    //     className: classes.checkboxCell
+    //   },
+    //   extraProps: {
+    //     className: classes.checkboxCell
+    //   }
+    // },
     {
       id: 'phoneNumber',
       label: 'phone_numbers',
+      extraProps: {
+        className: classes.phoneNumberColumn
+      },
       extraHeadProps: {
         className: classes.phoneNumberHeadCell
       },
       headIcon: (
-        <img
-          className={classes.disconnectIcon}
-          src={disconnectIcon}
-          alt='disconnect'
-        />
+        <StyledTooltip title={t('disconnect_all_tooltip')}>
+          <img
+            className={classes.disconnectIcon}
+            src={disconnectIcon}
+            alt='disconnect'
+          />
+        </StyledTooltip>
       ),
       headIconWrapStyles: classes.customPhoneNumberHeadIconWrap,
       headCellInsideWrapStyles: classes.headCellInsideWrap,
@@ -618,30 +635,37 @@ const AccessNumbersItem = ({ t }) => {
             numbersToDisconnect.some(item => item.id === row.id) ? (
               <CircularProgress className={classes.deleteLoading} />
             ) : (
-              <IconButton
-                aria-label='upload picture'
-                component='span'
-                disabled={row.subaccount !== 'none' || row.inUse !== 'no'}
-                className={classnames(classes.tableIconWrap, {
-                  [classes.btnBack]:
-                    row.isSelectedToDisconnect && !isDisconnectingNumber,
-                  [classes.enabledColumnButton]:
-                    row.subaccount === 'none' && row.inUse === 'no'
-                })}
-                onClick={() => {
-                  selectNumbers(
-                    !row.isSelectedToDisconnect,
-                    row.id,
-                    'isSelectedToDisconnect'
-                  )
-                }}
+              <StyledTooltip
+                title={
+                  row.subaccount !== 'none' || row.inUse !== 'no'
+                    ? t('not_avaliable_to_disconnect_tooltip')
+                    : ''
+                }
               >
-                <img
-                  className={classes.disconnectIcon}
-                  src={disconnectIcon}
-                  alt='disconnect'
-                />
-              </IconButton>
+                <IconButton
+                  aria-label='upload picture'
+                  component='span'
+                  className={classnames(classes.tableIconWrap, {
+                    [classes.btnBack]:
+                      row.isSelectedToDisconnect && !isDisconnectingNumber,
+                    [classes.enabledColumnButton]:
+                      row.subaccount === 'none' && row.inUse === 'no'
+                  })}
+                  onClick={() => {
+                    selectNumbers(
+                      !row.isSelectedToDisconnect,
+                      row.id,
+                      'isSelectedToDisconnect'
+                    )
+                  }}
+                >
+                  <img
+                    className={classes.disconnectIcon}
+                    src={disconnectIcon}
+                    alt='disconnect'
+                  />
+                </IconButton>
+              </StyledTooltip>
             )}
           </Fragment>
         </Box>
@@ -654,11 +678,13 @@ const AccessNumbersItem = ({ t }) => {
         className: classes.subaccountHeadCell
       },
       headIcon: (
-        <img
-          className={classes.deassignIcon}
-          src={deassignIcon}
-          alt='deassign'
-        />
+        <StyledTooltip title={t('deassign_all_tooltip')}>
+          <img
+            className={classes.deassignIcon}
+            src={deassignIcon}
+            alt='deassign'
+          />
+        </StyledTooltip>
       ),
       headIconWrapStyles: classes.customSubaccountHeadIconWrap,
       headCellInsideWrapStyles: classes.headCellInsideWrap,
@@ -708,6 +734,43 @@ const AccessNumbersItem = ({ t }) => {
       )
     },
     {
+      id: 'asign',
+      headIcon: (
+        <StyledTooltip title={t('assign_all_tooltip')}>
+          <DoneOutlinedIcon className={classes.assignIcon} />
+        </StyledTooltip>
+      ),
+      headIconWrapStyles: classes.customAsignHeadIconWrap,
+      headCellInsideWrapStyles: classes.headCellInsideWrap,
+      onIconClick: handleSelectAll,
+      isSortAvailable: false,
+      extraProps: {
+        className: classes.asignCell
+      },
+      extraHeadProps: {
+        className: classes.asignCell
+      },
+      getCellData: row => (
+        <Fragment>
+          <IconButton
+            aria-label='assign all picture'
+            component='span'
+            className={classnames(classes.tableIconWrap, {
+              [classes.btnBack]: row.checked,
+              [classes.enabledColumnButton]:
+                row.subaccount === 'none' && row.inUse === 'no'
+            })}
+            onClick={() => {
+              selectNumbers(!row.checked, row.id, 'checked')
+            }}
+            disabled={row.subaccount !== 'none' || row.inUse !== 'no'}
+          >
+            <DoneOutlinedIcon className={classes.assignIcon} />
+          </IconButton>
+        </Fragment>
+      )
+    },
+    {
       id: 'inUse',
       label: 'status',
       getCellData: row => (
@@ -749,13 +812,14 @@ const AccessNumbersItem = ({ t }) => {
             <CustomTable
               classes={classes}
               columns={columns}
-              firstCell={false}
+              firstCell={true}
               rows={numbers}
               searchCriterias={['phoneNumber', 'subaccount', 'inUse', 'status']}
               getSearchList={setSearchList}
               extraToolbarBlock={toolbarButtonsBlock}
               noAvailableDataMessage={t('no_assigned_numbers_available')}
               tableId={'access_number_item_list'}
+              idColStyles={classes.idColumn}
             />
           </Fragment>
         )}
@@ -765,6 +829,9 @@ const AccessNumbersItem = ({ t }) => {
             handleClose={() => {
               setShowAddNumber(false)
               getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
+              setSelectAll(false)
+              setIsDisconnectAll(false)
+              setIsDeassignAll(false)
             }}
             step={step}
             changeStep={setStep}
