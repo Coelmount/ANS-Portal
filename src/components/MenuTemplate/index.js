@@ -38,6 +38,7 @@ import useStyles from './styles'
 import AudioPlayer from 'components/AudioPlayer'
 import Loading from 'components/Loading'
 import EditGreeting from './EditGreeting'
+import CustomSelect from 'components/Select'
 
 const MinusSquare = props => {
   const classes = useStyles()
@@ -107,8 +108,103 @@ const StyledTreeItem = props => {
     disabledFields,
     deleteItemFromKeys,
     id,
+    menuLvl,
+    ivrType,
+    announcements,
     ...rest
   } = props
+
+  const getActionData = () => {
+    switch (menuItem.action) {
+      case 'Go To Submenu':
+        return (
+          <Select
+            value={menuItem.parameter ? menuItem.parameter : ''}
+            onClick={e => {
+              e.stopPropagation()
+            }}
+            variant='outlined'
+            disabled={disabledFields}
+            className={classes.actionSelect}
+          />
+        )
+      case 'Transfer To Number With Prompt':
+        return (
+          <Select
+            value={menuItem.parameter ? menuItem.parameter : ''}
+            onClick={e => {
+              e.stopPropagation()
+            }}
+            variant='outlined'
+            disabled={disabledFields}
+            className={classes.actionSelect}
+          />
+        )
+      case 'Transfer To Number':
+        return (
+          <Select
+            value={menuItem.parameter ? menuItem.parameter : ''}
+            onClick={e => {
+              e.stopPropagation()
+            }}
+            variant='outlined'
+            disabled={disabledFields}
+            className={classes.actionSelect}
+          />
+        )
+      case 'Play Announcement':
+        return (
+          <CustomSelect
+            value={
+              has(menuItem, 'parameter.name') ? menuItem.parameter.name : ''
+            }
+            onClick={e => {
+              e.stopPropagation()
+            }}
+            variant='outlined'
+            disabled={disabledFields}
+            selectStyles={classes.select}
+            onChange={e => changeKeysMenu(id, 'announcement', e.target.value)}
+            options={announcements.map(el => ({
+              value: el.name,
+              label: el.name
+            }))}
+            icon={<VolumeUpOutlinedIcon />}
+          />
+          //   {announcements.map(el => (
+          //     <MenuItem key={el.name} value={el.name}>
+          //       {el.name}
+          //     </MenuItem>
+          //   ))}
+          // </Select>
+        )
+      case 'Repeat Menu':
+        return null
+      case 'Exit':
+        return null
+      case 'Back To Parent Menu':
+        return null
+      default:
+        return null
+    }
+  }
+
+  const getOptionsForAction = () => {
+    let options = []
+    const ivtType = ''
+
+    if (ivrType === 'Basic') {
+      options = actions.filter(
+        el =>
+          el.action !== 'Go To Submenu' && el.action !== 'Back To Parent Menu'
+      )
+    } else if (menuLvl === 'menus') {
+      options = actions.filter(el => el.action !== 'Back To Parent Menu')
+    } else {
+      options = actions
+    }
+    return options
+  }
 
   return (
     <TreeItem
@@ -157,7 +253,7 @@ const StyledTreeItem = props => {
               disabled={disabledFields}
               onChange={e => changeKeysMenu(id, 'action', e.target.value)}
             >
-              {actions.map(act => (
+              {getOptionsForAction().map(act => (
                 <MenuItem key={act.action} value={act.action}>
                   {act.action}
                 </MenuItem>
@@ -173,7 +269,7 @@ const StyledTreeItem = props => {
               disabled={disabledFields}
               className={classes.actionDataSelect}
             ></Select> */}
-              <TextField
+              {/* <TextField
                 onClick={e => {
                   e.stopPropagation()
                 }}
@@ -182,7 +278,8 @@ const StyledTreeItem = props => {
                 className={classes.descriptionInput}
                 disabled={disabledFields}
                 onChange={e => changeKeysMenu(id, 'parameter', e.target.value)}
-              />
+              /> */}
+              <Box className={classes.actionDataBox}>{getActionData()}</Box>
               {!disabledFields && (
                 <Button
                   variant={'contained'}
@@ -208,7 +305,9 @@ const MenuTemplate = props => {
     menuLvl,
     route,
     countChild,
-    refreshThree
+    refreshThree,
+    ivrType,
+    announcements
   } = props
   const classes = useStyles()
   const [stateMenu, setStateMenu] = useState({})
@@ -311,6 +410,13 @@ const MenuTemplate = props => {
         keys: keysMenu
       })
       return
+    }
+    if (field === 'announcement') {
+      keysMenu[index].parameter = { name: value }
+      setStateMenu({
+        ...stateMenu,
+        keys: keysMenu
+      })
     }
     keysMenu[index][field] = value
     setStateMenu({
@@ -475,6 +581,9 @@ const MenuTemplate = props => {
                   }
                   changeKeysMenu={changeKeysMenu}
                   deleteItemFromKeys={deleteItemFromKeys}
+                  menuLvl={menuLvl}
+                  ivrType={ivrType}
+                  announcements={announcements}
                 >
                   {el.action === 'Go To Submenu' && el.parameter && (
                     <MenuTemplate

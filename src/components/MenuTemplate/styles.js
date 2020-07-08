@@ -226,10 +226,15 @@ const useStyles = makeStyles(theme => ({
     }
   },
   select: {
-    width: 254
+    width: 254,
+    height: 50
   },
   personalBox: {
     display: 'flex'
+  },
+  actionDataBox: {
+    width: 254,
+    height: 50
   }
 }))
 

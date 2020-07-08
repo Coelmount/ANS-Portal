@@ -14,14 +14,26 @@ import MenuTemplate from 'components/MenuTemplate'
 import Loading from 'components/Loading'
 
 import IVRStore from 'stores/IVR'
+import AnnouncementsStore from 'stores/Announcements'
+
 import useStyles from './styles'
 
 const AfterHoursMenu = props => {
   const { t } = props
   const { ivr, isLoadingIVR } = IVRStore
+  const {
+    getAnnouncements,
+    isLoadingAnnouncements,
+    announcements
+  } = AnnouncementsStore
   const classes = useStyles()
+  const match = useParams()
 
-  if (isLoadingIVR) {
+  useEffect(() => {
+    getAnnouncements(match.customerId, match.groupId)
+  }, [])
+
+  if (isLoadingIVR || isLoadingAnnouncements) {
     return <Loading />
   }
 
@@ -56,11 +68,13 @@ const AfterHoursMenu = props => {
         </Button>
       </Box> */}
       <MenuTemplate
+        ivrType={ivr.type}
         menuType={'afterHours'}
         menuLvl={'menus'}
         showTitle
         route={'main'}
         countChild={1}
+        announcements={announcements}
       />
     </React.Fragment>
   )

@@ -15,17 +15,28 @@ import Loading from 'components/Loading'
 import EditSchedules from '../../../EditSchedules'
 
 import IVRStore from 'stores/IVR'
+import AnnouncementsStore from 'stores/Announcements'
+
 import useStyles from './styles'
 
 const HolidayMenu = props => {
   const { t } = props
   const { ivr, isLoadingIVR, getIVR } = IVRStore
+  const {
+    getAnnouncements,
+    isLoadingAnnouncements,
+    announcements
+  } = AnnouncementsStore
   const classes = useStyles()
   const match = useParams()
   const history = useHistory()
   const [showEditSchedules, setShowEditSchedules] = useState(false)
 
-  if (isLoadingIVR) {
+  useEffect(() => {
+    getAnnouncements(match.customerId, match.groupId)
+  }, [])
+
+  if (isLoadingIVR || isLoadingAnnouncements) {
     return <Loading />
   }
 
@@ -83,11 +94,13 @@ const HolidayMenu = props => {
         )}
       </Box>
       <MenuTemplate
+        ivrType={ivr.type}
         menuLvl={'menus'}
         menuType={'holiday'}
         showTitle
         route={'main'}
         countChild={1}
+        announcements={announcements}
       />
     </React.Fragment>
   )
