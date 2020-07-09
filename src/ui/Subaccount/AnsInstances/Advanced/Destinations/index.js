@@ -199,8 +199,7 @@ const Destinations = observer(({ t }) => {
               className={classnames(classes.mainIconWrap, {
                 [classes.disabledButton]: !isAnyChecked
               })}
-              onClick={handleMultipleDeleteClick}
-              disabled={!isAnyChecked}
+              onClick={isAnyChecked ? handleMultipleDeleteClick : undefined}
             >
               <img
                 className={classes.deleteIcon}
