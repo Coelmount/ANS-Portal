@@ -243,6 +243,14 @@ const useStyles = makeStyles(theme => ({
   },
   notificationIcon: {
     marginRight: 5
+  },
+  nameCellTitle: {
+    color: theme.palette.active.blue,
+    fontSize: 14,
+    cursor: 'pointer'
+  },
+  deleteName: {
+    fontWeight: 'bold'
   }
 }))
 

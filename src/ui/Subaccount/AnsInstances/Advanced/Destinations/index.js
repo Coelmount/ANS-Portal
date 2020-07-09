@@ -28,8 +28,7 @@ import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import AddModal from './components/AddModal'
-// import AddMultipleNumbers from '../MultipleANSBasicNumber'
-// import MultipleUpdateNumbers from '../MultipleUpdateANSBasicNumbers'
+import EditModal from './components/EditModal'
 import DeleteModal from 'components/DeleteModal'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
@@ -41,9 +40,20 @@ import deleteIcon from 'source/images/svg/delete-icon.svg'
 import notificationIcon from 'source/images/svg/no-numbers-notification.svg'
 
 const addModal = 1
-const deleteModal = 2
+const editModal = 2
+const deleteModal = 3
+const multipleDeleteModal = 4
 
 const Destinations = observer(({ t }) => {
+  const {
+    destinationsToDelete,
+    destinations,
+    isDestinationsLoading,
+    getDestinations,
+    deleteDestination,
+    deleteDestinations
+  } = DestinationsStore
+
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId } = match
@@ -53,15 +63,6 @@ const Destinations = observer(({ t }) => {
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
 
-  const [
-    showMultipleUpdateANSNumbers,
-    setShowMultipleUpdateANSNumbers
-  ] = useState(false)
-
-  // const [isAddModalOpen, setIsModalOpen] = useState(false)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [instancesForDelete, setInstancesForDelete] = useState([])
-
   const openedModal = useLocalStore(() => ({
     id: null,
     open(modalId) {
@@ -69,34 +70,28 @@ const Destinations = observer(({ t }) => {
     },
     close() {
       this.id = null
+      const payload = {
+        customerId,
+        groupId
+      }
+      getDestinations(payload)
     }
   }))
 
-  const {
-    setDefaultValues,
-    updateSelectedInstance,
-    basicTranslationsNumbers,
-    isBasicTranslationsNumbersLoading,
-    getBasicTranslationsNumbers,
-    deleteANSBasic,
-    isDeleting,
-    getAvailableNumbersForAddInstance,
-    availableNumbersForAddInstance,
-    isAvailableNumbersForAddInstanceLoading,
-    clearAvailableNumbersForAddInstance,
-    clearBasicNumbers
-  } = BasicTranslationsStore
-
-  const { destinations, getDestinations } = DestinationsStore
-  console.log(destinations, 'destinations')
-  const isLoading = false
+  const modals = useLocalStore(() => ({
+    data: '',
+    setData(value, modalId) {
+      this.data = value
+      openedModal.open(modalId)
+    }
+  }))
 
   useEffect(() => {
     const payload = {
       customerId,
       groupId
     }
-    // getDestinations(payload)
+    getDestinations(payload)
   }, [])
 
   useEffect(() => {
@@ -107,32 +102,7 @@ const Destinations = observer(({ t }) => {
     handleCheckedStates(searchList)
   }, [searchList])
 
-  const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false)
-    getBasicTranslationsNumbers(match.customerId, match.groupId)
-  }
-
-  const handleMultipleDelete = () => {
-    setIsDeleteModalOpen(true)
-    setInstancesForDelete(
-      numbers.filter(num => num.checked).map(el => el.ans_id)
-    )
-  }
-
-  const handleDelete = id => {
-    deleteANSBasic(match.customerId, match.groupId, id, handleCloseDeleteModal)
-  }
-
-  // const handleAddInstanceModalOpen = () => {
-  //   setIsAddInstanceModalOpen(true)
-  // }
-
-  // const handleAddInstanceModalClose = () => {
-  //   setIsAddInstanceModalOpen(false)
-  //   setDefaultValues()
-  //   getBasicTranslationsNumbers(match.customerId, match.groupId)
-  // }
-
+  // Checkboxes handlers ----
   const selectNumbers = (checked, id) => {
     const newNumbers = transformOnChange(numbers, checked, id)
     setNumbers(newNumbers)
@@ -173,12 +143,50 @@ const Destinations = observer(({ t }) => {
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
   }
+  // -----------
+
+  const handleMultipleDeleteClick = () => {
+    openedModal.open(multipleDeleteModal)
+  }
+
+  // Trigger delete actions in store ----
+  const handleDelete = () => {
+    const payload = {
+      customerId,
+      groupId,
+      destinationId: modals.data.ans_id,
+      closeModal: openedModal.close
+    }
+    deleteDestination(payload)
+  }
+
+  const handleMultipleDelete = () => {
+    const payload = {
+      customerId,
+      groupId,
+      closeModal: openedModal.close
+    }
+    deleteDestinations(payload)
+  }
+  // --------
 
   const titleData = {
     mainText: `${t('advanced')}: ${t('destinations')}`,
     iconCapture: t('add'),
     Icon: <AddOutlinedIcon />
   }
+
+  const extraDeleteBlock = (
+    <span className={classes.deleteName}>{` ${modals.data.name}?`}</span>
+  )
+
+  const extraMultipleDeleteBlock = (
+    <Fragment>
+      {destinationsToDelete.map(destination => (
+        <span className={classes.deleteName}>{` ${destination.name}`}</span>
+      ))}
+    </Fragment>
+  )
 
   const toolbarButtonsBlock = () => {
     return (
@@ -191,7 +199,7 @@ const Destinations = observer(({ t }) => {
               className={classnames(classes.mainIconWrap, {
                 [classes.disabledButton]: !isAnyChecked
               })}
-              onClick={isAnyChecked && handleMultipleDelete}
+              onClick={isAnyChecked && handleMultipleDeleteClick}
             >
               <img
                 className={classes.deleteIcon}
@@ -208,64 +216,80 @@ const Destinations = observer(({ t }) => {
     )
   }
 
-  const columns = () => {
-    const handleOpenDeleteModal = id => {
-      setIsDeleteModalOpen(true)
-      setInstancesForDelete([id])
-    }
-    return [
-      {
-        id: 'checkbox',
-        label: (
+  const columns = [
+    {
+      id: 'checkbox',
+      label: (
+        <Checkbox
+          className={classes.headCheckbox}
+          checked={selectAll}
+          onChange={handleSelectAll}
+        />
+      ),
+      isSortAvailable: false,
+      getCellData: (row, i) =>
+        row.checked ? (
           <Checkbox
-            className={classes.headCheckbox}
-            checked={selectAll}
-            onChange={handleSelectAll}
+            checked={row.checked}
+            className={classes.checkbox}
+            onChange={e => selectNumbers(!row.checked, row.id)}
           />
+        ) : (
+          <div
+            className={classes.indexHoverCheckbox}
+            onClick={() => selectNumbers(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
+          >
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectNumbers(true, row.id)}
+              />
+            ) : (
+              i + 1
+            )}
+          </div>
         ),
-        isSortAvailable: false,
-        getCellData: (row, i) =>
-          row.checked ? (
-            <Checkbox
-              checked={row.checked}
-              className={classes.checkbox}
-              onChange={e => selectNumbers(!row.checked, row.id)}
-            />
-          ) : (
-            <div
-              className={classes.indexHoverCheckbox}
-              onClick={() => selectNumbers(!row.checked, row.id)}
-              onMouseLeave={() => changeHover(false, row.id)}
-              onMouseEnter={() => changeHover(true, row.id)}
-            >
-              {row.hover ? (
-                <Checkbox
-                  checked={row.checked}
-                  className={classes.checkbox}
-                  onChange={() => selectNumbers(true, row.id)}
-                />
-              ) : (
-                i + 1
-              )}
-            </div>
-          ),
-        extraHeadProps: {
-          className: classes.checkboxCell
-        },
-        extraProps: {
-          className: classes.checkboxCell
-        }
+      extraHeadProps: {
+        className: classes.checkboxCell
       },
-      {
-        id: 'ans_id',
-        label: 'name'
-      },
-      {
-        id: 'access_number',
-        label: 'phone_number'
+      extraProps: {
+        className: classes.checkboxCell
       }
-    ]
-  }
+    },
+    {
+      id: 'name',
+      label: 'name',
+      getCellData: row => (
+        <span
+          onClick={() => modals.setData(row.ans_id, editModal)}
+          className={classes.nameCellTitle}
+        >
+          {row.name}
+        </span>
+      )
+    },
+    {
+      id: 'access_number',
+      label: 'phone_number'
+    },
+    {
+      id: 'delete',
+      extraProps: {
+        className: classes.deleteCell,
+        align: 'right'
+      },
+      isSortAvailable: false,
+      getCellData: row => (
+        <CloseOutlinedIcon
+          onClick={() => modals.setData(row, deleteModal)}
+          className={classes.deleteCustomerIcon}
+        />
+      )
+    }
+  ]
 
   return (
     <div className={classes.root}>
@@ -277,19 +301,14 @@ const Destinations = observer(({ t }) => {
             handleOpen={() => openedModal.open(addModal)}
           />
         </CustomContainer>
-        {isLoading ? (
+        {isDestinationsLoading ? (
           <Loading />
         ) : (
           <CustomTable
             firstCell={false}
             rows={numbers}
-            columns={columns()}
-            searchCriterias={[
-              'accessCountry',
-              'destinationCountry',
-              'access_number',
-              'destination_number'
-            ]}
+            columns={columns}
+            searchCriterias={['name', 'phoneNumber']}
             extraToolbarBlock={toolbarButtonsBlock}
             getSearchList={setSearchList}
             noAvailableDataMessage={t('no_destinations_available')}
@@ -302,40 +321,39 @@ const Destinations = observer(({ t }) => {
             handleClose={openedModal.close}
           />
         )}
-        {/* {showAddMultipleANSNumbers && (
-          <AddMultipleNumbers
-            open={showAddMultipleANSNumbers}
-            handleClose={() => {
-              setShowAddMultipleANSNumbers(false)
-              getBasicTranslationsNumbers(match.customerId, match.groupId)
-            }}
+        {openedModal.id === editModal && (
+          <EditModal
+            open={openedModal.id === editModal}
+            handleClose={openedModal.close}
+            destinationId={modals.data}
           />
         )}
-        {showMultipleUpdateANSNumbers && (
-          <MultipleUpdateNumbers
-            open={showMultipleUpdateANSNumbers}
-            handleClose={() => {
-              setShowMultipleUpdateANSNumbers(false)
-              getBasicTranslationsNumbers(match.customerId, match.groupId)
-            }}
-            numbers={numbers}
-          />
-        )}
-        {isDeleteModalOpen && (
+        {openedModal.id === deleteModal && (
           <DeleteModal
             classes={classes}
-            open={isDeleteModalOpen}
-            handleClose={handleCloseDeleteModal}
+            open={openedModal.id === deleteModal}
+            handleClose={() => openedModal.close()}
             handleDelete={handleDelete}
-            deleteInfo={instancesForDelete}
-            isDeleting={isDeleting}
-            deleteSubject={`${t('basic').toLowerCase()} ${t(
-              'phone_numbers'
-            ).toLowerCase()}`}
+            extraMessageBlock={extraDeleteBlock}
+            isDeleting={false}
+            deleteSubject={`${t('destination').toLowerCase()}`}
             action={t('to_delete')}
             titleAction={t(`delete`)}
           />
-        )} */}
+        )}
+        {openedModal.id === multipleDeleteModal && (
+          <DeleteModal
+            classes={classes}
+            open={openedModal.id === multipleDeleteModal}
+            handleClose={() => openedModal.close()}
+            handleDelete={handleMultipleDelete}
+            extraMessageBlock={extraMultipleDeleteBlock}
+            isDeleting={false}
+            deleteSubject={`${t('destinations').toLowerCase()}`}
+            action={t('to_delete')}
+            titleAction={t(`delete`)}
+          />
+        )}
       </Paper>
     </div>
   )

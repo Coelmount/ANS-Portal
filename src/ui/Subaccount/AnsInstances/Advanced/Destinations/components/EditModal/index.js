@@ -15,8 +15,9 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
-import WeekSchedulesStore from 'stores/WeekSchedules'
+import DestinationsStore from 'stores/Destionations'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import PeriodForm from 'components/PeriodForm'
@@ -25,9 +26,20 @@ import transformTime from 'utils/schedules/transformTime'
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
 
-const AddModal = ({ t, open, handleClose }) => {
+const EditModal = ({ t, open, handleClose, destinationId }) => {
   const classes = useStyles()
   const match = useParams()
+  const { customerId, groupId } = match
+
+  const {
+    destination,
+    isDestinationLoading,
+    isDestinationEditing,
+    getDestination,
+    putDestination
+  } = DestinationsStore
+
+  const isLoading = isDestinationLoading || isDestinationEditing
 
   const inputStore = useLocalStore(() => ({
     values: {
@@ -36,21 +48,41 @@ const AddModal = ({ t, open, handleClose }) => {
     },
     set(field, value) {
       this.values[field] = value
+    },
+    get isFieldsFilled() {
+      return this.values.name && this.values.phoneNumber
     }
   }))
 
-  const { customerId, groupId } = match
-  const {
-    periods,
-    putPeriods,
-    isScheduleEditing,
-    putPeriod
-  } = WeekSchedulesStore
+  useEffect(() => {
+    const payload = {
+      customerId,
+      groupId,
+      destinationId
+    }
+    getDestination(payload)
+  }, [])
+
+  useEffect(() => {
+    if (destination && Object.keys(destination).length) {
+      inputStore.set('name', destination.name)
+      inputStore.set('phoneNumber', destination.destination_number)
+    }
+  }, [destination])
+
+  const handleSave = () => {
+    const payload = {
+      customerId,
+      groupId,
+      closeModal: handleClose
+    }
+    // putDestination(payload)
+  }
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
-        {t('add_destination')}
+        {t('edit_destination')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -61,20 +93,22 @@ const AddModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
-        {isScheduleEditing ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <Box className={classes.inputsWrap}>
             <Input
-              icon={<PhoneOutlinedIcon />}
+              icon={<PermIdentityOutlined />}
               label={t('name')}
               variant='outlined'
+              value={inputStore.values.name}
               onChange={e => inputStore.set('name', e.target.value)}
             />
             <Input
               icon={<PhoneOutlinedIcon />}
               label={t('phonenumber')}
               variant='outlined'
+              value={inputStore.values.phoneNumber}
               onChange={e => inputStore.set('phoneNumber', e.target.value)}
             />
           </Box>
@@ -94,12 +128,14 @@ const AddModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
+          disabled={!inputStore.isFieldsFilled}
+          onClick={handleSave}
         >
-          {t('add')}
+          {t('save')}
         </Button>
       </DialogActions>
     </Dialog>
   )
 }
 
-export default withNamespaces()(observer(AddModal))
+export default withNamespaces()(observer(EditModal))
