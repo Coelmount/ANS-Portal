@@ -15,25 +15,40 @@ import Loading from 'components/Loading'
 
 import IVRStore from 'stores/IVR'
 import AnnouncementsStore from 'stores/Announcements'
+import PhoneNumbersStore from 'stores/PhoneNumbers'
 
 import useStyles from './styles'
 
 const AfterHoursMenu = props => {
   const { t } = props
-  const { ivr, isLoadingIVR } = IVRStore
+  const {
+    ivr,
+    isLoadingIVR,
+    getSubmenus,
+    submenus,
+    isLoadingSubmenus
+  } = IVRStore
   const {
     getAnnouncements,
     isLoadingAnnouncements,
     announcements
   } = AnnouncementsStore
+  const {
+    transformedPhoneNumbers,
+    isPhoneNumbersLoading,
+    getPhoneNumbers
+  } = PhoneNumbersStore
   const classes = useStyles()
   const match = useParams()
 
   useEffect(() => {
     getAnnouncements(match.customerId, match.groupId)
+    ivr.type === 'Standard' &&
+      getSubmenus(match.customerId, match.groupId, match.ivrId)
+    getPhoneNumbers(match.customerId, match.groupId, 1, 9999)
   }, [])
 
-  if (isLoadingIVR || isLoadingAnnouncements) {
+  if (isLoadingIVR || isLoadingAnnouncements || isLoadingSubmenus) {
     return <Loading />
   }
 
@@ -75,6 +90,9 @@ const AfterHoursMenu = props => {
         route={'main'}
         countChild={1}
         announcements={announcements}
+        submenus={submenus}
+        phoneNumbers={transformedPhoneNumbers}
+        menuName={t('main_ivr')}
       />
     </React.Fragment>
   )

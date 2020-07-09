@@ -21,6 +21,9 @@ class IVR {
   isLoadingWhiteBlackList = false
   whiteBlackList = {}
   menu = {}
+  submenus = []
+  isLoadingSubmenus = false
+  isAddingSubmenu = false
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -281,6 +284,52 @@ class IVR {
         this.menu[route].isLoading = false
       })
   }
+
+  getSubmenus = (tenantId, groupId, ivrId) => {
+    this.isLoadingSubmenus = true
+    this.submenus = []
+    axios
+      .get(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/submenus/`
+      )
+      .then(res => {
+        this.isLoadingSubmenus = false
+        this.submenus = res.data.submenus
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch submenus',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isLoadingSubmenus = false
+      })
+  }
+
+  postAddSubmenu = (tenantId, groupId, ivrId, data, callback) => {
+    this.isAddingSubmenu = true
+    axios
+      .post(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/submenus/`,
+        data
+      )
+      .then(() => {
+        this.submenus.push(data)
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to create ivr',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => (this.isAddingSubmenu = false))
+  }
 }
 
 decorate(IVR, {
@@ -300,6 +349,9 @@ decorate(IVR, {
   whiteBlackList: observable,
   isLoadingMenu: observable,
   menu: observable,
+  isLoadingSubmenus: observable,
+  submenus: observable,
+  isAddingSubmenu: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -309,7 +361,9 @@ decorate(IVR, {
   putUpdateIVRMenu: action,
   getGreetingAnnouncement: action,
   getWhiteBlackList: action,
-  getMenu: action
+  getMenu: action,
+  getSubmenus: action,
+  postAddSubmenu: action
 })
 
 export default new IVR()

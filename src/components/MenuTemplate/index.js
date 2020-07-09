@@ -39,6 +39,7 @@ import AudioPlayer from 'components/AudioPlayer'
 import Loading from 'components/Loading'
 import EditGreeting from './EditGreeting'
 import CustomSelect from 'components/Select'
+import AddSubmenu from './AddSubmenu'
 
 const MinusSquare = props => {
   const classes = useStyles()
@@ -111,8 +112,12 @@ const StyledTreeItem = props => {
     menuLvl,
     ivrType,
     announcements,
+    submenus,
+    phoneNumbers,
     ...rest
   } = props
+
+  const [openCreateSubmenu, setOpenCreateSubmenu] = useState(false)
 
   const getActionData = () => {
     switch (menuItem.action) {
@@ -126,7 +131,17 @@ const StyledTreeItem = props => {
             variant='outlined'
             disabled={disabledFields}
             className={classes.actionSelect}
-          />
+            onChange={e => handleChangeSubmenu(e.target.value)}
+          >
+            <MenuItem key={'create'} value={'create'}>
+              {t('create_submenu')}
+            </MenuItem>
+            {submenus.map(el => (
+              <MenuItem key={el.submenuId} value={el.submenuId}>
+                {el.submenuId}
+              </MenuItem>
+            ))}
+          </Select>
         )
       case 'Transfer To Number With Prompt':
         return (
@@ -138,7 +153,14 @@ const StyledTreeItem = props => {
             variant='outlined'
             disabled={disabledFields}
             className={classes.actionSelect}
-          />
+            onChange={e => changeKeysMenu(id, 'parameter', e.target.value)}
+          >
+            {phoneNumbers.map(el => (
+              <MenuItem key={el.phoneNumber} value={el.phoneNumber}>
+                {el.phoneNumber}
+              </MenuItem>
+            ))}
+          </Select>
         )
       case 'Transfer To Number':
         return (
@@ -150,7 +172,14 @@ const StyledTreeItem = props => {
             variant='outlined'
             disabled={disabledFields}
             className={classes.actionSelect}
-          />
+            onChange={e => changeKeysMenu(id, 'parameter', e.target.value)}
+          >
+            {phoneNumbers.map(el => (
+              <MenuItem key={el.phoneNumber} value={el.phoneNumber}>
+                {el.phoneNumber}
+              </MenuItem>
+            ))}
+          </Select>
         )
       case 'Play Announcement':
         return (
@@ -206,70 +235,81 @@ const StyledTreeItem = props => {
     return options
   }
 
+  const handleChangeSubmenu = menu => {
+    if (menu === 'create') {
+      setOpenCreateSubmenu(true)
+      return
+    }
+    changeKeysMenu(id, 'parameter', menu)
+  }
+
   return (
-    <TreeItem
-      {...rest}
-      className={classes.treeItem}
-      TransitionComponent={TransitionComponent}
-      label={
-        <Grid container spacing={1}>
-          <Grid item xs={'auto'} className={classes.gridItem}>
-            {index === 0 && t('keys')}
-            <TextField
-              onClick={e => {
-                e.stopPropagation()
-              }}
-              color='primary'
-              variant='outlined'
-              value={menuItem.key}
-              className={classes.keyInput}
-              disabled={disabledFields}
-              onChange={e => changeKeysMenu(id, 'key', e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={'auto'} className={classes.gridItem}>
-            {index === 0 && t('description')}
-            <TextField
-              onClick={e => {
-                e.stopPropagation()
-              }}
-              color='primary'
-              variant='outlined'
-              value={menuItem.description}
-              className={classes.descriptionInput}
-              disabled={disabledFields}
-              onChange={e => changeKeysMenu(id, 'description', e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={'auto'} className={classes.gridItem}>
-            {index === 0 && t('action')}
-            <Select
-              onClick={e => {
-                e.stopPropagation()
-              }}
-              value={menuItem.action}
-              variant='outlined'
-              className={classes.actionSelect}
-              disabled={disabledFields}
-              onChange={e => changeKeysMenu(id, 'action', e.target.value)}
-            >
-              {getOptionsForAction().map(act => (
-                <MenuItem key={act.action} value={act.action}>
-                  {act.action}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-          <Grid item xs={'auto'} className={classes.gridItem}>
-            {index === 0 && t('action_data')}
-            <Box className={classes.deleteBox}>
-              {/* <Select
+    <React.Fragment>
+      <TreeItem
+        {...rest}
+        className={classes.treeItem}
+        TransitionComponent={TransitionComponent}
+        label={
+          <Grid container spacing={1}>
+            <Grid item xs={'auto'} className={classes.gridItem}>
+              {index === 0 && t('keys')}
+              <TextField
+                onClick={e => {
+                  e.stopPropagation()
+                }}
+                color='primary'
+                variant='outlined'
+                value={menuItem.key}
+                className={classes.keyInput}
+                disabled={disabledFields}
+                onChange={e => changeKeysMenu(id, 'key', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={'auto'} className={classes.gridItem}>
+              {index === 0 && t('description')}
+              <TextField
+                onClick={e => {
+                  e.stopPropagation()
+                }}
+                color='primary'
+                variant='outlined'
+                value={menuItem.description}
+                className={classes.descriptionInput}
+                disabled={disabledFields}
+                onChange={e =>
+                  changeKeysMenu(id, 'description', e.target.value)
+                }
+              />
+            </Grid>
+            <Grid item xs={'auto'} className={classes.gridItem}>
+              {index === 0 && t('action')}
+              <Select
+                onClick={e => {
+                  e.stopPropagation()
+                }}
+                value={menuItem.action}
+                variant='outlined'
+                className={classes.actionSelect}
+                disabled={disabledFields}
+                onChange={e => changeKeysMenu(id, 'action', e.target.value)}
+              >
+                {getOptionsForAction().map(act => (
+                  <MenuItem key={act.action} value={act.action}>
+                    {act.action}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+            <Grid item xs={'auto'} className={classes.gridItem}>
+              {index === 0 && t('action_data')}
+              <Box className={classes.deleteBox}>
+                {/* <Select
               value={menuItem.parameter}
               variant='outlined'
               disabled={disabledFields}
               className={classes.actionDataSelect}
             ></Select> */}
-              {/* <TextField
+                {/* <TextField
                 onClick={e => {
                   e.stopPropagation()
                 }}
@@ -279,21 +319,27 @@ const StyledTreeItem = props => {
                 disabled={disabledFields}
                 onChange={e => changeKeysMenu(id, 'parameter', e.target.value)}
               /> */}
-              <Box className={classes.actionDataBox}>{getActionData()}</Box>
-              {!disabledFields && (
-                <Button
-                  variant={'contained'}
-                  className={classes.deleteKeyButton}
-                  onClick={() => deleteItemFromKeys(id)}
-                >
-                  <ClearIcon />
-                </Button>
-              )}
-            </Box>
+                <Box className={classes.actionDataBox}>{getActionData()}</Box>
+                {!disabledFields && (
+                  <Button
+                    variant={'contained'}
+                    className={classes.deleteKeyButton}
+                    onClick={() => deleteItemFromKeys(id)}
+                  >
+                    <ClearIcon />
+                  </Button>
+                )}
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      }
-    />
+        }
+      />
+      <AddSubmenu
+        open={openCreateSubmenu}
+        handleClose={() => setOpenCreateSubmenu(false)}
+        setSubmenu={submenu => changeKeysMenu(id, 'parameter', submenu)}
+      />
+    </React.Fragment>
   )
 }
 
@@ -307,7 +353,10 @@ const MenuTemplate = props => {
     countChild,
     refreshThree,
     ivrType,
-    announcements
+    announcements,
+    submenus,
+    phoneNumbers,
+    menuName
   } = props
   const classes = useStyles()
   const [stateMenu, setStateMenu] = useState({})
@@ -461,7 +510,7 @@ const MenuTemplate = props => {
     <Box className={!(countChild % 2) ? classes.secondTree : classes.tree}>
       {showTitle && (
         <Box className={classes.titleBox}>
-          {/* <Input /> */}
+          <Box>{menuName}</Box>
           {isEdit ? (
             <Box className={classes.editControlsButtons}>
               <Box className={classes.editControlsButtons}>
@@ -556,8 +605,8 @@ const MenuTemplate = props => {
         <TreeView
           key={route}
           className={classes.root}
-          defaultCollapseIcon={<MinusSquare />}
-          defaultExpandIcon={<PlusSquare />}
+          defaultCollapseIcon={isEdit ? null : <MinusSquare />}
+          defaultExpandIcon={isEdit ? null : <PlusSquare />}
           defaultEndIcon={null}
         >
           {has(stateMenu, 'keys') &&
@@ -584,6 +633,8 @@ const MenuTemplate = props => {
                   menuLvl={menuLvl}
                   ivrType={ivrType}
                   announcements={announcements}
+                  submenus={submenus}
+                  phoneNumbers={phoneNumbers}
                 >
                   {el.action === 'Go To Submenu' && el.parameter && (
                     <MenuTemplate
@@ -594,6 +645,10 @@ const MenuTemplate = props => {
                       countChild={countChild + 1}
                       showTitle
                       refreshThree={successEdit}
+                      announcements={announcements}
+                      submenus={submenus}
+                      phoneNumbers={phoneNumbers}
+                      menuName={`${t('submenu')}: ${el.parameter}`}
                     />
                   )}
                 </StyledTreeItem>

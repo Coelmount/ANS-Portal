@@ -23,11 +23,12 @@ const useStyles = makeStyles(theme => ({
   },
   titleBox: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     height: 25,
     alignItems: 'center',
     marginBottom: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    borderLeft: '4px solid #00678F'
   },
   greetingBox: {
     width: '100%',
