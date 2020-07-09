@@ -31,7 +31,6 @@ import AddModal from './components/AddModal'
 import EditModal from './components/EditModal'
 import DeleteModal from 'components/DeleteModal'
 
-import BasicTranslationsStore from 'stores/BasicTranslations'
 import DestinationsStore from 'stores/Destionations'
 
 import useStyles from './styles'
@@ -180,6 +179,7 @@ const Destinations = observer(({ t }) => {
     <span className={classes.deleteName}>{` ${modals.data.name}?`}</span>
   )
 
+  // join ,
   const extraMultipleDeleteBlock = (
     <Fragment>
       {destinationsToDelete.map(destination => (
@@ -194,12 +194,13 @@ const Destinations = observer(({ t }) => {
         <Box className={classes.toolbarButtonsBlockWrap}>
           <Box className={classes.addCustomerWrap}>
             <IconButton
-              aria-label='deassign icon button'
+              aria-label='delete icon button'
               component='span'
               className={classnames(classes.mainIconWrap, {
                 [classes.disabledButton]: !isAnyChecked
               })}
-              onClick={isAnyChecked && handleMultipleDeleteClick}
+              onClick={handleMultipleDeleteClick}
+              disabled={!isAnyChecked}
             >
               <img
                 className={classes.deleteIcon}

@@ -106,7 +106,7 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
             />
             <Input
               icon={<PhoneOutlinedIcon />}
-              label={t('phonenumber')}
+              label={t('phone_number')}
               variant='outlined'
               value={inputStore.values.phoneNumber}
               onChange={e => inputStore.set('phoneNumber', e.target.value)}

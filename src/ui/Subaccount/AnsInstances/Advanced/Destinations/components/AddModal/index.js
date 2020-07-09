@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
-import WeekSchedulesStore from 'stores/WeekSchedules'
+import DestinationsStore from 'stores/Destionations'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import PeriodForm from 'components/PeriodForm'
@@ -26,8 +26,11 @@ import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
 
 const AddModal = ({ t, open, handleClose }) => {
+  const { isDestinationPosting, postDestination } = DestinationsStore
+
   const classes = useStyles()
   const match = useParams()
+  const { customerId, groupId } = match
 
   const inputStore = useLocalStore(() => ({
     values: {
@@ -36,16 +39,22 @@ const AddModal = ({ t, open, handleClose }) => {
     },
     set(field, value) {
       this.values[field] = value
+    },
+    get isFieldsFilled() {
+      return this.values.name && this.values.phoneNumber
     }
   }))
 
-  const { customerId, groupId } = match
-  const {
-    periods,
-    putPeriods,
-    isScheduleEditing,
-    putPeriod
-  } = WeekSchedulesStore
+  const handleAdd = () => {
+    const payload = {
+      customerId,
+      groupId,
+      name: inputStore.values.name,
+      phoneNumber: inputStore.values.phoneNumber,
+      closeModal: handleClose
+    }
+    postDestination(payload)
+  }
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
@@ -61,7 +70,7 @@ const AddModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
-        {isScheduleEditing ? (
+        {isDestinationPosting ? (
           <Loading />
         ) : (
           <Box className={classes.inputsWrap}>
@@ -73,7 +82,7 @@ const AddModal = ({ t, open, handleClose }) => {
             />
             <Input
               icon={<PhoneOutlinedIcon />}
-              label={t('phonenumber')}
+              label={t('phone_number')}
               variant='outlined'
               onChange={e => inputStore.set('phoneNumber', e.target.value)}
             />
@@ -94,6 +103,8 @@ const AddModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
+          disabled={!inputStore.isFieldsFilled}
+          onClick={handleAdd}
         >
           {t('add')}
         </Button>

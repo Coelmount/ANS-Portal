@@ -10,6 +10,7 @@ export class Destinations {
   isDestinationsLoading = true
   isDestinationLoading = true
   isDestinationEditing = false
+  isDestinationEditing = false
   isDestinationDeleting = false
   isDestinationsDeleting = false
 
@@ -59,6 +60,42 @@ export class Destinations {
       })
   }
 
+  postDestination = ({
+    customerId,
+    groupId,
+    name,
+    phoneNumber,
+    closeModal
+  }) => {
+    console.log(name, phoneNumber, 'post')
+    // this.isDestinationPosting = true
+    axios
+      .post(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`, {
+        name,
+        phoneNumber
+      })
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Destination successfully posted',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to post destination',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        // this.isDestinationPosting = false
+      })
+  }
+
   putDestination = ({ customerId, groupId, destinationId, closeModal }) => {
     console.log(destinationId, 'edit')
     // this.isDestinationEditing = true
@@ -69,7 +106,7 @@ export class Destinations {
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
-          message: 'Destinations successfully edited',
+          message: 'Destination successfully edited',
           options: {
             variant: 'success'
           }
@@ -77,7 +114,7 @@ export class Destinations {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to edit destinations',
+          message: getErrorMessage(e) || 'Failed to edit destination',
           options: {
             variant: 'error'
           }
@@ -166,9 +203,11 @@ decorate(Destinations, {
   destination: observable,
   isDestinationsLoading: observable,
   isDestinationLoading: observable,
+  isDestinationPosting: observable,
   isDestinationEditing: observable,
   getDestinations: action,
   getDestination: action,
+  postDestination: action,
   putDestination: action,
   deleteDestinations: action,
   deleteDestination: action
