@@ -182,8 +182,8 @@ const Destinations = observer(({ t }) => {
   // join ,
   const extraMultipleDeleteBlock = (
     <Fragment>
-      {destinationsToDelete.map(destination => (
-        <span className={classes.deleteName}>{` ${destination.name}`}</span>
+      {destinationsToDelete.map(({ name, ans_id }) => (
+        <span key={ans_id} className={classes.deleteName}>{` ${name}`}</span>
       ))}
     </Fragment>
   )

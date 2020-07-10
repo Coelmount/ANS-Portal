@@ -213,8 +213,7 @@ const useStyles = makeStyles(theme => ({
   deleteCell: {
     paddingRight: '38px !important',
     display: 'flex',
-    alignItems: 'center',
-    height: '63px !important'
+    alignItems: 'center'
   },
   toolbarButton: {
     width: 30,
