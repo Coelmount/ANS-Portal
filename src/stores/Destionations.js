@@ -19,9 +19,11 @@ export class Destinations {
     this.isDestinationsLoading = true
 
     axios
-      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations`
+      )
       .then(res => {
-        this.destinations = res.data.ans_advanced
+        this.destinations = res.data.destinations
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -42,7 +44,7 @@ export class Destinations {
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationId}`
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${destinationId}`
       )
       .then(res => {
         this.destination = res.data
@@ -70,10 +72,13 @@ export class Destinations {
     console.log(name, phoneNumber, 'post')
     // this.isDestinationPosting = true
     axios
-      .post(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`, {
-        name,
-        phoneNumber
-      })
+      .post(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations`,
+        {
+          name,
+          phoneNumber
+        }
+      )
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
@@ -101,7 +106,7 @@ export class Destinations {
     // this.isDestinationEditing = true
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationId}`
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${destinationId}`
       )
       .then(() => {
         closeModal()
@@ -136,11 +141,10 @@ export class Destinations {
     const numbersToDelete = this.destinations.filter(
       destination => destination.checked
     )
-    numbersToDelete.forEach(({ ans_id }) => {
-      console.log(ans_id, 'delete')
+    numbersToDelete.forEach(({ userId }) => {
       promiseArr.push(
         axios.delete(
-          `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${ans_id}`
+          `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${userId}`
         )
       )
     })
@@ -172,7 +176,7 @@ export class Destinations {
     // this.isDestinationDeleting = true
     axios
       .delete(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationId}`
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${destinationId}`
       )
       .then(() => {
         closeModal()

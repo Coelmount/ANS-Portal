@@ -66,7 +66,8 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
   useEffect(() => {
     if (destination && Object.keys(destination).length) {
       inputStore.set('name', destination.name)
-      inputStore.set('phoneNumber', destination.destination_number)
+      //
+      inputStore.set('phoneNumber', destination.phoneNumber)
     }
   }, [destination])
 

@@ -153,7 +153,7 @@ const Destinations = observer(({ t }) => {
     const payload = {
       customerId,
       groupId,
-      destinationId: modals.data.ans_id,
+      destinationId: modals.data.userId,
       closeModal: openedModal.close
     }
     deleteDestination(payload)
@@ -182,8 +182,8 @@ const Destinations = observer(({ t }) => {
   // join ,
   const extraMultipleDeleteBlock = (
     <Fragment>
-      {destinationsToDelete.map(({ name, ans_id }) => (
-        <span key={ans_id} className={classes.deleteName}>{` ${name}`}</span>
+      {destinationsToDelete.map(({ name, userId }) => (
+        <span key={userId} className={classes.deleteName}>{` ${name}`}</span>
       ))}
     </Fragment>
   )
@@ -264,7 +264,7 @@ const Destinations = observer(({ t }) => {
       label: 'name',
       getCellData: row => (
         <span
-          onClick={() => modals.setData(row.ans_id, editModal)}
+          onClick={() => modals.setData(row.userId, editModal)}
           className={classes.nameCellTitle}
         >
           {row.name}
@@ -272,7 +272,7 @@ const Destinations = observer(({ t }) => {
       )
     },
     {
-      id: 'access_number',
+      id: 'phoneNumber',
       label: 'phone_number'
     },
     {
