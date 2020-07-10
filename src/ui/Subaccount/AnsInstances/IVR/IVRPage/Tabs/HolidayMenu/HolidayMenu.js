@@ -17,6 +17,7 @@ import EditSchedules from '../../../EditSchedules'
 import IVRStore from 'stores/IVR'
 import AnnouncementsStore from 'stores/Announcements'
 import PhoneNumbersStore from 'stores/PhoneNumbers'
+import ConfigStore from 'stores/Config'
 
 import useStyles from './styles'
 
@@ -40,6 +41,7 @@ const HolidayMenu = props => {
     isPhoneNumbersLoading,
     getPhoneNumbers
   } = PhoneNumbersStore
+  const { getConfig, isLoadingConfig, config } = ConfigStore
   const classes = useStyles()
   const match = useParams()
   const history = useHistory()
@@ -50,9 +52,16 @@ const HolidayMenu = props => {
     ivr.type === 'Standard' &&
       getSubmenus(match.customerId, match.groupId, match.ivrId)
     getPhoneNumbers(match.customerId, match.groupId, 1, 9999)
+    getConfig()
   }, [])
 
-  if (isLoadingIVR || isLoadingAnnouncements) {
+  if (
+    isLoadingIVR ||
+    isLoadingAnnouncements ||
+    isLoadingSubmenus ||
+    isLoadingConfig ||
+    isPhoneNumbersLoading
+  ) {
     return <Loading />
   }
 
@@ -120,6 +129,7 @@ const HolidayMenu = props => {
         submenus={submenus}
         phoneNumbers={transformedPhoneNumbers}
         menuName={t('main_ivr')}
+        config={config}
       />
     </React.Fragment>
   )

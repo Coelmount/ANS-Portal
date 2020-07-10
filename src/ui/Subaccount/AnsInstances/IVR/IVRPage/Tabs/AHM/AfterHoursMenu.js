@@ -16,6 +16,7 @@ import Loading from 'components/Loading'
 import IVRStore from 'stores/IVR'
 import AnnouncementsStore from 'stores/Announcements'
 import PhoneNumbersStore from 'stores/PhoneNumbers'
+import ConfigStore from 'stores/Config'
 
 import useStyles from './styles'
 
@@ -38,6 +39,7 @@ const AfterHoursMenu = props => {
     isPhoneNumbersLoading,
     getPhoneNumbers
   } = PhoneNumbersStore
+  const { getConfig, isLoadingConfig, config } = ConfigStore
   const classes = useStyles()
   const match = useParams()
 
@@ -46,9 +48,16 @@ const AfterHoursMenu = props => {
     ivr.type === 'Standard' &&
       getSubmenus(match.customerId, match.groupId, match.ivrId)
     getPhoneNumbers(match.customerId, match.groupId, 1, 9999)
+    getConfig()
   }, [])
 
-  if (isLoadingIVR || isLoadingAnnouncements || isLoadingSubmenus) {
+  if (
+    isLoadingIVR ||
+    isLoadingAnnouncements ||
+    isLoadingSubmenus ||
+    isLoadingConfig ||
+    isPhoneNumbersLoading
+  ) {
     return <Loading />
   }
 
@@ -93,6 +102,7 @@ const AfterHoursMenu = props => {
         submenus={submenus}
         phoneNumbers={transformedPhoneNumbers}
         menuName={t('main_ivr')}
+        config={config}
       />
     </React.Fragment>
   )

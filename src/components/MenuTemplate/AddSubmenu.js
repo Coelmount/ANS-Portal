@@ -41,7 +41,10 @@ const EditGreeting = props => {
       {
         submenuId: submenuName,
         announcementSelection: 'Default',
-        keys: []
+        keys: [
+          { key: '8', action: 'Repeat Menu', description: 'Repeat Menu' },
+          { key: '9', action: 'Exit', description: 'Exit' }
+        ]
       },
       successClose
     )

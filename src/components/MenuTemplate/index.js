@@ -30,7 +30,6 @@ import RemoveIcon from '@material-ui/icons/Remove'
 import AddIcon from '@material-ui/icons/Add'
 import CheckIcon from '@material-ui/icons/Check'
 
-import ConfigStore from 'stores/Config'
 import IVRStore from 'stores/IVR'
 
 import useStyles from './styles'
@@ -356,7 +355,9 @@ const MenuTemplate = props => {
     announcements,
     submenus,
     phoneNumbers,
-    menuName
+    menuName,
+    singleLvl,
+    config
   } = props
   const classes = useStyles()
   const [stateMenu, setStateMenu] = useState({})
@@ -365,7 +366,6 @@ const MenuTemplate = props => {
 
   const match = useParams()
 
-  const { getConfig, isLoadingConfig, config } = ConfigStore
   const {
     putUpdateIVRMenu,
     getGreetingAnnouncement,
@@ -377,9 +377,6 @@ const MenuTemplate = props => {
   } = IVRStore
 
   useEffect(() => {
-    if (!has(config, 'group.ivr.allowed_actions')) {
-      getConfig()
-    }
     getMenu(
       match.customerId,
       match.groupId,
@@ -502,7 +499,7 @@ const MenuTemplate = props => {
     setIsEditGreeting(false)
   }
 
-  if (isLoadingConfig || !stateMenu || stateMenu.isLoading) {
+  if (!stateMenu || stateMenu.isLoading) {
     return <Loading />
   }
 
@@ -605,8 +602,8 @@ const MenuTemplate = props => {
         <TreeView
           key={route}
           className={classes.root}
-          defaultCollapseIcon={isEdit ? null : <MinusSquare />}
-          defaultExpandIcon={isEdit ? null : <PlusSquare />}
+          defaultCollapseIcon={isEdit || singleLvl ? null : <MinusSquare />}
+          defaultExpandIcon={isEdit || singleLvl ? null : <PlusSquare />}
           defaultEndIcon={null}
         >
           {has(stateMenu, 'keys') &&
@@ -649,6 +646,7 @@ const MenuTemplate = props => {
                       submenus={submenus}
                       phoneNumbers={phoneNumbers}
                       menuName={`${t('submenu')}: ${el.parameter}`}
+                      config={config}
                     />
                   )}
                 </StyledTreeItem>
@@ -679,7 +677,8 @@ const MenuTemplate = props => {
 }
 
 MenuTemplate.defaultProps = {
-  showTitle: false
+  showTitle: false,
+  singleLvl: false
 }
 
 export default withNamespaces()(observer(MenuTemplate))

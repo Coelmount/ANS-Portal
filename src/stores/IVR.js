@@ -24,6 +24,7 @@ class IVR {
   submenus = []
   isLoadingSubmenus = false
   isAddingSubmenu = false
+  isDeletingSubmenu = false
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -231,7 +232,15 @@ class IVR {
       )
       .then(res => {
         this.isLoadingWhiteBlackList = false
-        this.whiteBlackList = res.data
+        this.whiteBlackList = {
+          ...res.data,
+          allowed_numbers: res.data.allowed_numbers.map(el => ({
+            phoneNumber: el,
+            checked: false,
+            hover: false
+          }))
+        }
+        console.log(this.whiteBlackList)
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -330,6 +339,24 @@ class IVR {
       )
       .finally(() => (this.isAddingSubmenu = false))
   }
+
+  deleteSubmenu = (tenantId, groupId, ivrId, submenuId, callback) => {
+    this.isDeletingSubmenu = true
+    axios
+      .delete(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/submenus/${submenuId}/`
+      )
+      .then(() => callback && callback())
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete submenu',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => (this.isDeletingSubmenu = false))
+  }
 }
 
 decorate(IVR, {
@@ -352,6 +379,7 @@ decorate(IVR, {
   isLoadingSubmenus: observable,
   submenus: observable,
   isAddingSubmenu: observable,
+  isDeletingSubmenu: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -363,7 +391,8 @@ decorate(IVR, {
   getWhiteBlackList: action,
   getMenu: action,
   getSubmenus: action,
-  postAddSubmenu: action
+  postAddSubmenu: action,
+  deleteSubmenu: action
 })
 
 export default new IVR()

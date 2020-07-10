@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     background: '#F4F4F4'
   },
   tree: {
+    width: '100%',
     padding: 10,
     marginTop: 10,
     background: '#F9F9F9'
