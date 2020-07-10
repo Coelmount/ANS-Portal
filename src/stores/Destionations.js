@@ -23,7 +23,12 @@ export class Destinations {
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations`
       )
       .then(res => {
-        this.destinations = res.data.destinations
+        this.destinations = res.data.destinations.map((destination, index) => {
+          return {
+            ...destination,
+            id: index
+          }
+        })
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({

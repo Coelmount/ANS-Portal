@@ -61,6 +61,9 @@ const Destinations = observer(({ t }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
+  const [destinationsToDeleteString, setDestinationsToDeleteString] = useState(
+    ''
+  )
 
   const openedModal = useLocalStore(() => ({
     id: null,
@@ -100,6 +103,13 @@ const Destinations = observer(({ t }) => {
   useEffect(() => {
     handleCheckedStates(searchList)
   }, [searchList])
+
+  useEffect(() => {
+    const destinationNames = destinationsToDelete.map(
+      destination => destination.name
+    )
+    setDestinationsToDeleteString(destinationNames.join(' , '))
+  }, [destinationsToDelete.length])
 
   // Checkboxes handlers ----
   const selectNumbers = (checked, id) => {
@@ -182,9 +192,9 @@ const Destinations = observer(({ t }) => {
   // join ,
   const extraMultipleDeleteBlock = (
     <Fragment>
-      {destinationsToDelete.map(({ name, userId }) => (
-        <span key={userId} className={classes.deleteName}>{` ${name}`}</span>
-      ))}
+      <span
+        className={classes.deleteName}
+      >{` ${destinationsToDeleteString}?`}</span>
     </Fragment>
   )
 
