@@ -243,6 +243,9 @@ const useStyles = makeStyles(theme => ({
   },
   notificationIcon: {
     marginRight: 5
+  },
+  deleteName: {
+    fontWeight: 'bold'
   }
 }))
 

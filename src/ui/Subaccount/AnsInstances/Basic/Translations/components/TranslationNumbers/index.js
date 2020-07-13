@@ -60,6 +60,7 @@ const TranslationNumbers = observer(({ t }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [instancesForDelete, setInstancesForDelete] = useState([])
   const [isUserSubaccount, setIsUserSubaccount] = useState(false)
+  const [instancesToDeleteString, setInstancesToDeleteString] = useState('')
 
   const isAddPopoverOpen = Boolean(anchorEl)
   const id = isAddPopoverOpen ? 'simple-popover' : undefined
@@ -106,20 +107,32 @@ const TranslationNumbers = observer(({ t }) => {
     handleCheckedStates(searchList)
   }, [searchList])
 
+  useEffect(() => {
+    const instanceNames = instancesForDelete.map(
+      instance => `${instance.access_number} ==> ${instance.destination_number}`
+    )
+    setInstancesToDeleteString(instanceNames.join(' , '))
+  }, [instancesForDelete.length])
+
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false)
     getBasicTranslationsNumbers(match.customerId, match.groupId)
+    setInstancesForDelete([])
   }
 
   const handleMultipleDelete = () => {
     setIsDeleteModalOpen(true)
-    setInstancesForDelete(
-      numbers.filter(num => num.checked).map(el => el.ans_id)
-    )
+    setInstancesForDelete(numbers.filter(num => num.checked))
   }
 
-  const handleDelete = id => {
-    deleteANSBasic(match.customerId, match.groupId, id, handleCloseDeleteModal)
+  const handleDelete = () => {
+    const deleteIds = instancesForDelete.map(instance => instance.ans_id)
+    deleteANSBasic(
+      match.customerId,
+      match.groupId,
+      deleteIds,
+      handleCloseDeleteModal
+    )
   }
 
   const handleAddInstanceModalOpen = () => {
@@ -303,10 +316,19 @@ const TranslationNumbers = observer(({ t }) => {
     )
   }
 
+  const extraDeleteBlock = (
+    <Fragment>
+      <span
+        className={classes.deleteName}
+      >{` (${instancesToDeleteString})? `}</span>
+      <span>{`${t('delete_instance_end')}.`}</span>
+    </Fragment>
+  )
+
   const columns = () => {
-    const handleOpenDeleteModal = id => {
+    const handleOpenDeleteModal = row => {
       setIsDeleteModalOpen(true)
-      setInstancesForDelete([id])
+      setInstancesForDelete([row])
     }
     return [
       {
@@ -408,7 +430,7 @@ const TranslationNumbers = observer(({ t }) => {
         getCellData: row => (
           <CloseOutlinedIcon
             className={classes.deleteCustomerIcon}
-            onClick={() => handleOpenDeleteModal(row.ans_id)}
+            onClick={() => handleOpenDeleteModal(row)}
           />
         )
       }
@@ -468,9 +490,11 @@ const TranslationNumbers = observer(({ t }) => {
             open={isDeleteModalOpen}
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
-            deleteInfo={instancesForDelete}
+            extraMessageBlock={extraDeleteBlock}
             isDeleting={isDeleting}
-            deleteSubject={`${t('translation').toLowerCase()}(s)`}
+            deleteSubject={`${t('translation').toLowerCase()}${
+              instancesForDelete.length > 1 ? 's' : ''
+            }`}
             action={t('to_delete')}
             titleAction={t(`delete`)}
           />
