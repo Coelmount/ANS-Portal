@@ -281,8 +281,29 @@ export class BasicTranslations {
     })
 
     Promise.all(promiseArr)
-      .then(() => callback && callback())
+      .then(() => {
+        this.isRedirectAfterPut = true
+        SnackbarStore.enqueueSnackbar({
+          message: `Translation${
+            idArr.length > 1 ? 's' : ''
+          } deleted successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) ||
+            `Failed to delete translation${idArr.length > 1 ? 's' : ''}`,
+          options: {
+            variant: 'error'
+          }
+        })
+      )
       .finally(() => {
+        if (callback) callback()
         this.isDeleting = false
       })
   }
