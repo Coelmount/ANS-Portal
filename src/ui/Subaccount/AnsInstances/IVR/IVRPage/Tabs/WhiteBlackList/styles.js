@@ -80,6 +80,58 @@ const useStyles = makeStyles(theme => ({
   },
   tableBox: {
     marginTop: 40
+  },
+  roundButton: {
+    width: 30,
+    height: 30,
+    minWidth: 30,
+    padding: 0,
+    marginRight: 10
+  },
+  addButtonBox: {
+    marginTop: 40,
+    display: 'flex',
+    alignItems: 'center'
+  },
+  rootAddNumbers: {
+    '& .MuiDialog-paperWidthSm': {
+      width: '650px'
+    },
+    '& .MuiDialog-paperScrollPaper': {
+      height: 540
+    }
+  },
+  title: {
+    '& > *': {
+      fontFamily: 'MTN',
+      fontWeight: 700,
+      fontSize: '24px',
+      color: theme.palette.black
+    },
+    height: '90px',
+    padding: '25px 44px'
+  },
+  closeButton: {
+    position: 'absolute',
+    right: 10,
+    top: 20,
+    '& > span > svg': {
+      width: 25,
+      height: 25
+    }
+  },
+  dialogActions: {
+    height: '110px',
+    justifyContent: 'space-between'
+  },
+  cancelButton: {
+    width: '160px',
+    marginLeft: '32px',
+    color: theme.palette.black
+  },
+  assignButton: {
+    width: '160px',
+    marginRight: '32px'
   }
 }))
 

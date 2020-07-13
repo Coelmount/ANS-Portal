@@ -16,11 +16,14 @@ import MenuTemplate from 'components/MenuTemplate'
 import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
+import DeleteModal from 'components/DeleteModal'
+import AddNumber from './AddNumber'
 
 import blacklist from 'source/images/svg/blacklist.svg'
 import whitelist from 'source/images/svg/whitelist.svg'
 import RemoveIcon from '@material-ui/icons/Clear'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
+import AddIcon from '@material-ui/icons/Add'
 
 import IVRStore from 'stores/IVR'
 import useStyles from './styles'
@@ -32,13 +35,19 @@ const WhiteBlackList = props => {
     isLoadingIVR,
     getWhiteBlackList,
     isLoadingWhiteBlackList,
-    whiteBlackList
+    whiteBlackList,
+    deleteNumberFromCallBlocking,
+    isDeletingNumbers
   } = IVRStore
   const classes = useStyles()
   const match = useParams()
   const [mode, setMode] = useState('')
   const [selectAll, setSelectAll] = useState(false)
   const [numbers, setNumbers] = useState([])
+  const [singleDeleteNumber, setSingleDeleteNumber] = useState('')
+  const [singleDelete, setSingleDelete] = useState(false)
+  const [multipleDelete, setMultipleDelete] = useState(false)
+  const [showAddNumbersModal, setShowAddNumbersModal] = useState(false)
 
   useEffect(() => {
     if (!isLoadingWhiteBlackList) {
@@ -95,6 +104,33 @@ const WhiteBlackList = props => {
     const index = numbers.findIndex(el => el.phoneNumber === number)
     newNumbers[index].hover = newHover
     setNumbers(newNumbers)
+  }
+
+  const handleClose = () => {
+    setSingleDelete(false)
+    setMultipleDelete(false)
+    setSelectAll(false)
+    getWhiteBlackList(match.customerId, match.groupId, match.ivrId)
+  }
+
+  const handleDelete = id => {
+    if (Array.isArray(id)) {
+      deleteNumberFromCallBlocking(
+        match.customerId,
+        match.groupId,
+        match.ivrId,
+        { data: { mode: whiteBlackList.mode, numbers: id } },
+        handleClose
+      )
+    } else {
+      deleteNumberFromCallBlocking(
+        match.customerId,
+        match.groupId,
+        match.ivrId,
+        { data: { mode: whiteBlackList.mode, numbers: [id] } },
+        handleClose
+      )
+    }
   }
 
   const columns = [
@@ -178,8 +214,9 @@ const WhiteBlackList = props => {
           variant='contained'
           color='primary'
           className={classes.deleteSelectedButton}
+          disabled={!numbers.some(el => el.checked)}
           onClick={() => {
-            console.log(213123)
+            setMultipleDelete(true)
           }}
         >
           <img
@@ -195,6 +232,10 @@ const WhiteBlackList = props => {
           className={classes.roundButtonDelete}
           onClick={() => {
             console.log(row.phoneNumber)
+          }}
+          onClick={() => {
+            setSingleDeleteNumber(row.phoneNumber)
+            setSingleDelete(true)
           }}
         >
           <RemoveIcon />
@@ -264,6 +305,47 @@ const WhiteBlackList = props => {
             noAvailableDataMessage={t('no_phone_numbers_available')}
             rows={numbers}
           />
+          <Box className={classes.addButtonBox}>
+            <Button
+              variant={'contained'}
+              color={'primary'}
+              className={classes.roundButton}
+              onClick={() => setShowAddNumbersModal(true)}
+              disabled={mode === 'inactive'}
+            >
+              <AddIcon />
+            </Button>
+            <Box>{`${t('add')} (${t('max')} 10)`}</Box>
+          </Box>
+          {showAddNumbersModal && (
+            <AddNumber
+              open={showAddNumbersModal}
+              handleClose={() => setShowAddNumbersModal(false)}
+              mode={mode}
+            />
+          )}
+          {(singleDelete || multipleDelete) && (
+            <DeleteModal
+              open={singleDelete || multipleDelete}
+              handleClose={handleClose}
+              handleDelete={handleDelete}
+              isDeleting={isDeletingNumbers}
+              action={t('to_delete')}
+              titleAction={t(`delete`)}
+              deleteSubject={
+                singleDelete
+                  ? t('number').toLowerCase()
+                  : t('numbers').toLowerCase()
+              }
+              deleteInfo={
+                singleDelete
+                  ? {
+                      id: singleDeleteNumber
+                    }
+                  : numbers.filter(el => el.checked).map(el => el.phoneNumber)
+              }
+            />
+          )}
         </Box>
       </Box>
     </React.Fragment>

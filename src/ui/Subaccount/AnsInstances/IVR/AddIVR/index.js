@@ -24,6 +24,7 @@ import NameIVRIcon from 'source/images/svg/nameIVRIcon.svg'
 
 import IVRStore from 'stores/IVR'
 import CustomersStore from 'stores/Customers'
+import ConfigStore from 'stores/Config'
 
 import useStyles from './styles'
 
@@ -40,6 +41,7 @@ const AddIVR = props => {
     addIVR
   } = IVRStore
   const { getCustomer, customer, isLoadingCustomer } = CustomersStore
+  const { getConfig, isLoadingConfig, config } = ConfigStore
   const [type, setType] = useState(
     !singleLvl && multiLvl ? 'Standard' : 'Basic'
   )
@@ -48,20 +50,21 @@ const AddIVR = props => {
   useEffect(() => {
     getCheckLicensesIVR(match.customerId, match.groupId)
     getCustomer(match.customerId)
+    getConfig()
   }, [])
 
   const handleAddIVR = () => {
     postAddIVR(match.customerId, match.groupId, {
       ivrInstance: {
-        serviceUserId: `${match.groupId}_ivr${name}@${customer.defaultDomain}`,
-        templateName: 'ANS_IVR',
+        //serviceUserId: `${match.groupId}_ivr${name}@${customer.defaultDomain}`,
+        templateName: config.templates.ivr,
         type,
         serviceInstanceProfile: { cliFirstName: 'IVR', cliLastName: name, name }
       }
     }).then(() => handleClose())
   }
 
-  if (isLoadingLicenses || isLoadingCustomer) {
+  if (isLoadingLicenses || isLoadingCustomer || isLoadingConfig) {
     return (
       <Dialog open={open} onClose={handleClose}>
         <Loading />

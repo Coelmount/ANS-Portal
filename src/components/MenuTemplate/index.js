@@ -113,6 +113,7 @@ const StyledTreeItem = props => {
     announcements,
     submenus,
     phoneNumbers,
+    config,
     ...rest
   } = props
 
@@ -337,6 +338,7 @@ const StyledTreeItem = props => {
         open={openCreateSubmenu}
         handleClose={() => setOpenCreateSubmenu(false)}
         setSubmenu={submenu => changeKeysMenu(id, 'parameter', submenu)}
+        config={config}
       />
     </React.Fragment>
   )
@@ -632,6 +634,7 @@ const MenuTemplate = props => {
                   announcements={announcements}
                   submenus={submenus}
                   phoneNumbers={phoneNumbers}
+                  config={config}
                 >
                   {el.action === 'Go To Submenu' && el.parameter && (
                     <MenuTemplate

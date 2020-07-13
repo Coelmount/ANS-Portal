@@ -25,6 +25,7 @@ class IVR {
   isLoadingSubmenus = false
   isAddingSubmenu = false
   isDeletingSubmenu = false
+  isDeletingNumbers = false
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -234,17 +235,18 @@ class IVR {
         this.isLoadingWhiteBlackList = false
         this.whiteBlackList = {
           ...res.data,
-          allowed_numbers: res.data.allowed_numbers.map(el => ({
-            phoneNumber: el,
-            checked: false,
-            hover: false
-          }))
+          allowed_numbers: res.data.allowed_numbers
+            ? res.data.allowed_numbers.map(el => ({
+                phoneNumber: el,
+                checked: false,
+                hover: false
+              }))
+            : []
         }
-        console.log(this.whiteBlackList)
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to fetch announcement',
+          message: getErrorMessage(e) || 'Failed to fetch white black list',
           options: {
             variant: 'error'
           }
@@ -357,6 +359,46 @@ class IVR {
       )
       .finally(() => (this.isDeletingSubmenu = false))
   }
+
+  deleteNumberFromCallBlocking = (tenantId, groupId, ivrId, data, callback) => {
+    this.isDeletingNumbers = true
+    axios
+      .delete(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/call_blocking`,
+        data
+      )
+      .then(() => callback && callback())
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete number',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => (this.isDeletingNumbers = false))
+  }
+
+  postAddNumberToCallBlocking = (tenantId, groupId, ivrId, data, callback) => {
+    this.isAddingNumbers = true
+    axios
+      .post(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/call_blocking/`,
+        data
+      )
+      .then(() => {
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to add numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => (this.isAddingNumbers = false))
+  }
 }
 
 decorate(IVR, {
@@ -380,6 +422,7 @@ decorate(IVR, {
   submenus: observable,
   isAddingSubmenu: observable,
   isDeletingSubmenu: observable,
+  isDeletingNumbers: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -392,7 +435,8 @@ decorate(IVR, {
   getMenu: action,
   getSubmenus: action,
   postAddSubmenu: action,
-  deleteSubmenu: action
+  deleteSubmenu: action,
+  deleteNumberFromCallBlocking: action
 })
 
 export default new IVR()

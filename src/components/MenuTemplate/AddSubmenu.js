@@ -21,7 +21,7 @@ import IVRStore from 'stores/IVR'
 import useStyles from './styles'
 
 const EditGreeting = props => {
-  const { t, open, handleClose, setSubmenu } = props
+  const { t, open, handleClose, setSubmenu, config } = props
   const classes = useStyles()
   const match = useParams()
   const [submenuName, setSubmenuName] = useState('')
@@ -34,18 +34,25 @@ const EditGreeting = props => {
   }
 
   const handleAddSubmenu = () => {
+    const data = {
+      submenuId: submenuName,
+      announcementSelection: 'Default',
+      keys: config.group.default_keys_submenu
+    }
+    console.log(data)
+
     postAddSubmenu(
       match.customerId,
       match.groupId,
       match.ivrId,
-      {
-        submenuId: submenuName,
-        announcementSelection: 'Default',
-        keys: [
-          { key: '8', action: 'Repeat Menu', description: 'Repeat Menu' },
-          { key: '9', action: 'Exit', description: 'Exit' }
-        ]
-      },
+      data,
+      //{
+
+      // keys: [
+      //   { key: '8', action: 'Repeat Menu', description: 'Repeat Menu' },
+      //   { key: '9', action: 'Exit', description: 'Exit' }
+      // ]
+      //},
       successClose
     )
   }
