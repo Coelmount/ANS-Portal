@@ -20,14 +20,40 @@ import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import TranslationNumbers from './components/TranslationNumbers'
-import AvailableNumbers from './components/AvailableNumbers'
+import AccessNumbers from './components/AccessNumbers'
+import Destinations from './components/Destinations'
+import Settings from './components/Settings'
+import WhiteBlackList from './components/WhiteBlackList'
 
 import useStyles from './styles'
+
+const tabPanelItems = [
+  {
+    index: 0,
+    component: <AccessNumbers />,
+    label: 'access_numbers'
+  },
+  {
+    index: 1,
+    component: <Destinations />,
+    label: 'destinations'
+  },
+  {
+    index: 2,
+    component: <Settings />,
+    label: 'white_black_list'
+  },
+  {
+    index: 3,
+    component: <WhiteBlackList />,
+    label: 'settings'
+  }
+]
 
 const SingleDestinationGroup = props => {
   const { t } = props
   const match = useParams()
+  const { destinationGroupName } = match
   const history = useHistory()
   const location = useLocation()
   const classes = useStyles()
@@ -40,7 +66,7 @@ const SingleDestinationGroup = props => {
   )
 
   const titleData = {
-    mainText: `${t('destination_group')}: ${location.hash}`
+    mainText: `${t('destination_group')}: ${destinationGroupName}`
   }
 
   const handleChange = (event, newValue) => {
@@ -67,10 +93,14 @@ const SingleDestinationGroup = props => {
 
   const returnActiveTab = () => {
     switch (location.hash) {
-      case '#translations':
+      case '#access_numbers':
         return 0
-      case '#available_numbers':
+      case '#destinations':
         return 1
+      case '#white_black_list':
+        return 2
+      case '#settings':
+        return 3
       default:
         return 0
     }
@@ -100,15 +130,16 @@ const SingleDestinationGroup = props => {
         variant='scrollable'
         scrollButtons='auto'
       >
-        <Tab value={0} label={t('translations')} className={classes.tab} />
-        <Tab value={1} label={t('available_numbers')} className={classes.tab} />
+        {tabPanelItems.map(({ index, label }) => (
+          <Tab value={index} label={t(label)} className={classes.tab} />
+        ))}
       </Tabs>
-      <TabPanel value={returnActiveTab()} index={0}>
-        <TranslationNumbers />
-      </TabPanel>
-      <TabPanel value={returnActiveTab()} index={1}>
-        <AvailableNumbers />
-      </TabPanel>
+
+      {tabPanelItems.map(({ index, component }) => (
+        <TabPanel value={returnActiveTab()} index={index}>
+          {component}
+        </TabPanel>
+      ))}
     </div>
   )
 }
