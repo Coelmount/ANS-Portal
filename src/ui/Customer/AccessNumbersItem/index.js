@@ -639,7 +639,7 @@ const AccessNumbersItem = ({ t }) => {
                 title={
                   row.subaccount !== 'none' || row.inUse !== 'no'
                     ? t('not_avaliable_to_disconnect_tooltip')
-                    : ''
+                    : t('available_to_disconnect_tooltip')
                 }
               >
                 <IconButton
@@ -652,11 +652,12 @@ const AccessNumbersItem = ({ t }) => {
                       row.subaccount === 'none' && row.inUse === 'no'
                   })}
                   onClick={() => {
-                    selectNumbers(
-                      !row.isSelectedToDisconnect,
-                      row.id,
-                      'isSelectedToDisconnect'
-                    )
+                    if (row.subaccount === 'none' && row.inUse === 'no')
+                      selectNumbers(
+                        !row.isSelectedToDisconnect,
+                        row.id,
+                        'isSelectedToDisconnect'
+                      )
                   }}
                 >
                   <img
@@ -704,30 +705,38 @@ const AccessNumbersItem = ({ t }) => {
             numbersToDeassign.some(item => item.id === row.id) ? (
               <CircularProgress className={classes.deleteLoading} />
             ) : (
-              <IconButton
-                aria-label='deassign icon button'
-                component='span'
-                disabled={row.subaccount === 'none' || row.inUse !== 'no'}
-                className={classnames(classes.tableIconWrap, {
-                  [classes.btnBack]:
-                    row.isSelectedToDeassign && !isDeassigningNumber,
-                  [classes.enabledColumnButton]:
-                    row.subaccount !== 'none' && row.inUse === 'no'
-                })}
-                onClick={() =>
-                  selectNumbers(
-                    !row.isSelectedToDeassign,
-                    row.id,
-                    'isSelectedToDeassign'
-                  )
+              <StyledTooltip
+                title={
+                  row.subaccount === 'none' || row.inUse !== 'no'
+                    ? t('not_available_to_deassign_tooltip')
+                    : t('available_to_deassign_tooltip')
                 }
               >
-                <img
-                  className={classes.deassignIcon}
-                  src={deassignIcon}
-                  alt='deassign from subaccount'
-                />
-              </IconButton>
+                <IconButton
+                  aria-label='deassign icon button'
+                  component='span'
+                  className={classnames(classes.tableIconWrap, {
+                    [classes.btnBack]:
+                      row.isSelectedToDeassign && !isDeassigningNumber,
+                    [classes.enabledColumnButton]:
+                      row.subaccount !== 'none' && row.inUse === 'no'
+                  })}
+                  onClick={() => {
+                    if (row.subaccount !== 'none' && row.inUse === 'no')
+                      selectNumbers(
+                        !row.isSelectedToDeassign,
+                        row.id,
+                        'isSelectedToDeassign'
+                      )
+                  }}
+                >
+                  <img
+                    className={classes.deassignIcon}
+                    src={deassignIcon}
+                    alt='deassign from subaccount'
+                  />
+                </IconButton>
+              </StyledTooltip>
             )}
           </Fragment>
         </Box>
