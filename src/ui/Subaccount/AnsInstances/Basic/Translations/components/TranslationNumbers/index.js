@@ -295,7 +295,7 @@ const TranslationNumbers = observer(({ t }) => {
               />
             </IconButton>
             <Typography className={classes.addCustomerTitle}>
-              {t('delete')}
+              {`${t('delete')} ${t('translation')}`}
             </Typography>
           </Box>
         </Box>
@@ -470,9 +470,7 @@ const TranslationNumbers = observer(({ t }) => {
             handleDelete={handleDelete}
             deleteInfo={instancesForDelete}
             isDeleting={isDeleting}
-            deleteSubject={`${t('basic').toLowerCase()} ${t(
-              'phone_numbers'
-            ).toLowerCase()}`}
+            deleteSubject={`${t('translation').toLowerCase()}(s)`}
             action={t('to_delete')}
             titleAction={t(`delete`)}
           />
