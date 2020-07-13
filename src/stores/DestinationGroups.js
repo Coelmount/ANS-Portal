@@ -17,11 +17,13 @@ export class DestinationGroups {
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
       .then(res => {
-        this.destinationGroups = res.data.destinations.map(
+        this.destinationGroups = res.data.ans_advanced.map(
           (destination, index) => {
             return {
               ...destination,
-              id: index
+              id: index,
+              routingPolicy: destination.routing_policy,
+              destinations: destination.destinations.length
             }
           }
         )

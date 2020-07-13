@@ -42,8 +42,7 @@ const deleteModal = 2
 
 const DestinationGroups = observer(({ t }) => {
   const {
-    destinationsToDelete,
-    destinations,
+    destinationGroups,
     isDestinationGroupsLoading,
     getDestinationGroups,
     deleteDestinationGroup,
@@ -68,7 +67,7 @@ const DestinationGroups = observer(({ t }) => {
       destinations: 10
     }
   ]
-  const [numbers, setNumbers] = useState(mock)
+  const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
@@ -104,9 +103,9 @@ const DestinationGroups = observer(({ t }) => {
     getDestinationGroups(payload)
   }, [])
 
-  // useEffect(() => {
-  //   setNumbers(destinations)
-  // }, [destinations])
+  useEffect(() => {
+    setNumbers(destinationGroups)
+  }, [destinationGroups])
 
   useEffect(() => {
     handleCheckedStates(searchList)
@@ -187,22 +186,26 @@ const DestinationGroups = observer(({ t }) => {
   )
 
   const columns = [
-    // link
     {
       id: 'name',
       label: 'name',
       getCellData: row => (
-        <span className={classes.nameCellTitle}>{row.name}</span>
+        <Link
+          to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destination_groups/${row.name}`}
+          className={classes.link}
+        >
+          {row.name}
+        </Link>
       )
     },
     {
       id: 'routingPolicy',
       label: 'routingPolicy'
     },
-    {
-      id: 'treatment',
-      label: 'treatment'
-    },
+    // {
+    //   id: 'treatment',
+    //   label: 'treatment'
+    // },
     {
       id: 'destinations',
       label: 'destinations'

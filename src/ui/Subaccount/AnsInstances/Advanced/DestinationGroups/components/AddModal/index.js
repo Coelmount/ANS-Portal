@@ -14,16 +14,16 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
+import PolicyIcon from '@material-ui/icons/Policy'
 
 import DestinationGroupsStore from 'stores/DestinationGroups'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
-import PeriodForm from 'components/PeriodForm'
-import transformTime from 'utils/schedules/transformTime'
+import Select from 'components/Select'
+import POLICY_OPTIONS from './policyOptions'
 
 import useStyles from './styles'
-import scheduleIcon from 'source/images/svg/schedule.svg'
 
 const AddModal = ({ t, open, handleClose }) => {
   const {
@@ -38,16 +38,13 @@ const AddModal = ({ t, open, handleClose }) => {
   const inputStore = useLocalStore(() => ({
     values: {
       name: '',
-      policy: '',
-      noAnswerTreatment: ''
+      policy: ''
     },
     set(field, value) {
       this.values[field] = value
     },
     get isFieldsFilled() {
-      return (
-        this.values.name && this.values.policy && this.values.noAnswerTreatment
-      )
+      return this.values.name && this.values.policy
     }
   }))
 
@@ -57,7 +54,6 @@ const AddModal = ({ t, open, handleClose }) => {
       groupId,
       name: inputStore.values.name,
       policy: inputStore.values.policy,
-      noAnswerTreatment: inputStore.values.noAnswerTreatment,
       closeModal: handleClose
     }
     postDestinationGroup(payload)
@@ -82,15 +78,15 @@ const AddModal = ({ t, open, handleClose }) => {
         ) : (
           <Box className={classes.inputsWrap}>
             <Input
-              icon={<PhoneOutlinedIcon />}
+              icon={<PermIdentityOutlined />}
               label={t('name')}
               variant='outlined'
               onChange={e => inputStore.set('name', e.target.value)}
             />
-            <Input
-              icon={<PhoneOutlinedIcon />}
-              label={t('phone_number')}
-              variant='outlined'
+            <Select
+              icon={<PolicyIcon />}
+              options={POLICY_OPTIONS}
+              label={t('policy')}
               onChange={e => inputStore.set('policy', e.target.value)}
             />
           </Box>
