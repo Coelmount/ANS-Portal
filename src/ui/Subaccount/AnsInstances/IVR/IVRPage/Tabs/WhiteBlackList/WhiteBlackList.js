@@ -56,10 +56,18 @@ const WhiteBlackList = props => {
   }, [])
 
   useEffect(() => {
-    if (has(whiteBlackList, 'allowed_numbers.length')) {
+    if (
+      has(whiteBlackList, 'allowed_numbers') &&
+      whiteBlackList.allowed_numbers.length
+    ) {
       setNumbers(whiteBlackList.allowed_numbers)
+    } else if (
+      has(whiteBlackList, 'blocked_numbers') &&
+      whiteBlackList.blocked_numbers.length
+    ) {
+      setNumbers(whiteBlackList.blocked_numbers)
     }
-  }, [whiteBlackList.allowed_numbers])
+  }, [whiteBlackList.allowed_numbers, whiteBlackList.blocked_numbers])
 
   useEffect(() => {
     if (whiteBlackList.mode) {
@@ -231,9 +239,6 @@ const WhiteBlackList = props => {
         <Button
           className={classes.roundButtonDelete}
           onClick={() => {
-            console.log(row.phoneNumber)
-          }}
-          onClick={() => {
             setSingleDeleteNumber(row.phoneNumber)
             setSingleDelete(true)
           }}
@@ -320,8 +325,12 @@ const WhiteBlackList = props => {
           {showAddNumbersModal && (
             <AddNumber
               open={showAddNumbersModal}
-              handleClose={() => setShowAddNumbersModal(false)}
+              handleClose={() => {
+                setShowAddNumbersModal(false)
+                getWhiteBlackList(match.customerId, match.groupId, match.ivrId)
+              }}
               mode={mode}
+              countNumbers={numbers.length}
             />
           )}
           {(singleDelete || multipleDelete) && (

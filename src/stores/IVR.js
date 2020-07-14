@@ -241,6 +241,13 @@ class IVR {
                 checked: false,
                 hover: false
               }))
+            : [],
+          blocked_numbers: res.data.blocked_numbers
+            ? res.data.blocked_numbers.map(el => ({
+                phoneNumber: el,
+                checked: false,
+                hover: false
+              }))
             : []
         }
       })
@@ -423,6 +430,7 @@ decorate(IVR, {
   isAddingSubmenu: observable,
   isDeletingSubmenu: observable,
   isDeletingNumbers: observable,
+  isAddingNumbers: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -436,7 +444,8 @@ decorate(IVR, {
   getSubmenus: action,
   postAddSubmenu: action,
   deleteSubmenu: action,
-  deleteNumberFromCallBlocking: action
+  deleteNumberFromCallBlocking: action,
+  postAddNumberToCallBlocking: action
 })
 
 export default new IVR()

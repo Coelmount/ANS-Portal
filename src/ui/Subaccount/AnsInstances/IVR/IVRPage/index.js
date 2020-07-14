@@ -226,33 +226,38 @@ const IVRPage = props => {
         />
         <Tab value={4} label={t('details')} className={classes.lastTab} />
       </Tabs>
-      <TabPanel value={returnActiveTab()} index={1}>
-        <BusinessHoursMenu />
-      </TabPanel>
-      <TabPanel value={returnActiveTab()} index={2}>
-        <AfterHoursMenu />
-      </TabPanel>
-      <TabPanel value={returnActiveTab()} index={3}>
-        <WhiteBlackList />
-      </TabPanel>
-      <TabPanel value={returnActiveTab()} index={4}>
-        <Details />
-      </TabPanel>
-      <TabPanel value={returnActiveTab()} index={5}>
-        {location.hash === '#ivr_menus_bhm' ? (
+      <Box className={classes.tabsContainerBox}>
+        <TabPanel
+          value={returnActiveTab()}
+          index={1}
+          className={classes.tabsContainerBox}
+        >
           <BusinessHoursMenu />
-        ) : location.hash === '#ivr_menus_ahm' ? (
+        </TabPanel>
+        <TabPanel value={returnActiveTab()} index={2}>
           <AfterHoursMenu />
-        ) : location.hash === '#ivr_menus_hm' ? (
-          <HolidayMenu />
-        ) : (
-          <Loading />
-        )}
-      </TabPanel>
-      <TabPanel value={returnActiveTab()} index={6}>
-        <Submenus />
-      </TabPanel>
-
+        </TabPanel>
+        <TabPanel value={returnActiveTab()} index={3}>
+          <WhiteBlackList />
+        </TabPanel>
+        <TabPanel value={returnActiveTab()} index={4}>
+          <Details />
+        </TabPanel>
+        <TabPanel value={returnActiveTab()} index={5}>
+          {location.hash === '#ivr_menus_bhm' ? (
+            <BusinessHoursMenu />
+          ) : location.hash === '#ivr_menus_ahm' ? (
+            <AfterHoursMenu />
+          ) : location.hash === '#ivr_menus_hm' ? (
+            <HolidayMenu />
+          ) : (
+            <Loading />
+          )}
+        </TabPanel>
+        <TabPanel value={returnActiveTab()} index={6}>
+          <Submenus />
+        </TabPanel>
+      </Box>
       <Popper
         open={open}
         anchorEl={anchorRef.current}

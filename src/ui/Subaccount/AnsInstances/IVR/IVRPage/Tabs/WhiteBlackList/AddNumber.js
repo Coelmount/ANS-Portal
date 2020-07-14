@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import PhoneInput from 'react-phone-input-2'
 
 import Input from 'components/Input'
+import Loading from 'components/Loading'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -16,20 +17,35 @@ import Box from '@material-ui/core/Box'
 
 import CloseIcon from '@material-ui/icons/Close'
 import AddIcon from '@material-ui/icons/Add'
+import RemoveIcon from '@material-ui/icons/Clear'
 
 import IVRStore from 'stores/IVR'
 import CustomersStore from 'stores/Customers'
 import ConfigStore from 'stores/Config'
 
 import useStyles from './styles'
-import { isNullLiteral } from '@babel/types'
 
 const AddIVR = props => {
-  const { t, open, handleClose, mode } = props
+  const { t, open, handleClose, mode, countNumbers } = props
   const classes = useStyles()
   const match = useParams()
-  const {} = IVRStore
+  const { postAddNumberToCallBlocking, isAddingNumbers } = IVRStore
   const [arrayOfInputs, setArrayOfInputs] = useState([''])
+
+  const handleAddNumbers = () => {
+    if (arrayOfInputs.length === 1 && !arrayOfInputs[0]) {
+      handleClose()
+      return
+    }
+
+    postAddNumberToCallBlocking(
+      match.customerId,
+      match.groupId,
+      match.ivrId,
+      { mode: mode, numbers: arrayOfInputs.map(el => `+${el}`) },
+      handleClose
+    )
+  }
 
   return (
     <Dialog
@@ -48,38 +64,59 @@ const AddIVR = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        {arrayOfInputs.map((el, i) => (
-          <Box className={classes.addButtonBox}>
-            <PhoneInput
-              //   country={selectedCountryNameCode}
-              value={el}
-              placeholder={t('phone_number')}
-              //   disabled={!selectedCountryNameCode}
-              //   onChange={(value, data) =>
-              //     handlePhoneInputChange(value, data)
-              //   }
-              //   countryCodeEditable={isCountryCodeEditable}
-              //   disableDropdown
-            />
-            {i + 1 === arrayOfInputs.length ? (
-              <Box className={classes.addButtonBox}>
-                <Button
-                  variant={'contained'}
-                  color={'primary'}
-                  className={classes.roundButton}
-                  onClick={() => {
-                    const newArray = [...arrayOfInputs]
-                    newArray.push('')
-                    setArrayOfInputs(newArray)
+        {isAddingNumbers ? (
+          <Loading />
+        ) : (
+          <Box className={classes.content}>
+            {arrayOfInputs.map((el, index) => (
+              <Box className={classes.rowBox} key={index}>
+                <PhoneInput
+                  className={classes.inputNumber}
+                  value={el}
+                  placeholder={t('phone_number')}
+                  onChange={value => {
+                    const newNumber = [...arrayOfInputs]
+                    newNumber[index] = value
+                    setArrayOfInputs(newNumber)
                   }}
-                >
-                  <AddIcon />
-                </Button>
-                <Box>{`(${t('max')} 10)`}</Box>
+                />
+                <Box className={classes.addButtonBoxModal}>
+                  {index + 1 === arrayOfInputs.length ? (
+                    <React.Fragment>
+                      <Button
+                        variant={'contained'}
+                        color={'primary'}
+                        className={classes.roundButtonAddModal}
+                        onClick={() => {
+                          const newArray = [...arrayOfInputs]
+                          newArray.push('')
+                          setArrayOfInputs(newArray)
+                        }}
+                        disabled={countNumbers + arrayOfInputs.length >= 10}
+                      >
+                        <AddIcon />
+                      </Button>
+                      {/* <Box className={classes.textBox}>{`(${t(
+                        'max'
+                      )} 10)`}</Box> */}
+                    </React.Fragment>
+                  ) : (
+                    <Button
+                      className={classes.roundButtonDelete}
+                      onClick={() => {
+                        const newNumbers = [...arrayOfInputs]
+                        newNumbers.splice(index, 1)
+                        setArrayOfInputs(newNumbers)
+                      }}
+                    >
+                      <RemoveIcon />
+                    </Button>
+                  )}
+                </Box>
               </Box>
-            ) : null}
+            ))}
           </Box>
-        ))}
+        )}
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
         <Button
@@ -87,6 +124,7 @@ const AddIVR = props => {
           color='primary'
           className={classes.cancelButton}
           onClick={handleClose}
+          disabled={isAddingNumbers}
         >
           {t('cancel')}
         </Button>
@@ -94,6 +132,8 @@ const AddIVR = props => {
           variant='contained'
           color='primary'
           className={classes.assignButton}
+          disabled={isAddingNumbers}
+          onClick={handleAddNumbers}
         >
           {t('add')}
         </Button>

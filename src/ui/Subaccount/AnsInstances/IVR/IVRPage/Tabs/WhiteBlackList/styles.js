@@ -132,6 +132,36 @@ const useStyles = makeStyles(theme => ({
   assignButton: {
     width: '160px',
     marginRight: '32px'
+  },
+  inputNumber: {
+    '& .react-tel-input': {
+      width: 'auto',
+      marginRight: 36
+    }
+  },
+  rowBox: {
+    width: 300,
+    display: 'flex',
+    justifyContent: 'center',
+    margin: 'auto',
+    marginTop: 20
+  },
+  content: {
+    marginTop: 100,
+    marginBottom: 80
+  },
+  textBox: {
+    whiteSpace: 'noWrap'
+  },
+  addButtonBoxModal: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  roundButtonAddModal: {
+    width: 30,
+    height: 30,
+    minWidth: 30,
+    padding: 0
   }
 }))
 
