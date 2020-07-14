@@ -54,17 +54,13 @@ const useStyles = makeStyles(theme => ({
     width: '160px',
     marginRight: '32px'
   },
-  modalContent: {
-    paddingTop: 43,
-    paddingLeft: 39
-  },
   nameInput: {
     marginBottom: 30
   },
   modalContent: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    paddingTop: 43
   },
   inputsWrap: {
     '& > div': {

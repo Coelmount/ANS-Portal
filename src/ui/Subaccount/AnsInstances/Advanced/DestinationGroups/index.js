@@ -200,7 +200,7 @@ const DestinationGroups = observer(({ t }) => {
     },
     {
       id: 'routingPolicy',
-      label: 'routingPolicy'
+      label: 'routing_policy'
     },
     // {
     //   id: 'treatment',
