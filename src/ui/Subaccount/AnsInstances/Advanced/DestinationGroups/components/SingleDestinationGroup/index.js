@@ -131,12 +131,17 @@ const SingleDestinationGroup = props => {
         scrollButtons='auto'
       >
         {tabPanelItems.map(({ index, label }) => (
-          <Tab value={index} label={t(label)} className={classes.tab} />
+          <Tab
+            value={index}
+            label={t(label)}
+            className={classes.tab}
+            key={index}
+          />
         ))}
       </Tabs>
 
       {tabPanelItems.map(({ index, component }) => (
-        <TabPanel value={returnActiveTab()} index={index}>
+        <TabPanel value={returnActiveTab()} index={index} key={index}>
           {component}
         </TabPanel>
       ))}
