@@ -21,6 +21,7 @@ import DestinationGroupsStore from 'stores/DestinationGroups'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
+import Checkbox from 'components/Checkbox'
 import POLICY_OPTIONS from './policyOptions'
 
 import useStyles from './styles'
@@ -38,7 +39,9 @@ const AddModal = ({ t, open, handleClose }) => {
   const inputStore = useLocalStore(() => ({
     values: {
       name: '',
-      policy: ''
+      policy: '',
+      huntAfterNoAnswer: false,
+      noAnswerNumberOfRings: ''
     },
     set(field, value) {
       this.values[field] = value
@@ -47,7 +50,11 @@ const AddModal = ({ t, open, handleClose }) => {
       return this.values.name && this.values.policy
     }
   }))
-
+  console.log(
+    inputStore.values.noAnswerNumberOfRings,
+    'noAnswerNumberOfRings store'
+  )
+  console.log(inputStore.values.huntAfterNoAnswer, 'huntAfterNoAnswer store')
   const handleAdd = () => {
     const payload = {
       customerId,
@@ -89,6 +96,28 @@ const AddModal = ({ t, open, handleClose }) => {
               label={t('policy')}
               onChange={e => inputStore.set('policy', e.target.value)}
             />
+            <Box className={classes.noAnswerWrap}>
+              <Checkbox
+                value={inputStore.values.noAnswerNumberOfRings}
+                onChange={e => {
+                  inputStore.set('huntAfterNoAnswer', e.target.checked)
+                }}
+              />
+              <Typography className={classes.noAnswerTitle}>
+                {t('destination_groups_add_checkbox_title')}
+              </Typography>
+            </Box>
+
+            {inputStore.values.huntAfterNoAnswer && (
+              <Input
+                icon={<PermIdentityOutlined />}
+                label={t('amount_of_skip')}
+                variant='outlined'
+                onChange={e =>
+                  inputStore.set('noAnswerNumberOfRings', e.target.value)
+                }
+              />
+            )}
           </Box>
         )}
       </DialogContent>

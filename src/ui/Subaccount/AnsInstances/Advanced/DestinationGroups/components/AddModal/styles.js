@@ -66,6 +66,12 @@ const useStyles = makeStyles(theme => ({
     '& > div': {
       marginBottom: 30
     }
+  },
+  noAnswerWrap: {
+    display: 'flex'
+  },
+  noAnswerTitle: {
+    marginLeft: 10
   }
 }))
 

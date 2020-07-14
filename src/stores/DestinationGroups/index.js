@@ -1,7 +1,7 @@
 import { decorate, observable, action, computed } from 'mobx'
 
 import axios from 'utils/axios'
-import SnackbarStore from './Snackbar'
+import SnackbarStore from '../Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 
 export class DestinationGroups {

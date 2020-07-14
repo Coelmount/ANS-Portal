@@ -53,20 +53,6 @@ const DestinationGroups = observer(({ t }) => {
   const match = useParams()
   const { customerId, groupId } = match
 
-  const mock = [
-    {
-      name: 'name1',
-      routingPolicy: 'regular',
-      treatment: 'no hunt',
-      destinations: 5
-    },
-    {
-      name: 'name2',
-      routingPolicy: 'circular',
-      treatment: 'hunt after x sec',
-      destinations: 10
-    }
-  ]
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
