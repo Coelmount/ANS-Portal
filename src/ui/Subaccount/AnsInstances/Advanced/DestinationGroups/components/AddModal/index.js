@@ -50,6 +50,7 @@ const AddModal = ({ t, open, handleClose }) => {
       return this.values.name && this.values.policy
     }
   }))
+
   console.log(
     inputStore.values.noAnswerNumberOfRings,
     'noAnswerNumberOfRings store'

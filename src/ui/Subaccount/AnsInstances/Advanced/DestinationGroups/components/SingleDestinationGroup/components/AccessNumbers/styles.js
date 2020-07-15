@@ -17,9 +17,10 @@ const useStyles = makeStyles(theme => ({
       color: '#598597'
     }
   },
-  addCustomerWrap: {
+  addWrap: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 22
   },
   updateWrap: {
     display: 'flex',
@@ -175,7 +176,7 @@ const useStyles = makeStyles(theme => ({
     top: 5,
     color: theme.palette.active.blue
   },
-  addCustomerTitle: {
+  addTitle: {
     marginRight: 10,
     fontSize: 14,
     fontStyle: 'normal',
@@ -211,11 +212,20 @@ const useStyles = makeStyles(theme => ({
       cursor: 'pointer'
     }
   },
+  mainDeleteCustomerIcon: {
+    width: 20,
+    height: 20
+  },
   deleteCell: {
     paddingRight: '38px !important',
     display: 'flex',
-    alignItems: 'center',
-    height: '63px !important'
+    alignItems: 'center'
+  },
+  mainNumberDeleteCell: {
+    opacity: 0,
+    paddingRight: '38px !important',
+    display: 'flex',
+    alignItems: 'center'
   },
   toolbarButton: {
     width: 30,
@@ -248,13 +258,36 @@ const useStyles = makeStyles(theme => ({
   toolbarWrap: {
     display: 'none'
   },
-  mainTitle: {
+  mainTitleWraper: {
+    display: 'flex',
     marginTop: 15,
     marginBottom: 5
   },
   secondaryNumbersTitle: {
     marginTop: 50,
     marginBottom: 5
+  },
+  deleteName: {
+    fontWeight: 'bold'
+  },
+  buttonIconsWrapper: {
+    boxShadow: '0px 2px 4px rgba(196, 196, 196, 0.25)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 1,
+    minWidth: 0,
+    width: 27,
+    height: 27,
+    borderRadius: 20,
+    marginLeft: 7,
+    paddingLeft: 1,
+    cursor: 'pointer'
+  },
+
+  addCustomerWrap: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 

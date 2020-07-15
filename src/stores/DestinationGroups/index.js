@@ -23,7 +23,11 @@ export class DestinationGroups {
               ...destination,
               id: index,
               routingPolicy: destination.routing_policy,
-              destinations: destination.destinations.length
+              destinations: destination.destinations.length,
+              noAnswerNumberOfRings: destination.no_answer_number_of_rings,
+              noAnswerHunt: destination.no_answer_hunt
+                ? `Hunt after ${destination.no_answer_number_of_rings} rings`
+                : 'No hunt'
             }
           }
         )

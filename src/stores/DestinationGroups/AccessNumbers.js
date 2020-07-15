@@ -50,7 +50,7 @@ export class AccessNumbers {
 
   getSecondaryNumbers = ({ customerId, groupId, destinationGroupName }) => {
     this.secondaryNumbers = []
-    // this.isSecondaryNumbersLoading = true
+    this.isSecondaryNumbersLoading = true
 
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
@@ -65,7 +65,6 @@ export class AccessNumbers {
             `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${currentGroup.ans_id}/secondary_numbers`
           )
           .then(res => {
-            console.log(res, 'res')
             const numbers = res.data.secondaryNumbers
             this.secondaryNumbers = numbers.map(({ phoneNumber }) => {
               return {
@@ -74,18 +73,23 @@ export class AccessNumbers {
               }
             })
           })
-        // .catch(e => {
-        //   SnackbarStore.enqueueSnackbar({
-        //     message: getErrorMessage(e) || 'Failed to fetch access numbers',
-        //     options: {
-        //       variant: 'error'
-        //     }
-        //   })
-        // })
-        // .finally(() => {
-        //   this.isMainNumberLoading = false
-        // })
+          .catch(e => {
+            SnackbarStore.enqueueSnackbar({
+              message:
+                getErrorMessage(e) || 'Failed to fetch secondary numbers',
+              options: {
+                variant: 'error'
+              }
+            })
+          })
+          .finally(() => {
+            this.isSecondaryNumbersLoading = false
+          })
       })
+  }
+
+  deleteSecondaryNumber = () => {
+    console.log('del access')
   }
 }
 
@@ -93,8 +97,10 @@ decorate(AccessNumbers, {
   mainNumber: observable,
   secondaryNumbers: observable,
   isMainNumberLoading: observable,
+  isSecondaryNumbersLoading: observable,
   getMainNumber: action,
-  getSecondaryNumbers: action
+  getSecondaryNumbers: action,
+  deleteSecondaryNumber: action
 })
 
 export default new AccessNumbers()
