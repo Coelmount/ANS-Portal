@@ -4,6 +4,7 @@ import { decorate, observable, action } from 'mobx'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import phoneNumbersRangeFilter from 'utils/phoneNumbers/rangeFilter'
+import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 
 class IVR {
   ivrs = []
@@ -26,6 +27,8 @@ class IVR {
   isAddingSubmenu = false
   isDeletingSubmenu = false
   isDeletingNumbers = false
+  mainNumber = {}
+  isLoadingMainNumber = {}
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -406,6 +409,63 @@ class IVR {
       )
       .finally(() => (this.isAddingNumbers = false))
   }
+
+  getMainNumber = (tenantId, groupId, ivrId) => {
+    this.isLoadingMainNumber = true
+    this.mainNumber = {}
+    axios
+      .get(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/main_number/`
+      )
+      .then(res => {
+        this.mainNumber = {
+          value: res.data.mainNumber,
+          country: getCountryNameFromNumber(res.data.mainNumber)
+            ? getCountryNameFromNumber(res.data.mainNumber)
+            : ''
+        }
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch main number',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isLoadingMainNumber = false
+      })
+  }
+
+  getSecondaryNumber = (tenantId, groupId, ivrId) => {
+    this.isLoadingSecondaryNumbers = true
+    this.secondaryNumbers = []
+    axios
+      .get(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/secondary_numbers/`
+      )
+      .then(res => {
+        this.secondaryNumbers = res.data.secondaryNumbers.length
+          ? res.data.secondaryNumbers.map(el => ({
+              id: el.id,
+              value: el.phoneNumber,
+              country: getCountryNameFromNumber(el.phoneNumber)
+            }))
+          : []
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch secondary numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isLoadingSecondaryNumbers = false
+      })
+  }
 }
 
 decorate(IVR, {
@@ -431,6 +491,10 @@ decorate(IVR, {
   isDeletingSubmenu: observable,
   isDeletingNumbers: observable,
   isAddingNumbers: observable,
+  mainNumber: observable,
+  isLoadingMainNumber: observable,
+  isLoadingSecondaryNumbers: observable,
+  secondaryNumbers: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -445,7 +509,9 @@ decorate(IVR, {
   postAddSubmenu: action,
   deleteSubmenu: action,
   deleteNumberFromCallBlocking: action,
-  postAddNumberToCallBlocking: action
+  postAddNumberToCallBlocking: action,
+  getMainNumber: action,
+  getSecondaryNumber: action
 })
 
 export default new IVR()

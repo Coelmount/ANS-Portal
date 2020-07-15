@@ -26,6 +26,7 @@ import AfterHoursMenu from './Tabs/AHM/AfterHoursMenu'
 import Details from './Tabs/Details'
 import HolidayMenu from './Tabs/HolidayMenu/HolidayMenu'
 import Submenus from './Tabs/Submenus'
+import AccessNumbers from './Tabs/AccessNumbers'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
@@ -256,6 +257,9 @@ const IVRPage = props => {
         </TabPanel>
         <TabPanel value={returnActiveTab()} index={6}>
           <Submenus />
+        </TabPanel>
+        <TabPanel value={returnActiveTab()} index={0}>
+          <AccessNumbers />
         </TabPanel>
       </Box>
       <Popper

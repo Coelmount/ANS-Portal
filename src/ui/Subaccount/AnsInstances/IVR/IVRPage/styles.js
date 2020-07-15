@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     },
     overflow: 'unset',
     '& .MuiTabs-scrollable': {
-      overflow: 'unset'
+      overflowX: 'unset'
     }
   },
   tab: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
   },
   popper: {
-    width: 'calc(100% / 5)',
+    width: 'calc(76% / 5)',
     border: '0.5px solid #CCCCCC',
     borderRadius: '0px 0px 3px 3px'
   },
