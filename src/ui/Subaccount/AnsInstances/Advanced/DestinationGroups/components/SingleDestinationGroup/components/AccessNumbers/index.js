@@ -18,6 +18,7 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 
+import AddModal from './components/AddModal'
 import TitleBlock from 'components/TitleBlock'
 import CustomTable from 'components/CustomTable'
 import CustomContainer from 'components/CustomContainer'
@@ -27,7 +28,6 @@ import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
-// import AddInstance from '../AddInstance'
 import DeleteModal from 'components/DeleteModal'
 
 import AccessNumbersStore from 'stores/DestinationGroups/AccessNumbers'
@@ -219,13 +219,12 @@ const AccessNumbers = observer(({ t }) => {
             </Box>
           </Fragment>
         )}
-
-        {/* {openedModal.id === addModal && (
+        {openedModal.id === addModal && (
           <AddModal
             open={openedModal.id === addModal}
             handleClose={openedModal.close}
           />
-        )} */}
+        )}
         {openedModal.id === deleteModal && (
           <DeleteModal
             classes={classes}
