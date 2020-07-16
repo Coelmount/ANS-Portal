@@ -59,6 +59,74 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'white',
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
     marginLeft: 10
+  },
+  checkbox: {
+    paddingBottom: 0
+  },
+  indexHoverCheckbox: {
+    cursor: 'pointer',
+    width: 24,
+    textAlign: 'center'
+  },
+  checkboxCell: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 'inherit',
+    padding: 0,
+    marginLeft: '30px',
+    '& > span': {
+      marginLeft: '3px !important'
+    }
+  },
+  rootSN: {
+    '& .MuiDialog-paperWidthSm': {
+      width: '651px'
+    },
+    '& .MuiDialog-paperScrollPaper': {
+      minHeight: '100%'
+    }
+  },
+  entitlementsDialogContent: {
+    padding: 0
+  },
+  setEntitlementsTitle: {
+    paddingLeft: 44,
+    paddingTop: 37,
+    fontSize: 18,
+    fontWeight: 600,
+    fontFamily: 'MTN'
+  },
+  countryInput: {
+    width: 354,
+    marginTop: 22,
+    marginLeft: 44
+    // marginBottom: 30
+  },
+  dialogActionsSecond: {
+    height: '110px',
+    justifyContent: 'space-between'
+  },
+  toolbarWrap: {
+    paddingLeft: 44,
+    position: 'relative',
+    height: 20
+  },
+  perPageWrap: {
+    position: 'absolute',
+    right: 30,
+    top: -50
+  },
+  paginationWrap: {
+    left: '50%',
+    bottom: 110,
+    display: 'flex',
+    position: 'absolute',
+    transform: 'translate(-50%, 0)',
+    background: 'transparent',
+    margin: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }))
 

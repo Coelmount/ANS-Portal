@@ -5,6 +5,7 @@ import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import phoneNumbersRangeFilter from 'utils/phoneNumbers/rangeFilter'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
+import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
 
 class IVR {
   ivrs = []
@@ -29,6 +30,12 @@ class IVR {
   isDeletingNumbers = false
   mainNumber = {}
   isLoadingMainNumber = {}
+  isLoadingIVRNumbers = false
+  ivrNumbers = []
+  availableNumbers = []
+  isAvailableNumbersLoading = false
+  totalPages = 0
+  countries = []
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -466,6 +473,134 @@ class IVR {
         this.isLoadingSecondaryNumbers = false
       })
   }
+
+  getIVRNumbers = (
+    tenantId,
+    groupId,
+    page,
+    perPage,
+    orderByField,
+    orderField
+  ) => {
+    this.isLoadingIVRNumbers = true
+    this.ivrNumbers = []
+    axios
+      .get(
+        `/tenants/${tenantId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr`
+      )
+      .then(res => {
+        this.ivrNumbers = res.data.numbers
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch ivr numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isLoadingIVRNumbers = false
+      })
+  }
+
+  putUpdateMainNumber = (tenantId, groupId, ivrId, data, callback) => {
+    this.isUpdatingMainNumber = true
+    axios
+      .put(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/main_number/`,
+        data
+      )
+      .then(() => {
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update main number',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isUpdatingMainNumber = false
+      })
+  }
+
+  getAvailableNumbers = ({
+    customerId,
+    groupId,
+    page,
+    rowsPerPage,
+    orderBy,
+    order,
+    countryCode
+  }) => {
+    this.availableNumbers = []
+    this.isAvailableNumbersLoading = true
+
+    let orderByField
+    switch (orderBy) {
+      case 'phoneNumber': {
+        orderByField = 'nsn'
+        break
+      }
+      case 'type': {
+        orderByField = 'type'
+        break
+      }
+      default: {
+        orderByField = 'id'
+      }
+    }
+    const orderField = order || 'asc'
+    const countryCodeField = countryCode.length
+      ? countryCode.replace('+', '%2B')
+      : ''
+
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr&country_code=${countryCodeField}`
+      )
+      .then(res => {
+        const pagination = res.data.pagination
+        const requestResult = res.data.numbers
+
+        const transformedNumbers = requestResult.map(item => {
+          return {
+            ...item,
+            phoneNumber: `${item.country_code} ${item.nsn}`,
+            checked: false,
+            hover: false
+          }
+        })
+
+        this.availableNumbers = transformedNumbers
+        this.totalPages = pagination[2]
+
+        const countryCodes = requestResult.map(item => item.country_code)
+        const uniqueCountryCodes = [...new Set(countryCodes)]
+        this.countries = uniqueCountryCodes.map(countryCode => {
+          return {
+            phone: countryCode,
+            code: getCountryTwoLetterCodeFromNumber(`${countryCode}11111`),
+            label: getCountryNameFromNumber(`${countryCode}11111`)
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) || 'Failed to fetch available to add numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isAvailableNumbersLoading = false
+      })
+  }
 }
 
 decorate(IVR, {
@@ -495,6 +630,11 @@ decorate(IVR, {
   isLoadingMainNumber: observable,
   isLoadingSecondaryNumbers: observable,
   secondaryNumbers: observable,
+  isLoadingIVRNumbers: observable,
+  ivrNumbers: observable,
+  isUpdatingMainNumber: observable,
+  availableNumbers: observable,
+  isAvailableNumbersLoading: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -511,7 +651,10 @@ decorate(IVR, {
   deleteNumberFromCallBlocking: action,
   postAddNumberToCallBlocking: action,
   getMainNumber: action,
-  getSecondaryNumber: action
+  getSecondaryNumber: action,
+  getIVRNumbers: action,
+  putUpdateMainNumber: action,
+  getAvailableNumbers: action
 })
 
 export default new IVR()

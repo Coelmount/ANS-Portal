@@ -10,8 +10,7 @@ import Button from '@material-ui/core/Button'
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
 import UpdateMainNumber from './UpdateMainNumber'
-// import AddInstance from '../AddInstance'
-// import DeleteModal from 'components/DeleteModal'
+import AddSecondaryNumbers from './AddSecondaryNumbers'
 
 import EditIcon from 'source/images/svg/edit-blue.svg'
 
@@ -24,6 +23,7 @@ const AccessNumbers = props => {
   const classes = useStyles()
   const match = useParams()
   const [showEditMainNumber, setShowEditMainNumber] = useState(false)
+  const [showAddSecondaryNumbers, setShowAddSecondaryNumbers] = useState(false)
 
   const {
     getMainNumber,
@@ -79,7 +79,10 @@ const AccessNumbers = props => {
       {showEditMainNumber && (
         <UpdateMainNumber
           open={showEditMainNumber}
-          handleClose={() => setShowEditMainNumber(false)}
+          handleClose={() => {
+            setShowEditMainNumber(false)
+            getMainNumber(match.customerId, match.groupId, match.ivrId)
+          }}
         />
       )}
       <CustomTable
@@ -105,6 +108,19 @@ const AccessNumbers = props => {
         showToolBar={false}
         noAvailableDataMessage={t('no_phone_numbers_available')}
       />
+      <AddSecondaryNumbers
+        open={showAddSecondaryNumbers}
+        handleClose={() => {
+          setShowAddSecondaryNumbers(false)
+          getSecondaryNumber(match.customerId, match.groupId, match.ivrId)
+        }}
+      />
+      <Button
+        className={classes.roundButtonEdit}
+        onClick={() => setShowAddSecondaryNumbers(true)}
+      >
+        <img src={EditIcon} alt='EditIcon' />
+      </Button>
 
       {/* {isAddInstanceModalOpen && (
           <AddInstance

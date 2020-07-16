@@ -6,6 +6,9 @@ import { useParams } from 'react-router-dom'
 import Loading from 'components/Loading'
 import Select from 'components/Select'
 
+import getCC from 'utils/phoneNumbers/getCountryCodeFromNumber'
+import getNSN from 'utils/phoneNumbers/getNsnFromNumber'
+
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -15,6 +18,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Box from '@material-ui/core/Box'
 
 import CloseIcon from '@material-ui/icons/Close'
+import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 import IVRStore from 'stores/IVR'
 
@@ -24,12 +28,45 @@ const UpdateMainNumber = props => {
   const { t, open, handleClose } = props
   const classes = useStyles()
   const match = useParams()
-  const { isUpdatingMainNumber, putUpdateMainNumber, mainNumber } = IVRStore
-  const [number, setNumber] = useState([''])
+  const {
+    isUpdatingMainNumber,
+    putUpdateMainNumber,
+    mainNumber,
+    getIVRNumbers,
+    ivrNumbers,
+    isLoadingIVRNumbers
+  } = IVRStore
+  const [number, setNumber] = useState('')
 
   useEffect(() => {
-    setNumber(mainNumber)
+    setNumber(mainNumber.value ? mainNumber.value : '')
+    getIVRNumbers(match.customerId, match.groupId, 1, 99999, 'id', 'asc')
   }, [])
+
+  const handleUpdate = () => {
+    putUpdateMainNumber(
+      match.customerId,
+      match.groupId,
+      match.ivrId,
+      {
+        cc_main_number: `+${getCC(number)}`,
+        main_number: getNSN(number)
+      },
+      handleClose
+    )
+  }
+
+  if (isLoadingIVRNumbers) {
+    return (
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        className={classes.rootUpdateMainNumber}
+      >
+        <Loading />
+      </Dialog>
+    )
+  }
 
   return (
     <Dialog
@@ -52,7 +89,15 @@ const UpdateMainNumber = props => {
           <Loading />
         ) : (
           <Box className={classes.content}>
-            <Select />
+            <Select
+              icon={<PhoneOutlinedIcon />}
+              value={number}
+              options={ivrNumbers.map(el => ({
+                value: `${el.country_code}${el.nsn}`,
+                label: `${el.country_code}${el.nsn}`
+              }))}
+              onChange={e => setNumber(e.target.value)}
+            />
           </Box>
         )}
       </DialogContent>
@@ -71,6 +116,7 @@ const UpdateMainNumber = props => {
           color='primary'
           className={classes.assignButton}
           disabled={isUpdatingMainNumber}
+          onClick={handleUpdate}
         >
           {t('add')}
         </Button>
