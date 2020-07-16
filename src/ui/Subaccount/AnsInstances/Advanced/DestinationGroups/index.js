@@ -188,13 +188,13 @@ const DestinationGroups = observer(({ t }) => {
       id: 'routingPolicy',
       label: 'routing_policy'
     },
-    {
-      id: 'noAnswerNumberOfRings',
-      label: 'no_answer_treatment'
-    },
+    // {
+    //   id: 'noAnswerNumberOfRings',
+    //   label: 'no_answer_treatment'
+    // },
     {
       id: 'noAnswerHunt',
-      label: 'no_answer_hunt'
+      label: 'no_answer_treatment'
     },
     {
       id: 'destinations',
