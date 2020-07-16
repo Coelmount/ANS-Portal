@@ -3,6 +3,7 @@ import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import PhoneInput from 'react-phone-input-2'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -50,7 +51,7 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
       this.values[field] = value
     },
     get isFieldsFilled() {
-      return this.values.name && this.values.phoneNumber
+      return this.values.name && this.values.phoneNumber.length > 6
     }
   }))
 
@@ -66,7 +67,6 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
   useEffect(() => {
     if (destination && Object.keys(destination).length) {
       inputStore.set('name', destination.name)
-      //
       inputStore.set('phoneNumber', destination.phoneNumber)
     }
   }, [destination])
@@ -75,9 +75,12 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
     const payload = {
       customerId,
       groupId,
+      destinationId,
+      name: inputStore.values.name,
+      phoneNumber: inputStore.values.phoneNumber,
       closeModal: handleClose
     }
-    // putDestination(payload)
+    putDestination(payload)
   }
 
   return (
@@ -105,12 +108,12 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
               value={inputStore.values.name}
               onChange={e => inputStore.set('name', e.target.value)}
             />
-            <Input
-              icon={<PhoneOutlinedIcon />}
-              label={t('phone_number')}
-              variant='outlined'
+            <PhoneInput
               value={inputStore.values.phoneNumber}
-              onChange={e => inputStore.set('phoneNumber', e.target.value)}
+              onChange={value => {
+                inputStore.set('phoneNumber', `+${value}`)
+              }}
+              placeholder={t('enter_number')}
             />
           </Box>
         )}
@@ -129,7 +132,7 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disabled={!inputStore.isFieldsFilled}
+          disabled={!inputStore.isFieldsFilled || isLoading}
           onClick={handleSave}
         >
           {t('save')}

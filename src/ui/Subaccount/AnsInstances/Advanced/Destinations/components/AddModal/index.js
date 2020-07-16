@@ -3,6 +3,7 @@ import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import PhoneInput from 'react-phone-input-2'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -41,7 +42,7 @@ const AddModal = ({ t, open, handleClose }) => {
       this.values[field] = value
     },
     get isFieldsFilled() {
-      return this.values.name && this.values.phoneNumber
+      return this.values.name && this.values.phoneNumber.length > 6
     }
   }))
 
@@ -80,12 +81,15 @@ const AddModal = ({ t, open, handleClose }) => {
               variant='outlined'
               onChange={e => inputStore.set('name', e.target.value)}
             />
-            <Input
-              icon={<PhoneOutlinedIcon />}
-              label={t('phone_number')}
-              variant='outlined'
-              onChange={e => inputStore.set('phoneNumber', e.target.value)}
-            />
+            <Box className={classes.phoneInputWrap}>
+              <PhoneInput
+                value={inputStore.values.phoneNumber}
+                onChange={value => {
+                  inputStore.set('phoneNumber', `+${value}`)
+                }}
+                placeholder={t('enter_number')}
+              />
+            </Box>
           </Box>
         )}
       </DialogContent>
@@ -103,7 +107,7 @@ const AddModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disabled={!inputStore.isFieldsFilled}
+          disabled={!inputStore.isFieldsFilled || isDestinationPosting}
           onClick={handleAdd}
         >
           {t('add')}

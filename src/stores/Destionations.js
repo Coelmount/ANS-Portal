@@ -3,16 +3,18 @@ import { decorate, observable, action, computed } from 'mobx'
 import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
+import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
 
 export class Destinations {
   destinations = []
   destination = null
   isDestinationsLoading = true
   isDestinationLoading = true
+  isDestinationPosting = false
   isDestinationEditing = false
   isDestinationEditing = false
   isDestinationDeleting = false
-  isDestinationsDeleting = false
 
   getDestinations = ({ customerId, groupId }) => {
     this.destinations = []
@@ -74,20 +76,20 @@ export class Destinations {
     phoneNumber,
     closeModal
   }) => {
-    console.log(name, phoneNumber, 'post')
-    // this.isDestinationPosting = true
+    this.isDestinationPosting = true
     axios
       .post(
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations`,
         {
           name,
-          phoneNumber
+          number: getNsnFromNumber(phoneNumber),
+          cc_number: `+${getCountryCodeFromNumber(phoneNumber)}`
         }
       )
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
-          message: 'Destination successfully posted',
+          message: 'Destination successfully created',
           options: {
             variant: 'success'
           }
@@ -95,28 +97,39 @@ export class Destinations {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to post destination',
+          message: getErrorMessage(e) || 'Failed to create destination',
           options: {
             variant: 'error'
           }
         })
       })
       .finally(() => {
-        // this.isDestinationPosting = false
+        this.isDestinationPosting = false
       })
   }
 
-  putDestination = ({ customerId, groupId, destinationId, closeModal }) => {
-    console.log(destinationId, 'edit')
-    // this.isDestinationEditing = true
+  putDestination = ({
+    customerId,
+    groupId,
+    destinationId,
+    name,
+    phoneNumber,
+    closeModal
+  }) => {
+    this.isDestinationEditing = true
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${destinationId}`
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${destinationId}`,
+        {
+          name,
+          number: getNsnFromNumber(phoneNumber),
+          cc_number: `+${getCountryCodeFromNumber(phoneNumber)}`
+        }
       )
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
-          message: 'Destination successfully edited',
+          message: 'Destination successfully updated',
           options: {
             variant: 'success'
           }
@@ -124,14 +137,14 @@ export class Destinations {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to edit destination',
+          message: getErrorMessage(e) || 'Failed to update destination',
           options: {
             variant: 'error'
           }
         })
       })
       .finally(() => {
-        // this.isDestinationEditing = false
+        this.isDestinationEditing = false
       })
   }
 
@@ -141,7 +154,7 @@ export class Destinations {
   }
 
   deleteDestinations = ({ customerId, groupId, closeModal }) => {
-    // this.isDestinationsDeleting = true
+    this.isDestinationDeleting = true
     let promiseArr = []
     const numbersToDelete = this.destinations.filter(
       destination => destination.checked
@@ -172,13 +185,12 @@ export class Destinations {
         })
       })
       .finally(() => {
-        // isDestinationsDeleting = false
+        this.isDestinationDeleting = false
       })
   }
 
   deleteDestination = ({ customerId, groupId, destinationId, closeModal }) => {
-    console.log(destinationId, 'delete')
-    // this.isDestinationDeleting = true
+    this.isDestinationDeleting = true
     axios
       .delete(
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${destinationId}`
@@ -186,7 +198,7 @@ export class Destinations {
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
-          message: 'Destinations successfully deleted',
+          message: 'Destination successfully deleted',
           options: {
             variant: 'success'
           }
@@ -194,14 +206,14 @@ export class Destinations {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to delete destinations',
+          message: getErrorMessage(e) || 'Failed to delete destination',
           options: {
             variant: 'error'
           }
         })
       })
       .finally(() => {
-        // isDestinationDeleting = false
+        this.isDestinationDeleting = false
       })
   }
 }
@@ -214,6 +226,7 @@ decorate(Destinations, {
   isDestinationLoading: observable,
   isDestinationPosting: observable,
   isDestinationEditing: observable,
+  isDestinationDeleting: observable,
   getDestinations: action,
   getDestination: action,
   postDestination: action,

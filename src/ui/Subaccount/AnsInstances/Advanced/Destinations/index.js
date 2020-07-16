@@ -48,6 +48,7 @@ const Destinations = observer(({ t }) => {
     destinationsToDelete,
     destinations,
     isDestinationsLoading,
+    isDestinationDeleting,
     getDestinations,
     deleteDestination,
     deleteDestinations
@@ -189,7 +190,6 @@ const Destinations = observer(({ t }) => {
     <span className={classes.deleteName}>{` ${modals.data.name}?`}</span>
   )
 
-  // join ,
   const extraMultipleDeleteBlock = (
     <Fragment>
       <span
@@ -345,7 +345,7 @@ const Destinations = observer(({ t }) => {
             handleClose={() => openedModal.close()}
             handleDelete={handleDelete}
             extraMessageBlock={extraDeleteBlock}
-            isDeleting={false}
+            isDeleting={isDestinationDeleting}
             deleteSubject={`${t('destination').toLowerCase()}`}
             action={t('to_delete')}
             titleAction={t(`delete`)}
@@ -358,7 +358,7 @@ const Destinations = observer(({ t }) => {
             handleClose={() => openedModal.close()}
             handleDelete={handleMultipleDelete}
             extraMessageBlock={extraMultipleDeleteBlock}
-            isDeleting={false}
+            isDeleting={isDestinationDeleting}
             deleteSubject={`${t('destinations').toLowerCase()}`}
             action={t('to_delete')}
             titleAction={t(`delete`)}
