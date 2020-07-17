@@ -6,13 +6,22 @@ import { useParams } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import Box from '@material-ui/core/Box'
 
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
 import UpdateMainNumber from './UpdateMainNumber'
 import AddSecondaryNumbers from './AddSecondaryNumbers'
+import DeleteModal from 'components/DeleteModal'
 
 import EditIcon from 'source/images/svg/edit-blue.svg'
+import RemoveIcon from '@material-ui/icons/Clear'
+import AddIcon from '@material-ui/icons/Add'
+
+import getCC from 'utils/phoneNumbers/getCountryCodeFromNumber'
+import getNSN from 'utils/phoneNumbers/getNsnFromNumber'
 
 import IVRStore from 'stores/IVR'
 
@@ -24,6 +33,8 @@ const AccessNumbers = props => {
   const match = useParams()
   const [showEditMainNumber, setShowEditMainNumber] = useState(false)
   const [showAddSecondaryNumbers, setShowAddSecondaryNumbers] = useState(false)
+  const [deleteNumber, setDeleteNumber] = useState({})
+  const [showDeleteNumber, setShowDeleteNumber] = useState(false)
 
   const {
     getMainNumber,
@@ -31,13 +42,81 @@ const AccessNumbers = props => {
     mainNumber,
     isLoadingSecondaryNumbers,
     secondaryNumbers,
-    getSecondaryNumber
+    getSecondaryNumber,
+    clearLoadingStates,
+    isAddingSecondaryNumbers,
+    putAddSecondaryNumbers
   } = IVRStore
 
   useEffect(() => {
     getMainNumber(match.customerId, match.groupId, match.ivrId)
     getSecondaryNumber(match.customerId, match.groupId, match.ivrId)
   }, [])
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteNumber(false)
+    getSecondaryNumber(match.customerId, match.groupId, match.ivrId)
+  }
+
+  const handleDelete = id => {
+    const data = {
+      id: id,
+      delete: true
+    }
+    putAddSecondaryNumbers(
+      match.customerId,
+      match.groupId,
+      match.ivrId,
+      [data],
+      handleCloseDeleteModal
+    )
+  }
+
+  // const handleChangePriority = (newId, oldId) => {
+  //   if (secondaryNumbers.some(el => el.id === newId)) {
+  //     const phone = secondaryNumbers.find(el => el.id === oldId)
+  //     const swapPhone = secondaryNumbers.find(el => el.id === newId)
+  //     const data = [
+  //       {
+  //         id: oldId,
+  //         cc_number: `+${getCC(swapPhone.value)}`,
+  //         number: getNSN(swapPhone.value)
+  //       },
+  //       {
+  //         id: newId,
+  //         cc_number: `+${getCC(phone.value)}`,
+  //         number: getNSN(phone.value)
+  //       }
+  //     ]
+  //     putAddSecondaryNumbers(
+  //       match.customerId,
+  //       match.groupId,
+  //       match.ivrId,
+  //       data,
+  //       handleCloseDeleteModal
+  //     )
+  //   } else {
+  //     const phone = secondaryNumbers.find(el => el.id === oldId)
+  //     const data = [
+  //       {
+  //         id: oldId,
+  //         delete: true
+  //       },
+  //       {
+  //         id: newId,
+  //         cc_number: `+${getCC(phone.value)}`,
+  //         number: getNSN(phone.value)
+  //       }
+  //     ]
+  //     putAddSecondaryNumbers(
+  //       match.customerId,
+  //       match.groupId,
+  //       match.ivrId,
+  //       data,
+  //       handleCloseDeleteModal
+  //     )
+  //   }
+  // }
 
   const mainNumberColumns = [
     {
@@ -58,10 +137,42 @@ const AccessNumbers = props => {
     {
       id: 'value',
       label: 'phone_number'
+    },
+    // {
+    //   id: 'id',
+    //   label: 'priority',
+    //   getCellData: row => (
+    //     <Select
+    //       value={row.id}
+    //       variant='outlined'
+    //       onChange={e => handleChangePriority(e.target.value, row.id)}
+    //     >
+    //       {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'].map(el => (
+    //         <MenuItem key={el} value={el}>
+    //           {el}
+    //         </MenuItem>
+    //       ))}
+    //     </Select>
+    //   )
+    // },
+    {
+      id: 'delete',
+      isSortAvailable: false,
+      getCellData: row => (
+        <Button
+          className={classes.roundButtonEdit}
+          onClick={() => {
+            setDeleteNumber({ name: row.value, id: row.id })
+            setShowDeleteNumber(true)
+          }}
+        >
+          <RemoveIcon />
+        </Button>
+      )
     }
   ]
 
-  if (isLoadingMainNumber) {
+  if (isLoadingMainNumber || isLoadingSecondaryNumbers) {
     return <Loading />
   }
 
@@ -108,39 +219,41 @@ const AccessNumbers = props => {
         showToolBar={false}
         noAvailableDataMessage={t('no_phone_numbers_available')}
       />
-      <AddSecondaryNumbers
-        open={showAddSecondaryNumbers}
-        handleClose={() => {
-          setShowAddSecondaryNumbers(false)
-          getSecondaryNumber(match.customerId, match.groupId, match.ivrId)
-        }}
-      />
-      <Button
-        className={classes.roundButtonEdit}
-        onClick={() => setShowAddSecondaryNumbers(true)}
-      >
-        <img src={EditIcon} alt='EditIcon' />
-      </Button>
 
-      {/* {isAddInstanceModalOpen && (
-          <AddInstance
-            open={isAddInstanceModalOpen}
-            handleClose={handleAddInstanceModalClose}
-          />
-        )} */}
-      {/* {isDeleteModalOpen && (
-          <DeleteModal
-            classes={classes}
-            open={isDeleteModalOpen}
-            handleClose={handleCloseDeleteModal}
-            handleDelete={handleDelete}
-            deleteInfo={instancesForDelete}
-            isDeleting={isDeleting}
-            deleteSubject={`${t('translation').toLowerCase()}(s)`}
-            action={t('to_delete')}
-            titleAction={t(`delete`)}
-          />
-        )} */}
+      {showAddSecondaryNumbers && (
+        <AddSecondaryNumbers
+          open={showAddSecondaryNumbers}
+          handleClose={() => {
+            setShowAddSecondaryNumbers(false)
+            getSecondaryNumber(match.customerId, match.groupId, match.ivrId)
+            clearLoadingStates()
+          }}
+        />
+      )}
+      <Box className={classes.addButtonBox}>
+        <Button
+          variant={'contained'}
+          color={'primary'}
+          className={classes.roundButton}
+          onClick={() => setShowAddSecondaryNumbers(true)}
+          disabled={secondaryNumbers.length >= 10}
+        >
+          <AddIcon />
+        </Button>
+        <Box>{`${t('add')} (${t('max')} 10)`}</Box>
+      </Box>
+      {showDeleteNumber && (
+        <DeleteModal
+          open={showDeleteNumber}
+          handleClose={handleCloseDeleteModal}
+          handleDelete={handleDelete}
+          isDeleting={isAddingSecondaryNumbers}
+          action={t('to_delete')}
+          titleAction={t(`delete`)}
+          deleteSubject={t('number').toLowerCase()}
+          deleteInfo={deleteNumber}
+        />
+      )}
     </React.Fragment>
   )
 }

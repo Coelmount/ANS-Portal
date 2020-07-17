@@ -6,6 +6,8 @@ import getErrorMessage from 'utils/getErrorMessage'
 import phoneNumbersRangeFilter from 'utils/phoneNumbers/rangeFilter'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
+import difference from 'lodash/difference'
+import sortBy from 'lodash/sortBy'
 
 class IVR {
   ivrs = []
@@ -33,9 +35,11 @@ class IVR {
   isLoadingIVRNumbers = false
   ivrNumbers = []
   availableNumbers = []
-  isAvailableNumbersLoading = false
+  isAvailableNumbersLoading = true
   totalPages = 0
   countries = []
+  freeSecondaryIDs = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+  isAddingSecondaryNumbers = false
 
   getIVRs = (tenantId, groupId) => {
     this.isLoadingIVRs = true
@@ -454,12 +458,23 @@ class IVR {
       )
       .then(res => {
         this.secondaryNumbers = res.data.secondaryNumbers.length
-          ? res.data.secondaryNumbers.map(el => ({
-              id: el.id,
-              value: el.phoneNumber,
-              country: getCountryNameFromNumber(el.phoneNumber)
-            }))
+          ? res.data.secondaryNumbers
+              // .sort((a, b) => {
+              //   if (a.id < b.id) return 1
+              //   if (a.id > b.id) return -1
+              //   return 0
+              // })
+              .map(el => ({
+                id: el.id,
+                value: el.phoneNumber,
+                country: getCountryNameFromNumber(el.phoneNumber)
+              }))
           : []
+        console.log(this.secondaryNumbers)
+        this.freeSecondaryIDs = difference(
+          this.freeSecondaryIDs,
+          this.secondaryNumbers.map(el => el.id)
+        )
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -560,20 +575,22 @@ class IVR {
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr&country_code=${countryCodeField}`
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr&&country_code=${countryCodeField}`
       )
       .then(res => {
         const pagination = res.data.pagination
         const requestResult = res.data.numbers
 
-        const transformedNumbers = requestResult.map(item => {
-          return {
-            ...item,
-            phoneNumber: `${item.country_code} ${item.nsn}`,
-            checked: false,
-            hover: false
-          }
-        })
+        const transformedNumbers = requestResult
+          .filter(el => !el.connected_to)
+          .map(item => {
+            return {
+              ...item,
+              phoneNumber: `${item.country_code} ${item.nsn}`,
+              checked: false,
+              hover: false
+            }
+          })
 
         this.availableNumbers = transformedNumbers
         this.totalPages = pagination[2]
@@ -600,6 +617,33 @@ class IVR {
       .finally(() => {
         this.isAvailableNumbersLoading = false
       })
+  }
+
+  putAddSecondaryNumbers = (tenantId, groupId, ivrId, data, callback) => {
+    this.isAddingSecondaryNumbers = true
+    axios
+      .put(
+        `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/secondary_numbers/`,
+        { secondary_numbers: data }
+      )
+      .then(() => {
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to add secondary number',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isAddingSecondaryNumbers = false
+      })
+  }
+
+  clearLoadingStates = () => {
+    this.isAvailableNumbersLoading = true
   }
 }
 
@@ -635,6 +679,8 @@ decorate(IVR, {
   isUpdatingMainNumber: observable,
   availableNumbers: observable,
   isAvailableNumbersLoading: observable,
+  freeSecondaryIDs: observable,
+  isAddingSecondaryNumbers: observable,
   getIVRs: action,
   getCheckLicensesIVR: action,
   postAddIVR: action,
@@ -654,7 +700,9 @@ decorate(IVR, {
   getSecondaryNumber: action,
   getIVRNumbers: action,
   putUpdateMainNumber: action,
-  getAvailableNumbers: action
+  getAvailableNumbers: action,
+  putAddSecondaryNumbers: action,
+  clearLoadingStates: action
 })
 
 export default new IVR()

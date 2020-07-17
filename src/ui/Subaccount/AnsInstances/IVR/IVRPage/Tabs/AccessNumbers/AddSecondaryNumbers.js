@@ -39,7 +39,10 @@ const AddModal = props => {
     availableNumbers,
     totalPages,
     countries,
-    isAvailableNumbersLoading
+    isAvailableNumbersLoading,
+    freeSecondaryIDs,
+    putAddSecondaryNumbers,
+    isAddingSecondaryNumbers
   } = IVRStore
 
   const [selectedCountry, setSelectedCountry] = useState({
@@ -60,7 +63,13 @@ const AddModal = props => {
   const [orderBy, setOrderBy] = useState('id')
   const [countryCode, setCountryCode] = useState('')
 
+  console.log(freeSecondaryIDs, numberOfChecked)
+
   useEffect(() => {
+    let cc = ''
+    if (!!selectedCountry) {
+      cc = selectedCountry.phone
+    }
     const payload = {
       customerId,
       groupId,
@@ -68,8 +77,9 @@ const AddModal = props => {
       rowsPerPage,
       order,
       orderBy,
-      countryCode: selectedCountry.phone
+      countryCode: cc
     }
+
     getAvailableNumbers(payload)
   }, [])
 
@@ -97,6 +107,10 @@ const AddModal = props => {
 
   //  onUpdate pagination
   useEffect(() => {
+    let cc = ''
+    if (!!selectedCountry) {
+      cc = selectedCountry.phone
+    }
     if (!isAvailableNumbersLoading) {
       const payload = {
         customerId,
@@ -105,7 +119,7 @@ const AddModal = props => {
         rowsPerPage,
         order,
         orderBy,
-        countryCode: selectedCountry.phone
+        countryCode: cc
       }
       getAvailableNumbers(payload)
       setNumberOfChecked(0)
@@ -114,6 +128,10 @@ const AddModal = props => {
 
   // onUpdate country input
   useEffect(() => {
+    let cc = ''
+    if (!!selectedCountry) {
+      cc = selectedCountry.phone
+    }
     if (!isAvailableNumbersLoading) {
       const payload = {
         customerId,
@@ -122,7 +140,7 @@ const AddModal = props => {
         rowsPerPage,
         order,
         orderBy,
-        countryCode: selectedCountry.phone
+        countryCode: cc
       }
       getAvailableNumbers(payload)
       setNumberOfChecked(0)
@@ -142,7 +160,7 @@ const AddModal = props => {
   // handle check all
   const handleSelectAll = () => {
     const newNumbers = numbers.map(item => {
-      return { ...item, checked: !selectAll }
+      return { ...item, checked: !selectAll, hover: false }
     })
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
@@ -170,6 +188,27 @@ const AddModal = props => {
   const changeHover = (newHover, id) => {
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
+  }
+
+  const handleAddNumbers = () => {
+    const selectedNumbers = numbers.filter(el => el.checked)
+    let index = 0
+    let data = []
+    selectedNumbers.forEach(el => {
+      data.push({
+        id: freeSecondaryIDs[index],
+        cc_number: el.country_code,
+        number: el.nsn
+      })
+      index++
+    })
+    putAddSecondaryNumbers(
+      match.customerId,
+      match.groupId,
+      match.ivrId,
+      data,
+      handleClose
+    )
   }
 
   const columns = [
@@ -227,7 +266,7 @@ const AddModal = props => {
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.rootSN}>
-      {isAvailableNumbersLoading ? (
+      {isAvailableNumbersLoading || isAddingSecondaryNumbers ? (
         <Loading />
       ) : (
         <Fragment>
@@ -279,6 +318,7 @@ const AddModal = props => {
               color='primary'
               className={classes.cancelButton}
               onClick={handleClose}
+              disabled={isAddingSecondaryNumbers}
             >
               {t('cancel')}
             </Button>
@@ -286,8 +326,12 @@ const AddModal = props => {
               variant='contained'
               color='primary'
               className={classes.assignButton}
-              // onClick={handleNextButtonClick}
-              // disabled={!numbers.some(item => item.checked === true)}
+              onClick={handleAddNumbers}
+              disabled={
+                !numbers.some(item => item.checked === true) ||
+                numberOfChecked >= freeSecondaryIDs.length ||
+                isAddingSecondaryNumbers
+              }
             >
               {`${t('Add')}${
                 numberOfChecked > 0 ? `(${numberOfChecked})` : ''

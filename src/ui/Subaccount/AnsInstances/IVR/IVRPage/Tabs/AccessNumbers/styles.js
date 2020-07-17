@@ -127,6 +127,18 @@ const useStyles = makeStyles(theme => ({
     margin: 0,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  roundButton: {
+    width: 30,
+    height: 30,
+    minWidth: 30,
+    padding: 0,
+    marginRight: 10
+  },
+  addButtonBox: {
+    marginTop: 40,
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 
