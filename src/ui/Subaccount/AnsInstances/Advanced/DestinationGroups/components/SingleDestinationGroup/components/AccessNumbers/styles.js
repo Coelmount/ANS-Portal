@@ -284,10 +284,31 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 1,
     cursor: 'pointer'
   },
-
   addCustomerWrap: {
     display: 'flex',
     alignItems: 'center'
+  },
+  searchParamSelect: {
+    background: 'white',
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
+    '& div': {
+      marginLeft: 5,
+      fontSize: 14
+    },
+    '& svg': {
+      color: theme.palette.active.blue,
+      top: 6,
+      right: 3
+    },
+    '&:before': {
+      display: 'none'
+    },
+    '&:after': {
+      display: 'none'
+    }
+  },
+  selectItem: {
+    fontSize: 14
   }
 }))
 

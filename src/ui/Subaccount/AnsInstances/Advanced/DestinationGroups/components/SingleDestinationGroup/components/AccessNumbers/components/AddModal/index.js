@@ -41,8 +41,11 @@ const AddModal = ({ open, handleClose, t }) => {
     availableNumbers,
     totalPages,
     countries,
-    isAvailableNumbersLoading
+    isAvailableNumbersLoading,
+    isSecondaryNumbersAdding
   } = AccessNumbersStore
+
+  const isLoading = isAvailableNumbersLoading || isSecondaryNumbersAdding
 
   const [selectedCountry, setSelectedCountry] = useState({
     code: '',
@@ -83,7 +86,7 @@ const AddModal = ({ open, handleClose, t }) => {
   // onUpdate search/sorting
   useEffect(() => {
     setPage(1)
-    if (!isAvailableNumbersLoading) {
+    if (!isLoading) {
       const payload = {
         customerId,
         groupId,
@@ -99,7 +102,7 @@ const AddModal = ({ open, handleClose, t }) => {
 
   //  onUpdate pagination
   useEffect(() => {
-    if (!isAvailableNumbersLoading) {
+    if (!isLoading) {
       const payload = {
         customerId,
         groupId,
@@ -116,7 +119,7 @@ const AddModal = ({ open, handleClose, t }) => {
 
   // onUpdate country input
   useEffect(() => {
-    if (!isAvailableNumbersLoading) {
+    if (!isLoading) {
       const payload = {
         customerId,
         groupId,
@@ -144,7 +147,7 @@ const AddModal = ({ open, handleClose, t }) => {
   // handle check all
   const handleSelectAll = () => {
     const newNumbers = numbers.map(item => {
-      return { ...item, checked: !selectAll }
+      return { ...item, checked: !selectAll, hover: false }
     })
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
@@ -238,7 +241,7 @@ const AddModal = ({ open, handleClose, t }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
-      {isAvailableNumbersLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Fragment>
@@ -277,7 +280,7 @@ const AddModal = ({ open, handleClose, t }) => {
               orderBy={orderBy}
               setOrderBy={setOrderBy}
               totalPages={totalPages}
-              isLoadingData={isAvailableNumbersLoading}
+              isLoadingData={isLoading}
               noAvailableDataMessage={t('no_phone_numbers_available')}
               showSearchBar={false}
               isModal={true}

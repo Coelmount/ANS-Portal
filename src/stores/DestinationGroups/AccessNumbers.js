@@ -1,10 +1,14 @@
 import { decorate, observable, action, computed } from 'mobx'
+import difference from 'lodash/difference'
 
 import axios from 'utils/axios'
 import SnackbarStore from '../Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
+import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
+import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
+import DEFAULT_IDS from './utils/defaultIds'
 import { toJS } from 'mobx'
 
 export class AccessNumbers {
@@ -15,8 +19,15 @@ export class AccessNumbers {
   isMainNumberLoading = true
   isSecondaryNumbersLoading = true
   isAvailableNumbersLoading = true
+  isSecondaryNumbersAdding = false
+  isSecondaryNumbersUpdating = false
   totalPages = 0
   currentGroupId = ''
+  availableSecondaryIds = []
+
+  clearLoadingStates = () => {
+    this.isAvailableNumbersLoading = true
+  }
 
   getMainNumber = ({ customerId, groupId, destinationGroupName }) => {
     this.accessNumbers = []
@@ -74,10 +85,21 @@ export class AccessNumbers {
           )
           .then(res => {
             const numbers = res.data.secondaryNumbers
-            this.secondaryNumbers = numbers.map(({ phoneNumber }) => {
+            const busySecondaryIds = numbers.map(number => number.id)
+            this.availableSecondaryIds = difference(
+              DEFAULT_IDS,
+              busySecondaryIds
+            )
+            console.log(
+              this.availableSecondaryIds,
+              'this.availableSecondaryIds'
+            )
+
+            this.secondaryNumbers = numbers.map(item => {
               return {
-                value: phoneNumber,
-                country: getCountryNameFromNumber(phoneNumber)
+                ...item,
+                value: item.phoneNumber,
+                country: getCountryNameFromNumber(item.phoneNumber)
               }
             })
           })
@@ -175,21 +197,18 @@ export class AccessNumbers {
     console.log('del access')
   }
 
-  postSecondaryNumbers = ({ customerId, groupId }) => {
-    // this.isSecondaryNumbersLoading = true
+  postSecondaryNumbers = ({ customerId, groupId, closeModal }) => {
+    this.isSecondaryNumbersAdding = true
     const checkedNumbers = this.availableNumbers.filter(
       item => item.checked === true
     )
-    const numbersToAdd = checkedNumbers.map(
-      ({ id, country_code, nsn }, index) => {
-        return {
-          id,
-          cc_number: country_code,
-          number: nsn
-        }
+    const numbersToAdd = checkedNumbers.map(({ country_code, nsn }, index) => {
+      return {
+        id: this.availableSecondaryIds[index],
+        cc_number: country_code,
+        number: nsn
       }
-    )
-    console.log(toJS(numbersToAdd), 'checkedNumbers')
+    })
     axios
       .put(
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
@@ -197,25 +216,110 @@ export class AccessNumbers {
           secondary_numbers: numbersToAdd
         }
       )
-      .then(res => {
-        const numbers = res.data.secondaryNumbers
-        this.secondaryNumbers = numbers.map(({ phoneNumber }) => {
-          return {
-            value: phoneNumber,
-            country: getCountryNameFromNumber(phoneNumber)
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: `Secondary number${
+            numbersToAdd.length > 1 ? 's' : ''
+          } added successfully`,
+          options: {
+            variant: 'success'
           }
         })
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to fetch secondary numbers',
+          message:
+            getErrorMessage(e) ||
+            `Failed to add secondary number${
+              numbersToAdd.length > 1 ? 's' : ''
+            }`,
           options: {
             variant: 'error'
           }
         })
       })
       .finally(() => {
-        // this.isSecondaryNumbersLoading = false
+        this.isSecondaryNumbersAdding = false
+      })
+  }
+
+  putSecondaryNumbers = ({ customerId, groupId, closeModal, row, value }) => {
+    this.isSecondaryNumbersUpdating = true
+    const existNumberToUpdate = this.secondaryNumbers.find(
+      number => number.id === value
+    )
+    console.log(value, 'value')
+    console.log(toJS(this.availableSecondaryIds), 'availableSecondaryIds')
+    // const numbersToSwap = [
+    //   {
+    //     id: value,
+    //     cc_number: `+${getCountryCodeFromNumber(row.phoneNumber)}`,
+    //     number: getNsnFromNumber(row.phoneNumber)
+    //   },
+    //   {
+    //     id: row.id,
+    //     cc_number: `+${getCountryCodeFromNumber(
+    //       existNumberToUpdate.phoneNumber
+    //     )}`,
+    //     number: getNsnFromNumber(existNumberToUpdate.phoneNumber)
+    //   }
+    // ]
+
+    const numbersToEdit = this.availableSecondaryIds.some(
+      availableId => availableId === String(value)
+    )
+      ? [
+          {
+            id: value,
+            cc_number: `+${getCountryCodeFromNumber(row.phoneNumber)}`,
+            number: getNsnFromNumber(row.phoneNumber)
+          },
+          {
+            id: row.id,
+            delete: true
+          }
+        ]
+      : [
+          {
+            id: value,
+            cc_number: `+${getCountryCodeFromNumber(row.phoneNumber)}`,
+            number: getNsnFromNumber(row.phoneNumber)
+          },
+          {
+            id: row.id,
+            cc_number: `+${getCountryCodeFromNumber(
+              existNumberToUpdate.phoneNumber
+            )}`,
+            number: getNsnFromNumber(existNumberToUpdate.phoneNumber)
+          }
+        ]
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
+        {
+          secondary_numbers: numbersToEdit
+        }
+      )
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: `Secondary number updated successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || `Failed to update secondary number`,
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isSecondaryNumbersUpdating = false
       })
   }
 }
@@ -229,11 +333,15 @@ decorate(AccessNumbers, {
   isMainNumberLoading: observable,
   isSecondaryNumbersLoading: observable,
   isAvailableNumbersLoading: observable,
+  isSecondaryNumbersAdding: observable,
+  isSecondaryNumbersUpdating: observable,
   getMainNumber: action,
   getSecondaryNumbers: action,
   getAvailableNumbers: action,
   deleteSecondaryNumber: action,
-  postSecondaryNumbers: action
+  postSecondaryNumbers: action,
+  clearLoadingStates: action,
+  putSecondaryNumbers: action
 })
 
 export default new AccessNumbers()

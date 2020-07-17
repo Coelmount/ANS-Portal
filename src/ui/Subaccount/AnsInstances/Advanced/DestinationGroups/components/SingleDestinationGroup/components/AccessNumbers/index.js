@@ -11,12 +11,14 @@ import Popover from '@material-ui/core/Popover'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
+import Select from '@material-ui/core/Select'
 
 import UpdateIcon from '@material-ui/icons/Update'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 import AddModal from './components/AddModal'
 import TitleBlock from 'components/TitleBlock'
@@ -42,6 +44,7 @@ import { toJS } from 'mobx'
 const addModal = 1
 const editModal = 2
 const deleteModal = 3
+const SELECT_OPTIONS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
 const AccessNumbers = observer(({ t }) => {
   const classes = useStyles()
@@ -52,11 +55,15 @@ const AccessNumbers = observer(({ t }) => {
     getMainNumber,
     getSecondaryNumbers,
     deleteSecondaryNumber,
+    clearLoadingStates,
+    putSecondaryNumbers,
     mainNumber,
     secondaryNumbers,
     isMainNumberLoading,
     isSecondaryNumbersLoading
   } = AccessNumbersStore
+
+  const [priorityValue, setPriorityValue] = useState('')
   const isLoading = isMainNumberLoading || isSecondaryNumbersLoading
 
   const openedModal = useLocalStore(() => ({
@@ -74,6 +81,7 @@ const AccessNumbers = observer(({ t }) => {
       }
       getMainNumber(payload)
       getSecondaryNumbers(payload)
+      clearLoadingStates()
     }
   }))
 
@@ -120,6 +128,16 @@ const AccessNumbers = observer(({ t }) => {
   }
   // ------------
 
+  const updateSecondaryId = (row, value) => {
+    const payload = {
+      customerId,
+      groupId,
+      row,
+      value
+    }
+    putSecondaryNumbers(payload)
+  }
+
   const extraDeleteBlock = (
     <span
       className={classes.deleteName}
@@ -150,6 +168,30 @@ const AccessNumbers = observer(({ t }) => {
     {
       id: 'value',
       label: 'phone_number'
+    },
+    {
+      id: 'edit',
+      label: 'priority_id',
+      getCellData: row => (
+        <Box>
+          <Select
+            value={row.id}
+            onChange={e => updateSecondaryId(row, e.target.value)}
+            IconComponent={ArrowDropDownIcon}
+            className={classes.searchParamSelect}
+          >
+            {SELECT_OPTIONS.map(option => (
+              <MenuItem
+                value={option}
+                key={`${option}`}
+                className={classes.selectItem}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+      )
     },
     {
       id: 'delete',
