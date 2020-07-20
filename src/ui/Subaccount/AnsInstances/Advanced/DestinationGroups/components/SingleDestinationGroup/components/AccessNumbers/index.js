@@ -56,11 +56,11 @@ const AccessNumbers = observer(({ t }) => {
     getSecondaryNumbers,
     deleteSecondaryNumber,
     clearLoadingStates,
-    putSecondaryNumbers,
     mainNumber,
     secondaryNumbers,
     isMainNumberLoading,
-    isSecondaryNumbersLoading
+    isSecondaryNumbersLoading,
+    isSecondaryNumberDeleting
   } = AccessNumbersStore
 
   const [priorityValue, setPriorityValue] = useState('')
@@ -108,7 +108,7 @@ const AccessNumbers = observer(({ t }) => {
     const payload = {
       customerId,
       groupId,
-      // destinationId: modals.data.userId,
+      secondaryNumberId: modals.data.id,
       closeModal: openedModal.close
     }
     deleteSecondaryNumber(payload)
@@ -127,16 +127,6 @@ const AccessNumbers = observer(({ t }) => {
     modals.setData(row, deleteModal)
   }
   // ------------
-
-  const updateSecondaryId = (row, value) => {
-    const payload = {
-      customerId,
-      groupId,
-      row,
-      value
-    }
-    putSecondaryNumbers(payload)
-  }
 
   const extraDeleteBlock = (
     <span
@@ -168,30 +158,6 @@ const AccessNumbers = observer(({ t }) => {
     {
       id: 'value',
       label: 'phone_number'
-    },
-    {
-      id: 'edit',
-      label: 'priority_id',
-      getCellData: row => (
-        <Box>
-          <Select
-            value={row.id}
-            onChange={e => updateSecondaryId(row, e.target.value)}
-            IconComponent={ArrowDropDownIcon}
-            className={classes.searchParamSelect}
-          >
-            {SELECT_OPTIONS.map(option => (
-              <MenuItem
-                value={option}
-                key={`${option}`}
-                className={classes.selectItem}
-              >
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-      )
     },
     {
       id: 'delete',
@@ -274,8 +240,8 @@ const AccessNumbers = observer(({ t }) => {
             handleClose={openedModal.close}
             handleDelete={handleDelete}
             extraMessageBlock={extraDeleteBlock}
-            isDeleting={false}
-            deleteSubject={`${t('access_number').toLowerCase()}`}
+            isDeleting={isSecondaryNumberDeleting}
+            deleteSubject={`${t('secondary_number').toLowerCase()}`}
             action={t('to_delete')}
             titleAction={t(`delete`)}
           />

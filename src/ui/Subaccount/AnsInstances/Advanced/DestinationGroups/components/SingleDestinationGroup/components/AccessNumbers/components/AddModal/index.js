@@ -181,7 +181,8 @@ const AddModal = ({ open, handleClose, t }) => {
   const handleAddButtonClick = () => {
     const payload = {
       customerId,
-      groupId
+      groupId,
+      closeModal: handleClose
     }
     postSecondaryNumbers(payload)
   }

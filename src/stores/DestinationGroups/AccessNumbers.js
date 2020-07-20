@@ -20,7 +20,7 @@ export class AccessNumbers {
   isSecondaryNumbersLoading = true
   isAvailableNumbersLoading = true
   isSecondaryNumbersAdding = false
-  isSecondaryNumbersUpdating = false
+  isSecondaryNumberDeleting = false
   totalPages = 0
   currentGroupId = ''
   availableSecondaryIds = []
@@ -193,8 +193,45 @@ export class AccessNumbers {
       })
   }
 
-  deleteSecondaryNumber = () => {
-    console.log('del access')
+  deleteSecondaryNumber = ({
+    customerId,
+    groupId,
+    secondaryNumberId,
+    closeModal
+  }) => {
+    this.isSecondaryNumberDeleting = true
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
+        {
+          secondary_numbers: [
+            {
+              id: secondaryNumberId,
+              delete: true
+            }
+          ]
+        }
+      )
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Secondary number successfully deleted',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete secondary number',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isSecondaryNumberDeleting = false
+      })
   }
 
   postSecondaryNumbers = ({ customerId, groupId, closeModal }) => {
@@ -202,6 +239,7 @@ export class AccessNumbers {
     const checkedNumbers = this.availableNumbers.filter(
       item => item.checked === true
     )
+
     const numbersToAdd = checkedNumbers.map(({ country_code, nsn }, index) => {
       return {
         id: this.availableSecondaryIds[index],
@@ -209,6 +247,7 @@ export class AccessNumbers {
         number: nsn
       }
     })
+
     axios
       .put(
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
@@ -243,85 +282,6 @@ export class AccessNumbers {
         this.isSecondaryNumbersAdding = false
       })
   }
-
-  putSecondaryNumbers = ({ customerId, groupId, closeModal, row, value }) => {
-    this.isSecondaryNumbersUpdating = true
-    const existNumberToUpdate = this.secondaryNumbers.find(
-      number => number.id === value
-    )
-    console.log(value, 'value')
-    console.log(toJS(this.availableSecondaryIds), 'availableSecondaryIds')
-    // const numbersToSwap = [
-    //   {
-    //     id: value,
-    //     cc_number: `+${getCountryCodeFromNumber(row.phoneNumber)}`,
-    //     number: getNsnFromNumber(row.phoneNumber)
-    //   },
-    //   {
-    //     id: row.id,
-    //     cc_number: `+${getCountryCodeFromNumber(
-    //       existNumberToUpdate.phoneNumber
-    //     )}`,
-    //     number: getNsnFromNumber(existNumberToUpdate.phoneNumber)
-    //   }
-    // ]
-
-    const numbersToEdit = this.availableSecondaryIds.some(
-      availableId => availableId === String(value)
-    )
-      ? [
-          {
-            id: value,
-            cc_number: `+${getCountryCodeFromNumber(row.phoneNumber)}`,
-            number: getNsnFromNumber(row.phoneNumber)
-          },
-          {
-            id: row.id,
-            delete: true
-          }
-        ]
-      : [
-          {
-            id: value,
-            cc_number: `+${getCountryCodeFromNumber(row.phoneNumber)}`,
-            number: getNsnFromNumber(row.phoneNumber)
-          },
-          {
-            id: row.id,
-            cc_number: `+${getCountryCodeFromNumber(
-              existNumberToUpdate.phoneNumber
-            )}`,
-            number: getNsnFromNumber(existNumberToUpdate.phoneNumber)
-          }
-        ]
-    axios
-      .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
-        {
-          secondary_numbers: numbersToEdit
-        }
-      )
-      .then(() => {
-        closeModal()
-        SnackbarStore.enqueueSnackbar({
-          message: `Secondary number updated successfully`,
-          options: {
-            variant: 'success'
-          }
-        })
-      })
-      .catch(e => {
-        SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || `Failed to update secondary number`,
-          options: {
-            variant: 'error'
-          }
-        })
-      })
-      .finally(() => {
-        this.isSecondaryNumbersUpdating = false
-      })
-  }
 }
 
 decorate(AccessNumbers, {
@@ -334,14 +294,13 @@ decorate(AccessNumbers, {
   isSecondaryNumbersLoading: observable,
   isAvailableNumbersLoading: observable,
   isSecondaryNumbersAdding: observable,
-  isSecondaryNumbersUpdating: observable,
+  isSecondaryNumberDeleting: observable,
   getMainNumber: action,
   getSecondaryNumbers: action,
   getAvailableNumbers: action,
   deleteSecondaryNumber: action,
   postSecondaryNumbers: action,
-  clearLoadingStates: action,
-  putSecondaryNumbers: action
+  clearLoadingStates: action
 })
 
 export default new AccessNumbers()
