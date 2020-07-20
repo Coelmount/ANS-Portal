@@ -40,12 +40,12 @@ const tabPanelItems = [
   },
   {
     index: 2,
-    component: <Settings />,
+    component: <WhiteBlackList />,
     label: 'white_black_list'
   },
   {
     index: 3,
-    component: <WhiteBlackList />,
+    component: <Settings />,
     label: 'settings'
   }
 ]
