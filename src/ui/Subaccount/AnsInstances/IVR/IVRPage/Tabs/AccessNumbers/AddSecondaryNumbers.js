@@ -63,8 +63,6 @@ const AddModal = props => {
   const [orderBy, setOrderBy] = useState('id')
   const [countryCode, setCountryCode] = useState('')
 
-  console.log(freeSecondaryIDs, numberOfChecked)
-
   useEffect(() => {
     let cc = ''
     if (!!selectedCountry) {
@@ -79,7 +77,6 @@ const AddModal = props => {
       orderBy,
       countryCode: cc
     }
-
     getAvailableNumbers(payload)
   }, [])
 

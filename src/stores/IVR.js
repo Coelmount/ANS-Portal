@@ -452,29 +452,26 @@ class IVR {
   getSecondaryNumber = (tenantId, groupId, ivrId) => {
     this.isLoadingSecondaryNumbers = true
     this.secondaryNumbers = []
+    this.freeSecondaryIDs = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
     axios
       .get(
         `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/secondary_numbers/`
       )
       .then(res => {
         this.secondaryNumbers = res.data.secondaryNumbers.length
-          ? res.data.secondaryNumbers
-              // .sort((a, b) => {
-              //   if (a.id < b.id) return 1
-              //   if (a.id > b.id) return -1
-              //   return 0
-              // })
-              .map(el => ({
-                id: el.id,
-                value: el.phoneNumber,
-                country: getCountryNameFromNumber(el.phoneNumber)
-              }))
+          ? res.data.secondaryNumbers.map(el => ({
+              id: el.id,
+              value: el.phoneNumber,
+              country: getCountryNameFromNumber(el.phoneNumber)
+            }))
           : []
-        console.log(this.secondaryNumbers)
-        this.freeSecondaryIDs = difference(
-          this.freeSecondaryIDs,
-          this.secondaryNumbers.map(el => el.id)
-        )
+        this.freeSecondaryIDs = [
+          ...difference(
+            this.freeSecondaryIDs,
+            res.data.secondaryNumbers.map(el => el.id)
+          )
+        ]
+        console.log(this.freeSecondaryIDs)
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -575,7 +572,7 @@ class IVR {
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr&&in_use=false&&country_code=${countryCodeField}`
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr&in_use=false&&country_code=${countryCodeField}`
       )
       .then(res => {
         const pagination = res.data.pagination
