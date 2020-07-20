@@ -279,7 +279,7 @@ const AddModal = props => {
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
             <Typography className={classes.setEntitlementsTitle}>
-              {t('select_access_number')}
+              {t('select_access_ph_num')}
             </Typography>
 
             <CountryInput
@@ -330,7 +330,7 @@ const AddModal = props => {
                 isAddingSecondaryNumbers
               }
             >
-              {`${t('Add')}${
+              {`${t('add')}${
                 numberOfChecked > 0 ? `(${numberOfChecked})` : ''
               }`}
             </Button>

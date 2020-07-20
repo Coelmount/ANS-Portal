@@ -211,7 +211,7 @@ const WhiteBlackList = props => {
     //   }
     // },
     {
-      id: 'phone',
+      id: 'phoneNumber',
       label: t('phone_number'),
       getCellData: row => row.phoneNumber
     },
@@ -320,7 +320,7 @@ const WhiteBlackList = props => {
             >
               <AddIcon />
             </Button>
-            <Box>{`${t('add')} (${t('max')} 10)`}</Box>
+            <Box>{`${t('add')} (max 10)`}</Box>
           </Box>
           {showAddNumbersModal && (
             <AddNumber

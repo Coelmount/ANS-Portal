@@ -89,7 +89,7 @@ const EditGreeting = props => {
       <DialogTitle className={classes.title}>
         {menuType === 'businessHours'
           ? t('edit_business_hours')
-          : t('edit_holyday_hours')}
+          : t('edit_holiday_hours')}
         <IconButton
           aria-label='close'
           onClick={handleClose}

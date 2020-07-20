@@ -92,10 +92,17 @@ const UpdateMainNumber = props => {
             <Select
               icon={<PhoneOutlinedIcon />}
               value={number}
-              options={ivrNumbers.map(el => ({
-                value: `${el.country_code}${el.nsn}`,
-                label: `${el.country_code}${el.nsn}`
-              }))}
+              options={[
+                {
+                  value: mainNumber.value,
+                  label: mainNumber.value,
+                  show: !mainNumber.value
+                },
+                ...ivrNumbers.map(el => ({
+                  value: `${el.country_code}${el.nsn}`,
+                  label: `${el.country_code}${el.nsn}`
+                }))
+              ]}
               onChange={e => setNumber(e.target.value)}
             />
           </Box>

@@ -498,7 +498,7 @@ class IVR {
     this.ivrNumbers = []
     axios
       .get(
-        `/tenants/${tenantId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr`
+        `/tenants/${tenantId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr&in_use=false`
       )
       .then(res => {
         this.ivrNumbers = res.data.numbers

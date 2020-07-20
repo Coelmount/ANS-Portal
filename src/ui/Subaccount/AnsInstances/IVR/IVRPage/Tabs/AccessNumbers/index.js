@@ -240,7 +240,7 @@ const AccessNumbers = props => {
         >
           <AddIcon />
         </Button>
-        <Box>{`${t('add')} (${t('max')} 10)`}</Box>
+        <Box>{`${t('add')} (max 10)`}</Box>
       </Box>
       {showDeleteNumber && (
         <DeleteModal
