@@ -21,6 +21,8 @@ export class AccessNumbers {
   isAvailableNumbersLoading = true
   isSecondaryNumbersAdding = false
   isSecondaryNumberDeleting = false
+  isAccessNumbersLoading = true
+  isUpdatingMainNumber = false
   totalPages = 0
   currentGroupId = ''
   availableSecondaryIds = []
@@ -30,7 +32,7 @@ export class AccessNumbers {
   }
 
   getMainNumber = ({ customerId, groupId, destinationGroupName }) => {
-    this.accessNumbers = []
+    this.mainNumber = null
     this.isMainNumberLoading = true
 
     axios
@@ -48,6 +50,8 @@ export class AccessNumbers {
           .then(res => {
             const number = res.data.mainNumber
             this.mainNumber = {
+              country_code: `+${getCountryCodeFromNumber(number)}`,
+              nsn: getNsnFromNumber(number),
               value: number,
               country: getCountryNameFromNumber(number)
             }
@@ -89,10 +93,6 @@ export class AccessNumbers {
             this.availableSecondaryIds = difference(
               DEFAULT_IDS,
               busySecondaryIds
-            )
-            console.log(
-              this.availableSecondaryIds,
-              'this.availableSecondaryIds'
             )
 
             this.secondaryNumbers = numbers.map(item => {
@@ -151,7 +151,7 @@ export class AccessNumbers {
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=advanced&country_code=${countryCodeField}`
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=advanced&in_use=false&country_code=${countryCodeField}`
       )
       .then(res => {
         const pagination = res.data.pagination
@@ -190,47 +190,6 @@ export class AccessNumbers {
       })
       .finally(() => {
         this.isAvailableNumbersLoading = false
-      })
-  }
-
-  deleteSecondaryNumber = ({
-    customerId,
-    groupId,
-    secondaryNumberId,
-    closeModal
-  }) => {
-    this.isSecondaryNumberDeleting = true
-    axios
-      .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
-        {
-          secondary_numbers: [
-            {
-              id: secondaryNumberId,
-              delete: true
-            }
-          ]
-        }
-      )
-      .then(() => {
-        closeModal()
-        SnackbarStore.enqueueSnackbar({
-          message: 'Secondary number successfully deleted',
-          options: {
-            variant: 'success'
-          }
-        })
-      })
-      .catch(e => {
-        SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to delete secondary number',
-          options: {
-            variant: 'error'
-          }
-        })
-      })
-      .finally(() => {
-        this.isSecondaryNumberDeleting = false
       })
   }
 
@@ -282,6 +241,76 @@ export class AccessNumbers {
         this.isSecondaryNumbersAdding = false
       })
   }
+
+  putUpdateMainNumber = (customerId, groupId, data, callback) => {
+    this.isUpdatingMainNumber = true
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/main_number/`,
+        data
+      )
+      .then(() => {
+        callback && callback()
+        SnackbarStore.enqueueSnackbar({
+          message: `Main number updated successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update main number',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isUpdatingMainNumber = false
+      })
+  }
+
+  deleteSecondaryNumber = ({
+    customerId,
+    groupId,
+    secondaryNumberId,
+    closeModal
+  }) => {
+    this.isSecondaryNumberDeleting = true
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
+        {
+          secondary_numbers: [
+            {
+              id: secondaryNumberId,
+              delete: true
+            }
+          ]
+        }
+      )
+      .then(() => {
+        closeModal()
+        SnackbarStore.enqueueSnackbar({
+          message: 'Secondary number successfully deleted',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to delete secondary number',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isSecondaryNumberDeleting = false
+      })
+  }
 }
 
 decorate(AccessNumbers, {
@@ -295,12 +324,15 @@ decorate(AccessNumbers, {
   isAvailableNumbersLoading: observable,
   isSecondaryNumbersAdding: observable,
   isSecondaryNumberDeleting: observable,
+  isAccessNumbersLoading: observable,
+  isUpdatingMainNumber: observable,
   getMainNumber: action,
   getSecondaryNumbers: action,
   getAvailableNumbers: action,
   deleteSecondaryNumber: action,
   postSecondaryNumbers: action,
-  clearLoadingStates: action
+  clearLoadingStates: action,
+  putUpdateMainNumber: action
 })
 
 export default new AccessNumbers()

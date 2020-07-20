@@ -21,6 +21,7 @@ import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 import AddModal from './components/AddModal'
+import EditMainNumberModal from './components/EditMainNumberModal'
 import TitleBlock from 'components/TitleBlock'
 import CustomTable from 'components/CustomTable'
 import CustomContainer from 'components/CustomContainer'
@@ -230,6 +231,12 @@ const AccessNumbers = observer(({ t }) => {
         {openedModal.id === addModal && (
           <AddModal
             open={openedModal.id === addModal}
+            handleClose={openedModal.close}
+          />
+        )}
+        {openedModal.id === editModal && (
+          <EditMainNumberModal
+            open={openedModal.id === editModal}
             handleClose={openedModal.close}
           />
         )}
