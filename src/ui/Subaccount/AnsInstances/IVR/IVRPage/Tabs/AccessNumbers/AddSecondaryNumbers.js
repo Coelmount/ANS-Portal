@@ -329,7 +329,7 @@ const AddModal = props => {
               onClick={handleAddNumbers}
               disabled={
                 !numbers.some(item => item.checked === true) ||
-                numberOfChecked >= freeSecondaryIDs.length ||
+                numberOfChecked > freeSecondaryIDs.length ||
                 isAddingSecondaryNumbers
               }
             >
