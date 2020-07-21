@@ -38,7 +38,7 @@ import AccessNumbersStore from 'stores/DestinationGroups/AccessNumbers'
 import useStyles from './styles'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import notificationIcon from 'source/images/svg/no-numbers-notification.svg'
-import EditIcon from './EditIcon'
+import EditIcon from 'source/images/components/EditIcon'
 
 import { toJS } from 'mobx'
 

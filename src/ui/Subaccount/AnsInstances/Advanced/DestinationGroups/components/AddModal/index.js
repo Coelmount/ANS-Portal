@@ -22,7 +22,7 @@ import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
 import Checkbox from 'components/Checkbox'
-import POLICY_OPTIONS from './policyOptions'
+import POLICY_OPTIONS from '../../policyOptions'
 
 import useStyles from './styles'
 
@@ -47,22 +47,30 @@ const AddModal = ({ t, open, handleClose }) => {
       this.values[field] = value
     },
     get isFieldsFilled() {
-      return this.values.name && this.values.policy
+      const isRequiredFields =
+        this.values.name && this.values.policy && !this.values.huntAfterNoAnswer
+
+      const isOptionalFields =
+        this.values.name &&
+        this.values.policy &&
+        this.values.huntAfterNoAnswer &&
+        this.values.noAnswerNumberOfRings
+
+      return isRequiredFields || isOptionalFields
     }
   }))
 
-  console.log(
-    inputStore.values.noAnswerNumberOfRings,
-    'noAnswerNumberOfRings store'
-  )
-  console.log(inputStore.values.huntAfterNoAnswer, 'huntAfterNoAnswer store')
   const handleAdd = () => {
     const payload = {
       customerId,
       groupId,
       name: inputStore.values.name,
       policy: inputStore.values.policy,
+      huntAfterNoAnswer: inputStore.values.huntAfterNoAnswer,
       closeModal: handleClose
+    }
+    if (inputStore.values.huntAfterNoAnswer) {
+      payload.noAnswerNumberOfRings = inputStore.values.noAnswerNumberOfRings
     }
     postDestinationGroup(payload)
   }

@@ -3,6 +3,7 @@ import { decorate, observable, action, computed } from 'mobx'
 import axios from 'utils/axios'
 import SnackbarStore from '../Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import capitalize from 'lodash/capitalize'
 
 export class DestinationGroups {
   destinationGroups = []
@@ -49,16 +50,25 @@ export class DestinationGroups {
     customerId,
     groupId,
     name,
-    phoneNumber,
+    policy,
+    huntAfterNoAnswer,
+    noAnswerNumberOfRings,
     closeModal
   }) => {
-    console.log(name, phoneNumber, 'post')
     // this.isDestinationGroupPosting = true
+    const data = {
+      name,
+      routing_policy: capitalize(policy)
+    }
+    if (huntAfterNoAnswer) {
+      data.no_answer_hunt = true
+      data.no_answer_number_of_rings = Number(noAnswerNumberOfRings)
+    }
     axios
-      .post(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`, {
-        name,
-        phoneNumber
-      })
+      .post(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced`,
+        data
+      )
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({

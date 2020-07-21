@@ -162,9 +162,9 @@ const DestinationGroups = observer(({ t }) => {
   // --------
 
   const titleData = {
-    mainText: `${t('advanced')}: ${t('destination_groups')}`,
-    iconCapture: t('add'),
-    Icon: <AddOutlinedIcon />
+    mainText: `${t('advanced')}: ${t('destination_groups')}`
+    // iconCapture: t('add'),
+    // Icon: <AddOutlinedIcon />
   }
 
   const extraDeleteBlock = (
@@ -223,7 +223,7 @@ const DestinationGroups = observer(({ t }) => {
           <CustomBreadcrumbs />
           <TitleBlock
             titleData={titleData}
-            handleOpen={() => openedModal.open(addModal)}
+            // handleOpen={() => openedModal.open(addModal)}
           />
         </CustomContainer>
         {isDestinationGroupsLoading ? (
