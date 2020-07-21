@@ -84,7 +84,7 @@ const Submenus = props => {
           }}
         />
         {submenus.map((el, index) => (
-          <Accordion>
+          <Accordion key={el.submenuId}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               className={classes.summary}
