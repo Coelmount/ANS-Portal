@@ -284,7 +284,12 @@ const WhiteBlackList = props => {
             showSearchBar={false}
             showToolBar={false}
             noAvailableDataMessage={t('no_phone_numbers_available')}
-            rows={numbers}
+            rows={
+              whiteBlackList.mode === 'blacklist' ||
+              whiteBlackList.mode === 'whitelist'
+                ? numbers
+                : []
+            }
           />
           <Box className={classes.addButtonBox}>
             <Button
