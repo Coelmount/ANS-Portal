@@ -128,8 +128,6 @@ const SelectMediaFile = props => {
     })
   }
 
-  console.log('ann', announcementsForPost)
-
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
@@ -155,7 +153,6 @@ const SelectMediaFile = props => {
             boxShadow: 'none'
           }}
           onSelectionChange={rows => {
-            console.log('change', rows)
             announcementsForPost = rows
             // return rows
           }}

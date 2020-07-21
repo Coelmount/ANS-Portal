@@ -39,7 +39,6 @@ const EditGreeting = props => {
       announcementSelection: 'Default',
       keys: config.group.default_keys_submenu
     }
-    console.log(data)
 
     postAddSubmenu(
       match.customerId,

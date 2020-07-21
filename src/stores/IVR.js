@@ -471,7 +471,6 @@ class IVR {
             res.data.secondaryNumbers.map(el => el.id)
           )
         ]
-        console.log(this.freeSecondaryIDs)
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
