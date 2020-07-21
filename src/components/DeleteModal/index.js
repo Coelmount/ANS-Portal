@@ -10,6 +10,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 
 import Loading from 'components/Loading'
+
 import useStyles from './styles'
 
 const DeleteModal = props => {
@@ -26,6 +27,7 @@ const DeleteModal = props => {
     titleAction,
     extraMessageBlock,
     identifier,
+    customIcon,
     t
   } = props
 
@@ -45,7 +47,7 @@ const DeleteModal = props => {
     <Dialog
       className={classes.deleteModal}
       disableAutoFocus={true}
-      open={open}
+      open={!!open}
       onClose={handleClose}
     >
       {isDeleting ? (
@@ -56,7 +58,7 @@ const DeleteModal = props => {
             <Box className={classes.deleteTitleBlock}>
               <img
                 className={classes.deleteIcon}
-                src={deleteIcon}
+                src={customIcon || deleteIcon}
                 alt='delete icon'
               />
               <Typography className={classes.deleteTitle}>
@@ -73,7 +75,7 @@ const DeleteModal = props => {
               <span>{t(`are_you_sure_you_want`)}</span>
               <span className={classes.boldText}> {action}</span>
               <span>{` ${extraDeleteSubject || deleteSubject}`}</span>
-              {(idArr.length || id) && (
+              {(idArr.length || id || name) && (
                 <span className={classes.boldText}>
                   {` ${name ? name : ''}${` id: ${
                     idArr.length ? idArr.join(', ') : id

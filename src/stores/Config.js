@@ -9,10 +9,10 @@ export class ConfigStore {
   customerStatuses = []
   timeZones = []
   countries = []
-  isLoadingConfig = true
-  isLoadingCustomerStatuses = true
-  isLoadingTimeZones = true
-  isLoadingCountries = true
+  isLoadingConfig = false
+  isLoadingCustomerStatuses = false
+  isLoadingTimeZones = false
+  isLoadingCountries = false
 
   getConfig = () => {
     this.isLoadingConfig = true

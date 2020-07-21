@@ -27,7 +27,9 @@ const EditEntitlements = props => {
     entitlements: propsEntitlements,
     putTotalEntitlements
   } = entitlementsStore
-  const [entitlements, setEntitlements] = useState(toJS(propsEntitlements))
+  const [entitlements, setEntitlements] = useState(() =>
+    toJS(propsEntitlements)
+  )
   const [disabledSave, setDisabledSave] = useState(false)
   const classes = useStyles()
   const match = useParams()

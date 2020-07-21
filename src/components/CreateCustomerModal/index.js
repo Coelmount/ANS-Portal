@@ -38,7 +38,7 @@ const CreateCustomer = props => {
   } = props
   const { step, changeCustomer, setCreateSubaccount } = store
 
-  const { config, getConfig, isLoadingConfig } = ConfigStore
+  const { getConfig, isLoadingConfig } = ConfigStore
 
   // const step = 4
   const classes = useStyles()
