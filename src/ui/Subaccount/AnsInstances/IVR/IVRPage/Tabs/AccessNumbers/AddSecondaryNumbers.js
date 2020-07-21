@@ -10,7 +10,6 @@ import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import IVRStore from 'stores/IVR'
@@ -52,7 +51,6 @@ const AddModal = props => {
   })
 
   const [numbers, setNumbers] = useState([])
-  const [selectedNumber, setSelectedNumber] = useState(null)
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [page, setPage] = useState(1)
@@ -61,7 +59,6 @@ const AddModal = props => {
   )
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
-  const [countryCode, setCountryCode] = useState('')
 
   useEffect(() => {
     let cc = ''

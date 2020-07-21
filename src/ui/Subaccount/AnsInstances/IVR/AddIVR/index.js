@@ -16,8 +16,6 @@ import Box from '@material-ui/core/Box'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormControl from '@material-ui/core/FormControl'
-import FormLabel from '@material-ui/core/FormLabel'
 
 import CloseIcon from '@material-ui/icons/Close'
 import NameIVRIcon from 'source/images/svg/nameIVRIcon.svg'
@@ -40,7 +38,7 @@ const AddIVR = props => {
     postAddIVR,
     addIVR
   } = IVRStore
-  const { getCustomer, customer, isLoadingCustomer } = CustomersStore
+  const { getCustomer, isLoadingCustomer } = CustomersStore
   const { getConfig, isLoadingConfig, config } = ConfigStore
   const [type, setType] = useState(
     !singleLvl && multiLvl ? 'Standard' : 'Basic'

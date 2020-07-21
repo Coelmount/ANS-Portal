@@ -8,14 +8,12 @@ import classnames from 'classnames'
 import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Grow from '@material-ui/core/Grow'
 import Popper from '@material-ui/core/Popper'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
@@ -42,7 +40,6 @@ const IVRPage = props => {
   const location = useLocation()
   const classes = useStyles()
   const { ivr, isLoadingIVR, getIVR } = IVRStore
-  const [activeTab, setActiveTab] = useState(0)
   const [open, setOpen] = useState(false)
   const anchorRef = useRef(null)
   const [ivrMenuName, setIVRMenuName] = useState(t('ivr_menus'))
@@ -57,7 +54,6 @@ const IVRPage = props => {
   }
 
   const handleChange = (event, newValue, hash) => {
-    setActiveTab(newValue)
     switch (newValue) {
       case 0:
         history.push('#access_numbers')
@@ -86,6 +82,9 @@ const IVRPage = props => {
         history.push('#submenus')
         setIVRMenuName(t('ivr_menus'))
         break
+      default:
+        history.push('#access_numbers')
+        setIVRMenuName(t('ivr_menus'))
     }
   }
 
@@ -135,6 +134,8 @@ const IVRPage = props => {
         case '#ivr_menus_hm':
           setIVRMenuName(t('holiday_hours_menu'))
           break
+        default:
+          setIVRMenuName(t('ivr_menus'))
       }
       handleChange(event, newValue, hash)
     } else {

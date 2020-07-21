@@ -11,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import CloseIcon from '@material-ui/icons/Close'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
@@ -26,7 +25,7 @@ const AddDestinationNumber = ({ handleClose, t }) => {
   const classes = useStyles()
   const match = useParams()
 
-  const { changeStep, postInstance, isPostingInstance } = BasicTranslationsStore
+  const { postInstance, isPostingInstance } = BasicTranslationsStore
   const { getCountries, countries, isLoadingCountries } = ConfigStore
 
   const [selectedCountry, setSelectedCountry] = useState(null)

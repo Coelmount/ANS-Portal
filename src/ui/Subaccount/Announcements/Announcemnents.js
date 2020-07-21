@@ -14,7 +14,6 @@ import DeleteModal from 'components/DeleteModal'
 
 import tableIcons from './tableIcons'
 import ClearIcon from '@material-ui/icons/Clear'
-import editIcon from 'source/images/svg/editIcon.svg'
 
 import useStyles from './styles'
 

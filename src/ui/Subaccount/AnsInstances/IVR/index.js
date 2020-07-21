@@ -7,14 +7,14 @@ import MaterialLink from '@material-ui/core/Link'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
 
-import Switch from 'components/Switch'
+//import Switch from 'components/Switch'
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CustomTable from 'components/CustomTable'
 import AddIVR from './AddIVR'
-import DisableEnableIVR from 'components/DeleteModal'
+//import DisableEnableIVR from 'components/DeleteModal'
 import DeleteModal from 'components/DeleteModal'
 
 import AddIcon from '@material-ui/icons/Add'
@@ -36,8 +36,6 @@ const IVR = props => {
     singleLvl,
     multiLvl,
     getCheckLicensesIVR,
-    isLoadingLicenses,
-    isUpdatingIVR,
     putUpdateIVR,
     deleteIVR,
     isDeletingIVR
@@ -51,20 +49,20 @@ const IVR = props => {
     getCheckLicensesIVR(match.customerId, match.groupId)
   }, [])
 
-  const handleSwitchStatus = () => {
-    putUpdateIVR(
-      match.customerId,
-      match.groupId,
-      ivrForSwitchStatus.serviceUserId,
-      {
-        ivrInstance: {
-          active: !ivrForSwitchStatus.active,
-          serviceUserId: ivrForSwitchStatus.serviceUserId
-        }
-      },
-      handleClose
-    )
-  }
+  // const handleSwitchStatus = () => {
+  //   putUpdateIVR(
+  //     match.customerId,
+  //     match.groupId,
+  //     ivrForSwitchStatus.serviceUserId,
+  //     {
+  //       ivrInstance: {
+  //         active: !ivrForSwitchStatus.active,
+  //         serviceUserId: ivrForSwitchStatus.serviceUserId
+  //       }
+  //     },
+  //     handleClose
+  //   )
+  // }
 
   const handleDelete = () => {
     deleteIVR(

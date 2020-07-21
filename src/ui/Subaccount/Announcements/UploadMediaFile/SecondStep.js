@@ -10,9 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import CloseIcon from '@material-ui/icons/Close'
-import uploadIcon from 'source/images/svg/upload.svg'
 import VolumeUpIcon from '@material-ui/icons/VolumeUp'
 
 import AnnouncementsStore from 'stores/Announcements'
@@ -24,7 +22,7 @@ import useStyles from './styles'
 
 const SecondStep = props => {
   const match = useParams()
-  const { handleClose, setStep, t, announcements } = props
+  const { handleClose, t, announcements } = props
   const [isLoading, setIsLoading] = useState(false)
   const [stateAnnouncements, setStateAnnouncements] = useState([])
 
