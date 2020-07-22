@@ -92,7 +92,7 @@ const AddIVR = props => {
                           newArray.push('')
                           setArrayOfInputs(newArray)
                         }}
-                        disabled={countNumbers + arrayOfInputs.length >= 10}
+                        // disabled={countNumbers + arrayOfInputs.length >= 10}
                       >
                         <AddIcon />
                       </Button>

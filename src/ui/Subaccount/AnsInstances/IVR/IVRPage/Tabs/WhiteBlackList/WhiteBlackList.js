@@ -304,7 +304,7 @@ const WhiteBlackList = props => {
           <CustomTable
             columns={columns}
             firstCell={false}
-            showPagination={false}
+            // showPagination={false}
             showSearchBar={false}
             showToolBar={false}
             noAvailableDataMessage={t('no_phone_numbers_available')}
@@ -325,7 +325,7 @@ const WhiteBlackList = props => {
             >
               <AddIcon />
             </Button>
-            <Box>{`${t('add')} (max 10)`}</Box>
+            <Box>{`${t('add')}`}</Box>
           </Box>
           {showAddNumbersModal && (
             <AddNumber
