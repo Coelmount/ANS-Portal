@@ -381,12 +381,30 @@ class IVR {
       .finally(() => (this.isDeletingSubmenu = false))
   }
 
-  deleteNumberFromCallBlocking = (tenantId, groupId, ivrId, data, callback) => {
+  deleteNumberFromCallBlocking = (
+    tenantId,
+    groupId,
+    ivrId,
+    singleDelete,
+    callback,
+    numbers
+  ) => {
     this.isDeletingNumbers = true
+
+    const itemsToDelete = !singleDelete
+      ? numbers.filter(number => number.checked)
+      : []
+    const numbersToDelete = itemsToDelete.map(item => item.phoneNumber)
+    const dataToDelete = {
+      data: {
+        mode: this.whiteBlackList.mode,
+        numbers: singleDelete ? [numbers] : numbersToDelete
+      }
+    }
     axios
       .delete(
         `/tenants/${tenantId}/groups/${groupId}/services/ivrs/${ivrId}/call_blocking`,
-        data
+        dataToDelete
       )
       .then(() => callback && callback())
       .catch(e =>
@@ -409,6 +427,14 @@ class IVR {
       )
       .then(() => {
         callback && callback()
+        SnackbarStore.enqueueSnackbar({
+          message: `Phone number${
+            data.numbers.length > 1 ? 's' : ''
+          } successfully added`,
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({

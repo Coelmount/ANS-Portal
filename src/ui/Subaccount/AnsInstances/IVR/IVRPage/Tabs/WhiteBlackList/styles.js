@@ -162,6 +162,23 @@ const useStyles = makeStyles(theme => ({
     height: 30,
     minWidth: 30,
     padding: 0
+  },
+  disabledButton: {
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
+  },
+  disabledLabel: {
+    opacity: 0.5
+  },
+  boldDeleteText: {
+    fontWeight: 600,
+    fontSize: 16
+  },
+  deleteText: {
+    fontSize: 16
   }
 }))
 
