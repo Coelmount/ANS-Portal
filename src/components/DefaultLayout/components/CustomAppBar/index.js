@@ -18,6 +18,8 @@ import MenuIcon from '@material-ui/icons/Menu'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import ExpandMoreOutlinedIcon from '@material-ui/icons/ExpandMoreOutlined'
 
+import ChangePasswordModal from 'components/ChangePassword'
+
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
 
@@ -32,6 +34,7 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle, t }) => {
   } = AuthStore
   const { getLocale } = LanguagesStore
   const [anchorEl, setAnchorEl] = useState(null)
+  const [showChangePassModal, setShowChangePassModal] = useState(false)
 
   const changeLanguage = lng => {
     getLocale(lng, true)
@@ -76,7 +79,12 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle, t }) => {
               onClose={handleCloseProfileMenu}
               className={classes.profileMenu}
             >
-              <MenuItem onClick={handleCloseProfileMenu}>
+              <MenuItem
+                onClick={() => {
+                  setShowChangePassModal(true)
+                  setAnchorEl(false)
+                }}
+              >
                 {t('change_password')}
               </MenuItem>
               <MenuItem
@@ -113,6 +121,12 @@ const CustomDrawer = ({ classes, notFoundPage, handleDrawerToggle, t }) => {
             </Box>
           </Box>
         </Toolbar>
+        {showChangePassModal && (
+          <ChangePasswordModal
+            open={showChangePassModal}
+            handleClose={() => setShowChangePassModal(false)}
+          />
+        )}
       </AppBar>
     </Fragment>
   )
