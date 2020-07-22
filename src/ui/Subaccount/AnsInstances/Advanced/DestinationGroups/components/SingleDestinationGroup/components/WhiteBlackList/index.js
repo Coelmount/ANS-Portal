@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 import has from 'lodash/has'
+import classnames from 'classnames'
 
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -10,6 +11,9 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import { withStyles } from '@material-ui/core/styles'
 
 import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
@@ -26,6 +30,12 @@ import AddIcon from '@material-ui/icons/Add'
 import WhiteBlackListStore from 'stores/DestinationGroups/WhiteBlackList'
 import useStyles from './styles'
 import { toJS } from 'mobx'
+
+const StyledTooltip = withStyles({
+  tooltip: {
+    textAlign: 'center'
+  }
+})(Tooltip)
 
 const WhiteBlackList = props => {
   const { t } = props
@@ -45,9 +55,11 @@ const WhiteBlackList = props => {
   const [selectAll, setSelectAll] = useState(false)
   const [numbers, setNumbers] = useState([])
   const [singleDeleteNumber, setSingleDeleteNumber] = useState('')
+  console.log(singleDeleteNumber, 'singleDeleteNumber state')
   const [singleDelete, setSingleDelete] = useState(false)
   const [multipleDelete, setMultipleDelete] = useState(false)
   const [showAddNumbersModal, setShowAddNumbersModal] = useState(false)
+  const [deleteMessageBlock, setDeleteMessageBlock] = useState(null)
 
   useEffect(() => {
     if (!isLoadingWhiteBlackList) {
@@ -123,6 +135,8 @@ const WhiteBlackList = props => {
     setSingleDelete(false)
     setMultipleDelete(false)
     setSelectAll(false)
+    setSingleDeleteNumber('')
+    setDeleteMessageBlock(null)
     const payload = {
       customerId,
       groupId,
@@ -131,22 +145,45 @@ const WhiteBlackList = props => {
     getWhiteBlackList(payload)
   }
 
-  const handleDelete = id => {
-    if (Array.isArray(id)) {
+  const handleDelete = () => {
+    if (singleDelete) {
       deleteNumberFromCallBlocking(
         customerId,
         groupId,
-        { data: { mode: whiteBlackList.mode, numbers: id } },
-        handleClose
+        singleDelete,
+        handleClose,
+        singleDeleteNumber
       )
     } else {
       deleteNumberFromCallBlocking(
         customerId,
         groupId,
-        { data: { mode: whiteBlackList.mode, numbers: [id] } },
-        handleClose
+        singleDelete,
+        handleClose,
+        numbers
       )
     }
+  }
+
+  const createDeleteMessageBlock = singleNumber => {
+    const checkedNumbers = numbers.filter(number => number.checked)
+    const numbersArr = singleDeleteNumber
+      ? [singleDeleteNumber]
+      : checkedNumbers.map(number => number.phoneNumber)
+    const splitedNumbersStr = singleNumber
+      ? `${singleNumber}`
+      : numbersArr.join(', ')
+    const totalMessage = `${splitedNumbersStr}`
+    const deleteMessageBlock = (
+      <Box>
+        <span className={classes.boldDeleteText}>{totalMessage}</span>
+        <span
+          className={classes.deleteText}
+        >{` from ${whiteBlackList.mode} ?`}</span>
+      </Box>
+    )
+
+    setDeleteMessageBlock(deleteMessageBlock)
   }
 
   const columns = [
@@ -201,6 +238,7 @@ const WhiteBlackList = props => {
           disabled={!numbers.some(el => el.checked)}
           onClick={() => {
             setMultipleDelete(true)
+            createDeleteMessageBlock()
           }}
         >
           <img
@@ -217,6 +255,7 @@ const WhiteBlackList = props => {
           onClick={() => {
             setSingleDeleteNumber(row.phoneNumber)
             setSingleDelete(true)
+            createDeleteMessageBlock(row.phoneNumber)
           }}
         >
           <RemoveIcon />
@@ -234,53 +273,70 @@ const WhiteBlackList = props => {
             onChange={changeMode}
             className={classes.radioGroup}
           >
-            <FormControlLabel
-              value='blacklist'
-              control={
-                <Radio
-                  checkedIcon={<span className={classes.checkedRadioIcon} />}
-                  icon={<span className={classes.radioIcon} />}
-                />
+            <StyledTooltip
+              title={
+                whiteBlackList.mode === 'whitelist'
+                  ? t('black_list_disabled_radio_tooltip')
+                  : ''
               }
-              label={
-                <Box className={classes.formControlLabel}>
-                  <img
-                    src={blacklist}
-                    alt='blacklist'
-                    className={classes.icons}
+            >
+              <FormControlLabel
+                value='blacklist'
+                control={
+                  <Radio
+                    checkedIcon={<span className={classes.checkedRadioIcon} />}
+                    icon={<span className={classes.radioIcon} />}
                   />
-                  <Box>{t('blacklist')}</Box>
-                </Box>
+                }
+                label={
+                  <Box className={classes.formControlLabel}>
+                    <img
+                      src={blacklist}
+                      alt='blacklist'
+                      className={classes.icons}
+                    />
+                    <Box>{t('blacklist')}</Box>
+                  </Box>
+                }
+                disabled={whiteBlackList.mode === 'whitelist'}
+              />
+            </StyledTooltip>
+            <StyledTooltip
+              title={
+                whiteBlackList.mode === 'blacklist'
+                  ? t('white_list_disabled_radio_tooltip')
+                  : ''
               }
-              disabled={whiteBlackList.mode === 'whitelist'}
-            />
-            <FormControlLabel
-              value='whitelist'
-              control={
-                <Radio
-                  checkedIcon={<span className={classes.checkedRadioIcon} />}
-                  icon={<span className={classes.radioIcon} />}
-                />
-              }
-              label={
-                <Box className={classes.formControlLabel}>
-                  <img
-                    src={whitelist}
-                    alt='whitelist'
-                    className={classes.icons}
+            >
+              <FormControlLabel
+                value='whitelist'
+                control={
+                  <Radio
+                    checkedIcon={<span className={classes.checkedRadioIcon} />}
+                    icon={<span className={classes.radioIcon} />}
                   />
-                  <Box>{t('whitelist')}</Box>
-                </Box>
-              }
-              disabled={whiteBlackList.mode === 'blacklist'}
-            />
+                }
+                label={
+                  <Box className={classes.formControlLabel}>
+                    <img
+                      src={whitelist}
+                      alt='whitelist'
+                      className={classes.icons}
+                    />
+                    <Box>{t('whitelist')}</Box>
+                  </Box>
+                }
+                disabled={whiteBlackList.mode === 'blacklist'}
+              />
+            </StyledTooltip>
           </RadioGroup>
         </FormControl>
+
         <Box className={classes.tableBox}>
           <CustomTable
             columns={columns}
             firstCell={false}
-            showPagination={false}
+            // showPagination={false}
             showSearchBar={false}
             showToolBar={false}
             noAvailableDataMessage={t('no_phone_numbers_available')}
@@ -292,16 +348,31 @@ const WhiteBlackList = props => {
             }
           />
           <Box className={classes.addButtonBox}>
-            <Button
-              variant={'contained'}
-              color={'primary'}
-              className={classes.roundButton}
-              onClick={() => setShowAddNumbersModal(true)}
-              disabled={mode === 'inactive'}
+            <StyledTooltip
+              title={
+                mode === 'inactive' ? t('wb_list_disabled_add_tooltip') : ''
+              }
             >
-              <AddIcon />
-            </Button>
-            <Box>{`${t('add')} (${t('max')} 10)`}</Box>
+              <Button
+                variant={'contained'}
+                color={'primary'}
+                className={classnames(classes.roundButton, {
+                  [classes.disabledButton]: mode === 'inactive'
+                })}
+                onClick={() =>
+                  mode !== 'inactive' ? setShowAddNumbersModal(true) : undefined
+                }
+              >
+                <AddIcon />
+              </Button>
+            </StyledTooltip>
+            <Box
+              className={classnames({
+                [classes.disabledLabel]: mode === 'inactive'
+              })}
+            >
+              {t('add')}
+            </Box>
           </Box>
           {showAddNumbersModal && (
             <AddNumber
@@ -333,13 +404,14 @@ const WhiteBlackList = props => {
                   ? t('number').toLowerCase()
                   : t('numbers').toLowerCase()
               }
-              deleteInfo={
-                singleDelete
-                  ? {
-                      id: singleDeleteNumber
-                    }
-                  : numbers.filter(el => el.checked).map(el => el.phoneNumber)
-              }
+              extraMessageBlock={deleteMessageBlock}
+              // deleteInfo={
+              //   singleDelete
+              //     ? {
+              //         id: singleDeleteNumber
+              //       }
+              //     : numbers.filter(el => el.checked).map(el => el.phoneNumber)
+              // }
             />
           )}
         </Box>

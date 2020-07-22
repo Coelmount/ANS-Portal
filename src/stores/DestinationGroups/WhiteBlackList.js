@@ -3,6 +3,7 @@ import { decorate, observable, action } from 'mobx'
 import axios from 'utils/axios'
 import SnackbarStore from '../Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import { toJS } from 'mobx'
 
 export class WhiteBlackList {
   whiteBlackList = {}
@@ -63,6 +64,7 @@ export class WhiteBlackList {
 
   postAddNumberToCallBlocking = (customerId, groupId, data, callback) => {
     this.isAddingNumbers = true
+
     axios
       .post(
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/call_blocking/`,
@@ -70,6 +72,14 @@ export class WhiteBlackList {
       )
       .then(() => {
         callback && callback()
+        SnackbarStore.enqueueSnackbar({
+          message: `Phone number${
+            data.numbers.length > 1 ? 's' : ''
+          } successfully added`,
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
@@ -82,12 +92,30 @@ export class WhiteBlackList {
       .finally(() => (this.isAddingNumbers = false))
   }
 
-  deleteNumberFromCallBlocking = (tenantId, groupId, data, callback) => {
+  deleteNumberFromCallBlocking = (
+    tenantId,
+    groupId,
+    singleDelete,
+    callback,
+    numbers
+  ) => {
     this.isDeletingNumbers = true
+
+    const itemsToDelete = !singleDelete
+      ? numbers.filter(number => number.checked)
+      : []
+    const numbersToDelete = itemsToDelete.map(item => item.phoneNumber)
+    const dataToDelete = {
+      data: {
+        mode: this.whiteBlackList.mode,
+        numbers: singleDelete ? [numbers] : numbersToDelete
+      }
+    }
+
     axios
       .delete(
         `/tenants/${tenantId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/call_blocking`,
-        data
+        dataToDelete
       )
       .then(() => callback && callback())
       .catch(e =>
