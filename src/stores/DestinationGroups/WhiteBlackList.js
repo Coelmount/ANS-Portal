@@ -3,7 +3,6 @@ import { decorate, observable, action } from 'mobx'
 import axios from 'utils/axios'
 import SnackbarStore from '../Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
-import { toJS } from 'mobx'
 
 export class WhiteBlackList {
   whiteBlackList = {}
@@ -117,7 +116,15 @@ export class WhiteBlackList {
         `/tenants/${tenantId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/call_blocking`,
         dataToDelete
       )
-      .then(() => callback && callback())
+      .then(() => {
+        callback && callback()
+        SnackbarStore.enqueueSnackbar({
+          message: `Number(s) successfully deleted`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to delete number',

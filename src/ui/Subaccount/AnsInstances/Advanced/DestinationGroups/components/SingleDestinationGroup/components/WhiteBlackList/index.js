@@ -12,7 +12,6 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
 import Loading from 'components/Loading'
@@ -29,7 +28,6 @@ import AddIcon from '@material-ui/icons/Add'
 
 import WhiteBlackListStore from 'stores/DestinationGroups/WhiteBlackList'
 import useStyles from './styles'
-import { toJS } from 'mobx'
 
 const StyledTooltip = withStyles({
   tooltip: {
