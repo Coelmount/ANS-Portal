@@ -13,6 +13,8 @@ import Button from '@material-ui/core/Button'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 
+import UserStore from 'stores/user'
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import useStyles from './styles'
@@ -25,11 +27,24 @@ const ChangePassword = props => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordsNotMatchError, setPasswordsNotMatchError] = useState(false)
 
+  const { updatePasswordLowAdmin, updatePasswordSuperAdmin } = UserStore
+
   const checkPasswords = () => {
     if (newPassword !== confirmPassword) {
       setPasswordsNotMatchError(true)
     } else {
       setPasswordsNotMatchError(false)
+    }
+  }
+
+  const changePassword = () => {
+    if (localStorage.getItem('ids')) {
+      updatePasswordLowAdmin(
+        { oldPassword, newPassword, confirmPassword },
+        handleClose
+      )
+    } else {
+      updatePasswordSuperAdmin({ password: newPassword }, handleClose)
     }
   }
 
@@ -51,16 +66,18 @@ const ChangePassword = props => {
           </DialogTitle>
           <DialogContent>
             <Box className={classes.contentBox}>
-              <Box className={classes.inputBox}>
-                <Input
-                  icon={<LockOutlinedIcon />}
-                  label={t('old_password')}
-                  value={oldPassword}
-                  onChange={e => setOldPassword(e.target.value)}
-                  type='password'
-                  autoComplete='new-password'
-                />
-              </Box>
+              {localStorage.getItem('ids') && (
+                <Box className={classes.inputBox}>
+                  <Input
+                    icon={<LockOutlinedIcon />}
+                    label={t('old_password')}
+                    value={oldPassword}
+                    onChange={e => setOldPassword(e.target.value)}
+                    type='password'
+                    autoComplete='new-password'
+                  />
+                </Box>
+              )}
               <Box className={classes.inputBox}>
                 <Input
                   icon={<LockOutlinedIcon />}
@@ -68,7 +85,9 @@ const ChangePassword = props => {
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
                   onBlur={() => {
-                    passwordsNotMatchError && checkPasswords()
+                    if (passwordsNotMatchError || confirmPassword) {
+                      checkPasswords()
+                    }
                   }}
                   type='password'
                   autoComplete='new-password'
@@ -104,7 +123,7 @@ const ChangePassword = props => {
               variant='contained'
               color='primary'
               className={classes.nextButton}
-              onClick={handleClose}
+              onClick={changePassword}
               disabled={passwordsNotMatchError}
             >
               {t('change')}
