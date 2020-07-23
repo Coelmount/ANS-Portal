@@ -58,7 +58,7 @@ const EditMainNumberModal = props => {
   }, [])
 
   useEffect(() => {
-    if (Object.keys(mainNumber).length && availableNumbers.length) {
+    if (Object.keys(mainNumber).length) {
       availableNumbers.push(mainNumber)
       setOptionNumbers(availableNumbers)
     }

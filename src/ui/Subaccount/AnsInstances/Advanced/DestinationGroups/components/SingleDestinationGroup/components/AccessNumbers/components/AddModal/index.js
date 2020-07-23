@@ -23,6 +23,7 @@ import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
+import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import useStyles from './styles'
 import { toJS } from 'mobx'
 
@@ -39,6 +40,7 @@ const AddModal = ({ open, handleClose, t }) => {
     getAvailableNumbers,
     postSecondaryNumbers,
     availableNumbers,
+    secondaryNumbers,
     totalPages,
     countries,
     isAvailableNumbersLoading,
@@ -54,6 +56,7 @@ const AddModal = ({ open, handleClose, t }) => {
   })
 
   const [numbers, setNumbers] = useState([])
+  console.log(toJS(numbers), 'numbers')
   const [selectedNumber, setSelectedNumber] = useState(null)
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
@@ -146,9 +149,7 @@ const AddModal = ({ open, handleClose, t }) => {
 
   // handle check all
   const handleSelectAll = () => {
-    const newNumbers = numbers.map(item => {
-      return { ...item, checked: !selectAll, hover: false }
-    })
+    const newNumbers = transformOnCheckAll(numbers, numbers, selectAll)
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
@@ -182,7 +183,8 @@ const AddModal = ({ open, handleClose, t }) => {
     const payload = {
       customerId,
       groupId,
-      closeModal: handleClose
+      closeModal: handleClose,
+      numbers
     }
     postSecondaryNumbers(payload)
   }
@@ -302,7 +304,10 @@ const AddModal = ({ open, handleClose, t }) => {
               color='primary'
               className={classes.nextButton}
               onClick={handleAddButtonClick}
-              disabled={numberOfChecked < 1}
+              disabled={
+                numberOfChecked < 1 ||
+                secondaryNumbers.length + numberOfChecked > 10
+              }
             >
               {`${t('Add')}${
                 numberOfChecked > 0 ? `(${numberOfChecked})` : ''

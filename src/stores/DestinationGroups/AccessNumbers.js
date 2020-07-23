@@ -193,11 +193,9 @@ export class AccessNumbers {
       })
   }
 
-  postSecondaryNumbers = ({ customerId, groupId, closeModal }) => {
+  postSecondaryNumbers = ({ customerId, groupId, closeModal, numbers }) => {
     this.isSecondaryNumbersAdding = true
-    const checkedNumbers = this.availableNumbers.filter(
-      item => item.checked === true
-    )
+    const checkedNumbers = numbers.filter(item => item.checked === true)
 
     const numbersToAdd = checkedNumbers.map(({ country_code, nsn }, index) => {
       return {
