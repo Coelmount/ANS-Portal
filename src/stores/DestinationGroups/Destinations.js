@@ -1,16 +1,22 @@
 import { decorate, action, observable } from 'mobx'
 
 import SnackbarStore from '../Snackbar'
+import differenceBy from 'lodash/differenceBy'
+import difference from 'lodash/difference'
 import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
 import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
 import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
+import { toJS } from 'mobx'
 
 export class Destinations {
   currentGroupId = ''
+  availableDestinationsForPost = []
   destinations = []
   isDestinationsLoading = true
+  isAvailableDestinationsLoading = true
   isDestinationPosting = false
+  isDestinationDeleting = false
 
   getDestinations = ({ customerId, groupId, destinationGroupName }) => {
     this.destinations = []
@@ -30,7 +36,16 @@ export class Destinations {
             `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${currentGroup.ans_id}/destinations`
           )
           .then(res => {
-            console.log(res.data, 'res.data')
+            this.destinations = res.data.destinations.map(
+              (destination, index) => {
+                return {
+                  ...destination,
+                  id: index,
+                  checked: false,
+                  hover: false
+                }
+              }
+            )
           })
           .catch(e =>
             SnackbarStore.enqueueSnackbar({
@@ -47,25 +62,59 @@ export class Destinations {
       })
   }
 
-  postDestination = ({
-    customerId,
-    groupId,
-    name,
-    phoneNumber,
-    closeModal
-  }) => {
+  getAvailableDestinationsForPost = ({ customerId, groupId }) => {
+    this.availableDestinationsForPost = []
+    this.isAvailableDestinationsLoading = true
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/available`
+      )
+      .then(res => {
+        console.log(toJS(res.data), 'res data')
+        const data = res.data.destinations.map((destination, index) => {
+          return {
+            ...destination,
+            id: index,
+            checked: false,
+            hover: false
+          }
+        })
+        this.availableDestinationsForPost = differenceBy(
+          data,
+          this.destinations,
+          'userId'
+        )
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) || 'Failed to fetch available destinations list',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isAvailableDestinationsLoading = false
+      })
+  }
+
+  postDestinations = ({ customerId, groupId, closeModal, numbers }) => {
     this.isDestinationPosting = true
+    const existDestinationsIds = this.destinations.map(
+      destination => destination.userId
+    )
+    const checkedDestinations = numbers.filter(number => number.checked)
+    const checkedDestinationsIds = checkedDestinations.map(
+      checkedDestination => checkedDestination.userId
+    )
+    const totalArr = existDestinationsIds.concat(checkedDestinationsIds)
+
     axios
       .put(
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}`,
         {
-          agents: [
-            {
-              name,
-              access_number: getNsnFromNumber(phoneNumber),
-              cc_access_number: `+${getCountryCodeFromNumber(phoneNumber)}`
-            }
-          ]
+          destinations: totalArr
         }
       )
       .then(() => {
@@ -90,11 +139,23 @@ export class Destinations {
       })
   }
 
-  deleteDestination = ({ customerId, groupId, destinationId, closeModal }) => {
+  deleteDestinations = ({ customerId, groupId, closeModal, numbers }) => {
     this.isDestinationDeleting = true
+    const existDestinationsIds = this.destinations.map(
+      destination => destination.userId
+    )
+    const checkedDestinations = numbers.filter(number => number.checked)
+    const checkedDestinationsIds = checkedDestinations.map(
+      checkedDestination => checkedDestination.userId
+    )
+    const totalArr = difference(existDestinationsIds, checkedDestinationsIds)
+
     axios
-      .delete(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${destinationId}`
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}`,
+        {
+          destinations: totalArr
+        }
       )
       .then(() => {
         closeModal()
@@ -121,10 +182,13 @@ export class Destinations {
 
 decorate(Destinations, {
   getDestinations: action,
-  postDestination: action,
-  deleteDestination: action,
+  getAvailableDestinationsForPost: action,
+  postDestinations: action,
+  deleteDestinations: action,
+  availableDestinationsForPost: observable,
   destinations: observable,
   isDestinationsLoading: observable,
+  isAvailableDestinationsLoading: observable,
   isDestinationPosting: observable,
   isDestinationDeleting: observable
 })

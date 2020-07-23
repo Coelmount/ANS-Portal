@@ -19,43 +19,149 @@ import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 import DestinationsStore from 'stores/DestinationGroups/Destinations'
 import Loading from 'components/Loading'
-import Input from 'components/Input'
-import PeriodForm from 'components/PeriodForm'
-import transformTime from 'utils/schedules/transformTime'
+import CustomTable from 'components/CustomTable'
+import Checkbox from 'components/Checkbox'
+import transformOnChange from 'utils/tableCheckbox/transformOnChange'
+import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
+import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
 
 const AddModal = ({ t, open, handleClose }) => {
-  const { isDestinationPosting, postDestination } = DestinationsStore
-
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId } = match
 
-  const inputStore = useLocalStore(() => ({
-    values: {
-      name: '',
-      phoneNumber: ''
-    },
-    set(field, value) {
-      this.values[field] = value
-    },
-    get isFieldsFilled() {
-      return this.values.name && this.values.phoneNumber.length > 6
+  const {
+    getAvailableDestinationsForPost,
+    availableDestinationsForPost,
+    isAvailableDestinationsLoading,
+    isDestinationPosting,
+    postDestinations
+  } = DestinationsStore
+
+  const isLoading = isDestinationPosting || isAvailableDestinationsLoading
+  const [numbers, setNumbers] = useState([])
+  const [selectAll, setSelectAll] = useState(false)
+  const [searchList, setSearchList] = useState([])
+
+  useEffect(() => {
+    const payload = {
+      customerId,
+      groupId
     }
-  }))
+    getAvailableDestinationsForPost(payload)
+  }, [])
+
+  useEffect(() => {
+    setNumbers(availableDestinationsForPost)
+  }, [availableDestinationsForPost])
+
+  useEffect(() => {
+    handleCheckedStates(searchList)
+  }, [searchList])
+
+  const selectNumbers = (checked, id) => {
+    const newSelected = transformOnChange(numbers, checked, id)
+    setNumbers(newSelected)
+  }
+
+  const handleSelectAll = () => {
+    const newSelected = transformOnCheckAll(searchList, numbers, selectAll)
+    handleCheckedStates(newSelected)
+    setNumbers(newSelected)
+    setSelectAll(!selectAll)
+  }
+
+  const handleCheckedStates = newSelected => {
+    if (
+      newSelected.every(el => {
+        return el.checked
+      })
+    ) {
+      setSelectAll(true)
+    } else {
+      setSelectAll(false)
+    }
+    if (!newSelected.length) {
+      setSelectAll(false)
+    }
+  }
+
+  const changeHover = (newHover, id) => {
+    const newSelected = transformOnHover(numbers, newHover, id)
+    setNumbers(newSelected)
+  }
 
   const handleAdd = () => {
     const payload = {
       customerId,
       groupId,
-      name: inputStore.values.name,
-      phoneNumber: inputStore.values.phoneNumber,
-      closeModal: handleClose
+      closeModal: handleClose,
+      numbers
     }
-    postDestination(payload)
+    postDestinations(payload)
   }
+
+  const columns = [
+    {
+      id: 'checkbox',
+      label: (
+        <Checkbox
+          className={classes.headCheckbox}
+          checked={selectAll}
+          onChange={handleSelectAll}
+        />
+      ),
+      isSortAvailable: false,
+      getCellData: (row, i) =>
+        row.checked ? (
+          <Checkbox
+            checked={row.checked}
+            className={classes.checkbox}
+            onChange={() => selectNumbers(!row.checked, row.id)}
+          />
+        ) : (
+          <div
+            className={classes.indexHoverCheckbox}
+            onClick={() => selectNumbers(!row.checked, row.id)}
+            onMouseLeave={() => changeHover(false, row.id)}
+            onMouseEnter={() => changeHover(true, row.id)}
+          >
+            {row.hover ? (
+              <Checkbox
+                checked={row.checked}
+                className={classes.checkbox}
+                onChange={() => selectNumbers(true, row.id)}
+              />
+            ) : (
+              i + 1
+            )}
+          </div>
+        ),
+      extraHeadProps: {
+        className: classes.checkboxCell
+      },
+      extraProps: {
+        className: classes.checkboxCell
+      }
+    },
+    {
+      id: 'name',
+      label: 'entitlement',
+      extraProps: {
+        className: classes.entitlementHeadCell
+      }
+    },
+    {
+      id: 'phoneNumber',
+      label: 'phone_number',
+      extraProps: {
+        className: classes.entitlementHeadCell
+      }
+    }
+  ]
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
@@ -70,27 +176,22 @@ const AddModal = ({ t, open, handleClose }) => {
         </IconButton>
       </DialogTitle>
 
-      <DialogContent className={classes.modalContent}>
-        {isDestinationPosting ? (
+      <DialogContent className={classes.entitlementsDialogContent}>
+        {isLoading ? (
           <Loading />
         ) : (
-          <Box className={classes.inputsWrap}>
-            <Input
-              icon={<PhoneOutlinedIcon />}
-              label={t('name')}
-              variant='outlined'
-              onChange={e => inputStore.set('name', e.target.value)}
-            />
-            <Box className={classes.phoneInputWrap}>
-              <PhoneInput
-                value={inputStore.values.phoneNumber}
-                onChange={value => {
-                  inputStore.set('phoneNumber', `+${value}`)
-                }}
-                placeholder={t('enter_number')}
-              />
-            </Box>
-          </Box>
+          <CustomTable
+            classes={classes}
+            columns={columns}
+            firstCell={false}
+            showPagination={true}
+            rows={numbers}
+            searchCriterias={['name', 'phoneNumber']}
+            getSearchList={setSearchList}
+            noAvailableDataMessage={t('no_add_destinations_available')}
+            isModal={true}
+            tableId={'advanced_destinations_add_modal'}
+          />
         )}
       </DialogContent>
 
@@ -107,7 +208,7 @@ const AddModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disabled={!inputStore.isFieldsFilled || isDestinationPosting}
+          // disabled={!inputStore.isFieldsFilled || isDestinationPosting}
           onClick={handleAdd}
         >
           {t('add')}

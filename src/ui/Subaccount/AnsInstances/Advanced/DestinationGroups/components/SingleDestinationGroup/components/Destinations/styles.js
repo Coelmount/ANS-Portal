@@ -256,9 +256,6 @@ const useStyles = makeStyles(theme => ({
   notificationIcon: {
     marginRight: 5
   },
-  toolbarWrap: {
-    display: 'none'
-  },
   mainTitleWraper: {
     display: 'flex',
     marginTop: 15,
@@ -310,6 +307,65 @@ const useStyles = makeStyles(theme => ({
   },
   selectItem: {
     fontSize: 14
+  },
+  toolbarButtonsBlockWrap: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    width: '100%',
+    marginRight: 40,
+    marginLeft: 40
+  },
+  buttonContainer: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  deassignWrap: {
+    marginLeft: 30
+  },
+  mainIconWrap: {
+    background: theme.palette.primary.main,
+    width: 30,
+    height: 30,
+    padding: 0,
+    marginRight: 8,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  disabledButton: {
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
+  },
+  disabledButton: {
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
+  },
+  iconTitle: {
+    whiteSpace: 'nowrap',
+    fontSize: 14,
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500
+  },
+  disabledIconTitle: {
+    opacity: 0.5
+  },
+  disconnectIcon: {
+    width: 14,
+    height: 16
+  },
+  boldDeleteText: {
+    fontWeight: 600,
+    fontSize: 16
+  },
+  deleteText: {
+    fontSize: 16
   }
 }))
 
