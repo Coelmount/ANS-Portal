@@ -85,6 +85,31 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.lightGrey,
       cursor: 'auto'
     }
+  },
+  noAnswerWrap: {
+    display: 'flex'
+  },
+  noAnswerTitle: {
+    marginLeft: 10
+  },
+  amountSkipRingsWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    '& > div': {
+      width: 261
+    }
+  },
+  amountSkipRingsLeftTitle: {
+    marginRight: 10,
+    fontSize: 16,
+    whiteSpace: 'nowrap'
+  },
+  amountSkipRingsRightTitle: {
+    marginLeft: 10,
+    fontSize: 16
+  },
+  disabledBlock: {
+    opacity: 0.5
   }
 }))
 

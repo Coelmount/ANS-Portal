@@ -17,7 +17,7 @@ export class AccessNumbers {
   availableNumbers = []
   countries = []
   isMainNumberLoading = true
-  isSecondaryNumbersLoading = true
+  isSecondaryNumbersLoading = false
   isAvailableNumbersLoading = true
   isSecondaryNumbersAdding = false
   isSecondaryNumberDeleting = false
@@ -49,11 +49,20 @@ export class AccessNumbers {
           )
           .then(res => {
             const number = res.data.mainNumber
-            this.mainNumber = {
-              country_code: `+${getCountryCodeFromNumber(number)}`,
-              nsn: getNsnFromNumber(number),
-              value: number,
-              country: getCountryNameFromNumber(number)
+            if (number.length > 6) {
+              this.mainNumber = {
+                country_code: `+${getCountryCodeFromNumber(number)}`,
+                nsn: getNsnFromNumber(number),
+                value: number,
+                country: getCountryNameFromNumber(number)
+              }
+            } else {
+              this.mainNumber = {
+                country_code: '',
+                nsn: '',
+                value: '',
+                country: ''
+              }
             }
           })
           .catch(e => {
@@ -73,7 +82,6 @@ export class AccessNumbers {
   getSecondaryNumbers = ({ customerId, groupId, destinationGroupName }) => {
     this.secondaryNumbers = []
     this.isSecondaryNumbersLoading = true
-
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
       .then(res => {
@@ -82,7 +90,6 @@ export class AccessNumbers {
           destinationGroup => destinationGroup.name === destinationGroupName
         )
         this.currentGroupId = currentGroup.ans_id
-
         axios
           .get(
             `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${currentGroup.ans_id}/secondary_numbers`
@@ -94,7 +101,6 @@ export class AccessNumbers {
               DEFAULT_IDS,
               busySecondaryIds
             )
-
             this.secondaryNumbers = numbers.map(item => {
               return {
                 ...item,
