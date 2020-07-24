@@ -53,7 +53,6 @@ const WhiteBlackList = props => {
   const [selectAll, setSelectAll] = useState(false)
   const [numbers, setNumbers] = useState([])
   const [singleDeleteNumber, setSingleDeleteNumber] = useState('')
-  console.log(singleDeleteNumber, 'singleDeleteNumber state')
   const [singleDelete, setSingleDelete] = useState(false)
   const [multipleDelete, setMultipleDelete] = useState(false)
   const [showAddNumbersModal, setShowAddNumbersModal] = useState(false)
@@ -403,13 +402,6 @@ const WhiteBlackList = props => {
                   : t('numbers').toLowerCase()
               }
               extraMessageBlock={deleteMessageBlock}
-              // deleteInfo={
-              //   singleDelete
-              //     ? {
-              //         id: singleDeleteNumber
-              //       }
-              //     : numbers.filter(el => el.checked).map(el => el.phoneNumber)
-              // }
             />
           )}
         </Box>

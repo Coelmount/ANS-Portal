@@ -64,6 +64,15 @@ const Destinations = observer(({ t }) => {
   const [isSingleDeleteMode, setIsSingleDeleteMode] = useState(false)
   const isAnyNumberChecked = numbers.some(number => number.checked)
 
+  const initialRequest = () => {
+    const payload = {
+      customerId,
+      groupId,
+      destinationGroupName
+    }
+    getDestinations(payload)
+  }
+
   const openedModal = useLocalStore(() => ({
     id: null,
     open(modalId) {
@@ -71,14 +80,8 @@ const Destinations = observer(({ t }) => {
     },
     close() {
       this.id = null
-      // init func refactor
-      const payload = {
-        customerId,
-        groupId,
-        destinationGroupName
-      }
-      getDestinations(payload)
       setIsSingleDeleteMode(false)
+      initialRequest()
     }
   }))
 
@@ -91,12 +94,7 @@ const Destinations = observer(({ t }) => {
   }))
 
   useEffect(() => {
-    const payload = {
-      customerId,
-      groupId,
-      destinationGroupName
-    }
-    getDestinations(payload)
+    initialRequest()
   }, [])
 
   useEffect(() => {

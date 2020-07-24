@@ -67,6 +67,16 @@ const AccessNumbers = observer(({ t }) => {
   const [priorityValue, setPriorityValue] = useState('')
   const isLoading = isMainNumberLoading || isSecondaryNumbersLoading
 
+  const initialRequest = () => {
+    const payload = {
+      customerId,
+      groupId,
+      destinationGroupName
+    }
+    getMainNumber(payload)
+    getSecondaryNumbers(payload)
+  }
+
   const openedModal = useLocalStore(() => ({
     id: null,
     open(modalId) {
@@ -74,14 +84,7 @@ const AccessNumbers = observer(({ t }) => {
     },
     close() {
       this.id = null
-      // init func refactor
-      const payload = {
-        customerId,
-        groupId,
-        destinationGroupName
-      }
-      getMainNumber(payload)
-      getSecondaryNumbers(payload)
+      initialRequest()
       clearLoadingStates()
     }
   }))
@@ -95,13 +98,7 @@ const AccessNumbers = observer(({ t }) => {
   }))
 
   useEffect(() => {
-    const payload = {
-      customerId,
-      groupId,
-      destinationGroupName
-    }
-    getMainNumber(payload)
-    getSecondaryNumbers(payload)
+    initialRequest()
   }, [])
 
   // Trigger delete action in store

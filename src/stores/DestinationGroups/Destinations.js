@@ -70,7 +70,6 @@ export class Destinations {
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/available`
       )
       .then(res => {
-        console.log(toJS(res.data), 'res data')
         const data = res.data.destinations.map((destination, index) => {
           return {
             ...destination,
@@ -120,7 +119,9 @@ export class Destinations {
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
-          message: 'Destination successfully created',
+          message: `Destination${
+            checkedDestinationsIds.length > 1 ? 's' : ''
+          } successfully created`,
           options: {
             variant: 'success'
           }
@@ -128,7 +129,11 @@ export class Destinations {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to create destination',
+          message:
+            getErrorMessage(e) ||
+            `Failed to create destination${
+              checkedDestinationsIds.length > 1 ? 's' : ''
+            }`,
           options: {
             variant: 'error'
           }
@@ -160,7 +165,9 @@ export class Destinations {
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
-          message: 'Destination successfully deleted',
+          message: `Destination${
+            checkedDestinationsIds.length > 1 ? 's' : ''
+          } successfully deleted`,
           options: {
             variant: 'success'
           }
@@ -168,7 +175,11 @@ export class Destinations {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to delete destination',
+          message:
+            getErrorMessage(e) ||
+            `Failed to delete destination${
+              checkedDestinationsIds.length > 1 ? 's' : ''
+            }`,
           options: {
             variant: 'error'
           }

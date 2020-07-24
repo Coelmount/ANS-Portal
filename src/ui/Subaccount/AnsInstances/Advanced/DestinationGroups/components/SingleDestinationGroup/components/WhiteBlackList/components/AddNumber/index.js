@@ -91,13 +91,9 @@ const AddIVR = props => {
                           newArray.push('')
                           setArrayOfInputs(newArray)
                         }}
-                        // disabled={countNumbers + arrayOfInputs.length >= 10}
                       >
                         <AddIcon />
                       </Button>
-                      {/* <Box className={classes.textBox}>{`(${t(
-                        'max'
-                      )} 10)`}</Box> */}
                     </React.Fragment>
                   ) : (
                     <Button

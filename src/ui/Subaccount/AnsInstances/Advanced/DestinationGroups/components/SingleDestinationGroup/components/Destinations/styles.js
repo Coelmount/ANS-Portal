@@ -361,7 +361,7 @@ const useStyles = makeStyles(theme => ({
     height: 16
   },
   boldDeleteText: {
-    fontWeight: 600,
+    fontWeight: 'bold',
     fontSize: 16
   },
   deleteText: {

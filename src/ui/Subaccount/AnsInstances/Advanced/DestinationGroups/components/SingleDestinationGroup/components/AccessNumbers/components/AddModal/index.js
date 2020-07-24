@@ -28,13 +28,14 @@ import useStyles from './styles'
 import { toJS } from 'mobx'
 
 const AddModal = ({ open, handleClose, t }) => {
+  const classes = useStyles()
+  const match = useParams()
+  const { customerId, groupId } = match
+
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
         .basic_instance_select_access_numbers
     : null
-  const classes = useStyles()
-  const match = useParams()
-  const { customerId, groupId } = match
 
   const {
     getAvailableNumbers,
@@ -56,7 +57,6 @@ const AddModal = ({ open, handleClose, t }) => {
   })
 
   const [numbers, setNumbers] = useState([])
-  console.log(toJS(numbers), 'numbers')
   const [selectedNumber, setSelectedNumber] = useState(null)
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
@@ -68,7 +68,7 @@ const AddModal = ({ open, handleClose, t }) => {
   const [orderBy, setOrderBy] = useState('id')
   const [countryCode, setCountryCode] = useState('')
 
-  useEffect(() => {
+  const getRequest = () => {
     const payload = {
       customerId,
       groupId,
@@ -79,6 +79,10 @@ const AddModal = ({ open, handleClose, t }) => {
       countryCode: selectedCountry.phone
     }
     getAvailableNumbers(payload)
+  }
+
+  useEffect(() => {
+    getRequest()
   }, [])
 
   // set numbers in local state from store
@@ -90,16 +94,7 @@ const AddModal = ({ open, handleClose, t }) => {
   useEffect(() => {
     setPage(1)
     if (!isLoading) {
-      const payload = {
-        customerId,
-        groupId,
-        page: 1,
-        rowsPerPage,
-        order,
-        orderBy,
-        countryCode: selectedCountry.phone
-      }
-      getAvailableNumbers(payload)
+      getRequest()
     }
   }, [orderBy, order])
 
@@ -118,24 +113,7 @@ const AddModal = ({ open, handleClose, t }) => {
       getAvailableNumbers(payload)
       setNumberOfChecked(0)
     }
-  }, [page, rowsPerPage])
-
-  // onUpdate country input
-  useEffect(() => {
-    if (!isLoading) {
-      const payload = {
-        customerId,
-        groupId,
-        page,
-        rowsPerPage,
-        order,
-        orderBy,
-        countryCode: selectedCountry.phone
-      }
-      getAvailableNumbers(payload)
-      setNumberOfChecked(0)
-    }
-  }, [selectedCountry])
+  }, [page, rowsPerPage, selectedCountry])
 
   // handle check/uncheck
   const selectNumbers = (checked, id) => {

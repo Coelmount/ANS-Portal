@@ -41,10 +41,13 @@ const AddModal = ({ t, open, handleClose }) => {
     postDestinations
   } = DestinationsStore
 
-  const isLoading = isDestinationPosting || isAvailableDestinationsLoading
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [searchList, setSearchList] = useState([])
+
+  const isLoading = isDestinationPosting || isAvailableDestinationsLoading
+  const isAddButtonEnabled =
+    numbers.some(number => number.checked) && !isLoading
 
   useEffect(() => {
     const payload = {
@@ -208,7 +211,7 @@ const AddModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          // disabled={!inputStore.isFieldsFilled || isDestinationPosting}
+          disabled={!isAddButtonEnabled}
           onClick={handleAdd}
         >
           {t('add')}
