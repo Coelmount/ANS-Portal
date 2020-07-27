@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
+import IVRStore from 'stores/IVR'
 import Loading from 'components/Loading'
 
 import basicIcon from 'source/images/svg/dashboard_basic_icon.svg'
@@ -34,8 +35,11 @@ const AnsInstances = observer(({ t }) => {
     amountOfBasicInstances
   } = BasicTranslationsStore
 
+  const { getIVRs, isLoadingIVRs, ivrs } = IVRStore
+
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
+    getIVRs(match.customerId, match.groupId)
   }, [])
 
   const handleInstanceRedirect = link => {
@@ -65,7 +69,7 @@ const AnsInstances = observer(({ t }) => {
       label: t('ivr'),
       iconSrc: ivrIcon,
       link: `${ansInstancesPrefix}/ivr`,
-      amount: MOCK_AMOUNT
+      amount: ivrs.length
     }
   ]
 
@@ -75,7 +79,7 @@ const AnsInstances = observer(({ t }) => {
 
   return (
     <Fragment>
-      {isBasicTranslationsNumbersLoading ? (
+      {isBasicTranslationsNumbersLoading || isLoadingIVRs ? (
         <Loading />
       ) : (
         <Box className={classes.root}>
