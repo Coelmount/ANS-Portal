@@ -20,9 +20,7 @@ const icons = {
 
 const NotificationContent = React.forwardRef(
   ({ id, message, options, classes }, ref) => {
-    console.log(options.variant)
     const Icon = options.variant ? icons[options.variant] : <div />
-    console.log(Icon)
 
     const { closeSnackbar } = useSnackbar()
 

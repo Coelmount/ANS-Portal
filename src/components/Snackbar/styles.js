@@ -5,6 +5,7 @@ const styles = createStyles({
     maxWidth: '50vw',
     width: 650,
     padding: 2,
+    borderRadius: 3,
     '&.error': {
       background: '#C03A2B'
     },
