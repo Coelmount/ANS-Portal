@@ -19,15 +19,16 @@ import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 
-import BasicTranslationsStore from 'stores/BasicTranslations'
+import AdvancedAccessNumbersStore from 'stores/AdvancedAccessNumbers'
 import CustomTable, {
   DEFAULT_ROWS_PER_PAGE
 } from 'components/CustomTableBackendPagination'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
-import AddInstance from '../AddInstance'
-import AddMultipleNumbers from '../MultipleANSBasicNumber'
-import usePreviousValue from 'utils/hooks/usePreviousValue'
+import AddModal from './components/AddModal'
+import CustomContainer from 'components/CustomContainer'
+import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
+import TitleBlock from 'components/TitleBlock'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
@@ -37,7 +38,7 @@ import useStyles from './styles'
 
 const { COUNTRY_CODE, NUMBER_LIKE, TYPE } = types
 
-const AvailableNumbers = ({ t }) => {
+const AccessNumbers = ({ t }) => {
   const searchParamsList = [COUNTRY_CODE, NUMBER_LIKE, TYPE]
 
   const storageRowsPerPage = localStorage.rowsPerPageScheme
@@ -45,22 +46,21 @@ const AvailableNumbers = ({ t }) => {
         .basic_instance_select_access_numbers
     : null
   const [widthOffset, setWidthOffset] = useState('153px')
+
   const calcInput = useRef(null)
   const classes = useStyles({ widthOffset })
   const match = useParams()
   const { customerId, groupId } = match
 
   const {
-    step,
-    changeStep,
-    updateSelectedPhoneNumber,
+    updateSelectedNumber,
     getAvailableNumbersForAddInstance,
-    totalPagesAvailableNumbers,
-    isAvailableNumbersForAddInstanceLoading,
-    availableNumbersForAddInstance,
+    totalPagesAccessNumbers,
+    isAccessNumbersLoading,
+    accessNumbers,
     searchParam,
     updateSearchParam
-  } = BasicTranslationsStore
+  } = AdvancedAccessNumbersStore
 
   const [numbers, setNumbers] = useState([])
   const [selectedNumber, setSelectedNumber] = useState(null)
@@ -73,7 +73,7 @@ const AvailableNumbers = ({ t }) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [numberLike, setNumberLike] = useState('')
-  const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
     false
   )
@@ -97,20 +97,20 @@ const AvailableNumbers = ({ t }) => {
     getRequest()
   }, [])
 
-  // set numbers in local state from store
+  // Set numbers in local state from store
   useEffect(() => {
-    setNumbers(availableNumbersForAddInstance)
-  }, [availableNumbersForAddInstance])
+    setNumbers(accessNumbers)
+  }, [accessNumbers])
 
-  // onUpdate search/sorting
+  // On update search/sorting
   useEffect(() => {
     setPage(1)
-    if (!isAvailableNumbersForAddInstanceLoading) getRequest()
+    if (!isAccessNumbersLoading) getRequest()
   }, [debouncedNumberLike, orderBy, order, searchParam])
 
-  // onUpdate pagination
+  // On update pagination
   useEffect(() => {
-    if (!isAvailableNumbersForAddInstanceLoading)
+    if (!isAccessNumbersLoading)
       getAvailableNumbersForAddInstance(
         customerId,
         groupId,
@@ -129,19 +129,18 @@ const AvailableNumbers = ({ t }) => {
     }
   }, [calcInput.current, searchParam])
 
-  const handleSingleConfigure = row => {
+  const handleSingleConfigureClick = row => {
     const { country_code, nsn } = row
     const payload = {
       country_code,
       nsn
     }
-    updateSelectedPhoneNumber(payload)
-    changeStep(1)
-    setIsAddInstanceModalOpen(true)
+    updateSelectedNumber(payload)
+    setIsAddModalOpen(true)
   }
 
-  const handleAddInstanceModalClose = () => {
-    setIsAddInstanceModalOpen(false)
+  const handleAddModalClose = () => {
+    setIsAddModalOpen(false)
     getRequest()
   }
 
@@ -201,6 +200,10 @@ const AvailableNumbers = ({ t }) => {
     setNumbers(newNumbers)
   }
 
+  const titleData = {
+    mainText: t('access_numbers')
+  }
+
   const SearchSelector = (
     <Select
       value={searchParam}
@@ -242,48 +245,48 @@ const AvailableNumbers = ({ t }) => {
   }
 
   const columns = [
-    {
-      id: 'checkbox',
-      label: (
-        <Checkbox
-          className={classes.headCheckbox}
-          checked={selectAll}
-          onChange={handleSelectAll}
-        />
-      ),
-      isSortAvailable: false,
-      getCellData: (row, i) =>
-        row.checked ? (
-          <Checkbox
-            checked={row.checked}
-            className={classes.checkbox}
-            onChange={e => selectNumbers(!row.checked, row.id)}
-          />
-        ) : (
-          <div
-            className={classes.indexHoverCheckbox}
-            onClick={() => selectNumbers(!row.checked, row.id)}
-            onMouseLeave={() => changeHover(false, row.id)}
-            onMouseEnter={() => changeHover(true, row.id)}
-          >
-            {row.hover ? (
-              <Checkbox
-                checked={row.checked}
-                className={classes.checkbox}
-                onChange={() => selectNumbers(true, row.id)}
-              />
-            ) : (
-              (page - 1) * rowsPerPage + i + 1
-            )}
-          </div>
-        ),
-      extraHeadProps: {
-        className: classes.checkboxCell
-      },
-      extraProps: {
-        className: classes.checkboxCell
-      }
-    },
+    // {
+    //   id: 'checkbox',
+    //   label: (
+    //     <Checkbox
+    //       className={classes.headCheckbox}
+    //       checked={selectAll}
+    //       onChange={handleSelectAll}
+    //     />
+    //   ),
+    //   isSortAvailable: false,
+    //   getCellData: (row, i) =>
+    //     row.checked ? (
+    //       <Checkbox
+    //         checked={row.checked}
+    //         className={classes.checkbox}
+    //         onChange={e => selectNumbers(!row.checked, row.id)}
+    //       />
+    //     ) : (
+    //       <div
+    //         className={classes.indexHoverCheckbox}
+    //         onClick={() => selectNumbers(!row.checked, row.id)}
+    //         onMouseLeave={() => changeHover(false, row.id)}
+    //         onMouseEnter={() => changeHover(true, row.id)}
+    //       >
+    //         {row.hover ? (
+    //           <Checkbox
+    //             checked={row.checked}
+    //             className={classes.checkbox}
+    //             onChange={() => selectNumbers(true, row.id)}
+    //           />
+    //         ) : (
+    //           (page - 1) * rowsPerPage + i + 1
+    //         )}
+    //       </div>
+    //     ),
+    //   extraHeadProps: {
+    //     className: classes.checkboxCell
+    //   },
+    //   extraProps: {
+    //     className: classes.checkboxCell
+    //   }
+    // },
     {
       id: 'country',
       label: 'country'
@@ -322,7 +325,7 @@ const AvailableNumbers = ({ t }) => {
         <Button
           variant='contained'
           color='primary'
-          onClick={() => handleSingleConfigure(row)}
+          onClick={() => handleSingleConfigureClick(row)}
           className={classes.configureButton}
         >
           {t('configure_now')}
@@ -334,15 +337,19 @@ const AvailableNumbers = ({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {isAvailableNumbersForAddInstanceLoading && !numberLike ? (
+        <CustomContainer>
+          <CustomBreadcrumbs />
+          <TitleBlock titleData={titleData} classes={classes} />
+        </CustomContainer>
+        {isAccessNumbersLoading && !numberLike ? (
           <Loading />
         ) : (
           <CustomTable
-            firstCell={false}
+            firstCell={true}
             classes={classes}
             rows={numbers}
             columns={columns}
-            extraToolbarBlock={toolbarButtonsBlock}
+            // extraToolbarBlock={toolbarButtonsBlock}
             page={page}
             setPage={setPage}
             rowsPerPage={rowsPerPage}
@@ -351,32 +358,22 @@ const AvailableNumbers = ({ t }) => {
             setOrder={setOrder}
             orderBy={orderBy}
             setOrderBy={setOrderBy}
-            totalPages={totalPagesAvailableNumbers}
+            totalPages={totalPagesAccessNumbers}
             query={numberLike}
             setQuery={setNumberLike}
             isSearchParamsActive={isSearchParamsActive}
-            isLoadingData={isAvailableNumbersForAddInstanceLoading}
+            isLoadingData={isAccessNumbersLoading}
             noAvailableDataMessage={t('no_phone_numbers_available')}
-            tableId={'ans_basic_available_numbers'}
+            tableId={'ans_advanced_access_numbers'}
             searchSelector={SearchSelector}
           />
         )}
-        {isAddInstanceModalOpen && (
-          <AddInstance
-            open={isAddInstanceModalOpen}
-            handleClose={handleAddInstanceModalClose}
-          />
-        )}
-        {showAddMultipleANSNumbers && (
-          <AddMultipleNumbers
-            open={showAddMultipleANSNumbers}
-            handleClose={handleMultipleConfigureClose}
-            numbers={numbers}
-          />
+        {isAddModalOpen && (
+          <AddModal open={isAddModalOpen} handleClose={handleAddModalClose} />
         )}
       </Paper>
     </div>
   )
 }
 
-export default withNamespaces()(observer(AvailableNumbers))
+export default withNamespaces()(observer(AccessNumbers))

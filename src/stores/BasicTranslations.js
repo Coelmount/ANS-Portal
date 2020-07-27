@@ -150,9 +150,12 @@ export class BasicTranslations {
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
         const basicInstances = res.data.ans_basic
-        this.amountOfBasicInstances = basicInstances.length
+        const validBasicInstances = basicInstances.filter(
+          basicInstance => basicInstance
+        )
+        this.amountOfBasicInstances = validBasicInstances.length
 
-        const transformedNumbers = basicInstances.map((item, index) => {
+        const transformedNumbers = validBasicInstances.map((item, index) => {
           return {
             id: item.id || index,
             checked: false,
