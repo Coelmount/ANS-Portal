@@ -70,7 +70,8 @@ export class Destinations {
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/available`
       )
       .then(res => {
-        const data = res.data.destinations.map((destination, index) => {
+        const correctData = res.data.destinations.filter(item => item)
+        const transformedData = correctData.map((destination, index) => {
           return {
             ...destination,
             id: index,
@@ -79,7 +80,7 @@ export class Destinations {
           }
         })
         this.availableDestinationsForPost = differenceBy(
-          data,
+          transformedData,
           this.destinations,
           'userId'
         )
