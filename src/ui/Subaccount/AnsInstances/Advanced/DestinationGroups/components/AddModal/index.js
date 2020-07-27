@@ -22,7 +22,7 @@ import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
 import Checkbox from 'components/Checkbox'
-import POLICY_OPTIONS from '../../policyOptions'
+import POLICY_OPTIONS from 'utils/types/policyOptions'
 
 import useStyles from './styles'
 

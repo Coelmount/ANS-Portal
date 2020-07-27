@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import classnames from 'classnames'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
@@ -18,11 +18,10 @@ import Input from 'components/Input'
 import Select from 'components/Select'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
-import POLICY_OPTIONS from '../../../../policyOptions'
+import POLICY_OPTIONS from 'utils/types/policyOptions'
 
 import EditIcon from 'source/images/components/EditIcon'
 import useStyles from './styles'
-import { useEffect } from 'react'
 
 const Settings = ({ t }) => {
   const classes = useStyles()
