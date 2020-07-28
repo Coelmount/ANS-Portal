@@ -24,7 +24,8 @@ const CustomBreadcrumbs = ({ match, t }) => {
       instanceNumber,
       weekScheduleName,
       holidayScheduleName,
-      ivrId
+      ivrId,
+      destinationGroupName
     }
   } = match
   const ids = JSON.parse(localStorage.getItem('ids'))
@@ -141,6 +142,42 @@ const CustomBreadcrumbs = ({ match, t }) => {
       return (
         <Link
           to={`/customers/${customerId}/subaccounts/${groupId}/schedules/holiday_schedules`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (breadcrumbsAmount > 6 && index === 5 && holidayScheduleName) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/schedules/holiday_schedules`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (breadcrumbsAmount > 6 && index === 5 && destinationGroupName) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (breadcrumbsAmount > 7 && index === 6 && destinationGroupName) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced#destination_groups`}
           className={classes.link}
           key={breadcrumb}
           onClick={handleCloseNav}
