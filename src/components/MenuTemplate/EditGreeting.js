@@ -33,7 +33,8 @@ const EditGreeting = props => {
     menuType,
     defaultGreeting,
     defaultAudioFile,
-    keys
+    keys,
+    announcements
   } = props
   const classes = useStyles()
   const match = useParams()
@@ -42,17 +43,13 @@ const EditGreeting = props => {
   )
   const [audioFile, setAudioFile] = useState(defaultAudioFile)
 
-  const {
-    getAnnouncements,
-    isLoadingAnnouncements,
-    announcements
-  } = AnnouncementsStore
+  const { isLoadingAnnouncements } = AnnouncementsStore
 
   const { putUpdateIVRMenu } = IVRStore
 
-  useEffect(() => {
-    getAnnouncements(match.customerId, match.groupId)
-  }, [])
+  // useEffect(() => {
+  //   getAnnouncements(match.customerId, match.groupId)
+  // }, [])
 
   const handleUpdateGreeting = () => {
     let data = {}

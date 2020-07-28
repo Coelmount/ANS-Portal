@@ -588,6 +588,7 @@ const MenuTemplate = props => {
             <EditGreeting
               open={isEditGreeting}
               handleClose={closeEditGreeting}
+              announcements={announcements}
               menuLvl={menuLvl}
               menuType={menuType}
               defaultGreeting={stateMenu.announcementSelection}
