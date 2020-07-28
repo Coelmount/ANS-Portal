@@ -44,6 +44,7 @@ const DestinationGroups = observer(({ t }) => {
   const {
     destinationGroups,
     isDestinationGroupsLoading,
+    isDestinationGroupDeleting,
     getDestinationGroups,
     deleteDestinationGroup,
     deleteDestinations
@@ -233,7 +234,12 @@ const DestinationGroups = observer(({ t }) => {
             firstCell={true}
             rows={numbers}
             columns={columns}
-            searchCriterias={['name', 'phoneNumber']}
+            searchCriterias={[
+              'name',
+              'routingPolicy',
+              'noAnswerHunt',
+              'destinations'
+            ]}
             getSearchList={setSearchList}
             noAvailableDataMessage={t('no_destinations_available')}
             tableId={'ans_advanced_destinations'}
@@ -252,7 +258,7 @@ const DestinationGroups = observer(({ t }) => {
             handleClose={() => openedModal.close()}
             handleDelete={handleDelete}
             extraMessageBlock={extraDeleteBlock}
-            isDeleting={false}
+            isDeleting={isDestinationGroupDeleting}
             deleteSubject={`${t('destination_group').toLowerCase()}`}
             action={t('to_delete')}
             titleAction={t(`delete`)}

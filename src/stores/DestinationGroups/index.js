@@ -24,7 +24,7 @@ export class DestinationGroups {
               ...destination,
               id: index,
               routingPolicy: destination.routing_policy,
-              destinations: destination.destinations.length,
+              destinations: String(destination.destinations.length),
               noAnswerNumberOfRings: destination.no_answer_number_of_rings,
               noAnswerHunt: destination.no_answer_hunt
                 ? `Hunt after ${destination.no_answer_number_of_rings} rings`
@@ -97,8 +97,7 @@ export class DestinationGroups {
     destinationId,
     closeModal
   }) => {
-    console.log(destinationId, 'delete')
-    // this.isDestinationGroupDeleting = true
+    this.isDestinationGroupDeleting = true
     axios
       .delete(
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationId}`
@@ -121,7 +120,7 @@ export class DestinationGroups {
         })
       })
       .finally(() => {
-        // isDestinationGroupDeleting = false
+        this.isDestinationGroupDeleting = false
       })
   }
 }
@@ -130,6 +129,7 @@ decorate(DestinationGroups, {
   destinationGroups: observable,
   isDestinationGroupsLoading: observable,
   isDestinationGroupPosting: observable,
+  isDestinationGroupDeleting: observable,
   getDestinationGroups: action,
   postDestinationGroup: action,
   deleteDestinationGroup: action
