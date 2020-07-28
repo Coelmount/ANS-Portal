@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
+import DestinationGroupsStore from 'stores/DestinationGroups'
 import Loading from 'components/Loading'
 
 import basicIcon from 'source/images/svg/dashboard_basic_icon.svg'
@@ -34,8 +35,18 @@ const AnsInstances = observer(({ t }) => {
     amountOfBasicInstances
   } = BasicTranslationsStore
 
+  const {
+    getDestinationGroups,
+    isDestinationGroupsLoading,
+    amountOfDestinationGroups
+  } = DestinationGroupsStore
+
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
+    getDestinationGroups({
+      customerId: match.customerId,
+      groupId: match.groupId
+    })
   }, [])
 
   const handleInstanceRedirect = link => {
@@ -53,7 +64,7 @@ const AnsInstances = observer(({ t }) => {
       label: t('advanced'),
       iconSrc: advancedIcon,
       link: `${ansInstancesPrefix}/advanced/destinations`,
-      amount: MOCK_AMOUNT
+      amount: amountOfDestinationGroups
     },
     {
       label: t('time_based_routing'),
@@ -75,7 +86,7 @@ const AnsInstances = observer(({ t }) => {
 
   return (
     <Fragment>
-      {isBasicTranslationsNumbersLoading ? (
+      {isBasicTranslationsNumbersLoading || isDestinationGroupsLoading ? (
         <Loading />
       ) : (
         <Box className={classes.root}>

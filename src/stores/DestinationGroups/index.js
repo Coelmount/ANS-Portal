@@ -10,6 +10,7 @@ export class DestinationGroups {
   isDestinationGroupsLoading = true
   isDestinationGroupPosting = false
   isDestinationGroupDeleting = false
+  amountOfDestinationGroups = 0
 
   getDestinationGroups = ({ customerId, groupId }) => {
     this.destinationGroups = []
@@ -32,6 +33,7 @@ export class DestinationGroups {
             }
           }
         )
+        this.amountOfDestinationGroups = this.destinationGroups.length
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -130,6 +132,7 @@ decorate(DestinationGroups, {
   isDestinationGroupsLoading: observable,
   isDestinationGroupPosting: observable,
   isDestinationGroupDeleting: observable,
+  amountOfDestinationGroups: observable,
   getDestinationGroups: action,
   postDestinationGroup: action,
   deleteDestinationGroup: action
