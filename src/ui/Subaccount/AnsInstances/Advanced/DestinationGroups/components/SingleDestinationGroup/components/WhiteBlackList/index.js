@@ -174,9 +174,9 @@ const WhiteBlackList = props => {
     const deleteMessageBlock = (
       <Box>
         <span className={classes.boldDeleteText}>{totalMessage}</span>
-        <span
-          className={classes.deleteText}
-        >{` from ${whiteBlackList.mode} ?`}</span>
+        <span className={classes.deleteText}>{` ${t('from')} ${t(
+          whiteBlackList.mode
+        ).toLowerCase()} ?`}</span>
       </Box>
     )
 
@@ -273,7 +273,7 @@ const WhiteBlackList = props => {
             <StyledTooltip
               title={
                 whiteBlackList.mode === 'whitelist'
-                  ? t('black_list_disabled_radio_tooltip')
+                  ? t('wb_list_disabled_radio_tooltip')
                   : ''
               }
             >
@@ -301,7 +301,7 @@ const WhiteBlackList = props => {
             <StyledTooltip
               title={
                 whiteBlackList.mode === 'blacklist'
-                  ? t('white_list_disabled_radio_tooltip')
+                  ? t('wb_list_disabled_radio_tooltip')
                   : ''
               }
             >

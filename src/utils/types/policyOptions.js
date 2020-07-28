@@ -1,22 +1,22 @@
 const POLICY_OPTIONS = [
   {
-    label: 'weighted',
+    label: 'Weighted',
     value: 'weighted'
   },
   {
-    label: 'simultaneous',
+    label: 'Simultaneous',
     value: 'simultaneous'
   },
   {
-    label: 'circular',
+    label: 'Circular',
     value: 'circular'
   },
   {
-    label: 'regular',
+    label: 'Regular',
     value: 'regular'
   },
   {
-    label: 'uniform',
+    label: 'Uniform',
     value: 'uniform'
   }
 ]

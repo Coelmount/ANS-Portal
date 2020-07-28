@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 import classnames from 'classnames'
+import capitalize from 'lodash/capitalize'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Paper from '@material-ui/core/Paper'
@@ -66,7 +67,7 @@ const SingleDestinationGroup = props => {
   )
 
   const titleData = {
-    mainText: `${t('destination_group')}: ${destinationGroupName}`
+    mainText: `${capitalize(t('destination_group'))}: ${destinationGroupName}`
   }
 
   const handleChange = (event, newValue) => {

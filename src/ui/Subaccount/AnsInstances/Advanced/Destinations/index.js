@@ -322,7 +322,7 @@ const Destinations = observer(({ t }) => {
             extraToolbarBlock={toolbarButtonsBlock}
             getSearchList={setSearchList}
             noAvailableDataMessage={t('no_destinations_available')}
-            tableId={'ans_advanced_destinations'}
+            tableId={'ans_advanced_destinations_list'}
           />
         )}
         {openedModal.id === addModal && (

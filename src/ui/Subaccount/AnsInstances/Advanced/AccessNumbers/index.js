@@ -363,7 +363,7 @@ const AccessNumbers = ({ t }) => {
             setQuery={setNumberLike}
             isSearchParamsActive={isSearchParamsActive}
             isLoadingData={isAccessNumbersLoading}
-            noAvailableDataMessage={t('no_phone_numbers_available')}
+            noAvailableDataMessage={t('no_access_numbers_available')}
             tableId={'ans_advanced_access_numbers'}
             searchSelector={SearchSelector}
           />

@@ -157,7 +157,6 @@ const Settings = ({ t }) => {
             />
             <Typography className={classes.noAnswerTitle}>
               {t('destination_groups_add_checkbox_title')}
-              {/* Go to next destination when destination doesn't answer */}
             </Typography>
           </Box>
           {inputStore.values.huntAfterNoAnswer && (
@@ -167,7 +166,6 @@ const Settings = ({ t }) => {
                   [classes.disabledBlock]: !inputStore.values.isEditMode
                 })}
               >
-                {/* Skip after */}
                 {t('skip_after')}
               </span>
               <Input

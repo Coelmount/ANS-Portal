@@ -75,7 +75,7 @@ const AddModal = ({ t, open, handleClose }) => {
       ) : (
         <Fragment>
           <DialogTitle className={classes.title}>
-            {t('add_ans_advanced_group')}
+            {t('add_group_destination')}
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -119,7 +119,7 @@ const AddModal = ({ t, open, handleClose }) => {
                 <Input
                   icon={<PhoneForwardedIcon />}
                   type='number'
-                  label={t('X')}
+                  label='x'
                   variant='outlined'
                   value={inputStore.values.amountSkipRings}
                   onChange={e =>
