@@ -299,7 +299,7 @@ const WhiteBlackList = props => {
             <StyledTooltip
               title={
                 whiteBlackList.mode === 'whitelist'
-                  ? t('black_list_disabled_radio_tooltip')
+                  ? t('wb_list_disabled_radio_tooltip')
                   : ''
               }
             >
@@ -327,7 +327,7 @@ const WhiteBlackList = props => {
             <StyledTooltip
               title={
                 whiteBlackList.mode === 'blacklist'
-                  ? t('white_list_disabled_radio_tooltip')
+                  ? t('wb_list_disabled_radio_tooltip')
                   : ''
               }
             >
