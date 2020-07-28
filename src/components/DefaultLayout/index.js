@@ -130,6 +130,11 @@ const DefaultLayout = ({ t, notFoundPage }) => {
           name: 'advanced',
           childLinks: [
             {
+              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/access_numbers`,
+              text: t('access_numbers'),
+              name: 'access_numbers'
+            },
+            {
               link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`,
               text: t('destinations'),
               name: 'destinations'

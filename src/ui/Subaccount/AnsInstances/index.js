@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
 import IVRStore from 'stores/IVR'
+import DestinationGroupsStore from 'stores/DestinationGroups'
 import Loading from 'components/Loading'
 
 import basicIcon from 'source/images/svg/dashboard_basic_icon.svg'
@@ -35,10 +36,25 @@ const AnsInstances = observer(({ t }) => {
     amountOfBasicInstances
   } = BasicTranslationsStore
 
+  const {
+    getDestinationGroups,
+    isDestinationGroupsLoading,
+    amountOfDestinationGroups
+  } = DestinationGroupsStore
+
   const { getIVRs, isLoadingIVRs, ivrs } = IVRStore
+
+  const isLoading =
+    isBasicTranslationsNumbersLoading ||
+    isLoadingIVRs ||
+    isDestinationGroupsLoading
 
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
+    getDestinationGroups({
+      customerId: match.customerId,
+      groupId: match.groupId
+    })
     getIVRs(match.customerId, match.groupId)
   }, [])
 
@@ -57,7 +73,7 @@ const AnsInstances = observer(({ t }) => {
       label: t('advanced'),
       iconSrc: advancedIcon,
       link: `${ansInstancesPrefix}/advanced/destinations`,
-      amount: MOCK_AMOUNT
+      amount: amountOfDestinationGroups
     },
     {
       label: t('time_based_routing'),
@@ -79,7 +95,7 @@ const AnsInstances = observer(({ t }) => {
 
   return (
     <Fragment>
-      {isBasicTranslationsNumbersLoading || isLoadingIVRs ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Box className={classes.root}>
