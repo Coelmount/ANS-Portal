@@ -72,7 +72,7 @@ const AnsInstances = observer(({ t }) => {
     {
       label: t('advanced'),
       iconSrc: advancedIcon,
-      link: `${ansInstancesPrefix}/advanced/destinations`,
+      link: `${ansInstancesPrefix}/advanced`,
       amount: amountOfDestinationGroups
     },
     {

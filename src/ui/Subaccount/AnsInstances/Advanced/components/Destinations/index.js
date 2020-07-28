@@ -18,10 +18,7 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 
-import TitleBlock from 'components/TitleBlock'
 import CustomTable from 'components/CustomTable'
-import CustomContainer from 'components/CustomContainer'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
@@ -180,12 +177,6 @@ const Destinations = observer(({ t }) => {
   }
   // --------
 
-  const titleData = {
-    mainText: `${t('advanced')}: ${t('destinations')}`,
-    iconCapture: t('add'),
-    Icon: <AddOutlinedIcon />
-  }
-
   const extraDeleteBlock = (
     <span className={classes.deleteName}>{` ${modals.data.name}?`}</span>
   )
@@ -304,13 +295,6 @@ const Destinations = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <CustomContainer>
-          <CustomBreadcrumbs />
-          <TitleBlock
-            titleData={titleData}
-            handleOpen={() => openedModal.open(addModal)}
-          />
-        </CustomContainer>
         {isDestinationsLoading ? (
           <Loading />
         ) : (

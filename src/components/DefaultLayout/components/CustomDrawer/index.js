@@ -33,7 +33,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
     activeParentNav,
     activeChildNav,
     activeBasicSubChild,
-    activeAdvancedSubChild,
     handleActiveParentNav,
     handleActiveChildNav,
     handleActiveSubChildNav,
@@ -226,7 +225,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                           >
                             <Box
                               className={
-                                childLink.name === 'advanced'
+                                childLink.name === 'if tab with icon added'
                                   ? classes.secondLevelTitleWithIcon
                                   : classes.secondLevelTitle
                               }
@@ -275,9 +274,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                                         <ListItemText
                                           className={
                                             activeBasicSubChild ===
-                                              subChild.name ||
-                                            activeAdvancedSubChild ===
-                                              subChild.name
+                                            subChild.name
                                               ? classes.activeThirdLevelItemText
                                               : classes.thirdLevelItemText
                                           }

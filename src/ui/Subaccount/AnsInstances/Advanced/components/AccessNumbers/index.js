@@ -26,9 +26,6 @@ import CustomTable, {
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import AddModal from './components/AddModal'
-import CustomContainer from 'components/CustomContainer'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import TitleBlock from 'components/TitleBlock'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
@@ -200,10 +197,6 @@ const AccessNumbers = ({ t }) => {
     setNumbers(newNumbers)
   }
 
-  const titleData = {
-    mainText: t('access_numbers')
-  }
-
   const SearchSelector = (
     <Select
       value={searchParam}
@@ -337,10 +330,6 @@ const AccessNumbers = ({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <CustomContainer>
-          <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} classes={classes} />
-        </CustomContainer>
         {isAccessNumbersLoading && !numberLike ? (
           <Loading />
         ) : (

@@ -4,7 +4,6 @@ export class DefaultLayoutStore {
   activeParentNav = null
   activeChildNav = null
   activeBasicSubChild = null
-  activeAdvancedSubChild = null
   isChildNavClosed = false
 
   setDefaultValues = () => {
@@ -26,13 +25,7 @@ export class DefaultLayoutStore {
   handleCloseNav = () => (this.activeParentNav = null)
 
   handleActiveChildNav = child => {
-    if (
-      this.activeAdvancedSubChild === 'destination_groups' &&
-      child === 'advanced'
-    ) {
-      this.activeChildNav = child
-      this.activeAdvancedSubChild = 'destinations'
-    } else if (this.activeBasicSubChild === 'bulk_jobs' && child === 'basic') {
+    if (this.activeBasicSubChild === 'bulk_jobs' && child === 'basic') {
       this.activeChildNav = child
       this.activeBasicSubChild = 'translations'
     } else if (this.activeChildNav === child) {
@@ -40,7 +33,6 @@ export class DefaultLayoutStore {
       this.isChildNavClosed = true
     } else {
       this.activeChildNav = child
-      this.activeAdvancedSubChild = 'destinations'
       this.activeBasicSubChild = 'translations'
     }
   }
@@ -48,8 +40,6 @@ export class DefaultLayoutStore {
   handleActiveSubChildNav = (subChild, child) => {
     if (child === 'basic') {
       this.activeBasicSubChild = subChild
-    } else if (child === 'advanced') {
-      this.activeAdvancedSubChild = subChild
     }
   }
 
@@ -65,16 +55,6 @@ export class DefaultLayoutStore {
       this.activeParentNav = 'ans_instances'
       this.activeChildNav = 'basic'
       this.activeBasicSubChild = 'bulk_jobs'
-    } else if (urlArr[7] === 'destinations') {
-      this.activeParentNav = 'ans_instances'
-      if (this.isChildNavClosed === false) {
-        this.activeChildNav = 'advanced'
-        this.activeAdvancedSubChild = 'destinations'
-      }
-    } else if (urlArr[7] === 'destination_groups') {
-      this.activeParentNav = 'ans_instances'
-      this.activeChildNav = 'advanced'
-      this.activeAdvancedSubChild = 'destination_groups'
     } else if (urlArr[6] === 'ivr') {
       this.activeParentNav = 'ans_instances'
       this.activeChildNav = 'ivr'
@@ -98,7 +78,6 @@ decorate(DefaultLayoutStore, {
   activeParentNav: observable,
   activeChildNav: observable,
   activeBasicSubChild: observable,
-  activeAdvancedSubChild: observable,
   handleActiveParentNav: action,
   handleActiveChildNav: action,
   handleActiveSubChildNav: action,
