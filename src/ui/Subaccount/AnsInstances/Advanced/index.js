@@ -60,9 +60,9 @@ const Advanced = props => {
   )
 
   const titleData = {
-    mainText: t(
-      `${location.hash ? location.hash.slice(1) : 'available_numbers'}`
-    )
+    mainText: `${t('advanced')}: ${
+      location.hash ? t(location.hash.slice(1)) : t('available_numbers')
+    }`
   }
 
   const handleChange = (event, newValue) => {
