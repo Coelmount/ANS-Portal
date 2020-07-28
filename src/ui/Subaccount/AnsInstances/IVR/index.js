@@ -204,7 +204,8 @@ const IVR = props => {
             titleAction={t(`delete`)}
             deleteSubject={t('ans_ivr_instance')}
             deleteInfo={{
-              name: ivrForDelete.name
+              name: ivrForDelete.name,
+              id: ivrForDelete.serviceUserId
             }}
           />
         )}
