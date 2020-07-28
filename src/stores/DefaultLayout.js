@@ -64,6 +64,9 @@ export class DefaultLayoutStore {
     } else if (urlArr[6] === 'basic') {
       this.activeParentNav = 'ans_instances'
       this.activeChildNav = 'basic'
+    } else if (urlArr[6] === 'advanced') {
+      this.activeParentNav = 'ans_instances'
+      this.activeChildNav = 'advanced'
     } else if (urlArr[6] === 'week_schedules') {
       this.activeParentNav = 'schedules'
       this.activeChildNav = 'week_schedules'
