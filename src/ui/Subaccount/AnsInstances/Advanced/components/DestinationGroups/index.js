@@ -48,8 +48,7 @@ const DestinationGroups = observer(({ t }) => {
   } = DestinationGroupsStore
 
   const classes = useStyles()
-  const match = useParams()
-  const { customerId, groupId } = match
+  const { customerId, groupId } = useParams()
 
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
@@ -112,6 +111,7 @@ const DestinationGroups = observer(({ t }) => {
 
   const handleCheckedStates = newNumbers => {
     if (
+      newNumbers.length &&
       newNumbers.every(el => {
         return el.checked
       })
@@ -120,16 +120,12 @@ const DestinationGroups = observer(({ t }) => {
       setIsAnyChecked(true)
     } else {
       setSelectAll(false)
-      if (newNumbers.some(el => el.checked)) {
-        setIsAnyChecked(true)
-      } else {
-        setIsAnyChecked(false)
-      }
+      setIsAnyChecked(newNumbers.some(el => el.checked))
     }
-    if (!newNumbers.length) {
-      setSelectAll(false)
-      setIsAnyChecked(false)
-    }
+    // if (!newNumbers.length) {
+    //   setSelectAll(false)
+    //   setIsAnyChecked(false)
+    // }
   }
 
   const changeHover = (newHover, id) => {
@@ -169,7 +165,7 @@ const DestinationGroups = observer(({ t }) => {
       label: 'name',
       getCellData: row => (
         <Link
-          to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destination_groups/${row.name}`}
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced/destination_groups/${row.name}`}
           className={classes.link}
         >
           {row.name}
