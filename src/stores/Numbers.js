@@ -153,9 +153,9 @@ export class NumbersStore {
       })
   }
 
-  postAssignNumbersToCustomer = (tenantId, changeStep, step) => {
+  postAssignNumbersToCustomer = (tenantId, numbers, changeStep, step) => {
     this.isAddingNumbers = true
-    const selectedNumbers = this.availableNumbersTable.filter(el => el.checked)
+    const selectedNumbers = numbers.filter(el => el.checked)
     const dataForPost = this.parseNumbersToPost(selectedNumbers)
     const promiseArray = []
     dataForPost.forEach(data => {
