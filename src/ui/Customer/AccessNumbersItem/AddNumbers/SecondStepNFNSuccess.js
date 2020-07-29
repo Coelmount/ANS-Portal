@@ -60,11 +60,13 @@ const FirstStepNFN = props => {
   }
 
   const handleSelectAll = () => {
-    const newNumbers = numbers.map(el => ({
-      ...el,
-      checked: !selectAll,
-      hover: false
-    }))
+    const newNumbers = [
+      ...numbers.map(el => ({
+        ...el,
+        checked: !selectAll,
+        hover: false
+      }))
+    ]
     if (!selectAll) {
       let accumulator = 0
       numbers.forEach(el => {
@@ -166,21 +168,27 @@ const FirstStepNFN = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <Box className={classes.stepStyles}>{'SEARCH RESULT'}</Box>
-        <Box
-          className={classes.thirdParagraphBox}
-        >{`${currentEntitlement.name} (${currentEntitlement.country_code})`}</Box>
-        <CustomTable
-          classes={classes}
-          columns={columns}
-          firstCell={false}
-          showPagination={false}
-          showSearchBar={false}
-          showToolBar={false}
-          rows={numbers}
-          noAvailableDataMessage={t('no_phone_numbers_available')}
-          tableId={'second_step_nfn_success'}
-        />
+        {isAddingNumbers ? (
+          <Loading />
+        ) : (
+          <React.Fragment>
+            <Box className={classes.stepStyles}>{'SEARCH RESULT'}</Box>
+            <Box
+              className={classes.thirdParagraphBox}
+            >{`${currentEntitlement.name} (${currentEntitlement.country_code})`}</Box>
+            <CustomTable
+              classes={classes}
+              columns={columns}
+              firstCell={false}
+              showPagination={false}
+              showSearchBar={false}
+              showToolBar={false}
+              rows={numbers}
+              noAvailableDataMessage={t('no_phone_numbers_available')}
+              tableId={'second_step_nfn_success'}
+            />
+          </React.Fragment>
+        )}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button
@@ -191,7 +199,7 @@ const FirstStepNFN = props => {
             changeStep(1)
             clearNumbers()
           }}
-          disable={isAddingNumbers}
+          disabled={isAddingNumbers}
         >
           <ChevronLeft />
           {t('back')}
@@ -200,9 +208,14 @@ const FirstStepNFN = props => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disable={isAddingNumbers}
+          disabled={isAddingNumbers}
           onClick={() =>
-            postAssignNumbersToCustomer(match.customerId, changeStep, 3)
+            postAssignNumbersToCustomer(
+              match.customerId,
+              numbers,
+              changeStep,
+              3
+            )
           }
         >
           {`${t('add')} (${countNumbers})`}
