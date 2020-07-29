@@ -760,7 +760,13 @@ const AccessNumbersItem = ({ t }) => {
         className: classes.asignCell
       },
       getCellData: row => (
-        <Fragment>
+        <StyledTooltip
+          title={
+            row.subaccount !== 'none' || row.inUse !== 'no'
+              ? t('not_available_to_assign_tooltip')
+              : t('available_to_assign_tooltip')
+          }
+        >
           <IconButton
             aria-label='assign all picture'
             component='span'
@@ -770,13 +776,13 @@ const AccessNumbersItem = ({ t }) => {
                 row.subaccount === 'none' && row.inUse === 'no'
             })}
             onClick={() => {
-              selectNumbers(!row.checked, row.id, 'checked')
+              if (row.subaccount === 'none' && row.inUse === 'no')
+                selectNumbers(!row.checked, row.id, 'checked')
             }}
-            disabled={row.subaccount !== 'none' || row.inUse !== 'no'}
           >
             <DoneOutlinedIcon className={classes.assignIcon} />
           </IconButton>
-        </Fragment>
+        </StyledTooltip>
       )
     },
     {
