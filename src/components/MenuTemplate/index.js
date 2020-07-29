@@ -20,6 +20,8 @@ import Collapse from '@material-ui/core/Collapse'
 import Grid from '@material-ui/core/Grid'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import Tooltip from '@material-ui/core/Tooltip'
+import PhoneInput from 'react-phone-input-2'
 
 import { fade, makeStyles, withStyles } from '@material-ui/core/styles'
 
@@ -145,41 +147,45 @@ const StyledTreeItem = props => {
         )
       case 'Transfer To Number With Prompt':
         return (
-          <Select
+          <PhoneInput
             value={menuItem.parameter ? menuItem.parameter : ''}
             onClick={e => {
               e.stopPropagation()
             }}
-            variant='outlined'
+            placeholder={''}
+            containerClass={classes.inputNumber}
             disabled={disabledFields}
-            className={classes.actionSelect}
-            onChange={e => changeKeysMenu(id, 'parameter', e.target.value)}
-          >
-            {phoneNumbers.map(el => (
-              <MenuItem key={el.phoneNumber} value={el.phoneNumber}>
-                {el.phoneNumber}
-              </MenuItem>
-            ))}
-          </Select>
+            onChange={value => changeKeysMenu(id, 'parameter', value)}
+          />
+          // <Select
+          //   value={menuItem.parameter ? menuItem.parameter : ''}
+          //   onClick={e => {
+          //     e.stopPropagation()
+          //   }}
+          //   variant='outlined'
+          //   disabled={disabledFields}
+          //   className={classes.actionSelect}
+          //   onChange={e => changeKeysMenu(id, 'parameter', e.target.value)}
+          // >
+          //   {phoneNumbers.map(el => (
+          //     <MenuItem key={el.phoneNumber} value={el.phoneNumber}>
+          //       {el.phoneNumber}
+          //     </MenuItem>
+          //   ))}
+          // </Select>
         )
       case 'Transfer To Number':
         return (
-          <Select
+          <PhoneInput
             value={menuItem.parameter ? menuItem.parameter : ''}
             onClick={e => {
               e.stopPropagation()
             }}
-            variant='outlined'
+            placeholder={''}
+            containerClass={classes.inputNumber}
             disabled={disabledFields}
-            className={classes.actionSelect}
-            onChange={e => changeKeysMenu(id, 'parameter', e.target.value)}
-          >
-            {phoneNumbers.map(el => (
-              <MenuItem key={el.phoneNumber} value={el.phoneNumber}>
-                {el.phoneNumber}
-              </MenuItem>
-            ))}
-          </Select>
+            onChange={value => changeKeysMenu(id, 'parameter', value)}
+          />
         )
       case 'Play Announcement':
         return (
@@ -538,14 +544,17 @@ const MenuTemplate = props => {
               </Box>
             </Box>
           ) : (
-            <Button
-              variant={'contained'}
-              color={'primary'}
-              className={classes.roundButton}
-              onClick={() => setIsEdit(true)}
-            >
-              <img src={EditIcon} alt='EditIcon' />
-            </Button>
+            <Box className={classes.editButtonBox}>
+              <Button
+                variant={'contained'}
+                color={'primary'}
+                className={classes.roundButton}
+                onClick={() => setIsEdit(true)}
+              >
+                <img src={EditIcon} alt='EditIcon' />
+              </Button>
+              <Box>{t('edit')}</Box>
+            </Box>
           )}
         </Box>
       )}
@@ -602,60 +611,62 @@ const MenuTemplate = props => {
       )}
       <Box></Box>
       <Box>
-        <TreeView
-          key={route}
-          className={classes.root}
-          defaultCollapseIcon={isEdit || singleLvl ? null : <MinusSquare />}
-          defaultExpandIcon={isEdit || singleLvl ? null : <PlusSquare />}
-          defaultEndIcon={null}
-        >
-          {has(stateMenu, 'keys') &&
-            stateMenu.keys
-              .filter(el => el.action !== null)
-              .map((el, i) => (
-                <StyledTreeItem
-                  disabledFields={!isEdit}
-                  t={t}
-                  index={i}
-                  classes={classes}
-                  menuItem={el}
-                  nodeId={el.key}
-                  label={el.key}
-                  key={el.id}
-                  id={el.id}
-                  actions={
-                    has(config, 'group.ivr.allowed_actions')
-                      ? config.group.ivr.allowed_actions
-                      : []
-                  }
-                  changeKeysMenu={changeKeysMenu}
-                  deleteItemFromKeys={deleteItemFromKeys}
-                  menuLvl={menuLvl}
-                  ivrType={ivrType}
-                  announcements={announcements}
-                  submenus={submenus}
-                  phoneNumbers={phoneNumbers}
-                  config={config}
-                >
-                  {el.action === 'Go To Submenu' && el.parameter && (
-                    <MenuTemplate
-                      menuLvl={'submenus'}
-                      menuType={el.parameter}
-                      route={route + el.key}
-                      t={t}
-                      countChild={countChild + 1}
-                      showTitle
-                      refreshThree={successEdit}
-                      announcements={announcements}
-                      submenus={submenus}
-                      phoneNumbers={phoneNumbers}
-                      menuName={`${t('submenu')}: ${el.parameter}`}
-                      config={config}
-                    />
-                  )}
-                </StyledTreeItem>
-              ))}
-        </TreeView>
+        <Tooltip title={isEdit ? '' : t('menu_edit_tooltip')}>
+          <TreeView
+            key={route}
+            className={classes.root}
+            defaultCollapseIcon={isEdit || singleLvl ? null : <MinusSquare />}
+            defaultExpandIcon={isEdit || singleLvl ? null : <PlusSquare />}
+            defaultEndIcon={null}
+          >
+            {has(stateMenu, 'keys') &&
+              stateMenu.keys
+                .filter(el => el.action !== null)
+                .map((el, i) => (
+                  <StyledTreeItem
+                    disabledFields={!isEdit}
+                    t={t}
+                    index={i}
+                    classes={classes}
+                    menuItem={el}
+                    nodeId={el.key}
+                    label={el.key}
+                    key={el.id}
+                    id={el.id}
+                    actions={
+                      has(config, 'group.ivr.allowed_actions')
+                        ? config.group.ivr.allowed_actions
+                        : []
+                    }
+                    changeKeysMenu={changeKeysMenu}
+                    deleteItemFromKeys={deleteItemFromKeys}
+                    menuLvl={menuLvl}
+                    ivrType={ivrType}
+                    announcements={announcements}
+                    submenus={submenus}
+                    phoneNumbers={phoneNumbers}
+                    config={config}
+                  >
+                    {el.action === 'Go To Submenu' && el.parameter && (
+                      <MenuTemplate
+                        menuLvl={'submenus'}
+                        menuType={el.parameter}
+                        route={route + el.key}
+                        t={t}
+                        countChild={countChild + 1}
+                        showTitle
+                        refreshThree={successEdit}
+                        announcements={announcements}
+                        submenus={submenus}
+                        phoneNumbers={phoneNumbers}
+                        menuName={`${t('submenu')}: ${el.parameter}`}
+                        config={config}
+                      />
+                    )}
+                  </StyledTreeItem>
+                ))}
+          </TreeView>
+        </Tooltip>
         {isEdit && (
           <Box className={classes.addItemBlock}>
             <Box>

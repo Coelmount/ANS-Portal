@@ -20,7 +20,12 @@ const useStyles = makeStyles(theme => ({
     width: 30,
     height: 30,
     minWidth: 30,
-    padding: 0
+    padding: 0,
+    marginRight: 10
+  },
+  editButtonBox: {
+    display: 'flex',
+    alignItems: 'center'
   },
   titleBox: {
     display: 'flex',
@@ -236,6 +241,22 @@ const useStyles = makeStyles(theme => ({
   actionDataBox: {
     width: 254,
     height: 50
+  },
+  inputNumber: {
+    '&.react-tel-input .form-control': {
+      width: '254px !important',
+      height: 50
+    },
+    '&.react-tel-input .form-control + div:before': {
+      display: 'none'
+    },
+    '&.react-tel-input :disabled': {
+      color: '#b3b3b3',
+      '&:hover': {
+        borderColor: '#cacaca'
+      },
+      cursor: 'default'
+    }
   }
 }))
 

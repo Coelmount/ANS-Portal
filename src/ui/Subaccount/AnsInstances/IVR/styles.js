@@ -10,7 +10,9 @@ const useStyles = makeStyles(theme => ({
     boxShadow: 'none'
   },
   link: {
-    cursor: 'pointer'
+    cursor: 'pointer',
+    '&.MuiLink-underlineHover:hover': { textDecoration: 'none' },
+    fontSize: 14
   },
   rootEditSchedule: {
     '& .MuiDialog-paperWidthSm': {
