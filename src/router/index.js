@@ -20,8 +20,8 @@ import TimeBasedRouting from 'ui/Subaccount/AnsInstances/TimeBasedRouting'
 import IVR from 'ui/Subaccount/AnsInstances/IVR'
 import Translations from 'ui/Subaccount/AnsInstances/Basic/Translations'
 import TranslationsSingleNumber from 'ui/Subaccount/AnsInstances/Basic/Translations/components/SingleNumber'
-import Destinations from 'ui/Subaccount/AnsInstances/Advanced/Destinations'
-import DestinationGroups from 'ui/Subaccount/AnsInstances/Advanced/DestinationGroups'
+import Advanced from 'ui/Subaccount/AnsInstances/Advanced'
+import SingleDestinationGroup from 'ui/Subaccount/AnsInstances/Advanced/components/DestinationGroups/components/SingleDestinationGroup'
 import PhoneNumbers from 'ui/Subaccount/PhoneNumbers'
 import Announcements from 'ui/Subaccount/Announcements'
 import SubaccountAdmins from 'ui/Subaccount/Administrators'
@@ -93,15 +93,15 @@ const userComponents = [
     accessLevel: 3
   },
   {
-    path:
-      '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced/destinations',
-    component: <Destinations />,
+    path: '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced',
+    component: <Advanced />,
     accessLevel: 3
   },
+
   {
     path:
-      '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced/destination_groups',
-    component: <DestinationGroups />,
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced/destination_groups/:destinationGroupName',
+    component: <SingleDestinationGroup />,
     accessLevel: 3
   },
   {

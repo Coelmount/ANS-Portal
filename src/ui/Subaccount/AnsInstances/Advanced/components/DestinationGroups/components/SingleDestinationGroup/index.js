@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 import classnames from 'classnames'
 import capitalize from 'lodash/capitalize'
 
@@ -22,8 +22,9 @@ import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import AccessNumbers from './components/AccessNumbers'
-import DestinationGroups from './components/DestinationGroups'
 import Destinations from './components/Destinations'
+import Settings from './components/Settings'
+import WhiteBlackList from './components/WhiteBlackList'
 
 import useStyles from './styles'
 
@@ -31,23 +32,29 @@ const tabPanelItems = [
   {
     index: 0,
     component: <AccessNumbers />,
-    label: 'available_numbers'
+    label: 'access_numbers'
   },
   {
     index: 1,
-    component: <DestinationGroups />,
-    label: 'destination_groups'
+    component: <Destinations />,
+    label: 'destinations'
   },
   {
     index: 2,
-    component: <Destinations />,
-    label: 'destinations'
+    component: <WhiteBlackList />,
+    label: 'white_black_list'
+  },
+  {
+    index: 3,
+    component: <Settings />,
+    label: 'settings'
   }
 ]
 
-const Advanced = props => {
+const SingleDestinationGroup = props => {
   const { t } = props
-
+  const match = useParams()
+  const { destinationGroupName } = match
   const history = useHistory()
   const location = useLocation()
   const classes = useStyles()
@@ -60,37 +67,41 @@ const Advanced = props => {
   )
 
   const titleData = {
-    mainText: `${t('advanced')}: ${
-      location.hash ? t(location.hash.slice(1)) : t('available_numbers')
-    }`
+    mainText: `${capitalize(t('destination_group'))}: ${destinationGroupName}`
   }
 
   const handleChange = (event, newValue) => {
     setActiveTab(newValue)
     switch (newValue) {
       case 0:
-        history.push('#available_numbers')
-        setTranslationsMenuName(t('available_numbers'))
+        history.push('#access_numbers')
+        setTranslationsMenuName(t('access_numbers'))
         break
       case 1:
-        history.push('#destination_groups')
-        setTranslationsMenuName(t('destination_groups'))
-        break
-      case 2:
         history.push('#destinations')
         setTranslationsMenuName(t('destinations'))
+        break
+      case 2:
+        history.push('#white_black_list')
+        setTranslationsMenuName(t('white_black_list'))
+        break
+      case 3:
+        history.push('#settings')
+        setTranslationsMenuName(t('settings'))
         break
     }
   }
 
   const returnActiveTab = () => {
     switch (location.hash) {
-      case '#available_numbers':
+      case '#access_numbers':
         return 0
-      case '#destination_groups':
-        return 1
       case '#destinations':
+        return 1
+      case '#white_black_list':
         return 2
+      case '#settings':
+        return 3
       default:
         return 0
     }
@@ -157,4 +168,4 @@ const TabPanel = props => {
   )
 }
 
-export default withNamespaces()(observer(Advanced))
+export default withNamespaces()(observer(SingleDestinationGroup))

@@ -125,21 +125,9 @@ const DefaultLayout = ({ t, notFoundPage }) => {
           name: 'basic'
         },
         {
-          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`,
+          link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced`,
           text: t('advanced'),
-          name: 'advanced',
-          childLinks: [
-            {
-              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destinations`,
-              text: t('destinations'),
-              name: 'destinations'
-            },
-            {
-              link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/advanced/destination_groups`,
-              text: t('destination_groups'),
-              name: 'destination_groups'
-            }
-          ]
+          name: 'advanced'
         },
         {
           link: `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/ivr`,

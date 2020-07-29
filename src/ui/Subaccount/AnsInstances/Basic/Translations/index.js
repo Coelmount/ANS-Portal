@@ -40,7 +40,9 @@ const Translations = props => {
   )
 
   const titleData = {
-    mainText: t(`${location.hash ? location.hash.slice(1) : 'translations'}`)
+    mainText: `${t('basic')}: ${
+      location.hash ? t(location.hash.slice(1)) : t('translations')
+    }`
   }
 
   const handleChange = (event, newValue) => {
