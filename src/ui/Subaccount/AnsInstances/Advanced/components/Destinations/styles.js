@@ -94,9 +94,7 @@ const useStyles = makeStyles(theme => ({
   toolbarButtonsBlockWrap: {
     display: 'flex',
     justifyContent: 'flex-end',
-    width: '100%',
-    marginRight: 40,
-    marginLeft: 40
+    marginRight: 40
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
@@ -250,6 +248,11 @@ const useStyles = makeStyles(theme => ({
   },
   deleteName: {
     fontWeight: 'bold'
+  },
+  toolbarWrap: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    width: '100%'
   }
 }))
 
