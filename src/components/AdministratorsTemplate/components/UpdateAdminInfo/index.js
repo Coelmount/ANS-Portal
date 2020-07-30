@@ -19,7 +19,6 @@ import EditDeleteAdminStore from 'stores/EditDeleteAdministrator'
 import EditDeleteSubaccountsAdmin from 'stores/EditDeleteSubaccountsAdmin'
 import Loading from 'components/Loading'
 
-// import { SELECTLANGUAGE } from 'source/config'
 import Input from 'components/Input'
 import CustomSelect from 'components/Select'
 import sharp from 'source/images/svg/sharp.svg'

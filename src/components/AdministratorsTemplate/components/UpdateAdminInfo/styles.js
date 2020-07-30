@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1
   },
   inputes: {
-    marginTop: '30px',
+    marginTop: 30,
     marginLeft: 'calc(104px - 24px)'
   },
   buttonsWrapper: {
