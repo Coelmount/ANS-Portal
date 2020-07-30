@@ -72,16 +72,16 @@ const TimeBasedRouting = ({ t }) => {
       label: t('name'),
       getCellData: row => (
         <Link
-          onClick={() =>
-            history.push(
-              `/customers/${customerId}/subaccounts/${groupId}/ivr/${row.serviceUserId}`
-            )
-          }
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing/${row.name}`}
           className={classes.link}
         >
           {row.name}
         </Link>
       )
+    },
+    {
+      id: 'defaultDestination',
+      label: t('default_destination')
     },
     {
       id: 'delete',
@@ -120,7 +120,7 @@ const TimeBasedRouting = ({ t }) => {
           <CustomTable
             rows={timeBaseRoutes}
             columns={columns}
-            searchCriterias={['name']}
+            searchCriterias={['name', 'defaultDestination']}
             noAvailableDataMessage={t('no_tbs_available')}
             tableId='time_based_routing_list'
           />
