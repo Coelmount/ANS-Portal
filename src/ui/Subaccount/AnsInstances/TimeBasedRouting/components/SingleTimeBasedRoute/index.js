@@ -48,7 +48,7 @@ const tabPanelItems = [
 const SingleDestinationGroup = props => {
   const { t } = props
   const match = useParams()
-  const { destinationGroupName } = match
+  const { tbrName } = match
   const history = useHistory()
   const location = useLocation()
   const classes = useStyles()
@@ -61,7 +61,7 @@ const SingleDestinationGroup = props => {
   )
 
   const titleData = {
-    mainText: `${capitalize(t('destination_group'))}: ${destinationGroupName}`
+    mainText: `${capitalize(t('time_based_routing'))}: ${tbrName}`
   }
 
   const handleChange = (event, newValue) => {

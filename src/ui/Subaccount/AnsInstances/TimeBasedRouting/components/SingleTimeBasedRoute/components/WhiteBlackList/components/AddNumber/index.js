@@ -19,7 +19,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import AddIcon from '@material-ui/icons/Add'
 import RemoveIcon from '@material-ui/icons/Clear'
 
-import WhiteBlackListStore from 'stores/DestinationGroups/WhiteBlackList'
+import WhiteBlackListStore from 'stores/TimeBasedRouting/WhiteBlackList'
 import CustomersStore from 'stores/Customers'
 import ConfigStore from 'stores/Config'
 

@@ -26,7 +26,7 @@ import RemoveIcon from '@material-ui/icons/Clear'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import AddIcon from '@material-ui/icons/Add'
 
-import WhiteBlackListStore from 'stores/DestinationGroups/WhiteBlackList'
+import WhiteBlackListStore from 'stores/TimeBasedRouting/WhiteBlackList'
 import useStyles from './styles'
 
 const StyledTooltip = withStyles({
@@ -48,7 +48,7 @@ const WhiteBlackList = props => {
 
   const classes = useStyles()
   const match = useParams()
-  const { customerId, groupId, destinationGroupName } = match
+  const { customerId, groupId, tbrName } = match
   const [mode, setMode] = useState('')
   const [selectAll, setSelectAll] = useState(false)
   const [numbers, setNumbers] = useState([])
@@ -63,7 +63,7 @@ const WhiteBlackList = props => {
       const payload = {
         customerId,
         groupId,
-        destinationGroupName
+        tbrName
       }
       getWhiteBlackList(payload)
     }
@@ -137,7 +137,7 @@ const WhiteBlackList = props => {
     const payload = {
       customerId,
       groupId,
-      destinationGroupName
+      tbrName
     }
     getWhiteBlackList(payload)
   }
@@ -379,7 +379,7 @@ const WhiteBlackList = props => {
                 const payload = {
                   customerId,
                   groupId,
-                  destinationGroupName
+                  tbrName
                 }
                 getWhiteBlackList(payload)
                 setSelectAll(false)

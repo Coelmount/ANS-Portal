@@ -24,28 +24,30 @@ export class AccessNumbers {
   isAccessNumbersLoading = true
   isUpdatingMainNumber = false
   totalPages = 0
-  currentGroupId = ''
+  currentTbrId = ''
   availableSecondaryIds = []
 
   clearLoadingStates = () => {
     this.isAvailableNumbersLoading = true
   }
 
-  getMainNumber = ({ customerId, groupId, destinationGroupName }) => {
+  getMainNumber = ({ customerId, groupId, tbrName }) => {
     this.mainNumber = null
     this.isMainNumberLoading = true
 
     axios
-      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
+      )
       .then(res => {
-        const destinationGroups = res.data.ans_advanced
-        const currentGroup = destinationGroups.find(
-          destinationGroup => destinationGroup.name === destinationGroupName
+        const timeBasedRoutes = res.data.time_based_routes
+        const currentTimeBasedRoute = timeBasedRoutes.find(
+          timeBasedRoute => timeBasedRoute.name === tbrName
         )
 
         axios
           .get(
-            `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${currentGroup.ans_id}/main_number`
+            `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${currentTimeBasedRoute.userId}/main_number`
           )
           .then(res => {
             const number = res.data.mainNumber
@@ -79,20 +81,22 @@ export class AccessNumbers {
       })
   }
 
-  getSecondaryNumbers = ({ customerId, groupId, destinationGroupName }) => {
+  getSecondaryNumbers = ({ customerId, groupId, tbrName }) => {
     this.secondaryNumbers = []
     this.isSecondaryNumbersLoading = true
     axios
-      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
+      )
       .then(res => {
-        const destinationGroups = res.data.ans_advanced
-        const currentGroup = destinationGroups.find(
-          destinationGroup => destinationGroup.name === destinationGroupName
+        const timeBasedRoutes = res.data.time_based_routes
+        const currentTimeBasedRoute = timeBasedRoutes.find(
+          timeBasedRoute => timeBasedRoute.name === tbrName
         )
-        this.currentGroupId = currentGroup.ans_id
+        this.currentTbrId = currentTimeBasedRoute.userId
         axios
           .get(
-            `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${currentGroup.ans_id}/secondary_numbers`
+            `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${currentTimeBasedRoute.userId}/secondary_numbers`
           )
           .then(res => {
             const numbers = res.data.secondaryNumbers
@@ -157,7 +161,7 @@ export class AccessNumbers {
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=advanced&in_use=false&country_code=${countryCodeField}`
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=tbr&in_use=false&country_code=${countryCodeField}`
       )
       .then(res => {
         const pagination = res.data.pagination
@@ -213,7 +217,7 @@ export class AccessNumbers {
 
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentTbrId}/secondary_numbers`,
         {
           secondary_numbers: numbersToAdd
         }
@@ -250,7 +254,7 @@ export class AccessNumbers {
     this.isUpdatingMainNumber = true
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/main_number/`,
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentTbrId}/main_number/`,
         data
       )
       .then(() => {
@@ -284,7 +288,7 @@ export class AccessNumbers {
     this.isSecondaryNumberDeleting = true
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentTbrId}/secondary_numbers`,
         {
           secondary_numbers: [
             {

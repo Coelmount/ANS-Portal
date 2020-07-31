@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
-import AccessNumbersStore from 'stores/DestinationGroups/AccessNumbers'
+import AccessNumbersStore from 'stores/TimeBasedRouting/AccessNumbers'
 import CustomTable, {
   DEFAULT_ROWS_PER_PAGE
 } from 'components/CustomTableBackendPagination'

@@ -33,7 +33,7 @@ import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import DeleteModal from 'components/DeleteModal'
 
-import AccessNumbersStore from 'stores/DestinationGroups/AccessNumbers'
+import AccessNumbersStore from 'stores/TimeBasedRouting/AccessNumbers'
 
 import useStyles from './styles'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
@@ -50,7 +50,7 @@ const SELECT_OPTIONS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 const AccessNumbers = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
-  const { customerId, groupId, destinationGroupName } = match
+  const { customerId, groupId, tbrName } = match
 
   const {
     getMainNumber,
@@ -64,14 +64,13 @@ const AccessNumbers = observer(({ t }) => {
     isSecondaryNumberDeleting
   } = AccessNumbersStore
 
-  const [priorityValue, setPriorityValue] = useState('')
   const isLoading = isMainNumberLoading || isSecondaryNumbersLoading
 
   const initialRequest = () => {
     const payload = {
       customerId,
       groupId,
-      destinationGroupName
+      tbrName
     }
     getMainNumber(payload)
     getSecondaryNumbers(payload)
@@ -196,7 +195,7 @@ const AccessNumbers = observer(({ t }) => {
 
             <CustomTable
               firstCell={true}
-              rows={[mainNumber]}
+              rows={mainNumber ? [mainNumber] : []}
               columns={mainNumberColumns}
               showSearchBar={false}
               showPagination={false}

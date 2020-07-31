@@ -20,7 +20,7 @@ import Box from '@material-ui/core/Box'
 import CloseIcon from '@material-ui/icons/Close'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
-import AccessNumbersStore from 'stores/DestinationGroups/AccessNumbers'
+import AccessNumbersStore from 'stores/TimeBasedRouting/AccessNumbers'
 
 import useStyles from './styles'
 import { toJS } from 'mobx'
@@ -44,7 +44,7 @@ const EditMainNumberModal = props => {
   const [optionNumbers, setOptionNumbers] = useState([])
 
   useEffect(() => {
-    setNumber(mainNumber.value ? mainNumber.value : '')
+    setNumber(mainNumber && mainNumber.value ? mainNumber.value : '')
 
     const payload = {
       customerId,
@@ -59,7 +59,7 @@ const EditMainNumberModal = props => {
   }, [])
 
   useEffect(() => {
-    if (Object.keys(mainNumber).length) {
+    if (mainNumber && Object.keys(mainNumber).length) {
       availableNumbers.push(mainNumber)
       setOptionNumbers(availableNumbers)
     }

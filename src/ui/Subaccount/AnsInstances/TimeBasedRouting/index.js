@@ -1,140 +1,126 @@
-import React, { useState, useEffect } from 'react'
-import { observer, useLocalStore } from 'mobx-react-lite'
+import React, { useState, useEffect, useRef } from 'react'
+import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory, Link } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
+import classnames from 'classnames'
 
-import AddIcon from '@material-ui/icons/Add'
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Paper from '@material-ui/core/Paper'
-import IconButton from '@material-ui/core/IconButton'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Button from '@material-ui/core/Button'
+import Grow from '@material-ui/core/Grow'
+import Popper from '@material-ui/core/Popper'
+import MenuItem from '@material-ui/core/MenuItem'
+import MenuList from '@material-ui/core/MenuList'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
-import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import CustomTable from 'components/CustomTable'
-import DeleteModal from 'components/DeleteModal'
-import AddModal from './components/AddModal'
+import TranslationNumbers from './components/TranslationNumbers'
+import AvailableNumbers from './components/AvailableNumbers'
 
 import useStyles from './styles'
 
-const addModalId = 1
-const deleteModalId = 2
-
-const TimeBasedRouting = ({ t }) => {
-  const classes = useStyles()
+const Translations = props => {
+  const { t } = props
+  const match = useParams()
   const history = useHistory()
-  const { customerId, groupId } = useParams()
+  const location = useLocation()
+  const classes = useStyles()
 
-  const {
-    timeBaseRoutes,
-    isLoadingTBR,
-    getTimeBasedRoutes
-  } = TimeBaseRoutingStore
-
-  const modalsStore = useLocalStore(() => ({
-    openedId: null,
-    open(modalId) {
-      this.openedId = modalId
-    },
-    close() {
-      this.openedId = null
-      getRequest()
-    }
-  }))
-
-  const getRequest = () => {
-    const payload = {
-      customerId,
-      groupId
-    }
-    getTimeBasedRoutes(payload)
-  }
-
-  useEffect(() => {
-    getRequest()
-  }, [])
-
-  const handleAddButtonClick = () => {
-    modalsStore.open(addModalId)
-  }
+  const [activeTab, setActiveTab] = useState(0)
+  const [open, setOpen] = useState(false)
+  const anchorRef = useRef(null)
+  const [translationsMenuName, setTranslationsMenuName] = useState(
+    t('translations_menus')
+  )
 
   const titleData = {
-    mainText: t('time_base_routing'),
-    iconCapture: t('add'),
-    Icon: <AddIcon />
+    mainText: t('time_based_routing')
   }
 
-  const columns = [
-    {
-      id: 'name',
-      label: t('name'),
-      getCellData: row => (
-        <Link
-          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing/${row.name}`}
-          className={classes.link}
-        >
-          {row.name}
-        </Link>
-      )
-    },
-    {
-      id: 'defaultDestination',
-      label: t('default_destination')
-    },
-    {
-      id: 'delete',
-      extraProps: {
-        className: classes.deleteCell,
-        align: 'right'
-      },
-      isSortAvailable: false,
-      getCellData: row => (
-        <IconButton
-        // onClick={() => setIVRForDelete(row)}
-        >
-          <CloseOutlinedIcon
-          //onClick={() => handleOpenDeleteModal(row.groupId, row.groupName)}
-          //className={classes.deleteCustomerIcon}
-          />
-        </IconButton>
-      )
+  const handleChange = (event, newValue) => {
+    setActiveTab(newValue)
+    switch (newValue) {
+      case 0:
+        history.push('#translations')
+        setTranslationsMenuName(t('translations_menus'))
+        break
+      case 1:
+        history.push('#available_numbers')
+        setTranslationsMenuName(t('translations_menus'))
+        break
     }
-  ]
+  }
+
+  const returnActiveTab = () => {
+    switch (location.hash) {
+      case '#translations':
+        return 0
+      case '#available_numbers':
+        return 1
+      default:
+        return 0
+    }
+  }
+
+  const prevOpen = useRef(open)
+  useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus()
+    }
+    prevOpen.current = open
+  }, [open])
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock
-            titleData={titleData}
-            classes={classes}
-            handleOpen={handleAddButtonClick}
-          />
+          <TitleBlock titleData={titleData} classes={classes} />
         </CustomContainer>
-        {isLoadingTBR ? (
-          <Loading />
-        ) : (
-          <CustomTable
-            rows={timeBaseRoutes}
-            columns={columns}
-            searchCriterias={['name', 'defaultDestination']}
-            noAvailableDataMessage={t('no_tbs_available')}
-            tableId='time_based_routing_list'
-          />
-        )}
       </Paper>
-
-      {modalsStore.openedId === addModalId && (
-        <AddModal
-          open={modalsStore.openedId === addModalId}
-          handleClose={modalsStore.close}
-        />
-      )}
+      <Tabs
+        className={classes.tabs}
+        value={returnActiveTab()}
+        indicatorColor='primary'
+        onChange={handleChange}
+        variant='scrollable'
+        scrollButtons='auto'
+      >
+        <Tab value={0} label={t('translations')} className={classes.tab} />
+        <Tab value={1} label={t('available_numbers')} className={classes.tab} />
+      </Tabs>
+      <TabPanel value={returnActiveTab()} index={0}>
+        <TranslationNumbers />
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={1}>
+        <AvailableNumbers />
+      </TabPanel>
     </div>
   )
 }
 
-export default withNamespaces()(observer(TimeBasedRouting))
+const TabPanel = props => {
+  const { children, value, index, ...other } = props
+  const classes = useStyles()
+
+  return (
+    <div
+      className={classes.tabs}
+      role='tabpanel'
+      hidden={value !== index}
+      id={`wrapped-tabpanel-${index}`}
+      aria-labelledby={`wrapped-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  )
+}
+
+export default withNamespaces()(observer(Translations))
