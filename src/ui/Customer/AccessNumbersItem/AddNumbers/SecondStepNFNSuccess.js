@@ -28,7 +28,7 @@ import useStyles from './styles'
 import Loading from 'components/Loading'
 
 const FirstStepNFN = props => {
-  const { handleClose, t, changeStep } = props
+  const { handleClose, t, changeStep, clearQueryParameters } = props
   const classes = useStyles()
   const match = useParams()
   const {
@@ -196,8 +196,9 @@ const FirstStepNFN = props => {
           color='primary'
           className={classes.backButton}
           onClick={() => {
-            changeStep(1)
             clearNumbers()
+            clearQueryParameters()
+            changeStep(1)
           }}
           disabled={isAddingNumbers}
         >

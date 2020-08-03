@@ -22,7 +22,7 @@ import useStyles from './styles'
 import Loading from 'components/Loading'
 
 const FirstStepNFN = props => {
-  const { handleClose, t, changeStep } = props
+  const { handleClose, t, changeStep, clearQueryParameters } = props
   const classes = useStyles()
   const match = useParams()
 
@@ -47,7 +47,10 @@ const FirstStepNFN = props => {
           variant='outlined'
           color='primary'
           className={classes.backButton}
-          onClick={() => changeStep(1)}
+          onClick={() => {
+            changeStep(1)
+            clearQueryParameters()
+          }}
         >
           <ChevronLeft />
           {t('back')}

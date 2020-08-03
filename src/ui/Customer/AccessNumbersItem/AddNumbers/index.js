@@ -60,6 +60,15 @@ const CreateCustomer = props => {
   })
   const match = useParams()
 
+  const clearQueryParameters = () => {
+    setQueryAvalibleNumbers({
+      range_size: '',
+      number_type: '',
+      country_code: '',
+      numbers_of_results: ''
+    })
+  }
+
   useEffect(() => {
     setDefaultValue()
   }, [])
@@ -208,6 +217,7 @@ const CreateCustomer = props => {
           setQueryAvalibleNumbers={setQueryAvalibleNumbers}
           searchAvalibleNumbers={searchAvalibleNumbers}
           availableNumbers={availableNumbers}
+          clearQueryParameters={clearQueryParameters}
         />
       )}
     </Dialog>
@@ -232,6 +242,7 @@ const StepsNotFoundNumbers = props => {
           <SecondStepNFNSuccess
             handleClose={props.handleClose}
             changeStep={props.changeStep}
+            clearQueryParameters={props.clearQueryParameters}
           />
         )
       } else {
@@ -239,6 +250,7 @@ const StepsNotFoundNumbers = props => {
           <SecondStepNFNFailed
             handleClose={props.handleClose}
             changeStep={props.changeStep}
+            clearQueryParameters={props.clearQueryParameters}
           />
         )
       }
