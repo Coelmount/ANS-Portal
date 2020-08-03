@@ -1,16 +1,17 @@
-import { decorate, observable, action } from 'mobx'
-
-import axios from 'utils/axios'
+import { decorate, observable, action, computed } from 'mobx'
+import capitalize from 'lodash/capitalize'
 
 import SnackbarStore from '../Snackbar'
+import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
 import types from 'utils/types/basicSearchParams'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
+import { toJS } from 'mobx'
 
 const { NUMBER_LIKE, COUNTRY_CODE } = types
 
 export class TimeBasedRouting {
-  timeBaseRoutes = []
+  timeBasedRoutes = []
   availableNumbers = []
   totalPagesAvailableNumbers = 0
   searchParam = NUMBER_LIKE
@@ -18,6 +19,7 @@ export class TimeBasedRouting {
   isLoadingTBR = true
   isTimeBasedRoutePosting = false
   isAvailableNumbersLoading = true
+  isDeleting = false
 
   getAvailableNumbers = (
     customerId,
@@ -95,7 +97,7 @@ export class TimeBasedRouting {
   }
 
   getTimeBasedRoutes = ({ customerId, groupId }) => {
-    this.timeBaseRoutes = []
+    this.timeBasedRoutes = []
     this.isLoadingTBR = true
 
     axios
@@ -103,13 +105,16 @@ export class TimeBasedRouting {
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
       )
       .then(res => {
-        this.timeBaseRoutes = res.data.time_based_routes.map(item => {
-          return {
-            ...item,
-            checked: false,
-            hover: false
+        this.timeBasedRoutes = res.data.time_based_routes.map(
+          (route, index) => {
+            return {
+              ...route,
+              id: index,
+              checked: false,
+              hover: false
+            }
           }
-        })
+        )
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -124,8 +129,26 @@ export class TimeBasedRouting {
       })
   }
 
+  // @computed: check if checked field of every number === TRUE
+  get areAllNumbersChecked() {
+    return this.timeBasedRoutes.every(route => route.checked)
+  }
+
+  // change field  to reversed value
+  handleReverseState = (field, id, newState) => {
+    this.timeBasedRoutes[id][field] = newState
+  }
+
+  // change checked field of each number => TRUE
+  handleCheckAll = () => {
+    if (this.areAllNumbersChecked) {
+      this.timeBasedRoutes.forEach(route => (route.checked = false))
+    } else {
+      this.timeBasedRoutes.forEach(route => (route.checked = true))
+    }
+  }
+
   postTimeBasedRoute = ({ customerId, groupId, name, closeModal }) => {
-    console.log(this.numberToConfigure, 'this.numberToConfigure')
     this.isTimeBasedRoutePosting = true
     axios
       .post(
@@ -158,21 +181,84 @@ export class TimeBasedRouting {
         this.isTimeBasedRoutePosting = false
       })
   }
+
+  get checkedNumbers() {
+    const checkedNumbers = this.timeBasedRoutes.filter(route => route.checked)
+    return checkedNumbers
+  }
+
+  get deleteString() {
+    const checkedNumbers = this.timeBasedRoutes.filter(route => route.checked)
+    return checkedNumbers.map(number => `'${number.name}'`).join(', ')
+  }
+
+  deleteTimeBasedRoutes = ({
+    customerId,
+    groupId,
+    callback,
+    singleDeleteItem
+  }) => {
+    this.isDeleting = true
+    const deleteSubject = `translation${singleDeleteItem ? '' : 's'}`
+    const numbersToDelete = singleDeleteItem.userId
+      ? [singleDeleteItem]
+      : this.checkedNumbers
+
+    let promiseArr = []
+    numbersToDelete.forEach(number => {
+      promiseArr.push(
+        axios.delete(
+          `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${number.userId}`
+        )
+      )
+    })
+
+    Promise.all(promiseArr)
+      .then(() => {
+        SnackbarStore.enqueueSnackbar({
+          message: `${capitalize(deleteSubject)} deleted successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) ||
+            `Failed to delete ${capitalize(deleteSubject).capitalize()}`,
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        callback()
+        this.isDeleting = false
+      })
+  }
 }
 
 decorate(TimeBasedRouting, {
+  areAllNumbersChecked: computed,
+  checkedNumbers: computed,
+  deleteString: computed,
   getTimeBasedRoutes: action,
   postTimeBasedRoute: action,
   getAvailableNumbers: action,
   updateSearchParam: action,
   setNumberToConfigure: action,
-  timeBaseRoutes: observable,
+  handleCheckAll: action,
+  handleReverseState: action,
+  deleteTimeBasedRoutes: action,
+  timeBasedRoutes: observable,
   searchParam: observable,
   totalPagesAvailableNumbers: observable,
   numberToConfigure: observable,
   isLoadingTBR: observable,
   isTimeBasedRoutePosting: observable,
-  isAvailableNumbersLoading: observable
+  isAvailableNumbersLoading: observable,
+  isDeleting: observable
 })
 
 export default new TimeBasedRouting()
