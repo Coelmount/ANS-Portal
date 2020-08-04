@@ -1,4 +1,4 @@
-import { decorate, observable, action, computed } from 'mobx'
+import { decorate, observable, action, computed, toJS, runInAction } from 'mobx'
 import capitalize from 'lodash/capitalize'
 
 import SnackbarStore from '../Snackbar'
@@ -6,7 +6,7 @@ import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
 import types from 'utils/types/basicSearchParams'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
-import { toJS } from 'mobx'
+import TimeBasedRoute from './TimeBasedRoute'
 
 const { NUMBER_LIKE, COUNTRY_CODE } = types
 
@@ -99,22 +99,25 @@ export class TimeBasedRouting {
   getTimeBasedRoutes = ({ customerId, groupId }) => {
     this.timeBasedRoutes = []
     this.isLoadingTBR = true
-
     axios
       .get(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
       )
       .then(res => {
-        this.timeBasedRoutes = res.data.time_based_routes.map(
+        const transformedRoutes = res.data.time_based_routes.map(
           (route, index) => {
             return {
-              ...route,
               id: index,
               checked: false,
-              hover: false
+              hover: false,
+              ...route
             }
+            // const test = new TimeBasedRoute(route, index)
           }
         )
+        runInAction(() => {
+          this.timeBasedRoutes = transformedRoutes
+        })
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -135,6 +138,12 @@ export class TimeBasedRouting {
   }
 
   // change field  to reversed value
+  // handleReverseState = (field, id, newState) => {
+  //   const copy = this.timeBasedRoutes.slice()
+  //   copy[id][field] = newState
+  //   this.timeBasedRoutes = copy
+  // }
+
   handleReverseState = (field, id, newState) => {
     this.timeBasedRoutes[id][field] = newState
   }
@@ -226,7 +235,7 @@ export class TimeBasedRouting {
         SnackbarStore.enqueueSnackbar({
           message:
             getErrorMessage(e) ||
-            `Failed to delete ${capitalize(deleteSubject).capitalize()}`,
+            `Failed to delete ${capitalize(deleteSubject)}`,
           options: {
             variant: 'error'
           }

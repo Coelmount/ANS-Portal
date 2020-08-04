@@ -45,7 +45,6 @@ const TimeBasedRouting = ({ t }) => {
     deleteTimeBasedRoutes
   } = TimeBaseRoutingStore
   console.log(toJS(timeBasedRoutes), 'timeBasedRoutes')
-
   const modalStore = useLocalStore(() => ({
     openedId: null,
     deleteItem: {},
@@ -153,20 +152,20 @@ const TimeBasedRouting = ({ t }) => {
           <Checkbox
             checked={row.checked}
             className={classes.checkbox}
-            onChange={() => handleReverseState('checked', row.id, !row.checked)}
+            onChange={() => handleReverseState('checked', !row.checked)}
           />
         ) : (
           <div
             className={classes.indexHoverCheckbox}
-            onClick={() => handleReverseState('checked', row.id, !row.checked)}
-            onMouseLeave={() => handleReverseState('hover', row.id, false)}
-            onMouseEnter={() => handleReverseState('hover', row.id, true)}
+            onClick={() => handleReverseState('checked', !row.checked)}
+            onMouseLeave={() => handleReverseState('hover', false)}
+            onMouseEnter={() => handleReverseState('hover', true)}
           >
             {row.hover ? (
               <Checkbox
                 checked={row.checked}
                 className={classes.checkbox}
-                onChange={() => handleReverseState('checked', row.id, true)}
+                onChange={() => handleReverseState('checked', true)}
               />
             ) : (
               i + 1
