@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 const TenantWizard = () => {
   const classes = useStyles()
   const [step, setStep] = useState(2)
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Dialog
