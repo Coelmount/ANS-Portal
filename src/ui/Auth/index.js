@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Auth = ({ t }) => {
-  const { postLogin } = AuthStore
+  const { postLogin, isLogging } = AuthStore
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -126,6 +126,7 @@ const Auth = ({ t }) => {
               color='primary'
               type='submit'
               className={'button'}
+              disabled={isLogging}
             >
               {t('log_in')}
             </Button>

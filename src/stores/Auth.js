@@ -13,10 +13,12 @@ export class AuthStore {
     ? !!localStorage.getItem('isAuthorized', true)
     : false
   username = ''
+  isLogging = false
 
   postLogin = (data, history) => {
     this.token = localStorage.getItem('token')
     this.userLogin = {}
+    this.isLogging = true
     axios
       .post(`${BASE_URL}/auth/login`, data)
       .then(res => {
@@ -51,6 +53,9 @@ export class AuthStore {
           }
         })
       )
+      .finally(() => {
+        this.isLogging = false
+      })
   }
 
   getLocal = () => {
@@ -97,6 +102,7 @@ decorate(AuthStore, {
   user: observable,
   isAuthorized: observable,
   username: observable,
+  isLogging: observable,
   postLogin: action,
   getLocal: action,
   logOut: action

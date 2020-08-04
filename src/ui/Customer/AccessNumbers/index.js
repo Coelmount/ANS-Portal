@@ -21,6 +21,7 @@ import EditEntitlements from 'components/EditEntitlements'
 import AssignNumbers from 'components/CustomerAssignNumbers'
 import Entitlements from 'components/Entitlements'
 import Loading from 'components/Loading'
+import TenantWizard from 'components/TenantWizard'
 
 import editSvg from 'source/images/svg/edit-blue.svg'
 import useStyles from './styles'
@@ -243,6 +244,7 @@ const AccessNumbers = ({ t }) => {
           />
         )}
       </Paper>
+      <TenantWizard />
     </div>
   )
 }
