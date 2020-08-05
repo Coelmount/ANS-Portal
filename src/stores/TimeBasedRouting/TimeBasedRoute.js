@@ -1,23 +1,44 @@
 import { decorate, observable, action } from 'mobx'
+import pick from 'lodash/pick'
+
+const DEFAULT_VALUES = {
+  userId: '',
+  name: '',
+  defaultDestination: ''
+}
 
 class TimeBasedRoute {
-  constructor({ name, defaultDestination }, index) {
+  constructor(route, index) {
+    const defaultValuesKeys = Object.getOwnPropertyNames(DEFAULT_VALUES)
+    defaultValuesKeys.forEach(defaultKey => {
+      console.log(DEFAULT_VALUES, 'DEFAULT_VALUES')
+      this[defaultKey] = route[defaultKey]
+    })
+
+    // Object.assign(this, {
+    //   ...DEFAULT_VALUES,
+    //   ...pick(routeValues, Object.keys(DEFAULT_VALUES))
+    // })
+
     this.id = index
-    this.name = name
-    this.defaultDestination = defaultDestination
     this.checked = false
     this.hover = false
   }
 
-  handleReverseState = (field, newState) => {
-    this[field] = newState
+  setChecked = value => {
+    this.checked = value
+  }
+
+  setHover = value => {
+    this.hover = value
   }
 }
 
 decorate(TimeBasedRoute, {
   checked: observable,
   hover: observable,
-  handleReverseState: action
+  setChecked: action,
+  setHover: action
 })
 
 export default TimeBasedRoute

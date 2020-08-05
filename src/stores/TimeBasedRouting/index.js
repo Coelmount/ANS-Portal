@@ -143,17 +143,6 @@ export class TimeBasedRouting {
     return checkedNumbers.map(number => `'${number.name}'`).join(', ')
   }
 
-  // change field  to reversed value
-  // handleReverseState = (field, id, newState) => {
-  //   const copy = this.timeBasedRoutes.slice()
-  //   copy[id][field] = newState
-  //   this.timeBasedRoutes = copy
-  // }
-
-  handleReverseState = (field, id, newState) => {
-    this.timeBasedRoutes[id][field] = newState
-  }
-
   // change checked field of each number => TRUE
   handleCheckAll = () => {
     if (this.areAllNumbersChecked) {
@@ -254,7 +243,6 @@ decorate(TimeBasedRouting, {
   updateSearchParam: action,
   setNumberToConfigure: action,
   handleCheckAll: action,
-  handleReverseState: action,
   deleteTimeBasedRoutes: action,
   timeBasedRoutes: observable,
   searchParam: observable,

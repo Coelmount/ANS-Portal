@@ -18,6 +18,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
 import Checkbox from 'components/Checkbox'
+import CheckCell from './components/CheckCell'
 
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import useStyles from './styles'
@@ -41,10 +42,9 @@ const TimeBasedRouting = ({ t }) => {
     isDeleting,
     getTimeBasedRoutes,
     handleCheckAll,
-    handleReverseState,
     deleteTimeBasedRoutes
   } = TimeBaseRoutingStore
-  console.log(toJS(timeBasedRoutes), 'timeBasedRoutes')
+
   const modalStore = useLocalStore(() => ({
     openedId: null,
     deleteItem: {},
@@ -57,6 +57,7 @@ const TimeBasedRouting = ({ t }) => {
       getRequest()
     }
   }))
+
   const isAnyChecked = checkedNumbers.length
   const singleDeleteModalOpen = modalStore.openedId === singleDeleteModalId
   const deleteSubject = t(
@@ -147,31 +148,8 @@ const TimeBasedRouting = ({ t }) => {
         />
       ),
       isSortAvailable: false,
-      getCellData: ({ hover, checked, handleReverseState }, i) => {
-        return checked ? (
-          <Checkbox
-            checked={checked}
-            className={classes.checkbox}
-            onChange={() => handleReverseState('checked', !checked)}
-          />
-        ) : (
-          <div
-            className={classes.indexHoverCheckbox}
-            onClick={() => handleReverseState('checked', !checked)}
-            onMouseLeave={() => handleReverseState('hover', false)}
-            onMouseEnter={() => handleReverseState('hover', true)}
-          >
-            {hover ? (
-              <Checkbox
-                checked={checked}
-                className={classes.checkbox}
-                onChange={() => handleReverseState('checked', true)}
-              />
-            ) : (
-              i + 1
-            )}
-          </div>
-        )
+      getCellData: (row, i) => {
+        return <CheckCell key={i} row={row} i={i} classes={classes} />
       },
       extraHeadProps: {
         className: classes.checkboxCell
