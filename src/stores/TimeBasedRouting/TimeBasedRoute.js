@@ -1,15 +1,23 @@
 import { decorate, observable, action } from 'mobx'
 
 class TimeBasedRoute {
-  constructor(route, index) {
-    const { name, defaultDestination } = route
-    console.log(index, name, defaultDestination)
+  constructor({ name, defaultDestination }, index) {
     this.id = index
     this.name = name
     this.defaultDestination = defaultDestination
     this.checked = false
     this.hover = false
   }
+
+  handleReverseState = (field, newState) => {
+    this[field] = newState
+  }
 }
+
+decorate(TimeBasedRoute, {
+  checked: observable,
+  hover: observable,
+  handleReverseState: action
+})
 
 export default TimeBasedRoute

@@ -147,23 +147,23 @@ const TimeBasedRouting = ({ t }) => {
         />
       ),
       isSortAvailable: false,
-      getCellData: (row, i) =>
-        row.checked ? (
+      getCellData: ({ hover, checked, handleReverseState }, i) => {
+        return checked ? (
           <Checkbox
-            checked={row.checked}
+            checked={checked}
             className={classes.checkbox}
-            onChange={() => handleReverseState('checked', !row.checked)}
+            onChange={() => handleReverseState('checked', !checked)}
           />
         ) : (
           <div
             className={classes.indexHoverCheckbox}
-            onClick={() => handleReverseState('checked', !row.checked)}
+            onClick={() => handleReverseState('checked', !checked)}
             onMouseLeave={() => handleReverseState('hover', false)}
             onMouseEnter={() => handleReverseState('hover', true)}
           >
-            {row.hover ? (
+            {hover ? (
               <Checkbox
-                checked={row.checked}
+                checked={checked}
                 className={classes.checkbox}
                 onChange={() => handleReverseState('checked', true)}
               />
@@ -171,7 +171,8 @@ const TimeBasedRouting = ({ t }) => {
               i + 1
             )}
           </div>
-        ),
+        )
+      },
       extraHeadProps: {
         className: classes.checkboxCell
       },

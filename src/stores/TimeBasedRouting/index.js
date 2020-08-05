@@ -106,13 +106,7 @@ export class TimeBasedRouting {
       .then(res => {
         const transformedRoutes = res.data.time_based_routes.map(
           (route, index) => {
-            return {
-              id: index,
-              checked: false,
-              hover: false,
-              ...route
-            }
-            // const test = new TimeBasedRoute(route, index)
+            return new TimeBasedRoute(route, index)
           }
         )
         runInAction(() => {
@@ -135,6 +129,18 @@ export class TimeBasedRouting {
   // @computed: check if checked field of every number === TRUE
   get areAllNumbersChecked() {
     return this.timeBasedRoutes.every(route => route.checked)
+  }
+
+  // @computed:
+  get checkedNumbers() {
+    const checkedNumbers = this.timeBasedRoutes.filter(route => route.checked)
+    return checkedNumbers
+  }
+
+  // @computed
+  get deleteString() {
+    const checkedNumbers = this.timeBasedRoutes.filter(route => route.checked)
+    return checkedNumbers.map(number => `'${number.name}'`).join(', ')
   }
 
   // change field  to reversed value
@@ -189,16 +195,6 @@ export class TimeBasedRouting {
       .finally(() => {
         this.isTimeBasedRoutePosting = false
       })
-  }
-
-  get checkedNumbers() {
-    const checkedNumbers = this.timeBasedRoutes.filter(route => route.checked)
-    return checkedNumbers
-  }
-
-  get deleteString() {
-    const checkedNumbers = this.timeBasedRoutes.filter(route => route.checked)
-    return checkedNumbers.map(number => `'${number.name}'`).join(', ')
   }
 
   deleteTimeBasedRoutes = ({
