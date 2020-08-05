@@ -23,7 +23,6 @@ export class WhiteBlackList {
         const currentTimeBasedRoute = timeBasedRoutes.find(
           timeBasedRoute => timeBasedRoute.name === tbrName
         )
-        console.log(currentTimeBasedRoute, 'currentTimeBasedRoute')
         this.currentTbrId = currentTimeBasedRoute.userId
 
         axios
