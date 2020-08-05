@@ -5,6 +5,8 @@ import { observer } from 'mobx-react'
 import Dialog from '@material-ui/core/Dialog'
 
 import { makeStyles } from '@material-ui/core/styles'
+import AuthStore from 'stores/Auth'
+import has from 'lodash/has'
 
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
@@ -24,21 +26,25 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const TenantWizard = () => {
+  const { userLogin, changeUserLogin } = AuthStore
   const classes = useStyles()
-  const [step, setStep] = useState(2)
-  const [isOpen, setIsOpen] = useState(false)
+  const [step, setStep] = useState(0)
+  const [isOpen, setIsOpen] = useState(
+    has(userLogin, 'profile.is_first_login')
+      ? userLogin.profile.is_first_login
+        ? userLogin.profile.is_first_login
+        : false
+      : false
+  )
+
+  const handleClose = () => {
+    setIsOpen(false)
+    changeUserLogin()
+  }
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
-      className={classes.root}
-    >
-      <Steps
-        step={step}
-        handleClose={() => setIsOpen(false)}
-        changeStep={setStep}
-      />
+    <Dialog open={isOpen} onClose={handleClose} className={classes.root}>
+      <Steps step={step} handleClose={handleClose} changeStep={setStep} />
     </Dialog>
   )
 }

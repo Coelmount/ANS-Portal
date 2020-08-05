@@ -61,7 +61,7 @@ const FirstStep = props => {
             <Box className={classes.boldMTNText}>{t('subaccounts')}</Box>
           </Box>
           <Box className={classes.supportText}>
-            {t('normaly_default_account_created')}
+            {t('normally_default_account_created').toLowerCase()}
           </Box>
           <Box className={classes.checkInfoBox}>
             <CheckIcon color={'primary'} className={classes.checkIcon} />

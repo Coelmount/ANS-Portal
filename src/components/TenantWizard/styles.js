@@ -136,6 +136,69 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 112,
     display: 'flex',
     alignItems: 'center'
+  },
+  dialogActionsTS: {
+    height: 110,
+    justifyContent: 'center'
+  },
+  instructionBox: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    height: 122,
+    marginTop: 18
+  },
+  roundBoxTS: {
+    width: 45,
+    height: 45,
+    borderRadius: 100,
+    background: '#fff',
+    boxShadow: '0px 8px 4px rgba(204, 204, 204, 0.25)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  topLine: {
+    '&:before': {
+      content: '""',
+      height: 24,
+      border: 'solid 1px #00678F',
+      position: 'absolute',
+      marginTop: -70
+    }
+  },
+  bottomLine: {
+    '&:before': {
+      content: '""',
+      height: 24,
+      border: 'solid 1px #00678F',
+      position: 'absolute',
+      marginTop: 70
+    }
+  },
+  bottomTextAdvanced: {
+    color: '#00678F',
+    position: 'absolute',
+    marginTop: 24,
+    marginLeft: -10
+  },
+  bottomTextIVR: {
+    color: '#00678F',
+    position: 'absolute',
+    marginTop: 24,
+    marginLeft: 14
+  },
+  topTextTBR: {
+    color: '#00678F',
+    position: 'absolute',
+    marginTop: -46,
+    marginLeft: -38
+  },
+  topTextBasic: {
+    color: '#00678F',
+    position: 'absolute',
+    marginTop: -46,
+    marginLeft: 6
   }
 }))
 

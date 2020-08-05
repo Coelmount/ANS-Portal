@@ -12,10 +12,12 @@ import Button from '@material-ui/core/Button'
 import MobileStepper from '@material-ui/core/MobileStepper'
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import CheckIcon from '@material-ui/icons/Check'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import basicIcon from 'source/images/svg/dashboard_basic_icon.svg'
+import advancedIcon from 'source/images/svg/dashboard_advanced_icon.svg'
+import timeBasedRoutingIcon from 'source/images/svg/dasboard_tbr_icon.svg'
+import ivrIcon from 'source/images/svg/dashboard_ivr_icon.svg'
 
 import AuthStore from 'stores/Auth'
 
@@ -82,6 +84,34 @@ const ThirdStep = props => {
             </Box>
             <Box className={classes.boldText}>{t('ans_instances')}:</Box>
           </Box>
+          <Box className={classes.instructionBox}>
+            <Box>
+              <Box className={`${classes.roundBoxTS} ${classes.bottomLine}`}>
+                <img src={advancedIcon} alt={`advancedIcon`} />
+              </Box>
+              <Box className={classes.bottomTextAdvanced}>{t('advanced')}</Box>
+            </Box>
+            <Box>
+              <Box className={classes.topTextTBR}>
+                {t('time_based_routing')}
+              </Box>
+              <Box className={`${classes.roundBoxTS} ${classes.topLine}`}>
+                <img src={timeBasedRoutingIcon} alt={`timeBasedRoutingIcon`} />
+              </Box>
+            </Box>
+            <Box>
+              <Box className={`${classes.roundBoxTS} ${classes.bottomLine}`}>
+                <img src={ivrIcon} alt={`ivrIcon`} />
+              </Box>
+              <Box className={classes.bottomTextIVR}>{t('ivr')}</Box>
+            </Box>
+            <Box>
+              <Box className={classes.topTextBasic}>{t('basic')}</Box>
+              <Box className={`${classes.roundBoxTS} ${classes.topLine}`}>
+                <img src={basicIcon} alt={`basicIcon`} />
+              </Box>
+            </Box>
+          </Box>
         </Box>
         <MobileStepper
           variant='dots'
@@ -91,23 +121,14 @@ const ThirdStep = props => {
           className={classes.stepper}
         />
       </DialogContent>
-      <DialogActions className={classes.dialogActionsSecond}>
-        <Button
-          variant='outlined'
-          color='primary'
-          className={classes.backButton}
-          onClick={handleClose}
-        >
-          {t('skip')}
-        </Button>
+      <DialogActions className={classes.dialogActionsTS}>
         <Button
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(2)}
+          onClick={handleClose}
         >
-          {t('next')}
-          <ChevronRightIcon />
+          {t('start')}
         </Button>
       </DialogActions>
     </React.Fragment>

@@ -58,6 +58,13 @@ export class AuthStore {
       })
   }
 
+  changeUserLogin = () => {
+    this.userLogin = {
+      ...this.userLogin,
+      profile: { ...this.userLogin.profile, is_first_login: false }
+    }
+  }
+
   getLocal = () => {
     this.user = {}
     this.username = ''
