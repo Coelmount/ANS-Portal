@@ -4,7 +4,6 @@ import { withNamespaces } from 'react-i18next'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import classnames from 'classnames'
 
-import AddIcon from '@material-ui/icons/Add'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
@@ -89,7 +88,7 @@ const TimeBasedRouting = ({ t }) => {
     modalStore.open(multipleDeleteModalId)
   }
 
-  // Store request trigger
+  // Delete request trigger
   const handleDelete = () => {
     const payload = {
       customerId,
@@ -98,13 +97,6 @@ const TimeBasedRouting = ({ t }) => {
       singleDeleteItem: modalStore.deleteItem
     }
     deleteTimeBasedRoutes(payload)
-  }
-  // ------
-
-  const titleData = {
-    mainText: t('time_base_routing'),
-    iconCapture: t('add'),
-    Icon: <AddIcon />
   }
 
   const extraDeleteBlock = (
