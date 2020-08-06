@@ -68,7 +68,7 @@ const ThirdStep = props => {
             <Box className={classes.regularText}>{t('the').toLowerCase()}</Box>
             <Box className={classes.boldText}>{t('numbers').toLowerCase()}</Box>
             <Box className={classes.regularText}>
-              {t('to_the_account').toLowerCase()}
+              {t('to_that_account').toLowerCase()}
             </Box>
             <Box className={classes.wrapperBox}>
               <Box className={classes.iconMainRoundBox}>
