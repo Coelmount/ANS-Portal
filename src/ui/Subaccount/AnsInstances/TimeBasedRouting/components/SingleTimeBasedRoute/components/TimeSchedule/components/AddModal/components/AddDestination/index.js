@@ -2,9 +2,9 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import PhoneInput from 'react-phone-input-2'
 
+import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import { makeStyles } from '@material-ui/core/styles'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -14,47 +14,92 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
-import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
+import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
+import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
-import PeriodForm from 'components/PeriodForm'
-import transformTime from 'utils/schedules/transformTime'
+import Select from 'components/Select'
 
-import useStyles from './styles'
-import scheduleIcon from 'source/images/svg/schedule.svg'
+import ScheduleIcon from 'source/images/components/ScheduleIcon'
+import useStyles from '../../styles'
+import { toJS } from 'mobx'
 
-const AddModal = ({ t, open, handleClose }) => {
+// Id's equal to steps id's in ../AddModal container - Steps switch
+const PHONE_NUMBER_ID = 2
+const ANS_INSTANCE_ID = 3
+const ANS_DESTINATION_ID = 4
+const ANS_IVR_ID = 5
+
+const AddModal = ({ t, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
+  const { setStep } = TimeSchedulesStore
+  const { getSchedules, schedules, isSchedulesLoading } = WeekSchedulesStore
+  const isLoading = isSchedulesLoading
 
-  const { postTimeBasedRoute, isTimeBasedRoutePosting } = TimeBaseRoutingStore
-
-  const inputStore = useLocalStore(() => ({
+  const formStore = useLocalStore(() => ({
     name: '',
-    set(value) {
-      this.name = value
+    phoneNumber: PHONE_NUMBER_ID,
+    schedule: '',
+    scheduleOptions: [],
+
+    set(field, value) {
+      this[field] = value
     },
-    get isNameValid() {
-      return this.name
+    get isFormValid() {
+      const { name, phoneNumber, schedule } = this
+      return name && phoneNumber && schedule
     }
   }))
 
-  const handleAdd = () => {
-    const payload = {
-      customerId,
-      groupId,
-      name: inputStore.name,
-      closeModal: handleClose
+  // Initial request
+  useEffect(() => {
+    getSchedules(customerId, groupId)
+  }, [])
+
+  // On receive schedules from store
+  useEffect(() => {
+    if (schedules.length) {
+      const options = schedules.map(({ name }) => ({
+        label: name,
+        value: name
+      }))
+      // Set schedule options to store
+      formStore.set('scheduleOptions', options)
+      // Set first option as default to store
+      formStore.set('schedule', options[0].value)
     }
-    postTimeBasedRoute(payload)
+  }, [schedules])
+
+  const handleAddClick = () => {
+    // Change step depends on Phone number selected option
+    setStep(formStore.phoneNumber)
   }
+
+  const phoneNumberOptions = [
+    {
+      label: t('add_phone_number'),
+      value: PHONE_NUMBER_ID
+    },
+    {
+      label: t('select_ans_instance'),
+      value: ANS_INSTANCE_ID
+    },
+    {
+      label: t('select_ans_destination'),
+      value: ANS_DESTINATION_ID
+    },
+    {
+      label: t('select_ans_ivr'),
+      value: ANS_IVR_ID
+    }
+  ]
 
   return (
     <Fragment>
       <DialogTitle className={classes.title}>
-        {t('add_tbr_instance')}
+        {t('add_destination')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -65,16 +110,47 @@ const AddModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
-        {isTimeBasedRoutePosting ? (
+        {isLoading ? (
           <Loading />
         ) : (
-          <Box className={classes.inputsWrap}>
-            <Input
-              icon={<PhoneOutlinedIcon />}
-              label={t('name')}
-              variant='outlined'
-              onChange={e => inputStore.set(e.target.value)}
-            />
+          <Box className={classes.formWrap}>
+            <Box className={classes.formTitleWrap}>
+              <Typography className={classes.formTitleLabel}>
+                {`${t('destination')} 5`}
+              </Typography>
+            </Box>
+            <Box className={classes.formContentWrap}>
+              <Input
+                icon={<PermIdentityOutlined />}
+                label={t('name')}
+                variant='outlined'
+                onChange={e => formStore.set('name', e.target.value)}
+              />
+              <Select
+                label={t('phone_number')}
+                icon={<PhoneOutlinedIcon alt='phone' />}
+                options={phoneNumberOptions}
+                value={formStore.phoneNumber}
+                onChange={e => formStore.set('phoneNumber', e.target.value)}
+              />
+              <Select
+                label={t('schedule')}
+                icon={
+                  <ScheduleIcon
+                    style={{
+                      width: 30,
+                      height: 25,
+                      marginTop: 1,
+                      marginLeft: 1
+                    }}
+                    alt='schedule'
+                  />
+                }
+                options={formStore.scheduleOptions}
+                value={formStore.schedule}
+                onChange={e => formStore.set('schedule', e.target.value)}
+              />
+            </Box>
           </Box>
         )}
       </DialogContent>
@@ -92,8 +168,8 @@ const AddModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disabled={!inputStore.isNameValid || isTimeBasedRoutePosting}
-          onClick={handleAdd}
+          disabled={!formStore.isFormValid || isLoading}
+          onClick={handleAddClick}
         >
           {t('add')}
         </Button>

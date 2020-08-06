@@ -6,19 +6,24 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
 import AddDestination from './components/AddDestination'
+import AddPhoneNumber from './components/AddPhoneNumber'
 
-const useStyles = makeStyles(() => ({
-  root: {
-    '& .MuiDialog-paperWidthSm': {
-      width: '651px'
-    },
-    '& .MuiDialog-paperScrollPaper': {
-      minHeight: '100%'
-    }
+import useStyles from './styles.js'
+
+const Steps = ({ step, handleClose }) => {
+  switch (step) {
+    case 1:
+      return <AddDestination handleClose={handleClose} />
+    case 2:
+      return <AddPhoneNumber handleClose={handleClose} />
+    case 3:
+      return <div>select ans instance</div>
+    default:
+      return <AddDestination handleClose={handleClose} />
   }
-}))
+}
 
-const Entitlements = ({ open, handleClose }) => {
+const AddModal = ({ open, handleClose }) => {
   const classes = useStyles()
   const { step } = TimeSchedulesStore
 
@@ -29,15 +34,4 @@ const Entitlements = ({ open, handleClose }) => {
   )
 }
 
-const Steps = ({ step, handleClose }) => {
-  switch (step) {
-    case 1:
-      return <AddDestination handleClose={handleClose} />
-    case 2:
-      return <div>step2</div>
-    default:
-      return <AddDestination handleClose={handleClose} />
-  }
-}
-
-export default observer(Entitlements)
+export default observer(AddModal)

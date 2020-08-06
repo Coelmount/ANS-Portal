@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
       width: '651px'
     },
     '& .MuiDialog-paperScrollPaper': {
-      minHeight: 434
+      minHeight: '100%'
     }
   },
   title: {
@@ -29,17 +29,6 @@ const useStyles = makeStyles(theme => ({
       width: 27,
       height: 27
     }
-  },
-  periodFormsWrap: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column'
-  },
-
-  addPeriodTitle: {
-    fontSize: 14,
-    fontFamily: 'MTN',
-    marginLeft: 9
   },
   dialogActions: {
     height: '110px',
@@ -64,15 +53,34 @@ const useStyles = makeStyles(theme => ({
   modalContent: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    paddingTop: 32
   },
-  inputsWrap: {
+  formWrap: {
+    width: 500,
+    height: 370,
+    border: `1px solid ${theme.palette.silver}`,
+    borderRadius: 3
+  },
+  formTitleWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 50,
+    padding: '0px 22px',
+    background: 'white',
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
+    borderRadius: 3
+  },
+  formTitleLabel: {
+    fontSize: 16,
+    fontWeight: 600
+  },
+  formContentWrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: 36,
     '& > div': {
-      marginBottom: 30,
-      width: 330
-    },
-    '& input': {
-      width: '330px !important'
+      marginBottom: 30
     }
   }
 }))
