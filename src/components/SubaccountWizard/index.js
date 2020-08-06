@@ -30,7 +30,7 @@ const SubaccountWizard = () => {
   const classes = useStyles()
   const [step, setStep] = useState(0)
   const [isOpen, setIsOpen] = useState(
-    true
+    false
     // has(userLogin, 'profile.is_first_login')
     //   ? userLogin.profile.is_first_login
     //     ? userLogin.profile.is_first_login
