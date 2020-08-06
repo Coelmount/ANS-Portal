@@ -15,6 +15,7 @@ import BasicTranslationsStore from 'stores/BasicTranslations'
 import IVRStore from 'stores/IVR'
 import DestinationGroupsStore from 'stores/DestinationGroups'
 import Loading from 'components/Loading'
+import SubaccountWizzard from 'components/SubaccountWizard'
 
 import basicIcon from 'source/images/svg/dashboard_basic_icon.svg'
 import advancedIcon from 'source/images/svg/dashboard_advanced_icon.svg'
@@ -126,6 +127,7 @@ const AnsInstances = observer(({ t }) => {
           </Paper>
         </Box>
       )}
+      <SubaccountWizzard />
     </Fragment>
   )
 })
