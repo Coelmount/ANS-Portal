@@ -199,6 +199,34 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     marginTop: -46,
     marginLeft: 6
+  },
+  ansInstanceBox: {
+    display: 'flex',
+    justifyContent: 'space-evenly'
+  },
+  instanceBox: {
+    width: 114,
+    height: 104,
+    marginTop: 40,
+    background: '#fff',
+    boxShadow: '0px 4px 16px rgba(196, 196, 196, 0.25)',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    paddingTop: 18
+  },
+  borderInstance: {
+    borderBottom: '4px solid #FFCC00'
+  },
+  textInstance: {
+    marginTop: 16,
+    fontFamily: 'MTN',
+    textAlign: 'center',
+    fontSize: 14
+  },
+  iconsInstance: {
+    width: 26,
+    height: 26
   }
 }))
 
