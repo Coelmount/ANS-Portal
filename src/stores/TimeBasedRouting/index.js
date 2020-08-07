@@ -6,7 +6,7 @@ import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
 import types from 'utils/types/basicSearchParams'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
-import TimeBasedRoute from './TimeBasedRoute'
+import TimeBasedRoute from './substores/TimeBasedRoute'
 
 const { NUMBER_LIKE, COUNTRY_CODE } = types
 
