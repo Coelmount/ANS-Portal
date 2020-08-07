@@ -34,7 +34,7 @@ const ANS_IVR_ID = 5
 const AddModal = ({ t, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
-  const { setStep } = TimeSchedulesStore
+  const { scheduleIndexToAdd, setStep, setDestinationData } = TimeSchedulesStore
   const { getSchedules, schedules, isSchedulesLoading } = WeekSchedulesStore
   const isLoading = isSchedulesLoading
 
@@ -73,8 +73,13 @@ const AddModal = ({ t, handleClose }) => {
   }, [schedules])
 
   const handleAddClick = () => {
+    const payload = {
+      destinationName: formStore.name,
+      scheduleName: formStore.schedule
+    }
     // Change step depends on Phone number selected option
     setStep(formStore.phoneNumber)
+    setDestinationData(payload)
   }
 
   const phoneNumberOptions = [
@@ -116,7 +121,7 @@ const AddModal = ({ t, handleClose }) => {
           <Box className={classes.formWrap}>
             <Box className={classes.formTitleWrap}>
               <Typography className={classes.formTitleLabel}>
-                {`${t('destination')} 5`}
+                {`${t('destination')} ${scheduleIndexToAdd}`}
               </Typography>
             </Box>
             <Box className={classes.formContentWrap}>
