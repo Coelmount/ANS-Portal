@@ -68,14 +68,6 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
-  // checkboxCell: {
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   height: 'inherit',
-  //   padding: 0,
-  //   marginLeft: '30px'
-  // },
   checkboxCell: {
     display: 'flex',
     justifyContent: 'center',
