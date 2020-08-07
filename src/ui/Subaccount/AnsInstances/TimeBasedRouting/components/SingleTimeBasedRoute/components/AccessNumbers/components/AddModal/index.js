@@ -76,7 +76,7 @@ const AddModal = ({ open, handleClose, t }) => {
       rowsPerPage,
       order,
       orderBy,
-      countryCode: selectedCountry.phone
+      countryCode: selectedCountry ? selectedCountry.phone : ''
     }
     getAvailableNumbers(payload)
   }
@@ -108,7 +108,7 @@ const AddModal = ({ open, handleClose, t }) => {
         rowsPerPage,
         order,
         orderBy,
-        countryCode: selectedCountry.phone
+        countryCode: selectedCountry ? selectedCountry.phone : ''
       }
       getAvailableNumbers(payload)
       setNumberOfChecked(0)
