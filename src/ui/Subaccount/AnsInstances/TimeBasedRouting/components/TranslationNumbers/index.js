@@ -17,7 +17,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
 import Checkbox from 'components/Checkbox'
-import CheckCell from './components/CheckCell'
+import CheckCell from 'components/CheckCell'
 
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import useStyles from './styles'
@@ -140,9 +140,9 @@ const TimeBasedRouting = ({ t }) => {
         />
       ),
       isSortAvailable: false,
-      getCellData: (row, i) => {
-        return <CheckCell key={i} row={row} i={i} classes={classes} />
-      },
+      getCellData: (row, i) => (
+        <CheckCell key={i} row={row} i={i} classes={classes} />
+      ),
       extraHeadProps: {
         className: classes.checkboxCell
       },
