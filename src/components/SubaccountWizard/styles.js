@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
       fontSize: 24,
       color: theme.palette.black
     },
-    height: 300,
+    height: 270,
     padding: '20px 24px',
     display: 'flex',
     justifyContent: 'center',
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     top: 10
   },
   stepStyles: {
-    marginTop: 60,
+    marginTop: 36,
     marginLeft: 40,
     fontFamily: 'MTN',
     fontWeight: 500,
@@ -43,8 +43,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between'
   },
   checkInfoBox: {
-    marginTop: 36,
-    marginLeft: 86,
+    marginTop: 10,
+    marginLeft: 66,
     display: 'flex',
     alignItems: 'center'
   },

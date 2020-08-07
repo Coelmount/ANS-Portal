@@ -16,6 +16,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import CheckIcon from '@material-ui/icons/Check'
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import SettingsPhoneOutlinedIcon from '@material-ui/icons/SettingsPhoneOutlined'
 
 import AuthStore from 'stores/Auth'
 
@@ -50,37 +51,19 @@ const FirstStep = props => {
       <DialogContent className={classes.dialogContent}>
         <Box className={classes.mainContent}>
           <Box className={classes.stepStyles}>{`${t('step')} ${step +
-            1}/3`}</Box>
+            1}/4`}</Box>
           <Box className={classes.checkInfoBox}>
             <CheckIcon color={'primary'} className={classes.checkIcon} />
-            <Box className={classes.boldText}>{t('check')}</Box>
-            <Box className={classes.regularText}>{t('your').toLowerCase()}</Box>
+            <Box className={classes.regularText}>{t('go_to_your')}</Box>
             <Box className={classes.iconRoundBox}>
-              <PeopleAltOutlinedIcon />
+              <SettingsPhoneOutlinedIcon />
             </Box>
-            <Box className={classes.boldMTNText}>{t('subaccounts')}</Box>
-          </Box>
-          <Box className={classes.supportText}>
-            {t('normally_default_account_created').toLowerCase()}
-          </Box>
-          <Box className={classes.checkInfoBox}>
-            <CheckIcon color={'primary'} className={classes.checkIcon} />
-            <Box className={classes.regularText}>{t('you_can')}</Box>
-            <Box className={classes.boldText}>{t('create').toLowerCase()}</Box>
-            <Box className={classes.regularText}>
-              {t('additional').toLowerCase()}
-            </Box>
-            <Box className={classes.wrapperBox}>
-              <Box className={classes.iconMainRoundBox}>
-                <AddOutlinedIcon />
-              </Box>
-              <Box className={classes.boldMTNText}>{t('add_subaccount')}</Box>
-            </Box>
+            <Box className={classes.boldMTNText}>{t('ans_instances')}</Box>
           </Box>
         </Box>
         <MobileStepper
           variant='dots'
-          steps={3}
+          steps={4}
           position='static'
           activeStep={step}
           className={classes.stepper}
