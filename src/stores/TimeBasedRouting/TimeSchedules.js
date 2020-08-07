@@ -1,18 +1,73 @@
-import { decorate, observable, action } from 'mobx'
+import { decorate, observable, action, computed, runInAction } from 'mobx'
 
 import axios from 'utils/axios'
 import SnackbarStore from '../Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
+import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
+import PhoneNumber from './substores/PhoneNumber'
 
 export class TimeSchedules {
   step = 1
+  totalPages = 0
+  defaultDestination = ''
+  destinationScheduleName = ''
+  destinationName = ''
   schedules = []
-  isSchedulesLoading = false
+  countries = []
+  phoneNumbers = []
+  isSchedulesLoading = true
+  isPhoneNumbersLoading = true
+  isTimeScheduleAdding = false
 
   setStep = value => (this.step = value)
 
-  getSchedules = () => {
-    console.log('get schedules')
+  setDestinationData = ({ destinationName, scheduleName }) => {
+    this.destinationName = destinationName
+    this.destinationScheduleName = scheduleName
+  }
+
+  getSchedules = ({ customerId, groupId, tbrName }) => {
+    this.schedules = []
+    this.isSchedulesLoading = true
+
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
+      )
+      .then(res => {
+        const timeBasedRoutes = res.data.time_based_routes
+        const currentTimeBasedRoute = timeBasedRoutes.find(
+          timeBasedRoute => timeBasedRoute.name === tbrName
+        )
+        this.currentUserId = currentTimeBasedRoute.userId
+
+        axios
+          .get(
+            `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}`
+          )
+          .then(res => {
+            const schedules = res.data.time_based_route.schedules
+            const defaultDestination =
+              res.data.time_based_route.defaultDestination
+            runInAction(() => {
+              this.schedules = schedules
+              this.defaultDestination = defaultDestination
+            })
+          })
+          .catch(e =>
+            SnackbarStore.enqueueSnackbar({
+              message:
+                getErrorMessage(e) || 'Failed to fetch time schedule list',
+              options: {
+                variant: 'error'
+              }
+            })
+          )
+          .finally(() => {
+            this.isSchedulesLoading = false
+          })
+      })
   }
 
   getPhoneNumbers = ({
@@ -24,8 +79,8 @@ export class TimeSchedules {
     order,
     countryCode
   }) => {
-    this.availableNumbers = []
-    this.isAvailableNumbersLoading = true
+    this.phoneNumbers = []
+    this.isPhoneNumbersLoading = true
 
     let orderByField
     switch (orderBy) {
@@ -53,27 +108,20 @@ export class TimeSchedules {
       .then(res => {
         const pagination = res.data.pagination
         const requestResult = res.data.numbers
-
-        const transformedNumbers = requestResult.map(item => {
-          return {
-            ...item,
-            phoneNumber: `${item.country_code} ${item.nsn}`,
-            checked: false,
-            hover: false
-          }
-        })
-
-        this.availableNumbers = transformedNumbers
-        this.totalPages = pagination[2]
-
+        const transformedNumbers = requestResult.map(
+          phoneNumber => new PhoneNumber(phoneNumber)
+        )
         const countryCodes = requestResult.map(item => item.country_code)
         const uniqueCountryCodes = [...new Set(countryCodes)]
-        this.countries = uniqueCountryCodes.map(countryCode => {
-          return {
-            phone: countryCode
-            // code: getCountryTwoLetterCodeFromNumber(`${countryCode}11111`),
-            // label: getCountryNameFromNumber(`${countryCode}11111`)
-          }
+
+        runInAction(() => {
+          this.phoneNumbers = transformedNumbers
+          this.totalPages = pagination[2]
+          this.countries = uniqueCountryCodes.map(countryCode => ({
+            phone: countryCode,
+            code: getCountryTwoLetterCodeFromNumber(`${countryCode}11111`),
+            label: getCountryNameFromNumber(`${countryCode}11111`)
+          }))
         })
       })
       .catch(e => {
@@ -86,18 +134,87 @@ export class TimeSchedules {
         })
       })
       .finally(() => {
-        this.isAvailableNumbersLoading = false
+        this.isPhoneNumbersLoading = false
+      })
+  }
+
+  // change checked field of each number => TRUE
+  // handleCheckAll = () => {
+  //   if (this.areAllNumbersChecked) {
+  //     this.phoneNumbers.forEach(number => (number.checked = false))
+  //   } else {
+  //     this.phoneNumbers.forEach(number => (number.checked = true))
+  //   }
+  // }
+
+  // @computed: check if checked field of every number === TRUE
+  // get areAllNumbersChecked() {
+  //   return this.phoneNumbers.every(number => number.checked)
+  // }
+
+  // @computed: check if checked field of any number === TRUE
+  // get isAnyNumberChecked() {
+  //   return this.phoneNumbers.some(number => number.checked)
+  // }
+
+  // @computed: ID for Add schedule view
+  get scheduleIndexToAdd() {
+    return this.schedules.length + 1
+  }
+
+  postTimeSchedule = ({ customerId, groupId, destination, closeModal }) => {
+    this.isTimeScheduleAdding = true
+
+    axios
+      .post(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}/criteria/`,
+        {
+          name: this.destinationName,
+          destination: destination,
+          timeSchedule: this.destinationScheduleName
+        }
+      )
+      .then(() => {
+        SnackbarStore.enqueueSnackbar({
+          message: `Destination added successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || `Failed to add destination`,
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isTimeScheduleAdding = false
+        closeModal()
       })
   }
 }
 
 decorate(TimeSchedules, {
+  // areAllNumbersChecked: computed,
+  // isAnyNumberChecked: computed,
+  scheduleIndexToAdd: computed,
   step: observable,
   schedules: observable,
+  phoneNumbers: observable,
+  countries: observable,
+  defaultDestination: observable,
   isSchedulesLoading: observable,
+  isPhoneNumbersLoading: observable,
+  isTimeScheduleAdding: observable,
   setStep: action,
+  setDestinationData: action,
   getSchedules: action,
-  getPhoneNumbers: action
+  getPhoneNumbers: action,
+  // handleCheckAll: action,
+  postTimeSchedule: action
 })
 
 export default new TimeSchedules()

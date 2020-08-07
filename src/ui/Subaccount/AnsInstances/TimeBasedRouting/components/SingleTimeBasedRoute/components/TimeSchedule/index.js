@@ -31,13 +31,15 @@ const deleteModalId = 2
 const TimeSchedule = ({ t }) => {
   const classes = useStyles()
   const history = useHistory()
-  const { customerId, groupId } = useParams()
+  const { customerId, groupId, tbrName } = useParams()
 
   const {
     schedules,
+    defaultDestination,
     deleteString,
     isSchedulesLoading,
-    getSchedules
+    getSchedules,
+    setStep
   } = TimeSchedulesStore
 
   const modalStore = useLocalStore(() => ({
@@ -50,6 +52,7 @@ const TimeSchedule = ({ t }) => {
       this.openedId = null
       this.deleteItem = {}
       getRequest()
+      setStep(1)
     }
   }))
 
@@ -59,7 +62,8 @@ const TimeSchedule = ({ t }) => {
   const getRequest = () => {
     const payload = {
       customerId,
-      groupId
+      groupId,
+      tbrName
     }
     getSchedules(payload)
   }
@@ -75,7 +79,6 @@ const TimeSchedule = ({ t }) => {
   }
 
   const handleAddClick = () => {
-    console.log('add open')
     modalStore.open(addModalId)
   }
   // ------
@@ -118,8 +121,12 @@ const TimeSchedule = ({ t }) => {
       )
     },
     {
-      id: 'defaultDestination',
-      label: t('default_destination')
+      id: 'forwardTo',
+      label: 'forward_to'
+    },
+    {
+      id: 'timeSchedule',
+      label: 'schedule'
     },
     {
       id: 'delete',

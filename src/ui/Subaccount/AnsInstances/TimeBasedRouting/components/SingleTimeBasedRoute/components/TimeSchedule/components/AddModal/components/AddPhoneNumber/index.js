@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
-import { observer } from 'mobx-react'
-import { useDebounce } from 'use-debounce'
+import { observer, useLocalStore } from 'mobx-react'
 import { useParams } from 'react-router-dom'
 
 import Dialog from '@material-ui/core/Dialog'
@@ -21,51 +20,86 @@ import CustomTable, {
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
-import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnHover from 'utils/tableCheckbox/transformOnHover'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
+import SingleCheckCell from 'components/SingleCheckCell'
 import useStyles from '../../styles'
 import { toJS } from 'mobx'
 
-const AddPhoneNumber = ({ open, handleClose, t }) => {
+const AddPhoneNumber = ({ handleClose, t }) => {
   const classes = useStyles()
-  const match = useParams()
-  const { customerId, groupId } = match
+  const { customerId, groupId } = useParams()
 
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
-        .basic_instance_select_access_numbers
+        .ans_tbr_add_phone_number_step
     : null
 
   const {
     getPhoneNumbers,
-    postSecondaryNumbers,
-    availableNumbers,
-    secondaryNumbers,
-    totalPages,
+    postTimeSchedule,
+    setStep,
+    phoneNumbers,
     countries,
-    isAvailableNumbersLoading,
-    isSecondaryNumbersAdding
+    totalPages,
+    isPhoneNumbersLoading,
+    isTimeScheduleAdding
   } = TimeSchedulesStore
 
-  const isLoading = isAvailableNumbersLoading || isSecondaryNumbersAdding
+  const isLoading = isPhoneNumbersLoading || isTimeScheduleAdding
 
-  const [selectedCountry, setSelectedCountry] = useState({
-    code: '',
-    phone: '',
-    label: ''
-  })
-
-  const [selectedNumber, setSelectedNumber] = useState(null)
-  const [selectAll, setSelectAll] = useState(false)
-  const [numberOfChecked, setNumberOfChecked] = useState(0)
-  const [page, setPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(
-    storageRowsPerPage || DEFAULT_ROWS_PER_PAGE
-  )
-  const [order, setOrder] = useState('asc')
-  const [orderBy, setOrderBy] = useState('id')
-  const [countryCode, setCountryCode] = useState('')
+  const localStore = useLocalStore(() => ({
+    page: 1,
+    rowsPerPage: storageRowsPerPage || DEFAULT_ROWS_PER_PAGE,
+    order: 'asc',
+    orderBy: 'id',
+    countryCode: '',
+    selectedCountry: {
+      code: '',
+      phone: '',
+      label: ''
+    },
+    currentCheckedNumber: {
+      id: null,
+      destination: ''
+    },
+    setPage(value) {
+      this.page = value
+    },
+    setRowsPerPage(value) {
+      this.rowsPerPage = value
+    },
+    setCurrentCheckedNumber(value) {
+      this.currentCheckedNumber = value
+    },
+    setOrder(value) {
+      this.order = value
+    },
+    setOrderBy(value) {
+      this.order = value
+    },
+    setCountryCode(value) {
+      this.countryCode = value
+    },
+    setSelectedCountry(value) {
+      this.selectedCountry = value
+    }
+  }))
+  const {
+    page,
+    rowsPerPage,
+    currentCheckedNumber,
+    order,
+    orderBy,
+    countryCode,
+    selectedCountry,
+    setField,
+    setPage,
+    setRowsPerPage,
+    setCurrentCheckedNumber,
+    setOrder,
+    setOrderBy,
+    setCountryCode,
+    setSelectedCountry
+  } = localStore
 
   // Initial request
   const getRequest = () => {
@@ -76,7 +110,7 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
       rowsPerPage,
       order,
       orderBy,
-      countryCode: selectedCountry.phone
+      countryCode: selectedCountry ? selectedCountry.phone : ''
     }
     getPhoneNumbers(payload)
   }
@@ -85,7 +119,7 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
     getRequest()
   }, [])
 
-  // onUpdate search/sorting
+  // On update search/sorting
   useEffect(() => {
     setPage(1)
     if (!isLoading) {
@@ -93,7 +127,7 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
     }
   }, [orderBy, order])
 
-  //  onUpdate pagination
+  // On update pagination
   useEffect(() => {
     if (!isLoading) {
       const payload = {
@@ -103,60 +137,45 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
         rowsPerPage,
         order,
         orderBy,
-        countryCode: selectedCountry.phone
+        countryCode: selectedCountry ? selectedCountry.phone : ''
       }
       getRequest(payload)
     }
   }, [page, rowsPerPage, selectedCountry])
 
-  // trigger store POST request
+  // Trigger store POST request
   const handleAddButtonClick = () => {
-    console.log('add')
-    // const payload = {
-    //   customerId,
-    //   groupId,
-    //   closeModal: handleClose,
-    //   numbers
-    // }
-    // postSecondaryNumbers(payload)
+    const payload = {
+      customerId,
+      groupId,
+      destination: currentCheckedNumber.destination,
+      closeModal: handleClose
+    }
+    postTimeSchedule(payload)
+  }
+
+  // Back to first step
+  const handleBackButtonClick = () => {
+    setStep(1)
   }
 
   const columns = [
     {
       id: 'checkbox',
       label: (
-        <Checkbox
-          className={classes.headCheckbox}
-          checked={selectAll}
-          // onChange={handleSelectAll}
-        />
+        <Checkbox className={classes.headCheckbox} checked={false} disabled />
       ),
       isSortAvailable: false,
-      getCellData: (row, i) =>
-        row.checked ? (
-          <Checkbox
-            checked={row.checked}
-            className={classes.checkbox}
-            // onChange={() => selectNumbers(!row.checked, row.id)}
-          />
-        ) : (
-          <div
-            className={classes.indexHoverCheckbox}
-            // onClick={() => selectNumbers(!row.checked, row.id)}
-            // onMouseLeave={() => changeHover(false, row.id)}
-            // onMouseEnter={() => changeHover(true, row.id)}
-          >
-            {row.hover ? (
-              <Checkbox
-                checked={row.checked}
-                className={classes.checkbox}
-                // onChange={() => selectNumbers(true, row.id)}
-              />
-            ) : (
-              (page - 1) * rowsPerPage + i + 1
-            )}
-          </div>
-        ),
+      getCellData: (row, i) => (
+        <SingleCheckCell
+          key={i}
+          row={row}
+          i={i}
+          classes={classes}
+          checked={i === currentCheckedNumber.id}
+          setCurrentCheckedNumber={setCurrentCheckedNumber}
+        />
+      ),
       extraProps: {
         className: classes.checkboxCell
       },
@@ -175,7 +194,7 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
   ]
 
   return (
-    <Dialog open={open} onClose={handleClose} className={classes.root}>
+    <Fragment>
       {isLoading ? (
         <Loading />
       ) : (
@@ -191,10 +210,6 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
-            <Typography className={classes.setEntitlementsTitle}>
-              {t('select_access_number')}
-            </Typography>
-
             <CountryInput
               value={selectedCountry}
               setValue={setSelectedCountry}
@@ -204,7 +219,7 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
             <CustomTable
               firstCell={false}
               classes={classes}
-              rows={availableNumbers}
+              rows={phoneNumbers}
               columns={columns}
               page={page}
               setPage={setPage}
@@ -219,7 +234,7 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
               noAvailableDataMessage={t('no_phone_numbers_available')}
               showSearchBar={false}
               isModal={true}
-              tableId={'ans_advanced_add_select_access_numbers'}
+              tableId={'ans_tbr_add_phone_number_step'}
             />
           </DialogContent>
           <DialogActions className={classes.dialogActionsSecond}>
@@ -227,23 +242,23 @@ const AddPhoneNumber = ({ open, handleClose, t }) => {
               variant='outlined'
               color='primary'
               className={classes.backButton}
-              onClick={handleClose}
+              onClick={handleBackButtonClick}
             >
-              {t('cancel')}
+              {t('back')}
             </Button>
             <Button
               variant='contained'
               color='primary'
               className={classes.nextButton}
               onClick={handleAddButtonClick}
-              // disabled={}
+              disabled={!currentCheckedNumber.destination}
             >
               {t('add')}
             </Button>
           </DialogActions>
         </Fragment>
       )}
-    </Dialog>
+    </Fragment>
   )
 }
 

@@ -82,6 +82,101 @@ const useStyles = makeStyles(theme => ({
     '& > div': {
       marginBottom: 30
     }
+  },
+  countryInput: {
+    width: 354,
+    marginTop: 22,
+    marginLeft: 44
+  },
+  paginationWrap: {
+    left: '50%',
+    bottom: 110,
+    display: 'flex',
+    position: 'absolute',
+    transform: 'translate(-50%, 0)',
+    background: 'transparent',
+    margin: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  toolbarWrap: {
+    paddingLeft: 44,
+    position: 'relative',
+    height: 20
+  },
+  perPageWrap: {
+    position: 'absolute',
+    right: 30,
+    top: -50
+  },
+  table: {
+    marginTop: 13
+  },
+  thead: {
+    backgroundColor: 'white',
+    '& th': {
+      border: 'none'
+    },
+    height: 50,
+    '& > tr': {
+      height: 50
+    }
+  },
+  tableRow: {
+    height: '50px',
+    borderLeft: '5px solid transparent',
+    '& > td': {
+      width: 50
+    },
+    '& > th': {
+      height: 50
+    },
+    '&:nth-child(2n+1)': {
+      backgroundColor: theme.palette.active.main,
+      '&:hover': {
+        borderLeft: `5px solid ${theme.palette.primary.main}`,
+        backgroundColor: theme.palette.active.main
+      }
+    },
+    '&:nth-child(2n)': {
+      backgroundColor: 'white',
+      '&:hover': {
+        borderLeft: `5px solid ${theme.palette.primary.main}`,
+        backgroundColor: 'white'
+      }
+    }
+  },
+  checkboxCell: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 'inherit',
+    padding: 0,
+    marginLeft: '30px',
+    '& > span': {
+      marginLeft: '3px !important'
+    }
+  },
+  bodyFirstCell: {
+    paddingLeft: '37px'
+  },
+  checkboxHead: {
+    paddingBottom: 0,
+    paddingTop: 0,
+    paddingLeft: 44
+  },
+  dialogActionsSecond: {
+    height: '110px',
+    justifyContent: 'space-between'
+  },
+  backButton: {
+    width: '160px',
+    marginLeft: '32px',
+    color: theme.palette.black
+  },
+  nextButton: {
+    width: '160px',
+    marginRight: '32px'
   }
 }))
 
