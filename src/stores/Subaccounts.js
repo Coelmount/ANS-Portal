@@ -5,6 +5,8 @@ import axios from 'utils/axios'
 import set from 'lodash/set'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
+import { removeEmpty } from 'utils/removeEmpty'
+import { toJS } from 'mobx'
 
 export class SubaccountsStore {
   rows = []
@@ -145,8 +147,10 @@ export class SubaccountsStore {
 
   updateCustomer = (tenantId, groupId, handleClose) => {
     this.addUpdateCustomer = true
+    const customer = toJS(this.customer)
+    const data = removeEmpty(customer)
     return axios
-      .put(`/tenants/${tenantId}/groups/${groupId}`, this.customer)
+      .put(`/tenants/${tenantId}/groups/${groupId}`, data)
       .then(res => {
         merge(this.customer, res.data)
         handleClose()
