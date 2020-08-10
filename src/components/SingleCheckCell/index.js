@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import Checkbox from 'components/Checkbox'
 
 const SingleCheckCell = ({
-  row: { hover, setHover, country_code, nsn },
+  row: { hover, setHover, phoneNumber },
   i,
   classes,
   checked,
@@ -20,7 +20,7 @@ const SingleCheckCell = ({
           onChange={() =>
             setCurrentCheckedNumber({
               id: i,
-              destination: `${country_code}${nsn}`
+              destination: phoneNumber
             })
           }
         />
@@ -30,7 +30,7 @@ const SingleCheckCell = ({
           onClick={() =>
             setCurrentCheckedNumber({
               id: i,
-              destination: `${country_code}${nsn}`
+              destination: `${phoneNumber}`
             })
           }
           onMouseLeave={() => setHover(false)}
@@ -43,7 +43,7 @@ const SingleCheckCell = ({
               onChange={() =>
                 setCurrentCheckedNumber({
                   id: i,
-                  destination: `${country_code}${nsn}`
+                  destination: `${phoneNumber}`
                 })
               }
             />

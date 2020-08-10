@@ -21,6 +21,8 @@ import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import SingleCheckCell from 'components/SingleCheckCell'
+import { ADD_DESTINATION_DEFAULT_ID } from 'utils/types/addDestinationModalStepsId'
+
 import useStyles from '../../styles'
 import { toJS } from 'mobx'
 
@@ -156,7 +158,7 @@ const AddPhoneNumber = ({ handleClose, t }) => {
 
   // Back to first step
   const handleBackButtonClick = () => {
-    setStep(1)
+    setStep(ADD_DESTINATION_DEFAULT_ID)
   }
 
   const columns = [

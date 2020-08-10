@@ -6,6 +6,7 @@ import getErrorMessage from 'utils/getErrorMessage'
 import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import PhoneNumber from './substores/PhoneNumber'
+import AnsInstance from './substores/AnsInstance'
 
 export class TimeSchedules {
   step = 1
@@ -16,8 +17,10 @@ export class TimeSchedules {
   schedules = []
   countries = []
   phoneNumbers = []
+  ansIntances = []
   isSchedulesLoading = true
   isPhoneNumbersLoading = true
+  isAnsIntancesLoading = true
   isTimeScheduleAdding = false
 
   setStep = value => (this.step = value)
@@ -138,6 +141,37 @@ export class TimeSchedules {
       })
   }
 
+  getAdvancedIntances = ({ customerId, groupId }) => {
+    this.ansIntances = []
+    this.isAnsIntancesLoading = true
+
+    axios
+      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .then(res => {
+        const ansAdvancedIntances = res.data.ans_advanced
+        ansAdvancedIntances.push({
+          name: 'testpush',
+          access_number: '+966423423'
+        })
+        runInAction(() => {
+          this.ansIntances = ansAdvancedIntances.map(
+            ansIntance => new AnsInstance(ansIntance)
+          )
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch ANS instances',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isAnsIntancesLoading = false
+      })
+  }
+
   // change checked field of each number => TRUE
   // handleCheckAll = () => {
   //   if (this.areAllNumbersChecked) {
@@ -204,15 +238,18 @@ decorate(TimeSchedules, {
   step: observable,
   schedules: observable,
   phoneNumbers: observable,
+  ansIntances: observable,
   countries: observable,
   defaultDestination: observable,
   isSchedulesLoading: observable,
   isPhoneNumbersLoading: observable,
+  isAnsIntancesLoading: observable,
   isTimeScheduleAdding: observable,
   setStep: action,
   setDestinationData: action,
   getSchedules: action,
   getPhoneNumbers: action,
+  getAdvancedIntances: action,
   // handleCheckAll: action,
   postTimeSchedule: action
 })

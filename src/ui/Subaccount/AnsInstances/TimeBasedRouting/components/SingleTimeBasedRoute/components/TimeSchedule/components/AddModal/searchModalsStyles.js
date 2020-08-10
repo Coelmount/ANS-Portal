@@ -99,16 +99,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  toolbarWrap: {
-    paddingLeft: 44,
-    position: 'relative',
-    height: 20
-  },
-  perPageWrap: {
-    position: 'absolute',
-    right: 30,
-    top: -50
-  },
   table: {
     marginTop: 13
   },
@@ -150,6 +140,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    width: 50,
     height: 'inherit',
     padding: 0,
     marginLeft: '30px',
@@ -178,8 +169,18 @@ const useStyles = makeStyles(theme => ({
     width: '160px',
     marginRight: '32px'
   },
-  dialogContent: {
-    padding: 0
+  toolbarWrap: {
+    height: 98,
+    display: 'flex',
+    background: theme.palette.active.main,
+    alignItems: 'center',
+    paddingLeft: 53,
+    paddingRight: 33,
+    justifyContent: 'space-between'
+  },
+  searchWrap: {
+    position: 'relative',
+    marginRight: 36
   }
 }))
 
