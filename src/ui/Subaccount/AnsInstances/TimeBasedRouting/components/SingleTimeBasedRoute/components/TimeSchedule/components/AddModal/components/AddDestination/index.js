@@ -31,7 +31,7 @@ import ScheduleIcon from 'source/images/components/ScheduleIcon'
 import useStyles from '../../styles'
 import { toJS } from 'mobx'
 
-const AddModal = ({ t, handleClose }) => {
+const AddDestination = ({ t, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
   const { scheduleIndexToAdd, setStep, setDestinationData } = TimeSchedulesStore
@@ -183,4 +183,4 @@ const AddModal = ({ t, handleClose }) => {
   )
 }
 
-export default withNamespaces()(observer(AddModal))
+export default withNamespaces()(observer(AddDestination))
