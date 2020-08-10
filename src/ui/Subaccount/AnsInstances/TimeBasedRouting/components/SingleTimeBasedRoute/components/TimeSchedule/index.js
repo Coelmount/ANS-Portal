@@ -37,7 +37,7 @@ const TimeSchedule = ({ t }) => {
     schedules,
     defaultDestination,
     deleteString,
-    isSchedulesLoading,
+    isSchedulesLoading: isLoading,
     getSchedules,
     setStep
   } = TimeSchedulesStore
@@ -79,7 +79,7 @@ const TimeSchedule = ({ t }) => {
   }
 
   const handleAddClick = () => {
-    modalStore.open(addModalId)
+    if (!isLoading) modalStore.open(addModalId)
   }
   // ------
 
@@ -93,12 +93,6 @@ const TimeSchedule = ({ t }) => {
       deleteItem: deleteItem
     }
     // deleteTimeBasedRoutes(payload)
-  }
-
-  const titleData = {
-    mainText: t('time_base_routing'),
-    iconCapture: t('add'),
-    Icon: <AddIcon />
   }
 
   const extraDeleteBlock = (
@@ -147,7 +141,11 @@ const TimeSchedule = ({ t }) => {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Box className={classes.toolbarButtonsBlockWrap}>
-          <Box className={classes.addCustomerWrap}>
+          <Box
+            className={classnames(classes.addButtonWrap, {
+              [classes.disabledAddButtonWrap]: isLoading
+            })}
+          >
             <IconButton
               aria-label='deassign icon button'
               component='span'
@@ -161,7 +159,7 @@ const TimeSchedule = ({ t }) => {
             </Typography>
           </Box>
         </Box>
-        {isSchedulesLoading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <CustomTable

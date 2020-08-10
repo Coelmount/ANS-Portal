@@ -16,9 +16,15 @@ const useStyles = makeStyles(theme => ({
       color: '#598597'
     }
   },
-  addCustomerWrap: {
+  addButtonWrap: {
     display: 'flex',
     alignItems: 'center'
+  },
+  disabledAddButtonWrap: {
+    opacity: 0.5,
+    '& > span': {
+      background: theme.palette.lightGrey
+    }
   },
   updateWrap: {
     display: 'flex',
