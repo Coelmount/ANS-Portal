@@ -103,7 +103,7 @@ const SelectAnsIntance = ({ t, handleClose }) => {
     },
     {
       id: 'name',
-      label: 'destination',
+      label: 'name',
       extraProps: {
         className: classes.entitlementHeadCell
       }

@@ -33,14 +33,14 @@ const SelectAnsDestination = ({ t, handleClose }) => {
 
   const {
     setStep,
-    getAdvancedIntances,
+    getAdvancedDestinations,
     postTimeSchedule,
-    ansIntances,
-    isAnsIntancesLoading,
+    ansDestinations,
+    isAnsDestinationsLoading,
     isTimeScheduleAdding
   } = TimeSchedulesStore
 
-  const isLoading = isAnsIntancesLoading || isTimeScheduleAdding
+  const isLoading = isAnsDestinationsLoading || isTimeScheduleAdding
 
   const localStore = useLocalStore(() => ({
     currentCheckedNumber: {
@@ -58,7 +58,7 @@ const SelectAnsDestination = ({ t, handleClose }) => {
       customerId,
       groupId
     }
-    getAdvancedIntances(payload)
+    getAdvancedDestinations(payload)
   }, [])
 
   // Trigger store POST request
@@ -103,7 +103,7 @@ const SelectAnsDestination = ({ t, handleClose }) => {
     },
     {
       id: 'name',
-      label: 'destination',
+      label: 'name',
       extraProps: {
         className: classes.entitlementHeadCell
       }
@@ -139,7 +139,7 @@ const SelectAnsDestination = ({ t, handleClose }) => {
               columns={columns}
               firstCell={false}
               showPagination={true}
-              rows={ansIntances}
+              rows={ansDestinations}
               searchCriterias={['name', 'phoneNumber']}
               noAvailableDataMessage={t('no_ans_advanced_instances_available')}
               isModal={true}

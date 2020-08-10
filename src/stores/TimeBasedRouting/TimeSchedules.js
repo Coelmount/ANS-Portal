@@ -7,6 +7,7 @@ import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoL
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import PhoneNumber from './substores/PhoneNumber'
 import AnsInstance from './substores/AnsInstance'
+import AnsDestination from './substores/AnsDestination'
 
 export class TimeSchedules {
   step = 1
@@ -18,9 +19,11 @@ export class TimeSchedules {
   countries = []
   phoneNumbers = []
   ansIntances = []
+  ansDestinations = []
   isSchedulesLoading = true
   isPhoneNumbersLoading = true
   isAnsIntancesLoading = true
+  isAnsDestinationsLoading = true
   isTimeScheduleAdding = false
 
   setStep = value => (this.step = value)
@@ -161,7 +164,8 @@ export class TimeSchedules {
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to fetch ANS instances',
+          message:
+            getErrorMessage(e) || 'Failed to fetch ANS advanced instances',
           options: {
             variant: 'error'
           }
@@ -169,6 +173,36 @@ export class TimeSchedules {
       })
       .finally(() => {
         this.isAnsIntancesLoading = false
+      })
+  }
+
+  getAdvancedDestinations = ({ customerId, groupId }) => {
+    this.ansDestinations = []
+    this.isAnsDestinationsLoading = true
+
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations`
+      )
+      .then(res => {
+        const ansAdvancedDestinations = res.data.destinations
+        runInAction(() => {
+          this.ansDestinations = ansAdvancedDestinations.map(
+            ansIntance => new AnsDestination(ansIntance)
+          )
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) || 'Failed to fetch ANS advanced destinations',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isAnsDestinationsLoading = false
       })
   }
 
@@ -239,17 +273,20 @@ decorate(TimeSchedules, {
   schedules: observable,
   phoneNumbers: observable,
   ansIntances: observable,
+  ansDestinations: observable,
   countries: observable,
   defaultDestination: observable,
   isSchedulesLoading: observable,
   isPhoneNumbersLoading: observable,
   isAnsIntancesLoading: observable,
+  isAnsDestinationsLoading: observable,
   isTimeScheduleAdding: observable,
   setStep: action,
   setDestinationData: action,
   getSchedules: action,
   getPhoneNumbers: action,
   getAdvancedIntances: action,
+  getAdvancedDestinations: action,
   // handleCheckAll: action,
   postTimeSchedule: action
 })
