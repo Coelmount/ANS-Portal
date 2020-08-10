@@ -20,16 +20,16 @@ import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
+import {
+  PHONE_NUMBER_ID,
+  ANS_INSTANCE_ID,
+  ANS_DESTINATION_ID,
+  ANS_IVR_ID
+} from 'utils/types/addDestinationModalStepsId'
 
 import ScheduleIcon from 'source/images/components/ScheduleIcon'
 import useStyles from '../../styles'
 import { toJS } from 'mobx'
-
-// Id's equal to steps id's in ../AddModal container - Steps switch
-const PHONE_NUMBER_ID = 2
-const ANS_INSTANCE_ID = 3
-const ANS_DESTINATION_ID = 4
-const ANS_IVR_ID = 5
 
 const AddModal = ({ t, handleClose }) => {
   const classes = useStyles()
