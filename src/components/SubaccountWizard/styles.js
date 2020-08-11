@@ -227,6 +227,21 @@ const useStyles = makeStyles(theme => ({
   iconsInstance: {
     width: 26,
     height: 26
+  },
+  instanceInfoBox: {
+    marginTop: 40,
+    marginLeft: 40,
+    textAlign: 'justify',
+    marginRight: 30
+  },
+  tabsBox: {
+    background: 'white',
+    height: 48,
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
+    borderRadius: 3,
+    marginTop: 60,
+    marginLeft: 40,
+    marginRight: 30
   }
 }))
 

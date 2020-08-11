@@ -98,6 +98,8 @@ const FirstStep = props => {
               </Box>
             </Box>
           </Box>
+          <Box className={classes.instanceInfoBox}>{t('basic_info')}</Box>
+          <Box className={classes.tabsBox}></Box>
         </Box>
         <MobileStepper
           variant='dots'
