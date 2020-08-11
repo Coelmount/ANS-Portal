@@ -71,7 +71,6 @@ const SecondStep = props => {
         <Loading />
       ) : (
         <React.Fragment>
-          {' '}
           <DialogTitle className={classes.title}>
             {(isCreateSubaccount && t('add_subaccount')) ||
               (isEditCustomer && t('edit_customer')) ||
