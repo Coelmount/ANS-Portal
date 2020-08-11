@@ -9,6 +9,7 @@ import AddDestination from './components/AddDestination'
 import AddPhoneNumber from './components/AddPhoneNumber'
 import SelectAnsIntance from './components/SelectAnsInstance'
 import SelectAnsDestination from './components/SelectAnsDestination'
+import SelectAnsIvr from './components/SelectAnsIvr'
 import {
   ADD_DESTINATION_DEFAULT_ID,
   PHONE_NUMBER_ID,
@@ -30,6 +31,8 @@ const Steps = ({ step, handleClose }) => {
       return <SelectAnsIntance handleClose={handleClose} />
     case ANS_DESTINATION_ID:
       return <SelectAnsDestination handleClose={handleClose} />
+    case ANS_IVR_ID:
+      return <SelectAnsIvr handleClose={handleClose} />
     default:
       return <AddDestination handleClose={handleClose} />
   }

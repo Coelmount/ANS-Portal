@@ -8,6 +8,7 @@ import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumbe
 import PhoneNumber from './substores/PhoneNumber'
 import AnsInstance from './substores/AnsInstance'
 import AnsDestination from './substores/AnsDestination'
+import IvrInstance from './substores/IvrInstance'
 
 export class TimeSchedules {
   step = 1
@@ -20,10 +21,12 @@ export class TimeSchedules {
   phoneNumbers = []
   ansIntances = []
   ansDestinations = []
+  ivrList = []
   isSchedulesLoading = true
   isPhoneNumbersLoading = true
   isAnsIntancesLoading = true
   isAnsDestinationsLoading = true
+  isIvrListLoading = true
   isTimeScheduleAdding = false
 
   setStep = value => (this.step = value)
@@ -206,6 +209,33 @@ export class TimeSchedules {
       })
   }
 
+  getIvrList = ({ customerId, groupId }) => {
+    this.ivrList = []
+    this.isIvrListLoading = true
+
+    axios
+      .get(`/tenants/${customerId}/groups/${groupId}/services/ivrs/`)
+      .then(res => {
+        const ansIvrList = res.data.ivrs
+        runInAction(() => {
+          this.ivrList = ansIvrList.map(
+            ivrInstance => new IvrInstance(ivrInstance)
+          )
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch ANS IVR data',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isIvrListLoading = false
+      })
+  }
+
   // change checked field of each number => TRUE
   // handleCheckAll = () => {
   //   if (this.areAllNumbersChecked) {
@@ -274,12 +304,14 @@ decorate(TimeSchedules, {
   phoneNumbers: observable,
   ansIntances: observable,
   ansDestinations: observable,
+  ivrList: observable,
   countries: observable,
   defaultDestination: observable,
   isSchedulesLoading: observable,
   isPhoneNumbersLoading: observable,
   isAnsIntancesLoading: observable,
   isAnsDestinationsLoading: observable,
+  isIvrListLoading: observable,
   isTimeScheduleAdding: observable,
   setStep: action,
   setDestinationData: action,
@@ -287,6 +319,7 @@ decorate(TimeSchedules, {
   getPhoneNumbers: action,
   getAdvancedIntances: action,
   getAdvancedDestinations: action,
+  getIvrList: action,
   // handleCheckAll: action,
   postTimeSchedule: action
 })

@@ -26,21 +26,21 @@ import { ADD_DESTINATION_DEFAULT_ID } from 'utils/types/addDestinationModalSteps
 
 import useStyles from '../../searchModalsStyles'
 
-const SelectAnsDestination = ({ t, handleClose }) => {
+const SelectAnsIvr = ({ t, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
   const { customerId, groupId } = match
 
   const {
     setStep,
-    getAdvancedDestinations,
+    getIvrList,
     postTimeSchedule,
-    ansDestinations,
-    isAnsDestinationsLoading,
+    ivrList,
+    isIvrListLoading,
     isTimeScheduleAdding
   } = TimeSchedulesStore
 
-  const isLoading = isAnsDestinationsLoading || isTimeScheduleAdding
+  const isLoading = isIvrListLoading || isTimeScheduleAdding
 
   const localStore = useLocalStore(() => ({
     currentCheckedNumber: {
@@ -58,7 +58,7 @@ const SelectAnsDestination = ({ t, handleClose }) => {
       customerId,
       groupId
     }
-    getAdvancedDestinations(payload)
+    getIvrList(payload)
   }, [])
 
   // Trigger store POST request
@@ -124,7 +124,7 @@ const SelectAnsDestination = ({ t, handleClose }) => {
       ) : (
         <Fragment>
           <DialogTitle className={classes.title}>
-            {t('select_ans_advanced_destination')}
+            {t('select_ans_ivr')}
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -139,11 +139,11 @@ const SelectAnsDestination = ({ t, handleClose }) => {
               columns={columns}
               firstCell={false}
               showPagination={true}
-              rows={ansDestinations}
+              rows={ivrList}
               searchCriterias={['name', 'phoneNumber']}
               noAvailableDataMessage={t('no_ans_advanced_instances_available')}
               isModal={true}
-              tableId={'advanced_time_schedule_add_ans_destination'}
+              tableId={'advanced_time_schedule_add_ivr_instance'}
             />
           </DialogContent>
           <DialogActions className={classes.dialogActions}>
@@ -171,4 +171,4 @@ const SelectAnsDestination = ({ t, handleClose }) => {
   )
 }
 
-export default withNamespaces()(observer(SelectAnsDestination))
+export default withNamespaces()(observer(SelectAnsIvr))
