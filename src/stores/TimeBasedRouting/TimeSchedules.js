@@ -16,6 +16,8 @@ export class TimeSchedules {
   defaultDestination = ''
   destinationScheduleName = ''
   destinationName = ''
+  scheduleNameToEdit = ''
+  timeSchdule = {}
   schedules = []
   countries = []
   phoneNumbers = []
@@ -34,6 +36,10 @@ export class TimeSchedules {
   setDestinationData = ({ destinationName, scheduleName }) => {
     this.destinationName = destinationName
     this.destinationScheduleName = scheduleName
+  }
+
+  setScheduleNameToEdit = name => {
+    this.destinationScheduleName = name
   }
 
   getSchedules = ({ customerId, groupId, tbrName }) => {
@@ -76,6 +82,38 @@ export class TimeSchedules {
           .finally(() => {
             this.isSchedulesLoading = false
           })
+      })
+  }
+
+  findTImeSchedule = ({ customerId, groupId }) => {
+    this.timeSchdule = {}
+    this.isAnsIntancesLoading = true
+
+    axios
+      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .then(res => {
+        const ansAdvancedIntances = res.data.ans_advanced
+        ansAdvancedIntances.push({
+          name: 'testpush',
+          access_number: '+966423423'
+        })
+        runInAction(() => {
+          this.ansIntances = ansAdvancedIntances.map(
+            ansIntance => new AnsInstance(ansIntance)
+          )
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) || 'Failed to fetch ANS advanced instances',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isAnsIntancesLoading = false
       })
   }
 
@@ -301,6 +339,7 @@ decorate(TimeSchedules, {
   scheduleIndexToAdd: computed,
   step: observable,
   schedules: observable,
+  timeSchedule: observable,
   phoneNumbers: observable,
   ansIntances: observable,
   ansDestinations: observable,
@@ -315,7 +354,9 @@ decorate(TimeSchedules, {
   isTimeScheduleAdding: observable,
   setStep: action,
   setDestinationData: action,
+  setScheduleNameToEdit: action,
   getSchedules: action,
+  findTImeSchedule: action,
   getPhoneNumbers: action,
   getAdvancedIntances: action,
   getAdvancedDestinations: action,

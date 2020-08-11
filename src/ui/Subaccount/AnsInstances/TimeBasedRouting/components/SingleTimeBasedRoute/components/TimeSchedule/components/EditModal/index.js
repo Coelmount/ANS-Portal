@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import { makeStyles } from '@material-ui/core/styles'
+import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -28,13 +29,17 @@ import {
 } from 'utils/types/addDestinationModalStepsId'
 
 import ScheduleIcon from 'source/images/components/ScheduleIcon'
-import useStyles from '../../../modalStyles'
-import { toJS } from 'mobx'
+import useStyles from '../modalStyles.js'
 
-const AddDestination = ({ t, handleClose }) => {
+const EditModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
-  const { scheduleIndexToAdd, setStep, setDestinationData } = TimeSchedulesStore
+  const {
+    findTImeSchedule,
+    scheduleIndexToAdd,
+    setStep,
+    setDestinationData
+  } = TimeSchedulesStore
   const { getSchedules, schedules, isSchedulesLoading } = WeekSchedulesStore
   const isLoading = isSchedulesLoading
 
@@ -55,7 +60,12 @@ const AddDestination = ({ t, handleClose }) => {
 
   // Initial request
   useEffect(() => {
+    const payload = {
+      customerId,
+      groupId
+    }
     getSchedules(customerId, groupId)
+    findTImeSchedule(payload)
   }, [])
 
   // On receive schedules from store
@@ -102,9 +112,9 @@ const AddDestination = ({ t, handleClose }) => {
   ]
 
   return (
-    <Fragment>
+    <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
-        {t('add_destination')}
+        {t('edit_destination')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -179,8 +189,8 @@ const AddDestination = ({ t, handleClose }) => {
           {t('add')}
         </Button>
       </DialogActions>
-    </Fragment>
+    </Dialog>
   )
 }
 
-export default withNamespaces()(observer(AddDestination))
+export default withNamespaces()(observer(EditModal))

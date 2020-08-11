@@ -2,7 +2,6 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import Dialog from '@material-ui/core/Dialog'
-import { makeStyles } from '@material-ui/core/styles'
 
 import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
 import AddDestination from './components/AddDestination'
@@ -18,10 +17,9 @@ import {
   ANS_IVR_ID
 } from 'utils/types/addDestinationModalStepsId'
 
-import useStyles from './styles.js'
+import useStyles from '../modalStyles'
 
 const Steps = ({ step, handleClose }) => {
-  // const step = 3
   switch (step) {
     case ADD_DESTINATION_DEFAULT_ID:
       return <AddDestination handleClose={handleClose} />

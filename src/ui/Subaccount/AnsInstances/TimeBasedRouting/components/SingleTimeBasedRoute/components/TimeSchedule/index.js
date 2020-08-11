@@ -19,14 +19,17 @@ import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
 import Checkbox from 'components/Checkbox'
 import AddModal from './components/AddModal'
+import EditModal from './components/EditModal'
 
 import deleteIcon from 'source/images/svg/delete-icon.svg'
+import editIcon from 'source/images/svg/edit-blue.svg'
 import useStyles from './styles'
 
 import { toJS } from 'mobx'
 
 const addModalId = 1
 const deleteModalId = 2
+const editModalId = 3
 
 const TimeSchedule = ({ t }) => {
   const classes = useStyles()
@@ -38,6 +41,7 @@ const TimeSchedule = ({ t }) => {
     defaultDestination,
     deleteString,
     isSchedulesLoading: isLoading,
+    setScheduleNameToEdit,
     getSchedules,
     setStep
   } = TimeSchedulesStore
@@ -58,6 +62,7 @@ const TimeSchedule = ({ t }) => {
 
   const isDeleteModalOpen = modalStore.openedId === deleteModalId
   const isAddModalOpen = modalStore.openedId === addModalId
+  const isEditModalOpen = modalStore.openedId === editModalId
 
   const getRequest = () => {
     const payload = {
@@ -80,6 +85,11 @@ const TimeSchedule = ({ t }) => {
 
   const handleAddClick = () => {
     if (!isLoading) modalStore.open(addModalId)
+  }
+
+  const handleEditIconClick = name => {
+    setScheduleNameToEdit(name)
+    modalStore.open(editModalId)
   }
   // ------
 
@@ -130,9 +140,14 @@ const TimeSchedule = ({ t }) => {
       },
       isSortAvailable: false,
       getCellData: row => (
-        <IconButton onClick={() => handleDeleteClick(row)}>
-          <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
-        </IconButton>
+        <Fragment>
+          <IconButton onClick={() => handleDeleteClick(row)}>
+            <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
+          </IconButton>
+          <IconButton onClick={() => handleEditIconClick(row.name)}>
+            <img src={editIcon} alt='edit' />
+          </IconButton>
+        </Fragment>
       )
     }
   ]
@@ -173,6 +188,9 @@ const TimeSchedule = ({ t }) => {
         )}
         {isAddModalOpen && (
           <AddModal open={isAddModalOpen} handleClose={modalStore.close} />
+        )}
+        {isEditModalOpen && (
+          <EditModal open={isEditModalOpen} handleClose={modalStore.close} />
         )}
         {/* {isDeleteModalOpen && (
           <DeleteModal
