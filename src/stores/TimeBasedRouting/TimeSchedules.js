@@ -9,6 +9,7 @@ import PhoneNumber from './substores/PhoneNumber'
 import AnsInstance from './substores/AnsInstance'
 import AnsDestination from './substores/AnsDestination'
 import IvrInstance from './substores/IvrInstance'
+import { toJS } from 'mobx'
 
 export class TimeSchedules {
   step = 1
@@ -17,7 +18,7 @@ export class TimeSchedules {
   destinationScheduleName = ''
   destinationName = ''
   scheduleNameToEdit = ''
-  timeSchdule = {}
+  currentTimeSchedule = {}
   schedules = []
   countries = []
   phoneNumbers = []
@@ -30,6 +31,7 @@ export class TimeSchedules {
   isAnsDestinationsLoading = true
   isIvrListLoading = true
   isTimeScheduleAdding = false
+  isTimeScheduleEditing = false
 
   setStep = value => (this.step = value)
 
@@ -39,7 +41,7 @@ export class TimeSchedules {
   }
 
   setScheduleNameToEdit = name => {
-    this.destinationScheduleName = name
+    this.scheduleNameToEdit = name
   }
 
   getSchedules = ({ customerId, groupId, tbrName }) => {
@@ -63,10 +65,18 @@ export class TimeSchedules {
           )
           .then(res => {
             const schedules = res.data.time_based_route.schedules
+            const transferedSchedules = schedules.map(schedule => {
+              const fixedTimeScheduleName = schedule.timeSchedule.split('(')[0]
+
+              return {
+                ...schedule,
+                timeSchedule: fixedTimeScheduleName
+              }
+            })
             const defaultDestination =
               res.data.time_based_route.defaultDestination
             runInAction(() => {
-              this.schedules = schedules
+              this.schedules = transferedSchedules
               this.defaultDestination = defaultDestination
             })
           })
@@ -85,36 +95,12 @@ export class TimeSchedules {
       })
   }
 
-  findTImeSchedule = ({ customerId, groupId }) => {
-    this.timeSchdule = {}
-    this.isAnsIntancesLoading = true
-
-    axios
-      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
-      .then(res => {
-        const ansAdvancedIntances = res.data.ans_advanced
-        ansAdvancedIntances.push({
-          name: 'testpush',
-          access_number: '+966423423'
-        })
-        runInAction(() => {
-          this.ansIntances = ansAdvancedIntances.map(
-            ansIntance => new AnsInstance(ansIntance)
-          )
-        })
-      })
-      .catch(e => {
-        SnackbarStore.enqueueSnackbar({
-          message:
-            getErrorMessage(e) || 'Failed to fetch ANS advanced instances',
-          options: {
-            variant: 'error'
-          }
-        })
-      })
-      .finally(() => {
-        this.isAnsIntancesLoading = false
-      })
+  findTImeSchedule = () => {
+    const { schedules, scheduleNameToEdit } = this
+    this.currentTimeSchedule = schedules.find(
+      schedule => schedule.name === scheduleNameToEdit
+    )
+    console.log(this.currentTimeSchedule, 'currentTimeSchedule')
   }
 
   getPhoneNumbers = ({
@@ -331,6 +317,40 @@ export class TimeSchedules {
         closeModal()
       })
   }
+
+  putTimeSchedule = ({ customerId, groupId, schedule, closeModal }) => {
+    this.isTimeScheduleEditing = true
+    const { name, destination, timeSchedule } = schedule
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}/criteria/${this.scheduleNameToEdit}`,
+        {
+          name,
+          destination,
+          timeSchedule
+        }
+      )
+      .then(() => {
+        SnackbarStore.enqueueSnackbar({
+          message: `Destination updated successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || `Failed to update destination`,
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isTimeScheduleEditing = false
+        closeModal()
+      })
+  }
 }
 
 decorate(TimeSchedules, {
@@ -346,12 +366,14 @@ decorate(TimeSchedules, {
   ivrList: observable,
   countries: observable,
   defaultDestination: observable,
+  currentTimeSchedule: observable,
   isSchedulesLoading: observable,
   isPhoneNumbersLoading: observable,
   isAnsIntancesLoading: observable,
   isAnsDestinationsLoading: observable,
   isIvrListLoading: observable,
   isTimeScheduleAdding: observable,
+  isTimeScheduleEditing: observable,
   setStep: action,
   setDestinationData: action,
   setScheduleNameToEdit: action,
@@ -362,7 +384,8 @@ decorate(TimeSchedules, {
   getAdvancedDestinations: action,
   getIvrList: action,
   // handleCheckAll: action,
-  postTimeSchedule: action
+  postTimeSchedule: action,
+  putTimeSchedule: action
 })
 
 export default new TimeSchedules()

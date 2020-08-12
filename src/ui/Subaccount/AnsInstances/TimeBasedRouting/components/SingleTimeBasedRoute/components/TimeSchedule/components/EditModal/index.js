@@ -30,6 +30,7 @@ import {
 
 import ScheduleIcon from 'source/images/components/ScheduleIcon'
 import useStyles from '../modalStyles.js'
+import { toJS } from 'mobx'
 
 const EditModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
@@ -37,15 +38,17 @@ const EditModal = ({ t, open, handleClose }) => {
   const {
     findTImeSchedule,
     scheduleIndexToAdd,
+    currentTimeSchedule,
     setStep,
-    setDestinationData
+    putTimeSchedule
   } = TimeSchedulesStore
+
   const { getSchedules, schedules, isSchedulesLoading } = WeekSchedulesStore
   const isLoading = isSchedulesLoading
 
   const formStore = useLocalStore(() => ({
     name: '',
-    phoneNumber: PHONE_NUMBER_ID,
+    phoneNumber: '',
     schedule: '',
     scheduleOptions: [],
 
@@ -65,7 +68,7 @@ const EditModal = ({ t, open, handleClose }) => {
       groupId
     }
     getSchedules(customerId, groupId)
-    findTImeSchedule(payload)
+    findTImeSchedule()
   }, [])
 
   // On receive schedules from store
@@ -77,19 +80,37 @@ const EditModal = ({ t, open, handleClose }) => {
       }))
       // Set schedule options to store
       formStore.set('scheduleOptions', options)
-      // Set first option as default to store
-      formStore.set('schedule', options[0].value)
     }
   }, [schedules])
 
+  useEffect(() => {
+    if (Object.keys(currentTimeSchedule)) {
+      formStore.set('name', currentTimeSchedule.name)
+      formStore.set('phoneNumber', currentTimeSchedule.forwardToPhoneNumber)
+      formStore.set('schedule', currentTimeSchedule.timeSchedule)
+    }
+  }, [currentTimeSchedule])
+
   const handleAddClick = () => {
     const payload = {
-      destinationName: formStore.name,
-      scheduleName: formStore.schedule
+      schedule: {
+        name: formStore.name,
+        destination: formStore.phoneNumber,
+        timeSchedule: formStore.schedule
+      },
+      closeModal: handleClose,
+      customerId,
+      groupId
+    }
+
+    if (phoneNumberOptionsWithCurrent[0].value === formStore.phoneNumber) {
+      putTimeSchedule(payload)
+    } else {
+      console.log('next step')
     }
     // Change step depends on Phone number selected option
-    setStep(formStore.phoneNumber)
-    setDestinationData(payload)
+    // setStep(formStore.phoneNumber)
+    // setDestinationData(payload)
   }
 
   const phoneNumberOptions = [
@@ -109,6 +130,22 @@ const EditModal = ({ t, open, handleClose }) => {
       label: t('select_ans_ivr'),
       value: ANS_IVR_ID
     }
+  ]
+
+  const phoneNumberOptionsWithCurrent = [
+    {
+      label: currentTimeSchedule.forwardToPhoneNumber,
+      value: currentTimeSchedule.forwardToPhoneNumber
+    },
+    ...phoneNumberOptions
+  ]
+
+  const scheduleOptionsWithCurrent = [
+    {
+      label: currentTimeSchedule.timeSchedule,
+      value: currentTimeSchedule.timeSchedule
+    },
+    ...formStore.scheduleOptions
   ]
 
   return (
@@ -139,15 +176,19 @@ const EditModal = ({ t, open, handleClose }) => {
                 icon={<PermIdentityOutlined />}
                 label={t('name')}
                 variant='outlined'
+                value={formStore.name}
                 onChange={e => formStore.set('name', e.target.value)}
               />
-              <Select
-                label={t('phone_number')}
-                icon={<PhoneOutlinedIcon alt='phone' />}
-                options={phoneNumberOptions}
-                value={formStore.phoneNumber}
-                onChange={e => formStore.set('phoneNumber', e.target.value)}
-              />
+              {
+                <Select
+                  label={t('phone_number')}
+                  icon={<PhoneOutlinedIcon alt='phone' />}
+                  options={phoneNumberOptionsWithCurrent}
+                  value={formStore.phoneNumber}
+                  onChange={e => formStore.set('phoneNumber', e.target.value)}
+                />
+              }
+
               <Select
                 label={t('schedule')}
                 icon={
@@ -161,7 +202,7 @@ const EditModal = ({ t, open, handleClose }) => {
                     alt='schedule'
                   />
                 }
-                options={formStore.scheduleOptions}
+                options={scheduleOptionsWithCurrent}
                 value={formStore.schedule}
                 onChange={e => formStore.set('schedule', e.target.value)}
               />
@@ -183,7 +224,7 @@ const EditModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disabled={!formStore.isFormValid || isLoading}
+          // disabled={!formStore.isFormValid || isLoading}
           onClick={handleAddClick}
         >
           {t('add')}
