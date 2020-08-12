@@ -24,7 +24,7 @@ import AuthStore from 'stores/Auth'
 
 import useStyles from './styles'
 
-const FirstStep = props => {
+const ThirdStep = props => {
   const { handleClose, t, changeStep, step } = props
   const classes = useStyles()
   const { user } = AuthStore
@@ -63,7 +63,7 @@ const FirstStep = props => {
             <Box className={classes.boldMTNText}>{t('ans_instances')}</Box>
           </Box>
           <Box className={classes.ansInstanceBox}>
-            <Box className={`${classes.instanceBox} ${classes.borderInstance}`}>
+            <Box className={classes.instanceBox}>
               <img
                 src={basicIcon}
                 alt={`basicIcon`}
@@ -87,7 +87,7 @@ const FirstStep = props => {
               />
               <Box className={classes.textInstance}>{t('ivr')}</Box>
             </Box>
-            <Box className={classes.instanceBox}>
+            <Box className={`${classes.instanceBox} ${classes.borderInstance}`}>
               <img
                 src={timeBasedRoutingIcon}
                 alt={`timeBasedRoutingIcon`}
@@ -98,23 +98,31 @@ const FirstStep = props => {
               </Box>
             </Box>
           </Box>
-          <Box className={classes.instanceInfoBox}>{t('basic_info')}</Box>
+          <Box className={classes.instanceInfoBox}>{t('tbr_info')}</Box>
           <Box className={classes.tabsBox}>
             <Box className={`${classes.tabs} ${classes.bottomLine}`}>
-              {t('translations')}
+              {t('access_numbers')}
               <Box className={classes.bottomRoundIcon}>1</Box>
               <Box className={classes.bottomInfoBox}>
                 <CheckIcon color={'primary'} className={classes.checkIcon} />
-                <Box>{t('basic_translations_info')}</Box>
+                <Box>{t('tbr_access_numbers_info')}</Box>
               </Box>
             </Box>
-            <Box className={`${classes.lastTab} ${classes.topLine}`}>
+            <Box className={`${classes.tabs} ${classes.topLine}`}>
               <Box className={classes.topInfoBox}>
                 <CheckIcon color={'primary'} className={classes.checkIcon} />
-                <Box>{t('basic_available_numbers_info')}</Box>
+                <Box>{t('tbr_time_schedule_info')}</Box>
               </Box>
               <Box className={classes.topRoundIcon}>2</Box>
-              {t('available_numbers')}
+              {t('time_schedule')}
+            </Box>
+            <Box className={`${classes.lastTab} ${classes.bottomLine}`}>
+              {`${t('whitelist')}/${t('blacklist')}`}
+              <Box className={classes.bottomRoundIcon}>3</Box>
+              <Box className={classes.bottomInfoBox}>
+                <CheckIcon color={'primary'} className={classes.checkIcon} />
+                <Box>{t('tbr_whitelist_blacklist_info')}</Box>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -126,27 +134,18 @@ const FirstStep = props => {
           className={classes.stepper}
         />
       </DialogContent>
-      <DialogActions className={classes.dialogActionsSecond}>
-        <Button
-          variant='outlined'
-          color='primary'
-          className={classes.backButton}
-          onClick={handleClose}
-        >
-          {t('skip')}
-        </Button>
+      <DialogActions className={classes.dialogActionsTS}>
         <Button
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          onClick={() => changeStep(1)}
+          onClick={handleClose}
         >
-          {t('next')}
-          <ChevronRightIcon />
+          {t('start')}
         </Button>
       </DialogActions>
     </React.Fragment>
   )
 }
 
-export default withNamespaces()(observer(FirstStep))
+export default withNamespaces()(observer(ThirdStep))

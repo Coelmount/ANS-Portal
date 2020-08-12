@@ -11,6 +11,7 @@ import has from 'lodash/has'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import ThirdStep from './ThirdStep'
+import FourthStep from './FourthStep'
 
 import Loading from 'components/Loading'
 
@@ -30,12 +31,12 @@ const SubaccountWizard = () => {
   const classes = useStyles()
   const [step, setStep] = useState(0)
   const [isOpen, setIsOpen] = useState(
-    false
-    // has(userLogin, 'profile.is_first_login')
-    //   ? userLogin.profile.is_first_login
-    //     ? userLogin.profile.is_first_login
-    //     : false
-    //   : false
+    //true
+    has(userLogin, 'profile.is_first_login')
+      ? userLogin.profile.is_first_login
+        ? userLogin.profile.is_first_login
+        : false
+      : false
   )
 
   const handleClose = () => {
@@ -71,6 +72,14 @@ const Steps = props => {
     case 2:
       return (
         <ThirdStep
+          handleClose={props.handleClose}
+          step={props.step}
+          changeStep={props.changeStep}
+        />
+      )
+    case 3:
+      return (
+        <FourthStep
           handleClose={props.handleClose}
           step={props.step}
           changeStep={props.changeStep}

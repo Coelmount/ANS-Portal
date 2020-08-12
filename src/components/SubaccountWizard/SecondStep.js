@@ -14,8 +14,11 @@ import MobileStepper from '@material-ui/core/MobileStepper'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import CheckIcon from '@material-ui/icons/Check'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import SettingsPhoneOutlinedIcon from '@material-ui/icons/SettingsPhoneOutlined'
+import basicIcon from 'source/images/svg/dashboard_basic_icon.svg'
+import advancedIcon from 'source/images/svg/dashboard_advanced_icon.svg'
+import timeBasedRoutingIcon from 'source/images/svg/dasboard_tbr_icon.svg'
+import ivrIcon from 'source/images/svg/dashboard_ivr_icon.svg'
 
 import AuthStore from 'stores/Auth'
 
@@ -50,52 +53,82 @@ const SecondStep = props => {
       <DialogContent className={classes.dialogContent}>
         <Box className={classes.mainContent}>
           <Box className={classes.stepStyles}>{`${t('step')} ${step +
-            1}/3`}</Box>
+            1}/4`}</Box>
           <Box className={classes.checkInfoBox}>
             <CheckIcon color={'primary'} className={classes.checkIcon} />
             <Box className={classes.regularText}>{t('go_to_your')}</Box>
             <Box className={classes.iconRoundBox}>
-              <PhoneOutlinedIcon />
+              <SettingsPhoneOutlinedIcon />
             </Box>
-            <Box className={classes.boldMTNText}>{t('access_numbers')}</Box>
+            <Box className={classes.boldMTNText}>{t('ans_instances')}</Box>
           </Box>
-          <Box className={classes.supportText}>
-            {t('entitlements_licenses_info')}
-          </Box>
-          <Box className={classes.checkInfoBox}>
-            <CheckIcon color={'primary'} className={classes.checkIcon} />
-            <Box className={classes.regularText}>{t('you_can')}</Box>
-            <Box className={classes.boldText}>{t('search').toLowerCase()}</Box>
-            <Box className={classes.regularText}>
-              {t('our_inventory_for').toLowerCase()}
+          <Box className={classes.ansInstanceBox}>
+            <Box className={classes.instanceBox}>
+              <img
+                src={basicIcon}
+                alt={`basicIcon`}
+                className={classes.iconsInstance}
+              />
+              <Box className={classes.textInstance}>{t('basic')}</Box>
             </Box>
-            <Box className={classes.boldText}>{t('numbers').toLowerCase()}</Box>
-            <Box className={classes.wrapperBox}>
-              <Box className={classes.boldMTNTextSecondary}>
-                {t('see_numbers')}
+            <Box className={`${classes.instanceBox} ${classes.borderInstance}`}>
+              <img
+                src={advancedIcon}
+                alt={`advancedIcon`}
+                className={classes.iconsInstance}
+              />
+              <Box className={classes.textInstance}>{t('advanced')}</Box>
+            </Box>
+            <Box className={classes.instanceBox}>
+              <img
+                src={ivrIcon}
+                alt={`ivrIcon`}
+                className={classes.iconsInstance}
+              />
+              <Box className={classes.textInstance}>{t('ivr')}</Box>
+            </Box>
+            <Box className={classes.instanceBox}>
+              <img
+                src={timeBasedRoutingIcon}
+                alt={`timeBasedRoutingIcon`}
+                className={classes.iconsInstance}
+              />
+              <Box className={classes.textInstance}>
+                {t('time_based_routing')}
               </Box>
             </Box>
           </Box>
-          <Box className={classes.checkInfoBox}>
-            <CheckIcon color={'primary'} className={classes.checkIcon} />
-            <Box className={classes.boldText}>{t('assign')}</Box>
-            <Box className={classes.regularText}>
-              {t('them_to_your_account').toLowerCase()}
-            </Box>
-            <Box className={classes.wrapperBox}>
-              <Box className={classes.iconMainRoundBox}>
-                <AddOutlinedIcon />
+          <Box className={classes.instanceInfoBox}>{t('advanced_info')}</Box>
+          <Box className={classes.tabsBox}>
+            <Box className={`${classes.tabs} ${classes.bottomLine}`}>
+              {t('available_numbers')}
+              <Box className={classes.bottomRoundIcon}>1</Box>
+              <Box className={classes.bottomInfoBox}>
+                <CheckIcon color={'primary'} className={classes.checkIcon} />
+                <Box>{t('advanced_available_numbers_info')}</Box>
               </Box>
-              <Box className={classes.boldMTNText}>{t('add_numbers')}</Box>
             </Box>
-          </Box>
-          <Box className={classes.supportText}>
-            {t('info_to_assign_numbers_to_subaccount')}
+            <Box className={`${classes.tabs} ${classes.topLine}`}>
+              <Box className={classes.topInfoBox}>
+                <CheckIcon color={'primary'} className={classes.checkIcon} />
+                <Box>{t('advanced_destination_groups_info')}</Box>
+              </Box>
+              <Box className={classes.topRoundIcon}>2</Box>
+              {t('destination_groups')}
+            </Box>
+            <Box className={`${classes.lastTab} ${classes.bottomLine}`}>
+              {t('destinations')}
+              <Box className={classes.bottomRoundIcon}>3</Box>
+              <Box className={classes.bottomInfoBox}>
+                <CheckIcon color={'primary'} className={classes.checkIcon} />
+                <Box>{t('advanced_destinations_info')}</Box>
+              </Box>
+            </Box>
           </Box>
         </Box>
         <MobileStepper
           variant='dots'
-          steps={3}
+          steps={4}
           position='static'
           activeStep={step}
           className={classes.stepper}

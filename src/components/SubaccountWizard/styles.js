@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     top: 10
   },
   stepStyles: {
-    marginTop: 36,
+    marginTop: 18,
     marginLeft: 40,
     fontFamily: 'MTN',
     fontWeight: 500,
@@ -164,7 +164,7 @@ const useStyles = makeStyles(theme => ({
       height: 24,
       border: 'solid 1px #00678F',
       position: 'absolute',
-      marginTop: -70
+      marginTop: -72
     }
   },
   bottomLine: {
@@ -173,7 +173,7 @@ const useStyles = makeStyles(theme => ({
       height: 24,
       border: 'solid 1px #00678F',
       position: 'absolute',
-      marginTop: 70
+      marginTop: 72
     }
   },
   bottomTextAdvanced: {
@@ -207,7 +207,7 @@ const useStyles = makeStyles(theme => ({
   instanceBox: {
     width: 114,
     height: 104,
-    marginTop: 40,
+    marginTop: 20,
     background: '#fff',
     boxShadow: '0px 4px 16px rgba(196, 196, 196, 0.25)',
     display: 'flex',
@@ -229,19 +229,75 @@ const useStyles = makeStyles(theme => ({
     height: 26
   },
   instanceInfoBox: {
-    marginTop: 40,
+    marginTop: 20,
     marginLeft: 40,
     textAlign: 'justify',
     marginRight: 30
   },
   tabsBox: {
-    background: 'white',
-    height: 48,
-    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
+    position: 'relative',
+    height: 260,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 3,
-    marginTop: 60,
     marginLeft: 40,
     marginRight: 30
+  },
+  tabs: {
+    background: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: 48,
+    borderRight: '0.5px solid #CCCCCC',
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
+  },
+  lastTab: {
+    background: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: 48,
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
+  },
+  bottomRoundIcon: {
+    color: '#00678F',
+    position: 'absolute',
+    marginTop: 116,
+    width: 20,
+    height: 20,
+    borderRadius: 20,
+    background: '#FFFFFF',
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  topRoundIcon: {
+    color: '#00678F',
+    position: 'absolute',
+    marginTop: -116,
+    width: 20,
+    height: 20,
+    borderRadius: 20,
+    background: '#FFFFFF',
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  bottomInfoBox: {
+    position: 'absolute',
+    display: 'flex',
+    marginTop: 158
+  },
+  topInfoBox: {
+    position: 'absolute',
+    display: 'flex',
+    marginTop: -158
   }
 }))
 
