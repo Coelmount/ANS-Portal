@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
       fontSize: 24,
       color: theme.palette.black
     },
-    height: 300,
+    height: 220,
     padding: '20px 24px',
     display: 'flex',
     justifyContent: 'center',
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   accountIcon: {
     width: 60,
     height: 60,
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 10
   },
   adminName: {
