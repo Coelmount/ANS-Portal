@@ -36,15 +36,17 @@ const EditModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
   const {
-    findTImeSchedule,
+    findTimeSchedule,
     scheduleIndexToAdd,
     currentTimeSchedule,
+    scheduleIndexToEdit,
     setStep,
-    putTimeSchedule
+    setDestinationData,
+    putTimeSchedule,
+    isTimeScheduleEditing
   } = TimeSchedulesStore
 
   const { getSchedules, schedules, isSchedulesLoading } = WeekSchedulesStore
-  const isLoading = isSchedulesLoading
 
   const formStore = useLocalStore(() => ({
     name: '',
@@ -61,6 +63,9 @@ const EditModal = ({ t, open, handleClose }) => {
     }
   }))
 
+  const isLoading = isSchedulesLoading || isTimeScheduleEditing
+  const isAddButtonDisabled = !formStore.isFormValid || isLoading
+
   // Initial request
   useEffect(() => {
     const payload = {
@@ -68,7 +73,7 @@ const EditModal = ({ t, open, handleClose }) => {
       groupId
     }
     getSchedules(customerId, groupId)
-    findTImeSchedule()
+    findTimeSchedule()
   }, [])
 
   // On receive schedules from store
@@ -93,24 +98,29 @@ const EditModal = ({ t, open, handleClose }) => {
 
   const handleAddClick = () => {
     const payload = {
+      customerId,
+      groupId,
       schedule: {
         name: formStore.name,
         destination: formStore.phoneNumber,
         timeSchedule: formStore.schedule
       },
-      closeModal: handleClose,
-      customerId,
-      groupId
+      isPhoneNumberChanged: false,
+      closeModal: handleClose
     }
 
+    const destinationData = {
+      destinationName: formStore.name,
+      scheduleName: formStore.schedule
+    }
+    // if number didn't changed and needed to instantly send request without phonenumber step
     if (phoneNumberOptionsWithCurrent[0].value === formStore.phoneNumber) {
       putTimeSchedule(payload)
     } else {
-      console.log('next step')
+      // go to choose number step
+      setStep(formStore.phoneNumber)
+      setDestinationData(destinationData)
     }
-    // Change step depends on Phone number selected option
-    // setStep(formStore.phoneNumber)
-    // setDestinationData(payload)
   }
 
   const phoneNumberOptions = [
@@ -140,16 +150,8 @@ const EditModal = ({ t, open, handleClose }) => {
     ...phoneNumberOptions
   ]
 
-  const scheduleOptionsWithCurrent = [
-    {
-      label: currentTimeSchedule.timeSchedule,
-      value: currentTimeSchedule.timeSchedule
-    },
-    ...formStore.scheduleOptions
-  ]
-
   return (
-    <Dialog open={open} onClose={handleClose} className={classes.root}>
+    <Fragment>
       <DialogTitle className={classes.title}>
         {t('edit_destination')}
         <IconButton
@@ -168,7 +170,7 @@ const EditModal = ({ t, open, handleClose }) => {
           <Box className={classes.formWrap}>
             <Box className={classes.formTitleWrap}>
               <Typography className={classes.formTitleLabel}>
-                {`${t('destination')} ${scheduleIndexToAdd}`}
+                {`${t('destination')} ${scheduleIndexToEdit}`}
               </Typography>
             </Box>
             <Box className={classes.formContentWrap}>
@@ -202,7 +204,7 @@ const EditModal = ({ t, open, handleClose }) => {
                     alt='schedule'
                   />
                 }
-                options={scheduleOptionsWithCurrent}
+                options={formStore.scheduleOptions}
                 value={formStore.schedule}
                 onChange={e => formStore.set('schedule', e.target.value)}
               />
@@ -224,13 +226,13 @@ const EditModal = ({ t, open, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          // disabled={!formStore.isFormValid || isLoading}
+          disabled={isAddButtonDisabled}
           onClick={handleAddClick}
         >
           {t('add')}
         </Button>
       </DialogActions>
-    </Dialog>
+    </Fragment>
   )
 }
 

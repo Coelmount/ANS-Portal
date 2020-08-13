@@ -19,12 +19,14 @@ export class TimeSchedules {
   destinationName = ''
   scheduleNameToEdit = ''
   currentTimeSchedule = {}
+  scheduleIndexToEdit = null
   schedules = []
   countries = []
   phoneNumbers = []
   ansIntances = []
   ansDestinations = []
   ivrList = []
+  isEditMode = false
   isSchedulesLoading = true
   isPhoneNumbersLoading = true
   isAnsIntancesLoading = true
@@ -35,13 +37,23 @@ export class TimeSchedules {
 
   setStep = value => (this.step = value)
 
+  setIsEditMode = flag => (this.isEditMode = flag)
+
   setDestinationData = ({ destinationName, scheduleName }) => {
     this.destinationName = destinationName
     this.destinationScheduleName = scheduleName
   }
 
-  setScheduleNameToEdit = name => {
-    this.scheduleNameToEdit = name
+  setScheduleToEdit = scheduleToEdit => {
+    this.scheduleNameToEdit = scheduleToEdit.name
+    this.scheduleIndexToEdit =
+      this.schedules.findIndex(
+        schedule => schedule.name === scheduleToEdit.name
+      ) + 1
+  }
+
+  clearLoading = () => {
+    this.isPhoneNumbersLoading = true
   }
 
   getSchedules = ({ customerId, groupId, tbrName }) => {
@@ -95,12 +107,11 @@ export class TimeSchedules {
       })
   }
 
-  findTImeSchedule = () => {
+  findTimeSchedule = () => {
     const { schedules, scheduleNameToEdit } = this
     this.currentTimeSchedule = schedules.find(
       schedule => schedule.name === scheduleNameToEdit
     )
-    console.log(this.currentTimeSchedule, 'currentTimeSchedule')
   }
 
   getPhoneNumbers = ({
@@ -318,17 +329,30 @@ export class TimeSchedules {
       })
   }
 
-  putTimeSchedule = ({ customerId, groupId, schedule, closeModal }) => {
+  putTimeSchedule = ({
+    customerId,
+    groupId,
+    schedule,
+    destination,
+    isPhoneNumberChanged,
+    closeModal
+  }) => {
     this.isTimeScheduleEditing = true
-    const { name, destination, timeSchedule } = schedule
+
+    const { destinationName, destinationScheduleName } = this
+
+    const payload = isPhoneNumberChanged
+      ? {
+          name: destinationName,
+          timeSchedule: destinationScheduleName,
+          destination
+        }
+      : schedule
+
     axios
       .put(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}/criteria/${this.scheduleNameToEdit}`,
-        {
-          name,
-          destination,
-          timeSchedule
-        }
+        payload
       )
       .then(() => {
         SnackbarStore.enqueueSnackbar({
@@ -367,18 +391,23 @@ decorate(TimeSchedules, {
   countries: observable,
   defaultDestination: observable,
   currentTimeSchedule: observable,
-  isSchedulesLoading: observable,
+  scheduleIndexToEdit: observable,
+  isEditMode: observable,
   isPhoneNumbersLoading: observable,
+  isSchedulesLoading: observable,
   isAnsIntancesLoading: observable,
   isAnsDestinationsLoading: observable,
   isIvrListLoading: observable,
   isTimeScheduleAdding: observable,
   isTimeScheduleEditing: observable,
   setStep: action,
+  clearLoading: action,
+  setIsEditMode: action,
+  setIsLoadingTrue: action,
   setDestinationData: action,
-  setScheduleNameToEdit: action,
+  setScheduleToEdit: action,
   getSchedules: action,
-  findTImeSchedule: action,
+  findTimeSchedule: action,
   getPhoneNumbers: action,
   getAdvancedIntances: action,
   getAdvancedDestinations: action,

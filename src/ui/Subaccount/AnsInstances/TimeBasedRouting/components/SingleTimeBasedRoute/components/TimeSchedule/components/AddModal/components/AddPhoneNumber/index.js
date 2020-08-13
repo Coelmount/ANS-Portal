@@ -21,7 +21,10 @@ import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import SingleCheckCell from 'components/SingleCheckCell'
-import { ADD_DESTINATION_DEFAULT_ID } from 'utils/types/addDestinationModalStepsId'
+import {
+  ADD_DESTINATION_DEFAULT_ID,
+  EDIT_DESTINATION_ID
+} from 'utils/types/addDestinationModalStepsId'
 
 import useStyles from '../../../modalStyles'
 import { toJS } from 'mobx'
@@ -38,15 +41,20 @@ const AddPhoneNumber = ({ handleClose, t }) => {
   const {
     getPhoneNumbers,
     postTimeSchedule,
+    putTimeSchedule,
     setStep,
+    clearLoading,
     phoneNumbers,
     countries,
     totalPages,
+    isEditMode,
     isPhoneNumbersLoading,
-    isTimeScheduleAdding
+    isTimeScheduleAdding,
+    isTimeScheduleEditing
   } = TimeSchedulesStore
 
-  const isLoading = isPhoneNumbersLoading || isTimeScheduleAdding
+  const isLoading =
+    isPhoneNumbersLoading || isTimeScheduleAdding || isTimeScheduleEditing
 
   const localStore = useLocalStore(() => ({
     page: 1,
@@ -119,6 +127,8 @@ const AddPhoneNumber = ({ handleClose, t }) => {
 
   useEffect(() => {
     getRequest()
+
+    return () => clearLoading()
   }, [])
 
   // On update search/sorting
@@ -151,14 +161,17 @@ const AddPhoneNumber = ({ handleClose, t }) => {
       customerId,
       groupId,
       destination: currentCheckedNumber.destination,
+      isPhoneNumberChanged: true,
       closeModal: handleClose
     }
-    postTimeSchedule(payload)
+    isEditMode ? putTimeSchedule(payload) : postTimeSchedule(payload)
   }
 
   // Back to first step
   const handleBackButtonClick = () => {
-    setStep(ADD_DESTINATION_DEFAULT_ID)
+    isEditMode
+      ? setStep(EDIT_DESTINATION_ID)
+      : setStep(ADD_DESTINATION_DEFAULT_ID)
   }
 
   const columns = [
@@ -255,7 +268,7 @@ const AddPhoneNumber = ({ handleClose, t }) => {
               onClick={handleAddButtonClick}
               disabled={!currentCheckedNumber.destination}
             >
-              {t('add')}
+              {isEditMode ? t('save') : t('add')}
             </Button>
           </DialogActions>
         </Fragment>

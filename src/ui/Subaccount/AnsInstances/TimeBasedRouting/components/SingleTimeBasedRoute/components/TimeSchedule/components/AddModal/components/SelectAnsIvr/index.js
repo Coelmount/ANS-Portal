@@ -22,7 +22,10 @@ import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
 import SingleCheckCell from 'components/SingleCheckCell'
-import { ADD_DESTINATION_DEFAULT_ID } from 'utils/types/addDestinationModalStepsId'
+import {
+  ADD_DESTINATION_DEFAULT_ID,
+  EDIT_DESTINATION_ID
+} from 'utils/types/addDestinationModalStepsId'
 
 import useStyles from '../../searchModalsStyles'
 
@@ -35,12 +38,16 @@ const SelectAnsIvr = ({ t, handleClose }) => {
     setStep,
     getIvrList,
     postTimeSchedule,
+    putTimeSchedule,
     ivrList,
+    isEditMode,
     isIvrListLoading,
-    isTimeScheduleAdding
+    isTimeScheduleAdding,
+    isTimeScheduleEditing
   } = TimeSchedulesStore
 
-  const isLoading = isIvrListLoading || isTimeScheduleAdding
+  const isLoading =
+    isIvrListLoading || isTimeScheduleAdding || isTimeScheduleEditing
 
   const localStore = useLocalStore(() => ({
     currentCheckedNumber: {
@@ -67,14 +74,17 @@ const SelectAnsIvr = ({ t, handleClose }) => {
       customerId,
       groupId,
       destination: currentCheckedNumber.destination,
+      isPhoneNumberChanged: true,
       closeModal: handleClose
     }
-    postTimeSchedule(payload)
+    isEditMode ? putTimeSchedule(payload) : postTimeSchedule(payload)
   }
 
   // Back to first step
   const handleBackButtonClick = () => {
-    setStep(ADD_DESTINATION_DEFAULT_ID)
+    isEditMode
+      ? setStep(EDIT_DESTINATION_ID)
+      : setStep(ADD_DESTINATION_DEFAULT_ID)
   }
 
   const columns = [
@@ -162,7 +172,7 @@ const SelectAnsIvr = ({ t, handleClose }) => {
               disabled={!currentCheckedNumber.destination}
               onClick={handleAddButtonClick}
             >
-              {t('add')}
+              {isEditMode ? t('save') : t('add')}
             </Button>
           </DialogActions>
         </Fragment>

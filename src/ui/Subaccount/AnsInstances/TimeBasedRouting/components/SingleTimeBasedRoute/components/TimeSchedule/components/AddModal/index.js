@@ -9,12 +9,14 @@ import AddPhoneNumber from './components/AddPhoneNumber'
 import SelectAnsIntance from './components/SelectAnsInstance'
 import SelectAnsDestination from './components/SelectAnsDestination'
 import SelectAnsIvr from './components/SelectAnsIvr'
+import EditDestination from '../EditModal'
 import {
   ADD_DESTINATION_DEFAULT_ID,
   PHONE_NUMBER_ID,
   ANS_INSTANCE_ID,
   ANS_DESTINATION_ID,
-  ANS_IVR_ID
+  ANS_IVR_ID,
+  EDIT_DESTINATION_ID
 } from 'utils/types/addDestinationModalStepsId'
 
 import useStyles from '../modalStyles'
@@ -31,6 +33,8 @@ const Steps = ({ step, handleClose }) => {
       return <SelectAnsDestination handleClose={handleClose} />
     case ANS_IVR_ID:
       return <SelectAnsIvr handleClose={handleClose} />
+    case EDIT_DESTINATION_ID:
+      return <EditDestination handleClose={handleClose} />
     default:
       return <AddDestination handleClose={handleClose} />
   }

@@ -20,6 +20,7 @@ import DeleteModal from 'components/DeleteModal'
 import Checkbox from 'components/Checkbox'
 import AddModal from './components/AddModal'
 import EditModal from './components/EditModal'
+import { EDIT_DESTINATION_ID } from 'utils/types/addDestinationModalStepsId'
 
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import editIcon from 'source/images/svg/edit-blue.svg'
@@ -41,9 +42,10 @@ const TimeSchedule = ({ t }) => {
     defaultDestination,
     deleteString,
     isSchedulesLoading: isLoading,
-    setScheduleNameToEdit,
+    setScheduleToEdit,
     getSchedules,
-    setStep
+    setStep,
+    setIsEditMode
   } = TimeSchedulesStore
 
   const modalStore = useLocalStore(() => ({
@@ -57,6 +59,7 @@ const TimeSchedule = ({ t }) => {
       this.deleteItem = {}
       getRequest()
       setStep(1)
+      setIsEditMode(false)
     }
   }))
 
@@ -87,9 +90,11 @@ const TimeSchedule = ({ t }) => {
     if (!isLoading) modalStore.open(addModalId)
   }
 
-  const handleEditIconClick = name => {
-    setScheduleNameToEdit(name)
-    modalStore.open(editModalId)
+  const handleEditIconClick = row => {
+    setScheduleToEdit(row)
+    setStep(EDIT_DESTINATION_ID)
+    setIsEditMode(true)
+    modalStore.open(addModalId)
   }
   // ------
 
@@ -144,7 +149,7 @@ const TimeSchedule = ({ t }) => {
           <IconButton onClick={() => handleDeleteClick(row)}>
             <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
           </IconButton>
-          <IconButton onClick={() => handleEditIconClick(row.name)}>
+          <IconButton onClick={() => handleEditIconClick(row)}>
             <img src={editIcon} alt='edit' />
           </IconButton>
         </Fragment>
@@ -188,9 +193,6 @@ const TimeSchedule = ({ t }) => {
         )}
         {isAddModalOpen && (
           <AddModal open={isAddModalOpen} handleClose={modalStore.close} />
-        )}
-        {isEditModalOpen && (
-          <EditModal open={isEditModalOpen} handleClose={modalStore.close} />
         )}
         {/* {isDeleteModalOpen && (
           <DeleteModal
