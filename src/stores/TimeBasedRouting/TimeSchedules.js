@@ -338,9 +338,7 @@ export class TimeSchedules {
     closeModal
   }) => {
     this.isTimeScheduleEditing = true
-
     const { destinationName, destinationScheduleName } = this
-
     const payload = isPhoneNumberChanged
       ? {
           name: destinationName,
@@ -375,6 +373,36 @@ export class TimeSchedules {
         closeModal()
       })
   }
+
+  deleteTimeSchedule = ({ customerId, groupId, name, closeModal }) => {
+    this.isTimeScheduleDeleting = true
+
+    axios
+      .delete(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}/criteria/${name}`
+      )
+      .then(() => {
+        SnackbarStore.enqueueSnackbar({
+          message: `Time based destination deleted successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) || `Failed to delete time based destination`,
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isTimeScheduleDeleting = false
+        closeModal()
+      })
+  }
 }
 
 decorate(TimeSchedules, {
@@ -400,6 +428,7 @@ decorate(TimeSchedules, {
   isIvrListLoading: observable,
   isTimeScheduleAdding: observable,
   isTimeScheduleEditing: observable,
+  isTimeScheduleDeleting: observable,
   setStep: action,
   clearLoading: action,
   setIsEditMode: action,
@@ -414,7 +443,8 @@ decorate(TimeSchedules, {
   getIvrList: action,
   // handleCheckAll: action,
   postTimeSchedule: action,
-  putTimeSchedule: action
+  putTimeSchedule: action,
+  deleteTimeSchedule: action
 })
 
 export default new TimeSchedules()

@@ -42,8 +42,10 @@ const TimeSchedule = ({ t }) => {
     defaultDestination,
     deleteString,
     isSchedulesLoading: isLoading,
+    isTimeScheduleDeleting: isDeleting,
     setScheduleToEdit,
     getSchedules,
+    deleteTimeSchedule,
     setStep,
     setIsEditMode
   } = TimeSchedulesStore
@@ -104,16 +106,16 @@ const TimeSchedule = ({ t }) => {
     const payload = {
       customerId,
       groupId,
-      callback: close,
-      deleteItem: deleteItem
+      name: deleteItem.name,
+      closeModal: close
     }
-    // deleteTimeBasedRoutes(payload)
+    deleteTimeSchedule(payload)
   }
 
   const extraDeleteBlock = (
-    <span className={classes.deleteName}>{` ${
-      isDeleteModalOpen ? `'${modalStore.deleteItem.name}'` : deleteString
-    }? `}</span>
+    <span
+      className={classes.deleteName}
+    >{` ${modalStore.deleteItem.name}?`}</span>
   )
 
   const columns = [
@@ -194,7 +196,7 @@ const TimeSchedule = ({ t }) => {
         {isAddModalOpen && (
           <AddModal open={isAddModalOpen} handleClose={modalStore.close} />
         )}
-        {/* {isDeleteModalOpen && (
+        {isDeleteModalOpen && (
           <DeleteModal
             classes={classes}
             open={isDeleteModalOpen}
@@ -202,11 +204,11 @@ const TimeSchedule = ({ t }) => {
             handleDelete={handleDelete}
             extraMessageBlock={extraDeleteBlock}
             isDeleting={isDeleting}
-            deleteSubject={deleteSubject}
+            deleteSubject={t('time_based_destination')}
             action={t('to_delete')}
             titleAction={t(`delete`)}
           />
-        )} */}
+        )}
       </Paper>
     </div>
   )
