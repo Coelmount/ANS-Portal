@@ -292,7 +292,7 @@ const useStyles = makeStyles(theme => ({
   bottomInfoBox: {
     position: 'absolute',
     display: 'flex',
-    bottom: 40
+    bottom: 20
   },
   topInfoBox: {
     position: 'absolute',
