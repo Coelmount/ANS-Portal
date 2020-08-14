@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { observer, useLocalStore } from 'mobx-react-lite'
+import { observer, useLocalStore, useObserver } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import classnames from 'classnames'
@@ -20,10 +20,13 @@ import DeleteModal from 'components/DeleteModal'
 import Checkbox from 'components/Checkbox'
 import AddModal from './components/AddModal'
 import EditModal from './components/EditModal'
+import Input from 'components/Input'
 import { EDIT_DESTINATION_ID } from 'utils/types/addDestinationModalStepsId'
 
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import editIcon from 'source/images/svg/edit-blue.svg'
+import listTableIcon from 'source/images/svg/list-table.svg'
+import scheduleIcon from 'source/images/svg/schedule.svg'
 import useStyles from './styles'
 
 import { toJS } from 'mobx'
@@ -32,10 +35,59 @@ const addModalId = 1
 const deleteModalId = 2
 const editModalId = 3
 
+const pageViews = [
+  {
+    icon: <img src={listTableIcon} alt='list-table' />,
+    label: 'list'
+  },
+  {
+    icon: <img src={scheduleIcon} alt='schedule' />,
+    label: 'calendar'
+  }
+]
+
+const PageView = ({ t, classes }) => {
+  return (
+    <Box className={classes.pageViewWrap}>
+      <Typography className={classes.blockLabel}>{t('page_view')}</Typography>
+      {pageViews.map(({ icon, label }) => (
+        <Fragment key={label}>
+          <Box className={classes.pageViewIconWrap}>{icon}</Box>
+          <Typography>{t(label)}</Typography>
+        </Fragment>
+      ))}
+    </Box>
+  )
+}
+
+const DefaultDestination = ({ t, classes }) => {
+  const { defaultDestination } = TimeSchedulesStore
+
+  return useObserver(() => (
+    <Box className={classes.defaultDestinationWrap}>
+      <Typography className={classes.blockLabel}>
+        {t('default_destination')}
+      </Typography>
+      <Box className={classes.inputWrap}>
+        <Input
+          value={defaultDestination}
+          label={t('forward_to')}
+          variant='outlined'
+        />
+      </Box>
+      <Box className={classes.editButtonWrap}>
+        <img src={editIcon} alt='edit' />
+      </Box>
+    </Box>
+  ))
+}
+
 const Toolbar = ({ t, classes, isLoading, handleAddClick }) => {
   return (
     <Box className={classes.toolbarWrap}>
-      <Typography>{t('time_based_destination_list')}</Typography>
+      <Typography className={classes.toolbarLabel}>
+        {t('time_based_destination_list')}
+      </Typography>
       <Box
         className={classnames(classes.addButtonWrap, {
           [classes.disabledAddButtonWrap]: isLoading
@@ -183,8 +235,10 @@ const TimeSchedule = ({ t }) => {
   ]
 
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <Paper className={classes.paper}>
+        <PageView t={t} classes={classes} />
+        <DefaultDestination t={t} classes={classes} />
         <Toolbar
           t={t}
           classes={classes}
@@ -220,7 +274,7 @@ const TimeSchedule = ({ t }) => {
           />
         )}
       </Paper>
-    </div>
+    </Box>
   )
 }
 

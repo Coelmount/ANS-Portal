@@ -7,7 +7,8 @@ const useStyles = makeStyles(theme => ({
   paper: {
     width: '100%',
     marginBottom: theme.spacing(2),
-    boxShadow: 'none'
+    boxShadow: 'none',
+    background: theme.palette.active.main
   },
   link: {
     color: theme.palette.secondary.main,
@@ -99,10 +100,13 @@ const useStyles = makeStyles(theme => ({
   },
   toolbarWrap: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     width: '100%',
-    marginRight: 40,
-    marginLeft: 40
+    marginTop: 15
+  },
+  toolbarLabel: {
+    fontSize: 16,
+    fontWeight: 600
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
@@ -252,6 +256,50 @@ const useStyles = makeStyles(theme => ({
   },
   deleteName: {
     fontWeight: 'bold'
+  },
+  editButtonWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
+    height: 30,
+    marginLeft: 11,
+    background: 'white',
+    borderRadius: 100,
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    cursor: 'pointer'
+  },
+  defaultDestinationWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingBottom: 20,
+    borderBottom: '1px solid #E8E8E8'
+  },
+  pageViewWrap: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: 21
+  },
+  blockLabel: {
+    fontSize: 14,
+    fontWeight: 600,
+    marginRight: 10
+  },
+  pageViewIconWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 36,
+    height: 36,
+    border: '0.5px solid #CCCCCC',
+    borderRadius: 3,
+    marginLeft: 15,
+    marginRight: 5
+  },
+  inputWrap: {
+    width: 250
   }
 }))
 
