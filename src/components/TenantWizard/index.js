@@ -30,11 +30,12 @@ const TenantWizard = () => {
   const classes = useStyles()
   const [step, setStep] = useState(0)
   const [isOpen, setIsOpen] = useState(
-    has(userLogin, 'profile.is_first_login')
-      ? userLogin.profile.is_first_login
-        ? userLogin.profile.is_first_login
-        : false
-      : false
+    true
+    // has(userLogin, 'profile.is_first_login')
+    //   ? userLogin.profile.is_first_login
+    //     ? userLogin.profile.is_first_login
+    //     : false
+    //   : false
   )
 
   const handleClose = () => {

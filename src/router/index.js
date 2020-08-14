@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -275,7 +275,12 @@ const AuthPages = observer(() => {
 const Router = () => {
   const { getLocal, isAuthorized } = AuthStore
   const { getLocale, isLoadingLang, lang } = LanguagesStore
+
   useEffect(() => {
+    console.log('useEffect')
+  }, [])
+  useLayoutEffect(() => {
+    console.log('useLayoutEffect')
     getLocal()
     getLocale(localStorage.getItem('i18nextLng'))
   }, [])

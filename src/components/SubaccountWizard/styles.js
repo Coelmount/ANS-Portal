@@ -164,7 +164,7 @@ const useStyles = makeStyles(theme => ({
       height: 24,
       border: 'solid 1px #00678F',
       position: 'absolute',
-      marginTop: -72
+      top: 82
     }
   },
   bottomLine: {
@@ -173,7 +173,7 @@ const useStyles = makeStyles(theme => ({
       height: 24,
       border: 'solid 1px #00678F',
       position: 'absolute',
-      marginTop: 72
+      bottom: 82
     }
   },
   bottomTextAdvanced: {
@@ -266,7 +266,7 @@ const useStyles = makeStyles(theme => ({
   bottomRoundIcon: {
     color: '#00678F',
     position: 'absolute',
-    marginTop: 116,
+    bottom: 62,
     width: 20,
     height: 20,
     borderRadius: 20,
@@ -279,7 +279,7 @@ const useStyles = makeStyles(theme => ({
   topRoundIcon: {
     color: '#00678F',
     position: 'absolute',
-    marginTop: -116,
+    top: 62,
     width: 20,
     height: 20,
     borderRadius: 20,
@@ -292,12 +292,12 @@ const useStyles = makeStyles(theme => ({
   bottomInfoBox: {
     position: 'absolute',
     display: 'flex',
-    marginTop: 158
+    bottom: 40
   },
   topInfoBox: {
     position: 'absolute',
     display: 'flex',
-    marginTop: -158
+    top: 40
   }
 }))
 

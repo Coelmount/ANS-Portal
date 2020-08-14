@@ -29,7 +29,7 @@ input[type='range']::-webkit-slider-thumb {
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -0.8px;
-  box-shadow: -5000px 0 0 4996px #00678f; /* I hope with of monitores not would be more than 5000px */
+  box-shadow: -5000px 0 0 4996px #00678f; /* I hope width of monitores not would be more than 5000px */
 }
 input[type='range']:focus::-webkit-slider-runnable-track {
   /* background: #00678f; */

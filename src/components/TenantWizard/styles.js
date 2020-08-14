@@ -146,7 +146,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     height: 122,
-    marginTop: 18
+    marginTop: 18,
+    position: 'relative'
   },
   roundBoxTS: {
     width: 45,
@@ -164,7 +165,7 @@ const useStyles = makeStyles(theme => ({
       height: 24,
       border: 'solid 1px #00678F',
       position: 'absolute',
-      marginTop: -70
+      top: 14
     }
   },
   bottomLine: {
@@ -173,32 +174,32 @@ const useStyles = makeStyles(theme => ({
       height: 24,
       border: 'solid 1px #00678F',
       position: 'absolute',
-      marginTop: 70
+      bottom: 14
     }
   },
   bottomTextAdvanced: {
     color: '#00678F',
     position: 'absolute',
-    marginTop: 24,
-    marginLeft: -10
+    bottom: -5,
+    left: 74
   },
   bottomTextIVR: {
     color: '#00678F',
     position: 'absolute',
-    marginTop: 24,
-    marginLeft: 14
+    bottom: -5,
+    right: 224
   },
   topTextTBR: {
     color: '#00678F',
     position: 'absolute',
-    marginTop: -46,
-    marginLeft: -38
+    top: -5,
+    left: 180
   },
   topTextBasic: {
     color: '#00678F',
     position: 'absolute',
-    marginTop: -46,
-    marginLeft: 6
+    top: -5,
+    right: 92
   }
 }))
 
