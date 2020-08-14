@@ -32,6 +32,29 @@ const addModalId = 1
 const deleteModalId = 2
 const editModalId = 3
 
+const Toolbar = ({ t, classes, isLoading, handleAddClick }) => {
+  return (
+    <Box className={classes.toolbarWrap}>
+      <Typography>{t('time_based_destination_list')}</Typography>
+      <Box
+        className={classnames(classes.addButtonWrap, {
+          [classes.disabledAddButtonWrap]: isLoading
+        })}
+      >
+        <IconButton
+          aria-label='add icon button'
+          component='span'
+          className={classes.mainIconWrap}
+          onClick={handleAddClick}
+        >
+          <AddIcon />
+        </IconButton>
+        <Typography className={classes.addCustomerTitle}>{t('add')}</Typography>
+      </Box>
+    </Box>
+  )
+}
+
 const TimeSchedule = ({ t }) => {
   const classes = useStyles()
   const history = useHistory()
@@ -162,25 +185,12 @@ const TimeSchedule = ({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Box className={classes.toolbarButtonsBlockWrap}>
-          <Box
-            className={classnames(classes.addButtonWrap, {
-              [classes.disabledAddButtonWrap]: isLoading
-            })}
-          >
-            <IconButton
-              aria-label='deassign icon button'
-              component='span'
-              className={classes.mainIconWrap}
-              onClick={handleAddClick}
-            >
-              <AddIcon />
-            </IconButton>
-            <Typography className={classes.addCustomerTitle}>
-              {t('add')}
-            </Typography>
-          </Box>
-        </Box>
+        <Toolbar
+          t={t}
+          classes={classes}
+          isLoading={isLoading}
+          handleAddClick={handleAddClick}
+        />
         {isLoading ? (
           <Loading />
         ) : (

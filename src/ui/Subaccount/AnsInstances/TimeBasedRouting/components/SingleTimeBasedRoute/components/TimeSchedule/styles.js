@@ -97,7 +97,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 14,
     fontWeight: 600
   },
-  toolbarButtonsBlockWrap: {
+  toolbarWrap: {
     display: 'flex',
     justifyContent: 'flex-end',
     width: '100%',
