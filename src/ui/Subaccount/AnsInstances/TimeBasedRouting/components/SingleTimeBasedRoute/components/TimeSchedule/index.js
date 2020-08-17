@@ -19,7 +19,7 @@ import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
 import Checkbox from 'components/Checkbox'
 import AddModal from './components/AddModal'
-import EditModal from './components/EditModal'
+import EditDefaultDestinationModal from './components/EditDefaultDestinationModal'
 import Input from 'components/Input'
 import { EDIT_DESTINATION_ID } from 'utils/types/addDestinationModalStepsId'
 
@@ -33,35 +33,50 @@ import { toJS } from 'mobx'
 
 const addModalId = 1
 const deleteModalId = 2
-const editModalId = 3
+const editDefaultDestinationModalId = 3
+const LIST_VIEW_ID = 'list'
+const CALENDAR_VIEW_ID = 'calendar'
 
 const pageViews = [
   {
     icon: <img src={listTableIcon} alt='list-table' />,
-    label: 'list'
+    id: LIST_VIEW_ID
   },
   {
     icon: <img src={scheduleIcon} alt='schedule' />,
-    label: 'calendar'
+    id: CALENDAR_VIEW_ID
   }
 ]
 
-const PageView = ({ t, classes }) => {
+const PageView = ({ t, classes, setViewType }) => {
+  const handlePageViewChange = id => {
+    setViewType(id)
+  }
+
   return (
     <Box className={classes.pageViewWrap}>
       <Typography className={classes.blockLabel}>{t('page_view')}</Typography>
-      {pageViews.map(({ icon, label }) => (
-        <Fragment key={label}>
-          <Box className={classes.pageViewIconWrap}>{icon}</Box>
-          <Typography>{t(label)}</Typography>
-        </Fragment>
+      {pageViews.map(({ icon, id }) => (
+        <div className={classes.pageViewBlock} key={id}>
+          <Box
+            onClick={() => handlePageViewChange(id)}
+            className={classes.pageViewIconWrap}
+          >
+            {icon}
+          </Box>
+          <Typography>{t(id)}</Typography>
+        </div>
       ))}
     </Box>
   )
 }
 
-const DefaultDestination = ({ t, classes }) => {
+const DefaultDestination = ({ t, classes, open }) => {
   const { defaultDestination } = TimeSchedulesStore
+
+  const handleEditIconClick = () => {
+    open(editDefaultDestinationModalId)
+  }
 
   return useObserver(() => (
     <Box className={classes.defaultDestinationWrap}>
@@ -73,9 +88,10 @@ const DefaultDestination = ({ t, classes }) => {
           value={defaultDestination}
           label={t('forward_to')}
           variant='outlined'
+          disabled
         />
       </Box>
-      <Box className={classes.editButtonWrap}>
+      <Box onClick={handleEditIconClick} className={classes.editButtonWrap}>
         <img src={editIcon} alt='edit' />
       </Box>
     </Box>
@@ -125,6 +141,7 @@ const TimeSchedule = ({ t }) => {
     setIsEditMode
   } = TimeSchedulesStore
 
+  const [viewType, setViewType] = useState(LIST_VIEW_ID)
   const modalStore = useLocalStore(() => ({
     openedId: null,
     deleteItem: {},
@@ -142,7 +159,8 @@ const TimeSchedule = ({ t }) => {
 
   const isDeleteModalOpen = modalStore.openedId === deleteModalId
   const isAddModalOpen = modalStore.openedId === addModalId
-  const isEditModalOpen = modalStore.openedId === editModalId
+  const isEditDefaultDestinationModal =
+    modalStore.openedId === editDefaultDestinationModalId
 
   const getRequest = () => {
     const payload = {
@@ -195,6 +213,17 @@ const TimeSchedule = ({ t }) => {
 
   const columns = [
     {
+      id: 'color',
+      label: 'color',
+      getCellData: row => (
+        <div style={{ width: 20, height: 20, background: row.color }}></div>
+      ),
+      extraProps: {
+        className: classes.colorCell
+      },
+      isSortAvailable: false
+    },
+    {
       id: 'name',
       label: t('name'),
       getCellData: row => (
@@ -237,8 +266,8 @@ const TimeSchedule = ({ t }) => {
   return (
     <Box className={classes.root}>
       <Paper className={classes.paper}>
-        <PageView t={t} classes={classes} />
-        <DefaultDestination t={t} classes={classes} />
+        <PageView t={t} classes={classes} setViewType={setViewType} />
+        <DefaultDestination t={t} classes={classes} open={modalStore.open} />
         <Toolbar
           t={t}
           classes={classes}
@@ -248,17 +277,29 @@ const TimeSchedule = ({ t }) => {
         {isLoading ? (
           <Loading />
         ) : (
-          <CustomTable
-            firstCell
-            rows={schedules}
-            columns={columns}
-            searchCriterias={['name', 'defaultDestination']}
-            noAvailableDataMessage={t('no_time_schedules_available')}
-            tableId='time_based_routing_schedules_list'
-          />
+          <Fragment>
+            {viewType === LIST_VIEW_ID ? (
+              <CustomTable
+                firstCell
+                rows={schedules}
+                columns={columns}
+                searchCriterias={['name', 'defaultDestination']}
+                noAvailableDataMessage={t('no_time_schedules_available')}
+                tableId='time_based_routing_schedules_list'
+              />
+            ) : (
+              <div>calendar</div>
+            )}
+          </Fragment>
         )}
         {isAddModalOpen && (
           <AddModal open={isAddModalOpen} handleClose={modalStore.close} />
+        )}
+        {isEditDefaultDestinationModal && (
+          <EditDefaultDestinationModal
+            open={isEditDefaultDestinationModal}
+            handleClose={modalStore.close}
+          />
         )}
         {isDeleteModalOpen && (
           <DeleteModal

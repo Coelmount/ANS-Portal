@@ -296,10 +296,20 @@ const useStyles = makeStyles(theme => ({
     border: '0.5px solid #CCCCCC',
     borderRadius: 3,
     marginLeft: 15,
-    marginRight: 5
+    marginRight: 5,
+    cursor: 'pointer'
   },
   inputWrap: {
     width: 250
+  },
+  colorCell: {
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: 10
+  },
+  pageViewBlock: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 

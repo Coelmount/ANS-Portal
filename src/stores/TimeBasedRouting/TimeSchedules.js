@@ -5,6 +5,7 @@ import SnackbarStore from '../Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
+import getRandomColor from 'utils/schedules/getRandomColor'
 import PhoneNumber from './substores/PhoneNumber'
 import AnsInstance from './substores/AnsInstance'
 import AnsDestination from './substores/AnsDestination'
@@ -82,9 +83,11 @@ export class TimeSchedules {
 
               return {
                 ...schedule,
-                timeSchedule: fixedTimeScheduleName
+                timeSchedule: fixedTimeScheduleName,
+                color: getRandomColor()
               }
             })
+
             const defaultDestination =
               res.data.time_based_route.defaultDestination
             runInAction(() => {

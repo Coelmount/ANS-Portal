@@ -9,7 +9,7 @@ import AddPhoneNumber from './components/AddPhoneNumber'
 import SelectAnsIntance from './components/SelectAnsInstance'
 import SelectAnsDestination from './components/SelectAnsDestination'
 import SelectAnsIvr from './components/SelectAnsIvr'
-import EditDestination from '../EditModal'
+import EditDestination from '../EditDestinationListModal'
 import {
   ADD_DESTINATION_DEFAULT_ID,
   PHONE_NUMBER_ID,
