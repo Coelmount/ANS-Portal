@@ -234,7 +234,7 @@ const AvailableNumbers = ({ t }) => {
             <AddOutlinedIcon />
           </IconButton>
           <Typography className={classes.iconTitle}>
-            {t('configure_now')}
+            {t('bulk_import')}
           </Typography>
         </Box>
       </Box>
