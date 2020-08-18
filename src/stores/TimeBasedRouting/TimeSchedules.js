@@ -27,6 +27,8 @@ export class TimeSchedules {
   ansIntances = []
   ansDestinations = []
   ivrList = []
+  timeScheduleNames = []
+  timeSchedulesPeriods = []
   isEditMode = false
   isSchedulesLoading = true
   isPhoneNumbersLoading = true
@@ -78,8 +80,10 @@ export class TimeSchedules {
           )
           .then(res => {
             const schedules = res.data.time_based_route.schedules
+            let timeScheduleNames = []
             const transferedSchedules = schedules.map(schedule => {
               const fixedTimeScheduleName = schedule.timeSchedule.split('(')[0]
+              timeScheduleNames.push(fixedTimeScheduleName)
 
               return {
                 ...schedule,
@@ -93,6 +97,7 @@ export class TimeSchedules {
             runInAction(() => {
               this.schedules = transferedSchedules
               this.defaultDestination = defaultDestination
+              this.timeScheduleNames = timeScheduleNames
             })
           })
           .catch(e =>
@@ -108,6 +113,35 @@ export class TimeSchedules {
             this.isSchedulesLoading = false
           })
       })
+  }
+
+  addPeriodsToSchedules = ({ customerId, groupId }) => {
+    const promiseArr = []
+    console.log(toJS(this.schedules), 'this.schedules before')
+    this.schedules.forEach((schedule, index) => {
+      promiseArr.push(
+        axios
+          .get(
+            `/tenants/${customerId}/groups/${groupId}/time_schedules/${schedule.timeSchedule}`,
+            {
+              params: { full_list: true }
+            }
+          )
+          .then(res => {
+            const periods = res.data.periods
+            this.timeSchedulesPeriods.push({
+              destinationName: schedule.name,
+              color: schedule.color,
+              periods: periods.map(period => {
+                return { ...period, color: schedule.color }
+              })
+            })
+          })
+      )
+      Promise.all(promiseArr)
+
+      // this.timeSchedulesPeriods = 10
+    })
   }
 
   findTimeSchedule = () => {
@@ -432,6 +466,7 @@ decorate(TimeSchedules, {
   isTimeScheduleAdding: observable,
   isTimeScheduleEditing: observable,
   isTimeScheduleDeleting: observable,
+  timeSchedulesPeriods: observable,
   setStep: action,
   clearLoading: action,
   setIsEditMode: action,
@@ -447,7 +482,8 @@ decorate(TimeSchedules, {
   // handleCheckAll: action,
   postTimeSchedule: action,
   putTimeSchedule: action,
-  deleteTimeSchedule: action
+  deleteTimeSchedule: action,
+  addPeriodsToSchedules: action
 })
 
 export default new TimeSchedules()

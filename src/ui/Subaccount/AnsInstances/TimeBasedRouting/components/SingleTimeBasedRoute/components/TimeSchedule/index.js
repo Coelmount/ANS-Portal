@@ -20,6 +20,7 @@ import DeleteModal from 'components/DeleteModal'
 import Checkbox from 'components/Checkbox'
 import AddModal from './components/AddModal'
 import EditDefaultDestinationModal from './components/EditDefaultDestinationModal'
+import TimeScheduleCalendar from './components/TimeScheduleCalendar'
 import Input from 'components/Input'
 import { EDIT_DESTINATION_ID } from 'utils/types/addDestinationModalStepsId'
 
@@ -288,7 +289,7 @@ const TimeSchedule = ({ t }) => {
                 tableId='time_based_routing_schedules_list'
               />
             ) : (
-              <div>calendar</div>
+              <TimeScheduleCalendar />
             )}
           </Fragment>
         )}
