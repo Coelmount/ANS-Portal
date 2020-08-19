@@ -13,6 +13,21 @@ const useStyles = makeStyles(theme => ({
     background: theme.palette.active.main,
     paddingTop: 24
   },
+  colorsLegendWrap: {
+    width: '80%',
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  colorsLegendItem: {
+    width: '25%',
+    display: 'flex',
+    height: 50
+  },
+  colorBox: {
+    width: 26,
+    height: 26,
+    background: 'red'
+  },
   calendarCustomStyles: {
     margin: '0px 33px 33px 68px !important',
     '& .rbc-allday-cell': {
@@ -24,9 +39,11 @@ const useStyles = makeStyles(theme => ({
       paddingBottom: 10,
       fontSize: 14
     },
-    '& .rbc-event': {
-      '&:hover': {
-        opacity: 0.9
+    '& .rbc-day-slot': {
+      '& .rbc-event': {
+        '&:hover': {
+          opacity: '0.5 !important'
+        }
       }
     },
     '& .rbc-event-label': {

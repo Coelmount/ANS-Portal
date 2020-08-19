@@ -6,6 +6,7 @@ import getErrorMessage from 'utils/getErrorMessage'
 import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import getRandomColor from 'utils/schedules/getRandomColor'
+import transformWeekDateFormat from 'utils/schedules/transformWeekDateFormat'
 import PhoneNumber from './substores/PhoneNumber'
 import AnsInstance from './substores/AnsInstance'
 import AnsDestination from './substores/AnsDestination'
@@ -28,7 +29,8 @@ export class TimeSchedules {
   ansDestinations = []
   ivrList = []
   timeScheduleNames = []
-  timeSchedulesPeriods = []
+  timeSchedulesWithPeriods = []
+  allPeriods = []
   isEditMode = false
   isSchedulesLoading = true
   isPhoneNumbersLoading = true
@@ -37,6 +39,7 @@ export class TimeSchedules {
   isIvrListLoading = true
   isTimeScheduleAdding = false
   isTimeScheduleEditing = false
+  isSchedulesPeriodsLoading = true
 
   setStep = value => (this.step = value)
 
@@ -116,9 +119,10 @@ export class TimeSchedules {
   }
 
   addPeriodsToSchedules = ({ customerId, groupId }) => {
-    const promiseArr = []
-    console.log(toJS(this.schedules), 'this.schedules before')
-    this.schedules.forEach((schedule, index) => {
+    let promiseArr = []
+    this.isSchedulesPeriodsLoading = true
+
+    this.schedules.forEach(schedule => {
       promiseArr.push(
         axios
           .get(
@@ -129,7 +133,7 @@ export class TimeSchedules {
           )
           .then(res => {
             const periods = res.data.periods
-            this.timeSchedulesPeriods.push({
+            this.timeSchedulesWithPeriods.push({
               destinationName: schedule.name,
               color: schedule.color,
               periods: periods.map(period => {
@@ -138,10 +142,33 @@ export class TimeSchedules {
             })
           })
       )
-      Promise.all(promiseArr)
-
-      // this.timeSchedulesPeriods = 10
     })
+    Promise.all(promiseArr)
+      .then(() => {
+        const allPeriods = this.timeSchedulesWithPeriods
+          .map(timeSchedule => timeSchedule.periods)
+          .flat()
+
+        this.allPeriods = allPeriods.map((item, index) => {
+          const generatedKey = index
+          return {
+            id: index,
+            title: `${generatedKey} ${item.dayOfWeek.toLowerCase()}`,
+            start: transformWeekDateFormat(item.dayOfWeek, item.startTime),
+            end: transformWeekDateFormat(item.dayOfWeek, item.stopTime),
+            initName: item.name,
+            color: item.color
+          }
+        })
+      })
+      .finally(() => {
+        this.isSchedulesPeriodsLoading = false
+      })
+  }
+
+  clearSchedulesPeriods = () => {
+    this.allPeriods = []
+    this.timeSchedulesWithPeriods = []
   }
 
   findTimeSchedule = () => {
@@ -466,7 +493,9 @@ decorate(TimeSchedules, {
   isTimeScheduleAdding: observable,
   isTimeScheduleEditing: observable,
   isTimeScheduleDeleting: observable,
-  timeSchedulesPeriods: observable,
+  isSchedulesPeriodsLoading: observable,
+  timeSchedulesWithPeriods: observable,
+  allPeriods: observable,
   setStep: action,
   clearLoading: action,
   setIsEditMode: action,
@@ -483,7 +512,8 @@ decorate(TimeSchedules, {
   postTimeSchedule: action,
   putTimeSchedule: action,
   deleteTimeSchedule: action,
-  addPeriodsToSchedules: action
+  addPeriodsToSchedules: action,
+  clearSchedulesPeriods: action
 })
 
 export default new TimeSchedules()
