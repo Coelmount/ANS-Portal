@@ -276,11 +276,7 @@ const Router = () => {
   const { getLocal, isAuthorized } = AuthStore
   const { getLocale, isLoadingLang, lang } = LanguagesStore
 
-  useEffect(() => {
-    console.log('useEffect')
-  }, [])
   useLayoutEffect(() => {
-    console.log('useLayoutEffect')
     getLocal()
     getLocale(localStorage.getItem('i18nextLng'))
   }, [])
