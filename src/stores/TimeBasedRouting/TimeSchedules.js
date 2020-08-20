@@ -118,15 +118,18 @@ export class TimeSchedules {
       })
   }
 
-  addPeriodsToSchedules = ({ customerId, groupId }) => {
-    let promiseArr = []
+  getSchedulesPeriods = ({ customerId, groupId }) => {
+    this.allPeriods = []
+    this.timeSchedulesWithPeriods = []
     this.isSchedulesPeriodsLoading = true
+    // To push get requests to every schedule
+    let promiseArr = []
 
-    this.schedules.forEach(schedule => {
+    this.schedules.forEach(({ timeSchedule, name, color }) => {
       promiseArr.push(
         axios
           .get(
-            `/tenants/${customerId}/groups/${groupId}/time_schedules/${schedule.timeSchedule}`,
+            `/tenants/${customerId}/groups/${groupId}/time_schedules/${timeSchedule}`,
             {
               params: { full_list: true }
             }
@@ -134,19 +137,20 @@ export class TimeSchedules {
           .then(res => {
             const periods = res.data.periods
             this.timeSchedulesWithPeriods.push({
-              destinationName: schedule.name,
-              color: schedule.color,
+              destinationName: name,
+              color: color,
               periods: periods.map(period => {
-                return { ...period, color: schedule.color }
+                return { ...period, color: color }
               })
             })
           })
       )
     })
+
     Promise.all(promiseArr)
       .then(() => {
         const allPeriods = this.timeSchedulesWithPeriods
-          .map(timeSchedule => timeSchedule.periods)
+          .map(({ periods }) => periods)
           .flat()
 
         this.allPeriods = allPeriods.map((item, index) => {
@@ -512,7 +516,7 @@ decorate(TimeSchedules, {
   postTimeSchedule: action,
   putTimeSchedule: action,
   deleteTimeSchedule: action,
-  addPeriodsToSchedules: action,
+  getSchedulesPeriods: action,
   clearSchedulesPeriods: action
 })
 

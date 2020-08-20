@@ -226,15 +226,7 @@ const TimeSchedule = ({ t }) => {
     },
     {
       id: 'name',
-      label: t('name'),
-      getCellData: row => (
-        <Link
-          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing/${row.name}`}
-          className={classes.link}
-        >
-          {row.name}
-        </Link>
-      )
+      label: t('name')
     },
     {
       id: 'forwardTo',

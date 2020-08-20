@@ -19,14 +19,18 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap'
   },
   colorsLegendItem: {
-    width: '25%',
     display: 'flex',
+    alignItems: 'center',
+    width: '25%',
     height: 50
   },
   colorBox: {
     width: 26,
-    height: 26,
-    background: 'red'
+    height: 26
+  },
+  colorsLegendItemLabel: {
+    marginLeft: 20,
+    fontSize: 14
   },
   calendarCustomStyles: {
     margin: '0px 33px 33px 68px !important',

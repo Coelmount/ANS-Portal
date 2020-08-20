@@ -1,36 +1,34 @@
 import React, { useEffect, Fragment } from 'react'
 import { useParams } from 'react-router-dom'
 import { observer, useObserver } from 'mobx-react-lite'
-
-import Box from '@material-ui/core/Box'
 import { Calendar } from 'react-big-calendar'
 import localizer from 'react-big-calendar/lib/localizers/globalize'
 import globalize from 'globalize'
+
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
 import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
 import Loading from 'components/Loading'
 import transformTime from 'utils/schedules/transformTime'
 
-import useStyles from './styles'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { toJS } from 'mobx'
-import { colors, Typography } from '@material-ui/core'
+import useStyles from './styles'
 
 const ColorsLegend = () => {
   const classes = useStyles()
   const { timeSchedulesWithPeriods } = TimeSchedulesStore
-  console.log(timeSchedulesWithPeriods, 'timeSchedulesWithPeriods')
 
   return useObserver(() => (
     <Box className={classes.colorsLegendWrap}>
-      {timeSchedulesWithPeriods.map(timeSchedule => {
-        return (
-          <Box className={classes.colorsLegendItem}>
-            <Box className={classes.colorBox}></Box>
-            <Typography>{timeSchedule.destinationName}</Typography>
-          </Box>
-        )
-      })}
+      {timeSchedulesWithPeriods.map(({ destinationName, color }) => (
+        <Box className={classes.colorsLegendItem}>
+          <Box className={classes.colorBox} style={{ background: color }}></Box>
+          <Typography className={classes.colorsLegendItemLabel}>
+            {destinationName}
+          </Typography>
+        </Box>
+      ))}
     </Box>
   ))
 }
@@ -43,7 +41,7 @@ const TimeScheduleCalendar = () => {
   const { customerId, groupId } = useParams()
 
   const {
-    addPeriodsToSchedules,
+    getSchedulesPeriods,
     clearSchedulesPeriods,
     schedules,
     timeSchedulesPeriods,
@@ -56,11 +54,11 @@ const TimeScheduleCalendar = () => {
       customerId,
       groupId
     }
-    addPeriodsToSchedules(payload)
-
+    getSchedulesPeriods(payload)
     return clearSchedulesPeriods
   }, [])
 
+  // Date/time configs for Calandar
   const globalizeLocalizer = localizer(globalize)
   const formats = {
     dayFormat: 'ddd',
@@ -72,20 +70,19 @@ const TimeScheduleCalendar = () => {
       return `${transformedTime.start} : ${transformedTime.stop}`
     }
   }
-  const eventStyleGetter = (event, start, end, isSelected) => {
-    var backgroundColor = event.color
-    var style = {
-      backgroundColor: backgroundColor,
+
+  // Different background color for events
+  const eventStyleGetter = ({ color }) => ({
+    style: {
+      backgroundColor: color,
       borderRadius: '0px',
       opacity: 0.8,
       color: 'black',
       border: '0px',
       display: 'block'
     }
-    return {
-      style: style
-    }
-  }
+  })
+
   return (
     <Fragment>
       {isSchedulesPeriodsLoading ? (
@@ -96,17 +93,11 @@ const TimeScheduleCalendar = () => {
           <Calendar
             view='week'
             events={allPeriods}
-            // onView={handleOnViewChange}
             toolbar={false}
             formats={formats}
             defaultDate={new Date(2020, 5, 7)}
             localizer={globalizeLocalizer}
             className={classes.calendarCustomStyles}
-            // onSelectEvent={(event, e) => {
-            //   setCurrentPeriod(event)
-            //   setAnchorEl(e.currentTarget)
-            // }}
-            // onSelectSlot={handleSelectSlot}
             components={{
               event: EventComponent
             }}
