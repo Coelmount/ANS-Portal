@@ -77,19 +77,25 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     marginTop: 30,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginLeft: 16,
+    marginRight: 16
   },
   uploadFileTitle: {
     fontFamily: 'MTN',
     fontSize: 24,
-    fontWeight: 600
+    fontWeight: 600,
+    textAlign: 'center'
   },
   uploadButton: {
     height: 44,
     width: 44,
     minWidth: 44,
     borderRadius: 100,
-    marginTop: 30
+    marginTop: 30,
+    '& span': {
+      width: 20
+    }
   },
   uploadInput: {
     display: 'none'
@@ -156,6 +162,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  disabledTitle: {
+    opacity: 0.5
   }
 }))
 

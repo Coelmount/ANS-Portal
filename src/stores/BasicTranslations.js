@@ -1,4 +1,4 @@
-import { decorate, observable, action } from 'mobx'
+import { decorate, observable, action, computed } from 'mobx'
 import set from 'lodash/set'
 
 import axios from 'utils/axios'
@@ -6,6 +6,9 @@ import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
+import types from 'utils/types/basicSearchParams'
+
+const { NUMBER_LIKE, COUNTRY_CODE } = types
 
 export class BasicTranslations {
   step = 1
@@ -25,6 +28,7 @@ export class BasicTranslations {
   isRedirectAfterPut = false
   isDeleting = false
   amountOfBasicInstances = 0
+  searchParam = NUMBER_LIKE
 
   changeStep = step => {
     this.step = step
@@ -43,6 +47,7 @@ export class BasicTranslations {
     this.successAdded = []
     this.refusedAdded = []
     this.errorAdded = []
+    this.searchParam = NUMBER_LIKE
   }
 
   updateSelectedPhoneNumber = number => {
@@ -145,9 +150,12 @@ export class BasicTranslations {
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_basic`)
       .then(res => {
         const basicInstances = res.data.ans_basic
-        this.amountOfBasicInstances = basicInstances.length
+        const validBasicInstances = basicInstances.filter(
+          basicInstance => basicInstance
+        )
+        this.amountOfBasicInstances = validBasicInstances.length
 
-        const transformedNumbers = basicInstances.map((item, index) => {
+        const transformedNumbers = validBasicInstances.map((item, index) => {
           return {
             id: item.id || index,
             checked: false,
@@ -273,8 +281,29 @@ export class BasicTranslations {
     })
 
     Promise.all(promiseArr)
-      .then(() => callback && callback())
+      .then(() => {
+        this.isRedirectAfterPut = true
+        SnackbarStore.enqueueSnackbar({
+          message: `Translation${
+            idArr.length > 1 ? 's' : ''
+          } deleted successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) ||
+            `Failed to delete translation${idArr.length > 1 ? 's' : ''}`,
+          options: {
+            variant: 'error'
+          }
+        })
+      )
       .finally(() => {
+        if (callback) callback()
         this.isDeleting = false
       })
   }
@@ -290,7 +319,7 @@ export class BasicTranslations {
     perPage,
     orderBy,
     order,
-    numberLike
+    query
   ) => {
     this.isAvailableNumbersForAddInstanceLoading = true
     let orderByField
@@ -308,11 +337,15 @@ export class BasicTranslations {
       }
     }
     const orderField = order || 'asc'
-    const numberLikeField = numberLike || ''
+    const queryField = query || ''
+    const searchValue =
+      this.searchParam === COUNTRY_CODE && queryField.length > 1
+        ? queryField.replace('+', '%2B')
+        : queryField
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=basic&in_use=false&number_like=${numberLikeField} `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=basic&in_use=false&${this.searchParam}=${searchValue} `
       )
       .then(res => {
         const pagination = res.data.pagination
@@ -321,7 +354,12 @@ export class BasicTranslations {
         const transformedNumbers = requestResult.map(item => {
           return {
             ...item,
-            phoneNumber: `${item.country_code} ${item.nsn}`,
+            phoneNumber: `${item.country_code}${item.nsn}`,
+            country: getCountryNameFromNumber(
+              `${item.country_code}${item.nsn}`
+            ),
+            status: 'free',
+            service_capabilities: 'basic',
             checked: false,
             hover: false
           }
@@ -341,12 +379,24 @@ export class BasicTranslations {
       )
       .finally(() => (this.isAvailableNumbersForAddInstanceLoading = false))
   }
+
+  get isAnyAvailableNumbersSelected() {
+    return this.availableNumbersForAddInstance.some(
+      number => number.checked === true
+    )
+  }
+
   clearAvailableNumbersForAddInstance = () => {
     this.availableNumbersForAddInstance = []
+  }
+
+  updateSearchParam = value => {
+    this.searchParam = value
   }
 }
 
 decorate(BasicTranslations, {
+  isAnyAvailableNumbersSelected: computed,
   step: observable,
   selectedInstance: observable,
   isBasicTranslationsNumbersLoading: observable,
@@ -363,6 +413,7 @@ decorate(BasicTranslations, {
   isRedirectAfterPut: observable,
   isDeleting: observable,
   amountOfBasicInstances: observable,
+  searchParam: observable,
   changeStep: action,
   setDefaultValues: action,
   updateSelectedPhoneNumber: action,
@@ -376,7 +427,8 @@ decorate(BasicTranslations, {
   putUpdateMultipleANSBasic: action,
   deleteANSBasic: action,
   clearAvailableNumbersForAddInstance: action,
-  clearBasicNumbers: action
+  clearBasicNumbers: action,
+  updateSearchParam: action
 })
 
 export default new BasicTranslations()

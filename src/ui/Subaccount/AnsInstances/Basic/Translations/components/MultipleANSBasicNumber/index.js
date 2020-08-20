@@ -23,14 +23,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateCustomer = props => {
-  const { open, handleClose } = props
+  const { open, handleClose, numbers } = props
   const [step, setStep] = useState(1)
 
   const classes = useStyles()
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
-      <Steps step={step} handleClose={handleClose} setStep={setStep} />
+      <Steps
+        step={step}
+        handleClose={handleClose}
+        setStep={setStep}
+        numbers={numbers}
+      />
     </Dialog>
   )
 }
@@ -39,14 +44,20 @@ const Steps = props => {
   switch (props.step) {
     case 1:
       return (
-        <FirstStep handleClose={props.handleClose} setStep={props.setStep} />
+        <FirstStep
+          handleClose={props.handleClose}
+          setStep={props.setStep}
+          numbers={props.numbers}
+        />
       )
     case 2:
       return (
         <SecondStep handleClose={props.handleClose} setStep={props.setStep} />
       )
     default:
-      return <FirstStep handleClose={props.handleClose} />
+      return (
+        <FirstStep handleClose={props.handleClose} numbers={props.numbers} />
+      )
   }
 }
 
