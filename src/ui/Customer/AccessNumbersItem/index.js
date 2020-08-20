@@ -145,11 +145,18 @@ const AccessNumbersItem = ({ t }) => {
     setNumberOfSelectedToDeassign(0)
   }, [assignedNumbers])
 
-  // In use column redirect
+  // Status(in use) column redirect
   useEffect(() => {
+    // for 'used' status column value redirect
     if (subaccountLinkId && phoneNumberToRedirect) {
       history.push(
         `/customers/${match.customerId}/subaccounts/${subaccountLinkId}/ans_instances/basic/${phoneNumberToRedirect}`
+      )
+    }
+    // for 'free' status column value redirect
+    if (subaccountLinkId && !phoneNumberToRedirect) {
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${subaccountLinkId}/ans_instances/basic`
       )
     }
     return () => {
@@ -401,9 +408,9 @@ const AccessNumbersItem = ({ t }) => {
     deassignNumbers(payload)
   }
 
-  const handleInUseLinkClick = row => {
+  const handleInUseLinkClick = (row, isPhoneNumberRedirect = true) => {
     getSubaccountId(match.customerId, row.subaccount)
-    setPhoneNumberToRedirect(row.phoneNumber)
+    setPhoneNumberToRedirect(isPhoneNumberRedirect ? row.phoneNumber : '')
   }
 
   const handleSubaccountLinkClick = row => {
@@ -760,7 +767,13 @@ const AccessNumbersItem = ({ t }) => {
         className: classes.asignCell
       },
       getCellData: row => (
-        <Fragment>
+        <StyledTooltip
+          title={
+            row.subaccount !== 'none' || row.inUse !== 'no'
+              ? t('not_available_to_assign_tooltip')
+              : t('available_to_assign_tooltip')
+          }
+        >
           <IconButton
             aria-label='assign all picture'
             component='span'
@@ -770,13 +783,13 @@ const AccessNumbersItem = ({ t }) => {
                 row.subaccount === 'none' && row.inUse === 'no'
             })}
             onClick={() => {
-              selectNumbers(!row.checked, row.id, 'checked')
+              if (row.subaccount === 'none' && row.inUse === 'no')
+                selectNumbers(!row.checked, row.id, 'checked')
             }}
-            disabled={row.subaccount !== 'none' || row.inUse !== 'no'}
           >
             <DoneOutlinedIcon className={classes.assignIcon} />
           </IconButton>
-        </Fragment>
+        </StyledTooltip>
       )
     },
     {
@@ -792,9 +805,24 @@ const AccessNumbersItem = ({ t }) => {
               {t('used')}
             </Typography>
           ) : (
-            <Typography className={classes.availableTitle}>
-              {t('free')}
-            </Typography>
+            <StyledTooltip
+              title={
+                row.subaccount === 'none'
+                  ? t('status_assign_subaccount_first')
+                  : ''
+              }
+            >
+              <Typography
+                onClick={
+                  row.subaccount !== 'none'
+                    ? () => handleInUseLinkClick(row, false)
+                    : undefined
+                }
+                className={classes.availableTitle}
+              >
+                {t('free')}
+              </Typography>
+            </StyledTooltip>
           )}
         </Fragment>
       )

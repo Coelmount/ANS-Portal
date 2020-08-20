@@ -376,7 +376,6 @@ const TranslationNumbers = observer(({ t }) => {
       {
         id: 'access_number',
         label: 'access_number',
-        isSortAvailable: false,
         getCellData: row => (
           <Box>
             <Link
@@ -410,7 +409,6 @@ const TranslationNumbers = observer(({ t }) => {
       {
         id: 'destination_number',
         label: 'destination_number',
-        isSortAvailable: false,
         getCellData: row => (
           <Box>
             <Typography className={classes.destinationNumberText}>
