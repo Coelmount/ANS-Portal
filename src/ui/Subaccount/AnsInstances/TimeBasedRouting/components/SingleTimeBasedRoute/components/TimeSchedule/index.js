@@ -49,7 +49,9 @@ const pageViews = [
   }
 ]
 
-const PageView = ({ t, classes, setViewType }) => {
+const PageViewSelectorMenu = ({ t, setViewType }) => {
+  const classes = useStyles()
+
   const handlePageViewChange = id => {
     setViewType(id)
   }
@@ -69,6 +71,86 @@ const PageView = ({ t, classes, setViewType }) => {
         </div>
       ))}
     </Box>
+  )
+}
+
+const ListView = ({
+  t,
+  open,
+  isLoading,
+  handleAddClick,
+  handleEditIconClick,
+  handleDeleteClick
+}) => {
+  const classes = useStyles()
+  const { schedules } = TimeSchedulesStore
+
+  const columns = [
+    {
+      id: 'color',
+      label: 'color',
+      getCellData: row => (
+        <div style={{ width: 20, height: 20, background: row.color }}></div>
+      ),
+      extraProps: {
+        className: classes.colorCell
+      },
+      isSortAvailable: false
+    },
+    {
+      id: 'name',
+      label: t('name')
+    },
+    {
+      id: 'forwardTo',
+      label: 'forward_to'
+    },
+    {
+      id: 'timeSchedule',
+      label: 'schedule'
+    },
+    {
+      id: 'delete',
+      extraProps: {
+        className: classes.deleteCell,
+        align: 'right'
+      },
+      isSortAvailable: false,
+      getCellData: row => (
+        <Fragment>
+          <IconButton onClick={() => handleDeleteClick(row)}>
+            <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
+          </IconButton>
+          <IconButton onClick={() => handleEditIconClick(row)}>
+            <img src={editIcon} alt='edit' />
+          </IconButton>
+        </Fragment>
+      )
+    }
+  ]
+
+  return (
+    <Fragment>
+      <DefaultDestination t={t} classes={classes} open={open} />
+      <Toolbar
+        t={t}
+        classes={classes}
+        isLoading={isLoading}
+        handleAddClick={handleAddClick}
+      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <CustomTable
+          firstCell
+          rows={schedules}
+          columns={columns}
+          searchCriterias={['name', 'defaultDestination']}
+          noAvailableDataMessage={t('no_time_schedules_available')}
+          tableId='time_based_routing_schedules_list'
+        />
+      )}
+    </Fragment>
   )
 }
 
@@ -130,7 +212,6 @@ const TimeSchedule = ({ t }) => {
   const { customerId, groupId, tbrName } = useParams()
 
   const {
-    schedules,
     defaultDestination,
     deleteString,
     isSchedulesLoading: isLoading,
@@ -212,103 +293,46 @@ const TimeSchedule = ({ t }) => {
     >{` ${modalStore.deleteItem.name}?`}</span>
   )
 
-  const columns = [
-    {
-      id: 'color',
-      label: 'color',
-      getCellData: row => (
-        <div style={{ width: 20, height: 20, background: row.color }}></div>
-      ),
-      extraProps: {
-        className: classes.colorCell
-      },
-      isSortAvailable: false
-    },
-    {
-      id: 'name',
-      label: t('name')
-    },
-    {
-      id: 'forwardTo',
-      label: 'forward_to'
-    },
-    {
-      id: 'timeSchedule',
-      label: 'schedule'
-    },
-    {
-      id: 'delete',
-      extraProps: {
-        className: classes.deleteCell,
-        align: 'right'
-      },
-      isSortAvailable: false,
-      getCellData: row => (
-        <Fragment>
-          <IconButton onClick={() => handleDeleteClick(row)}>
-            <CloseOutlinedIcon className={classes.deleteCustomerIcon} />
-          </IconButton>
-          <IconButton onClick={() => handleEditIconClick(row)}>
-            <img src={editIcon} alt='edit' />
-          </IconButton>
-        </Fragment>
-      )
-    }
-  ]
-
   return (
-    <Box className={classes.root}>
-      <Paper className={classes.paper}>
-        <PageView t={t} classes={classes} setViewType={setViewType} />
-        <DefaultDestination t={t} classes={classes} open={modalStore.open} />
-        <Toolbar
+    <Paper className={classes.root}>
+      <PageViewSelectorMenu t={t} setViewType={setViewType} />
+
+      {viewType === LIST_VIEW_ID ? (
+        <ListView
           t={t}
-          classes={classes}
+          open={modalStore.open}
           isLoading={isLoading}
           handleAddClick={handleAddClick}
+          handleEditIconClick={handleEditIconClick}
+          handleDeleteClick={handleDeleteClick}
         />
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Fragment>
-            {viewType === LIST_VIEW_ID ? (
-              <CustomTable
-                firstCell
-                rows={schedules}
-                columns={columns}
-                searchCriterias={['name', 'defaultDestination']}
-                noAvailableDataMessage={t('no_time_schedules_available')}
-                tableId='time_based_routing_schedules_list'
-              />
-            ) : (
-              <TimeScheduleCalendar />
-            )}
-          </Fragment>
-        )}
-        {isAddModalOpen && (
-          <AddModal open={isAddModalOpen} handleClose={modalStore.close} />
-        )}
-        {isEditDefaultDestinationModal && (
-          <EditDefaultDestinationModal
-            open={isEditDefaultDestinationModal}
-            handleClose={modalStore.close}
-          />
-        )}
-        {isDeleteModalOpen && (
-          <DeleteModal
-            classes={classes}
-            open={isDeleteModalOpen}
-            handleClose={modalStore.close}
-            handleDelete={handleDelete}
-            extraMessageBlock={extraDeleteBlock}
-            isDeleting={isDeleting}
-            deleteSubject={t('time_based_destination')}
-            action={t('to_delete')}
-            titleAction={t(`delete`)}
-          />
-        )}
-      </Paper>
-    </Box>
+      ) : (
+        <TimeScheduleCalendar />
+      )}
+
+      {isAddModalOpen && (
+        <AddModal open={isAddModalOpen} handleClose={modalStore.close} />
+      )}
+      {isEditDefaultDestinationModal && (
+        <EditDefaultDestinationModal
+          open={isEditDefaultDestinationModal}
+          handleClose={modalStore.close}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteModal
+          classes={classes}
+          open={isDeleteModalOpen}
+          handleClose={modalStore.close}
+          handleDelete={handleDelete}
+          extraMessageBlock={extraDeleteBlock}
+          isDeleting={isDeleting}
+          deleteSubject={t('time_based_destination')}
+          action={t('to_delete')}
+          titleAction={t(`delete`)}
+        />
+      )}
+    </Paper>
   )
 }
 

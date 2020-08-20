@@ -122,6 +122,7 @@ export class TimeSchedules {
     this.allPeriods = []
     this.timeSchedulesWithPeriods = []
     this.isSchedulesPeriodsLoading = true
+
     // To push get requests to every schedule
     let promiseArr = []
 
@@ -149,6 +150,7 @@ export class TimeSchedules {
 
     Promise.all(promiseArr)
       .then(() => {
+        // Create general array with periods array items of each schedule item
         const allPeriods = this.timeSchedulesWithPeriods
           .map(({ periods }) => periods)
           .flat()

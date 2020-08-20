@@ -16,7 +16,9 @@ const useStyles = makeStyles(theme => ({
   colorsLegendWrap: {
     width: '80%',
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    marginTop: 25,
+    marginBottom: 15
   },
   colorsLegendItem: {
     display: 'flex',
