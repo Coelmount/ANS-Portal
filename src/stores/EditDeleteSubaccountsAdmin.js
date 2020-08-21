@@ -10,7 +10,8 @@ export class EditDeleteSubaccountAdminStore {
   updatedSubaccountAdmin = {
     firstName: '',
     lastName: '',
-    language: ''
+    language: '',
+    emailAddress: ''
   }
   isDeletingSubaccountAdmin = false
   sentSubaccountAdmin = {}
@@ -19,7 +20,8 @@ export class EditDeleteSubaccountAdminStore {
     this.updatedSubaccountAdmin = {
       firstName: '',
       lastName: '',
-      language: ''
+      language: '',
+      emailAddress: ''
     }
   }
 
@@ -37,7 +39,8 @@ export class EditDeleteSubaccountAdminStore {
     this.updatedSubaccountAdmin = {
       firstName: '',
       lastName: '',
-      language: ''
+      language: '',
+      emailAddress: ''
     }
     axios
       .get(`/tenants/${id}/groups/${groupId}/admins/${userId}`)
@@ -46,6 +49,7 @@ export class EditDeleteSubaccountAdminStore {
           this.updateSubaccountAdminInfo('firstName', res.data.firstName)
           this.updateSubaccountAdminInfo('lastName', res.data.lastName)
           this.updateSubaccountAdminInfo('language', res.data.language)
+          this.updateSubaccountAdminInfo('emailAddress', res.data.emailAddress)
           this.isLoadingData = false
         }
       })

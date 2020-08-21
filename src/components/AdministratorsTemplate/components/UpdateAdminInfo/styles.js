@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     paddingLeft: 0,
     paddingRight: 0,
+    paddingBottom: 0,
     '& .MuiTypography-h6': {
       display: 'flex',
       justifyContent: 'space-between',

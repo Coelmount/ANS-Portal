@@ -245,7 +245,8 @@ const useStyles = makeStyles(theme => ({
     height: 27,
     borderRadius: 20,
     marginRight: 8,
-    paddingLeft: 1
+    paddingLeft: 1,
+    cursor: 'pointer'
   },
   closeButtonIconWrapper: {
     boxShadow: '0px 2px 4px rgba(196, 196, 196, 0.25)',
@@ -258,7 +259,8 @@ const useStyles = makeStyles(theme => ({
     height: 27,
     borderRadius: 20,
     marginLeft: 10,
-    paddingLeft: 1
+    paddingLeft: 1,
+    cursor: 'pointer'
   }
 }))
 
