@@ -12,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline'
+import MailOutlinedIcon from '@material-ui/icons/MailOutlined'
 import LanguageIcon from '@material-ui/icons/Language'
 
 import CustomerAdministrators from 'stores/CustomerAdministrators'
@@ -83,7 +84,14 @@ const UpdateAdminInfo = ({
                   disabled
                 />
               </Box>
-
+              <Box className={classes.inputes}>
+                <Input
+                  icon={<MailOutlinedIcon />}
+                  label={t('email')}
+                  value={user.emailAddress}
+                  onChange={e => updateInfo('emailAddress', e.target.value)}
+                />
+              </Box>
               <Box className={classes.inputes}>
                 <Input
                   icon={<PersonOutlineIcon />}

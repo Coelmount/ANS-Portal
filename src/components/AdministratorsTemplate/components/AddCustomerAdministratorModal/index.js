@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline'
+import MailOutlinedIcon from '@material-ui/icons/MailOutlined'
 import LanguageIcon from '@material-ui/icons/Language'
 
 import CustomerAdministrators from 'stores/CustomerAdministrators'
@@ -133,8 +134,17 @@ const AddCustomerAdministrator = ({
               </Box>
               <Box className={classes.inputes}>
                 <Input
+                  icon={<MailOutlinedIcon />}
+                  label={t('email')}
+                  value={user.emailAddress}
+                  onChange={e => setUserInfo('emailAddress', e.target.value)}
+                />
+              </Box>
+              <Box className={classes.inputes}>
+                <Input
                   icon={<LockOutlinedIcon />}
                   label={t('password')}
+                  autoComplete='new-password'
                   variant='outlined'
                   value={password}
                   onChange={handlePasswordChange}

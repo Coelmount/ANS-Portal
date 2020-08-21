@@ -14,7 +14,8 @@ export class SubaccountAdminsStore {
     firstName: '',
     lastName: '',
     language: '',
-    password: ''
+    password: '',
+    emailAddress: ''
   }
   sentSubaccountAdmin = {}
 
@@ -24,7 +25,8 @@ export class SubaccountAdminsStore {
       firstName: '',
       lastName: '',
       language: '',
-      password: ''
+      password: '',
+      emailAddress: ''
     }
   }
 
@@ -50,6 +52,7 @@ export class SubaccountAdminsStore {
   }
 
   setSubaccountAdminInfo = (valueKey, value) => {
+    console.log(this.subaccountAdmin)
     for (let key in this.subaccountAdmin) {
       if (valueKey === key) {
         this.subaccountAdmin[key] = value
@@ -81,7 +84,8 @@ export class SubaccountAdminsStore {
             firstName: '',
             lastName: '',
             language: '',
-            password: ''
+            password: '',
+            emailAddress: ''
           }
           closeModal()
         }
