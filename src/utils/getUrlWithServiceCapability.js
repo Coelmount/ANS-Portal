@@ -14,11 +14,12 @@ const getUrlWithServiceCapability = (serviceCapability, instance = {}) => {
       case BASIC:
         return `${BASIC}/${instance.phoneNumber}`
       case ADVANCED:
-        return ADVANCED_URL
+        return `${ADVANCED_URL}/${instance.connected_to}`
       case IVR:
         return `${IVR}/${instance.connected_to}`
+      default:
+        return ''
     }
-    // return serviceCapability === BASIC ? BASIC_URL : serviceCapability
   } else {
     // 'free' number case with link to list
     return serviceCapability === BASIC ? BASIC_URL : serviceCapability
