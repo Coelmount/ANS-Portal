@@ -155,7 +155,7 @@ const TimeBasedRouting = ({ t }) => {
       label: t('name'),
       getCellData: row => (
         <Link
-          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing/${row.name}`}
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing/${row.userId}`}
           className={classes.link}
         >
           {row.name}

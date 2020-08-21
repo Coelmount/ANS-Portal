@@ -6,7 +6,8 @@ import {
   TBR,
   BASIC_URL,
   ADVANCED_URL,
-  TBR_URL
+  TBR_URL,
+  BUSY_TBR_URL
 } from 'utils/types/serviceCapabilities'
 
 const getUrlWithServiceCapability = (serviceCapability, instance = {}) => {
@@ -20,13 +21,20 @@ const getUrlWithServiceCapability = (serviceCapability, instance = {}) => {
       case IVR:
         return `${IVR}/${instance.connected_to}`
       case TBR:
-        return `${TBR_URL}/${instance.connected_to}`
+        return `${BUSY_TBR_URL}/${instance.connected_to}`
       default:
         return ''
     }
   } else {
     // 'free' number case with link to list
-    return serviceCapability === BASIC ? BASIC_URL : serviceCapability
+    switch (serviceCapability) {
+      case BASIC:
+        return BASIC_URL
+      case TBR:
+        return TBR_URL
+      default:
+        return serviceCapability
+    }
   }
 }
 

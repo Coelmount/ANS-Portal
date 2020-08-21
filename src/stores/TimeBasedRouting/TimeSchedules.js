@@ -73,7 +73,7 @@ export class TimeSchedules {
       .then(res => {
         const timeBasedRoutes = res.data.time_based_routes
         const currentTimeBasedRoute = timeBasedRoutes.find(
-          timeBasedRoute => timeBasedRoute.name === tbrName
+          timeBasedRoute => timeBasedRoute.userId === tbrName
         )
         this.currentUserId = currentTimeBasedRoute.userId
 

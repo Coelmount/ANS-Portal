@@ -42,7 +42,7 @@ export class AccessNumbers {
       .then(res => {
         const timeBasedRoutes = res.data.time_based_routes
         const currentTimeBasedRoute = timeBasedRoutes.find(
-          timeBasedRoute => timeBasedRoute.name === tbrName
+          timeBasedRoute => timeBasedRoute.userId === tbrName
         )
 
         axios
@@ -91,7 +91,7 @@ export class AccessNumbers {
       .then(res => {
         const timeBasedRoutes = res.data.time_based_routes
         const currentTimeBasedRoute = timeBasedRoutes.find(
-          timeBasedRoute => timeBasedRoute.name === tbrName
+          timeBasedRoute => timeBasedRoute.userId === tbrName
         )
         this.currentTbrId = currentTimeBasedRoute.userId
         axios
