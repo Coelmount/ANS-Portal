@@ -160,7 +160,8 @@ const userComponents = [
     accessLevel: 3
   },
   {
-    path: '/customers/:customerId/subaccounts/:groupId/ivr/:ivrId',
+    path:
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/ivr/:ivrId',
     component: <IVRPage />,
     accessLevel: 3
   }
