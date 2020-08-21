@@ -20,11 +20,19 @@ const SelectMediaFile = props => {
 
   useEffect(() => {
     const ua = navigator.userAgent
-    if (ua.search(/Safari/) > 0) {
+    if (
+      /constructor/i.test(window.HTMLElement) ||
+      (function(p) {
+        return p.toString() === '[object SafariRemoteNotification]'
+      })(
+        !window['safari'] ||
+          (typeof safari !== 'undefined' && window.safari.pushNotification)
+      )
+    ) {
       setNotSupprotedBrowser('Safari')
       return
     }
-    if (ua.search(/MSIE/) > 0) {
+    if (Boolean(document.documentMode)) {
       setNotSupprotedBrowser('Internet Explorer')
       return
     }
@@ -43,7 +51,7 @@ const SelectMediaFile = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        {notSupprotedBrowser ? (
+        {!notSupprotedBrowser ? (
           <AudioRecorder handleClose={handleClose} />
         ) : (
           <div className={classes.notSupprotedBrowserMessage}>
