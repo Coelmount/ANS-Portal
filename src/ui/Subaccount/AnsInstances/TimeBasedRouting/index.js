@@ -1,151 +1,126 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory } from 'react-router-dom'
-import MaterialLink from '@material-ui/core/Link'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
+import classnames from 'classnames'
 
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Paper from '@material-ui/core/Paper'
-import IconButton from '@material-ui/core/IconButton'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Button from '@material-ui/core/Button'
+import Grow from '@material-ui/core/Grow'
+import Popper from '@material-ui/core/Popper'
+import MenuItem from '@material-ui/core/MenuItem'
+import MenuList from '@material-ui/core/MenuList'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
-//import Switch from 'components/Switch'
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import CustomTable from 'components/CustomTable'
-// import AddIVR from './AddIVR'
-//import DisableEnableIVR from 'components/DeleteModal'
-import DeleteModal from 'components/DeleteModal'
-
-import TimeBaseRoutingStore from 'stores/TimeBaseRouting'
-
-import AddIcon from '@material-ui/icons/Add'
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+import TranslationNumbers from './components/TranslationNumbers'
+import AvailableNumbers from './components/AvailableNumbers'
 
 import useStyles from './styles'
 
-const TimeBaseRouting = props => {
+const Translations = props => {
   const { t } = props
-  const classes = useStyles()
   const match = useParams()
   const history = useHistory()
-  const {
-    timeBaseRouting,
-    isLoadingTBR,
-    getTimeBaseRouting
-  } = TimeBaseRoutingStore
-  // const [showAddIVR, setShowAddIVR] = useState(false)
-  // const [ivrForSwitchStatus, setIVRForSwitchStatus] = useState(null)
-  // const [ivrForDelete, setIVRForDelete] = useState(null)
+  const location = useLocation()
+  const classes = useStyles()
 
-  useEffect(() => {
-    getTimeBaseRouting(match.customerId, match.groupId)
-  }, [])
-
-  // const handleDelete = () => {
-  //   deleteIVR(
-  //     match.customerId,
-  //     match.groupId,
-  //     ivrForDelete.serviceUserId,
-  //     handleClose
-  //   )
-  // }
-
-  // const handleClose = () => {
-  //   setShowAddIVR(false)
-  //   setIVRForSwitchStatus(null)
-  //   setIVRForDelete(null)
-  //   getIVRs(match.customerId, match.groupId)
-  //   getCheckLicensesIVR(match.customerId, match.groupId)
-  // }
+  const [activeTab, setActiveTab] = useState(0)
+  const [open, setOpen] = useState(false)
+  const anchorRef = useRef(null)
+  const [translationsMenuName, setTranslationsMenuName] = useState(
+    t('translations_menus')
+  )
 
   const titleData = {
-    mainText: t('time_base_routing'),
-    iconCapture: t('add'),
-    Icon: <AddIcon />
+    mainText: t('time_based_routing')
   }
 
-  const columns = [
-    {
-      id: 'name',
-      numeric: false,
-      label: t('name'),
-      extraProps: {
-        scope: 'row'
-      },
-      getCellData: row => (
-        <MaterialLink
-          onClick={() =>
-            history.push(
-              `/customers/${match.customerId}/subaccounts/${match.groupId}/ivr/${row.serviceUserId}`
-            )
-          }
-          className={classes.link}
-        >
-          {row.name}
-        </MaterialLink>
-      )
-    },
-    {
-      id: 'delete',
-      extraProps: {
-        className: classes.deleteCell,
-        align: 'right'
-      },
-      isSortAvailable: false,
-      getCellData: row => (
-        <IconButton
-        // onClick={() => setIVRForDelete(row)}
-        >
-          <CloseOutlinedIcon
-          //onClick={() => handleOpenDeleteModal(row.groupId, row.groupName)}
-          //className={classes.deleteCustomerIcon}
-          />
-        </IconButton>
-      )
+  const handleChange = (event, newValue) => {
+    setActiveTab(newValue)
+    switch (newValue) {
+      case 0:
+        history.push('#translations')
+        setTranslationsMenuName(t('translations_menus'))
+        break
+      case 1:
+        history.push('#available_numbers')
+        setTranslationsMenuName(t('translations_menus'))
+        break
     }
-  ]
-
-  if (isLoadingTBR) {
-    return <Loading />
   }
+
+  const returnActiveTab = () => {
+    switch (location.hash) {
+      case '#translations':
+        return 0
+      case '#available_numbers':
+        return 1
+      default:
+        return 0
+    }
+  }
+
+  const prevOpen = useRef(open)
+  useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus()
+    }
+    prevOpen.current = open
+  }, [open])
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock
-            titleData={titleData}
-            classes={classes}
-            //handleOpen={() => setShowAddIVR(true)}
-          />
+          <TitleBlock titleData={titleData} classes={classes} />
         </CustomContainer>
-        <CustomTable
-          rows={[]}
-          columns={columns}
-          searchCriterias={['name']}
-          noAvailableDataMessage={t('no_tbs_available')}
-          tableId='tbs'
-        />
-        {/* {showAddIVR && <AddIVR open={showAddIVR} handleClose={handleClose} />}
-        {ivrForDelete && (
-          <DeleteModal
-            open={ivrForDelete}
-            handleClose={handleClose}
-            handleDelete={handleDelete}
-            isDeleting={isDeletingIVR}
-            action={t('to_delete')}
-            titleAction={t(`delete`)}
-            deleteSubject={t('ans_ivr_instance')}
-            deleteInfo={{
-              name: ivrForDelete.name
-            }}
-          />
-        )} */}
       </Paper>
+      <Tabs
+        className={classes.tabs}
+        value={returnActiveTab()}
+        indicatorColor='primary'
+        onChange={handleChange}
+        variant='scrollable'
+        scrollButtons='auto'
+      >
+        <Tab value={0} label={t('translations')} className={classes.tab} />
+        <Tab value={1} label={t('available_numbers')} className={classes.tab} />
+      </Tabs>
+      <TabPanel value={returnActiveTab()} index={0}>
+        <TranslationNumbers />
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={1}>
+        <AvailableNumbers />
+      </TabPanel>
     </div>
   )
 }
 
-export default withNamespaces()(observer(TimeBaseRouting))
+const TabPanel = props => {
+  const { children, value, index, ...other } = props
+  const classes = useStyles()
+
+  return (
+    <div
+      className={classes.tabs}
+      role='tabpanel'
+      hidden={value !== index}
+      id={`wrapped-tabpanel-${index}`}
+      aria-labelledby={`wrapped-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  )
+}
+
+export default withNamespaces()(observer(Translations))

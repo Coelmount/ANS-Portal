@@ -17,6 +17,7 @@ import Administrators from 'ui/Customer/Administrators'
 import Details from 'ui/Customer/Details'
 import AnsInstances from 'ui/Subaccount/AnsInstances'
 import TimeBasedRouting from 'ui/Subaccount/AnsInstances/TimeBasedRouting'
+import SingleTimeBasedRoute from 'ui/Subaccount/AnsInstances/TimeBasedRouting/components/SingleTimeBasedRoute'
 import IVR from 'ui/Subaccount/AnsInstances/IVR'
 import Translations from 'ui/Subaccount/AnsInstances/Basic/Translations'
 import TranslationsSingleNumber from 'ui/Subaccount/AnsInstances/Basic/Translations/components/SingleNumber'
@@ -97,7 +98,6 @@ const userComponents = [
     component: <Advanced />,
     accessLevel: 3
   },
-
   {
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/advanced/destination_groups/:destinationGroupName',
@@ -108,6 +108,12 @@ const userComponents = [
     path:
       '/customers/:customerId/subaccounts/:groupId/ans_instances/time_based_routing',
     component: <TimeBasedRouting />,
+    accessLevel: 3
+  },
+  {
+    path:
+      '/customers/:customerId/subaccounts/:groupId/ans_instances/time_based_routing/:tbrName',
+    component: <SingleTimeBasedRoute />,
     accessLevel: 3
   },
   {

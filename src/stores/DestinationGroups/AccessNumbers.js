@@ -8,7 +8,7 @@ import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumbe
 import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
 import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
 import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
-import DEFAULT_IDS from './utils/defaultIds'
+import DEFAULT_IDS from 'utils/types/defaultSecondaryIds'
 import { toJS } from 'mobx'
 
 export class AccessNumbers {

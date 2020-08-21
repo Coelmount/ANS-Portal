@@ -152,7 +152,7 @@ const AddModal = ({ t, open, handleClose }) => {
     },
     {
       id: 'name',
-      label: 'entitlement',
+      label: 'destination',
       extraProps: {
         className: classes.entitlementHeadCell
       }
