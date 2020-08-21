@@ -14,7 +14,8 @@ export class CustomerAdminsStore {
     firstName: '',
     lastName: '',
     language: '',
-    password: ''
+    password: '',
+    emailAddress: ''
   }
   sentAdmin = {}
   languagesList = []

@@ -10,7 +10,8 @@ export class EditDeleteAdminStore {
   updatedAdmin = {
     firstName: '',
     lastName: '',
-    language: ''
+    language: '',
+    emailAddress: ''
   }
   isDeletingAdmin = false
   sentAdmin = {}
@@ -29,7 +30,8 @@ export class EditDeleteAdminStore {
     this.updatedAdmin = {
       firstName: '',
       lastName: '',
-      language: ''
+      language: '',
+      emailAddress: ''
     }
     axios
       .get(`/tenants/${id}/admins/${userId}`)
@@ -38,6 +40,7 @@ export class EditDeleteAdminStore {
           this.updateAdminInfo('firstName', res.data.firstName)
           this.updateAdminInfo('lastName', res.data.lastName)
           this.updateAdminInfo('language', res.data.language)
+          this.updateAdminInfo('emailAddress', res.data.emailAddress)
           this.isLoadingData = false
         }
       })

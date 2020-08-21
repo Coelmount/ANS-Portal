@@ -133,8 +133,17 @@ const AddCustomerAdministrator = ({
               </Box>
               <Box className={classes.inputes}>
                 <Input
+                  icon={<img src={sharp} alt='sharp' />}
+                  label={t('email')}
+                  value={user.emailAddress}
+                  onChange={e => setUserInfo('emailAddress', e.target.value)}
+                />
+              </Box>
+              <Box className={classes.inputes}>
+                <Input
                   icon={<LockOutlinedIcon />}
                   label={t('password')}
+                  autoComplete='new-password'
                   variant='outlined'
                   value={password}
                   onChange={handlePasswordChange}
