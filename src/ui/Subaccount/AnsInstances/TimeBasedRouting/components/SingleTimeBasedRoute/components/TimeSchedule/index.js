@@ -99,15 +99,18 @@ const ListView = ({
     },
     {
       id: 'name',
-      label: t('name')
+      label: t('name'),
+      isSortAvailable: false
     },
     {
       id: 'forwardTo',
-      label: 'forward_to'
+      label: 'forward_to',
+      isSortAvailable: false
     },
     {
       id: 'timeSchedule',
-      label: 'schedule'
+      label: 'schedule',
+      isSortAvailable: false
     },
     {
       id: 'delete',

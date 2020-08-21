@@ -22,7 +22,7 @@ const ColorsLegend = () => {
   return useObserver(() => (
     <Box className={classes.colorsLegendWrap}>
       {timeSchedulesWithPeriods.map(({ destinationName, color }) => (
-        <Box className={classes.colorsLegendItem}>
+        <Box key={destinationName} className={classes.colorsLegendItem}>
           <Box className={classes.colorBox} style={{ background: color }}></Box>
           <Typography className={classes.colorsLegendItemLabel}>
             {destinationName}
@@ -35,6 +35,9 @@ const ColorsLegend = () => {
 
 // To show empty periods on view with only time (by default)
 const EventComponent = () => null
+
+// To disable lib warning
+const handleOnViewChange = () => null
 
 const TimeScheduleCalendar = () => {
   const classes = useStyles()
@@ -92,6 +95,7 @@ const TimeScheduleCalendar = () => {
           <ColorsLegend />
           <Calendar
             view='week'
+            onView={handleOnViewChange}
             events={allPeriods}
             toolbar={false}
             formats={formats}
