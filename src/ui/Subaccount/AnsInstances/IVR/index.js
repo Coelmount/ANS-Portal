@@ -100,7 +100,7 @@ const IVR = props => {
         <MaterialLink
           onClick={() =>
             history.push(
-              `/customers/${match.customerId}/subaccounts/${match.groupId}/ivr/${row.serviceUserId}`
+              `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/ivr/${row.serviceUserId}`
             )
           }
           className={classes.link}

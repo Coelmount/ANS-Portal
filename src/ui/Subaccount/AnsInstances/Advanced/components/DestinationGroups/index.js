@@ -165,7 +165,7 @@ const DestinationGroups = observer(({ t }) => {
       label: 'name',
       getCellData: row => (
         <Link
-          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced/destination_groups/${row.name}`}
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced/destination_groups/${row.ans_id}`}
           className={classes.link}
         >
           {row.name}

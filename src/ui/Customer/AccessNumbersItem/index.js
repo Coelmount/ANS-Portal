@@ -29,6 +29,7 @@ import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
+import getUrlWithServiceCapability from 'utils/getUrlWithServiceCapability'
 
 import disconnectIcon from 'source/images/svg/delete-icon.svg'
 import deassignIcon from 'source/images/svg/deassign.svg'
@@ -68,7 +69,7 @@ const AccessNumbersItem = ({ t }) => {
   const [deassignMessage, setDeassignMessage] = useState('')
   const [deassignMessageBlock, setDeassignMessageBlock] = useState(null)
   const [deassignSubject, setDeassignSubject] = useState('')
-  const [phoneNumberToRedirect, setPhoneNumberToRedirect] = useState('')
+  const [clickedInstance, setClickedInstance] = useState({})
   const [isSubaccountLinkClicked, setIsSubaccountLinkClicked] = useState(false)
   const [isDisconnectAll, setIsDisconnectAll] = useState(false)
   const [isDeassignAll, setIsDeassignAll] = useState(false)
@@ -145,16 +146,30 @@ const AccessNumbersItem = ({ t }) => {
     setNumberOfSelectedToDeassign(0)
   }, [assignedNumbers])
 
-  // In use column redirect
+  // Status(in use) column redirect
   useEffect(() => {
-    if (subaccountLinkId && phoneNumberToRedirect) {
+    // for 'used' status column value redirect
+    if (subaccountLinkId && clickedInstance.phoneNumber) {
+      const url = getUrlWithServiceCapability(
+        currentEntitlement.service_capabilities,
+        clickedInstance
+      )
       history.push(
-        `/customers/${match.customerId}/subaccounts/${subaccountLinkId}/ans_instances/basic/${phoneNumberToRedirect}`
+        `/customers/${match.customerId}/subaccounts/${subaccountLinkId}/ans_instances/${url}`
+      )
+    }
+    // for 'free' status column value redirect
+    if (subaccountLinkId && !clickedInstance.phoneNumber) {
+      const url = getUrlWithServiceCapability(
+        currentEntitlement.service_capabilities
+      )
+      history.push(
+        `/customers/${match.customerId}/subaccounts/${subaccountLinkId}/ans_instances/${url}`
       )
     }
     return () => {
       clearSubaccountLinkId()
-      setPhoneNumberToRedirect('')
+      setClickedInstance({})
     }
   }, [subaccountLinkId])
 
@@ -401,9 +416,9 @@ const AccessNumbersItem = ({ t }) => {
     deassignNumbers(payload)
   }
 
-  const handleInUseLinkClick = row => {
+  const handleInUseLinkClick = (row, isPhoneNumberRedirect = true) => {
     getSubaccountId(match.customerId, row.subaccount)
-    setPhoneNumberToRedirect(row.phoneNumber)
+    setClickedInstance(isPhoneNumberRedirect ? row : {})
   }
 
   const handleSubaccountLinkClick = row => {
@@ -798,9 +813,24 @@ const AccessNumbersItem = ({ t }) => {
               {t('used')}
             </Typography>
           ) : (
-            <Typography className={classes.availableTitle}>
-              {t('free')}
-            </Typography>
+            <StyledTooltip
+              title={
+                row.subaccount === 'none'
+                  ? t('status_assign_subaccount_first')
+                  : ''
+              }
+            >
+              <Typography
+                onClick={
+                  row.subaccount !== 'none'
+                    ? () => handleInUseLinkClick(row, false)
+                    : undefined
+                }
+                className={classes.availableTitle}
+              >
+                {t('free')}
+              </Typography>
+            </StyledTooltip>
           )}
         </Fragment>
       )

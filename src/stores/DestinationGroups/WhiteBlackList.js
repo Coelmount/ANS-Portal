@@ -19,7 +19,7 @@ export class WhiteBlackList {
       .then(res => {
         const destinationGroups = res.data.ans_advanced
         const currentGroup = destinationGroups.find(
-          destinationGroup => destinationGroup.name === destinationGroupName
+          destinationGroup => destinationGroup.ans_id === destinationGroupName
         )
         this.currentGroupId = currentGroup.ans_id
 
