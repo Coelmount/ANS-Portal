@@ -71,14 +71,14 @@ const AddedListStep = ({ handleClose, t }) => {
   } = SubaccountsStore
   const {
     postAssignToSubaccountWithClearData,
-    isPostAssignNumbers,
-    setNumbersToAssign
+    isPostAssignNumbers
   } = AssignedNumbersStore
 
   const match = useParams()
 
   useEffect(() => {
     getSubaccounts(match.customerId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

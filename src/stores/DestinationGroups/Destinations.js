@@ -5,9 +5,6 @@ import differenceBy from 'lodash/differenceBy'
 import difference from 'lodash/difference'
 import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
-import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
-import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
-import { toJS } from 'mobx'
 
 export class Destinations {
   currentGroupId = ''

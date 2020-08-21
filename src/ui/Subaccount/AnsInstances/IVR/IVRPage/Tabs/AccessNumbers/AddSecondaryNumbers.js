@@ -75,6 +75,7 @@ const AddModal = props => {
       countryCode: cc
     }
     getAvailableNumbers(payload)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // set numbers in local state from store
@@ -97,6 +98,7 @@ const AddModal = props => {
       }
       getAvailableNumbers(payload)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderBy, order])
 
   //  onUpdate pagination
@@ -118,6 +120,7 @@ const AddModal = props => {
       getAvailableNumbers(payload)
       setNumberOfChecked(0)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage])
 
   // onUpdate country input
@@ -139,6 +142,7 @@ const AddModal = props => {
       getAvailableNumbers(payload)
       setNumberOfChecked(0)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCountry])
 
   // handle check/uncheck

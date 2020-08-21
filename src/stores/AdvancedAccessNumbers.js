@@ -6,7 +6,6 @@ import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import types from 'utils/types/basicSearchParams'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
-import { toJS } from 'mobx'
 
 const { NUMBER_LIKE, COUNTRY_CODE, NSN, TYPE, ID } = types
 
