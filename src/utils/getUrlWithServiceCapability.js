@@ -3,8 +3,10 @@ import {
   BASIC,
   ADVANCED,
   IVR,
+  TBR,
   BASIC_URL,
-  ADVANCED_URL
+  ADVANCED_URL,
+  TBR_URL
 } from 'utils/types/serviceCapabilities'
 
 const getUrlWithServiceCapability = (serviceCapability, instance = {}) => {
@@ -17,6 +19,8 @@ const getUrlWithServiceCapability = (serviceCapability, instance = {}) => {
         return `${ADVANCED_URL}/${instance.connected_to}`
       case IVR:
         return `${IVR}/${instance.connected_to}`
+      case TBR:
+        return `${TBR_URL}/${instance.connected_to}`
       default:
         return ''
     }
