@@ -72,6 +72,7 @@ const Settings = ({ t }) => {
 
   useEffect(() => {
     getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -82,6 +83,7 @@ const Settings = ({ t }) => {
 
     if (settings && settings.policy)
       inputStore.set('policy', settings.policy.toLowerCase())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings])
 
   const handleEditIconClick = () => {

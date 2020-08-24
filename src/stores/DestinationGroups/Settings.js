@@ -4,7 +4,6 @@ import capitalize from 'lodash/capitalize'
 import getErrorMessage from 'utils/getErrorMessage'
 import SnackbarStore from '../Snackbar'
 import axios from 'utils/axios'
-import { toJS } from 'mobx'
 
 export class Settings {
   currentGroupId = ''
