@@ -18,7 +18,6 @@ import Typography from '@material-ui/core/Typography'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
-import Loading from 'components/Loading'
 import Input from 'components/Input'
 import PeriodForm from 'components/PeriodForm'
 import Select from 'components/Select'
@@ -30,9 +29,8 @@ import scheduleIcon from 'source/images/svg/schedule.svg'
 
 const FirstStep = ({ t, handleClose }) => {
   const classes = useStyles()
-  const { customerId, groupId } = useParams()
 
-  const { postTimeBasedRoute, isTimeBasedRoutePosting } = TimeBaseRoutingStore
+  const { setConfigureStep, setTbrToAddName } = TimeBaseRoutingStore
 
   const inputStore = useLocalStore(() => ({
     name: '',
@@ -40,19 +38,14 @@ const FirstStep = ({ t, handleClose }) => {
     set(field, value) {
       this[field] = value
     },
-    get isNameValid() {
-      return this.name
+    get isFieldsValid() {
+      return this.name && this.numberType
     }
   }))
 
-  const handleAdd = () => {
-    const payload = {
-      customerId,
-      groupId,
-      name: inputStore.name,
-      closeModal: handleClose
-    }
-    postTimeBasedRoute(payload)
+  const handleNextButtonClick = () => {
+    setConfigureStep(inputStore.numberType)
+    setTbrToAddName(inputStore.name)
   }
 
   const phoneNumberTypeOptions = [
@@ -79,26 +72,23 @@ const FirstStep = ({ t, handleClose }) => {
         </IconButton>
       </DialogTitle>
 
-      <DialogContent className={classes.modalContent}>
-        {isTimeBasedRoutePosting ? (
-          <Loading />
-        ) : (
-          <Box className={classes.inputsWrap}>
-            <Input
-              icon={<PhoneOutlinedIcon />}
-              label={t('name')}
-              variant='outlined'
-              onChange={e => inputStore.set('name', e.target.value)}
-            />
-            <Select
-              label={t('phone_number_type')}
-              icon={<PhoneOutlinedIcon alt='phone' />}
-              options={phoneNumberTypeOptions}
-              value={inputStore.numberType}
-              onChange={e => inputStore.set('numberType', e.target.value)}
-            />
-          </Box>
-        )}
+      <DialogContent>
+        <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
+        <Box className={classes.inputsWrap}>
+          <Input
+            icon={<PhoneOutlinedIcon />}
+            label={t('name')}
+            variant='outlined'
+            onChange={e => inputStore.set('name', e.target.value)}
+          />
+          <Select
+            label={t('phone_number_type')}
+            icon={<PhoneOutlinedIcon alt='phone' />}
+            options={phoneNumberTypeOptions}
+            value={inputStore.numberType}
+            onChange={e => inputStore.set('numberType', e.target.value)}
+          />
+        </Box>
       </DialogContent>
 
       <DialogActions className={classes.dialogActions}>
@@ -114,8 +104,8 @@ const FirstStep = ({ t, handleClose }) => {
           variant='contained'
           color='primary'
           className={classes.nextButton}
-          disabled={!inputStore.isNameValid || isTimeBasedRoutePosting}
-          onClick={handleAdd}
+          disabled={!inputStore.isFieldsValid}
+          onClick={handleNextButtonClick}
         >
           {t('next')}
         </Button>

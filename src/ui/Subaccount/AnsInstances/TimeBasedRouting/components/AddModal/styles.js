@@ -64,12 +64,31 @@ const useStyles = makeStyles(theme => ({
   modalContent: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'relative'
+  },
+  freeNumberStep: {
+    position: 'absolute',
+    top: 16,
+    left: 44,
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    color: theme.palette.grey40
   },
   inputsWrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     '& > div': {
       marginBottom: 30
     }
+  },
+  stepStyles: {
+    margin: 16,
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    color: theme.palette.grey40
   }
 }))
 

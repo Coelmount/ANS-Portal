@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 
 import Dialog from '@material-ui/core/Dialog'
 
-import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
+import TimeBasedRoutingStore from 'stores/TimeBasedRouting'
 import FirstStep from './components/FirstStep'
 import FreeNumberStep from './components/FreeNumberStep'
 import AnsNumberStep from './components/AnsNumberStep'
@@ -26,7 +26,7 @@ const Steps = ({ step, handleClose }) => {
 
 const AddModal = ({ open, handleClose }) => {
   const classes = useStyles()
-  const { configureStep } = TimeSchedulesStore
+  const { configureStep } = TimeBasedRoutingStore
 
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
