@@ -16,7 +16,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
+import TimeBasedRoutingStore from 'stores/TimeBasedRouting'
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
@@ -48,7 +50,7 @@ const tabPanelItems = [
 const SingleDestinationGroup = props => {
   const { t } = props
   const match = useParams()
-  const { tbrName } = match
+  const { customerId, groupId, tbrName } = match
   const history = useHistory()
   const location = useLocation()
   const classes = useStyles()
@@ -60,8 +62,18 @@ const SingleDestinationGroup = props => {
     t('translations_menus')
   )
 
+  const { getCurrentNameWithId, currentTbrName } = TimeBasedRoutingStore
+  useEffect(() => {
+    const payload = {
+      customerId,
+      groupId,
+      tbrId: tbrName
+    }
+    getCurrentNameWithId(payload)
+  }, [])
+
   const titleData = {
-    mainText: `${capitalize(t('time_based_routing'))}: ${tbrName}`
+    mainText: `${capitalize(t('time_based_routing'))}: ${currentTbrName}`
   }
 
   const handleChange = (event, newValue) => {
@@ -108,7 +120,11 @@ const SingleDestinationGroup = props => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} classes={classes} />
+          {currentTbrName ? (
+            <TitleBlock titleData={titleData} classes={classes} />
+          ) : (
+            <CircularProgress />
+          )}
         </CustomContainer>
       </Paper>
       <Tabs

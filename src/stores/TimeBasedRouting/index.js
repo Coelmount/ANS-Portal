@@ -16,6 +16,7 @@ export class TimeBasedRouting {
   totalPagesAvailableNumbers = 0
   searchParam = NUMBER_LIKE
   numberToConfigure = ''
+  currentTbrName = ''
   isLoadingTBR = true
   isTimeBasedRoutePosting = false
   isAvailableNumbersLoading = true
@@ -112,6 +113,43 @@ export class TimeBasedRouting {
         runInAction(() => {
           this.timeBasedRoutes = transformedRoutes
         })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch phone numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isLoadingTBR = false
+      })
+  }
+
+  getCurrentNameWithId = ({ customerId, groupId, tbrId }) => {
+    this.timeBasedRoutes = []
+    this.currentTbrName = ''
+    this.isLoadingTBR = true
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
+      )
+      .then(res => {
+        const transformedRoutes = res.data.time_based_routes.map(
+          (route, index) => {
+            return new TimeBasedRoute(route, index)
+          }
+        )
+        runInAction(() => {
+          this.timeBasedRoutes = transformedRoutes
+        })
+      })
+      .then(() => {
+        const currentTbr = this.timeBasedRoutes.find(
+          ({ userId }) => userId === tbrId
+        )
+        this.currentTbrName = currentTbr.name || ''
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -244,10 +282,12 @@ decorate(TimeBasedRouting, {
   setNumberToConfigure: action,
   handleCheckAll: action,
   deleteTimeBasedRoutes: action,
+  getCurrentNameWithId: action,
   timeBasedRoutes: observable,
   searchParam: observable,
   totalPagesAvailableNumbers: observable,
   numberToConfigure: observable,
+  currentTbrName: observable,
   isLoadingTBR: observable,
   isTimeBasedRoutePosting: observable,
   isAvailableNumbersLoading: observable,

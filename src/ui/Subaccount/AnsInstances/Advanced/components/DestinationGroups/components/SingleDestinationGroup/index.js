@@ -16,7 +16,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
+import DestinationsGroupStore from 'stores/DestinationGroups'
 import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
@@ -54,10 +56,14 @@ const tabPanelItems = [
 const SingleDestinationGroup = props => {
   const { t } = props
   const match = useParams()
-  const { destinationGroupName } = match
+  const { customerId, groupId, destinationGroupName } = match
   const history = useHistory()
   const location = useLocation()
   const classes = useStyles()
+  const {
+    getCurrentNameWithId,
+    currentDestinationName
+  } = DestinationsGroupStore
 
   const [activeTab, setActiveTab] = useState(0)
   const [open, setOpen] = useState(false)
@@ -66,8 +72,17 @@ const SingleDestinationGroup = props => {
     t('translations_menus')
   )
 
+  useEffect(() => {
+    const payload = {
+      customerId,
+      groupId,
+      ansId: destinationGroupName
+    }
+    getCurrentNameWithId(payload)
+  }, [])
+
   const titleData = {
-    mainText: `${capitalize(t('destination_group'))}: ${destinationGroupName}`
+    mainText: `${capitalize(t('destination_group'))}: ${currentDestinationName}`
   }
 
   const handleChange = (event, newValue) => {
@@ -120,7 +135,11 @@ const SingleDestinationGroup = props => {
       <Paper className={classes.paper}>
         <CustomContainer>
           <CustomBreadcrumbs />
-          <TitleBlock titleData={titleData} classes={classes} />
+          {currentDestinationName ? (
+            <TitleBlock titleData={titleData} classes={classes} />
+          ) : (
+            <CircularProgress />
+          )}
         </CustomContainer>
       </Paper>
       <Tabs
