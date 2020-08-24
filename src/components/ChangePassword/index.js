@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { withNamespaces } from 'react-i18next'
+import { observer } from 'mobx-react-lite'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -21,13 +22,17 @@ import useStyles from './styles'
 
 const ChangePassword = props => {
   const classes = useStyles()
-  const { open, handleClose, isUpdating, t } = props
+  const { open, handleClose, t } = props
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordsNotMatchError, setPasswordsNotMatchError] = useState(false)
 
-  const { updatePasswordLowAdmin, updatePasswordSuperAdmin } = UserStore
+  const {
+    updatePasswordLowAdmin,
+    updatePasswordSuperAdmin,
+    isUpdating
+  } = UserStore
 
   const checkPasswords = () => {
     if (newPassword !== confirmPassword) {
@@ -135,4 +140,4 @@ const ChangePassword = props => {
   )
 }
 
-export default withNamespaces()(ChangePassword)
+export default withNamespaces()(observer(ChangePassword))
