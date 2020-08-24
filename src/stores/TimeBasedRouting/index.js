@@ -5,6 +5,7 @@ import SnackbarStore from '../Snackbar'
 import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
 import types from 'utils/types/basicSearchParams'
+import { FREE_ENTRY_NUMBER_ID, ANS_NUMBER_ID } from 'utils/types/numberTypes'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import TimeBasedRoute from './substores/TimeBasedRoute'
 
@@ -14,6 +15,7 @@ export class TimeBasedRouting {
   timeBasedRoutes = []
   availableNumbers = []
   totalPagesAvailableNumbers = 0
+  configureStep = 1
   searchParam = NUMBER_LIKE
   numberToConfigure = ''
   currentTbrName = ''
@@ -288,6 +290,7 @@ decorate(TimeBasedRouting, {
   totalPagesAvailableNumbers: observable,
   numberToConfigure: observable,
   currentTbrName: observable,
+  configureStep: observable,
   isLoadingTBR: observable,
   isTimeBasedRoutePosting: observable,
   isAvailableNumbersLoading: observable,

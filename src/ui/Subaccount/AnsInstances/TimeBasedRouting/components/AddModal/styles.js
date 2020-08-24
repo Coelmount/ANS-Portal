@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
       width: '651px'
     },
     '& .MuiDialog-paperScrollPaper': {
-      minHeight: 434
+      minHeight: 500
     }
   },
   title: {
@@ -68,11 +68,7 @@ const useStyles = makeStyles(theme => ({
   },
   inputsWrap: {
     '& > div': {
-      marginBottom: 30,
-      width: 330
-    },
-    '& input': {
-      width: '330px !important'
+      marginBottom: 30
     }
   }
 }))
