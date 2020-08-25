@@ -73,6 +73,7 @@ const useStyles = makeStyles(theme => ({
     left: 44,
     fontFamily: 'MTN',
     fontWeight: 500,
+    fontSize: 16,
     color: theme.palette.grey40
   },
   inputsWrap: {
@@ -88,6 +89,7 @@ const useStyles = makeStyles(theme => ({
     margin: 16,
     fontFamily: 'MTN',
     fontWeight: 500,
+    fontSize: 16,
     color: theme.palette.grey40
   }
 }))
