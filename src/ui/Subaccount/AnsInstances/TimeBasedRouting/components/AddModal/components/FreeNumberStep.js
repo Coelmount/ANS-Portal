@@ -28,7 +28,7 @@ import { FREE_ENTRY_NUMBER_ID, ANS_NUMBER_ID } from 'utils/types/numberTypes'
 import useStyles from '../styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
 
-const FirstStep = ({ t, handleClose }) => {
+const FreeNumberStep = ({ t, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
 
@@ -49,11 +49,15 @@ const FirstStep = ({ t, handleClose }) => {
   }))
 
   const handlePhoneInputChange = value => {
-    console.log(value, 'value')
     inputStore.set(`+${value}`)
   }
 
-  const handleAdd = () => {
+  // Back to first step
+  const handleBackButtonClick = () => {
+    setConfigureStep(1)
+  }
+
+  const handleAddButtonClick = () => {
     const payload = {
       customerId,
       groupId,
@@ -96,9 +100,9 @@ const FirstStep = ({ t, handleClose }) => {
               variant='outlined'
               color='primary'
               className={classes.backButton}
-              onClick={handleClose}
+              onClick={handleBackButtonClick}
             >
-              {t('cancel')}
+              {t('back')}
             </Button>
             <Button
               variant='contained'
@@ -107,7 +111,7 @@ const FirstStep = ({ t, handleClose }) => {
               disabled={
                 !inputStore.isPhoneNumberValid || isTimeBasedRoutePosting
               }
-              onClick={handleAdd}
+              onClick={handleAddButtonClick}
             >
               {t('add')}
             </Button>
@@ -118,4 +122,4 @@ const FirstStep = ({ t, handleClose }) => {
   )
 }
 
-export default withNamespaces()(observer(FirstStep))
+export default withNamespaces()(observer(FreeNumberStep))

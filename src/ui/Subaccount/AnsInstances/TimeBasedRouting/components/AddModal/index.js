@@ -29,7 +29,15 @@ const AddModal = ({ open, handleClose }) => {
   const { configureStep } = TimeBasedRoutingStore
 
   return (
-    <Dialog open={open} onClose={handleClose} className={classes.root}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      className={
+        configureStep === ANS_NUMBER_ID
+          ? classes.ansNumberStepRoot
+          : classes.root
+      }
+    >
       <Steps step={configureStep} handleClose={handleClose} />
     </Dialog>
   )

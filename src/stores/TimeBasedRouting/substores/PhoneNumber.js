@@ -1,8 +1,10 @@
 import { decorate, observable, action } from 'mobx'
 import pick from 'lodash/pick'
+import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 
 const DEFAULT_VALUES = {
   phoneNumber: '',
+  country: '',
   country_code: '',
   nsn: '',
   type: ''
@@ -15,6 +17,9 @@ class PhoneNumber {
       ...pick(phoneNumber, Object.keys(DEFAULT_VALUES))
     })
     this.phoneNumber = `${phoneNumber.country_code}${phoneNumber.nsn}`
+    this.country = getCountryNameFromNumber(
+      `${phoneNumber.country_code}${phoneNumber.nsn}`
+    )
     this.checked = false
     this.hover = false
   }
