@@ -47,6 +47,12 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 43,
     paddingLeft: 39
   },
+  addDestinationModalContent: {
+    paddingTop: 25,
+    paddingLeft: 39,
+    display: 'flex',
+    flexDirection: 'column'
+  },
   nameInput: {
     marginBottom: 30
   },
@@ -180,6 +186,13 @@ const useStyles = makeStyles(theme => ({
   },
   dialogContent: {
     padding: 0
+  },
+  freeNumberStep: {
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    fontSize: 16,
+    color: theme.palette.grey40,
+    marginBottom: 15
   }
 }))
 
