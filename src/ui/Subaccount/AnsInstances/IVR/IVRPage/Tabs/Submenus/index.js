@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
-import has from 'lodash/has'
+import { useParams } from 'react-router-dom'
 
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -56,6 +55,7 @@ const Submenus = props => {
     getAnnouncements(match.customerId, match.groupId)
     getPhoneNumbers(match.customerId, match.groupId, 1, 9999)
     getConfig()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleDeleteSubmenus = id => {

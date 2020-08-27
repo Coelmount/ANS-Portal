@@ -48,10 +48,12 @@ const UpdateAdminInfo = ({
 
   useEffect(() => {
     getAdminInfo(userId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
 
   useEffect(() => {
     getCustomerAdminsLanguages()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

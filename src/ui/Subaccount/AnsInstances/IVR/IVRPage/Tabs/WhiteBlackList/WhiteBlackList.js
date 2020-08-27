@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
-import { toJS } from 'mobx'
+import { useParams } from 'react-router-dom'
 import has from 'lodash/has'
 import classnames from 'classnames'
 
@@ -13,10 +12,8 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
-import MenuTemplate from 'components/MenuTemplate'
 import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
@@ -41,7 +38,6 @@ const StyledTooltip = withStyles({
 const WhiteBlackList = props => {
   const { t } = props
   const {
-    ivr,
     isLoadingIVR,
     getWhiteBlackList,
     isLoadingWhiteBlackList,
@@ -64,6 +60,7 @@ const WhiteBlackList = props => {
     if (!isLoadingWhiteBlackList) {
       getWhiteBlackList(match.customerId, match.groupId, match.ivrId)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -78,6 +75,7 @@ const WhiteBlackList = props => {
     ) {
       setNumbers(whiteBlackList.blocked_numbers)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [whiteBlackList.allowed_numbers, whiteBlackList.blocked_numbers])
 
   useEffect(() => {

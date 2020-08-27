@@ -49,6 +49,7 @@ const Administrators = ({ t }) => {
 
   useEffect(() => {
     getCustomerAdmins(match.customerId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const titleData = {

@@ -111,7 +111,7 @@ const CustomBreadcrumbs = ({ match, t }) => {
         </Link>
       )
     }
-    if (breadcrumbsAmount > 5 && index === 4 && ivrId) {
+    if (breadcrumbsAmount > 6 && index === 5 && ivrId) {
       return (
         <Link
           to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/ivr`}

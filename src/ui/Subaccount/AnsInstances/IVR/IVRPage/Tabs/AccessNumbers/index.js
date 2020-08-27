@@ -3,11 +3,8 @@ import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
 import Box from '@material-ui/core/Box'
 
 import CustomTable from 'components/CustomTable'
@@ -19,9 +16,6 @@ import DeleteModal from 'components/DeleteModal'
 import EditIcon from 'source/images/svg/edit-blue.svg'
 import RemoveIcon from '@material-ui/icons/Clear'
 import AddIcon from '@material-ui/icons/Add'
-
-import getCC from 'utils/phoneNumbers/getCountryCodeFromNumber'
-import getNSN from 'utils/phoneNumbers/getNsnFromNumber'
 
 import IVRStore from 'stores/IVR'
 
@@ -51,6 +45,7 @@ const AccessNumbers = props => {
   useEffect(() => {
     getMainNumber(match.customerId, match.groupId, match.ivrId)
     getSecondaryNumber(match.customerId, match.groupId, match.ivrId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleCloseDeleteModal = () => {

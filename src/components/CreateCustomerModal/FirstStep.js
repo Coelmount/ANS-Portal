@@ -3,9 +3,6 @@ import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
-import ct from 'countries-and-timezones'
-import toArray from 'lodash/toArray'
-
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -53,6 +50,7 @@ const FirstStep = props => {
 
   useEffect(() => {
     getTimeZones()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -64,10 +62,11 @@ const FirstStep = props => {
         changeCustomer('type', config.tenant_type)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingConfig, config])
 
   const changeId = value => {
-    if (/^[\w\@\-\/]{1,30}$/.test(value)) {
+    if (/^[\w@\-/]{1,30}$/.test(value) || value === '') {
       changeCustomer('tenantId', value)
     } else {
       return

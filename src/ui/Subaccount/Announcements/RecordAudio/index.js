@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { useParams } from 'react-router-dom'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -14,12 +13,11 @@ import useStyles from './styles'
 import AudioRecorder from 'components/AudioRecorder'
 
 const SelectMediaFile = props => {
-  const { open, handleClose, t } = props
+  const { open, handleClose } = props
   const classes = useStyles()
   const [notSupprotedBrowser, setNotSupprotedBrowser] = useState('')
 
   useEffect(() => {
-    const ua = navigator.userAgent
     if (
       /constructor/i.test(window.HTMLElement) ||
       (function(p) {

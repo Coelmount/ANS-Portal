@@ -49,6 +49,7 @@ const AddIVR = props => {
     getCheckLicensesIVR(match.customerId, match.groupId)
     getCustomer(match.customerId)
     getConfig()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleAddIVR = () => {

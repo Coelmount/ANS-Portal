@@ -53,7 +53,6 @@ const useStyles = makeStyles(theme => ({
   },
   cancelButton: {
     width: '160px',
-    width: '160px',
     marginLeft: '32px',
     color: theme.palette.black
   },

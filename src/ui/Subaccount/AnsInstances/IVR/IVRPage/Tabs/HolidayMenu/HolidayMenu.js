@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import has from 'lodash/has'
 
 import Box from '@material-ui/core/Box'
@@ -53,6 +53,7 @@ const HolidayMenu = props => {
       getSubmenus(match.customerId, match.groupId, match.ivrId)
     getPhoneNumbers(match.customerId, match.groupId, 1, 9999)
     getConfig()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (

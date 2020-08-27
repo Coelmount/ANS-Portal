@@ -3,11 +3,9 @@ import { decorate, observable, action } from 'mobx'
 
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
-import phoneNumbersRangeFilter from 'utils/phoneNumbers/rangeFilter'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
 import difference from 'lodash/difference'
-import sortBy from 'lodash/sortBy'
 
 class IVR {
   ivrs = []

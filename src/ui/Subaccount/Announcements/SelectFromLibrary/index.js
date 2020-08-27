@@ -40,6 +40,7 @@ const SelectMediaFile = props => {
   useEffect(() => {
     getDefaultAnnouncements()
     announcementsForPost = []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const classes = useStyles()

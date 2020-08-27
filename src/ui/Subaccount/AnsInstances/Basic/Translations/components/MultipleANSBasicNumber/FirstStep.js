@@ -53,6 +53,7 @@ const FirstStep = props => {
     if (csvValue.length !== 0) {
       setDisabledUpload(errorOdj.showError)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [csvValue.length])
 
   useEffect(() => {
@@ -63,10 +64,12 @@ const FirstStep = props => {
     ) {
       setStep(2)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [multipleCounter.total, multipleCounter.count])
 
   useEffect(() => {
     setDefaultValues()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const downloadCSVFile = () => {

@@ -50,6 +50,7 @@ const CustomersTable = observer(({ t }) => {
   useEffect(() => {
     getCustomers()
     return () => setDefaultTableValues()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setDefaultTableValues])
 
   const handleCloseDeleteModal = () => {
@@ -160,6 +161,7 @@ const CustomersTable = observer(({ t }) => {
         )
       }
     ]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [classes.deleteCell, classes.deleteCustomerIcon, classes.link])
 
   const titleData = {

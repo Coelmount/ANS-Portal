@@ -68,6 +68,7 @@ const AddCustomerAdministrator = ({
         setUserInfo('password', password)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repeatPassword, password])
 
   useEffect(() => {
@@ -76,12 +77,14 @@ const AddCustomerAdministrator = ({
         Boolean(repeatPassword) &&
         !isPasswordInputActive
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPasswordInputActive])
 
   useEffect(() => {
     getCustomer(match.customerId)
     getCustomerAdminsLanguages()
     getUserInfo(match.customerId, match.groupId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleRepeatPasswordChange = e => {
