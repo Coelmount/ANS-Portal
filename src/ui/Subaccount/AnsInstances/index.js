@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import BasicTranslationsStore from 'stores/BasicTranslations'
 import IVRStore from 'stores/IVR'
 import DestinationGroupsStore from 'stores/DestinationGroups'
+import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Loading from 'components/Loading'
 import SubaccountWizzard from 'components/SubaccountWizard'
 
@@ -45,6 +46,8 @@ const AnsInstances = observer(({ t }) => {
 
   const { getIVRs, isLoadingIVRs, ivrs } = IVRStore
 
+  const { getTimeBasedRoutes, timeBasedRoutes } = TimeBaseRoutingStore
+
   const isLoading =
     isBasicTranslationsNumbersLoading ||
     isLoadingIVRs ||
@@ -57,6 +60,10 @@ const AnsInstances = observer(({ t }) => {
       groupId: match.groupId
     })
     getIVRs(match.customerId, match.groupId)
+    getTimeBasedRoutes({
+      customerId: match.customerId,
+      groupId: match.groupId
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -81,7 +88,7 @@ const AnsInstances = observer(({ t }) => {
       label: t('time_based_routing'),
       iconSrc: timeBasedRoutingIcon,
       link: `${ansInstancesPrefix}/time_based_routing`,
-      amount: MOCK_AMOUNT
+      amount: timeBasedRoutes.length
     },
     {
       label: t('ivr'),
