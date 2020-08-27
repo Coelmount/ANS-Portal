@@ -49,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  tabsContainerWrap: {
+    padding: '0px 34px 0px 68px'
   }
 }))
 

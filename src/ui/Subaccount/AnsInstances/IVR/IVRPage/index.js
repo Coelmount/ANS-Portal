@@ -50,8 +50,9 @@ const IVRPage = props => {
   }, [])
 
   const titleData = {
-    mainText: `IVR: ${has(ivr, 'serviceInstanceProfile.name') &&
-      ivr.serviceInstanceProfile.name}`
+    mainText: `IVR: ${
+      has(ivr, 'serviceInstanceProfile.name') && ivr.serviceInstanceProfile.name
+    }`
   }
 
   const handleChange = (event, newValue, hash) => {
@@ -228,7 +229,7 @@ const IVRPage = props => {
         />
         <Tab value={4} label={t('details')} className={classes.lastTab} />
       </Tabs>
-      <Box className={classes.tabsContainerBox}>
+      <Box className={classes.tabsContainerWrap}>
         <TabPanel
           value={returnActiveTab()}
           index={1}
