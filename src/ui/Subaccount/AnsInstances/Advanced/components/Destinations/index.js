@@ -177,6 +177,10 @@ const Destinations = observer(({ t }) => {
   }
   // --------
 
+  const handleAddButtonClick = () => {
+    openedModal.open(addModal)
+  }
+
   const extraDeleteBlock = (
     <span className={classes.deleteName}>{` ${modals.data.name}?`}</span>
   )
@@ -191,7 +195,22 @@ const Destinations = observer(({ t }) => {
 
   const toolbarButtonsBlock = () => {
     return (
-      <Fragment>
+      <Box className={classes.toolbarWrap}>
+        <Box className={classes.toolbarButtonsBlockWrap}>
+          <Box className={classes.addCustomerWrap}>
+            <IconButton
+              aria-label='add icon button'
+              component='span'
+              className={classes.mainIconWrap}
+              onClick={handleAddButtonClick}
+            >
+              <AddOutlinedIcon />
+            </IconButton>
+            <Typography className={classes.addCustomerTitle}>
+              {t('add')}
+            </Typography>
+          </Box>
+        </Box>
         <Box className={classes.toolbarButtonsBlockWrap}>
           <Box className={classes.addCustomerWrap}>
             <IconButton
@@ -213,7 +232,7 @@ const Destinations = observer(({ t }) => {
             </Typography>
           </Box>
         </Box>
-      </Fragment>
+      </Box>
     )
   }
 

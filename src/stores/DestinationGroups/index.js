@@ -4,6 +4,7 @@ import axios from 'utils/axios'
 import SnackbarStore from '../Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import capitalize from 'lodash/capitalize'
+import { toJS } from 'mobx'
 
 export class DestinationGroups {
   destinationGroups = []
@@ -11,6 +12,7 @@ export class DestinationGroups {
   isDestinationGroupPosting = false
   isDestinationGroupDeleting = false
   amountOfDestinationGroups = 0
+  currentDestinationName = ''
 
   getDestinationGroups = ({ customerId, groupId }) => {
     this.destinationGroups = []
@@ -34,6 +36,49 @@ export class DestinationGroups {
           }
         )
         this.amountOfDestinationGroups = this.destinationGroups.length
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch destination groups',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isDestinationGroupsLoading = false
+      })
+  }
+
+  getCurrentNameWithId = ({ customerId, groupId, ansId }) => {
+    this.destinationGroups = []
+    this.currentDestinationName = ''
+    this.isDestinationGroupsLoading = true
+
+    axios
+      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .then(res => {
+        this.destinationGroups = res.data.ans_advanced.map(
+          (destination, index) => {
+            return {
+              ...destination,
+              id: index,
+              routingPolicy: destination.routing_policy,
+              destinations: String(destination.destinations.length),
+              noAnswerNumberOfRings: destination.no_answer_number_of_rings,
+              noAnswerHunt: destination.no_answer_hunt
+                ? `Hunt after ${destination.no_answer_number_of_rings} rings`
+                : 'No hunt'
+            }
+          }
+        )
+        this.amountOfDestinationGroups = this.destinationGroups.length
+      })
+      .then(() => {
+        const currentDestination = this.destinationGroups.find(
+          ({ ans_id }) => ans_id === ansId
+        )
+        this.currentDestinationName = currentDestination.name || ''
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -133,9 +178,11 @@ decorate(DestinationGroups, {
   isDestinationGroupPosting: observable,
   isDestinationGroupDeleting: observable,
   amountOfDestinationGroups: observable,
+  currentDestinationName: observable,
   getDestinationGroups: action,
   postDestinationGroup: action,
-  deleteDestinationGroup: action
+  deleteDestinationGroup: action,
+  getCurrentNameWithId: action
 })
 
 export default new DestinationGroups()

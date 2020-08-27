@@ -196,7 +196,7 @@ const AccessNumbers = observer(({ t }) => {
 
             <CustomTable
               firstCell={true}
-              rows={[mainNumber]}
+              rows={mainNumber ? [mainNumber] : []}
               columns={mainNumberColumns}
               showSearchBar={false}
               showPagination={false}

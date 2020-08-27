@@ -9,44 +9,45 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
     boxShadow: 'none'
   },
-  link: {
-    cursor: 'pointer'
-  },
-  rootEditSchedule: {
-    '& .MuiDialog-paperWidthSm': {
-      width: '650px'
+  tabs: {
+    padding: '0px 34px 0px 68px',
+    width: '100%',
+    '& .MuiTabs-indicator': {
+      height: 4
     },
-    '& .MuiDialog-paperScrollPaper': {
-      height: 540
+    overflow: 'unset',
+    '& .MuiTabs-scrollable': {
+      overflowX: 'unset'
     }
   },
-  title: {
-    '& > *': {
-      fontFamily: 'MTN',
-      fontWeight: 700,
-      fontSize: '24px',
-      color: theme.palette.black
-    },
-    height: '90px',
-    padding: '25px 44px'
+  tab: {
+    fontFamily: 'MTN',
+    backgroundColor: 'white',
+    borderRight: '0.5px solid #CCCCCC',
+    textTransform: 'none',
+    width: 'calc(100% / 5)',
+    color: '#212529',
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
   },
-  closeButton: {
-    position: 'absolute',
-    right: 10,
-    top: 20,
-    '& > span > svg': {
-      width: 25,
-      height: 25
-    }
+  lastTab: {
+    fontFamily: 'MTN',
+    backgroundColor: 'white',
+    textTransform: 'none',
+    width: 'calc(100% / 5)',
+    color: '#212529',
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
   },
-  dialogContent: {
+  popper: {
+    width: 'calc(76% / 5)',
+    border: '0.5px solid #CCCCCC',
+    borderRadius: '0px 0px 3px 3px'
+  },
+  displayNone: {
+    display: 'none'
+  },
+  ivrMenuLabel: {
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column'
-  },
-  dialogActions: {
-    height: '110px',
     justifyContent: 'space-between'
   },
   cancelButton: {

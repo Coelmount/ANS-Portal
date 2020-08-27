@@ -94,7 +94,7 @@ const AddModal = props => {
         rowsPerPage,
         order,
         orderBy,
-        countryCode: selectedCountry.phone
+        countryCode: selectedCountry ? selectedCountry.phone : ''
       }
       getAvailableNumbers(payload)
     }
