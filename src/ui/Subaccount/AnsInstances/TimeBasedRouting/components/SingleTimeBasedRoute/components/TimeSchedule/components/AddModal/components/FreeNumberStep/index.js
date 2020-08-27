@@ -32,12 +32,6 @@ const FreeNumberStep = ({ t, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
 
-  // const {
-  //   postTimeBasedRoute,
-  //   isTimeBasedRoutePosting,
-  //   setConfigureStep
-  // } = TimeBaseRoutingStore
-
   const {
     isEditMode,
     putTimeSchedule,
@@ -66,16 +60,6 @@ const FreeNumberStep = ({ t, handleClose }) => {
   const handleBackButtonClick = () => {
     setStep(1)
   }
-
-  // const handleAddButtonClick = () => {
-  //   const payload = {
-  //     customerId,
-  //     groupId,
-  //     defaultDestination: inputStore.phoneNumber,
-  //     closeModal: handleClose
-  //   }
-  //   postTimeBasedRoute(payload)
-  // }
 
   // Trigger store POST request
   const handleAddButtonClick = () => {
@@ -108,7 +92,7 @@ const FreeNumberStep = ({ t, handleClose }) => {
 
           <DialogContent className={classes.modalContent}>
             <Box className={classes.freeNumberStep}>{`${t('step')} 2/2`}</Box>
-            <Box>
+            <Box className={classes.phoneNumberWrap}>
               <PhoneInput
                 value={inputStore.phoneNumber}
                 placeholder={t('enter_number')}

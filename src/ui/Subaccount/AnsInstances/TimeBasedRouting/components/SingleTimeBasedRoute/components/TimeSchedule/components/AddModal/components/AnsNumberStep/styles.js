@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
       width: '651px'
     },
     '& .MuiDialog-paperScrollPaper': {
-      minHeight: 500
+      minHeight: '100%'
     }
   },
   ansNumberStepRoot: {
@@ -62,18 +62,22 @@ const useStyles = makeStyles(theme => ({
     width: '160px',
     marginRight: '32px'
   },
+  modalContent: {
+    paddingTop: 43,
+    paddingLeft: 39
+  },
   nameInput: {
     marginBottom: 30
   },
   modalContent: {
     display: 'flex',
     justifyContent: 'center',
-    position: 'relative',
-    paddingTop: 70
+    alignItems: 'center',
+    position: 'relative'
   },
   freeNumberStep: {
     position: 'absolute',
-    top: 20,
+    top: 16,
     left: 44,
     fontFamily: 'MTN',
     fontWeight: 500,
