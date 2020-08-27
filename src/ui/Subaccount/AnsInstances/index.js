@@ -57,6 +57,7 @@ const AnsInstances = observer(({ t }) => {
       groupId: match.groupId
     })
     getIVRs(match.customerId, match.groupId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleInstanceRedirect = link => {

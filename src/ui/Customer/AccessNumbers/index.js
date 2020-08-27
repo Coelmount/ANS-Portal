@@ -51,10 +51,12 @@ const AccessNumbers = ({ t }) => {
 
   useEffect(() => {
     getEntitlements(match.customerId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getEntitlements])
 
   useEffect(() => {
     setDefaultTableValues()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleOpenDeleteModal = (id, name) => {

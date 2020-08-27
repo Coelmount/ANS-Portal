@@ -61,7 +61,7 @@ export class PhoneNumbers {
   ) => {
     this.isPhoneNumbersLoading = true
     this.isGetPhoneNumbersRequestDone = null
-    const country = (filterValues && filterValues.country) || ''
+    //const country = (filterValues && filterValues.country) || ''
     const type = (filterValues && filterValues.type) || ''
     const getStatus = () => {
       if (filterValues && filterValues.status === 'assigned') return true

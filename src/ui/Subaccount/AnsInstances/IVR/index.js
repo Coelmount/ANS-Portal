@@ -36,7 +36,6 @@ const IVR = props => {
     singleLvl,
     multiLvl,
     getCheckLicensesIVR,
-    putUpdateIVR,
     deleteIVR,
     isDeletingIVR
   } = IVRStore
@@ -47,6 +46,7 @@ const IVR = props => {
   useEffect(() => {
     getIVRs(match.customerId, match.groupId)
     getCheckLicensesIVR(match.customerId, match.groupId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // const handleSwitchStatus = () => {

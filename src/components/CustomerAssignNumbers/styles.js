@@ -577,9 +577,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500,
     fontFamily: 'MTN'
   },
-  checkbox: {
-    paddingBottom: 0
-  },
   sortLabel: {
     '& svg': {
       marginTop: 10

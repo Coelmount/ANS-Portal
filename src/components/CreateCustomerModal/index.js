@@ -36,7 +36,7 @@ const CreateCustomer = props => {
     isEditCustomer,
     isEditSubaccount
   } = props
-  const { step, changeCustomer, setCreateSubaccount } = store
+  const { step, setCreateSubaccount } = store
 
   const { getConfig, isLoadingConfig } = ConfigStore
 
@@ -46,6 +46,7 @@ const CreateCustomer = props => {
   useEffect(() => {
     getConfig()
     setCreateSubaccount && setCreateSubaccount(createSubaccount)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isLoadingConfig) {

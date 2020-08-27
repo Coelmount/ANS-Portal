@@ -41,6 +41,7 @@ const UpdateMainNumber = props => {
   useEffect(() => {
     setNumber(mainNumber.value ? mainNumber.value : '')
     getIVRNumbers(match.customerId, match.groupId, 1, 99999, 'id', 'asc')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleUpdate = () => {

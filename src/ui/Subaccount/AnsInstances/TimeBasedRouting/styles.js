@@ -49,6 +49,24 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  cancelButton: {
+    width: '160px',
+    marginLeft: '32px',
+    color: theme.palette.black
+  },
+  assignButton: {
+    width: '160px',
+    marginRight: '32px'
+  },
+  select: {
+    width: 254
+  },
+  editSchedulesText: {
+    marginBottom: 10,
+    fontSize: 16,
+    fontFamily: 'MTN',
+    fontWeight: 500
   }
 }))
 

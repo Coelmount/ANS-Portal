@@ -47,6 +47,7 @@ const SetEntitlements = props => {
     const isFilterNeeded = Boolean(match.customerId)
     getEntitlementTypes(isFilterNeeded)
     return () => setDefaultEntitlementTypes()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getEntitlementTypes, setDefaultEntitlementTypes])
 
   useEffect(() => {

@@ -17,6 +17,8 @@ const getDayNumberFromDayName = day => {
       return 12
     case 'Saturday':
       return 13
+    default:
+      return 7
   }
 }
 

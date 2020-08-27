@@ -46,6 +46,7 @@ const IVRPage = props => {
 
   useEffect(() => {
     getIVR(match.customerId, match.groupId, match.ivrId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const titleData = {
@@ -189,7 +190,6 @@ const IVRPage = props => {
               {ivrMenuName} <ExpandMoreIcon />
             </Box>
           }
-          className={classes.tab}
           onClick={handleToggle}
           ref={anchorRef}
           className={classnames(classes.tab, {

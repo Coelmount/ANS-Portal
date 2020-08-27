@@ -36,8 +36,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
     handleActiveParentNav,
     handleActiveChildNav,
     handleActiveSubChildNav,
-    getActiveNavsAfterUpdate,
-    setDefaultValues
+    getActiveNavsAfterUpdate
   } = DefaultLayoutStore
 
   const {
@@ -51,7 +50,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
     isLoadingCustomerName,
     customerName,
     customer,
-    isLoadingCustomer,
     getCustomer
   } = CustomersStore
 
@@ -79,6 +77,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
         getSubaccount(match.customerId, match.groupId)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match.groupId, match.customerId])
 
   // update user data if store updated
@@ -91,6 +90,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
       setUserName(subaccount.groupName)
       setUserSubtitle(t('subaccount'))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subaccount.groupName, customerName])
 
   const redirectToMainPage = () => {

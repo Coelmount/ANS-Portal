@@ -43,6 +43,7 @@ const UpdateStatusModal = props => {
   useEffect(() => {
     getCustomerStatus(tenant.tenantId)
     getCustomerStatuses()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
