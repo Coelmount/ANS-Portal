@@ -49,6 +49,7 @@ const AvailableNumbers = ({ t }) => {
   const {
     getAvailableNumbers,
     updateSearchParam,
+    clearConfigureStep,
     availableNumbers,
     searchParam,
     totalPagesAvailableNumbers,
@@ -81,6 +82,7 @@ const AvailableNumbers = ({ t }) => {
     close() {
       this.openedId = null
       getRequest()
+      clearConfigureStep()
     }
   }))
 

@@ -22,10 +22,8 @@ import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
 import {
-  PHONE_NUMBER_ID,
-  ANS_INSTANCE_ID,
-  ANS_DESTINATION_ID,
-  ANS_IVR_ID
+  FREE_ENTRY_NUMBER_ID,
+  ANS_NUMBER_ID
 } from 'utils/types/addDestinationModalStepsId'
 
 import ScheduleIcon from 'source/images/components/ScheduleIcon'
@@ -125,20 +123,12 @@ const EditModal = ({ t, open, handleClose }) => {
 
   const phoneNumberOptions = [
     {
-      label: t('add_phone_number'),
-      value: PHONE_NUMBER_ID
+      label: t('select_free_enter_number'),
+      value: FREE_ENTRY_NUMBER_ID
     },
     {
-      label: t('select_ans_instance'),
-      value: ANS_INSTANCE_ID
-    },
-    {
-      label: t('select_ans_destination'),
-      value: ANS_DESTINATION_ID
-    },
-    {
-      label: t('select_ans_ivr'),
-      value: ANS_IVR_ID
+      label: t('select_ans_number'),
+      value: ANS_NUMBER_ID
     }
   ]
 

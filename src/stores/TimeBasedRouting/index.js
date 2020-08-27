@@ -4,23 +4,44 @@ import capitalize from 'lodash/capitalize'
 import SnackbarStore from '../Snackbar'
 import axios from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
+import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
 import types from 'utils/types/basicSearchParams'
+import { FREE_ENTRY_NUMBER_ID, ANS_NUMBER_ID } from 'utils/types/numberTypes'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import TimeBasedRoute from './substores/TimeBasedRoute'
+import PhoneNumber from './substores/PhoneNumber'
 
 const { NUMBER_LIKE, COUNTRY_CODE } = types
 
 export class TimeBasedRouting {
   timeBasedRoutes = []
   availableNumbers = []
+  ansNumbers = []
+  countries = []
   totalPagesAvailableNumbers = 0
+  totalPagesAnsNumbers = 0
+  configureStep = 1
+  tbrToAddName = ''
   searchParam = NUMBER_LIKE
   numberToConfigure = ''
   currentTbrName = ''
   isLoadingTBR = true
   isTimeBasedRoutePosting = false
   isAvailableNumbersLoading = true
+  isAnsNumbersLoading = true
   isDeleting = false
+
+  setConfigureStep = value => {
+    this.configureStep = value
+  }
+
+  clearConfigureStep = () => {
+    this.configureStep = 1
+  }
+
+  setTbrToAddName = value => {
+    this.tbrToAddName = value
+  }
 
   getAvailableNumbers = (
     customerId,
@@ -87,6 +108,81 @@ export class TimeBasedRouting {
         })
       )
       .finally(() => (this.isAvailableNumbersLoading = false))
+  }
+
+  getAnsNumbers = ({
+    customerId,
+    groupId,
+    page,
+    rowsPerPage,
+    orderBy,
+    order,
+    countryCode
+  }) => {
+    this.ansNumbers = []
+    this.isAnsNumbersLoading = true
+
+    let orderByField
+    switch (orderBy) {
+      case 'phoneNumber': {
+        orderByField = 'nsn'
+        break
+      }
+      case 'type': {
+        orderByField = 'type'
+        break
+      }
+      case 'country': {
+        orderByField = 'country_code'
+        break
+      }
+      default: {
+        orderByField = 'id'
+      }
+    }
+    const orderField = order || 'asc'
+    const countryCodeField = countryCode.length
+      ? countryCode.replace('+', '%2B')
+      : ''
+
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${rowsPerPage}}&cols=["country_code","nsn","type","connected_to","service_capabilities"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=tbr&in_use=true&country_code=${countryCodeField}`
+      )
+      .then(res => {
+        const pagination = res.data.pagination
+        const requestResult = res.data.numbers
+        const transformedNumbers = requestResult.map(
+          phoneNumber => new PhoneNumber(phoneNumber)
+        )
+        const countryCodes = requestResult.map(item => item.country_code)
+        const uniqueCountryCodes = [...new Set(countryCodes)]
+
+        runInAction(() => {
+          this.ansNumbers = transformedNumbers
+          this.totalPagesAnsNumbers = pagination[2]
+          this.countries = uniqueCountryCodes.map(countryCode => ({
+            phone: countryCode,
+            code: getCountryTwoLetterCodeFromNumber(`${countryCode}11111`),
+            label: getCountryNameFromNumber(`${countryCode}11111`)
+          }))
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch ANS numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isAnsNumbersLoading = false
+      })
+  }
+
+  clearAnsNumbersLoading = () => {
+    this.isAnsNumbersLoading = true
   }
 
   updateSearchParam = value => {
@@ -190,14 +286,19 @@ export class TimeBasedRouting {
     }
   }
 
-  postTimeBasedRoute = ({ customerId, groupId, name, closeModal }) => {
+  postTimeBasedRoute = ({
+    customerId,
+    groupId,
+    defaultDestination,
+    closeModal
+  }) => {
     this.isTimeBasedRoutePosting = true
     axios
       .post(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`,
         {
-          name,
-          defaultDestination: this.numberToConfigure
+          name: this.tbrToAddName,
+          defaultDestination
         }
       )
       .then(() => {
@@ -275,6 +376,9 @@ decorate(TimeBasedRouting, {
   areAllNumbersChecked: computed,
   checkedNumbers: computed,
   deleteString: computed,
+  setConfigureStep: action,
+  clearConfigureStep: action,
+  setTbrToAddName: action,
   getTimeBasedRoutes: action,
   postTimeBasedRoute: action,
   getAvailableNumbers: action,
@@ -283,14 +387,20 @@ decorate(TimeBasedRouting, {
   handleCheckAll: action,
   deleteTimeBasedRoutes: action,
   getCurrentNameWithId: action,
+  getAnsNumbers: action,
+  clearAnsNumbersLoading: action,
   timeBasedRoutes: observable,
   searchParam: observable,
   totalPagesAvailableNumbers: observable,
+  totalPagesAnsNumbers: observable,
   numberToConfigure: observable,
+  ansNumbers: observable,
   currentTbrName: observable,
+  configureStep: observable,
   isLoadingTBR: observable,
   isTimeBasedRoutePosting: observable,
   isAvailableNumbersLoading: observable,
+  isAnsNumbersLoading: observable,
   isDeleting: observable
 })
 

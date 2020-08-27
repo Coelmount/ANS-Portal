@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
       width: '651px'
     },
     '& .MuiDialog-paperScrollPaper': {
-      minHeight: 500
+      minHeight: '100%'
     }
   },
   ansNumberStepRoot: {

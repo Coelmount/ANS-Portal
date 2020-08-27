@@ -21,10 +21,12 @@ import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
 import {
-  PHONE_NUMBER_ID,
-  ANS_INSTANCE_ID,
-  ANS_DESTINATION_ID,
-  ANS_IVR_ID
+  // PHONE_NUMBER_ID,
+  // ANS_INSTANCE_ID,
+  // ANS_DESTINATION_ID,
+  // ANS_IVR_ID
+  FREE_ENTRY_NUMBER_ID,
+  ANS_NUMBER_ID
 } from 'utils/types/addDestinationModalStepsId'
 
 import ScheduleIcon from 'source/images/components/ScheduleIcon'
@@ -40,7 +42,7 @@ const AddDestination = ({ t, handleClose }) => {
 
   const formStore = useLocalStore(() => ({
     name: '',
-    phoneNumber: PHONE_NUMBER_ID,
+    phoneNumber: FREE_ENTRY_NUMBER_ID,
     schedule: '',
     scheduleOptions: [],
 
@@ -84,20 +86,12 @@ const AddDestination = ({ t, handleClose }) => {
 
   const phoneNumberOptions = [
     {
-      label: t('add_phone_number'),
-      value: PHONE_NUMBER_ID
+      label: t('select_free_enter_number'),
+      value: FREE_ENTRY_NUMBER_ID
     },
     {
-      label: t('select_ans_instance'),
-      value: ANS_INSTANCE_ID
-    },
-    {
-      label: t('select_ans_destination'),
-      value: ANS_DESTINATION_ID
-    },
-    {
-      label: t('select_ans_ivr'),
-      value: ANS_IVR_ID
+      label: t('select_ans_number'),
+      value: ANS_NUMBER_ID
     }
   ]
 
@@ -114,7 +108,8 @@ const AddDestination = ({ t, handleClose }) => {
         </IconButton>
       </DialogTitle>
 
-      <DialogContent className={classes.modalContent}>
+      <DialogContent className={classes.addDestinationModalContent}>
+        <Box className={classes.freeNumberStep}>{`${t('step')} 1/2`}</Box>
         {isLoading ? (
           <Loading />
         ) : (
