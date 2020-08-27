@@ -15,6 +15,7 @@ const { NUMBER_LIKE, COUNTRY_CODE } = types
 
 export class TimeBasedRouting {
   timeBasedRoutes = []
+  timeBasedRoute = {}
   availableNumbers = []
   ansNumbers = []
   countries = []
@@ -26,6 +27,7 @@ export class TimeBasedRouting {
   numberToConfigure = ''
   currentTbrName = ''
   isLoadingTBR = true
+  isLoadingSingleTBR = true
   isTimeBasedRoutePosting = false
   isAvailableNumbersLoading = true
   isAnsNumbersLoading = true
@@ -223,6 +225,76 @@ export class TimeBasedRouting {
       })
   }
 
+  getTimeBasedRoute = ({ customerId, groupId, tbrName }) => {
+    this.timeBasedRoute = {}
+    this.isLoadingSingleTBR = true
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrName}`
+      )
+      .then(res => {
+        const timeBasedRouteData = res.data.time_based_route
+        runInAction(() => {
+          this.timeBasedRoute = timeBasedRouteData
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) || 'Failed to fetch time based route instance',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isLoadingSingleTBR = false
+      })
+  }
+
+  putTimeBasedRoute = ({
+    customerId,
+    groupId,
+    tbrName,
+    name,
+    defaultDestination,
+    closeModal
+  }) => {
+    this.isTbrUpdating = true
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrName}`,
+        {
+          name,
+          defaultDestination
+        }
+      )
+      .then(() => {
+        SnackbarStore.enqueueSnackbar({
+          message: `Time based routing instance successfully updated`,
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .then(() => {
+        this.getCurrentNameWithId({ customerId, groupId, tbrId: tbrName })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) || 'Failed to update time based route instance',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        closeModal()
+        this.isTbrUpdating = false
+      })
+  }
+
   getCurrentNameWithId = ({ customerId, groupId, tbrId }) => {
     this.timeBasedRoutes = []
     this.currentTbrName = ''
@@ -380,6 +452,8 @@ decorate(TimeBasedRouting, {
   clearConfigureStep: action,
   setTbrToAddName: action,
   getTimeBasedRoutes: action,
+  getTimeBasedRoute: action,
+  putTimeBasedRoute: action,
   postTimeBasedRoute: action,
   getAvailableNumbers: action,
   updateSearchParam: action,
@@ -390,6 +464,7 @@ decorate(TimeBasedRouting, {
   getAnsNumbers: action,
   clearAnsNumbersLoading: action,
   timeBasedRoutes: observable,
+  timeBasedRoute: observable,
   searchParam: observable,
   totalPagesAvailableNumbers: observable,
   totalPagesAnsNumbers: observable,
@@ -398,6 +473,8 @@ decorate(TimeBasedRouting, {
   currentTbrName: observable,
   configureStep: observable,
   isLoadingTBR: observable,
+  isLoadingSingleTBR: observable,
+  isTbrUpdating: observable,
   isTimeBasedRoutePosting: observable,
   isAvailableNumbersLoading: observable,
   isAnsNumbersLoading: observable,

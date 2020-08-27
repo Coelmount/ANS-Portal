@@ -18,7 +18,7 @@ import Typography from '@material-ui/core/Typography'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
-import DestinationsStore from 'stores/Destionations'
+import TimeBasedRoutingStore from 'stores/TimeBasedRouting'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import PeriodForm from 'components/PeriodForm'
@@ -26,26 +26,22 @@ import transformTime from 'utils/schedules/transformTime'
 
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
+import { toJS } from 'mobx'
 
-const EditDefaultDestinationModal = ({
-  t,
-  open,
-  handleClose,
-  destinationId
-}) => {
+const EditDefaultDestinationModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
-  const { customerId, groupId } = match
+  const { customerId, groupId, tbrName } = match
 
   const {
-    destination,
-    isDestinationLoading,
-    isDestinationEditing,
-    getDestination,
-    putDestination
-  } = DestinationsStore
+    timeBasedRoute,
+    isLoadingSingleTBR,
+    isTbrUpdating,
+    getTimeBasedRoute,
+    putTimeBasedRoute
+  } = TimeBasedRoutingStore
 
-  const isLoading = isDestinationLoading || isDestinationEditing
+  const isLoading = isLoadingSingleTBR || isTbrUpdating
 
   const inputStore = useLocalStore(() => ({
     values: {
@@ -64,28 +60,28 @@ const EditDefaultDestinationModal = ({
     const payload = {
       customerId,
       groupId,
-      destinationId
+      tbrName
     }
-    getDestination(payload)
+    getTimeBasedRoute(payload)
   }, [])
 
   useEffect(() => {
-    if (destination && Object.keys(destination).length) {
-      inputStore.set('name', destination.name)
-      inputStore.set('phoneNumber', destination.phoneNumber)
+    if (timeBasedRoute && Object.keys(timeBasedRoute).length) {
+      inputStore.set('name', timeBasedRoute.name)
+      inputStore.set('phoneNumber', timeBasedRoute.defaultDestination)
     }
-  }, [destination])
+  }, [timeBasedRoute])
 
   const handleSave = () => {
     const payload = {
       customerId,
       groupId,
-      destinationId,
+      tbrName,
       name: inputStore.values.name,
-      phoneNumber: inputStore.values.phoneNumber,
+      defaultDestination: inputStore.values.phoneNumber,
       closeModal: handleClose
     }
-    putDestination(payload)
+    putTimeBasedRoute(payload)
   }
 
   return (
