@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
   toolbarButtonsBlockWrap: {
     display: 'flex',
     justifyContent: 'flex-end',
-    marginRight: 40
+    marginLeft: 35
   },
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
@@ -173,7 +173,6 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.active.blue
   },
   addCustomerTitle: {
-    marginRight: 10,
     fontSize: 14,
     fontStyle: 'normal',
     fontFamily: 'MTN',
@@ -252,7 +251,10 @@ const useStyles = makeStyles(theme => ({
   toolbarWrap: {
     display: 'flex',
     justifyContent: 'flex-end',
-    width: '100%'
+    width: '100%',
+    paddingRight: 33,
+    marginTop: 15,
+    background: theme.palette.active.main
   }
 }))
 

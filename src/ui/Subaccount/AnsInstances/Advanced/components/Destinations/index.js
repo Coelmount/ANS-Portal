@@ -193,7 +193,7 @@ const Destinations = observer(({ t }) => {
     </Fragment>
   )
 
-  const toolbarButtonsBlock = () => {
+  const ToolbarButtonsBlock = () => {
     return (
       <Box className={classes.toolbarWrap}>
         <Box className={classes.toolbarButtonsBlockWrap}>
@@ -314,6 +314,7 @@ const Destinations = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
+        <ToolbarButtonsBlock />
         {isDestinationsLoading ? (
           <Loading />
         ) : (
@@ -322,7 +323,6 @@ const Destinations = observer(({ t }) => {
             rows={numbers}
             columns={columns}
             searchCriterias={['name', 'phoneNumber']}
-            extraToolbarBlock={toolbarButtonsBlock}
             getSearchList={setSearchList}
             noAvailableDataMessage={t('no_destinations_available')}
             tableId={'ans_advanced_destinations_list'}
