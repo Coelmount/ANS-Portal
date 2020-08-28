@@ -16,6 +16,7 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
 import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Input from 'components/Input'
@@ -76,7 +77,7 @@ const FirstStep = ({ t, handleClose }) => {
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.inputsWrap}>
           <Input
-            icon={<PhoneOutlinedIcon />}
+            icon={<PermIdentityOutlined />}
             label={t('name')}
             variant='outlined'
             onChange={e => inputStore.set('name', e.target.value)}
