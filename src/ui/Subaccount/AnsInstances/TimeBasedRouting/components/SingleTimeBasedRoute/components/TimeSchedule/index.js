@@ -49,7 +49,7 @@ const pageViews = [
   }
 ]
 
-const PageViewSelectorMenu = ({ t, setViewType }) => {
+const PageViewSelectorMenu = ({ t, setViewType, viewType }) => {
   const classes = useStyles()
 
   const handlePageViewChange = id => {
@@ -63,7 +63,9 @@ const PageViewSelectorMenu = ({ t, setViewType }) => {
         <div className={classes.pageViewBlock} key={id}>
           <Box
             onClick={() => handlePageViewChange(id)}
-            className={classes.pageViewIconWrap}
+            className={classnames(classes.pageViewIconWrap, {
+              [classes.activePageView]: viewType === id
+            })}
           >
             {icon}
           </Box>
@@ -298,7 +300,11 @@ const TimeSchedule = ({ t }) => {
 
   return (
     <Paper className={classes.root}>
-      <PageViewSelectorMenu t={t} setViewType={setViewType} />
+      <PageViewSelectorMenu
+        t={t}
+        setViewType={setViewType}
+        viewType={viewType}
+      />
 
       {viewType === LIST_VIEW_ID ? (
         <ListView

@@ -271,7 +271,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginTop: 20,
     paddingBottom: 20,
-    borderBottom: '1px solid #E8E8E8'
+    borderBottom: `1px solid ${theme.palette.greyE8}`
   },
   pageViewWrap: {
     display: 'flex',
@@ -295,6 +295,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 15,
     marginRight: 5,
     cursor: 'pointer'
+  },
+  activePageView: {
+    border: `2px solid ${theme.palette.primary.main}`
   },
   inputWrap: {
     width: 250
