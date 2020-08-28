@@ -7,6 +7,7 @@ import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoL
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
 import getRandomColor from 'utils/schedules/getRandomColor'
 import transformWeekDateFormat from 'utils/schedules/transformWeekDateFormat'
+import { WEEK_PERIOD_TYPE } from 'utils/types/scheduleTypes'
 import PhoneNumber from './substores/PhoneNumber'
 import AnsInstance from './substores/AnsInstance'
 import AnsDestination from './substores/AnsDestination'
@@ -155,7 +156,11 @@ export class TimeSchedules {
           .map(({ periods }) => periods)
           .flat()
 
-        this.allPeriods = allPeriods.map((item, index) => {
+        const weekPeriods = allPeriods.filter(
+          period => period.type === WEEK_PERIOD_TYPE
+        )
+
+        this.allPeriods = weekPeriods.map((item, index) => {
           const generatedKey = index
           return {
             id: index,
