@@ -20,7 +20,7 @@ const SecondLevelTabItem = ({
   handleActiveSubChildNav
 }) => {
   return (
-    <Box key={`${link}`}>
+    <Box>
       <ListItem
         component={NavLink}
         className={classes.subMenuItem}

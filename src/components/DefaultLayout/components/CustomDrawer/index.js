@@ -166,6 +166,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                       ({ link, name, text, childLinks }) => {
                         return (
                           <SecondLevelTabItem
+                            key={link}
                             classes={classes}
                             link={link}
                             name={name}
