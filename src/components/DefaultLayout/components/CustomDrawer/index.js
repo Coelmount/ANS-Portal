@@ -19,6 +19,10 @@ import DefaultLayoutStore from 'stores/DefaultLayout'
 import SubaccountsStore from 'stores/Subaccounts'
 import CustomersStore from 'stores/Customers'
 
+import CurrentUser from './components/CurrentUser'
+import FirstLevelTabItem from './components/FirstLevelTabItem'
+import SecondLevelTabItem from './components/SecondLevelTabItem'
+
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 import subaccountIcon from 'source/images/svg/users-subaccount.svg'
 import customerIcon from 'source/images/svg/users-customer.svg'
@@ -111,19 +115,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
     }
   }
 
-  const redirectToDetailsPage = () => {
-    if (match.customerId && match.groupId) {
-      history.push(
-        `/customers/${match.customerId}/subaccounts/${match.groupId}/details`
-      )
-      return
-    }
-    if (match.customerId) {
-      history.push(`/customers/${match.customerId}/details`)
-      return
-    }
-  }
-
   return (
     <Fragment>
       <Box className='drawerHeader'>
@@ -136,34 +127,13 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
       </Box>
       <List className={classes.wrapper}>
         {userSubtitle && (
-          <Fragment>
-            {isUserLoading && !userName ? (
-              <CircularProgress className={classes.loadingIcon} />
-            ) : (
-              <Box className={classes.userWrap} onClick={redirectToDetailsPage}>
-                <Typography className={classes.userSubtitle}>
-                  {userSubtitle.toUpperCase()}
-                </Typography>
-                <Box className={classes.userNameWrap}>
-                  <img
-                    className={classes.usersIcon}
-                    src={
-                      userSubtitle === 'subaccount'
-                        ? subaccountIcon
-                        : customerIcon
-                    }
-                    alt='users'
-                  />
-                  <span>{userName}</span>
-                </Box>
-                {customer.status && (
-                  <Box className={classes.statusBox}>
-                    {customer.status === 'Active' ? '' : t('account_suspended')}
-                  </Box>
-                )}
-              </Box>
-            )}
-          </Fragment>
+          <CurrentUser
+            classes={classes}
+            isUserLoading={isUserLoading}
+            userName={userName}
+            userSubtitle={userSubtitle}
+            customerStatus={customer.status}
+          />
         )}
         {getCurrentLevel().map((navLink, index) => {
           const { link, icon: Icon, text, name } = navLink
@@ -175,35 +145,15 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                 { [classes.firstTab]: index === 0 }
               )}
             >
-              <ListItem
-                activeClassName={classes.activeMenuItem}
-                component={NavLink}
-                to={link}
-                className={classnames(classes.menuItem, {
-                  [classes.menuItemAnsInstances]:
-                    name === 'ans_instances' || name === 'schedules',
-                  [classes.activeMenuItem]:
-                    name === 'schedules' && activeParentNav === 'schedules'
-                })}
-                onClick={() => handleActiveParentNav(name)}
-                button
-              >
-                <Box className={classes.topLevelTitle}>
-                  {navLink.childLinks && (
-                    <ExpandMoreIcon
-                      className={
-                        activeParentNav === name
-                          ? classes.activeExpandIcon
-                          : classes.expandIcon
-                      }
-                    />
-                  )}
-                  <ListItemIcon className='icon'>
-                    <Icon className='sidebarIcon' />
-                  </ListItemIcon>
-                  <ListItemText primary={t(`${text}`)} className='menu-text' />
-                </Box>
-              </ListItem>
+              <FirstLevelTabItem
+                classes={classes}
+                link={link}
+                name={name}
+                activeParentNav={activeParentNav}
+                navLink={navLink}
+                Icon={Icon}
+                text={text}
+              />
 
               <Collapse
                 in={activeParentNav === name}
@@ -212,83 +162,23 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
               >
                 <List className={classes.collapse}>
                   {navLink.childLinks &&
-                    navLink.childLinks.map(childLink => {
-                      return (
-                        <Box key={`${childLink.link}`}>
-                          <ListItem
-                            component={NavLink}
-                            className={classes.subMenuItem}
-                            activeClassName={classes.activeSubMenuItem}
-                            to={childLink.link}
-                            onClick={() => handleActiveChildNav(childLink.name)}
-                            button
-                          >
-                            <Box
-                              className={
-                                childLink.name === 'if tab with icon added'
-                                  ? classes.secondLevelTitleWithIcon
-                                  : classes.secondLevelTitle
-                              }
-                            >
-                              {childLink.childLinks && (
-                                <ExpandMoreIcon
-                                  className={
-                                    activeChildNav === childLink.name
-                                      ? classes.activeExpandIcon
-                                      : classes.expandIcon
-                                  }
-                                />
-                              )}
-                              <ListItemText
-                                className={
-                                  activeChildNav === childLink.name
-                                    ? classes.activeSecondLevelItemText
-                                    : classes.secondLevelItemText
-                                }
-                                primary={childLink.text}
-                              />
-                            </Box>
-                          </ListItem>
-                          <Collapse
-                            in={activeChildNav === childLink.name}
-                            timeout='auto'
-                            unmountOnExit
-                          >
-                            <List className={classes.collapse}>
-                              {childLink.childLinks &&
-                                childLink.childLinks.map(subChild => {
-                                  return (
-                                    <Box key={`${subChild.link}`}>
-                                      <ListItem
-                                        className={classes.activeSubMenuItem}
-                                        component={NavLink}
-                                        to={subChild.link}
-                                        onClick={() =>
-                                          handleActiveSubChildNav(
-                                            subChild.name,
-                                            childLink.name
-                                          )
-                                        }
-                                        button
-                                      >
-                                        <ListItemText
-                                          className={
-                                            activeBasicSubChild ===
-                                            subChild.name
-                                              ? classes.activeThirdLevelItemText
-                                              : classes.thirdLevelItemText
-                                          }
-                                          primary={subChild.text}
-                                        />
-                                      </ListItem>
-                                    </Box>
-                                  )
-                                })}
-                            </List>
-                          </Collapse>
-                        </Box>
-                      )
-                    })}
+                    navLink.childLinks.map(
+                      ({ link, name, text, childLinks }) => {
+                        return (
+                          <SecondLevelTabItem
+                            classes={classes}
+                            link={link}
+                            name={name}
+                            childLinks={childLinks}
+                            text={text}
+                            activeChildNav={activeChildNav}
+                            activeBasicSubChild={activeBasicSubChild}
+                            handleActiveChildNav={handleActiveChildNav}
+                            handleActiveSubChildNav={handleActiveSubChildNav}
+                          />
+                        )
+                      }
+                    )}
                 </List>
               </Collapse>
             </Box>
