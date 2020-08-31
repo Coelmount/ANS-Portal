@@ -19,6 +19,7 @@ const SecondLevelTabItem = ({
   handleActiveChildNav,
   handleActiveSubChildNav
 }) => {
+  console.log(activeChildNav, 'activeChildNav')
   return (
     <Box>
       <ListItem
@@ -59,7 +60,6 @@ const SecondLevelTabItem = ({
         <List className={classes.collapse}>
           {childLinks &&
             childLinks.map(subChild => {
-              console.log(subChild, 'subChild')
               return (
                 <Box key={`${subChild.link}`}>
                   <ListItem
