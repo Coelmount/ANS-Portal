@@ -17,7 +17,7 @@ const FirstLevelTabItem = ({
   link,
   name,
   activeParentNav,
-  navLink,
+  childLinks,
   Icon,
   text
 }) => {
@@ -38,7 +38,7 @@ const FirstLevelTabItem = ({
       button
     >
       <Box className={classes.topLevelTitle}>
-        {navLink.childLinks && (
+        {childLinks && (
           <ExpandMoreIcon
             className={
               activeParentNav === name

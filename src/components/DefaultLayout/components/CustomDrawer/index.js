@@ -135,9 +135,8 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
             customerStatus={customer.status}
           />
         )}
-        {getCurrentLevel().map((navLink, index) => {
-          const { link, icon: Icon, text, name } = navLink
-          return (
+        {getCurrentLevel().map(
+          ({ link, icon: Icon, text, name, childLinks }, index) => (
             <Box
               key={`${link}`}
               className={classnames(
@@ -150,7 +149,7 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                 link={link}
                 name={name}
                 activeParentNav={activeParentNav}
-                navLink={navLink}
+                childLinks={childLinks}
                 Icon={Icon}
                 text={text}
               />
@@ -161,30 +160,26 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
                 unmountOnExit
               >
                 <List className={classes.collapse}>
-                  {navLink.childLinks &&
-                    navLink.childLinks.map(
-                      ({ link, name, text, childLinks }) => {
-                        return (
-                          <SecondLevelTabItem
-                            key={link}
-                            classes={classes}
-                            link={link}
-                            name={name}
-                            childLinks={childLinks}
-                            text={text}
-                            activeChildNav={activeChildNav}
-                            activeBasicSubChild={activeBasicSubChild}
-                            handleActiveChildNav={handleActiveChildNav}
-                            handleActiveSubChildNav={handleActiveSubChildNav}
-                          />
-                        )
-                      }
-                    )}
+                  {childLinks &&
+                    childLinks.map(({ link, name, text, childLinks }) => (
+                      <SecondLevelTabItem
+                        key={link}
+                        classes={classes}
+                        link={link}
+                        name={name}
+                        childLinks={childLinks}
+                        text={text}
+                        activeChildNav={activeChildNav}
+                        activeBasicSubChild={activeBasicSubChild}
+                        handleActiveChildNav={handleActiveChildNav}
+                        handleActiveSubChildNav={handleActiveSubChildNav}
+                      />
+                    ))}
                 </List>
               </Collapse>
             </Box>
           )
-        })}
+        )}
       </List>
     </Fragment>
   )
