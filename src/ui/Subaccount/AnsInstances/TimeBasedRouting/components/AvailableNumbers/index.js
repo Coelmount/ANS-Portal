@@ -1,19 +1,11 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useDebounce } from 'use-debounce'
 import { useParams } from 'react-router-dom'
-import classnames from 'classnames'
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
@@ -23,20 +15,14 @@ import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import CustomTable, {
   DEFAULT_ROWS_PER_PAGE
 } from 'components/CustomTableBackendPagination'
-import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import AddModal from '../AddModal'
-import usePreviousValue from 'utils/hooks/usePreviousValue'
-import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
-import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import types from 'utils/types/basicSearchParams'
 
 import useStyles from './styles'
 
 const { COUNTRY_CODE, NUMBER_LIKE, TYPE } = types
 const addModalId = 1
-const deleteModalId = 2
 
 const AvailableNumbers = ({ t }) => {
   const searchParamsList = [COUNTRY_CODE, NUMBER_LIKE, TYPE]
@@ -100,12 +86,14 @@ const AvailableNumbers = ({ t }) => {
 
   useEffect(() => {
     getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // onUpdate search/sorting
   useEffect(() => {
     setPage(1)
     if (!isAvailableNumbersLoading) getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNumberLike, orderBy, order, searchParam])
 
   // onUpdate pagination
@@ -120,6 +108,7 @@ const AvailableNumbers = ({ t }) => {
         order,
         debouncedNumberLike
       )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage])
 
   // Listener of params selector width
@@ -127,6 +116,7 @@ const AvailableNumbers = ({ t }) => {
     if (calcInput.current) {
       setWidthOffset(`${+calcInput.current.clientWidth + 15}px`)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calcInput.current, searchParam])
 
   const changeSearchParam = value => {

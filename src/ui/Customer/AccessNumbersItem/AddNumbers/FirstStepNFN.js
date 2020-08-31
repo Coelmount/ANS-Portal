@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -11,24 +11,18 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
-import sharp from 'source/images/svg/sharp.svg'
-import CallOutlined from '@material-ui/icons/CallOutlined'
-
 import Input from 'components/Input'
-import Select from 'components/Select'
 
 import CustomerStore from 'stores/Customers'
 import AccessNumbersStore from 'stores/AssignedNumbers'
 import NumbersStore from 'stores/Numbers'
 
 import useStyles from './styles'
-import Loading from 'components/Loading'
 
 const FirstStepNFN = props => {
   const {
     handleClose,
     t,
-    changeStep,
     queryAvalibleNumbers,
     setQueryAvalibleNumbers,
     searchAvalibleNumbers
@@ -36,7 +30,7 @@ const FirstStepNFN = props => {
   const classes = useStyles()
   const match = useParams()
 
-  const { customer, getCustomer, isLoadingCustomer } = CustomerStore
+  const { getCustomer } = CustomerStore
   const { currentEntitlement } = AccessNumbersStore
   const { isLoadingAvailableNumbers } = NumbersStore
 
@@ -49,11 +43,8 @@ const FirstStepNFN = props => {
       service_capabilities: currentEntitlement.service_capabilities,
       range_size: ''
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // if (isLoadingCustomer) {
-  //   return <Loading />
-  // }
 
   return (
     <React.Fragment>
@@ -70,33 +61,13 @@ const FirstStepNFN = props => {
       <DialogContent>
         <Box className={classes.stepStyles}>{t('search_parameters')}</Box>
         <Box className={classes.searchParametersBox}>
-          {/* <Select
-            label={t('country')}
-            wrapperStyles={classes.wrapperStylesSelect}
-            options={[{ value: '+966', label: 'KSA' }]}
-            onChange={e =>
-              setQueryAvalibleNumbers({
-                ...queryAvalibleNumbers,
-                country_code: e.target.value
-              })
-            }
-          />
-          <Select
-            label={t('type')}
-            wrapperStyles={classes.wrapperStylesSelect}
-            options={[{ value: 'geo', label: 'GEO' }]}
-            onChange={e =>
-              setQueryAvalibleNumbers({
-                ...queryAvalibleNumbers,
-                number_type: e.target.value
-              })
-            }
-          /> */}
           <Box className={classes.rangeBox}>
-            {`Range size (${currentEntitlement.entitlement -
+            {`Range size (${
+              currentEntitlement.entitlement -
               (isNaN(currentEntitlement.counter)
                 ? 0
-                : currentEntitlement.counter)} max)`}
+                : currentEntitlement.counter)
+            } max)`}
             <Input
               type='number'
               wrapperStyles={classes.rangeWrapperStylesInput}

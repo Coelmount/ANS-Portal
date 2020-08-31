@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -12,7 +12,6 @@ import Button from '@material-ui/core/Button'
 import MobileStepper from '@material-ui/core/MobileStepper'
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import CheckIcon from '@material-ui/icons/Check'
 import SettingsPhoneOutlinedIcon from '@material-ui/icons/SettingsPhoneOutlined'
 import basicIcon from 'source/images/svg/dashboard_basic_icon.svg'
@@ -25,7 +24,7 @@ import AuthStore from 'stores/Auth'
 import useStyles from './styles'
 
 const ThirdStep = props => {
-  const { handleClose, t, changeStep, step } = props
+  const { handleClose, t, step } = props
   const classes = useStyles()
   const { user } = AuthStore
 
@@ -52,8 +51,9 @@ const ThirdStep = props => {
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
         <Box className={classes.mainContent}>
-          <Box className={classes.stepStyles}>{`${t('step')} ${step +
-            1}/4`}</Box>
+          <Box className={classes.stepStyles}>{`${t('step')} ${
+            step + 1
+          }/4`}</Box>
           <Box className={classes.checkInfoBox}>
             <CheckIcon color={'primary'} className={classes.checkIcon} />
             <Box className={classes.regularText}>{t('go_to_your')}</Box>

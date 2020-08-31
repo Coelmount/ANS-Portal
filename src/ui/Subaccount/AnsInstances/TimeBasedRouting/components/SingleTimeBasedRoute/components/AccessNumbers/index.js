@@ -1,46 +1,25 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams, Link } from 'react-router-dom'
-import classnames from 'classnames'
+import { useParams } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-import Popover from '@material-ui/core/Popover'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import Select from '@material-ui/core/Select'
 
-import UpdateIcon from '@material-ui/icons/Update'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
-import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 import AddModal from './components/AddModal'
 import EditMainNumberModal from './components/EditMainNumberModal'
-import TitleBlock from 'components/TitleBlock'
 import CustomTable from 'components/CustomTable'
-import CustomContainer from 'components/CustomContainer'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
-import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
-import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import DeleteModal from 'components/DeleteModal'
 
 import AccessNumbersStore from 'stores/TimeBasedRouting/AccessNumbers'
 
 import useStyles from './styles'
-import deleteIcon from 'source/images/svg/delete-icon.svg'
-import notificationIcon from 'source/images/svg/no-numbers-notification.svg'
 import EditIcon from 'source/images/components/EditIcon'
-
-import { toJS } from 'mobx'
 
 const addModal = 1
 const editModal = 2
@@ -98,6 +77,7 @@ const AccessNumbers = observer(({ t }) => {
 
   useEffect(() => {
     initialRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Trigger delete action in store

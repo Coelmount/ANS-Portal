@@ -12,7 +12,6 @@ import PhoneNumber from './substores/PhoneNumber'
 import AnsInstance from './substores/AnsInstance'
 import AnsDestination from './substores/AnsDestination'
 import IvrInstance from './substores/IvrInstance'
-import { toJS } from 'mobx'
 
 export class TimeSchedules {
   step = 1

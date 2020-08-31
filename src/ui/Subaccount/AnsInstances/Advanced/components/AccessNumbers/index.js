@@ -1,17 +1,12 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useDebounce } from 'use-debounce'
 import { useParams } from 'react-router-dom'
-import classnames from 'classnames'
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
@@ -23,11 +18,9 @@ import AdvancedAccessNumbersStore from 'stores/AdvancedAccessNumbers'
 import CustomTable, {
   DEFAULT_ROWS_PER_PAGE
 } from 'components/CustomTableBackendPagination'
-import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import AddModal from './components/AddModal'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import types from 'utils/types/basicSearchParams'
 
@@ -60,7 +53,6 @@ const AccessNumbers = ({ t }) => {
   } = AdvancedAccessNumbersStore
 
   const [numbers, setNumbers] = useState([])
-  const [selectedNumber, setSelectedNumber] = useState(null)
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [page, setPage] = useState(1)
@@ -71,9 +63,6 @@ const AccessNumbers = ({ t }) => {
   const [orderBy, setOrderBy] = useState('id')
   const [numberLike, setNumberLike] = useState('')
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
-    false
-  )
   const debouncedNumberLike = useDebounce(numberLike, 1000)[0]
 
   // Search params ? TRUE : FALSE
@@ -138,15 +127,6 @@ const AccessNumbers = ({ t }) => {
 
   const handleAddModalClose = () => {
     setIsAddModalOpen(false)
-    getRequest()
-  }
-
-  const handleMultipleConfigure = () => {
-    setShowAddMultipleANSNumbers(true)
-  }
-
-  const handleMultipleConfigureClose = () => {
-    setShowAddMultipleANSNumbers(false)
     getRequest()
   }
 
@@ -217,69 +197,7 @@ const AccessNumbers = ({ t }) => {
     </Select>
   )
 
-  const toolbarButtonsBlock = () => {
-    return (
-      <Box className={classes.toolbarButtonsBlockWrap}>
-        <Box className={classes.toolbarConfigureWrap}>
-          <IconButton
-            aria-label='assign icon button'
-            component='span'
-            className={classes.mainIconWrap}
-            onClick={handleMultipleConfigure}
-          >
-            <AddOutlinedIcon />
-          </IconButton>
-          <Typography className={classes.iconTitle}>
-            {t('configure_now')}
-          </Typography>
-        </Box>
-      </Box>
-    )
-  }
-
   const columns = [
-    // {
-    //   id: 'checkbox',
-    //   label: (
-    //     <Checkbox
-    //       className={classes.headCheckbox}
-    //       checked={selectAll}
-    //       onChange={handleSelectAll}
-    //     />
-    //   ),
-    //   isSortAvailable: false,
-    //   getCellData: (row, i) =>
-    //     row.checked ? (
-    //       <Checkbox
-    //         checked={row.checked}
-    //         className={classes.checkbox}
-    //         onChange={e => selectNumbers(!row.checked, row.id)}
-    //       />
-    //     ) : (
-    //       <div
-    //         className={classes.indexHoverCheckbox}
-    //         onClick={() => selectNumbers(!row.checked, row.id)}
-    //         onMouseLeave={() => changeHover(false, row.id)}
-    //         onMouseEnter={() => changeHover(true, row.id)}
-    //       >
-    //         {row.hover ? (
-    //           <Checkbox
-    //             checked={row.checked}
-    //             className={classes.checkbox}
-    //             onChange={() => selectNumbers(true, row.id)}
-    //           />
-    //         ) : (
-    //           (page - 1) * rowsPerPage + i + 1
-    //         )}
-    //       </div>
-    //     ),
-    //   extraHeadProps: {
-    //     className: classes.checkboxCell
-    //   },
-    //   extraProps: {
-    //     className: classes.checkboxCell
-    //   }
-    // },
     {
       id: 'country',
       label: 'country'
@@ -338,7 +256,6 @@ const AccessNumbers = ({ t }) => {
             classes={classes}
             rows={numbers}
             columns={columns}
-            // extraToolbarBlock={toolbarButtonsBlock}
             page={page}
             setPage={setPage}
             rowsPerPage={rowsPerPage}

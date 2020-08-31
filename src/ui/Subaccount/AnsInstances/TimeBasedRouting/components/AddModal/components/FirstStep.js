@@ -1,12 +1,7 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
-import { useParams } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import PhoneInput from 'react-phone-input-2'
 
-import { makeStyles } from '@material-ui/core/styles'
-import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -14,19 +9,15 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
 import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Input from 'components/Input'
-import PeriodForm from 'components/PeriodForm'
 import Select from 'components/Select'
-import transformTime from 'utils/schedules/transformTime'
 import { FREE_ENTRY_NUMBER_ID, ANS_NUMBER_ID } from 'utils/types/numberTypes'
 
 import useStyles from '../styles'
-import scheduleIcon from 'source/images/svg/schedule.svg'
 
 const FirstStep = ({ t, handleClose }) => {
   const classes = useStyles()

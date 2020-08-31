@@ -1,9 +1,8 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react'
 import { useParams } from 'react-router-dom'
 
-import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -11,7 +10,6 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 
 import TimeBasedRoutingStore from 'stores/TimeBasedRouting'
 import CustomTable, {
@@ -21,13 +19,8 @@ import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import SingleCheckCell from 'components/SingleCheckCell'
-import {
-  ADD_DESTINATION_DEFAULT_ID,
-  EDIT_DESTINATION_ID
-} from 'utils/types/addDestinationModalStepsId'
 
 import useStyles from '../styles'
-import { toJS } from 'mobx'
 
 const AnsNumberStep = ({ handleClose, t }) => {
   const modalHeight = '1500px'
@@ -83,9 +76,6 @@ const AnsNumberStep = ({ handleClose, t }) => {
     setOrderBy(value) {
       this.orderBy = value
     },
-    setCountryCode(value) {
-      this.countryCode = value
-    },
     setSelectedCountry(value) {
       this.selectedCountry = value
     }
@@ -96,15 +86,12 @@ const AnsNumberStep = ({ handleClose, t }) => {
     currentCheckedNumber,
     order,
     orderBy,
-    countryCode,
     selectedCountry,
-    setField,
     setPage,
     setRowsPerPage,
     setCurrentCheckedNumber,
     setOrder,
     setOrderBy,
-    setCountryCode,
     setSelectedCountry
   } = localStore
 
@@ -125,6 +112,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
   useEffect(() => {
     getRequest()
     return () => clearAnsNumbersLoading()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // On update search/sorting
@@ -133,6 +121,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
     if (!isLoading) {
       getRequest()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderBy, order])
 
   // On update pagination
@@ -149,6 +138,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
       }
       getRequest(payload)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage, selectedCountry])
 
   // Trigger store POST request

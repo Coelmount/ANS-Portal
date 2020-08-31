@@ -1,7 +1,6 @@
-import React, { useEffect, useContext } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { useParams } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -11,20 +10,13 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
-import sharp from 'source/images/svg/sharp.svg'
-import CallOutlined from '@material-ui/icons/CallOutlined'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
-import Input from 'components/Input'
-import Select from 'components/Select'
-
 import useStyles from './styles'
-import Loading from 'components/Loading'
 
 const FirstStepNFN = props => {
   const { handleClose, t, changeStep, clearQueryParameters } = props
   const classes = useStyles()
-  const match = useParams()
 
   return (
     <React.Fragment>

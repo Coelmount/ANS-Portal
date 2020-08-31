@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -12,12 +12,8 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
-import sharp from 'source/images/svg/sharp.svg'
-import CallOutlined from '@material-ui/icons/CallOutlined'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
-import Input from 'components/Input'
-import Select from 'components/Select'
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
 

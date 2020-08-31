@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import PhoneInput from 'react-phone-input-2'
 
-import Input from 'components/Input'
 import Loading from 'components/Loading'
 
 import Dialog from '@material-ui/core/Dialog'
@@ -20,13 +19,11 @@ import AddIcon from '@material-ui/icons/Add'
 import RemoveIcon from '@material-ui/icons/Clear'
 
 import IVRStore from 'stores/IVR'
-import CustomersStore from 'stores/Customers'
-import ConfigStore from 'stores/Config'
 
 import useStyles from './styles'
 
 const AddIVR = props => {
-  const { t, open, handleClose, mode, countNumbers } = props
+  const { t, open, handleClose, mode } = props
   const classes = useStyles()
   const match = useParams()
   const { postAddNumberToCallBlocking, isAddingNumbers } = IVRStore
@@ -92,13 +89,9 @@ const AddIVR = props => {
                           newArray.push('')
                           setArrayOfInputs(newArray)
                         }}
-                        // disabled={countNumbers + arrayOfInputs.length >= 10}
                       >
                         <AddIcon />
                       </Button>
-                      {/* <Box className={classes.textBox}>{`(${t(
-                        'max'
-                      )} 10)`}</Box> */}
                     </React.Fragment>
                   ) : (
                     <Button

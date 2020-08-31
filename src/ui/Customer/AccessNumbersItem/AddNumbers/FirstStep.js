@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -11,10 +11,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
-import sharp from 'source/images/svg/sharp.svg'
 import CallOutlined from '@material-ui/icons/CallOutlined'
-
-import Input from 'components/Input'
 
 import CustomerStore from 'stores/Customers'
 
@@ -32,6 +29,7 @@ const FirstStep = props => {
 
   useEffect(() => {
     getCustomer(match.customerId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isLoadingCustomer) {

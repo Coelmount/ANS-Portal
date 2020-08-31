@@ -1,12 +1,10 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
 
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
-import { makeStyles } from '@material-ui/core/styles'
-import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -28,14 +26,12 @@ import {
 
 import ScheduleIcon from 'source/images/components/ScheduleIcon'
 import useStyles from '../modalStyles.js'
-import { toJS } from 'mobx'
 
 const EditModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
   const {
     findTimeSchedule,
-    scheduleIndexToAdd,
     currentTimeSchedule,
     scheduleIndexToEdit,
     setStep,
@@ -66,12 +62,9 @@ const EditModal = ({ t, open, handleClose }) => {
 
   // Initial request
   useEffect(() => {
-    const payload = {
-      customerId,
-      groupId
-    }
     getSchedules(customerId, groupId)
     findTimeSchedule()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // On receive schedules from store
@@ -84,6 +77,7 @@ const EditModal = ({ t, open, handleClose }) => {
       // Set schedule options to store
       formStore.set('scheduleOptions', options)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schedules])
 
   useEffect(() => {
@@ -92,6 +86,7 @@ const EditModal = ({ t, open, handleClose }) => {
       formStore.set('phoneNumber', currentTimeSchedule.forwardToPhoneNumber)
       formStore.set('schedule', currentTimeSchedule.timeSchedule)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTimeSchedule])
 
   const handleAddClick = () => {

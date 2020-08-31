@@ -9,7 +9,6 @@ import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
 import Box from '@material-ui/core/Box'
 
-import SvgIcon from '@material-ui/core/SvgIcon'
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'

@@ -1,9 +1,8 @@
-import React, { useEffect, useLayoutEffect } from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
 
-import Loading from 'components/Loading'
 import Snackbar from 'components/Snackbar'
 
 import DefaultLayout from 'components/DefaultLayout'
@@ -238,7 +237,6 @@ const Page = props => {
 }
 
 const UserPages = () => {
-  const { getLocale, isLoadingLang, lang } = LanguagesStore
   return (
     <Switch>
       {userComponents.map(el => (
@@ -281,11 +279,12 @@ const AuthPages = observer(() => {
 
 const Router = () => {
   const { getLocal, isAuthorized } = AuthStore
-  const { getLocale, isLoadingLang, lang } = LanguagesStore
+  const { getLocale } = LanguagesStore
 
   useLayoutEffect(() => {
     getLocal()
     getLocale(localStorage.getItem('i18nextLng'))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

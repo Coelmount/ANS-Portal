@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -9,7 +9,6 @@ import useStyles from './styles'
 
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import SvgIcon from '@material-ui/core/SvgIcon'
 
 import Loading from 'components/Loading'
 import Input from 'components/Input'

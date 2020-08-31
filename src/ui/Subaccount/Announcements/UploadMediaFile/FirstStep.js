@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
-import Papa from 'papaparse'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogActions from '@material-ui/core/DialogActions'
 import IconButton from '@material-ui/core/IconButton'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import MaterialLink from '@material-ui/core/Link'
-import Alert from '@material-ui/lab/Alert'
-import AlertTitle from '@material-ui/lab/AlertTitle'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
-
-import AnnouncementsStore from 'stores/Announcements'
 
 import useStyles from './styles'
 
 const FirstStep = props => {
-  const match = useParams()
-  const { handleClose, setStep, t, announcements, setAnnouncements } = props
+  const { handleClose, setStep, t, setAnnouncements } = props
 
   const classes = useStyles()
 

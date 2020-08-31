@@ -15,8 +15,6 @@ import Alert from '@material-ui/lab/Alert'
 import AlertTitle from '@material-ui/lab/AlertTitle'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
-import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
 import BasicTranslationsStore from 'stores/BasicTranslations'
@@ -49,6 +47,7 @@ const SecondStep = props => {
     if (csvValue.length !== 0) {
       setDisabledUpload(errorOdj.showError)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [csvValue.length])
 
   useEffect(() => {
@@ -59,10 +58,12 @@ const SecondStep = props => {
     ) {
       setStep(3)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [multipleCounter.total, multipleCounter.count])
 
   useEffect(() => {
     setDefaultValues()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const importFile = e => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -24,7 +24,7 @@ import AuthStore from 'stores/Auth'
 import useStyles from './styles'
 
 const ThirdStep = props => {
-  const { handleClose, t, changeStep, step } = props
+  const { handleClose, t, step } = props
   const classes = useStyles()
   const { user } = AuthStore
 
@@ -51,8 +51,9 @@ const ThirdStep = props => {
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
         <Box className={classes.mainContent}>
-          <Box className={classes.stepStyles}>{`${t('step')} ${step +
-            1}/3`}</Box>
+          <Box className={classes.stepStyles}>{`${t('step')} ${
+            step + 1
+          }/3`}</Box>
           <Box className={classes.checkInfoBox}>
             <CheckIcon color={'primary'} className={classes.checkIcon} />
             <Box className={classes.regularText}>

@@ -1,11 +1,10 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
 
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
-import { makeStyles } from '@material-ui/core/styles'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -21,17 +20,12 @@ import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
 import {
-  // PHONE_NUMBER_ID,
-  // ANS_INSTANCE_ID,
-  // ANS_DESTINATION_ID,
-  // ANS_IVR_ID
   FREE_ENTRY_NUMBER_ID,
   ANS_NUMBER_ID
 } from 'utils/types/addDestinationModalStepsId'
 
 import ScheduleIcon from 'source/images/components/ScheduleIcon'
 import useStyles from '../../../modalStyles'
-import { toJS } from 'mobx'
 
 const AddDestination = ({ t, handleClose }) => {
   const classes = useStyles()
@@ -58,6 +52,7 @@ const AddDestination = ({ t, handleClose }) => {
   // Initial request
   useEffect(() => {
     getSchedules(customerId, groupId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // On receive schedules from store
@@ -72,6 +67,7 @@ const AddDestination = ({ t, handleClose }) => {
       // Set first option as default to store
       formStore.set('schedule', options[0].value)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schedules])
 
   const handleAddClick = () => {

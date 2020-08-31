@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -52,8 +52,9 @@ const FirstStep = props => {
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
         <Box className={classes.mainContent}>
-          <Box className={classes.stepStyles}>{`${t('step')} ${step +
-            1}/4`}</Box>
+          <Box className={classes.stepStyles}>{`${t('step')} ${
+            step + 1
+          }/4`}</Box>
           <Box className={classes.checkInfoBox}>
             <CheckIcon color={'primary'} className={classes.checkIcon} />
             <Box className={classes.regularText}>{t('go_to_your')}</Box>

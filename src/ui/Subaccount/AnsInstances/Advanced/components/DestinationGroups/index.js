@@ -1,38 +1,20 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams, Link } from 'react-router-dom'
-import classnames from 'classnames'
 
 import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import Popover from '@material-ui/core/Popover'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
 
-import UpdateIcon from '@material-ui/icons/Update'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
-import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 
 import CustomTable from 'components/CustomTable'
-import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
-import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
-import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import AddModal from './components/AddModal'
 import DeleteModal from 'components/DeleteModal'
 
 import DestinationGroupsStore from 'stores/DestinationGroups'
 
 import useStyles from './styles'
-import RightArrowIcon from 'source/images/svg/right-arrow.svg'
-import deleteIcon from 'source/images/svg/delete-icon.svg'
-import notificationIcon from 'source/images/svg/no-numbers-notification.svg'
 
 const addModal = 1
 const deleteModal = 2
@@ -43,16 +25,13 @@ const DestinationGroups = observer(({ t }) => {
     isDestinationGroupsLoading,
     isDestinationGroupDeleting,
     getDestinationGroups,
-    deleteDestinationGroup,
-    deleteDestinations
+    deleteDestinationGroup
   } = DestinationGroupsStore
 
   const classes = useStyles()
   const { customerId, groupId } = useParams()
 
   const [numbers, setNumbers] = useState([])
-  const [selectAll, setSelectAll] = useState(false)
-  const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
 
   const openedModal = useLocalStore(() => ({
@@ -84,55 +63,12 @@ const DestinationGroups = observer(({ t }) => {
       groupId
     }
     getDestinationGroups(payload)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     setNumbers(destinationGroups)
   }, [destinationGroups])
-
-  useEffect(() => {
-    handleCheckedStates(searchList)
-  }, [searchList])
-
-  // Checkboxes handlers ----
-  const selectNumbers = (checked, id) => {
-    const newNumbers = transformOnChange(numbers, checked, id)
-    setNumbers(newNumbers)
-    handleCheckedStates(newNumbers)
-  }
-
-  const handleSelectAll = () => {
-    const newNumbers = transformOnCheckAll(searchList, numbers, selectAll)
-    handleCheckedStates(newNumbers)
-    setNumbers(newNumbers)
-    setSelectAll(!selectAll)
-    setIsAnyChecked(!selectAll)
-  }
-
-  const handleCheckedStates = newNumbers => {
-    if (
-      newNumbers.length &&
-      newNumbers.every(el => {
-        return el.checked
-      })
-    ) {
-      setSelectAll(true)
-      setIsAnyChecked(true)
-    } else {
-      setSelectAll(false)
-      setIsAnyChecked(newNumbers.some(el => el.checked))
-    }
-    // if (!newNumbers.length) {
-    //   setSelectAll(false)
-    //   setIsAnyChecked(false)
-    // }
-  }
-
-  const changeHover = (newHover, id) => {
-    const newNumbers = transformOnHover(numbers, newHover, id)
-    setNumbers(newNumbers)
-  }
-  // -----------
 
   // Trigger delete actions in store ----
   const handleDelete = () => {
@@ -143,15 +79,6 @@ const DestinationGroups = observer(({ t }) => {
       closeModal: openedModal.close
     }
     deleteDestinationGroup(payload)
-  }
-
-  const handleMultipleDelete = () => {
-    const payload = {
-      customerId,
-      groupId,
-      closeModal: openedModal.close
-    }
-    deleteDestinations(payload)
   }
   // --------
 

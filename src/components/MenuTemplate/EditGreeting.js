@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -46,10 +46,6 @@ const EditGreeting = props => {
   const { isLoadingAnnouncements } = AnnouncementsStore
 
   const { putUpdateIVRMenu } = IVRStore
-
-  // useEffect(() => {
-  //   getAnnouncements(match.customerId, match.groupId)
-  // }, [])
 
   const handleUpdateGreeting = () => {
     let data = {}

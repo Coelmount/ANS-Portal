@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 
@@ -11,8 +11,6 @@ import has from 'lodash/has'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import ThirdStep from './ThirdStep'
-
-import Loading from 'components/Loading'
 
 const useStyles = makeStyles(theme => ({
   root: {

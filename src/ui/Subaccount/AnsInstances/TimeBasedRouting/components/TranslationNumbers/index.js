@@ -1,7 +1,7 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory, Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import classnames from 'classnames'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
@@ -12,8 +12,6 @@ import Typography from '@material-ui/core/Typography'
 
 import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Loading from 'components/Loading'
-import TitleBlock from 'components/TitleBlock'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
 import Checkbox from 'components/Checkbox'
@@ -22,14 +20,11 @@ import CheckCell from 'components/CheckCell'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import useStyles from './styles'
 
-import { toJS } from 'mobx'
-
 const singleDeleteModalId = 1
 const multipleDeleteModalId = 2
 
 const TimeBasedRouting = ({ t }) => {
   const classes = useStyles()
-  const history = useHistory()
   const { customerId, groupId } = useParams()
 
   const {
@@ -76,6 +71,7 @@ const TimeBasedRouting = ({ t }) => {
 
   useEffect(() => {
     getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Modal click handlers
