@@ -175,7 +175,7 @@ const TranslationNumbers = observer(({ t }) => {
                 [classes.disabledButton]: !isAnyChecked
               })}
               onClick={() =>
-                isAnyChecked && setShowMultipleUpdateANSNumbers(true)
+                isAnyChecked ? setShowMultipleUpdateANSNumbers(true) : undefined
               }
             >
               <UpdateIcon className={classes.updateIcon} />
@@ -191,7 +191,7 @@ const TranslationNumbers = observer(({ t }) => {
               className={classnames(classes.mainIconWrap, {
                 [classes.disabledButton]: !isAnyChecked
               })}
-              onClick={isAnyChecked && handleMultipleDelete}
+              onClick={isAnyChecked ? handleMultipleDelete : undefined}
             >
               <img
                 className={classes.deleteIcon}
