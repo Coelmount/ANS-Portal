@@ -191,7 +191,7 @@ const AddModal = ({ t, open, handleClose }) => {
             rows={numbers}
             searchCriterias={['name', 'phoneNumber']}
             getSearchList={setSearchList}
-            noAvailableDataMessage={t('no_add_destinations_available')}
+            noAvailableDataMessage={t('no_destinations_available')}
             isModal={true}
             tableId={'advanced_destinations_add_modal'}
           />
