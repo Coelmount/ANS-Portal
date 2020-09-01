@@ -75,15 +75,6 @@ const Announcements = props => {
   }))
 
   const actions = [
-    // {
-    //   icon: () => (
-    //     <img src={editIcon} alt='editIcon' className={classes.editIcon} />
-    //   ),
-    //   tooltip: 'Edit announcement',
-    //   onClick: rowData => {
-    //     console.log('edit')
-    //   }
-    // },
     {
       icon: () => <ClearIcon />,
       tooltip: 'Delete announcement',

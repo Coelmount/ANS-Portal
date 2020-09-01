@@ -11,7 +11,6 @@ class TimeBasedRoute {
   constructor(route, index) {
     // const defaultValuesKeys = Object.getOwnPropertyNames(DEFAULT_VALUES)
     // defaultValuesKeys.forEach(defaultKey => {
-    //   // console.log(DEFAULT_VALUES, 'DEFAULT_VALUES')
     //   this[defaultKey] = route[defaultKey]
     // })
 

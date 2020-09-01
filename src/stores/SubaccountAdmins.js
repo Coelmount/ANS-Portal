@@ -52,7 +52,6 @@ export class SubaccountAdminsStore {
   }
 
   setSubaccountAdminInfo = (valueKey, value) => {
-    console.log(this.subaccountAdmin)
     for (let key in this.subaccountAdmin) {
       if (valueKey === key) {
         this.subaccountAdmin[key] = value

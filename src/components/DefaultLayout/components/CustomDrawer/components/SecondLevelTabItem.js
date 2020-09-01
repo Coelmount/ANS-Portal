@@ -19,7 +19,6 @@ const SecondLevelTabItem = ({
   handleActiveChildNav,
   handleActiveSubChildNav
 }) => {
-  console.log(activeChildNav, 'activeChildNav')
   return (
     <Box>
       <ListItem
