@@ -56,11 +56,11 @@ const useStyles = makeStyles(theme => ({
   nameInput: {
     marginBottom: 30
   },
-  modalContent: {
-    display: 'flex',
-    justifyContent: 'center',
-    paddingTop: 32
-  },
+  // modalContent: {
+  //   display: 'flex',
+  //   justifyContent: 'center',
+  //   paddingTop: 32
+  // },
   formWrap: {
     width: 500,
     height: 370,
@@ -174,15 +174,6 @@ const useStyles = makeStyles(theme => ({
   dialogActionsSecond: {
     height: '110px',
     justifyContent: 'space-between'
-  },
-  backButton: {
-    width: '160px',
-    marginLeft: '32px',
-    color: theme.palette.black
-  },
-  nextButton: {
-    width: '160px',
-    marginRight: '32px'
   },
   dialogContent: {
     padding: 0

@@ -56,16 +56,6 @@ const useStyles = makeStyles(theme => ({
   addIcon: {
     color: theme.palette.black
   },
-  mainIconWrap: {
-    background: theme.palette.primary.main,
-    width: 30,
-    height: 30,
-    padding: 0,
-    marginRight: 8,
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main
-    }
-  },
   disabledButton: {
     backgroundColor: theme.palette.lightGrey,
     '&:hover': {
@@ -308,13 +298,6 @@ const useStyles = makeStyles(theme => ({
   selectItem: {
     fontSize: 14
   },
-  toolbarButtonsBlockWrap: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    width: '100%',
-    marginRight: 40,
-    marginLeft: 40
-  },
   buttonContainer: {
     display: 'flex',
     alignItems: 'center'
@@ -330,20 +313,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: 8,
     '&:hover': {
       backgroundColor: theme.palette.primary.main
-    }
-  },
-  disabledButton: {
-    backgroundColor: theme.palette.lightGrey,
-    '&:hover': {
-      backgroundColor: theme.palette.lightGrey,
-      cursor: 'auto'
-    }
-  },
-  disabledButton: {
-    backgroundColor: theme.palette.lightGrey,
-    '&:hover': {
-      backgroundColor: theme.palette.lightGrey,
-      cursor: 'auto'
     }
   },
   iconTitle: {

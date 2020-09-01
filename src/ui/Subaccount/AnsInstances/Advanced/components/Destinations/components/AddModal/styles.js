@@ -54,10 +54,10 @@ const useStyles = makeStyles(theme => ({
     width: '160px',
     marginRight: '32px'
   },
-  modalContent: {
-    paddingTop: 43,
-    paddingLeft: 39
-  },
+  // modalContent: {
+  //   paddingTop: 43,
+  //   paddingLeft: 39
+  // },
   nameInput: {
     marginBottom: 30
   },
