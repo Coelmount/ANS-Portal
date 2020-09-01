@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 
@@ -65,6 +65,7 @@ const SubaccountsTable = observer(({ t }) => {
       getDefaultValues()
       clearPhoneNumbers()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -75,6 +76,7 @@ const SubaccountsTable = observer(({ t }) => {
     } else if (clickedGroupId && isGetPhoneNumbersRequestDone === true) {
       setIsNoNumbersModalOpen(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transformedPhoneNumbers])
 
   const columns = [

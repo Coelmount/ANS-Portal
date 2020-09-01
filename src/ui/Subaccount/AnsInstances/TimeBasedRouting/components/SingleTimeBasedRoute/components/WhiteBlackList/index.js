@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import has from 'lodash/has'
 import classnames from 'classnames'
 
@@ -67,6 +67,7 @@ const WhiteBlackList = props => {
       }
       getWhiteBlackList(payload)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -81,6 +82,7 @@ const WhiteBlackList = props => {
     ) {
       setNumbers(whiteBlackList.blocked_numbers)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [whiteBlackList.allowed_numbers, whiteBlackList.blocked_numbers])
 
   useEffect(() => {

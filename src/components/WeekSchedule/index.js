@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import classnames from 'classnames'
 import { withNamespaces } from 'react-i18next'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import globalize from 'globalize'
 import { Calendar } from 'react-big-calendar'
@@ -9,7 +8,6 @@ import localizer from 'react-big-calendar/lib/localizers/globalize'
 
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import WeekSchedulesStore from 'stores/WeekSchedules'
@@ -66,6 +64,7 @@ const WeekSchedule = observer(({ t }) => {
 
   useEffect(() => {
     getWeekSchedule(customerId, groupId, weekScheduleName)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Add period(s)

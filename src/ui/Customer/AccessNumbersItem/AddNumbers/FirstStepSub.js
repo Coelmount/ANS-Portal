@@ -3,7 +3,6 @@ import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
 
-import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -11,9 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 
-import Input from 'components/Input'
 import Select from 'components/Select'
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
@@ -22,7 +19,6 @@ import Checkbox from 'components/Checkbox'
 import Group3Person from 'source/images/svg/Group3Person.svg'
 
 import SubaccountsStore from 'stores/Subaccounts'
-import NumbersStore from 'stores/Numbers'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 
 import capitalize from 'lodash/capitalize'
@@ -48,6 +44,7 @@ const SecondStep = props => {
 
   useEffect(() => {
     getSubaccounts(match.customerId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const columns = [

@@ -2,24 +2,14 @@ import React, { useState, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
-import classnames from 'classnames'
 import capitalize from 'lodash/capitalize'
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import Button from '@material-ui/core/Button'
-import Grow from '@material-ui/core/Grow'
-import Popper from '@material-ui/core/Popper'
-import MenuItem from '@material-ui/core/MenuItem'
-import MenuList from '@material-ui/core/MenuList'
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import DestinationsGroupStore from 'stores/DestinationGroups'
-import Loading from 'components/Loading'
 import TitleBlock from 'components/TitleBlock'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
@@ -65,12 +55,8 @@ const SingleDestinationGroup = props => {
     currentDestinationName
   } = DestinationsGroupStore
 
-  const [activeTab, setActiveTab] = useState(0)
-  const [open, setOpen] = useState(false)
+  const [open] = useState(false)
   const anchorRef = useRef(null)
-  const [translationsMenuName, setTranslationsMenuName] = useState(
-    t('translations_menus')
-  )
 
   useEffect(() => {
     const payload = {
@@ -79,6 +65,7 @@ const SingleDestinationGroup = props => {
       ansId: destinationGroupName
     }
     getCurrentNameWithId(payload)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const titleData = {
@@ -86,23 +73,20 @@ const SingleDestinationGroup = props => {
   }
 
   const handleChange = (event, newValue) => {
-    setActiveTab(newValue)
     switch (newValue) {
       case 0:
         history.push('#access_numbers')
-        setTranslationsMenuName(t('access_numbers'))
         break
       case 1:
         history.push('#destinations')
-        setTranslationsMenuName(t('destinations'))
         break
       case 2:
         history.push('#white_black_list')
-        setTranslationsMenuName(t('white_black_list'))
         break
       case 3:
         history.push('#settings')
-        setTranslationsMenuName(t('settings'))
+        break
+      default:
         break
     }
   }

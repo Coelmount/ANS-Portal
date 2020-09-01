@@ -23,7 +23,7 @@ import HolidayScheduleStore from 'stores/HolidaySchedules'
 import useStyles from './styles'
 
 const EditGreeting = props => {
-  const { t, open, handleClose, menuLvl, menuType, defaultSchedule } = props
+  const { t, open, handleClose, menuType, defaultSchedule } = props
   const classes = useStyles()
   const match = useParams()
   const [schedulerSelection, setSchedulerSelection] = useState(defaultSchedule)
@@ -46,6 +46,7 @@ const EditGreeting = props => {
     } else {
       getHolidaySchedules(match.customerId, match.groupId)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const updateHours = () => {

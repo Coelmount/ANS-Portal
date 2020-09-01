@@ -30,7 +30,7 @@ const AddDestinationNumber = ({ handleClose, t }) => {
 
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [selectedCountryNameCode, setSelectedCountryNameCode] = useState('')
-  const [destinationNumber, setDestinationNumber] = useState('')
+  const [destinationNumber] = useState('')
   const [selectedNsn, setSelectedNsn] = useState('')
   const [selectedNumberCode, setSelectedNumberCode] = useState(null)
   const [isCountryCodeEditable, setIsCountryCodeEditable] = useState(true)

@@ -35,7 +35,6 @@ const CustomBreadcrumbs = ({ match, t }) => {
 
   let itemsAfterCollapseAmount
   const breadcrumbsArr = url.split('/')
-  const breadCrumbsAmount = breadcrumbsArr
 
   if (isCustomerActive) {
     breadcrumbsArr.splice(0, 2)

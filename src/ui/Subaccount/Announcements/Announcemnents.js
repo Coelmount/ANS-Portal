@@ -34,6 +34,7 @@ const Announcements = props => {
 
   useEffect(() => {
     getAnnouncements(match.customerId, match.groupId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const columns = [

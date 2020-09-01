@@ -1,11 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
-import ReactPlayer from 'react-player'
 import { withNamespaces } from 'react-i18next'
-import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
 
 import Slider from '@material-ui/core/Slider'
 
@@ -16,7 +13,6 @@ import PauseIcon from '@material-ui/icons/Pause'
 import StopIcon from '@material-ui/icons/Stop'
 import VolumeUpIcon from '@material-ui/icons/VolumeUp'
 
-import Loading from 'components/Loading'
 import Input from 'components/Input'
 
 import AnnouncementsStore from 'stores/Announcements'
@@ -57,6 +53,7 @@ const AudioRecorder = props => {
       clearInterval(timerPlayingId)
       clearTimeout(waitTimer)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const startRecording = (stream, lengthInMS) => {
@@ -77,7 +74,7 @@ const AudioRecorder = props => {
 
     const recorded = new Promise((resolve, reject) => {
       wait(lengthInMS).then(() => {
-        recorder.state == 'recording' && handleStopRecord()
+        recorder.state === 'recording' && handleStopRecord()
         recorder.onstop = resolve
         recorder.onerror = event => reject(event.name)
       })

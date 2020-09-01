@@ -24,7 +24,6 @@ import EditIcon from 'source/images/components/EditIcon'
 const addModal = 1
 const editModal = 2
 const deleteModal = 3
-const SELECT_OPTIONS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
 const AccessNumbers = observer(({ t }) => {
   const classes = useStyles()

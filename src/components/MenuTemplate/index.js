@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import { withNamespaces } from 'react-i18next'
 import { useSpring, animated } from 'react-spring'
 import has from 'lodash/has'
 import cloneDeep from 'lodash/cloneDeep'
-import classnames from 'classnames'
 import { observer } from 'mobx-react'
-import { toJS } from 'mobx'
 import { useParams } from 'react-router-dom'
 
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import Input from '@material-ui/core/Input'
 import TextField from '@material-ui/core/TextField'
 import SvgIcon from '@material-ui/core/SvgIcon'
 import TreeView from '@material-ui/lab/TreeView'
@@ -22,8 +18,6 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Tooltip from '@material-ui/core/Tooltip'
 import PhoneInput from 'react-phone-input-2'
-
-import { fade, makeStyles, withStyles } from '@material-ui/core/styles'
 
 import EditIcon from 'source/images/svg/edit-blue.svg'
 import VolumeUpOutlinedIcon from '@material-ui/icons/VolumeUpOutlined'
@@ -61,23 +55,6 @@ const PlusSquare = props => {
       <SvgIcon fontSize='inherit' style={{ width: 24, height: 24 }} {...props}>
         <AddIcon />
         {/* <path d='M22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0zM17.873 12.977h-4.923v4.896q0 .401-.281.682t-.682.281v0q-.375 0-.669-.281t-.294-.682v-4.896h-4.923q-.401 0-.682-.294t-.281-.669v0q0-.401.281-.682t.682-.281h4.923v-4.896q0-.401.294-.682t.669-.281v0q.401 0 .682.281t.281.682v4.896h4.923q.401 0 .682.281t.281.682v0q0 .375-.281.669t-.682.294z' /> */}
-      </SvgIcon>
-    </Box>
-  )
-}
-
-const CloseSquare = props => {
-  const classes = useStyles()
-  return (
-    <Box className={classes.menuControlButtons}>
-      <SvgIcon
-        className='close'
-        fontSize='inherit'
-        style={{ width: 24, height: 24, opacity: 0.3 }}
-        {...props}
-      >
-        <ClearIcon />
-        {/* <path d='M17.485 17.512q-.281.281-.682.281t-.696-.268l-4.12-4.147-4.12 4.147q-.294.268-.696.268t-.682-.281-.281-.682.294-.669l4.12-4.147-4.12-4.147q-.294-.268-.294-.669t.281-.682.682-.281.696 .268l4.12 4.147 4.12-4.147q.294-.268.696-.268t.682.281 .281.669-.294.682l-4.12 4.147 4.12 4.147q.294.268 .294.669t-.281.682zM22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0z' /> */}
       </SvgIcon>
     </Box>
   )
@@ -226,7 +203,6 @@ const StyledTreeItem = props => {
 
   const getOptionsForAction = () => {
     let options = []
-    const ivtType = ''
 
     if (ivrType === 'Basic') {
       options = actions.filter(
@@ -379,7 +355,6 @@ const MenuTemplate = props => {
     getGreetingAnnouncement,
     announcement,
     isLoadingAnnouncement,
-    isLoadingMenu,
     menu,
     getMenu
   } = IVRStore
@@ -393,10 +368,12 @@ const MenuTemplate = props => {
       menuType,
       route
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     setStateMenu(cloneDeep(menu[route]))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menu])
 
   const updateMenu = () => {

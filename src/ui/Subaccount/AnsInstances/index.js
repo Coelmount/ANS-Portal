@@ -24,8 +24,6 @@ import timeBasedRoutingIcon from 'source/images/svg/dasboard_tbr_icon.svg'
 import ivrIcon from 'source/images/svg/dashboard_ivr_icon.svg'
 import useStyles from './styles'
 
-const MOCK_AMOUNT = 0
-
 const AnsInstances = observer(({ t }) => {
   const classes = useStyles()
   const history = useHistory()

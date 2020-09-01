@@ -1,5 +1,4 @@
 import transformTime from 'utils/schedules/transformTime'
-import { defaultWeekDays } from 'stores/WeekSchedules'
 
 const transformToCustomPeriodsFormat = periods => {
   let transformedPeriods = []
@@ -21,7 +20,6 @@ const transformToCustomPeriodsFormat = periods => {
     let start
     let end
     let title
-    let id
     let initName
 
     periods.forEach(period => {
@@ -31,7 +29,6 @@ const transformToCustomPeriodsFormat = periods => {
         start = transformedTime.start
         end = transformedTime.stop
         title = period.title
-        id = period.id
         initName = period.initName
 
         newWeekDays[period.title.split(' ')[1]] = true
@@ -45,6 +42,7 @@ const transformToCustomPeriodsFormat = periods => {
       id: title.split(' ')[0],
       initName
     })
+    return ''
   })
   return transformedPeriods
 }

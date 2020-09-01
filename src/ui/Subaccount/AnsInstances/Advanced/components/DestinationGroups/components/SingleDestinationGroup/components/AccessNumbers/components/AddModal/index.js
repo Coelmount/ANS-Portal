@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
-import { useDebounce } from 'use-debounce'
 import { useParams } from 'react-router-dom'
 
 import Dialog from '@material-ui/core/Dialog'
@@ -11,7 +10,6 @@ import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import AccessNumbersStore from 'stores/DestinationGroups/AccessNumbers'
@@ -25,7 +23,6 @@ import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import useStyles from './styles'
-import { toJS } from 'mobx'
 
 const AddModal = ({ open, handleClose, t }) => {
   const classes = useStyles()
@@ -57,7 +54,6 @@ const AddModal = ({ open, handleClose, t }) => {
   })
 
   const [numbers, setNumbers] = useState([])
-  const [selectedNumber, setSelectedNumber] = useState(null)
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [page, setPage] = useState(1)
@@ -66,7 +62,6 @@ const AddModal = ({ open, handleClose, t }) => {
   )
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
-  const [countryCode, setCountryCode] = useState('')
 
   const getRequest = () => {
     const payload = {
@@ -83,6 +78,7 @@ const AddModal = ({ open, handleClose, t }) => {
 
   useEffect(() => {
     getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // set numbers in local state from store
@@ -96,6 +92,7 @@ const AddModal = ({ open, handleClose, t }) => {
     if (!isLoading) {
       getRequest()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderBy, order])
 
   //  onUpdate pagination
@@ -113,6 +110,7 @@ const AddModal = ({ open, handleClose, t }) => {
       getAvailableNumbers(payload)
       setNumberOfChecked(0)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage, selectedCountry])
 
   // handle check/uncheck

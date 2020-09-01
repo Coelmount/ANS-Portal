@@ -1,22 +1,16 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import classnames from 'classnames'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-import Popover from '@material-ui/core/Popover'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 
-import UpdateIcon from '@material-ui/icons/Update'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
-import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
@@ -31,9 +25,7 @@ import DeleteModal from 'components/DeleteModal'
 import DestinationsStore from 'stores/Destionations'
 
 import useStyles from './styles'
-import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
-import notificationIcon from 'source/images/svg/no-numbers-notification.svg'
 
 const addModal = 1
 const editModal = 2
@@ -92,6 +84,7 @@ const Destinations = observer(({ t }) => {
       groupId
     }
     getDestinations(payload)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -107,6 +100,7 @@ const Destinations = observer(({ t }) => {
       destination => destination.name
     )
     setDestinationsToDeleteString(destinationNames.join(' , '))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [destinationsToDelete.length])
 
   // Checkboxes handlers ----

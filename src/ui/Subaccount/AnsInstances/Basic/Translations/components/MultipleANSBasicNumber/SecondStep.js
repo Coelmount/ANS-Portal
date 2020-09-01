@@ -17,7 +17,7 @@ import BasicTranslationsStore from 'stores/BasicTranslations'
 import useStyles from './styles'
 
 const FirstStep = props => {
-  const { handleClose, setStep, t } = props
+  const { handleClose, t } = props
   const {
     successAdded,
     refusedAdded,

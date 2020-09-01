@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { borderRadius, textAlign, maxHeight } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
   root: {

@@ -26,7 +26,6 @@ const DeleteModal = props => {
     action,
     titleAction,
     extraMessageBlock,
-    identifier,
     customIcon,
     t
   } = props
@@ -112,8 +111,7 @@ DeleteModal.defaultProps = {
   deleteInfo: {
     name: '',
     id: null
-  },
-  identifier: 'id'
+  }
 }
 
 export default withNamespaces()(DeleteModal)

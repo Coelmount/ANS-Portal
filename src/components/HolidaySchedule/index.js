@@ -9,7 +9,6 @@ import localizer from 'react-big-calendar/lib/localizers/globalize'
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 
 import HolidaySchedulesStore from 'stores/HolidaySchedules'
 import CustomContainer from 'components/CustomContainer'
@@ -22,7 +21,6 @@ import ImportHolidaysModal from './components/ImportHolidaysModal'
 import AddPeriodModal from './components/AddPeriodModal'
 import EditPeriodModal from './components/EditPeriodModal'
 import CustomToolbar from './components/CustomToolbar'
-import transformTime from 'utils/schedules/transformTime'
 import formatPeriodDateFormat from 'utils/schedules/formatPeriodDateFormat'
 
 import editIcon from 'source/images/svg/edit.svg'
@@ -44,7 +42,6 @@ const HolidaySchedule = observer(({ t }) => {
     setPeriodToEdit,
     deletePeriod,
     isPeriodDeleting,
-    postPeriod,
     clearImportData
   } = HolidaySchedulesStore
 
@@ -62,6 +59,7 @@ const HolidaySchedule = observer(({ t }) => {
 
   useEffect(() => {
     getHolidaySchedule(customerId, groupId, holidayScheduleName)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleCloseAddPeriodModal = () => {
@@ -142,19 +140,6 @@ const HolidaySchedule = observer(({ t }) => {
 
   // To disable lib warning
   const handleOnViewChange = () => null
-
-  // Small components ------
-  const extraTitleBlock = (
-    <Box className={classes.extraTitleBlockWrap}>
-      <Box className={classes.extraTitleBlockIconWrap}>
-        <DateRangeIcon />
-      </Box>
-      <Typography className={classes.extraTitleBlockTitle}>
-        {t('import_holidays')}
-      </Typography>
-    </Box>
-  )
-  // -----------------
 
   // DATA
   const globalizeLocalizer = localizer(globalize)

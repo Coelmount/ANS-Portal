@@ -1,17 +1,12 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useDebounce } from 'use-debounce'
 import { useParams } from 'react-router-dom'
-import classnames from 'classnames'
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
@@ -27,9 +22,7 @@ import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import AddInstance from '../AddInstance'
 import AddMultipleNumbers from '../MultipleANSBasicNumber'
-import usePreviousValue from 'utils/hooks/usePreviousValue'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import types from 'utils/types/basicSearchParams'
 
@@ -51,7 +44,6 @@ const AvailableNumbers = ({ t }) => {
   const { customerId, groupId } = match
 
   const {
-    step,
     changeStep,
     updateSelectedPhoneNumber,
     getAvailableNumbersForAddInstance,
@@ -63,7 +55,6 @@ const AvailableNumbers = ({ t }) => {
   } = BasicTranslationsStore
 
   const [numbers, setNumbers] = useState([])
-  const [selectedNumber, setSelectedNumber] = useState(null)
   const [selectAll, setSelectAll] = useState(false)
   const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [page, setPage] = useState(1)
@@ -95,6 +86,7 @@ const AvailableNumbers = ({ t }) => {
 
   useEffect(() => {
     getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // set numbers in local state from store
@@ -106,6 +98,7 @@ const AvailableNumbers = ({ t }) => {
   useEffect(() => {
     setPage(1)
     if (!isAvailableNumbersForAddInstanceLoading) getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNumberLike, orderBy, order, searchParam])
 
   // onUpdate pagination
@@ -120,6 +113,7 @@ const AvailableNumbers = ({ t }) => {
         order,
         debouncedNumberLike
       )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage])
 
   // Listener of params selector width
@@ -127,6 +121,7 @@ const AvailableNumbers = ({ t }) => {
     if (calcInput.current) {
       setWidthOffset(`${+calcInput.current.clientWidth + 15}px`)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calcInput.current, searchParam])
 
   const handleSingleConfigure = row => {

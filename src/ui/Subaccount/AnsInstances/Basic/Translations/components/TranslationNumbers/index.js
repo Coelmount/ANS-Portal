@@ -7,21 +7,13 @@ import classnames from 'classnames'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-import Popover from '@material-ui/core/Popover'
-import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 
 import UpdateIcon from '@material-ui/icons/Update'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined'
-import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 
-import TitleBlock from 'components/TitleBlock'
 import CustomTable from 'components/CustomTable'
-import CustomContainer from 'components/CustomContainer'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
@@ -37,7 +29,6 @@ import BasicTranslationsStore from 'stores/BasicTranslations'
 import useStyles from './styles'
 import RightArrowIcon from 'source/images/svg/right-arrow.svg'
 import deleteIcon from 'source/images/svg/delete-icon.svg'
-import notificationIcon from 'source/images/svg/no-numbers-notification.svg'
 
 const TranslationNumbers = observer(({ t }) => {
   const classes = useStyles()
@@ -47,7 +38,6 @@ const TranslationNumbers = observer(({ t }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [searchList, setSearchList] = useState([])
-  const [anchorEl, setAnchorEl] = useState(null)
   const [showAddMultipleANSNumbers, setShowAddMultipleANSNumbers] = useState(
     false
   )
@@ -59,11 +49,7 @@ const TranslationNumbers = observer(({ t }) => {
   const [isAddInstanceModalOpen, setIsAddInstanceModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [instancesForDelete, setInstancesForDelete] = useState([])
-  const [isUserSubaccount, setIsUserSubaccount] = useState(false)
   const [instancesToDeleteString, setInstancesToDeleteString] = useState('')
-
-  const isAddPopoverOpen = Boolean(anchorEl)
-  const id = isAddPopoverOpen ? 'simple-popover' : undefined
 
   const {
     setDefaultValues,
@@ -74,7 +60,6 @@ const TranslationNumbers = observer(({ t }) => {
     deleteANSBasic,
     isDeleting,
     getAvailableNumbersForAddInstance,
-    availableNumbersForAddInstance,
     isAvailableNumbersForAddInstanceLoading,
     clearAvailableNumbersForAddInstance,
     clearBasicNumbers
@@ -82,21 +67,16 @@ const TranslationNumbers = observer(({ t }) => {
 
   const isLoading =
     isAvailableNumbersForAddInstanceLoading || isBasicTranslationsNumbersLoading
-  const isNumbersForAddInstanceAvailable = availableNumbersForAddInstance.length
-  const isNoNumbersNotificationVisible =
-    !isNumbersForAddInstanceAvailable && !isLoading && isUserSubaccount
 
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
     getAvailableNumbersForAddInstance(match.customerId, match.groupId, 1, 10)
 
-    const ids = JSON.parse(localStorage.getItem('ids'))
-    setIsUserSubaccount(Boolean(ids && ids.tenant_id && ids.group_id))
-
     return () => {
       clearAvailableNumbersForAddInstance()
       clearBasicNumbers()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -112,6 +92,7 @@ const TranslationNumbers = observer(({ t }) => {
       instance => `${instance.access_number} ==> ${instance.destination_number}`
     )
     setInstancesToDeleteString(instanceNames.join(' , '))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instancesForDelete.length])
 
   const handleCloseDeleteModal = () => {
@@ -135,23 +116,10 @@ const TranslationNumbers = observer(({ t }) => {
     )
   }
 
-  const handleAddInstanceModalOpen = () => {
-    setIsAddInstanceModalOpen(true)
-    setAnchorEl(null)
-  }
-
   const handleAddInstanceModalClose = () => {
     setIsAddInstanceModalOpen(false)
     setDefaultValues()
     getBasicTranslationsNumbers(match.customerId, match.groupId)
-  }
-
-  const handlePopoverOpen = event => {
-    if (isNumbersForAddInstanceAvailable) setAnchorEl(event.currentTarget)
-  }
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null)
   }
 
   const selectNumbers = (checked, id) => {
@@ -193,82 +161,6 @@ const TranslationNumbers = observer(({ t }) => {
   const changeHover = (newHover, id) => {
     const newNumbers = transformOnHover(numbers, newHover, id)
     setNumbers(newNumbers)
-  }
-
-  const addPopoverItems = [
-    {
-      id: 1,
-      label: t('1_ans_basic_number'),
-      onClick: handleAddInstanceModalOpen
-    },
-    {
-      id: 2,
-      label: t('multiply_ans_basic_number'),
-      onClick: () => {
-        setShowAddMultipleANSNumbers(true)
-        setAnchorEl(null)
-      }
-    }
-  ]
-
-  const titleData = {
-    mainText: t('basic_translations'),
-    buttonBlock: (
-      <Box className={classes.titleWrap}>
-        {isNoNumbersNotificationVisible && (
-          <Typography className={classes.titleNotification}>
-            <img
-              src={notificationIcon}
-              className={classes.notificationIcon}
-              alt='notification'
-            />
-            {t('no_numbers_notification')}
-          </Typography>
-        )}
-        <Box className={classes.addCustomerWrap}>
-          <Box
-            onClick={handlePopoverOpen}
-            className={classnames(classes.addIconWrap, {
-              [classes.disabledButton]: !isNumbersForAddInstanceAvailable
-            })}
-          >
-            <AddOutlinedIcon />
-          </Box>
-          <Box className={classes.addTitleWrap}>
-            <Typography
-              className={classnames(classes.addCustomerTitle, {
-                [classes.disabledText]: !isNumbersForAddInstanceAvailable
-              })}
-            >
-              {t('add')}
-            </Typography>
-            <ArrowDropUpOutlinedIcon className={classes.upArrowIcon} />
-            <ArrowDropDownOutlinedIcon className={classes.downArrowIcon} />
-          </Box>
-          <Popover
-            id={id}
-            open={isAddPopoverOpen}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-          >
-            <Box className={classes.addPopoverWrap}>
-              {addPopoverItems.map(item => (
-                <MenuItem
-                  onClick={item.onClick}
-                  value={item.label}
-                  key={item.id}
-                  className={classes.addPopoverItem}
-                >
-                  <Typography className={classes.addPopoverItemText}>
-                    {item.label}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Box>
-          </Popover>
-        </Box>
-      </Box>
-    )
   }
 
   const toolbarButtonsBlock = () => {

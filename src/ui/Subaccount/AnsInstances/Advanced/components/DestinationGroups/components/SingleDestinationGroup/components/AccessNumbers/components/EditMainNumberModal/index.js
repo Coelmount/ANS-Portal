@@ -23,7 +23,6 @@ import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import AccessNumbersStore from 'stores/DestinationGroups/AccessNumbers'
 
 import useStyles from './styles'
-import { toJS } from 'mobx'
 
 const EditMainNumberModal = props => {
   const { t, open, handleClose } = props
@@ -56,6 +55,7 @@ const EditMainNumberModal = props => {
       countryCode: ''
     }
     getAvailableNumbers(payload)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

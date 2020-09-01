@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { flexbox } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
   playerWrapper: {

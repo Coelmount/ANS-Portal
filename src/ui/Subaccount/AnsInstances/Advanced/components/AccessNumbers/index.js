@@ -5,10 +5,7 @@ import { useDebounce } from 'use-debounce'
 import { useParams } from 'react-router-dom'
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
@@ -81,6 +78,7 @@ const AccessNumbers = ({ t }) => {
 
   useEffect(() => {
     getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Set numbers in local state from store
@@ -92,6 +90,7 @@ const AccessNumbers = ({ t }) => {
   useEffect(() => {
     setPage(1)
     if (!isAccessNumbersLoading) getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNumberLike, orderBy, order, searchParam])
 
   // On update pagination
@@ -106,6 +105,7 @@ const AccessNumbers = ({ t }) => {
         order,
         debouncedNumberLike
       )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage])
 
   // Listener of params selector width
@@ -113,6 +113,7 @@ const AccessNumbers = ({ t }) => {
     if (calcInput.current) {
       setWidthOffset(`${+calcInput.current.clientWidth + 15}px`)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calcInput.current, searchParam])
 
   const handleSingleConfigureClick = row => {
@@ -134,27 +135,6 @@ const AccessNumbers = ({ t }) => {
     updateSearchParam(value)
   }
 
-  // handle check/uncheck
-  const selectNumbers = (checked, id) => {
-    const newNumbers = transformOnChange(numbers, checked, id)
-    setNumbers(newNumbers)
-    handleCheckedStates(newNumbers)
-    checked
-      ? setNumberOfChecked(numberOfChecked + 1)
-      : setNumberOfChecked(numberOfChecked - 1)
-  }
-
-  // handle check all
-  const handleSelectAll = () => {
-    const newNumbers = numbers.map(item => {
-      return { ...item, checked: !selectAll }
-    })
-    handleCheckedStates(newNumbers)
-    setNumbers(newNumbers)
-    setSelectAll(!selectAll)
-    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(numbers.length)
-  }
-
   // handler of check states schema
   const handleCheckedStates = newNumbers => {
     if (
@@ -169,12 +149,6 @@ const AccessNumbers = ({ t }) => {
     if (!newNumbers.length) {
       setSelectAll(false)
     }
-  }
-
-  // handle hovers
-  const changeHover = (newHover, id) => {
-    const newNumbers = transformOnHover(numbers, newHover, id)
-    setNumbers(newNumbers)
   }
 
   const SearchSelector = (

@@ -8,7 +8,6 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Chip from '@material-ui/core/Chip'
-// import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import TitleBlock from 'components/TitleBlock'
@@ -19,8 +18,6 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import FiltersModal from './components/FiltersModal'
 import Loading from 'components/Loading'
-import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 
 import filtersIcon from 'source/images/svg/filters.svg'
 import useStyles from './styles'
@@ -34,8 +31,6 @@ const PhoneNumbers = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
   const [numbers, setNumbers] = useState([])
-  const [selectAll, setSelectAll] = useState(false)
-  const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(
     storageRowsPerPage || DEFAULT_ROWS_PER_PAGE
@@ -105,36 +100,6 @@ const PhoneNumbers = observer(({ t }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage])
 
-  // request on search input change
-  // useEffect(() => {
-  //   setPage(1)
-  //   getPhoneNumbers(
-  //     match.customerId,
-  //     match.groupId,
-  //     1,
-  //     rowsPerPage,
-  //     filterValues,
-  //     orderBy,
-  //     order,
-  //     debouncedNumberLike
-  //   )
-  // }, [debouncedNumberLike])
-
-  //
-  // useEffect(() => {
-  //   // setPage(1)
-  //   getPhoneNumbers(
-  //     match.customerId,
-  //     match.groupId,
-  //     1,
-  //     rowsPerPage,
-  //     filterValues,
-  //     orderBy,
-  //     order,
-  //     debouncedNumberLike
-  //   )
-  // }, [filterValues.status, filterValues.type, filterValues.country.label])
-
   // Unmount clear
   useEffect(() => {
     return () => {
@@ -149,52 +114,8 @@ const PhoneNumbers = observer(({ t }) => {
 
   // handle search
   useEffect(() => {
-    handleCheckedStates(numbers)
     setPhoneNumbers(numbers)
   }, [numbers, setPhoneNumbers])
-
-  // handle check/uncheck
-  // const selectNumbers = (checked, id) => {
-  //   const newNumbers = transformOnChange(numbers, checked, id)
-  //   setNumbers(newNumbers)
-  //   handleCheckedStates(newNumbers)
-  //   checked
-  //     ? setNumberOfChecked(numberOfChecked + 1)
-  //     : setNumberOfChecked(numberOfChecked - 1)
-  // }
-
-  // handle check all
-  // const handleSelectAll = () => {
-  //   const newNumbers = numbers.map(item => {
-  //     return { ...item, checked: !selectAll }
-  //   })
-  //   handleCheckedStates(newNumbers)
-  //   setNumbers(newNumbers)
-  //   setSelectAll(!selectAll)
-  //   selectAll ? setNumberOfChecked(0) : setNumberOfChecked(numbers.length)
-  // }
-
-  // handler of check states schema
-  const handleCheckedStates = newNumbers => {
-    if (
-      newNumbers.every(el => {
-        return el.checked
-      })
-    ) {
-      setSelectAll(true)
-    } else {
-      setSelectAll(false)
-    }
-    if (!newNumbers.length) {
-      setSelectAll(false)
-    }
-  }
-
-  // handle hovers
-  // const changeHover = (newHover, id) => {
-  //   const newNumbers = transformOnHover(numbers, newHover, id)
-  //   setNumbers(newNumbers)
-  // }
 
   // Filters open
   const handleFiltersButtonClick = () => {
@@ -273,48 +194,6 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const columns = [
-    // {
-    //   id: 'checkbox',
-    //   label: (
-    //     <Checkbox
-    //       className={classes.headCheckbox}
-    //       checked={selectAll}
-    //       onChange={handleSelectAll}
-    //     />
-    //   ),
-    //   isSortAvailable: false,
-    //   getCellData: (row, i) =>
-    //     row.checked ? (
-    //       <Checkbox
-    //         checked={row.checked}
-    //         className={classes.checkbox}
-    //         onChange={e => selectNumbers(!row.checked, row.id)}
-    //       />
-    //     ) : (
-    //       <div
-    //         className={classes.indexHoverCheckbox}
-    //         onClick={() => selectNumbers(!row.checked, row.id)}
-    //         onMouseLeave={() => changeHover(false, row.id)}
-    //         onMouseEnter={() => changeHover(true, row.id)}
-    //       >
-    //         {row.hover ? (
-    //           <Checkbox
-    //             checked={row.checked}
-    //             className={classes.checkbox}
-    //             onChange={() => selectNumbers(true, row.id)}
-    //           />
-    //         ) : (
-    //           (page - 1) * rowsPerPage + i + 1
-    //         )}
-    //       </div>
-    //     ),
-    //   extraHeadProps: {
-    //     className: classes.checkboxCell
-    //   },
-    //   extraProps: {
-    //     className: classes.checkboxCell
-    //   }
-    // },
     {
       id: 'countryName',
       label: 'country',

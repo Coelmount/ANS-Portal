@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { observer, useLocalStore, useObserver } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import classnames from 'classnames'
 
 import AddIcon from '@material-ui/icons/Add'
@@ -13,24 +13,18 @@ import Typography from '@material-ui/core/Typography'
 
 import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
 import Loading from 'components/Loading'
-import TitleBlock from 'components/TitleBlock'
-import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
-import Checkbox from 'components/Checkbox'
 import AddModal from './components/AddModal'
 import EditDefaultDestinationModal from './components/EditDefaultDestinationModal'
 import TimeScheduleCalendar from './components/TimeScheduleCalendar'
 import Input from 'components/Input'
 import { EDIT_DESTINATION_ID } from 'utils/types/addDestinationModalStepsId'
 
-import deleteIcon from 'source/images/svg/delete-icon.svg'
 import editIcon from 'source/images/svg/edit-blue.svg'
 import listTableIcon from 'source/images/svg/list-table.svg'
 import scheduleIcon from 'source/images/svg/schedule.svg'
 import useStyles from './styles'
-
-import { toJS } from 'mobx'
 
 const addModalId = 1
 const deleteModalId = 2
@@ -213,12 +207,9 @@ const Toolbar = ({ t, classes, isLoading, handleAddClick }) => {
 
 const TimeSchedule = ({ t }) => {
   const classes = useStyles()
-  const history = useHistory()
   const { customerId, groupId, tbrName } = useParams()
 
   const {
-    defaultDestination,
-    deleteString,
     isSchedulesLoading: isLoading,
     isTimeScheduleDeleting: isDeleting,
     setScheduleToEdit,
@@ -260,6 +251,7 @@ const TimeSchedule = ({ t }) => {
 
   useEffect(() => {
     getRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Modal click handlers -----

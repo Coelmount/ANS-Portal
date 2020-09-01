@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { Link, useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import classnames from 'classnames'
@@ -22,20 +22,17 @@ import DeleteModal from 'components/DeleteModal'
 import CustomTable from 'components/CustomTable'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
-import Checkbox from 'components/Checkbox'
 import AddNumbers from './AddNumbers/'
 import AssignToSubaccountModal from './AssignToSubaccountModal'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
-import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import getUrlWithServiceCapability from 'utils/getUrlWithServiceCapability'
 
 import disconnectIcon from 'source/images/svg/delete-icon.svg'
 import deassignIcon from 'source/images/svg/deassign.svg'
 
 import useStyles from './styles'
-import { toJS } from 'mobx'
 
 const StyledTooltip = withStyles({
   tooltip: {
@@ -82,7 +79,6 @@ const AccessNumbersItem = ({ t }) => {
     isDisconnectingNumber,
     disconnectNumbers,
     deassignNumbers,
-    totalPagesServer,
     getEntitlementsAndFindCurrent,
     currentEntitlement,
     setDefaultValues,
@@ -138,12 +134,14 @@ const AccessNumbersItem = ({ t }) => {
     return () => {
       setDefaultValues()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     if (assignedNumbers.length > 0) setNumbers(assignedNumbers)
     setNumberOfSelectedToDisconnect(0)
     setNumberOfSelectedToDeassign(0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assignedNumbers])
 
   // Status(in use) column redirect
@@ -171,6 +169,7 @@ const AccessNumbersItem = ({ t }) => {
       clearSubaccountLinkId()
       setClickedInstance({})
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subaccountLinkId])
 
   // Subaccount column redirect
@@ -184,6 +183,7 @@ const AccessNumbersItem = ({ t }) => {
       clearSubaccountLinkId()
       setIsSubaccountLinkClicked(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subaccountLinkId])
 
   // update page after deassign
@@ -191,6 +191,7 @@ const AccessNumbersItem = ({ t }) => {
     if (isNumbersDeassigned) {
       getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNumbersDeassigned])
 
   const handleCloseAssignModal = () => {
@@ -285,11 +286,6 @@ const AccessNumbersItem = ({ t }) => {
     if (!possibleToDeassignArr.length) {
       setIsDeassignAll(false)
     }
-  }
-
-  const changeHover = (newHover, id) => {
-    const newSelected = transformOnHover(numbers, newHover, id)
-    setNumbers(newSelected)
   }
 
   const createDeassignMessage = numbers => {
@@ -430,7 +426,6 @@ const AccessNumbersItem = ({ t }) => {
 
   const handleDisconnectAll = () => {
     setIsDisconnectAll(!isDisconnectAll)
-    let counter = numberOfSelectedToDisconnect
     let localCounter = 0
     const currentVisibleList = searchList.map(item => item.id)
 
@@ -459,7 +454,6 @@ const AccessNumbersItem = ({ t }) => {
 
   const handleDeassignAll = () => {
     setIsDeassignAll(!isDeassignAll)
-    let counter = numberOfSelectedToDeassign
     let localCounter = 0
     const currentVisibleList = searchList.map(item => item.id)
 
@@ -571,54 +565,6 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const columns = [
-    // {
-    //   id: 'checkbox',
-    //   label: (
-    //     <Checkbox
-    //       className={classes.headCheckbox}
-    //       checked={selectAll}
-    //       onChange={handleSelectAll}
-    //     />
-    //   ),
-    //   isSortAvailable: false,
-    //   getCellData: (row, i) =>
-    //     row.checked ? (
-    //       <Checkbox
-    //         checked={row.checked}
-    //         className={classes.checkbox}
-    //         onChange={() => selectNumbers(!row.checked, row.id, 'checked')}
-    //       />
-    //     ) : (
-    //       <div
-    //         className={classes.indexHoverCheckbox}
-    //         onClick={() => {
-    //           if (row.subaccount === 'none' && row.inUse === 'no')
-    //             selectNumbers(!row.checked, row.id, 'checked')
-    //         }}
-    //         onMouseLeave={() => changeHover(false, row.id)}
-    //         onMouseEnter={() => changeHover(true, row.id)}
-    //       >
-    //         {row.hover && row.subaccount === 'none' && row.inUse === 'no' ? (
-    //           <Checkbox
-    //             checked={row.checked}
-    //             className={classes.checkbox}
-    //             onChange={() => {
-    //               if (row.subaccount === 'none' && row.inUse === 'no')
-    //                 selectNumbers(true, row.id, 'checked')
-    //             }}
-    //           />
-    //         ) : (
-    //           i + 1
-    //         )}
-    //       </div>
-    //     ),
-    //   extraHeadProps: {
-    //     className: classes.checkboxCell
-    //   },
-    //   extraProps: {
-    //     className: classes.checkboxCell
-    //   }
-    // },
     {
       id: 'phoneNumber',
       label: 'phone_numbers',
@@ -894,7 +840,6 @@ const AccessNumbersItem = ({ t }) => {
             open={isDeassignModalOpen}
             handleClose={handleCloseDeassignModal}
             handleDelete={handleDeassign}
-            // isDeleting={isDisconnectingNumber}
             deleteSubject={deassignSubject}
             extraDeleteSubject={deassignMessage}
             action={t('to_deassign')}

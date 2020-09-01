@@ -2,7 +2,6 @@ import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
-import PropTypes from 'prop-types'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'

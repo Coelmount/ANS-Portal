@@ -51,7 +51,7 @@ const CreateCustomer = props => {
   const [addedNumbers, setAddedNumber] = useState([])
   const [selectAllAddedNumbers, setSelectAllAddedNumbers] = useState(false)
   const [selectedGroup, setSelectedGroup] = useState('')
-  const [addedNumbersSub, setAddedNumberSub] = useState([])
+  const [addedNumbersSub] = useState([])
   const [queryAvalibleNumbers, setQueryAvalibleNumbers] = useState({
     range_size: '',
     number_type: '',

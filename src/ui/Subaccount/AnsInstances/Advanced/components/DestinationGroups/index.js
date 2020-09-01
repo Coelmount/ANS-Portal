@@ -32,7 +32,6 @@ const DestinationGroups = observer(({ t }) => {
   const { customerId, groupId } = useParams()
 
   const [numbers, setNumbers] = useState([])
-  const [searchList, setSearchList] = useState([])
 
   const openedModal = useLocalStore(() => ({
     id: null,
@@ -147,7 +146,6 @@ const DestinationGroups = observer(({ t }) => {
               'noAnswerHunt',
               'destinations'
             ]}
-            getSearchList={setSearchList}
             noAvailableDataMessage={t('no_destinations_available')}
             tableId={'ans_advanced_destinations'}
           />

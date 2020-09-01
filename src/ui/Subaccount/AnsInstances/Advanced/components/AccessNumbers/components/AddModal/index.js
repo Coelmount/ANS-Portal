@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import classnames from 'classnames'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -16,8 +15,6 @@ import CloseIcon from '@material-ui/icons/Close'
 import PhoneForwardedIcon from '@material-ui/icons/PhoneForwarded'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import PolicyIcon from '@material-ui/icons/Policy'
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
 import AdvancedAccessNumbersStore from 'stores/AdvancedAccessNumbers'
 import Input from 'components/Input'
@@ -26,13 +23,12 @@ import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import POLICY_OPTIONS from 'utils/types/policyOptions'
 
-import EditIcon from 'source/images/components/EditIcon'
 import useStyles from './styles'
 
 const AddModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
-  const { customerId, groupId, destinationGroupName } = match
+  const { customerId, groupId } = match
   const { postAccessNumber, isAccessNumberPosting } = AdvancedAccessNumbersStore
 
   const inputStore = useLocalStore(() => ({

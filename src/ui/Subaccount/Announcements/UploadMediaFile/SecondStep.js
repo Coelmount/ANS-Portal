@@ -32,6 +32,7 @@ const SecondStep = props => {
   useEffect(() => {
     const tempAnnouncements = [...announcements]
     setStateAnnouncements(tempAnnouncements)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const changeName = (value, index) => {

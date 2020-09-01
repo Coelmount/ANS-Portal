@@ -30,7 +30,7 @@ const AudioPlayer = props => {
   const [playing, setPlaying] = useState(false)
   const [seeking, setSeeking] = useState(false)
   const [played, setPlayed] = useState(0)
-  const [playbackRate, setPlaybackRate] = useState(1)
+  const [playbackRate] = useState(1)
   const [loadedSeconds, setLoadedSeconds] = useState(0)
 
   let player = null

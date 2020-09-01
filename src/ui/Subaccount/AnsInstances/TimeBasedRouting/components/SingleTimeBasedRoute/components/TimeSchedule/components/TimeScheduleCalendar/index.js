@@ -46,8 +46,6 @@ const TimeScheduleCalendar = () => {
   const {
     getSchedulesPeriods,
     clearSchedulesPeriods,
-    schedules,
-    timeSchedulesPeriods,
     allPeriods,
     isSchedulesPeriodsLoading
   } = TimeSchedulesStore
@@ -59,6 +57,7 @@ const TimeScheduleCalendar = () => {
     }
     getSchedulesPeriods(payload)
     return clearSchedulesPeriods
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Date/time configs for Calandar

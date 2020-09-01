@@ -34,6 +34,7 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
 
   useEffect(() => {
     getSubaccounts(match.customerId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSubaccounts])
 
   useEffect(() => {

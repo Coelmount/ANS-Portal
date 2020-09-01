@@ -1,19 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import classnames from 'classnames'
-import { useHistory, NavLink, useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 import { withRouter } from 'react-router'
 import { observer } from 'mobx-react-lite'
 
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import DefaultLayoutStore from 'stores/DefaultLayout'
 import SubaccountsStore from 'stores/Subaccounts'
@@ -24,8 +18,6 @@ import FirstLevelTabItem from './components/FirstLevelTabItem'
 import SecondLevelTabItem from './components/SecondLevelTabItem'
 
 import logo from 'source/images/svg/mtn-logo-nav.svg'
-import subaccountIcon from 'source/images/svg/users-subaccount.svg'
-import customerIcon from 'source/images/svg/users-customer.svg'
 
 const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
   const history = useHistory()
@@ -37,7 +29,6 @@ const CustomDrawer = ({ classes, getCurrentLevel, t }) => {
     activeParentNav,
     activeChildNav,
     activeBasicSubChild,
-    handleActiveParentNav,
     handleActiveChildNav,
     handleActiveSubChildNav,
     getActiveNavsAfterUpdate

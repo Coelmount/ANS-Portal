@@ -85,7 +85,6 @@ const AssignNumbers = props => {
   const { t } = props
   const [numbers, setNumbers] = useState(NUMBERS)
   const [selectAll, setSelectAll] = useState(false)
-  const [isAnyChecked, setIsAnyChecked] = useState(false)
   const [selectedGroup, setSelectedGroup] = useState('')
   const [searchList, setSearchList] = useState([])
   const classes = useStyles()
@@ -101,11 +100,11 @@ const AssignNumbers = props => {
   useEffect(() => {
     getSubaccounts(match.customerId)
     getAvailableNumbers()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     handleCheckedStates(searchList)
-    //setPhoneNumbers(searchList)
   }, [searchList])
 
   const selectNumbers = (checked, id) => {
@@ -120,18 +119,13 @@ const AssignNumbers = props => {
       })
     ) {
       setSelectAll(true)
-      setIsAnyChecked(true)
     } else {
       setSelectAll(false)
       if (newNumbers.some(el => el.checked)) {
-        setIsAnyChecked(true)
-      } else {
-        setIsAnyChecked(false)
       }
     }
     if (!newNumbers.length) {
       setSelectAll(false)
-      setIsAnyChecked(false)
     }
   }
 
@@ -140,7 +134,6 @@ const AssignNumbers = props => {
     handleCheckedStates(newNumbers)
     setNumbers(newNumbers)
     setSelectAll(!selectAll)
-    setIsAnyChecked(!selectAll)
   }
 
   const changeHover = (newHover, id) => {

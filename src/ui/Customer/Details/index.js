@@ -33,6 +33,7 @@ const Details = observer(({ t }) => {
 
   useEffect(() => {
     getCustomerDefaultValues()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const titleData = {

@@ -1,4 +1,4 @@
-import { decorate, observable, action, computed } from 'mobx'
+import { decorate, observable, action } from 'mobx'
 import difference from 'lodash/difference'
 
 import axios from 'utils/axios'
@@ -9,7 +9,6 @@ import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoL
 import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
 import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
 import DEFAULT_IDS from 'utils/types/defaultSecondaryIds'
-import { toJS } from 'mobx'
 
 export class AccessNumbers {
   mainNumber = null
