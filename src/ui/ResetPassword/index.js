@@ -1,27 +1,29 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Link, useHistory } from 'react-router-dom'
+// import {
+//   Link,
+//   useHistory }
+//   from 'react-router-dom'
+import { withNamespaces } from 'react-i18next'
 
+import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import MaterialLink from '@material-ui/core/Link'
 
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
-import LockOutlined from '@material-ui/icons/LockOutlined'
-import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined'
-import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
+// import LockOutlined from '@material-ui/icons/LockOutlined'
+// import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined'
+// import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
 import CheckIcon from '@material-ui/icons/Check'
 
-import AuthStore from 'stores/Auth'
+// import AuthStore from 'stores/Auth'
+import Input from 'components/Input'
+// import Checkbox from 'components/Checkbox'
+
 import bgImg from 'source/images/other/bg_img.jpg'
 import logo from 'source/images/svg/mtn-logo-nav.svg'
-import Input from 'components/Input'
-import Checkbox from 'components/Checkbox'
-import { makeStyles } from '@material-ui/core/styles'
-
-import { withNamespaces } from 'react-i18next'
-
 // import './index.css'
 
 const useStyles = makeStyles(theme => ({
@@ -71,12 +73,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Auth = ({ t }) => {
-  const { postLogin } = AuthStore
+  // const { postLogin } = AuthStore
   const [email, setEmail] = useState('')
   const [isEmailSended, setIsEmailSended] = useState(false)
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  // const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-  const history = useHistory()
+  // const history = useHistory()
   const classes = useStyles()
 
   const handleEmailChange = e => {

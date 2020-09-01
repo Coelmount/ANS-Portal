@@ -420,6 +420,7 @@ const MenuTemplate = props => {
   const changeKeysMenu = (id, field, value) => {
     const indexByKey = stateMenu.keys.findIndex(el => el.key === value)
     if (
+      // eslint-disable-next-line
       (field === 'key' && !/^[\d\#\*]$/.test(value) && value !== '') ||
       (stateMenu.keys.some(el => el.key === value) &&
         stateMenu.keys[indexByKey].action !== null)

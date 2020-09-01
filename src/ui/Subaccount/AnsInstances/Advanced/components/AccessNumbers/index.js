@@ -17,8 +17,6 @@ import CustomTable, {
 } from 'components/CustomTableBackendPagination'
 import Loading from 'components/Loading'
 import AddModal from './components/AddModal'
-import transformOnChange from 'utils/tableCheckbox/transformOnChange'
-import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import types from 'utils/types/basicSearchParams'
 
 import useStyles from './styles'
@@ -50,8 +48,6 @@ const AccessNumbers = ({ t }) => {
   } = AdvancedAccessNumbersStore
 
   const [numbers, setNumbers] = useState([])
-  const [selectAll, setSelectAll] = useState(false)
-  const [numberOfChecked, setNumberOfChecked] = useState(0)
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(
     storageRowsPerPage || DEFAULT_ROWS_PER_PAGE
@@ -133,22 +129,6 @@ const AccessNumbers = ({ t }) => {
 
   const changeSearchParam = value => {
     updateSearchParam(value)
-  }
-
-  // handler of check states schema
-  const handleCheckedStates = newNumbers => {
-    if (
-      newNumbers.every(el => {
-        return el.checked
-      })
-    ) {
-      setSelectAll(true)
-    } else {
-      setSelectAll(false)
-    }
-    if (!newNumbers.length) {
-      setSelectAll(false)
-    }
   }
 
   const SearchSelector = (
