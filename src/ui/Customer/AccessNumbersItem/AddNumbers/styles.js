@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     width: 392
   },
   rangeWrapperStylesInput: {
-    width: 70,
+    width: 85,
     marginLeft: 10
   },
   wrapperStylesSelect: {
