@@ -166,7 +166,8 @@ const useStyles = makeStyles(theme => ({
   availableTitle: {
     color: theme.palette.lightGreen,
     fontSize: 14,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    width: 'fit-content'
   },
   //delete cell without icon
   deleteCustomerIcon: {
