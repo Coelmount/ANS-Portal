@@ -44,8 +44,16 @@ const CreateCustomer = props => {
     postAddedNumbersToSubaccaunt,
     setDefaultValue
   } = numbersStore
-  const { currentEntitlement } = AssignedNumbersStore
+
+  const match = useParams()
   const classes = useStyles()
+
+  const { currentEntitlement } = AssignedNumbersStore
+
+  const maxRangeSize =
+    currentEntitlement.entitlement -
+    (isNaN(currentEntitlement.counter) ? 0 : currentEntitlement.counter)
+
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [addedNumbers, setAddedNumber] = useState([])
@@ -53,19 +61,18 @@ const CreateCustomer = props => {
   const [selectedGroup, setSelectedGroup] = useState('')
   const [addedNumbersSub] = useState([])
   const [queryAvalibleNumbers, setQueryAvalibleNumbers] = useState({
-    range_size: '',
+    range_size: `${maxRangeSize}`,
     number_type: '',
     country_code: '',
-    numbers_of_results: ''
+    number_of_results: '1'
   })
-  const match = useParams()
 
   const clearQueryParameters = () => {
     setQueryAvalibleNumbers({
-      range_size: '',
+      range_size: `${maxRangeSize}`,
       number_type: '',
       country_code: '',
-      numbers_of_results: ''
+      number_of_results: '1'
     })
   }
 
@@ -220,6 +227,7 @@ const CreateCustomer = props => {
           searchAvalibleNumbers={searchAvalibleNumbers}
           availableNumbers={availableNumbers}
           clearQueryParameters={clearQueryParameters}
+          maxRangeSize={maxRangeSize}
         />
       )}
     </Dialog>
@@ -236,6 +244,7 @@ const StepsNotFoundNumbers = props => {
           queryAvalibleNumbers={props.queryAvalibleNumbers}
           setQueryAvalibleNumbers={props.setQueryAvalibleNumbers}
           searchAvalibleNumbers={props.searchAvalibleNumbers}
+          maxRangeSize={props.maxRangeSize}
         />
       )
     case 2:

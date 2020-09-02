@@ -10,11 +10,12 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import Input from 'components/Input'
 
 import CustomerStore from 'stores/Customers'
-import AccessNumbersStore from 'stores/AssignedNumbers'
+import AssignedNumbersStore from 'stores/AssignedNumbers'
 import NumbersStore from 'stores/Numbers'
 
 import useStyles from './styles'
@@ -25,14 +26,22 @@ const FirstStepNFN = props => {
     t,
     queryAvalibleNumbers,
     setQueryAvalibleNumbers,
-    searchAvalibleNumbers
+    searchAvalibleNumbers,
+    maxRangeSize
   } = props
+
   const classes = useStyles()
   const match = useParams()
 
   const { getCustomer } = CustomerStore
-  const { currentEntitlement } = AccessNumbersStore
+  const { currentEntitlement } = AssignedNumbersStore
   const { isLoadingAvailableNumbers } = NumbersStore
+
+  // Disabled if page loading proceed or range size/number_of_results not exist
+  const isSearchButtonDisabled =
+    !queryAvalibleNumbers.range_size ||
+    !queryAvalibleNumbers.number_of_results ||
+    isLoadingAvailableNumbers
 
   useEffect(() => {
     getCustomer(match.customerId)
@@ -41,7 +50,7 @@ const FirstStepNFN = props => {
       country_code: currentEntitlement.country_code,
       number_type: currentEntitlement.number_type,
       service_capabilities: currentEntitlement.service_capabilities,
-      range_size: ''
+      range_size: `${maxRangeSize}`
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -62,22 +71,13 @@ const FirstStepNFN = props => {
         <Box className={classes.stepStyles}>{t('search_parameters')}</Box>
         <Box className={classes.searchParametersBox}>
           <Box className={classes.rangeBox}>
-            {`Range size (${
-              currentEntitlement.entitlement -
-              (isNaN(currentEntitlement.counter)
-                ? 0
-                : currentEntitlement.counter)
-            } max)`}
+            {`Range size (${maxRangeSize} max)`}
             <Input
               type='number'
               wrapperStyles={classes.rangeWrapperStylesInput}
               inputProps={{
                 min: 0,
-                max:
-                  currentEntitlement.entitlement -
-                  (isNaN(currentEntitlement.counter)
-                    ? 0
-                    : currentEntitlement.counter)
+                max: maxRangeSize
               }}
               onChange={e =>
                 setQueryAvalibleNumbers({
@@ -85,6 +85,7 @@ const FirstStepNFN = props => {
                   range_size: e.target.value
                 })
               }
+              defaultValue={maxRangeSize}
             />
           </Box>
           <Input
@@ -112,6 +113,7 @@ const FirstStepNFN = props => {
                   number_of_results: e.target.value
                 })
               }
+              defaultValue={1}
             />
           </Box>
         </Box>
@@ -126,15 +128,25 @@ const FirstStepNFN = props => {
         >
           {t('cancel')}
         </Button>
-        <Button
-          variant='contained'
-          color='primary'
-          className={classes.nextButton}
-          disabled={isLoadingAvailableNumbers}
-          onClick={searchAvalibleNumbers}
+        <Tooltip
+          title={
+            isSearchButtonDisabled
+              ? t('add_numbers_search_button_disabled_tooltip')
+              : ''
+          }
         >
-          {t('search')}
-        </Button>
+          <span>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.nextButton}
+              disabled={isSearchButtonDisabled}
+              onClick={searchAvalibleNumbers}
+            >
+              {t('search')}
+            </Button>
+          </span>
+        </Tooltip>
       </DialogActions>
     </React.Fragment>
   )
