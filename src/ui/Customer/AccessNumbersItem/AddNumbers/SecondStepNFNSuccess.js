@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
@@ -24,19 +25,44 @@ import useStyles from './styles'
 import Loading from 'components/Loading'
 
 const FirstStepNFN = props => {
-  const { handleClose, t, changeStep, clearQueryParameters } = props
+  const {
+    handleClose,
+    t,
+    changeStep,
+    clearQueryParameters,
+    maxRangeSize
+  } = props
+
   const classes = useStyles()
   const match = useParams()
+
   const {
     availableNumbersTable,
     postAssignNumbersToCustomer,
     isAddingNumbers,
     clearNumbers
   } = numbersStore
+
   const { currentEntitlement } = AccessNumbersStore
   const [numbers, setNumbers] = useState(availableNumbersTable)
   const [selectAll, setSelectAll] = useState(false)
   const [countNumbers, setCountNumbers] = useState(0)
+
+  const checkedCollections = numbers.filter(collection => collection.checked)
+  const checkedNumbersAmount = checkedCollections.reduce(
+    (acc, collection) => acc + collection.length,
+    0
+  )
+  const isCheckedNumbersAmountLower = checkedNumbersAmount < 1
+  const isCheckedNumbersAmountHigher = checkedNumbersAmount > maxRangeSize
+  const disabledAddButtonTooltip = isCheckedNumbersAmountLower
+    ? t('no_numbers_selected_disabled_tooltip')
+    : t('out_of_range_amount_numbers_disabled_tooltip', { maxRangeSize })
+  const isTooltipActive =
+    isCheckedNumbersAmountLower || isCheckedNumbersAmountHigher
+
+  // Should be more then 1 and lower then maxRangeSize
+  const isAddButtonDisabled = isAddingNumbers || isTooltipActive
 
   const selectNumbers = (checked, number) => {
     const newNumbers = [...numbers]
@@ -201,22 +227,26 @@ const FirstStepNFN = props => {
           <ChevronLeft />
           {t('back')}
         </Button>
-        <Button
-          variant='contained'
-          color='primary'
-          className={classes.nextButton}
-          disabled={isAddingNumbers}
-          onClick={() =>
-            postAssignNumbersToCustomer(
-              match.customerId,
-              numbers,
-              changeStep,
-              3
-            )
-          }
-        >
-          {`${t('add')} (${countNumbers})`}
-        </Button>
+        <Tooltip title={isTooltipActive ? disabledAddButtonTooltip : ''}>
+          <span>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.nextButton}
+              disabled={isAddButtonDisabled}
+              onClick={() =>
+                postAssignNumbersToCustomer(
+                  match.customerId,
+                  numbers,
+                  changeStep,
+                  3
+                )
+              }
+            >
+              {`${t('add')} (${countNumbers})`}
+            </Button>
+          </span>
+        </Tooltip>
       </DialogActions>
     </React.Fragment>
   )

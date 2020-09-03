@@ -254,6 +254,7 @@ const StepsNotFoundNumbers = props => {
             handleClose={props.handleClose}
             changeStep={props.changeStep}
             clearQueryParameters={props.clearQueryParameters}
+            maxRangeSize={props.maxRangeSize}
           />
         )
       } else {
