@@ -285,7 +285,7 @@ const Router = () => {
     getLocal()
     getLocale(localStorage.getItem('i18nextLng'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isAuthorized])
 
   return (
     <React.Fragment>
