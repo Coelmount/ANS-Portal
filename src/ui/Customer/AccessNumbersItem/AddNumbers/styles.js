@@ -555,15 +555,8 @@ const useStyles = makeStyles(theme => ({
   tableRow: {
     height: '50px',
     borderLeft: '5px solid transparent',
-    //borderBottom: `1px solid ${theme.palette.greyE8}`,
-    // '&:first-child': {
-    //   borderTop: `2px solid ${theme.palette.primary.main}`
-    // },
     '& > td': {
-      width: 50,
-      textAlign: 'center'
-      //padding: '10px 16px',
-      //paddingLeft: 44
+      width: 50
     },
     '& > th': {
       height: 50
@@ -760,8 +753,13 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    width: 0,
     height: 'inherit',
-    padding: 0
+    padding: 0,
+    marginLeft: '30px',
+    '& > span': {
+      marginLeft: '3px !important'
+    }
   },
   rangeFromTo: {
     fontSize: 16,

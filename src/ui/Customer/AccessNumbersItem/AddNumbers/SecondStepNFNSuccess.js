@@ -189,7 +189,7 @@ const FirstStepNFN = props => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent className={classes.entitlementsDialogContent}>
+      <DialogContent>
         {isAddingNumbers ? (
           <Loading />
         ) : (
