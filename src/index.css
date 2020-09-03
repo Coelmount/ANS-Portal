@@ -9,6 +9,10 @@ body {
   font-family: 'MTN';
   src: url('source/MTN_Font/MTNBrighterSans-Regular.woff');
 }
+/* react-phone-input-2 library bug fix */
+.react-tel-input .special-label {
+  display: none;
+}
 /* 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
