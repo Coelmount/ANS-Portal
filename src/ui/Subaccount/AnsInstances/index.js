@@ -83,16 +83,16 @@ const AnsInstances = observer(({ t }) => {
       amount: amountOfDestinationGroups
     },
     {
-      label: t('time_based_routing'),
-      iconSrc: timeBasedRoutingIcon,
-      link: `${ansInstancesPrefix}/time_based_routing`,
-      amount: timeBasedRoutes.length
-    },
-    {
       label: t('ivr'),
       iconSrc: ivrIcon,
       link: `${ansInstancesPrefix}/ivr`,
       amount: ivrs.length
+    },
+    {
+      label: t('time_based_routing'),
+      iconSrc: timeBasedRoutingIcon,
+      link: `${ansInstancesPrefix}/time_based_routing`,
+      amount: timeBasedRoutes.length
     }
   ]
 
