@@ -21,7 +21,10 @@ const useStyles = makeStyles(theme => ({
   disabledAddButtonWrap: {
     opacity: 0.5,
     '& > span': {
-      background: theme.palette.lightGrey
+      background: theme.palette.lightGrey,
+      '&:hover': {
+        background: theme.palette.lightGrey
+      }
     }
   },
   updateWrap: {
