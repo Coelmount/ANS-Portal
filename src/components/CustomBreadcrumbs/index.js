@@ -25,7 +25,8 @@ const CustomBreadcrumbs = ({ match, t }) => {
       weekScheduleName,
       holidayScheduleName,
       ivrId,
-      destinationGroupName
+      destinationGroupName,
+      tbrName
     }
   } = match
   const ids = JSON.parse(localStorage.getItem('ids'))
@@ -165,6 +166,18 @@ const CustomBreadcrumbs = ({ match, t }) => {
       return (
         <Link
           to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced`}
+          className={classes.link}
+          key={breadcrumb}
+          onClick={handleCloseNav}
+        >
+          {t(breadcrumb)}
+        </Link>
+      )
+    }
+    if (breadcrumbsAmount > 6 && index === 5 && tbrName) {
+      return (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing`}
           className={classes.link}
           key={breadcrumb}
           onClick={handleCloseNav}
