@@ -36,7 +36,7 @@ export class UserStore {
   updatePasswordSuperAdmin = (data, callback) => {
     this.isUpdating = true
     const config = {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      headers: { Authorization: `Bearer ${localStorage.getItem('jwtToken')}` }
     }
     basicAxios
       .put(`${BASE_URL}/system/users/local`, data, config)

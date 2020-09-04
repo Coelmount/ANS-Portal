@@ -2,11 +2,12 @@ import { decorate, observable, action } from 'mobx'
 import axios from 'axios'
 import { BASE_URL } from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
+import clearLocalStorage from 'utils/clearLocalStorage'
 
 import SnackbarStore from './Snackbar'
 
 export class AuthStore {
-  token = localStorage.getItem('token')
+  jwtToken = localStorage.getItem('jwtToken')
   user = {}
   userLogin = {}
   isAuthorized = localStorage.getItem('isAuthorized', true)
@@ -16,17 +17,22 @@ export class AuthStore {
   isLogging = false
 
   postLogin = (data, history) => {
-    this.token = localStorage.getItem('token')
+    this.jwtToken = localStorage.getItem('jwtToken')
     this.userLogin = {}
     this.isLogging = true
     axios
       .post(`${BASE_URL}/auth/login`, data)
       .then(res => {
         if (res.status === 200) {
-          localStorage.setItem('token', res.data.token)
-          this.token = res.data.token
+          const newJwtToken = res.data.access_token
+          const newRefreshToken = res.data.refresh_token
+          localStorage.setItem('jwtToken', newJwtToken)
+          localStorage.setItem('refreshJwtToken', newRefreshToken)
+
+          this.jwtToken = newJwtToken
           this.userLogin = res.data
           this.getLocal()
+
           if (res.data.ids) {
             localStorage.setItem('ids', JSON.stringify(res.data.ids))
             if (res.data.ids.tenant_id && res.data.ids.group_id) {
@@ -70,7 +76,7 @@ export class AuthStore {
     this.username = ''
     axios
       .get(`${BASE_URL}/system/users/local`, {
-        headers: { Authorization: `Bearer ${this.token}` }
+        headers: { Authorization: `Bearer ${this.jwtToken}` }
       })
       .then(res => {
         if (res.status === 200) {
@@ -94,18 +100,16 @@ export class AuthStore {
   }
 
   logOut = () => {
-    localStorage.removeItem('isAuthorized')
-    localStorage.removeItem('token')
-    localStorage.removeItem('rowsPerPageScheme')
+    clearLocalStorage()
     this.user = {}
-    this.token = ''
+    this.jwtToken = ''
     this.isAuthorized = false
   }
 }
 
 decorate(AuthStore, {
   userLogin: observable,
-  token: observable,
+  jwtToken: observable,
   user: observable,
   isAuthorized: observable,
   username: observable,

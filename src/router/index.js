@@ -267,10 +267,10 @@ const AuthPages = observer(() => {
       {authComponents.map(el => (
         <Route key={el.path} path={el.path} component={el.component} exact />
       ))}
-      {!isAuthorized && !localStorage.getItem('token') && (
+      {!isAuthorized && !localStorage.getItem('jwtToken') && (
         <Redirect to='/' exact />
       )}
-      {!isAuthorized && !localStorage.getItem('token') && (
+      {!isAuthorized && !localStorage.getItem('jwtToken') && (
         <Route path='*' component={NotFound} />
       )}
     </Switch>
@@ -290,7 +290,7 @@ const Router = () => {
   return (
     <React.Fragment>
       <Snackbar />
-      {isAuthorized && localStorage.getItem('token') ? (
+      {isAuthorized && localStorage.getItem('jwtToken') ? (
         <Route path='/' component={UserPages} />
       ) : (
         <Switch>
