@@ -102,17 +102,9 @@ const DestinationGroups = observer(({ t }) => {
       id: 'routingPolicy',
       label: 'routing_policy'
     },
-    // {
-    //   id: 'noAnswerNumberOfRings',
-    //   label: 'no_answer_treatment'
-    // },
     {
-      id: 'noAnswerHunt',
-      label: 'no_answer_treatment'
-    },
-    {
-      id: 'destinations',
-      label: 'destinations'
+      id: 'mainNumber',
+      label: 'main_number'
     },
     {
       id: 'delete',
@@ -140,12 +132,7 @@ const DestinationGroups = observer(({ t }) => {
             firstCell={true}
             rows={numbers}
             columns={columns}
-            searchCriterias={[
-              'name',
-              'routingPolicy',
-              'noAnswerHunt',
-              'destinations'
-            ]}
+            searchCriterias={['name', 'routingPolicy', 'mainNumber']}
             noAvailableDataMessage={t('no_destinations_available')}
             tableId={'ans_advanced_destinations'}
           />
