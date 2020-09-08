@@ -26,17 +26,17 @@ const Translations = props => {
 
   const titleData = {
     mainText: `${t('basic')}: ${
-      location.hash ? t(location.hash.slice(1)) : t('translations')
+      location.hash ? t(location.hash.slice(1)) : t('available_numbers')
     }`
   }
 
   const handleChange = (event, newValue) => {
     switch (newValue) {
       case 0:
-        history.push('#translations')
+        history.push('#available_numbers')
         break
       case 1:
-        history.push('#available_numbers')
+        history.push('#translations')
         break
       default:
         break
@@ -45,9 +45,9 @@ const Translations = props => {
 
   const returnActiveTab = () => {
     switch (location.hash) {
-      case '#translations':
-        return 0
       case '#available_numbers':
+        return 0
+      case '#translations':
         return 1
       default:
         return 0
@@ -78,14 +78,14 @@ const Translations = props => {
         variant='scrollable'
         scrollButtons='auto'
       >
-        <Tab value={0} label={t('translations')} className={classes.tab} />
-        <Tab value={1} label={t('available_numbers')} className={classes.tab} />
+        <Tab value={0} label={t('available_numbers')} className={classes.tab} />
+        <Tab value={1} label={t('translations')} className={classes.tab} />
       </Tabs>
       <TabPanel value={returnActiveTab()} index={0}>
-        <TranslationNumbers />
+        <AvailableNumbers />
       </TabPanel>
       <TabPanel value={returnActiveTab()} index={1}>
-        <AvailableNumbers />
+        <TranslationNumbers />
       </TabPanel>
     </div>
   )
