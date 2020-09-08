@@ -56,16 +56,14 @@ const SingleDestinationGroup = props => {
   } = TimeBasedRoutingStore
 
   useEffect(() => {
-    if (!isLoadingTBR) {
-      const payload = {
-        customerId,
-        groupId,
-        tbrId: tbrName
-      }
-      getCurrentNameWithId(payload)
+    const payload = {
+      customerId,
+      groupId,
+      tbrId: tbrName
     }
+    getCurrentNameWithId(payload)
 
-    return setDefaultIsLoadingTBR
+    // return setDefaultIsLoadingTBR
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
