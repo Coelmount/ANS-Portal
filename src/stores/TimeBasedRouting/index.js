@@ -331,6 +331,10 @@ export class TimeBasedRouting {
       })
   }
 
+  setDefaultIsLoadingTBR = () => {
+    this.isLoadingTBR = true
+  }
+
   // @computed: check if checked field of every number === TRUE
   get areAllNumbersChecked() {
     return this.timeBasedRoutes.every(route => route.checked)
@@ -460,6 +464,7 @@ decorate(TimeBasedRouting, {
   handleCheckAll: action,
   deleteTimeBasedRoutes: action,
   getCurrentNameWithId: action,
+  setDefaultIsLoadingTBR: action,
   getAnsNumbers: action,
   clearAnsNumbersLoading: action,
   timeBasedRoutes: observable,

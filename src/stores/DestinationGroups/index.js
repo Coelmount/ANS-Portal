@@ -87,6 +87,10 @@ export class DestinationGroups {
       })
   }
 
+  setDefaultIsDestinationGroupsLoading = () => {
+    this.isDestinationGroupsLoading = true
+  }
+
   postDestinationGroup = ({
     customerId,
     groupId,
@@ -176,7 +180,8 @@ decorate(DestinationGroups, {
   getDestinationGroups: action,
   postDestinationGroup: action,
   deleteDestinationGroup: action,
-  getCurrentNameWithId: action
+  getCurrentNameWithId: action,
+  setDefaultIsDestinationGroupsLoading: action
 })
 
 export default new DestinationGroups()

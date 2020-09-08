@@ -40,6 +40,7 @@ const AccessNumbers = ({ t }) => {
   const {
     updateSelectedNumber,
     getAvailableNumbersForAddInstance,
+    setDefaultIsAccessNumbersLoading,
     totalPagesAccessNumbers,
     isAccessNumbersLoading,
     accessNumbers,
@@ -74,6 +75,7 @@ const AccessNumbers = ({ t }) => {
 
   useEffect(() => {
     getRequest()
+    return setDefaultIsAccessNumbersLoading
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

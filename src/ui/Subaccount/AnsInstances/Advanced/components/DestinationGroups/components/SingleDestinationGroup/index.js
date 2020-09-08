@@ -52,19 +52,25 @@ const SingleDestinationGroup = props => {
   const classes = useStyles()
   const {
     getCurrentNameWithId,
-    currentDestinationName
+    currentDestinationName,
+    isDestinationGroupsLoading,
+    setDefaultIsDestinationGroupsLoading
   } = DestinationsGroupStore
 
   const [open] = useState(false)
   const anchorRef = useRef(null)
 
   useEffect(() => {
-    const payload = {
-      customerId,
-      groupId,
-      ansId: destinationGroupName
+    if (!isDestinationGroupsLoading) {
+      const payload = {
+        customerId,
+        groupId,
+        ansId: destinationGroupName
+      }
+      getCurrentNameWithId(payload)
+
+      return setDefaultIsDestinationGroupsLoading
     }
-    getCurrentNameWithId(payload)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
