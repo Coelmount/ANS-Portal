@@ -110,6 +110,9 @@ const AccessNumbersItem = ({ t }) => {
         (item.checked && item.subaccount !== 'none') ||
         (item.checked && item.inUse !== 'no')
     )
+  const isAssignAllPossible = numbers.some(
+    number => number.subaccount === 'none' && number.inUse === 'no'
+  )
 
   const isDeassignEnabled =
     !isDeassigningNumber &&
@@ -119,6 +122,9 @@ const AccessNumbersItem = ({ t }) => {
         (item.isSelectedToDeassign && item.subaccount === 'none') ||
         (item.isSelectedToDeassign && item.inUse !== 'no')
     )
+  const isDeassignAllPossible = numbers.some(
+    number => number.subaccount !== 'none' && number.inUse === 'no'
+  )
 
   const isDisconnectEnabled =
     !isDisconnectingNumber &&
@@ -128,6 +134,9 @@ const AccessNumbersItem = ({ t }) => {
         (item.isSelectedToDisconnect && item.subaccount !== 'none') ||
         (item.isSelectedToDisconnect && item.inUse !== 'no')
     )
+  const isDisconnectAllPossible = numbers.some(
+    number => number.subaccount === 'none' && number.inUse === 'no'
+  )
 
   useEffect(() => {
     getEntitlementsAndFindCurrent(match.customerId, match.numbersId)
@@ -230,15 +239,20 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const handleSelectAll = () => {
-    // && row.subaccount === 'none' && row.inUse === 'no'
-    const filteredNumbers = searchList.filter(
-      number => number.subaccount === 'none' && number.inUse === 'no'
-    )
-    const newSelected = transformOnCheckAll(filteredNumbers, numbers, selectAll)
-    handleCheckedStates(newSelected)
-    setNumbers(newSelected)
-    setSelectAll(!selectAll)
-    selectAll ? setNumberOfChecked(0) : setNumberOfChecked(searchList.length)
+    if (isAssignAllPossible) {
+      const filteredNumbers = searchList.filter(
+        number => number.subaccount === 'none' && number.inUse === 'no'
+      )
+      const newSelected = transformOnCheckAll(
+        filteredNumbers,
+        numbers,
+        selectAll
+      )
+      handleCheckedStates(newSelected)
+      setNumbers(newSelected)
+      setSelectAll(!selectAll)
+      selectAll ? setNumberOfChecked(0) : setNumberOfChecked(searchList.length)
+    }
   }
 
   const handleCheckedStates = newSelected => {
@@ -425,59 +439,63 @@ const AccessNumbersItem = ({ t }) => {
   }
 
   const handleDisconnectAll = () => {
-    setIsDisconnectAll(!isDisconnectAll)
-    let localCounter = 0
-    const currentVisibleList = searchList.map(item => item.id)
+    if (isDisconnectAllPossible) {
+      setIsDisconnectAll(!isDisconnectAll)
+      let localCounter = 0
+      const currentVisibleList = searchList.map(item => item.id)
 
-    const numbersWithChangedDisconnectFlag = numbers.map(number => {
-      if (
-        number.subaccount === 'none' &&
-        number.inUse === 'no' &&
-        currentVisibleList.includes(number.id)
-      ) {
-        if (number.isSelectedToDisconnect === false) {
-          localCounter = localCounter + 1
+      const numbersWithChangedDisconnectFlag = numbers.map(number => {
+        if (
+          number.subaccount === 'none' &&
+          number.inUse === 'no' &&
+          currentVisibleList.includes(number.id)
+        ) {
+          if (number.isSelectedToDisconnect === false) {
+            localCounter = localCounter + 1
+          }
+          setNumberOfSelectedToDisconnect(
+            isDisconnectAll ? 0 : localCounter + numberOfSelectedToDisconnect
+          )
+          return {
+            ...number,
+            isSelectedToDisconnect: !isDisconnectAll
+          }
+        } else {
+          return { ...number }
         }
-        setNumberOfSelectedToDisconnect(
-          isDisconnectAll ? 0 : localCounter + numberOfSelectedToDisconnect
-        )
-        return {
-          ...number,
-          isSelectedToDisconnect: !isDisconnectAll
-        }
-      } else {
-        return { ...number }
-      }
-    })
-    setNumbers(numbersWithChangedDisconnectFlag)
+      })
+      setNumbers(numbersWithChangedDisconnectFlag)
+    }
   }
 
   const handleDeassignAll = () => {
-    setIsDeassignAll(!isDeassignAll)
-    let localCounter = 0
-    const currentVisibleList = searchList.map(item => item.id)
+    if (isDeassignAllPossible) {
+      setIsDeassignAll(!isDeassignAll)
+      let localCounter = 0
+      const currentVisibleList = searchList.map(item => item.id)
 
-    const numbersWithChangedDeassignFlag = numbers.map(number => {
-      if (
-        number.subaccount !== 'none' &&
-        number.inUse === 'no' &&
-        currentVisibleList.includes(number.id)
-      ) {
-        if (number.isSelectedToDeassign === false) {
-          localCounter = localCounter + 1
+      const numbersWithChangedDeassignFlag = numbers.map(number => {
+        if (
+          number.subaccount !== 'none' &&
+          number.inUse === 'no' &&
+          currentVisibleList.includes(number.id)
+        ) {
+          if (number.isSelectedToDeassign === false) {
+            localCounter = localCounter + 1
+          }
+          setNumberOfSelectedToDeassign(
+            isDeassignAll ? 0 : localCounter + numberOfSelectedToDeassign
+          )
+          return {
+            ...number,
+            isSelectedToDeassign: !isDeassignAll
+          }
+        } else {
+          return { ...number }
         }
-        setNumberOfSelectedToDeassign(
-          isDeassignAll ? 0 : localCounter + numberOfSelectedToDeassign
-        )
-        return {
-          ...number,
-          isSelectedToDeassign: !isDeassignAll
-        }
-      } else {
-        return { ...number }
-      }
-    })
-    setNumbers(numbersWithChangedDeassignFlag)
+      })
+      setNumbers(numbersWithChangedDeassignFlag)
+    }
   }
 
   const extraTitleBlock = (
@@ -500,7 +518,7 @@ const AccessNumbersItem = ({ t }) => {
       </IconButton>
       <Typography
         className={classnames(classes.iconTitle, {
-          [classes.disabledIconTitle]: !isDisconnectEnabled
+          [classes.disabledContent]: !isDisconnectEnabled
         })}
       >
         {t('disconnect_from_customer')}
@@ -531,7 +549,7 @@ const AccessNumbersItem = ({ t }) => {
           </IconButton>
           <Typography
             className={classnames(classes.iconTitle, {
-              [classes.disabledIconTitle]: !isAssignEnabled
+              [classes.disabledContent]: !isAssignEnabled
             })}
           >
             {t('assign_to_subaccount')}
@@ -554,7 +572,7 @@ const AccessNumbersItem = ({ t }) => {
           </IconButton>
           <Typography
             className={classnames(classes.iconTitle, {
-              [classes.disabledIconTitle]: !isDeassignEnabled
+              [classes.disabledContent]: !isDeassignEnabled
             })}
           >
             {t('deassign_from_subaccount')}
@@ -575,9 +593,17 @@ const AccessNumbersItem = ({ t }) => {
         className: classes.phoneNumberHeadCell
       },
       headIcon: (
-        <StyledTooltip title={t('disconnect_all_tooltip')}>
+        <StyledTooltip
+          title={
+            !isDisconnectAllPossible
+              ? t('no_numbers_possible_to_disconnect')
+              : t('disconnect_all_tooltip')
+          }
+        >
           <img
-            className={classes.disconnectIcon}
+            className={classnames(classes.disconnectIcon, {
+              [classes.disabledContent]: !isDisconnectAllPossible
+            })}
             src={disconnectIcon}
             alt='disconnect'
           />
@@ -640,9 +666,17 @@ const AccessNumbersItem = ({ t }) => {
         className: classes.subaccountHeadCell
       },
       headIcon: (
-        <StyledTooltip title={t('deassign_all_tooltip')}>
+        <StyledTooltip
+          title={
+            !isDeassignAllPossible
+              ? t('no_numbers_possible_to_deassign')
+              : t('deassign_all_tooltip')
+          }
+        >
           <img
-            className={classes.deassignIcon}
+            className={classnames(classes.deassignIcon, {
+              [classes.disabledContent]: !isDeassignAllPossible
+            })}
             src={deassignIcon}
             alt='deassign'
           />
@@ -706,8 +740,18 @@ const AccessNumbersItem = ({ t }) => {
     {
       id: 'asign',
       headIcon: (
-        <StyledTooltip title={t('assign_all_tooltip')}>
-          <DoneOutlinedIcon className={classes.assignIcon} />
+        <StyledTooltip
+          title={
+            !isAssignAllPossible
+              ? t('no_numbers_possible_to_assign')
+              : t('assign_all_tooltip')
+          }
+        >
+          <DoneOutlinedIcon
+            className={classnames(classes.assignIcon, {
+              [classes.disabledContent]: !isAssignAllPossible
+            })}
+          />
         </StyledTooltip>
       ),
       headIconWrapStyles: classes.customAsignHeadIconWrap,

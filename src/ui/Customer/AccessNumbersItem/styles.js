@@ -131,7 +131,7 @@ const useStyles = makeStyles(theme => ({
     fontStyle: 'normal',
     fontWeight: 500
   },
-  disabledIconTitle: {
+  disabledContent: {
     opacity: 0.5
   },
   checkbox: {
