@@ -86,10 +86,12 @@ const CreateCustomer = props => {
       match.customerId,
       currentEntitlement.country_code,
       currentEntitlement.number_type
-    ).then(() => {
-      setNumbers(reservedNumbers)
-    })
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    setNumbers(reservedNumbers)
   }, [reservedNumbers.length])
 
   const searchAvalibleNumbers = () => {
@@ -181,7 +183,7 @@ const CreateCustomer = props => {
     postAddedNumbersToSubaccaunt(
       match.customerId,
       selectedGroup,
-      dataForPost,
+      { ranges: dataForPost },
       handleClose
     )
   }

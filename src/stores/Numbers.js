@@ -83,21 +83,14 @@ export class NumbersStore {
     dataForPost,
     handleClose
   ) => {
-    const promiseArray = []
-    dataForPost.forEach(data => {
-      promiseArray.push(
-        axios.post(`/tenants/${tenantId}/groups/${groupId}/numbers`, data)
-      )
-    })
-    Promise.all(promiseArray)
-      .then(res => {
-        res.forEach(el => {
-          SnackbarStore.enqueueSnackbar({
-            message: 'Success assigned numbers',
-            options: {
-              variant: 'success'
-            }
-          })
+    axios
+      .post(`/tenants/${tenantId}/groups/${groupId}/numbers`, dataForPost)
+      .then(() => {
+        SnackbarStore.enqueueSnackbar({
+          message: 'Success assigned numbers',
+          options: {
+            variant: 'success'
+          }
         })
         handleClose && handleClose()
       })

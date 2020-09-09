@@ -73,7 +73,7 @@ export class AssignedNumbers {
     axios
       .get(`/tenants/${customerId}/entitlements`)
       .then(res => {
-        return res.data.entitlments
+        return res.data.entitlements
       })
       .then(entitlements => {
         //chain then
