@@ -53,6 +53,8 @@ const SingleDestinationGroup = props => {
   const {
     getCurrentNameWithId,
     currentDestinationName
+    // isDestinationGroupsLoading,
+    // setDefaultIsDestinationGroupsLoading
   } = DestinationsGroupStore
 
   const [open] = useState(false)
@@ -65,6 +67,9 @@ const SingleDestinationGroup = props => {
       ansId: destinationGroupName
     }
     getCurrentNameWithId(payload)
+
+    // return setDefaultIsDestinationGroupsLoading
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

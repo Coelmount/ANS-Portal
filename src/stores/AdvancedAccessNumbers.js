@@ -84,6 +84,10 @@ export class AdvancedAccessNumbers {
       .finally(() => (this.isAccessNumbersLoading = false))
   }
 
+  setDefaultIsAccessNumbersLoading = () => {
+    this.isAccessNumbersLoading = true
+  }
+
   updateSearchParam = value => {
     this.searchParam = value
   }
@@ -142,6 +146,7 @@ decorate(AdvancedAccessNumbers, {
   updateSearchParam: action,
   updateSelectedNumber: action,
   postAccessNumber: action,
+  setDefaultIsAccessNumbersLoading: action,
   accessNumbers: observable,
   totalPagesAccessNumbers: observable,
   isAccessNumbersLoading: observable,

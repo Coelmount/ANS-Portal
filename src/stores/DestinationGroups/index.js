@@ -45,38 +45,19 @@ export class DestinationGroups {
   }
 
   getCurrentNameWithId = ({ customerId, groupId, ansId }) => {
-    this.destinationGroups = []
     this.currentDestinationName = ''
     this.isDestinationGroupsLoading = true
 
     axios
-      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${ansId}`
+      )
       .then(res => {
-        this.destinationGroups = res.data.ans_advanced.map(
-          (destination, index) => {
-            return {
-              ...destination,
-              id: index,
-              routingPolicy: destination.routing_policy,
-              destinations: String(destination.destinations.length),
-              noAnswerNumberOfRings: destination.no_answer_number_of_rings,
-              noAnswerHunt: destination.no_answer_hunt
-                ? `Hunt after ${destination.no_answer_number_of_rings} rings`
-                : 'No hunt'
-            }
-          }
-        )
-        this.amountOfDestinationGroups = this.destinationGroups.length
-      })
-      .then(() => {
-        const currentDestination = this.destinationGroups.find(
-          ({ ans_id }) => ans_id === ansId
-        )
-        this.currentDestinationName = currentDestination.name || ''
+        this.currentDestinationName = res.data.name
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
-          message: getErrorMessage(e) || 'Failed to fetch destination groups',
+          message: getErrorMessage(e) || 'Failed to fetch destination group',
           options: {
             variant: 'error'
           }
@@ -85,6 +66,10 @@ export class DestinationGroups {
       .finally(() => {
         this.isDestinationGroupsLoading = false
       })
+  }
+
+  setDefaultIsDestinationGroupsLoading = () => {
+    this.isDestinationGroupsLoading = true
   }
 
   postDestinationGroup = ({
@@ -176,7 +161,8 @@ decorate(DestinationGroups, {
   getDestinationGroups: action,
   postDestinationGroup: action,
   deleteDestinationGroup: action,
-  getCurrentNameWithId: action
+  getCurrentNameWithId: action,
+  setDefaultIsDestinationGroupsLoading: action
 })
 
 export default new DestinationGroups()
