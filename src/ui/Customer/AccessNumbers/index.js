@@ -214,7 +214,6 @@ const AccessNumbers = ({ t }) => {
             handleClose={() => setIsDeleteModalOpen(false)}
             handleDelete={() => handleDelete(accessNumberToDelete)}
             deleteInfo={accessNumberToDelete}
-            //isDeleting={isDeletingCustomer}
             deleteSubject={t('entitlement')}
             action={t('to_remove')}
             titleAction={t(`remove`)}
