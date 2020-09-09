@@ -34,13 +34,11 @@ const AccessNumbers = ({ t }) => {
 
   const calcInput = useRef(null)
   const classes = useStyles({ widthOffset })
-  const match = useParams()
-  const { customerId, groupId } = match
+  const { customerId, groupId } = useParams()
 
   const {
     updateSelectedNumber,
     getAvailableNumbersForAddInstance,
-    setDefaultIsAccessNumbersLoading,
     totalPagesAccessNumbers,
     isAccessNumbersLoading,
     accessNumbers,
@@ -61,6 +59,7 @@ const AccessNumbers = ({ t }) => {
 
   // Search params ? TRUE : FALSE
   const isSearchParamsActive = !!debouncedNumberLike || false
+
   const getRequest = () => {
     getAvailableNumbersForAddInstance(
       customerId,
@@ -75,7 +74,6 @@ const AccessNumbers = ({ t }) => {
 
   useEffect(() => {
     getRequest()
-    return setDefaultIsAccessNumbersLoading
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

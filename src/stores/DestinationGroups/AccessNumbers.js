@@ -15,7 +15,7 @@ export class AccessNumbers {
   secondaryNumbers = []
   availableNumbers = []
   countries = []
-  isMainNumberLoading = true
+  isMainNumberLoading = false
   isSecondaryNumbersLoading = false
   isAvailableNumbersLoading = true
   isSecondaryNumbersAdding = false
@@ -23,103 +23,81 @@ export class AccessNumbers {
   isAccessNumbersLoading = true
   isUpdatingMainNumber = false
   totalPages = 0
-  currentGroupId = ''
   availableSecondaryIds = []
 
-  clearLoadingStates = () => {
-    this.isAvailableNumbersLoading = true
-  }
-
   getMainNumber = ({ customerId, groupId, destinationGroupName }) => {
+    if (this.isMainNumberLoading) return
+
     this.mainNumber = null
     this.isMainNumberLoading = true
 
     axios
-      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationGroupName}/main_number`
+      )
       .then(res => {
-        const destinationGroups = res.data.ans_advanced
-        const currentGroup = destinationGroups.find(
-          destinationGroup => destinationGroup.ans_id === destinationGroupName
-        )
-
-        axios
-          .get(
-            `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${currentGroup.ans_id}/main_number`
-          )
-          .then(res => {
-            const number = res.data.mainNumber
-            if (number.length > 6) {
-              this.mainNumber = {
-                country_code: `+${getCountryCodeFromNumber(number)}`,
-                nsn: getNsnFromNumber(number),
-                value: number,
-                country: getCountryNameFromNumber(number)
-              }
-            } else {
-              this.mainNumber = {
-                country_code: '',
-                nsn: '',
-                value: '',
-                country: ''
-              }
-            }
-          })
-          .catch(e => {
-            SnackbarStore.enqueueSnackbar({
-              message: getErrorMessage(e) || 'Failed to fetch access numbers',
-              options: {
-                variant: 'error'
-              }
-            })
-          })
-          .finally(() => {
-            this.isMainNumberLoading = false
-          })
+        const number = res.data.mainNumber
+        if (number.length > 6) {
+          this.mainNumber = {
+            country_code: `+${getCountryCodeFromNumber(number)}`,
+            nsn: getNsnFromNumber(number),
+            value: number,
+            country: getCountryNameFromNumber(number)
+          }
+        } else {
+          this.mainNumber = {
+            country_code: '',
+            nsn: '',
+            value: '',
+            country: ''
+          }
+        }
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch access numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isMainNumberLoading = false
       })
   }
 
   getSecondaryNumbers = ({ customerId, groupId, destinationGroupName }) => {
+    if (this.isSecondaryNumbersLoading) return
+
     this.secondaryNumbers = []
     this.isSecondaryNumbersLoading = true
+
     axios
-      .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationGroupName}/secondary_numbers`
+      )
       .then(res => {
-        const destinationGroups = res.data.ans_advanced
-        const currentGroup = destinationGroups.find(
-          destinationGroup => destinationGroup.ans_id === destinationGroupName
-        )
-        this.currentGroupId = currentGroup.ans_id
-        axios
-          .get(
-            `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${currentGroup.ans_id}/secondary_numbers`
-          )
-          .then(res => {
-            const numbers = res.data.secondaryNumbers
-            const busySecondaryIds = numbers.map(number => number.id)
-            this.availableSecondaryIds = difference(
-              DEFAULT_IDS,
-              busySecondaryIds
-            )
-            this.secondaryNumbers = numbers.map(item => {
-              return {
-                ...item,
-                value: item.phoneNumber,
-                country: getCountryNameFromNumber(item.phoneNumber)
-              }
-            })
-          })
-          .catch(e => {
-            SnackbarStore.enqueueSnackbar({
-              message:
-                getErrorMessage(e) || 'Failed to fetch secondary numbers',
-              options: {
-                variant: 'error'
-              }
-            })
-          })
-          .finally(() => {
-            this.isSecondaryNumbersLoading = false
-          })
+        const numbers = res.data.secondaryNumbers
+        const busySecondaryIds = numbers.map(number => number.id)
+        this.availableSecondaryIds = difference(DEFAULT_IDS, busySecondaryIds)
+        this.secondaryNumbers = numbers.map(item => {
+          return {
+            ...item,
+            value: item.phoneNumber,
+            country: getCountryNameFromNumber(item.phoneNumber)
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch secondary numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isSecondaryNumbersLoading = false
       })
   }
 
@@ -198,7 +176,13 @@ export class AccessNumbers {
       })
   }
 
-  postSecondaryNumbers = ({ customerId, groupId, closeModal, numbers }) => {
+  postSecondaryNumbers = ({
+    customerId,
+    groupId,
+    destinationGroupName,
+    closeModal,
+    numbers
+  }) => {
     this.isSecondaryNumbersAdding = true
     const checkedNumbers = numbers.filter(item => item.checked === true)
 
@@ -212,7 +196,7 @@ export class AccessNumbers {
 
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationGroupName}/secondary_numbers`,
         {
           secondary_numbers: numbersToAdd
         }
@@ -245,11 +229,17 @@ export class AccessNumbers {
       })
   }
 
-  putUpdateMainNumber = (customerId, groupId, data, callback) => {
+  putUpdateMainNumber = (
+    customerId,
+    groupId,
+    destinationGroupName,
+    data,
+    callback
+  ) => {
     this.isUpdatingMainNumber = true
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/main_number/`,
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationGroupName}/main_number/`,
         data
       )
       .then(() => {
@@ -278,12 +268,13 @@ export class AccessNumbers {
     customerId,
     groupId,
     secondaryNumberId,
+    destinationGroupName,
     closeModal
   }) => {
     this.isSecondaryNumberDeleting = true
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${this.currentGroupId}/secondary_numbers`,
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationGroupName}/secondary_numbers`,
         {
           secondary_numbers: [
             {
@@ -334,7 +325,6 @@ decorate(AccessNumbers, {
   getAvailableNumbers: action,
   deleteSecondaryNumber: action,
   postSecondaryNumbers: action,
-  clearLoadingStates: action,
   putUpdateMainNumber: action
 })
 

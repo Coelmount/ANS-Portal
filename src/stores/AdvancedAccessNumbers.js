@@ -12,7 +12,7 @@ const { NUMBER_LIKE, COUNTRY_CODE, NSN, TYPE, ID } = types
 export class AdvancedAccessNumbers {
   accessNumbers = []
   totalPagesAccessNumbers = 0
-  isAccessNumbersLoading = true
+  isAccessNumbersLoading = false
   searchParam = NUMBER_LIKE
   selectedNumber = null
   isAccessNumberPosting = false
@@ -26,7 +26,9 @@ export class AdvancedAccessNumbers {
     order,
     query
   ) => {
+    if (this.isAccessNumbersLoading) return
     this.isAccessNumbersLoading = true
+
     let orderByField
     switch (orderBy) {
       case 'phoneNumber': {
@@ -82,10 +84,6 @@ export class AdvancedAccessNumbers {
         })
       )
       .finally(() => (this.isAccessNumbersLoading = false))
-  }
-
-  setDefaultIsAccessNumbersLoading = () => {
-    this.isAccessNumbersLoading = true
   }
 
   updateSearchParam = value => {
@@ -146,7 +144,6 @@ decorate(AdvancedAccessNumbers, {
   updateSearchParam: action,
   updateSelectedNumber: action,
   postAccessNumber: action,
-  setDefaultIsAccessNumbersLoading: action,
   accessNumbers: observable,
   totalPagesAccessNumbers: observable,
   isAccessNumbersLoading: observable,

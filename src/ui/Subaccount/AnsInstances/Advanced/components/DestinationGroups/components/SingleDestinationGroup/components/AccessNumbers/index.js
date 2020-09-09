@@ -27,14 +27,12 @@ const deleteModal = 3
 
 const AccessNumbers = observer(({ t }) => {
   const classes = useStyles()
-  const match = useParams()
-  const { customerId, groupId, destinationGroupName } = match
+  const { customerId, groupId, destinationGroupName } = useParams()
 
   const {
     getMainNumber,
     getSecondaryNumbers,
     deleteSecondaryNumber,
-    clearLoadingStates,
     mainNumber,
     secondaryNumbers,
     isMainNumberLoading,
@@ -62,7 +60,6 @@ const AccessNumbers = observer(({ t }) => {
     close() {
       this.id = null
       initialRequest()
-      clearLoadingStates()
     }
   }))
 
@@ -85,6 +82,7 @@ const AccessNumbers = observer(({ t }) => {
       customerId,
       groupId,
       secondaryNumberId: modals.data.id,
+      destinationGroupName,
       closeModal: openedModal.close
     }
     deleteSecondaryNumber(payload)

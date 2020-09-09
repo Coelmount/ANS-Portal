@@ -45,16 +45,13 @@ const tabPanelItems = [
 
 const SingleDestinationGroup = props => {
   const { t } = props
-  const match = useParams()
-  const { customerId, groupId, destinationGroupName } = match
+  const { customerId, groupId, destinationGroupName } = useParams()
   const history = useHistory()
   const location = useLocation()
   const classes = useStyles()
   const {
     getCurrentNameWithId,
     currentDestinationName
-    // isDestinationGroupsLoading,
-    // setDefaultIsDestinationGroupsLoading
   } = DestinationsGroupStore
 
   const [open] = useState(false)
@@ -67,9 +64,6 @@ const SingleDestinationGroup = props => {
       ansId: destinationGroupName
     }
     getCurrentNameWithId(payload)
-
-    // return setDefaultIsDestinationGroupsLoading
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

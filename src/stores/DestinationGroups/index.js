@@ -7,7 +7,7 @@ import capitalize from 'lodash/capitalize'
 
 export class DestinationGroups {
   destinationGroups = []
-  isDestinationGroupsLoading = true
+  isDestinationGroupsLoading = false
   isDestinationGroupPosting = false
   isDestinationGroupDeleting = false
   amountOfDestinationGroups = 0
@@ -45,6 +45,8 @@ export class DestinationGroups {
   }
 
   getCurrentNameWithId = ({ customerId, groupId, ansId }) => {
+    if (this.isDestinationGroupsLoading) return
+
     this.currentDestinationName = ''
     this.isDestinationGroupsLoading = true
 
@@ -68,10 +70,7 @@ export class DestinationGroups {
       })
   }
 
-  setDefaultIsDestinationGroupsLoading = () => {
-    this.isDestinationGroupsLoading = true
-  }
-
+  // TODO when backend request fixed
   postDestinationGroup = ({
     customerId,
     groupId,
@@ -161,8 +160,7 @@ decorate(DestinationGroups, {
   getDestinationGroups: action,
   postDestinationGroup: action,
   deleteDestinationGroup: action,
-  getCurrentNameWithId: action,
-  setDefaultIsDestinationGroupsLoading: action
+  getCurrentNameWithId: action
 })
 
 export default new DestinationGroups()

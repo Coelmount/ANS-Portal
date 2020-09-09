@@ -27,7 +27,7 @@ import useStyles from './styles'
 const AddModal = ({ open, handleClose, t }) => {
   const classes = useStyles()
   const match = useParams()
-  const { customerId, groupId } = match
+  const { customerId, groupId, destinationGroupName } = match
 
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
@@ -159,6 +159,7 @@ const AddModal = ({ open, handleClose, t }) => {
     const payload = {
       customerId,
       groupId,
+      destinationGroupName,
       closeModal: handleClose,
       numbers
     }
