@@ -50,9 +50,9 @@ const SingleDestinationGroup = props => {
 
   const {
     getCurrentNameWithId,
-    currentTbrName,
-    isLoadingTBR,
-    setDefaultIsLoadingTBR
+    currentTbrName
+    // isLoadingTBR,
+    // setDefaultIsLoadingTBR
   } = TimeBasedRoutingStore
 
   useEffect(() => {

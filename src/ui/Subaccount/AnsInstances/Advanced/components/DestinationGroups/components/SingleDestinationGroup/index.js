@@ -52,9 +52,9 @@ const SingleDestinationGroup = props => {
   const classes = useStyles()
   const {
     getCurrentNameWithId,
-    currentDestinationName,
-    isDestinationGroupsLoading,
-    setDefaultIsDestinationGroupsLoading
+    currentDestinationName
+    // isDestinationGroupsLoading,
+    // setDefaultIsDestinationGroupsLoading
   } = DestinationsGroupStore
 
   const [open] = useState(false)
