@@ -3,6 +3,7 @@ import capitalize from 'lodash/capitalize'
 
 import getErrorMessage from 'utils/getErrorMessage'
 import SnackbarStore from '../Snackbar'
+import DestinationsGroupsStore from './index'
 import axios from 'utils/axios'
 
 export class Settings {
@@ -53,7 +54,7 @@ export class Settings {
       })
   }
 
-  updateSettings = ({ customerId, groupId, updatedSettings }) => {
+  updateSettings = ({ customerId, groupId, updatedSettings, ansId }) => {
     this.isSettingsUpdating = true
     const { name, policy, huntAfterNoAnswer, amountSkipRings } = updatedSettings
 
@@ -74,6 +75,14 @@ export class Settings {
             variant: 'success'
           }
         })
+      })
+      .then(() => {
+        const payload = {
+          customerId,
+          groupId,
+          ansId
+        }
+        DestinationsGroupsStore.getCurrentNameWithId(payload)
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({

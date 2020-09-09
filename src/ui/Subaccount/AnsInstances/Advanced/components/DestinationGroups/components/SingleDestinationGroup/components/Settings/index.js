@@ -2,7 +2,7 @@ import React, { useEffect, Fragment } from 'react'
 import classnames from 'classnames'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
@@ -25,9 +25,7 @@ import useStyles from './styles'
 
 const Settings = ({ t }) => {
   const classes = useStyles()
-  const match = useParams()
-  const history = useHistory()
-  const { customerId, groupId, destinationGroupName } = match
+  const { customerId, groupId, destinationGroupName } = useParams()
 
   const {
     getSettings,
@@ -102,13 +100,12 @@ const Settings = ({ t }) => {
     const payload = {
       customerId,
       groupId,
-      updatedSettings: inputStore.values
+      updatedSettings: inputStore.values,
+      ansId: destinationGroupName
     }
-    updateSettings(payload)
+
     inputStore.set('isEditMode', false)
-    history.push(
-      `/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced/destination_groups/${inputStore.values.name}#settings`
-    )
+    updateSettings(payload)
   }
   // -----------
 
