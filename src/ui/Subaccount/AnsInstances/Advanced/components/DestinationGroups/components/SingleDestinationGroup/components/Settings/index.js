@@ -186,7 +186,6 @@ const Settings = ({ t }) => {
                   [classes.disabledBlock]: !inputStore.values.isEditMode
                 })}
               >
-                {/* rings */}
                 {t('rings')}
               </span>
             </Box>
