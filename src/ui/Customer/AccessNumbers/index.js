@@ -90,24 +90,6 @@ const AccessNumbers = ({ t }) => {
     ) : null
   }
 
-  // const toolbarButtonsBlock = () => {
-  //   return (
-  //     <Box className={classes.toolbarButtonsBlockWrap}>
-  //       <Box className={classes.addCustomerWrap}>
-  //         <Box
-  //           onClick={handleAssignButtonClick}
-  //           className={classes.addIconWrap}
-  //         >
-  //           <DoneOutlinedIcon className={classes.deleteIcon} />
-  //         </Box>
-  //         <Typography className={classes.addCustomerTitle}>
-  //           {t('assign_to_subaccount')}
-  //         </Typography>
-  //       </Box>
-  //     </Box>
-  //   )
-  // }
-
   const columns = [
     {
       id: 'name',
@@ -205,7 +187,6 @@ const AccessNumbers = ({ t }) => {
             columns={columns}
             searchCriterias={['name', 'number_type', 'service_capabilities']}
             noAvailableDataMessage={t('no_access_numbers_available')}
-            // extraToolbarBlock={toolbarButtonsBlock}
             tableId={'access_numbers'}
           />
         )}
