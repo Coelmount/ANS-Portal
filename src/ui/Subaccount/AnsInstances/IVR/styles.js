@@ -68,6 +68,34 @@ const useStyles = makeStyles(theme => ({
     fontSize: 16,
     fontFamily: 'MTN',
     fontWeight: 500
+  },
+  tabs: {
+    padding: '0px 34px 0px 68px',
+    width: '100%',
+    '& .MuiTabs-indicator': {
+      height: 4
+    },
+    overflow: 'unset',
+    '& .MuiTabs-scrollable': {
+      overflowX: 'unset'
+    }
+  },
+  tab: {
+    fontFamily: 'MTN',
+    backgroundColor: 'white',
+    borderRight: '0.5px solid #CCCCCC',
+    textTransform: 'none',
+    width: 'calc(100% / 5)',
+    color: '#212529',
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
+  },
+  lastTab: {
+    fontFamily: 'MTN',
+    backgroundColor: 'white',
+    textTransform: 'none',
+    width: 'calc(100% / 5)',
+    color: '#212529',
+    boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
   }
 }))
 

@@ -27,7 +27,7 @@ import ConfigStore from 'stores/Config'
 import useStyles from './styles'
 
 const AddIVR = props => {
-  const { t, open, handleClose } = props
+  const { t, open, handleClose, number } = props
   const classes = useStyles()
   const match = useParams()
   const {
@@ -58,7 +58,12 @@ const AddIVR = props => {
         //serviceUserId: `${match.groupId}_ivr${name}@${customer.defaultDomain}`,
         templateName: config.templates.ivr,
         type,
-        serviceInstanceProfile: { cliFirstName: 'IVR', cliLastName: name, name }
+        serviceInstanceProfile: {
+          cliFirstName: 'IVR',
+          cliLastName: name,
+          name,
+          phoneNumber: number
+        }
       }
     }).then(() => handleClose())
   }
