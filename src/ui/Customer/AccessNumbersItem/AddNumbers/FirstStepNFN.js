@@ -39,8 +39,8 @@ const FirstStepNFN = props => {
 
   // Disabled if page loading proceed or range size/number_of_results not exist
   const isSearchButtonDisabled =
-    !queryAvalibleNumbers.range_size ||
-    !queryAvalibleNumbers.number_of_results ||
+    queryAvalibleNumbers.range_size < 1 ||
+    queryAvalibleNumbers.number_of_results < 1 ||
     isLoadingAvailableNumbers
 
   useEffect(() => {

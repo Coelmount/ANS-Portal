@@ -123,6 +123,7 @@ export class DestinationGroups {
     closeModal
   }) => {
     this.isDestinationGroupDeleting = true
+
     axios
       .delete(
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationId}`
@@ -130,7 +131,7 @@ export class DestinationGroups {
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
-          message: 'Destination groups successfully deleted',
+          message: 'Destination group successfully deleted',
           options: {
             variant: 'success'
           }
