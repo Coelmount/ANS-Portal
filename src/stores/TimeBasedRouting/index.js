@@ -230,12 +230,13 @@ export class TimeBasedRouting {
   getTimeBasedRoute = ({ customerId, groupId, tbrName }) => {
     this.timeBasedRoute = {}
     this.isLoadingSingleTBR = true
+
     axios
       .get(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrName}`
       )
       .then(res => {
-        const timeBasedRouteData = res.data.time_based_route
+        const timeBasedRouteData = res.data
         runInAction(() => {
           this.timeBasedRoute = timeBasedRouteData
         })
@@ -263,6 +264,7 @@ export class TimeBasedRouting {
     closeModal
   }) => {
     this.isTbrUpdating = true
+
     axios
       .put(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrName}`,
@@ -361,6 +363,7 @@ export class TimeBasedRouting {
     closeModal
   }) => {
     this.isTimeBasedRoutePosting = true
+
     axios
       .post(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`,
@@ -400,6 +403,7 @@ export class TimeBasedRouting {
     singleDeleteItem
   }) => {
     this.isDeleting = true
+
     const deleteSubject = `translation${singleDeleteItem ? '' : 's'}`
     const numbersToDelete = singleDeleteItem.userId
       ? [singleDeleteItem]
