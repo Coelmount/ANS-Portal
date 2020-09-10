@@ -92,6 +92,7 @@ const CreateCustomer = props => {
 
   useEffect(() => {
     setNumbers(reservedNumbers)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reservedNumbers.length])
 
   const searchAvalibleNumbers = () => {
