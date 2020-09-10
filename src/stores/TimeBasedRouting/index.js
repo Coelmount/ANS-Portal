@@ -28,7 +28,7 @@ export class TimeBasedRouting {
   isLoadingTBR = true
   isLoadingSingleTBR = true
   isTimeBasedRoutePosting = false
-  isAvailableNumbersLoading = true
+  isAvailableNumbersLoading = false
   isAnsNumbersLoading = true
   isDeleting = false
 
@@ -53,7 +53,10 @@ export class TimeBasedRouting {
     order,
     query
   ) => {
+    if (this.isAvailableNumbersLoading) return
+
     this.isAvailableNumbersLoading = true
+
     let orderByField
     switch (orderBy) {
       case 'phoneNumber': {

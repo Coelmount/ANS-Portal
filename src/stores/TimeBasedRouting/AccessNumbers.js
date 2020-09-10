@@ -15,115 +15,89 @@ export class AccessNumbers {
   secondaryNumbers = []
   availableNumbers = []
   countries = []
-  isMainNumberLoading = true
+  isMainNumberLoading = false
   isSecondaryNumbersLoading = false
-  isAvailableNumbersLoading = true
+  isAvailableNumbersLoading = false
   isSecondaryNumbersAdding = false
   isSecondaryNumberDeleting = false
-  isAccessNumbersLoading = true
   isUpdatingMainNumber = false
   totalPages = 0
   currentTbrId = ''
   availableSecondaryIds = []
 
-  clearLoadingStates = () => {
-    this.isAvailableNumbersLoading = true
-  }
-
   getMainNumber = ({ customerId, groupId, tbrName }) => {
+    if (this.isMainNumberLoading) return
+
     this.mainNumber = null
     this.isMainNumberLoading = true
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrName}/main_number`
       )
       .then(res => {
-        const timeBasedRoutes = res.data.time_based_routes
-        const currentTimeBasedRoute = timeBasedRoutes.find(
-          timeBasedRoute => timeBasedRoute.userId === tbrName
-        )
-
-        axios
-          .get(
-            `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${currentTimeBasedRoute.userId}/main_number`
-          )
-          .then(res => {
-            const number = res.data.mainNumber
-            if (number.length > 6) {
-              this.mainNumber = {
-                country_code: `+${getCountryCodeFromNumber(number)}`,
-                nsn: getNsnFromNumber(number),
-                value: number,
-                country: getCountryNameFromNumber(number)
-              }
-            } else {
-              this.mainNumber = {
-                country_code: '',
-                nsn: '',
-                value: '',
-                country: ''
-              }
-            }
-          })
-          .catch(e => {
-            SnackbarStore.enqueueSnackbar({
-              message: getErrorMessage(e) || 'Failed to fetch access numbers',
-              options: {
-                variant: 'error'
-              }
-            })
-          })
-          .finally(() => {
-            this.isMainNumberLoading = false
-          })
+        const number = res.data.mainNumber
+        if (number.length > 6) {
+          this.mainNumber = {
+            country_code: `+${getCountryCodeFromNumber(number)}`,
+            nsn: getNsnFromNumber(number),
+            value: number,
+            country: getCountryNameFromNumber(number)
+          }
+        } else {
+          this.mainNumber = {
+            country_code: '',
+            nsn: '',
+            value: '',
+            country: ''
+          }
+        }
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch access numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isMainNumberLoading = false
       })
   }
 
   getSecondaryNumbers = ({ customerId, groupId, tbrName }) => {
+    if (this.isSecondaryNumbersLoading) return
+
     this.secondaryNumbers = []
     this.isSecondaryNumbersLoading = true
+
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrName}/secondary_numbers`
       )
       .then(res => {
-        const timeBasedRoutes = res.data.time_based_routes
-        const currentTimeBasedRoute = timeBasedRoutes.find(
-          timeBasedRoute => timeBasedRoute.userId === tbrName
-        )
-        this.currentTbrId = currentTimeBasedRoute.userId
-        axios
-          .get(
-            `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${currentTimeBasedRoute.userId}/secondary_numbers`
-          )
-          .then(res => {
-            const numbers = res.data.secondaryNumbers
-            const busySecondaryIds = numbers.map(number => number.id)
-            this.availableSecondaryIds = difference(
-              DEFAULT_IDS,
-              busySecondaryIds
-            )
-            this.secondaryNumbers = numbers.map(item => {
-              return {
-                ...item,
-                value: item.phoneNumber,
-                country: getCountryNameFromNumber(item.phoneNumber)
-              }
-            })
-          })
-          .catch(e => {
-            SnackbarStore.enqueueSnackbar({
-              message:
-                getErrorMessage(e) || 'Failed to fetch secondary numbers',
-              options: {
-                variant: 'error'
-              }
-            })
-          })
-          .finally(() => {
-            this.isSecondaryNumbersLoading = false
-          })
+        const numbers = res.data.secondaryNumbers
+        const busySecondaryIds = numbers.map(number => number.id)
+        this.availableSecondaryIds = difference(DEFAULT_IDS, busySecondaryIds)
+        this.secondaryNumbers = numbers.map(item => {
+          return {
+            ...item,
+            value: item.phoneNumber,
+            country: getCountryNameFromNumber(item.phoneNumber)
+          }
+        })
+      })
+      .catch(e => {
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch secondary numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+      .finally(() => {
+        this.isSecondaryNumbersLoading = false
       })
   }
 
@@ -136,6 +110,8 @@ export class AccessNumbers {
     order,
     countryCode
   }) => {
+    if (this.isAvailableNumbersLoading) return
+
     this.availableNumbers = []
     this.isAvailableNumbersLoading = true
 
@@ -331,14 +307,12 @@ decorate(AccessNumbers, {
   isAvailableNumbersLoading: observable,
   isSecondaryNumbersAdding: observable,
   isSecondaryNumberDeleting: observable,
-  isAccessNumbersLoading: observable,
   isUpdatingMainNumber: observable,
   getMainNumber: action,
   getSecondaryNumbers: action,
   getAvailableNumbers: action,
   deleteSecondaryNumber: action,
   postSecondaryNumbers: action,
-  clearLoadingStates: action,
   putUpdateMainNumber: action
 })
 

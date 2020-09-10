@@ -34,7 +34,6 @@ const AccessNumbers = observer(({ t }) => {
     getMainNumber,
     getSecondaryNumbers,
     deleteSecondaryNumber,
-    clearLoadingStates,
     mainNumber,
     secondaryNumbers,
     isMainNumberLoading,
@@ -62,7 +61,6 @@ const AccessNumbers = observer(({ t }) => {
     close() {
       this.id = null
       initialRequest()
-      clearLoadingStates()
     }
   }))
 
