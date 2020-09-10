@@ -68,53 +68,40 @@ export class TimeSchedules {
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrName}`
       )
       .then(res => {
-        const timeBasedRoutes = res.data.time_based_routes
-        const currentTimeBasedRoute = timeBasedRoutes.find(
-          timeBasedRoute => timeBasedRoute.userId === tbrName
-        )
-        this.currentUserId = currentTimeBasedRoute.userId
+        const schedules = res.data.schedules
+        let timeScheduleNames = []
 
-        axios
-          .get(
-            `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}`
-          )
-          .then(res => {
-            const schedules = res.data.time_based_route.schedules
-            let timeScheduleNames = []
-            const transferedSchedules = schedules.map(schedule => {
-              const fixedTimeScheduleName = schedule.timeSchedule.split('(')[0]
-              timeScheduleNames.push(fixedTimeScheduleName)
+        const transferedSchedules = schedules.map(schedule => {
+          const fixedTimeScheduleName = schedule.timeSchedule.split('(')[0]
+          timeScheduleNames.push(fixedTimeScheduleName)
 
-              return {
-                ...schedule,
-                timeSchedule: fixedTimeScheduleName,
-                color: getRandomColor()
-              }
-            })
+          return {
+            ...schedule,
+            timeSchedule: fixedTimeScheduleName,
+            color: getRandomColor()
+          }
+        })
 
-            const defaultDestination =
-              res.data.time_based_route.defaultDestination
-            runInAction(() => {
-              this.schedules = transferedSchedules
-              this.defaultDestination = defaultDestination
-              this.timeScheduleNames = timeScheduleNames
-            })
-          })
-          .catch(e =>
-            SnackbarStore.enqueueSnackbar({
-              message:
-                getErrorMessage(e) || 'Failed to fetch time schedule list',
-              options: {
-                variant: 'error'
-              }
-            })
-          )
-          .finally(() => {
-            this.isSchedulesLoading = false
-          })
+        const defaultDestination = res.data.defaultDestination
+        runInAction(() => {
+          this.schedules = transferedSchedules
+          this.defaultDestination = defaultDestination
+          this.timeScheduleNames = timeScheduleNames
+        })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch time schedule list',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isSchedulesLoading = false
       })
   }
 
@@ -345,25 +332,6 @@ export class TimeSchedules {
       })
   }
 
-  // change checked field of each number => TRUE
-  // handleCheckAll = () => {
-  //   if (this.areAllNumbersChecked) {
-  //     this.phoneNumbers.forEach(number => (number.checked = false))
-  //   } else {
-  //     this.phoneNumbers.forEach(number => (number.checked = true))
-  //   }
-  // }
-
-  // @computed: check if checked field of every number === TRUE
-  // get areAllNumbersChecked() {
-  //   return this.phoneNumbers.every(number => number.checked)
-  // }
-
-  // @computed: check if checked field of any number === TRUE
-  // get isAnyNumberChecked() {
-  //   return this.phoneNumbers.some(number => number.checked)
-  // }
-
   // @computed: ID for Add schedule view
   get scheduleIndexToAdd() {
     return this.schedules.length + 1
@@ -480,8 +448,6 @@ export class TimeSchedules {
 }
 
 decorate(TimeSchedules, {
-  // areAllNumbersChecked: computed,
-  // isAnyNumberChecked: computed,
   scheduleIndexToAdd: computed,
   step: observable,
   schedules: observable,
@@ -518,7 +484,6 @@ decorate(TimeSchedules, {
   getAdvancedIntances: action,
   getAdvancedDestinations: action,
   getIvrList: action,
-  // handleCheckAll: action,
   postTimeSchedule: action,
   putTimeSchedule: action,
   deleteTimeSchedule: action,
