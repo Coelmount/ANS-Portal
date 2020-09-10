@@ -74,7 +74,7 @@ const DestinationGroups = observer(({ t }) => {
     const payload = {
       customerId,
       groupId,
-      destinationId: modals.data.userId,
+      destinationId: modals.data.ans_id,
       closeModal: openedModal.close
     }
     deleteDestinationGroup(payload)
