@@ -10,11 +10,39 @@ export class AuthStore {
   jwtToken = localStorage.getItem('jwtToken')
   user = {}
   userLogin = {}
+  twoFactorPayload = ''
   isAuthorized = localStorage.getItem('isAuthorized', true)
     ? !!localStorage.getItem('isAuthorized', true)
     : false
   username = ''
   isLogging = false
+
+  handleSuccessfullAuth = ({ data, history }) => {
+    const newJwtToken = data.access_token
+    const newRefreshToken = data.refresh_token
+
+    localStorage.setItem('jwtToken', newJwtToken)
+    localStorage.setItem('refreshJwtToken', newRefreshToken)
+
+    this.jwtToken = newJwtToken
+    this.userLogin = data
+    this.getLocal()
+
+    if (data.ids) {
+      localStorage.setItem('ids', JSON.stringify(data.ids))
+      if (data.ids.tenant_id && data.ids.group_id) {
+        history.push(
+          `/customers/${data.ids.tenant_id}/subaccounts/${data.ids.group_id}/ans_instances`
+        )
+        return
+      }
+      if (data.ids.tenant_id) {
+        history.push(`/customers/${data.ids.tenant_id}/access_numbers`)
+        return
+      }
+    }
+    localStorage.removeItem('ids')
+  }
 
   postLogin = (data, history) => {
     this.jwtToken = localStorage.getItem('jwtToken')
@@ -24,36 +52,45 @@ export class AuthStore {
       .post(`${BASE_URL}/auth/login`, data)
       .then(res => {
         if (res.status === 200) {
-          const newJwtToken = res.data.access_token
-          const newRefreshToken = res.data.refresh_token
-          localStorage.setItem('jwtToken', newJwtToken)
-          localStorage.setItem('refreshJwtToken', newRefreshToken)
-
-          this.jwtToken = newJwtToken
-          this.userLogin = res.data
-          this.getLocal()
-
-          if (res.data.ids) {
-            localStorage.setItem('ids', JSON.stringify(res.data.ids))
-            if (res.data.ids.tenant_id && res.data.ids.group_id) {
-              history.push(
-                `/customers/${res.data.ids.tenant_id}/subaccounts/${res.data.ids.group_id}/ans_instances`
-              )
-              return
-            }
-            if (res.data.ids.tenant_id) {
-              history.push(
-                `/customers/${res.data.ids.tenant_id}/access_numbers`
-              )
-              return
-            }
+          const twoFactorPayload = '2fa_payload'
+          if (res.data[twoFactorPayload]) {
+            this.twoFactorPayload = res.data[twoFactorPayload]
+            history.push(`/2fa`)
+            return
           }
-          localStorage.removeItem('ids')
+          this.handleSuccessfullAuth({ data: res.data, history })
         }
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to login',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => {
+        this.isLogging = false
+      })
+  }
+
+  postTwoFactorCode = ({ code, history }) => {
+    // this.isLogging = true
+
+    const payload = {
+      code,
+      '2fa_payload': this.twoFactorPayload
+    }
+    axios
+      .post(`${BASE_URL}/auth/2fa`, payload)
+      .then(res => {
+        this.handleSuccessfullAuth({ data: res.data, history })
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message:
+            getErrorMessage(e) ||
+            'Failed to send two factor authentication code',
           options: {
             variant: 'error'
           }
@@ -115,6 +152,7 @@ decorate(AuthStore, {
   username: observable,
   isLogging: observable,
   postLogin: action,
+  postTwoFactorCode: action,
   getLocal: action,
   logOut: action
 })
