@@ -106,15 +106,15 @@ const Auth = ({ t }) => {
           <form onSubmit={loginSubmit} className={'form'}>
             <Box className={'login-title'}>{t('reset_password')}</Box>
             <Box className={classes.infoBox}>
-              Submit your email address and we’ll send you a link to reset your
-              password
+              Submit your user name and we’ll send you a link to reset your
+              password to your email
               {/* {t('dont_have_account_message')} */}
             </Box>
             <Box>
               <Box className={'login-box'}>
                 <Input
                   icon={<PermIdentityOutlined className={'icon'} />}
-                  label={t('email')}
+                  label={t('user_name')}
                   variant='outlined'
                   value={email}
                   onChange={handleEmailChange}
@@ -138,12 +138,12 @@ const Auth = ({ t }) => {
               {isEmailSended && (
                 <React.Fragment>
                   <Box className={classes.checkedInfoTitle}>
-                    Reset password email sent
+                    Letter has been sent to your email
                   </Box>
                   <Box className={classes.checkedInfo}>
                     Follow the directions in the email to reset your password
                   </Box>
-                  <Box className={classes.checkedInfo}>
+                  {/* <Box className={classes.checkedInfo}>
                     <MaterialLink
                       component='button'
                       variant='body2'
@@ -153,7 +153,7 @@ const Auth = ({ t }) => {
                     >
                       Fake reset
                     </MaterialLink>
-                  </Box>
+                  </Box> */}
                 </React.Fragment>
               )}
             </Box>
