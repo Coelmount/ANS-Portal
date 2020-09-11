@@ -69,13 +69,14 @@ const SubaccountAdministrators = props => {
     getSubaccountAdmins({ id: match.customerId, groupId: match.groupId })
   }
 
-  const addAdmin = defaultDomain => {
+  const addAdmin = (defaultDomain, sendWelcomeMail) => {
     addSubaccountAdmin({
       id: match.customerId,
       closeModal: hideModal,
       getUsers: getSubaccountAdmins,
       groupId: match.groupId,
-      defaultDomain
+      defaultDomain,
+      sendWelcomeMail
     })
   }
 

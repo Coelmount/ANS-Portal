@@ -65,9 +65,13 @@ export class SubaccountAdminsStore {
     closeModal,
     getUsers,
     groupId,
-    defaultDomain
+    defaultDomain,
+    sendWelcomeMail
   }) => {
-    this.isAdding = true
+    if (sendWelcomeMail) {
+      this.sentSubaccountAdmin.ui_id = 'mtn'
+      delete this.sentSubaccountAdmin.password
+    }
     axios
       .post(`/tenants/${id}/groups/${groupId}/admins/`, {
         ...this.sentSubaccountAdmin,

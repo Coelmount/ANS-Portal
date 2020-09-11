@@ -68,11 +68,12 @@ const Administrators = ({ t }) => {
     getCustomerAdmins(match.customerId)
   }
 
-  const addAdmin = () => {
+  const addAdmin = (defaultDomain, sendWelcomeMail) => {
     addCustomerAdmin({
       id: match.customerId,
       closeModal: hideModal,
-      getUsers: getCustomerAdmins
+      getUsers: getCustomerAdmins,
+      sendWelcomeMail
     })
   }
   const handleDelete = adminId => {

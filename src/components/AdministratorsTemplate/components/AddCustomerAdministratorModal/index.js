@@ -21,8 +21,8 @@ import CustomerAdministrators from 'stores/CustomerAdministrators'
 import CustomersStore from 'stores/Customers'
 import SubaccountAdminsStore from 'stores/SubaccountAdmins'
 import Loading from 'components/Loading'
+import Checkbox from 'components/Checkbox'
 
-// import { SELECTLANGUAGE } from 'source/config'
 import Input from 'components/Input'
 import CustomSelect from 'components/Select'
 import sharp from 'source/images/svg/sharp.svg'
@@ -45,6 +45,7 @@ const AddCustomerAdministrator = ({
   const [repeatPassword, setRepeatedPassword] = useState('')
   const [passwordError, setPasswordError] = useState(false)
   const [isPasswordInputActive, setIsPasswordInputActive] = useState(false)
+  const [sendWelcomeEmail, setSendWelcomeEmail] = useState(true)
 
   const {
     getCustomerAdminsLanguages,
@@ -93,6 +94,32 @@ const AddCustomerAdministrator = ({
 
   const handlePasswordChange = e => {
     setPassword(e.target.value)
+  }
+
+  const changeWelcomeEmail = () => {
+    if (!sendWelcomeEmail) {
+      setSendWelcomeEmail(!sendWelcomeEmail)
+      setPassword('')
+      setRepeatedPassword('')
+      setPasswordError(false)
+    } else {
+      setSendWelcomeEmail(!sendWelcomeEmail)
+    }
+  }
+
+  const checkDisabledButton = () => {
+    if (user.userId && sendWelcomeEmail) {
+      return false
+    } else if (
+      user.userId &&
+      !sendWelcomeEmail &&
+      repeatPassword &&
+      !passwordError
+    ) {
+      return false
+    } else {
+      return true
+    }
   }
 
   return (
@@ -144,38 +171,10 @@ const AddCustomerAdministrator = ({
                 />
               </Box>
               <Box className={classes.inputes}>
-                <Input
-                  icon={<LockOutlinedIcon />}
-                  label={t('password')}
-                  autoComplete='new-password'
-                  variant='outlined'
-                  value={password}
-                  onChange={handlePasswordChange}
-                  onFocus={() => {
-                    setIsPasswordInputActive(true)
-                  }}
-                  onBlur={() => {
-                    setIsPasswordInputActive(false)
-                  }}
-                  type={'password'}
-                />
-              </Box>
-              <Box className={classes.inputes}>
-                <Input
-                  error={passwordError}
-                  icon={<LockOutlinedIcon />}
-                  label={t('repeat_password')}
-                  variant='outlined'
-                  value={repeatPassword}
-                  onChange={handleRepeatPasswordChange}
-                  onFocus={() => {
-                    setIsPasswordInputActive(true)
-                  }}
-                  onBlur={() => {
-                    setIsPasswordInputActive(false)
-                  }}
-                  type={'password'}
-                  helperText={passwordError ? 'Passwords is not match' : null}
+                <Checkbox
+                  checked={sendWelcomeEmail}
+                  label={t('send_welcome_email')}
+                  onChange={changeWelcomeEmail}
                 />
               </Box>
               <Box className={classes.inputes}>
@@ -208,6 +207,47 @@ const AddCustomerAdministrator = ({
                   onChange={e => setUserInfo('language', e.target.value)}
                 />
               </Box>
+              {!sendWelcomeEmail && (
+                <React.Fragment>
+                  <Box className={classes.inputes}>
+                    <Input
+                      icon={<LockOutlinedIcon />}
+                      label={t('password')}
+                      autoComplete='new-password'
+                      variant='outlined'
+                      value={password}
+                      onChange={handlePasswordChange}
+                      onFocus={() => {
+                        setIsPasswordInputActive(true)
+                      }}
+                      onBlur={() => {
+                        setIsPasswordInputActive(false)
+                      }}
+                      type={'password'}
+                    />
+                  </Box>
+                  <Box className={classes.inputes}>
+                    <Input
+                      error={passwordError}
+                      icon={<LockOutlinedIcon />}
+                      label={t('repeat_password')}
+                      variant='outlined'
+                      value={repeatPassword}
+                      onChange={handleRepeatPasswordChange}
+                      onFocus={() => {
+                        setIsPasswordInputActive(true)
+                      }}
+                      onBlur={() => {
+                        setIsPasswordInputActive(false)
+                      }}
+                      type={'password'}
+                      helperText={
+                        passwordError ? 'Passwords is not match' : null
+                      }
+                    />
+                  </Box>
+                </React.Fragment>
+              )}
             </Box>
           </DialogContent>
           <DialogActions className={classes.dialogActionsSecond}>
@@ -223,8 +263,8 @@ const AddCustomerAdministrator = ({
               variant='contained'
               color='primary'
               className={classes.nextButton}
-              onClick={() => addAdmin(defaultDomain)}
-              disabled={!user.userId || !repeatPassword || passwordError}
+              onClick={() => addAdmin(defaultDomain, sendWelcomeEmail)}
+              disabled={checkDisabledButton()}
             >
               {t('add')}
             </Button>
