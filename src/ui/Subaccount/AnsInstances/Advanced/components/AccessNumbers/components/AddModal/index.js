@@ -59,7 +59,8 @@ const AddModal = ({ t, open, handleClose }) => {
     const payload = {
       customerId,
       groupId,
-      addData: inputStore.values
+      addData: inputStore.values,
+      closeModal: handleClose
     }
     postAccessNumber(payload)
   }
