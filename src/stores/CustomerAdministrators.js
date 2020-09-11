@@ -83,8 +83,12 @@ export class CustomerAdminsStore {
     }
   }
 
-  addCustomerAdmin = ({ id, closeModal, getUsers }) => {
+  addCustomerAdmin = ({ id, closeModal, getUsers, sendWelcomeMail }) => {
     this.isAdding = true
+    if (sendWelcomeMail) {
+      this.sentAdmin.ui_id = 'mtn'
+      delete this.sentAdmin.password
+    }
     axios
       .post(`/tenants/${id}/admins/`, this.sentAdmin)
       .then(res => {
