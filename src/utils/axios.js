@@ -27,7 +27,8 @@ instance.interceptors.response.use(
   response => {
     return response
   },
-  async error => {
+
+  async function (error) {
     const status = get(error, 'response.status', null)
     const errorMessage = get(error, 'response.statusText', '')
     const config = get(error, 'config', {})
@@ -36,31 +37,38 @@ instance.interceptors.response.use(
       status === 401 &&
       config.url === `${config.baseURL}/auth/access_token`
     ) {
+      AuthStore.logOut()
       return Promise.reject(error)
     } else if (status === 401 && errorMessage === tokenExpMsg) {
-      const refreshJwtToken = localStorage.getItem('refreshJwtToken')
+      const refreshToken = localStorage.getItem('refreshJwtToken')
 
-      try {
-        const res = await axios.get(`${BASE_URL}/auth/access_token`, {
+      return axios
+        .get(`${BASE_URL}/auth/access_token`, {
           headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${refreshJwtToken}`
+            Authorization: `Bearer ${refreshToken}`
           }
         })
-        if (res.status === 200 && res.data) {
-          const newJwtToken = res.data.access_token
-          localStorage.setItem('jwtToken', newJwtToken)
-          config.headers['Authorization'] = `Bearer ${newJwtToken}`
-        } else {
-          AuthStore.logOut()
-        }
-        return axios(config).catch(() => {
-          AuthStore.logOut()
+        .then(res => {
+          if (res.data) {
+            const newJwtToken = res.data.access_token
+            localStorage.setItem('jwtToken', newJwtToken)
+            config.headers['Authorization'] = `Bearer ${newJwtToken}`
+          } else {
+            AuthStore.logOut()
+          }
+          return axios(config)
         })
-      } catch (e) {
-        AuthStore.logOut()
-      }
+        .catch(({ message }) => {
+          // TODO: If you know the best way to remove this condition,
+          // then just do it!
+          if (message.includes('401')) {
+            AuthStore.logOut()
+          } else {
+            throw Error(message)
+          }
+        })
     }
+
     return Promise.reject(error)
   }
 )

@@ -171,7 +171,7 @@ export class CustomersStore {
             variant: 'error'
           }
         })
-        if (e.response.status === 400) {
+        if (e.response && e.response.status === 400) {
           this.isDeletingCustomer = false
         }
       })
