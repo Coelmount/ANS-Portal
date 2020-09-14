@@ -1,4 +1,5 @@
 import React from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
@@ -13,8 +14,9 @@ const useStyles = makeStyles(theme => ({
 
 const ModalHelperText = ({ title, helperText }) => {
   const classes = useStyles()
+  const { pathname } = useLocation()
 
-  const formattedHelperText = getHelperText(title, helperText)
+  const formattedHelperText = getHelperText(title, pathname, helperText)
 
   return (
     <Typography className={classes.helperText}>

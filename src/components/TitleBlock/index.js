@@ -1,4 +1,5 @@
 import React from 'react'
+import { useLocation } from 'react-router-dom'
 
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
@@ -21,8 +22,9 @@ const TitleBlock = ({
   }
 }) => {
   const classes = useStyles()
+  const { pathname } = useLocation()
 
-  const formattedHelperText = getHelperText(mainText, helperText)
+  const formattedHelperText = getHelperText(mainText, pathname, helperText)
 
   return (
     <Box className={classes.titleWrap}>
