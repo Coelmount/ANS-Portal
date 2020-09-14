@@ -3,8 +3,11 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(theme => ({
   titleWrap: {
     display: 'flex',
-    height: 75,
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    minHeight: 75
+  },
+  leftTextWrap: {
+    paddingRight: 20
   },
   title: {
     flex: '1 1 100%',
@@ -15,6 +18,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: 24,
     letterSpacing: '0.02em',
     color: theme.palette.black
+  },
+  helperText: {
+    fontSize: 14
   },
   addCustomerWrap: {
     display: 'flex',

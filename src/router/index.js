@@ -7,6 +7,8 @@ import Snackbar from 'components/Snackbar'
 
 import DefaultLayout from 'components/DefaultLayout'
 import Auth from 'ui/Auth'
+import ResetPassword from 'ui/ResetPassword'
+import TwoFactorAuthentication from 'ui/TwoFactorAuthentication'
 import Customers from 'ui/Customers'
 import Search from 'ui/Search'
 import AccessNumbers from 'ui/Customer/AccessNumbers'
@@ -30,7 +32,6 @@ import WeekSchedules from 'ui/Subaccount/Schedules/WeekSchedules'
 import WeekSchedule from 'components/WeekSchedule'
 import HolidaySchedules from 'ui/Subaccount/Schedules/HolidaySchedules'
 import HolidaySchedule from 'components/HolidaySchedule'
-import ResetPassword from 'ui/ResetPassword'
 import IVRPage from 'ui/Subaccount/AnsInstances/IVR/IVRPage'
 import ResetPasswordToken from 'ui/ResetPassword/ResetPassworWithToken'
 
@@ -185,6 +186,10 @@ const authComponents = [
   {
     path: '/reset-password/:resetToken',
     component: ResetPasswordToken
+  },
+  {
+    path: '/2fa',
+    component: TwoFactorAuthentication
   }
 ]
 
@@ -250,6 +255,7 @@ const UserPages = () => {
         </Route>
       ))}
       <Redirect path='/' to={'/customers'} exact />
+      <Redirect path='/2fa' to={'/customers'} exact />
       <Redirect
         path='/customers/:customerId/'
         to={'/customers/:customerId/access_numbers'}
