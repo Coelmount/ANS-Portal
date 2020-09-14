@@ -8,9 +8,9 @@ const getHelperText = (title, providedHelperText) => {
     .join('_')
     .toLowerCase()
 
-  return providedHelperText
-    ? providedHelperText
-    : `helper_text_${generatedHelperText}`
+  return `helper_text_${
+    providedHelperText ? providedHelperText : generatedHelperText
+  }`
 }
 
 export default getHelperText
