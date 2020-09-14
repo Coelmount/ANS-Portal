@@ -90,10 +90,7 @@ const Auth = ({ t }) => {
         <Grid item md={6} xs={12} className={'login-col'}>
           <form onSubmit={loginSubmit} className={'form'}>
             <Box className={'login-title'}>{t('reset_password')}</Box>
-            <Box className={classes.infoBox}>
-              Submit your user name and we’ll send you a link to reset your
-              password to your email
-            </Box>
+            <Box className={classes.infoBox}>{t('reset_password_info')}</Box>
             <Box>
               <Box className={'login-box'}>
                 <Input
@@ -122,10 +119,10 @@ const Auth = ({ t }) => {
               {isEmailSended && (
                 <React.Fragment>
                   <Box className={classes.checkedInfoTitle}>
-                    Letter has been sent to your email
+                    {t('latter_to_email')}
                   </Box>
                   <Box className={classes.checkedInfo}>
-                    Follow the directions in the email to reset your password
+                    {t('follow_directions')}
                   </Box>
                 </React.Fragment>
               )}

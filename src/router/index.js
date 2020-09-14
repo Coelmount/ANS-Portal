@@ -34,6 +34,7 @@ import HolidaySchedules from 'ui/Subaccount/Schedules/HolidaySchedules'
 import HolidaySchedule from 'components/HolidaySchedule'
 import IVRPage from 'ui/Subaccount/AnsInstances/IVR/IVRPage'
 import ResetPasswordToken from 'ui/ResetPassword/ResetPassworWithToken'
+import ExpiredPassword from 'ui/ExpiredPassword'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
@@ -190,6 +191,10 @@ const authComponents = [
   {
     path: '/2fa',
     component: TwoFactorAuthentication
+  },
+  {
+    path: '/expired-password',
+    component: ExpiredPassword
   }
 ]
 
