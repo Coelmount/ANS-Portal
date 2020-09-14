@@ -4,24 +4,36 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
+import getHelperText from 'utils/getHelperText'
+
 import useStyles from './styles'
 
-const TitleBlock = ({ handleOpen, titleData }) => {
-  const classes = useStyles()
-  const {
+const TitleBlock = ({
+  handleOpen,
+  titleData: {
     mainText,
+    helperText,
     iconCapture,
     Icon,
     buttonBlock,
     extraBlock,
     disabled
-  } = titleData
+  }
+}) => {
+  const classes = useStyles()
+
+  const formattedHelperText = getHelperText(mainText, helperText)
 
   return (
     <Box className={classes.titleWrap}>
-      <Typography className={classes.title} id='tableTitle'>
-        {mainText}
-      </Typography>
+      <Box className={classes.leftTextWrap}>
+        <Typography className={classes.title} id='tableTitle'>
+          {mainText}
+        </Typography>
+        <Typography className={classes.helperText}>
+          {formattedHelperText}
+        </Typography>
+      </Box>
       {extraBlock}
       {Icon && iconCapture && (
         <Box className={classes.addCustomerWrap}>
