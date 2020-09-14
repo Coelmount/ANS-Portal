@@ -32,6 +32,7 @@ import HolidaySchedules from 'ui/Subaccount/Schedules/HolidaySchedules'
 import HolidaySchedule from 'components/HolidaySchedule'
 import ResetPassword from 'ui/ResetPassword'
 import IVRPage from 'ui/Subaccount/AnsInstances/IVR/IVRPage'
+import ResetPasswordToken from 'ui/ResetPassword/ResetPassworWithToken'
 
 import AuthStore from 'stores/Auth'
 import LanguagesStore from 'stores/Languages'
@@ -178,8 +179,12 @@ const authComponents = [
     component: Auth
   },
   {
-    path: '/resetpassword',
+    path: '/reset-password',
     component: ResetPassword
+  },
+  {
+    path: '/reset-password/:resetToken',
+    component: ResetPasswordToken
   }
 ]
 

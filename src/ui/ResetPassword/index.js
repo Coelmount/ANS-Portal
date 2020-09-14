@@ -1,30 +1,19 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react-lite'
-// import {
-//   Link,
-//   useHistory }
-//   from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import MaterialLink from '@material-ui/core/Link'
 
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
-// import LockOutlined from '@material-ui/icons/LockOutlined'
-// import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined'
-// import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
 import CheckIcon from '@material-ui/icons/Check'
 
-// import AuthStore from 'stores/Auth'
 import Input from 'components/Input'
-// import Checkbox from 'components/Checkbox'
 
 import bgImg from 'source/images/other/bg_img.jpg'
 import logo from 'source/images/svg/mtn-logo-nav.svg'
-// import './index.css'
 
 const useStyles = makeStyles(theme => ({
   checkbox: {
@@ -73,12 +62,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Auth = ({ t }) => {
-  // const { postLogin } = AuthStore
   const [email, setEmail] = useState('')
   const [isEmailSended, setIsEmailSended] = useState(false)
-  // const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-  // const history = useHistory()
   const classes = useStyles()
 
   const handleEmailChange = e => {
@@ -90,7 +76,6 @@ const Auth = ({ t }) => {
     e.preventDefault()
 
     setIsEmailSended(true)
-    //postLogin({ username, password }, history)
   }
 
   return (
@@ -108,7 +93,6 @@ const Auth = ({ t }) => {
             <Box className={classes.infoBox}>
               Submit your user name and we’ll send you a link to reset your
               password to your email
-              {/* {t('dont_have_account_message')} */}
             </Box>
             <Box>
               <Box className={'login-box'}>
@@ -143,72 +127,10 @@ const Auth = ({ t }) => {
                   <Box className={classes.checkedInfo}>
                     Follow the directions in the email to reset your password
                   </Box>
-                  {/* <Box className={classes.checkedInfo}>
-                    <MaterialLink
-                      component='button'
-                      variant='body2'
-                      onClick={() => {
-                        console.info('Fake reset')
-                      }}
-                    >
-                      Fake reset
-                    </MaterialLink>
-                  </Box> */}
                 </React.Fragment>
               )}
             </Box>
-
-            {/*
-
-            <Box>
-              <Box className={'password-box'}>
-                <Input
-                  icon={<LockOutlined className={'icon'} />}
-                  label={t('password')}
-                  variant='outlined'
-                  value={password}
-                  onChange={handlePasswordChange}
-                  type={isPasswordVisible ? 'text' : 'password'}
-                />
-                {isPasswordVisible ? (
-                  <VisibilityOutlinedIcon
-                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                    className={`visibilityIcon`}
-                  />
-                ) : (
-                  <VisibilityOffOutlinedIcon
-                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                    className={`visibilityOffIcon`}
-                  />
-                )}
-              </Box>
-            </Box>
-            <Box className={'support-box'}>
-              <Checkbox className={classes.checkbox} label={t('remember_me')} />
-              <Link to='/resetpassword' className={classes.link}>
-                {t('reset_password')}
-              </Link>
-            </Box>
-            <Button
-              variant='contained'
-              color='primary'
-              type='submit'
-              className={'button'}
-            >
-              {t('log_in')}
-            </Button>
-            <Box>
-              {t('dont_have_account_message')}{' '}
-              <Link to='/signup' className={classes.link}>
-                {t('sign_up')}
-              </Link>
-            </Box>*/}
           </form>
-          {/* <Box className={'gtac'}>
-            <Link to='/gtac' className={classes.link}>
-              {t('general_terms_and_conditions')}
-            </Link>
-          </Box> */}
         </Grid>
       </Grid>
     </React.Fragment>
