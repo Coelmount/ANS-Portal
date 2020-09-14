@@ -23,7 +23,6 @@ import Select from 'components/Select'
 import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
-import Loading from 'components/Loading'
 
 const FirstStep = props => {
   const match = useParams()
@@ -43,18 +42,7 @@ const FirstStep = props => {
     customer.timeZone ? false : true
   )
 
-  const {
-    config,
-    isLoadingConfig,
-    getTimeZones,
-    timeZones,
-    isLoadingTimeZones
-  } = ConfigStore
-
-  useEffect(() => {
-    getTimeZones()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { config, isLoadingConfig, timeZones } = ConfigStore
 
   useEffect(() => {
     if (!isLoadingConfig) {
@@ -99,10 +87,6 @@ const FirstStep = props => {
     if (checkedTimeZone === false) {
       changeCustomer('timeZone', '')
     }
-  }
-
-  if (isLoadingTimeZones) {
-    return <Loading />
   }
 
   return (

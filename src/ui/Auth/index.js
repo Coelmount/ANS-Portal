@@ -117,7 +117,7 @@ const Auth = ({ t }) => {
             </Box>
             <Box className={'support-box'}>
               <Checkbox className={classes.checkbox} label={t('remember_me')} />
-              <Link to='/resetpassword' className={classes.link}>
+              <Link to='/reset-password' className={classes.link}>
                 {t('reset_password')}
               </Link>
             </Box>

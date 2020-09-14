@@ -38,18 +38,24 @@ const CreateCustomer = props => {
   } = props
   const { step, setCreateSubaccount } = store
 
-  const { getConfig, isLoadingConfig } = ConfigStore
+  const {
+    getConfig,
+    isLoadingConfig,
+    isLoadingTimeZones,
+    getTimeZones
+  } = ConfigStore
 
   // const step = 4
   const classes = useStyles()
 
   useEffect(() => {
     getConfig()
+    getTimeZones()
     setCreateSubaccount && setCreateSubaccount(createSubaccount)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (isLoadingConfig) {
+  if (isLoadingConfig || isLoadingTimeZones) {
     return (
       <Dialog open={open} onClose={handleClose} className={classes.root}>
         <Loading />
