@@ -13,6 +13,7 @@ import ConfigStore from 'stores/Config'
 import CustomersStore from 'stores/Customers'
 import Loading from 'components/Loading'
 import Select from 'components/Select'
+import ModalHelperText from 'components/ModalHelperText'
 import useStyles from './styles'
 
 import capitalize from 'lodash/capitalize'
@@ -71,6 +72,7 @@ const UpdateStatusModal = props => {
         tenant.name
       }`}</DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText helperText='update_customer_status' />
         <Box className={classes.contentBox}>
           <Box className={classes.statusText}>{`${t('status')}: `}</Box>
           <Select

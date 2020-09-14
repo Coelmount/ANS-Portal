@@ -15,6 +15,7 @@ import HolidaySchedulesStore from 'stores/HolidaySchedules'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import Select from 'components/Select'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -91,6 +92,7 @@ const ImportHolidaysModal = ({ t, open, handleClose }) => {
           </DialogTitle>
 
           <DialogContent className={classes.contentWrap}>
+            <ModalHelperText title={t('import_public_holidays')} />
             <CountryInput
               value={country}
               setValue={handleCountryChange}

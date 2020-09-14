@@ -23,6 +23,7 @@ import Loading from 'components/Loading'
 import Input from 'components/Input'
 import CustomSelect from 'components/Select'
 import sharp from 'source/images/svg/sharp.svg'
+import ModalHelperText from 'components/ModalHelperText'
 import useStyles from './styles'
 
 const UpdateAdminInfo = ({
@@ -72,6 +73,7 @@ const UpdateAdminInfo = ({
             />
           </DialogTitle>
           <DialogContent>
+            <ModalHelperText title={` ${t(`edit`)} ${editSubject}`} />
             <Box className={classes.loginTitleWrapper}>
               <Typography className={classes.loginTitle}>
                 {t('login_details')}

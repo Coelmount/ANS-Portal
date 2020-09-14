@@ -17,6 +17,7 @@ import EmailOutlined from '@material-ui/icons/EmailOutlined'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
 import Input from 'components/Input'
+import ModalHelperText from 'components/ModalHelperText'
 
 import CreateCustomerStore from 'stores/CreateCustomer'
 
@@ -43,6 +44,12 @@ const SecondStep = props => {
   } = store
 
   const createdCustomerStore = CreateCustomerStore
+  const title =
+    (isCreateSubaccount && t('add_subaccount')) ||
+    (isEditCustomer && t('edit_customer')) ||
+    (isEditSubaccount && t('edit_subaccount')) ||
+    t('add_customer')
+
   const classes = useStyles()
   const match = useParams()
 
@@ -72,10 +79,7 @@ const SecondStep = props => {
       ) : (
         <React.Fragment>
           <DialogTitle className={classes.title}>
-            {(isCreateSubaccount && t('add_subaccount')) ||
-              (isEditCustomer && t('edit_customer')) ||
-              (isEditSubaccount && t('edit_subaccount')) ||
-              t('add_customer')}
+            {title}
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -86,6 +90,7 @@ const SecondStep = props => {
           </DialogTitle>
           <DialogContent>
             <Fragment>
+              <ModalHelperText title={title} />
               <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
               <Box className={classes.paragraphBox}>
                 {t('contact_information')}

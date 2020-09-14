@@ -20,6 +20,7 @@ import timeBasedRoutingIcon from 'source/images/svg/dasboard_tbr_icon.svg'
 import ivrIcon from 'source/images/svg/dashboard_ivr_icon.svg'
 
 import AuthStore from 'stores/Auth'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -50,6 +51,7 @@ const ThirdStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText helperText='welcome_to_ans_step_3_tenant' />
         <Box className={classes.mainContent}>
           <Box className={classes.stepStyles}>{`${t('step')} ${
             step + 1

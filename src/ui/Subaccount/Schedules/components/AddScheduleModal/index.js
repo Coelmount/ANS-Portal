@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button'
 
 import Input from 'components/Input'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 import scheduleIcon from 'source/images/svg/schedule.svg'
@@ -55,6 +56,7 @@ const AddScheduleModal = ({
       </DialogTitle>
 
       <DialogContent>
+        <ModalHelperText title={title} />
         {isSchedulePosting ? (
           <Loading />
         ) : (

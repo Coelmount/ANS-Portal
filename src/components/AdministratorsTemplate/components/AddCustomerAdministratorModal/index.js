@@ -22,6 +22,7 @@ import CustomersStore from 'stores/Customers'
 import SubaccountAdminsStore from 'stores/SubaccountAdmins'
 import Loading from 'components/Loading'
 import Checkbox from 'components/Checkbox'
+import ModalHelperText from 'components/ModalHelperText'
 
 import Input from 'components/Input'
 import CustomSelect from 'components/Select'
@@ -143,6 +144,7 @@ const AddCustomerAdministrator = ({
             />
           </DialogTitle>
           <DialogContent>
+            <ModalHelperText title={`${t(`add`)} ${subject}`} />
             <Box className={classes.loginTitleWrapper}>
               <Typography className={classes.loginTitle}>
                 {t('login_details')}

@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button'
 
 import HolidaySchedulesStore from 'stores/HolidaySchedules'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 import PeriodForm from '../PeriodForm'
 
 import useStyles from './styles'
@@ -42,6 +43,7 @@ const EditPeriodModal = ({ t, open, handleClose }) => {
           </DialogTitle>
 
           <DialogContent>
+            <ModalHelperText title={t('edit_period')} />
             <Box className={classes.periodFormsWrap}>
               <PeriodForm isNameEditable={false} />
             </Box>

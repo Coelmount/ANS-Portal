@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography'
 
 import Input from 'components/Input'
 import CustomTable from 'components/CustomTable'
+import ModalHelperText from 'components/ModalHelperText'
 
 import entitlementsStore from 'stores/Entitlements'
 
@@ -126,6 +127,7 @@ const EditEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
+        <ModalHelperText title={t('edit_entitlements')} />
         <CustomTable
           showSearchBar={false}
           classes={classes}

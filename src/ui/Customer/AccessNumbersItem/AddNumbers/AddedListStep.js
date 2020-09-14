@@ -21,6 +21,7 @@ import Group3Person from 'source/images/svg/Group3Person.svg'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import Select from 'components/Select'
+import ModalHelperText from 'components/ModalHelperText'
 
 import NumbersStore from 'stores/Numbers'
 import SubaccountsStore from 'stores/Subaccounts'
@@ -252,6 +253,7 @@ const AddedListStep = ({ handleClose, t }) => {
         <CloseIcon onClick={handleClose} className={classes.closeButton} />
       </DialogTitle>
       <DialogContent className={classes.addedListStepDialogContent}>
+        <ModalHelperText title={t('added_phone_numbers_list')} />
         <AppBar className={classes.appBar} position='static'>
           <Tabs
             value={value}

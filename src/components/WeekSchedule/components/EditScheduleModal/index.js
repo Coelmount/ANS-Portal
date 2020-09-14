@@ -18,6 +18,7 @@ import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import PeriodForm from 'components/PeriodForm'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -51,6 +52,7 @@ const EditScheduleModal = ({
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
+        <ModalHelperText title={t('edit_week_schedule')} />
         {isScheduleEditing ? (
           <Loading />
         ) : (

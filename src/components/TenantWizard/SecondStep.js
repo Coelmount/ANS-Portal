@@ -18,6 +18,7 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 import AuthStore from 'stores/Auth'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -48,6 +49,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText helperText='welcome_to_ans_step_2_tenant' />
         <Box className={classes.mainContent}>
           <Box className={classes.stepStyles}>{`${t('step')} ${
             step + 1

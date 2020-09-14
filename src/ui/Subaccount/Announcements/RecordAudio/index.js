@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close'
 
 import useStyles from './styles'
 import AudioRecorder from 'components/AudioRecorder'
+import ModalHelperText from 'components/ModalHelperText'
 
 const SelectMediaFile = props => {
   const { open, handleClose } = props
@@ -20,7 +21,7 @@ const SelectMediaFile = props => {
   useEffect(() => {
     if (
       /constructor/i.test(window.HTMLElement) ||
-      (function(p) {
+      (function (p) {
         return p.toString() === '[object SafariRemoteNotification]'
       })(
         !window['safari'] ||
@@ -49,6 +50,7 @@ const SelectMediaFile = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={'Record announcement(s)'} />
         {!notSupprotedBrowser ? (
           <AudioRecorder handleClose={handleClose} />
         ) : (

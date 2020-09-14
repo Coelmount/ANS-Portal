@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
 
+import ModalHelperText from 'components/ModalHelperText'
+
 import useStyles from './styles'
 
 const FirstStep = props => {
@@ -60,6 +62,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('add_announcements')} />
         <Box className={classes.uploadBoxWrapper}>
           <Box className={classes.uploadFileTitle}>
             {t('upload_announcement')}
