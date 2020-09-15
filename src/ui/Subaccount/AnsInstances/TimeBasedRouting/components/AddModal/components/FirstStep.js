@@ -66,7 +66,6 @@ const FirstStep = ({ t, handleClose }) => {
       </DialogTitle>
 
       <DialogContent>
-        <ModalHelperText title={t('add_tbr_instance')} />
         <ModalHelperText helperText='add_tbr_instance_tbr_step_1' />
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.inputsWrap}>

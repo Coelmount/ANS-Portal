@@ -82,6 +82,14 @@ const FirstStep = props => {
     } else return t('add_customer')
   }
 
+  const getUserLevel = () => {
+    if (getTitle() === t('add_customer')) {
+      return 'system'
+    } else if (getTitle() === t('edit_subaccount')) {
+      return 'subaccount'
+    } else return 'customer'
+  }
+
   const changeTimeZone = () => {
     setCheckedTimeZone(!checkedTimeZone)
     if (checkedTimeZone === false) {
@@ -103,7 +111,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText title={getTitle()} />
+        <ModalHelperText title={getTitle()} userLevel={getUserLevel()} />
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.paragraphBox}>
           {(isCreateSubaccount && t('subaccount_details')) ||

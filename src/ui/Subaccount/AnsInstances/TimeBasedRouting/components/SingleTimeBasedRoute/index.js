@@ -39,8 +39,8 @@ const tabPanelItems = [
 
 const SingleDestinationGroup = props => {
   const { t } = props
-  const match = useParams()
-  const { customerId, groupId, tbrName } = match
+  const { customerId, groupId, tbrName } = useParams()
+
   const history = useHistory()
   const location = useLocation()
   const classes = useStyles()
@@ -48,12 +48,7 @@ const SingleDestinationGroup = props => {
   const [open] = useState(false)
   const anchorRef = useRef(null)
 
-  const {
-    getCurrentNameWithId,
-    currentTbrName
-    // isLoadingTBR,
-    // setDefaultIsLoadingTBR
-  } = TimeBasedRoutingStore
+  const { getCurrentNameWithId, currentTbrName } = TimeBasedRoutingStore
 
   useEffect(() => {
     const payload = {
@@ -62,13 +57,14 @@ const SingleDestinationGroup = props => {
       tbrId: tbrName
     }
     getCurrentNameWithId(payload)
-
-    // return setDefaultIsLoadingTBR
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const titleData = {
-    mainText: `${capitalize(t('time_based_routing'))}: ${currentTbrName}`
+    mainText: `${capitalize(t('time_based_routing'))}: ${currentTbrName}`,
+    helperText: `time_based_routing_${
+      location.hash ? location.hash.replace('#', '') : 'access_numbers'
+    }`
   }
 
   const handleChange = (event, newValue) => {

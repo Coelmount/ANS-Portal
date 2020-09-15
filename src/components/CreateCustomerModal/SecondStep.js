@@ -90,7 +90,10 @@ const SecondStep = props => {
           </DialogTitle>
           <DialogContent>
             <Fragment>
-              <ModalHelperText title={title} />
+              <ModalHelperText
+                helperText='add_customer_step_2'
+                userLevel='customer'
+              />
               <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
               <Box className={classes.paragraphBox}>
                 {t('contact_information')}
