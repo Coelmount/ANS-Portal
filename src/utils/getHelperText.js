@@ -2,7 +2,12 @@
 
 import i18n from 'i18next'
 
-const getHelperText = (title = '', pathname = '', providedHelperText) => {
+const getHelperText = ({
+  title = '',
+  pathname = '',
+  providedHelperText,
+  providedUserLevel
+}) => {
   const generatedHelperText = title
     .replace(':', '')
     .split(' ')
@@ -18,13 +23,12 @@ const getHelperText = (title = '', pathname = '', providedHelperText) => {
     return 'customer'
   }
 
-  const userLevel = getUserLevel()
+  const userLevel = providedUserLevel ? providedUserLevel : getUserLevel()
+  const helperText = providedHelperText
+    ? providedHelperText
+    : generatedHelperText
 
-  return i18n.t(
-    `helper_text_${userLevel}_${
-      providedHelperText ? providedHelperText : generatedHelperText
-    }`
-  )
+  return i18n.t(`helper_text_${userLevel}_${helperText}`)
 }
 
 export default getHelperText

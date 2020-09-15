@@ -12,11 +12,20 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ModalHelperText = ({ title, helperText }) => {
+const ModalHelperText = ({
+  title,
+  helperText: providedHelperText,
+  userLevel: providedUserLevel
+}) => {
   const classes = useStyles()
   const { pathname } = useLocation()
 
-  const formattedHelperText = getHelperText(title, pathname, helperText)
+  const formattedHelperText = getHelperText({
+    title,
+    pathname,
+    providedHelperText,
+    providedUserLevel
+  })
 
   return (
     <Typography className={classes.helperText}>
