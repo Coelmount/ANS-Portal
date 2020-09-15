@@ -54,6 +54,7 @@ const Administrators = ({ t }) => {
 
   const titleData = {
     mainText: 'MTN ANS',
+    helperText: 'administrators',
     iconCapture: t('add'),
     Icon: <PersonAddOutlinedIcon />
   }
