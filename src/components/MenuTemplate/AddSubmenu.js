@@ -17,6 +17,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import NameIVRIcon from 'source/images/svg/nameIVRIcon.svg'
 
 import IVRStore from 'stores/IVR'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -74,6 +75,7 @@ const EditGreeting = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText title={t('add_ivr_submenu')} />
         {isAddingSubmenu ? (
           <Loading />
         ) : (

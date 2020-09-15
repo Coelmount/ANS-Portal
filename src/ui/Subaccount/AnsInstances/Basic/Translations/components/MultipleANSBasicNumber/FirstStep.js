@@ -22,6 +22,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
+import ModalHelperText from 'components/ModalHelperText'
 import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
 
 import useStyles from './styles'
@@ -247,6 +248,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('add_multiple_ans_basic_instances')} />
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.infoBoxWrapper}>
           <InfoOutlinedIcon />

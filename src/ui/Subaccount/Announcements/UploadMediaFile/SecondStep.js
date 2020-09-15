@@ -17,6 +17,7 @@ import AnnouncementsStore from 'stores/Announcements'
 
 import AudioPlayer from 'components/AudioPlayer'
 import Input from 'components/Input'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -71,6 +72,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('add_announcements')} />
         <Box className={classes.secondStepTitleBlock}>
           {stateAnnouncements.map((el, i) => (
             <Box key={i} className={classes.audioBoxWrapper}>

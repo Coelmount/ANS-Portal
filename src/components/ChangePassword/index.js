@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button'
 
 import Loading from 'components/Loading'
 import Input from 'components/Input'
+import ModalHelperText from 'components/ModalHelperText'
 
 import UserStore from 'stores/user'
 
@@ -70,6 +71,7 @@ const ChangePassword = props => {
             </IconButton>
           </DialogTitle>
           <DialogContent>
+            <ModalHelperText title={t('change_password')} />
             <Box className={classes.contentBox}>
               {localStorage.getItem('ids') && (
                 <Box className={classes.inputBox}>

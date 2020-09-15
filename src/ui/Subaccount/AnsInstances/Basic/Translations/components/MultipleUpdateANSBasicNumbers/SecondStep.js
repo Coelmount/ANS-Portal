@@ -18,6 +18,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import CloseIcon from '@material-ui/icons/Close'
 import uploadIcon from 'source/images/svg/upload.svg'
 import BasicTranslationsStore from 'stores/BasicTranslations'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -216,6 +217,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('update_ans_basic_instances')} />
         <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
         <Box className={classes.uploadBoxWrapper}>
           <Box className={classes.uploadFileTitle}>{t('upload_csv_file')}</Box>

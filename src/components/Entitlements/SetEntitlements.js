@@ -16,6 +16,7 @@ import CustomTable from 'components/CustomTable'
 import EntitlementsStore from 'stores/Entitlements'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
@@ -156,6 +157,7 @@ const SetEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
+        <ModalHelperText title={t('add_entitlements')} />
         <Box className={classes.subtitle}>
           <Typography className={classes.stepStyles}>{`${t(
             'step'

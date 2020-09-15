@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -53,6 +54,7 @@ const ThirdStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('update_ans_basic_instances')} />
         <Box className={classes.secondStepTitleBlock}>
           <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
           <Box className={classes.secondStepTitleInfo}>

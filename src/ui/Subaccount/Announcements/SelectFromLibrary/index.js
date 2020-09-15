@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MaterialTable, { MTableToolbar } from 'material-table'
 
 import AudioPlayer from 'components/AudioPlayer'
+import ModalHelperText from 'components/ModalHelperText'
 import tableIcons from '../tableIcons'
 
 import TablePagination from '@material-ui/core/TablePagination'
@@ -142,6 +143,7 @@ const SelectMediaFile = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('add_announcements')} />
         <MaterialTable
           localization={localization}
           icons={tableIcons}

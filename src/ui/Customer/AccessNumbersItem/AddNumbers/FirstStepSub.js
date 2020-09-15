@@ -15,6 +15,7 @@ import Select from 'components/Select'
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
 import Checkbox from 'components/Checkbox'
+import ModalHelperText from 'components/ModalHelperText'
 
 import Group3Person from 'source/images/svg/Group3Person.svg'
 
@@ -117,6 +118,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
+        <ModalHelperText title={t('select_numbers_inv')} />
         <Box className={classes.secondParagraphBox}>
           <div>{t('select_subaccount')}</div>
           <Box>

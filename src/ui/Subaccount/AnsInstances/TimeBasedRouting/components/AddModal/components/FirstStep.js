@@ -15,6 +15,7 @@ import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Input from 'components/Input'
 import Select from 'components/Select'
+import ModalHelperText from 'components/ModalHelperText'
 import { FREE_ENTRY_NUMBER_ID, ANS_NUMBER_ID } from 'utils/types/numberTypes'
 
 import useStyles from '../styles'
@@ -65,6 +66,7 @@ const FirstStep = ({ t, handleClose }) => {
       </DialogTitle>
 
       <DialogContent>
+        <ModalHelperText title={t('add_tbr_instance')} />
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.inputsWrap}>
           <Input

@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 
 import Input from 'components/Input'
+import ModalHelperText from 'components/ModalHelperText'
 
 import CustomerStore from 'stores/Customers'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
@@ -68,6 +69,7 @@ const FirstStepNFN = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('add_numbers_inv')} />
         <Box className={classes.stepStyles}>{t('search_parameters')}</Box>
         <Box className={classes.searchParametersBox}>
           <Box className={classes.rangeBox}>

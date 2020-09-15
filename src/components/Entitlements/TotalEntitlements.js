@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography'
 import Input from 'components/Input'
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 import EntitlementsStore from 'stores/Entitlements'
 import CreateCustomerStore from 'stores/CreateCustomer'
 import CreateSubaccountStore from 'stores/CreateSubaccount'
@@ -117,6 +118,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
+            <ModalHelperText title={t('add_entitlements')} />
             <Box className={classes.subtitle}>
               <Typography className={classes.stepStyles}>{`${t(
                 'step'

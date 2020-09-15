@@ -20,11 +20,13 @@ import ConfigStore from 'stores/Config'
 import Input from 'components/Input'
 import Switch from 'components/Switch'
 import Select from 'components/Select'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
 const FirstStep = props => {
   const match = useParams()
+
   const {
     handleClose,
     t,
@@ -33,6 +35,7 @@ const FirstStep = props => {
     isEditCustomer,
     isEditSubaccount
   } = props
+
   const { changeStep, customer, changeCustomer } = store
   const classes = useStyles()
   const [checkedTimeZone, setCheckedTimeZone] = useState(
@@ -90,6 +93,7 @@ const FirstStep = props => {
     <React.Fragment>
       <DialogTitle className={classes.title}>
         {getTitle()}
+
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -99,6 +103,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={getTitle()} />
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.paragraphBox}>
           {(isCreateSubaccount && t('subaccount_details')) ||

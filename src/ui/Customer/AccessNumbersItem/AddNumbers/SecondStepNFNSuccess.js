@@ -17,6 +17,7 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
+import ModalHelperText from 'components/ModalHelperText'
 
 import numbersStore from 'stores/Numbers'
 import AccessNumbersStore from 'stores/AssignedNumbers'
@@ -190,6 +191,7 @@ const FirstStepNFN = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('add_numbers_inv')} />
         {isAddingNumbers ? (
           <Loading />
         ) : (

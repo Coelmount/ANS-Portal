@@ -21,6 +21,7 @@ import VolumeUpOutlinedIcon from '@material-ui/icons/VolumeUpOutlined'
 
 import AnnouncementsStore from 'stores/Announcements'
 import IVRStore from 'stores/IVR'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -103,6 +104,7 @@ const EditGreeting = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText title={t('edit_menu_greeting')} />
         <Box>
           <Box>
             <FormControlLabel

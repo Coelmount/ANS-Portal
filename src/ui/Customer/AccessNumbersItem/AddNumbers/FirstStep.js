@@ -17,6 +17,7 @@ import CustomerStore from 'stores/Customers'
 
 import useStyles from './styles'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 
 const FirstStep = props => {
@@ -49,6 +50,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('add_numbers_inv')} />
         <Box className={classes.paragraphBox}>
           <CallOutlined />
           <div className={classes.boldText}>{numbers.length}</div>

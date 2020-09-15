@@ -17,6 +17,7 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import PeriodForm from 'components/PeriodForm'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -63,6 +64,7 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent>
+        <ModalHelperText title={t('add_period')} />
         {isPeriodPosting ? (
           <Loading />
         ) : (

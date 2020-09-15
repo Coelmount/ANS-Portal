@@ -13,6 +13,8 @@ import Button from '@material-ui/core/Button'
 import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined'
 import CloseIcon from '@material-ui/icons/Close'
 
+import ModalHelperText from 'components/ModalHelperText'
+
 import useStyles from './styles'
 
 const FirstStep = props => {
@@ -67,6 +69,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <ModalHelperText title={t('update_ans_basic_instances')} />
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.downloadBoxWrapper}>
           <Box className={classes.downloadFileTitle}>

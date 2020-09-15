@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 
 import deleteIcon from 'source/images/svg/delete-icon.svg'
 import useStyles from './styles.js'
@@ -145,6 +146,7 @@ const DeletePeriodsModal = ({
           </DialogTitle>
 
           <DialogContent className={classes.dialogContentWrap}>
+            <ModalHelperText title={t('delete_recurring_period')} />
             <RadioGroup
               aria-label='content'
               name='modal-content'
