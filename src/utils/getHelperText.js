@@ -13,7 +13,7 @@ const getHelperText = (title = '', pathname = '', providedHelperText) => {
     const urlNodesArr = pathname.split('/')
 
     if (urlNodesArr.length === 2) return 'system'
-    else if (urlNodesArr.length >= 6 && pathname.includes('ans_instances'))
+    else if (urlNodesArr.length >= 6 && urlNodesArr[3] === 'subaccounts')
       return 'subaccount'
     return 'customer'
   }
