@@ -142,6 +142,44 @@ export class AuthStore {
     this.jwtToken = ''
     this.isAuthorized = false
   }
+
+  postSendResetPasswordMail = (data, callback) => {
+    axios
+      .post(`${BASE_URL}/auth/reset-password`, data)
+      .then(() => {
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to send reset password mail',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+  }
+
+  putResetPassword = (token, data, callback) => {
+    axios
+      .put(`${BASE_URL}/auth/reset-password/${token}`, data)
+      .then(() => {
+        SnackbarStore.enqueueSnackbar({
+          message: 'Password successfully updated',
+          options: {
+            variant: 'success'
+          }
+        })
+        callback && callback()
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update password',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+  }
 }
 
 decorate(AuthStore, {
@@ -154,7 +192,9 @@ decorate(AuthStore, {
   postLogin: action,
   postTwoFactorCode: action,
   getLocal: action,
-  logOut: action
+  logOut: action,
+  postSendResetPasswordMail: action,
+  putResetPassword: action
 })
 
 export default new AuthStore()

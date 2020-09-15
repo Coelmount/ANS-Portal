@@ -86,7 +86,7 @@ export class CustomerAdminsStore {
   addCustomerAdmin = ({ id, closeModal, getUsers, sendWelcomeMail }) => {
     this.isAdding = true
     if (sendWelcomeMail) {
-      this.sentAdmin.ui_id = 'mtn'
+      this.sentAdmin.ui_id = 'ans_portal'
       delete this.sentAdmin.password
     }
     axios
