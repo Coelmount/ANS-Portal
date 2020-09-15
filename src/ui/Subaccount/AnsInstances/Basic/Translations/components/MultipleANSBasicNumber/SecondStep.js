@@ -54,7 +54,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText title={t('add_multiple_ans_basic_instances')} />
+        <ModalHelperText helperText='add_multiple_ans_basic_instances_step)2' />
         <Box className={classes.secondStepTitleBlock}>
           <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
           <Box className={classes.secondStepTitleInfo}>

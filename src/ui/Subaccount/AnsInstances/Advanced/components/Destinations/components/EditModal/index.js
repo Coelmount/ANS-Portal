@@ -17,6 +17,7 @@ import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 import DestinationsStore from 'stores/Destionations'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -92,6 +93,7 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
+        <ModalHelperText title={t('edit_destination')} />
         {isLoading ? (
           <Loading />
         ) : (

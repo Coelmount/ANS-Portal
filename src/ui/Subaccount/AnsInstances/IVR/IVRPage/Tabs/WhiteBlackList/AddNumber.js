@@ -19,6 +19,7 @@ import AddIcon from '@material-ui/icons/Add'
 import RemoveIcon from '@material-ui/icons/Clear'
 
 import IVRStore from 'stores/IVR'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -61,6 +62,7 @@ const AddIVR = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText helperText='add_phone_number_to_ivr_page' />
         {isAddingNumbers ? (
           <Loading />
         ) : (

@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button'
 
 import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from '../styles'
 
@@ -74,6 +75,7 @@ const FreeNumberStep = ({ t, handleClose }) => {
           </DialogTitle>
 
           <DialogContent className={classes.modalContent}>
+            <ModalHelperText helperText='add_tbr_instance_tbr_step_2_free_number' />
             <Box className={classes.freeNumberStep}>{`${t('step')} 2/2`}</Box>
             <Box>
               <PhoneInput

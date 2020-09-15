@@ -17,6 +17,7 @@ import BasicTranslationsStore from 'stores/BasicTranslations'
 import ConfigStore from 'stores/Config'
 import CountryInput from 'components/CountryInput'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 import './customPhoneInputStyles.css'
@@ -99,6 +100,7 @@ const AddDestinationNumber = ({ handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
+            <ModalHelperText title={t('add_ans_basic_instance')} />
             <Box className={classes.subtitle}>
               <Typography className={classes.setEntitlementsTitle}>
                 {t('add_destination_number')}

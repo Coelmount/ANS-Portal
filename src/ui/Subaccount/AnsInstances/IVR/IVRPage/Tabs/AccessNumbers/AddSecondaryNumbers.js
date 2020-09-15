@@ -19,6 +19,7 @@ import CustomTable, {
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
+import ModalHelperText from 'components/ModalHelperText'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import useStyles from './styles'
@@ -279,6 +280,7 @@ const AddModal = props => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
+            <ModalHelperText helperText='add_access_number_ivr_page' />
             <Typography className={classes.setEntitlementsTitle}>
               {t('select_access_ph_num')}
             </Typography>

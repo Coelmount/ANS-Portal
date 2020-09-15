@@ -22,6 +22,7 @@ import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
 import SingleCheckCell from 'components/SingleCheckCell'
+import ModalHelperText from 'components/ModalHelperText'
 import {
   ADD_DESTINATION_DEFAULT_ID,
   EDIT_DESTINATION_ID
@@ -144,6 +145,7 @@ const SelectAnsIvr = ({ t, handleClose }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
+            <ModalHelperText title={t('select_ans_ivr')} />
             <CustomTable
               classes={classes}
               columns={columns}

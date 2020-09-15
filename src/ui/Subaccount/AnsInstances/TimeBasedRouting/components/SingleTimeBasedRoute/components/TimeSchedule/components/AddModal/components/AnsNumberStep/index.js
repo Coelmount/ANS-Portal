@@ -20,6 +20,7 @@ import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import SingleCheckCell from 'components/SingleCheckCell'
+import ModalHelperText from 'components/ModalHelperText'
 import {
   ADD_DESTINATION_DEFAULT_ID,
   EDIT_DESTINATION_ID
@@ -226,6 +227,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
+            <ModalHelperText helperText='add_destination_tbr_time_schedule_step_2_ans_number' />
             <Box className={classes.ansNumberStep}>{`${t('step')} 2/2`}</Box>
             <CountryInput
               value={selectedCountry}

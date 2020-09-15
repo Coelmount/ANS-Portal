@@ -15,6 +15,7 @@ import DestinationsStore from 'stores/DestinationGroups/Destinations'
 import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
+import ModalHelperText from 'components/ModalHelperText'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
@@ -174,6 +175,7 @@ const AddModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.entitlementsDialogContent}>
+        <ModalHelperText title={t('add_destination')} />
         {isLoading ? (
           <Loading />
         ) : (

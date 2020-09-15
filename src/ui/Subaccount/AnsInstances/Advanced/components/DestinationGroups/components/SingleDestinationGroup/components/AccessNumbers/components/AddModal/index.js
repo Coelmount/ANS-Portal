@@ -19,6 +19,7 @@ import CustomTable, {
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
+import ModalHelperText from 'components/ModalHelperText'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
@@ -236,6 +237,7 @@ const AddModal = ({ open, handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
+            <ModalHelperText title={t('add_access_number')} />
             <Typography className={classes.setEntitlementsTitle}>
               {t('select_access_number')}
             </Typography>

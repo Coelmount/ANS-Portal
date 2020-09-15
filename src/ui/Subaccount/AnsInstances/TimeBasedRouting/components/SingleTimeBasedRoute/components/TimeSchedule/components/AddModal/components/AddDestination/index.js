@@ -19,6 +19,7 @@ import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
+import ModalHelperText from 'components/ModalHelperText'
 import {
   FREE_ENTRY_NUMBER_ID,
   ANS_NUMBER_ID
@@ -105,6 +106,7 @@ const AddDestination = ({ t, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.addDestinationModalContent}>
+        <ModalHelperText helperText='add_destination_tbr_time_schedule' />
         <Box className={classes.freeNumberStep}>{`${t('step')} 1/2`}</Box>
         {isLoading ? (
           <Loading />

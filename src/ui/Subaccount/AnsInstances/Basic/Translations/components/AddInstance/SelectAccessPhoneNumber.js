@@ -19,6 +19,7 @@ import CustomTable, {
 } from 'components/CustomTableBackendPagination'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 import usePreviousValue from 'utils/hooks/usePreviousValue'
 
 import useStyles from './styles'
@@ -186,6 +187,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
+        <ModalHelperText helperText='select_numbers_inv_access_ph_num' />
         <Box className={classes.subtitle}>
           <Typography className={classes.stepStyles}>{`${t(
             'step'

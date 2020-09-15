@@ -19,6 +19,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import IVRStore from 'stores/IVR'
 import WeekScheduleStore from 'stores/WeekSchedules'
 import HolidayScheduleStore from 'stores/HolidaySchedules'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -39,6 +40,11 @@ const EditGreeting = props => {
     schedules: holidaySchedules,
     isSchedulesLoading: isHolidaySchedulesLoading
   } = HolidayScheduleStore
+
+  const title =
+    menuType === 'businessHours'
+      ? t('edit_business_hours')
+      : t('edit_holiday_hours')
 
   useEffect(() => {
     if (menuType === 'businessHours') {
@@ -88,9 +94,7 @@ const EditGreeting = props => {
       className={classes.rootEditSchedule}
     >
       <DialogTitle className={classes.title}>
-        {menuType === 'businessHours'
-          ? t('edit_business_hours')
-          : t('edit_holiday_hours')}
+        {title}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -100,6 +104,7 @@ const EditGreeting = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText title={title} />
         <Box>
           <Box className={classes.editSchedulesText}>
             {t('select_from_schedules_library')}

@@ -23,6 +23,7 @@ import NameIVRIcon from 'source/images/svg/nameIVRIcon.svg'
 import IVRStore from 'stores/IVR'
 import CustomersStore from 'stores/Customers'
 import ConfigStore from 'stores/Config'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -94,6 +95,7 @@ const AddIVR = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText title={t('add_ivr_instance')} />
         <Box className={classes.contentWrapper}>
           <Input
             icon={<img src={NameIVRIcon} alt='NameIVRIcon' />}

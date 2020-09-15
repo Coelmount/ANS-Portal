@@ -21,6 +21,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 import AccessNumbersStore from 'stores/DestinationGroups/AccessNumbers'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -106,6 +107,7 @@ const EditMainNumberModal = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText helperText='update_main_number_access_numbers' />
         {isUpdatingMainNumber ? (
           <Loading />
         ) : (

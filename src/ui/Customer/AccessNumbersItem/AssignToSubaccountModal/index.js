@@ -18,6 +18,7 @@ import SubaccountsStore from 'stores/Subaccounts'
 import Loading from 'components/Loading'
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -28,7 +29,6 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
   const [selectedSubaccount, setSelectedSubaccount] = useState(null)
 
   const [subaccountsList, setSubaccountsList] = useState([])
-  // const [searchList, setSearchList] = useState([])
   const { getSubaccounts, rows, isLoadingSubaccounts } = SubaccountsStore
   const { postAssignToSubaccount, isPostAssignNumbers } = AssignedNumbersStore
 
@@ -134,6 +134,7 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText title={t('assign_numbers_subaccount')} />
         {isPostAssignNumbers ? (
           <Loading />
         ) : (
@@ -153,7 +154,6 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
                 showPagination={true}
                 rows={subaccountsList}
                 searchCriterias={['groupId', 'groupName']}
-                // getSearchList={setSearchList}
                 noAvailableDataMessage={t('no_subaccounts_available')}
                 isModal={true}
                 tableId={'access_item_assign_to_sub_modal'}

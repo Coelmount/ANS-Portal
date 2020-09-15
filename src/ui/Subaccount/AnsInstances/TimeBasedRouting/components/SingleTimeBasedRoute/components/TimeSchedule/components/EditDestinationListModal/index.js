@@ -19,6 +19,7 @@ import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
+import ModalHelperText from 'components/ModalHelperText'
 import {
   FREE_ENTRY_NUMBER_ID,
   ANS_NUMBER_ID
@@ -149,6 +150,7 @@ const EditModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
+        <ModalHelperText helperText='edit_destination_tbr_time_schedule' />
         {isLoading ? (
           <Loading />
         ) : (

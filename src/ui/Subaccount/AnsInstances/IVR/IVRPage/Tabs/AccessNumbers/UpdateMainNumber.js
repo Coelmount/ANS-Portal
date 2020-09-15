@@ -21,6 +21,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 import IVRStore from 'stores/IVR'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -86,6 +87,7 @@ const UpdateMainNumber = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText helperText='update_main_number_ivr_access_numbers' />
         {isUpdatingMainNumber ? (
           <Loading />
         ) : (
