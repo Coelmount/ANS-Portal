@@ -9,6 +9,9 @@ const useStyles = makeStyles(theme => ({
   leftTextWrap: {
     paddingRight: 20
   },
+  rightBlockWrap: {
+    display: 'flex'
+  },
   title: {
     flex: '1 1 100%',
     marginTop: 5,
