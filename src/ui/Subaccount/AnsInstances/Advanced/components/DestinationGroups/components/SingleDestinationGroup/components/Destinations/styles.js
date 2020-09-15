@@ -57,9 +57,9 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.black
   },
   disabledButton: {
-    backgroundColor: theme.palette.lightGrey,
+    background: `${theme.palette.lightGrey} !important`,
     '&:hover': {
-      backgroundColor: theme.palette.lightGrey,
+      background: `${theme.palette.lightGrey} !important`,
       cursor: 'auto'
     }
   },
