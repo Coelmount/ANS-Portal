@@ -131,8 +131,6 @@ export class SubaccountsStore {
       .then(res => {
         if (res.status === 200) {
           this.getSubaccounts(tenantId)
-          callback()
-          this.isDeletingSubaccount = false
         }
       })
       .catch(e =>
@@ -143,6 +141,10 @@ export class SubaccountsStore {
           }
         })
       )
+      .finally(() => {
+        callback && callback()
+        this.isDeletingSubaccount = false
+      })
   }
 
   updateCustomer = (tenantId, groupId, handleClose) => {
