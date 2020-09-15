@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
+import { useHistory, useParams } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
@@ -15,6 +16,8 @@ import Input from 'components/Input'
 import bgImg from 'source/images/other/bg_img.jpg'
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 
+import AuthStore from 'stores/Auth'
+
 const ResetPassword = ({ t }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -23,9 +26,17 @@ const ResetPassword = ({ t }) => {
     false
   )
   const [passwordsIsNotMatch, setPasswordsIsNotMatch] = useState(false)
+  const history = useHistory()
+  const params = useParams()
+
+  const { putResetPassword } = AuthStore
 
   const changePasswordSubmit = e => {
     e.preventDefault()
+    const data = {
+      password
+    }
+    putResetPassword(params.resetToken, data, () => history.push('/'))
   }
 
   const handleChangePassword = e => {

@@ -15,6 +15,8 @@ import Input from 'components/Input'
 import bgImg from 'source/images/other/bg_img.jpg'
 import logo from 'source/images/svg/mtn-logo-nav.svg'
 
+import AuthStore from 'stores/Auth'
+
 const useStyles = makeStyles(theme => ({
   checkbox: {
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
@@ -62,20 +64,25 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Auth = ({ t }) => {
-  const [email, setEmail] = useState('')
+  const [userName, setUserName] = useState('')
   const [isEmailSended, setIsEmailSended] = useState(false)
+
+  const { postSendResetPasswordMail } = AuthStore
 
   const classes = useStyles()
 
   const handleEmailChange = e => {
-    setEmail(e.target.value)
+    setUserName(e.target.value)
     setIsEmailSended(false)
   }
 
   const loginSubmit = e => {
     e.preventDefault()
-
-    setIsEmailSended(true)
+    const data = {
+      username: userName,
+      ui_id: 'ans_portal'
+    }
+    postSendResetPasswordMail(data, setIsEmailSended(true))
   }
 
   return (
@@ -97,7 +104,7 @@ const Auth = ({ t }) => {
                   icon={<PermIdentityOutlined className={'icon'} />}
                   label={t('user_name')}
                   variant='outlined'
-                  value={email}
+                  value={userName}
                   onChange={handleEmailChange}
                 />
               </Box>
@@ -107,7 +114,7 @@ const Auth = ({ t }) => {
               color='primary'
               type='submit'
               className={'button'}
-              disabled={!email.length}
+              disabled={!userName.length}
             >
               {isEmailSended ? (
                 <CheckIcon className={classes.checkIcon} />

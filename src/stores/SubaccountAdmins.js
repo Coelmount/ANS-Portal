@@ -69,7 +69,7 @@ export class SubaccountAdminsStore {
     sendWelcomeMail
   }) => {
     if (sendWelcomeMail) {
-      this.sentSubaccountAdmin.ui_id = 'mtn'
+      this.sentSubaccountAdmin.ui_id = 'ans_portal'
       delete this.sentSubaccountAdmin.password
     }
     axios
