@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 24px'
+    padding: '20px 44px'
   },
   closeButton: {
     position: 'absolute',
@@ -97,6 +97,9 @@ const useStyles = makeStyles(theme => ({
   perPageText: {
     fontSize: 14,
     whiteSpace: 'nowrap'
+  },
+  helperTextWrap: {
+    marginLeft: 20
   }
 }))
 

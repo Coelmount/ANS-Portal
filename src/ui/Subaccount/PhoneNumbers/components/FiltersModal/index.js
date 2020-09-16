@@ -79,7 +79,9 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText title={t('filters')} />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText title={t('filters')} />
+        </div>
         {isLoadingCountries ? (
           <Loading />
         ) : (

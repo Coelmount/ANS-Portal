@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   inputes: {
-    marginTop: '30px',
+    marginTop: '62px',
     marginLeft: 'calc(104px - 24px)'
   },
   dialogActions: {

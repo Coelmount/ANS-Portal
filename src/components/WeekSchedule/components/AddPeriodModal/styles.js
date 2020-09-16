@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 40px'
+    padding: '20px 44px'
   },
   closeButton: {
     position: 'absolute',
@@ -69,6 +69,9 @@ const useStyles = makeStyles(theme => ({
   nextButton: {
     width: '160px',
     marginRight: '32px'
+  },
+  helperTextWrap: {
+    marginLeft: 20
   }
 }))
 

@@ -52,7 +52,9 @@ const EditScheduleModal = ({
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
-        <ModalHelperText title={t('edit_week_schedule')} />
+        <Box className={classes.helperTextWrap}>
+          <ModalHelperText title={t('edit_week_schedule')} />
+        </Box>
         {isScheduleEditing ? (
           <Loading />
         ) : (
@@ -62,6 +64,7 @@ const EditScheduleModal = ({
               label={t('schedule_name')}
               variant='outlined'
               value={weekScheduleName}
+              disabled
             />
             <Box className={classes.periodFormsWrap}>
               {periods.map(period => (

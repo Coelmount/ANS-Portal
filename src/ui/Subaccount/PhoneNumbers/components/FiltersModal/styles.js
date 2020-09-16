@@ -84,7 +84,11 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.primary.main
     }
   },
-  checked: {}
+  checked: {},
+  helperTextWrap: {
+    marginLeft: 44,
+    marginTop: 8
+  }
 }))
 
 export default useStyles

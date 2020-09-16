@@ -28,12 +28,12 @@ const useStyles = makeStyles(theme => ({
       height: 25
     }
   },
-  dialogContent: {
-    padding: 0,
+  inputsWrap: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: 50,
+    padding: 0,
+    marginTop: 100,
     '& > div': {
       marginBottom: 30,
       width: 392
@@ -73,6 +73,9 @@ const useStyles = makeStyles(theme => ({
   amountSkipRingsRightTitle: {
     marginLeft: 10,
     fontSize: 16
+  },
+  helperTextWrap: {
+    marginLeft: 20
   }
 }))
 

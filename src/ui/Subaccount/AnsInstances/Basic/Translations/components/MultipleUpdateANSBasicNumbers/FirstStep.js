@@ -69,7 +69,9 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText title={t('update_ans_basic_instances')} />
+        <Box className={classes.helperTextWrap}>
+          <ModalHelperText helperText='update_ans_basic_instances_step_1' />
+        </Box>
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.downloadBoxWrapper}>
           <Box className={classes.downloadFileTitle}>

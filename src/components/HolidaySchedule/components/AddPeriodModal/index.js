@@ -43,7 +43,9 @@ const AddPeriodModal = ({ t, open, handleClose }) => {
           </DialogTitle>
 
           <DialogContent>
-            <ModalHelperText title={t('add_period')} />
+            <Box className={classes.helperTextContainer}>
+              <ModalHelperText helperText='holiday_schedule_add_period' />
+            </Box>
             <Box className={classes.periodFormsWrap}>
               <PeriodForm />
             </Box>
