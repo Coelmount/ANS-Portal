@@ -157,7 +157,7 @@ const SetEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <ModalHelperText title={t('add_entitlements')} />
+        <ModalHelperText title={t('add_entitlements')} userLevel='customer' />
         <Box className={classes.subtitle}>
           <Typography className={classes.stepStyles}>{`${t(
             'step'

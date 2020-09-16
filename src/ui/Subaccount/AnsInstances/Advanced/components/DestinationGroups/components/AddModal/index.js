@@ -20,6 +20,7 @@ import Loading from 'components/Loading'
 import Input from 'components/Input'
 import Select from 'components/Select'
 import Checkbox from 'components/Checkbox'
+import ModalHelperText from 'components/ModalHelperText'
 import POLICY_OPTIONS from 'utils/types/policyOptions'
 
 import useStyles from './styles'
@@ -87,6 +88,7 @@ const AddModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
+        <ModalHelperText helperText='add_group_destination_destination_groups' />
         {isDestinationGroupPosting ? (
           <Loading />
         ) : (

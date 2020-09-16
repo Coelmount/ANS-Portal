@@ -143,7 +143,7 @@ const SelectMediaFile = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText title={t('add_announcements')} />
+        <ModalHelperText helperText='add_announcements_from_library' />
         <MaterialTable
           localization={localization}
           icons={tableIcons}

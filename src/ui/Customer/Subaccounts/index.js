@@ -127,6 +127,7 @@ const SubaccountsTable = observer(({ t }) => {
 
   const titleData = {
     mainText: 'MTN ANS',
+    helperText: 'subaccounts',
     iconCapture: t('add_subaccount'),
     Icon: <AddOutlinedIcon />
   }

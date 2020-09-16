@@ -68,7 +68,12 @@ const SingleDestinationGroup = props => {
   }, [])
 
   const titleData = {
-    mainText: `${capitalize(t('destination_group'))}: ${currentDestinationName}`
+    mainText: `${capitalize(
+      t('destination_group')
+    )}: ${currentDestinationName}`,
+    helperText: `destination_group_${
+      location.hash ? location.hash.replace('#', '') : 'access_numbers'
+    }`
   }
 
   const handleChange = (event, newValue) => {

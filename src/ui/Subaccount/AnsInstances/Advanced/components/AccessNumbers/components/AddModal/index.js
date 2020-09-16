@@ -21,6 +21,7 @@ import Input from 'components/Input'
 import Select from 'components/Select'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 import POLICY_OPTIONS from 'utils/types/policyOptions'
 
 import useStyles from './styles'
@@ -82,6 +83,7 @@ const AddModal = ({ t, open, handleClose }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
+            <ModalHelperText helperText='add_group_destination_access_numbers' />
             <Input
               icon={<PermIdentityOutlined />}
               label={t('name')}

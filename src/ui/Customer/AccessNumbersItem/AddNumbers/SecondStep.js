@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box'
 
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
+import ModalHelperText from 'components/ModalHelperText'
 
 import AssignedNumbersStore from 'stores/AssignedNumbers'
 
@@ -92,6 +93,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
+        <ModalHelperText helperText='select_numbers_inv_step_2' />
         <Box className={classes.secondParagraphBoxFN}>
           {currentEntitlement.name}
         </Box>

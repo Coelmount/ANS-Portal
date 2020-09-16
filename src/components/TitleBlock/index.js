@@ -13,7 +13,7 @@ const TitleBlock = ({
   handleOpen,
   titleData: {
     mainText,
-    helperText,
+    helperText: providedHelperText,
     iconCapture,
     Icon,
     buttonBlock,
@@ -24,7 +24,11 @@ const TitleBlock = ({
   const classes = useStyles()
   const { pathname } = useLocation()
 
-  const formattedHelperText = getHelperText(mainText, pathname, helperText)
+  const formattedHelperText = getHelperText({
+    title: mainText,
+    pathname,
+    providedHelperText
+  })
 
   return (
     <Box className={classes.titleWrap}>
@@ -36,24 +40,26 @@ const TitleBlock = ({
           {formattedHelperText}
         </Typography>
       </Box>
-      {extraBlock}
-      {Icon && iconCapture && (
-        <Box className={classes.addCustomerWrap}>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleOpen}
-            className={classes.iconButton}
-            disabled={disabled}
-          >
-            {Icon}
-          </Button>
-          <Typography className={classes.addCustomerTitle}>
-            {iconCapture}
-          </Typography>
-        </Box>
-      )}
-      {buttonBlock}
+      <Box className={classes.rightBlockWrap}>
+        {extraBlock}
+        {Icon && iconCapture && (
+          <Box className={classes.addCustomerWrap}>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleOpen}
+              className={classes.iconButton}
+              disabled={disabled}
+            >
+              {Icon}
+            </Button>
+            <Typography className={classes.addCustomerTitle}>
+              {iconCapture}
+            </Typography>
+          </Box>
+        )}
+        {buttonBlock}
+      </Box>
     </Box>
   )
 }

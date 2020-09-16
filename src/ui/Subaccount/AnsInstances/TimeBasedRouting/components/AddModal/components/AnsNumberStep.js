@@ -19,6 +19,7 @@ import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import SingleCheckCell from 'components/SingleCheckCell'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from '../styles'
 
@@ -209,6 +210,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
+            <ModalHelperText helperText='add_tbr_instance_tbr_step_2' />
             <Box className={classes.ansNumberStep}>{`${t('step')} 2/2`}</Box>
             <CountryInput
               value={selectedCountry}

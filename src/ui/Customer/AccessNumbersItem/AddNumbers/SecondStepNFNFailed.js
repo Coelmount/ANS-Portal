@@ -12,6 +12,8 @@ import Button from '@material-ui/core/Button'
 
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 
+import ModalHelperText from 'components/ModalHelperText'
+
 import useStyles from './styles'
 
 const FirstStepNFN = props => {
@@ -31,6 +33,7 @@ const FirstStepNFN = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.failedNFNContent}>
+        <ModalHelperText helperText='select_numbers_inv_step_nfn_failed_step_2' />
         <Box className={classes.failedResultTitle}>{'No search result'}</Box>
         {'Change the search parametres or contact the MTN agent + 27 400350000'}
       </DialogContent>

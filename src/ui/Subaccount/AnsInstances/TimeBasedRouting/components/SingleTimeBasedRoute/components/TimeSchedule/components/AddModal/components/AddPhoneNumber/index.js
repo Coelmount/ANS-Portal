@@ -21,6 +21,7 @@ import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
 import SingleCheckCell from 'components/SingleCheckCell'
+import ModalHelperText from 'components/ModalHelperText'
 import {
   ADD_DESTINATION_DEFAULT_ID,
   EDIT_DESTINATION_ID
@@ -225,6 +226,7 @@ const AddPhoneNumber = ({ handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
+            <ModalHelperText helperText='add_destination_tbr_time_schedule' />
             <CountryInput
               value={selectedCountry}
               setValue={setSelectedCountry}

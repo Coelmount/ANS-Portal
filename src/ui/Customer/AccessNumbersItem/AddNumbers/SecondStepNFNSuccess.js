@@ -191,7 +191,7 @@ const FirstStepNFN = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText title={t('add_numbers_inv')} />
+        <ModalHelperText helperText='add_numbers_inv_nfn_success_step_2' />
         {isAddingNumbers ? (
           <Loading />
         ) : (

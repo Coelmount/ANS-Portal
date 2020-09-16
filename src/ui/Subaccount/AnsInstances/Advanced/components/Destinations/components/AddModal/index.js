@@ -17,6 +17,7 @@ import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import DestinationsStore from 'stores/Destionations'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -65,6 +66,7 @@ const AddModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
+        <ModalHelperText title='add_destination_destinations' />
         {isDestinationPosting ? (
           <Loading />
         ) : (

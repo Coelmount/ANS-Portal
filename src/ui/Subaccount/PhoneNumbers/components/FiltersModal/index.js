@@ -21,6 +21,7 @@ import ConfigStore from 'stores/Config'
 import Switch from 'components/Switch'
 import Loading from 'components/Loading'
 import CountryInput from 'components/CountryInput'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -78,6 +79,7 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
+        <ModalHelperText title={t('filters')} />
         {isLoadingCountries ? (
           <Loading />
         ) : (

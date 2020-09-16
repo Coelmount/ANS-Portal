@@ -38,6 +38,7 @@ const Details = observer(({ t }) => {
 
   const titleData = {
     mainText: 'MTN ANS',
+    helperText: 'details',
     iconCapture: t('edit'),
     Icon: <img src={editSvg} alt='edit icon' />
   }

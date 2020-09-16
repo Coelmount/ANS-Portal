@@ -161,8 +161,14 @@ export class CustomersStore {
       .delete(`/tenants/${id}`)
       .then(() => {
         this.getCustomers()
-        callback()
         this.isDeletingCustomer = false
+
+        SnackbarStore.enqueueSnackbar({
+          message: `Customer deleted successfully`,
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e => {
         SnackbarStore.enqueueSnackbar({
@@ -177,6 +183,7 @@ export class CustomersStore {
       })
       .finally(() => {
         this.isDeletingCustomer = false
+        callback && callback()
       })
   }
 

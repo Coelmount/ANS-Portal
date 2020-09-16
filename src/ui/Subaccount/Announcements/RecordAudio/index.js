@@ -50,7 +50,7 @@ const SelectMediaFile = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText title={'Record announcement(s)'} />
+        <ModalHelperText helperText='record_announcements' />
         {!notSupprotedBrowser ? (
           <AudioRecorder handleClose={handleClose} />
         ) : (

@@ -62,7 +62,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText title={t('add_announcements')} />
+        <ModalHelperText helperText='add_announcements_upload_media_file_step_1' />
         <Box className={classes.uploadBoxWrapper}>
           <Box className={classes.uploadFileTitle}>
             {t('upload_announcement')}
