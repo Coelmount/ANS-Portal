@@ -26,7 +26,8 @@ export class CustomerAdminsStore {
       firstName: '',
       lastName: '',
       language: '',
-      password: ''
+      password: '',
+      emailAddress: ''
     }
   }
 
