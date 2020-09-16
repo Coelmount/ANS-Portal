@@ -132,6 +132,12 @@ export class SubaccountsStore {
         if (res.status === 200) {
           this.getSubaccounts(tenantId)
         }
+        SnackbarStore.enqueueSnackbar({
+          message: 'Subaccount deleted successfully',
+          options: {
+            variant: 'success'
+          }
+        })
       })
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
