@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
   },
   buttonsWrapper: {
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingLeft: 45,
     paddingRight: 40,
@@ -112,6 +112,9 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'MTN',
     fontStyle: 'normal',
     fontWeight: 500
+  },
+  dialogContent: {
+    padding: '8px 44px'
   }
 }))
 export default useStyles

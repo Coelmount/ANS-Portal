@@ -143,7 +143,7 @@ const AddCustomerAdministrator = ({
               className={classes.closeIcon}
             />
           </DialogTitle>
-          <DialogContent>
+          <DialogContent className={classes.dialogContent}>
             <ModalHelperText title={`${t(`add`)} ${subject}`} />
             <Box className={classes.loginTitleWrapper}>
               <Typography className={classes.loginTitle}>

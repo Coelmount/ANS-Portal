@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+import IconButton from '@material-ui/core/IconButton'
 import CustomTable from 'components/CustomTable'
 
 import Group3Person from 'source/images/svg/Group3Person.svg'
@@ -250,10 +251,18 @@ const AddedListStep = ({ handleClose, t }) => {
     <React.Fragment>
       <DialogTitle className={classes.title}>
         {t('added_phone_numbers_list')}
-        <CloseIcon onClick={handleClose} className={classes.closeButton} />
+        <IconButton
+          aria-label='close'
+          onClick={handleClose}
+          className={classes.closeButton}
+        >
+          <CloseIcon />
+        </IconButton>
       </DialogTitle>
       <DialogContent className={classes.addedListStepDialogContent}>
-        <ModalHelperText title={t('added_phone_numbers_list')} />
+        <Box className={classes.helperTextWrap}>
+          <ModalHelperText title={t('added_phone_numbers_list')} />
+        </Box>
         <AppBar className={classes.appBar} position='static'>
           <Tabs
             value={value}

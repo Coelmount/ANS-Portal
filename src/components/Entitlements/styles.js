@@ -45,7 +45,6 @@ const useStyles = makeStyles(theme => ({
   },
   stepStyles: {
     marginRight: 24,
-    paddingLeft: 44,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
@@ -203,7 +202,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '24px'
   },
   entitlementsDialogContent: {
-    padding: 0
+    padding: '8px 44px'
   },
   root: {
     width: '100%'
@@ -256,7 +255,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 600
   },
   toolbarWrap: {
-    paddingLeft: 44
+    padding: 0
   },
   totalInput: {
     width: 70

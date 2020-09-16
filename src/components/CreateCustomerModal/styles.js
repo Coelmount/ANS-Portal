@@ -5,14 +5,16 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   title: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '90px',
+    padding: '20px 44px',
     '& > *': {
       fontFamily: 'MTN',
       fontWeight: 700,
       fontSize: '24px',
       color: theme.palette.black
-    },
-    height: '90px',
-    padding: '20px 24px'
+    }
   },
   closeButton: {
     position: 'absolute',
@@ -20,7 +22,6 @@ const useStyles = makeStyles(theme => ({
   },
   stepStyles: {
     marginTop: '32px',
-    marginLeft: 'calc(40px - 24px)',
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
   paragraphBox: {
     marginTop: '19px',
-    marginLeft: 'calc(88px - 24px)',
+    marginLeft: 'calc(104px - 24px)',
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '18px',
@@ -58,14 +59,13 @@ const useStyles = makeStyles(theme => ({
     marginTop: '30px',
     marginLeft: 'calc(104px - 24px)',
     display: 'flex'
-    //width: '392px'
   },
   zip: {
     width: '35%',
     marginRight: '16px'
   },
   city: {
-    width: '37%'
+    width: '43%'
   },
   boxOfButtons: {
     paddingRight: '40px',
@@ -469,6 +469,9 @@ const useStyles = makeStyles(theme => ({
   },
   totalInput: {
     width: 50
+  },
+  dialogContent: {
+    padding: '8px 44px'
   }
 }))
 

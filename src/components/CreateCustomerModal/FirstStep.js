@@ -110,7 +110,7 @@ const FirstStep = props => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent className={classes.dialogContent}>
         <ModalHelperText title={getTitle()} userLevel={getUserLevel()} />
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.paragraphBox}>

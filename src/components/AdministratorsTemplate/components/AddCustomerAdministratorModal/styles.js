@@ -69,15 +69,15 @@ const useStyles = makeStyles(theme => ({
   maskInput: {
     position: 'absolute',
     background: '#eee',
-    right: 112,
+    left: 309,
     top: 0,
     height: 52,
     display: 'flex',
     alignItems: 'center',
     marginTop: 2,
     borderLeft: '1px solid grey',
-    paddingLeft: 7,
-    paddingRight: 7
+    paddingLeft: 14,
+    paddingRight: 14
   },
   buttonsWrapper: {
     display: 'flex',
@@ -155,6 +155,9 @@ const useStyles = makeStyles(theme => ({
   nextButton: {
     width: '160px',
     marginRight: '32px'
+  },
+  dialogContent: {
+    padding: '8px 44px'
   }
 }))
 export default useStyles

@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 20
   },
   addedListStepDialogContent: {
-    padding: 0
+    padding: '8px 0px'
   },
   okButtonAddedList: {
     width: 200,
@@ -69,7 +69,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    padding: '8px 44px'
   },
   partNumberWrapperInput: {
     marginTop: 30
@@ -130,7 +131,6 @@ const useStyles = makeStyles(theme => ({
     boxShadow: '0px 2px 4px rgba(204, 204, 204, 0.25)',
     width: '18px',
     height: '18px',
-    //marginRight: '9px',
     padding: 0,
     '& .MuiSvgIcon-root': {
       color: theme.palette.primary.main
@@ -155,22 +155,22 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   title: {
+    height: '90px',
+    padding: '25px 44px',
     '& > *': {
       fontFamily: 'MTN',
       fontWeight: 700,
       fontSize: '24px',
       color: theme.palette.black
-    },
-    height: '90px',
-    padding: '25px 44px'
+    }
   },
   closeButton: {
     position: 'absolute',
-    right: '10px'
+    right: '10px',
+    cursor: 'pointer'
   },
   stepStyles: {
     marginTop: 42,
-    marginLeft: 40,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
@@ -204,7 +204,6 @@ const useStyles = makeStyles(theme => ({
   thirdParagraphBox: {
     marginTop: 16,
     marginBottom: 26,
-    marginLeft: 66,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '18px',
@@ -802,6 +801,12 @@ const useStyles = makeStyles(theme => ({
       fontSize: 16,
       fontWeight: 600
     }
+  },
+  dialogContent: {
+    padding: '8px 44px'
+  },
+  helperTextWrap: {
+    marginLeft: 44
   }
 }))
 
