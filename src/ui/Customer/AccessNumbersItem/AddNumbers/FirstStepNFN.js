@@ -68,7 +68,7 @@ const FirstStepNFN = props => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent className={classes.dialogContent}>
         <ModalHelperText title={t('add_numbers_inv')} />
         <Box className={classes.stepStyles}>{t('search_parameters')}</Box>
         <Box className={classes.searchParametersBox}>

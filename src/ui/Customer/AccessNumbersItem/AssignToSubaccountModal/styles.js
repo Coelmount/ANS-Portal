@@ -48,13 +48,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   dialogContent: {
-    padding: 0
+    padding: '8px 44px'
   },
   subtitle: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: 29,
-    marginLeft: 44
+    marginTop: 29
   },
   subtitleText: {
     fontSize: 18,
@@ -109,7 +108,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   toolbarWrap: {
-    paddingLeft: 44
+    padding: 0
   },
   paginationWrap: {
     left: '50%',

@@ -190,7 +190,7 @@ const FirstStepNFN = props => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent className={classes.dialogContent}>
         <ModalHelperText helperText='add_numbers_inv_nfn_success_step_2' />
         {isAddingNumbers ? (
           <Loading />

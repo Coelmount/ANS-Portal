@@ -72,7 +72,7 @@ const UpdateAdminInfo = ({
               className={classes.closeIcon}
             />
           </DialogTitle>
-          <DialogContent>
+          <DialogContent className={classes.dialogContent}>
             <ModalHelperText title={` ${t(`edit`)} ${editSubject}`} />
             <Box className={classes.loginTitleWrapper}>
               <Typography className={classes.loginTitle}>
