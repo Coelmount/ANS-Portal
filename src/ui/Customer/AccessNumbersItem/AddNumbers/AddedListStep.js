@@ -287,6 +287,7 @@ const AddedListStep = ({ handleClose, t }) => {
                   wrapperStyles={classes.wrapper}
                   options={selectGroups}
                   value={selectedGroup}
+                  disabled={!selectGroups.length}
                   onChange={e => setSelectedGroup(e.target.value)}
                 />
               </Box>
