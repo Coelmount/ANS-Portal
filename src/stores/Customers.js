@@ -260,6 +260,7 @@ decorate(CustomersStore, {
   isUpdatingStatus: observable,
   isLoadingCustomerName: observable,
   customerName: observable,
+  addUpdateCustomer: observable,
   getCustomers: action,
   getCustomer: action,
   deleteCustomer: action,
