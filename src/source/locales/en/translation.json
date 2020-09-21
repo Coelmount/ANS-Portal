@@ -151,6 +151,7 @@
   "to_remove": "to remove",
   "total": "Total",
   "translations": "Translations",
+  "trust_label": "Trust this device",
   "two_factor_auth": "Two factor authentication",
   "two_factor_text": "You are trying to log in from a new device. We have sent a code to your email for safety, please enter it below:",
   "type": "Type",

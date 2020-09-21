@@ -7,11 +7,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
 import AuthStore from 'stores/Auth'
 import Input from 'components/Input'
 import Loading from 'components/Loading'
+import Checkbox from 'components/Checkbox'
 
 import bgImg from 'source/images/other/bg_img.jpg'
 import logo from 'source/images/svg/mtn-logo-nav.svg'
@@ -59,6 +61,13 @@ const useStyles = makeStyles(theme => ({
   },
   sentInfoBox: {
     height: 140
+  },
+  trustWrap: {
+    display: 'flex',
+    marginBottom: 15
+  },
+  trustLabel: {
+    marginLeft: 10
   }
 }))
 
@@ -67,11 +76,18 @@ const TwoFactorAuthentication = ({ t }) => {
   const history = useHistory()
 
   const [code, setCode] = useState('')
+  const [isTrusted, setIsTrusted] = useState(true)
   const { postTwoFactorCode, isLogging } = AuthStore
 
   const loginSubmit = e => {
     e.preventDefault()
-    postTwoFactorCode({ code, history })
+
+    const payload = {
+      code,
+      trust: isTrusted,
+      history
+    }
+    postTwoFactorCode(payload)
   }
 
   const handleCodeChange = e => {
@@ -104,6 +120,15 @@ const TwoFactorAuthentication = ({ t }) => {
                       value={code}
                       onChange={handleCodeChange}
                     />
+                  </Box>
+                  <Box className={classes.trustWrap}>
+                    <Checkbox
+                      checked={isTrusted}
+                      onChange={e => setIsTrusted(e.target.checked)}
+                    />
+                    <Typography className={classes.trustLabel}>
+                      {t('trust_label')}
+                    </Typography>
                   </Box>
                 </Box>
                 <Button

@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
+import Box from '@material-ui/core/Box'
 
 import CloseIcon from '@material-ui/icons/Close'
 
@@ -50,7 +51,9 @@ const SelectMediaFile = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText helperText='record_announcements' />
+        <Box className={classes.helperTextWrap}>
+          <ModalHelperText helperText='record_announcements' />
+        </Box>
         {!notSupprotedBrowser ? (
           <AudioRecorder handleClose={handleClose} />
         ) : (

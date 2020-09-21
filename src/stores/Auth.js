@@ -75,11 +75,12 @@ export class AuthStore {
       })
   }
 
-  postTwoFactorCode = ({ code, history }) => {
+  postTwoFactorCode = ({ code, trust, history }) => {
     // this.isLogging = true
 
     const payload = {
       code,
+      trust,
       '2fa_payload': this.twoFactorPayload
     }
     axios

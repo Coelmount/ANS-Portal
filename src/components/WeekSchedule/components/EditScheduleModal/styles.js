@@ -55,8 +55,10 @@ const useStyles = makeStyles(theme => ({
     marginRight: '32px'
   },
   modalContent: {
-    paddingTop: 43,
-    paddingLeft: 39
+    padding: '8px 44px'
+  },
+  helperTextWrap: {
+    marginBottom: 38
   }
 }))
 

@@ -83,53 +83,57 @@ const AddModal = ({ t, open, handleClose }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
-            <ModalHelperText helperText='add_group_destination_access_numbers' />
-            <Input
-              icon={<PermIdentityOutlined />}
-              label={t('name')}
-              variant='outlined'
-              value={inputStore.values.name}
-              onChange={e => inputStore.set('name', e.target.value)}
-            />
-            <Select
-              icon={<PolicyIcon />}
-              options={POLICY_OPTIONS}
-              label={t('policy')}
-              value={inputStore.values.policy}
-              onChange={e => inputStore.set('policy', e.target.value)}
-            />
-            <Box className={classes.noAnswerWrap}>
-              <Checkbox
-                checked={inputStore.values.huntAfterNoAnswer}
-                onChange={e => {
-                  inputStore.set('huntAfterNoAnswer', e.target.checked)
-                  inputStore.set('amountSkipRings', '')
-                }}
-              />
-              <Typography className={classes.noAnswerTitle}>
-                {t('destination_groups_add_checkbox_title')}
-              </Typography>
+            <Box className={classes.helperTextWrap}>
+              <ModalHelperText helperText='add_group_destination_available_numbers' />
             </Box>
-            {inputStore.values.huntAfterNoAnswer && (
-              <Box className={classes.amountSkipRingsWrap}>
-                <span className={classes.amountSkipRingsLeftTitle}>
-                  {t('skip_after')}
-                </span>
-                <Input
-                  icon={<PhoneForwardedIcon />}
-                  type='number'
-                  label='x'
-                  variant='outlined'
-                  value={inputStore.values.amountSkipRings}
-                  onChange={e =>
-                    inputStore.set('amountSkipRings', e.target.value)
-                  }
+            <Box className={classes.inputsWrap}>
+              <Input
+                icon={<PermIdentityOutlined />}
+                label={t('name')}
+                variant='outlined'
+                value={inputStore.values.name}
+                onChange={e => inputStore.set('name', e.target.value)}
+              />
+              <Select
+                icon={<PolicyIcon />}
+                options={POLICY_OPTIONS}
+                label={t('policy')}
+                value={inputStore.values.policy}
+                onChange={e => inputStore.set('policy', e.target.value)}
+              />
+              <Box className={classes.noAnswerWrap}>
+                <Checkbox
+                  checked={inputStore.values.huntAfterNoAnswer}
+                  onChange={e => {
+                    inputStore.set('huntAfterNoAnswer', e.target.checked)
+                    inputStore.set('amountSkipRings', '')
+                  }}
                 />
-                <span className={classes.amountSkipRingsRightTitle}>
-                  {t('rings')}
-                </span>
+                <Typography className={classes.noAnswerTitle}>
+                  {t('destination_groups_add_checkbox_title')}
+                </Typography>
               </Box>
-            )}
+              {inputStore.values.huntAfterNoAnswer && (
+                <Box className={classes.amountSkipRingsWrap}>
+                  <span className={classes.amountSkipRingsLeftTitle}>
+                    {t('skip_after')}
+                  </span>
+                  <Input
+                    icon={<PhoneForwardedIcon />}
+                    type='number'
+                    label='x'
+                    variant='outlined'
+                    value={inputStore.values.amountSkipRings}
+                    onChange={e =>
+                      inputStore.set('amountSkipRings', e.target.value)
+                    }
+                  />
+                  <span className={classes.amountSkipRingsRightTitle}>
+                    {t('rings')}
+                  </span>
+                </Box>
+              )}
+            </Box>
           </DialogContent>
           <DialogActions className={classes.dialogActions}>
             <Button

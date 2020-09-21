@@ -69,6 +69,9 @@ const useStyles = makeStyles(theme => ({
   nextButton: {
     width: '160px',
     marginRight: '32px'
+  },
+  helperTextContainer: {
+    marginLeft: 20
   }
 }))
 

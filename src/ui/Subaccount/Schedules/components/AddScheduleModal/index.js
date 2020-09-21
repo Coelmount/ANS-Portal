@@ -55,7 +55,7 @@ const AddScheduleModal = ({
         </IconButton>
       </DialogTitle>
 
-      <DialogContent>
+      <DialogContent className={classes.dialogContent}>
         <ModalHelperText title={title} />
         {isSchedulePosting ? (
           <Loading />

@@ -17,6 +17,7 @@ import tableIcons from '../tableIcons'
 
 import TablePagination from '@material-ui/core/TablePagination'
 import Button from '@material-ui/core/Button'
+import Box from '@material-ui/core/Box'
 
 import CloseIcon from '@material-ui/icons/Close'
 
@@ -143,7 +144,9 @@ const SelectMediaFile = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText helperText='add_announcements_from_library' />
+        <Box className={classes.helperTextWrap}>
+          <ModalHelperText helperText='add_announcements_from_library' />
+        </Box>
         <MaterialTable
           localization={localization}
           icons={tableIcons}

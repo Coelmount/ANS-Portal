@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 24px'
+    padding: '20px 44px'
   },
   closeButton: {
     position: 'absolute',
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   stepStyles: {
     marginTop: '32px',
-    marginLeft: 'calc(40px - 24px)',
+    marginLeft: 'calc(40px - 20px)',
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: '16px',
@@ -193,6 +193,9 @@ const useStyles = makeStyles(theme => ({
     minWidth: 44,
     borderRadius: 100,
     marginTop: 30
+  },
+  helperTextWrap: {
+    marginLeft: 20
   }
 }))
 

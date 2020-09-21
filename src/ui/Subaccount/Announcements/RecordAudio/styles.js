@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 24px'
+    padding: '20px 44px'
   },
   closeButton: {
     position: 'absolute',
@@ -27,6 +27,9 @@ const useStyles = makeStyles(theme => ({
   notSupprotedBrowserMessage: {
     marginTop: 270,
     textAlign: 'center'
+  },
+  helperTextWrap: {
+    marginLeft: 20
   }
 }))
 

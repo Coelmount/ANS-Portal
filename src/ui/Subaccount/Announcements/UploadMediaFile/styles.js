@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 24px'
+    padding: '20px 44px'
   },
   closeButton: {
     position: 'absolute',
@@ -210,6 +210,9 @@ const useStyles = makeStyles(theme => ({
     color: '#666666',
     padding: '0 8px',
     fontSize: 16
+  },
+  helperTextContainer: {
+    marginLeft: 20
   }
 }))
 

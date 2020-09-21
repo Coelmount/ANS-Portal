@@ -369,6 +369,10 @@ const useStyles = makeStyles(theme => ({
   },
   okButton: {
     width: 160
+  },
+  helperTextWrap: {
+    marginLeft: 44,
+    marginTop: 8
   }
 }))
 
