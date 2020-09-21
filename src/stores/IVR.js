@@ -282,6 +282,7 @@ class IVR {
     }
     if (Object.keys(this.menu).some(el => el === route)) {
       if (this.menu[route].name === typeMenu) {
+        this.menu = {}
         return
       }
     }
