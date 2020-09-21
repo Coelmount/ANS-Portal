@@ -1,5 +1,6 @@
 import { decorate, observable, action } from 'mobx'
 import axios from 'axios'
+import customAxios from 'utils/axios'
 import { BASE_URL } from 'utils/axios'
 import getErrorMessage from 'utils/getErrorMessage'
 import clearLocalStorage from 'utils/clearLocalStorage'
@@ -144,8 +145,8 @@ export class AuthStore {
   }
 
   postSendResetPasswordMail = (data, callback) => {
-    axios
-      .post(`${BASE_URL}/auth/reset-password`, data)
+    customAxios
+      .post(`/auth/reset-password`, data)
       .then(() => {
         callback && callback()
       })
@@ -160,8 +161,8 @@ export class AuthStore {
   }
 
   putResetPassword = (token, data, callback) => {
-    axios
-      .put(`${BASE_URL}/auth/reset-password/${token}`, data)
+    customAxios
+      .put(`/auth/reset-password/${token}`, data)
       .then(() => {
         SnackbarStore.enqueueSnackbar({
           message: 'Password successfully updated',
