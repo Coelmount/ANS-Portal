@@ -624,6 +624,7 @@ const MenuTemplate = props => {
                     submenus={submenus}
                     phoneNumbers={phoneNumbers}
                     config={config}
+                    onLabelClick={e => e.preventDefault()}
                   >
                     {el.action === 'Go To Submenu' && el.parameter && (
                       <MenuTemplate
