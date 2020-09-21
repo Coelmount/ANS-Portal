@@ -55,8 +55,8 @@ export class Entitlements {
     axios
       .get(`/tenants/${id}/entitlements`)
       .then(res => {
-        this.entitlements = res.data.entitlments
-        this.entitlementsIdArr = res.data.entitlments.map(
+        this.entitlements = res.data.entitlements
+        this.entitlementsIdArr = res.data.entitlements.map(
           item => item.license_model_id
         )
       })
