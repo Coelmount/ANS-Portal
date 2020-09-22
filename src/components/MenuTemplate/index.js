@@ -258,9 +258,12 @@ const StyledTreeItem = props => {
                 value={menuItem.description}
                 className={classes.descriptionInput}
                 disabled={disabledFields}
-                onChange={e =>
+                onChange={e => {
+                  if (e.target.value.length > 20) {
+                    return
+                  }
                   changeKeysMenu(id, 'description', e.target.value)
-                }
+                }}
               />
             </Grid>
             <Grid item xs={'auto'} className={classes.gridItem}>
