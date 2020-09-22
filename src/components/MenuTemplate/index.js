@@ -378,16 +378,15 @@ const MenuTemplate = props => {
 
   const updateMenu = () => {
     const clearData = []
-    for (let i = 0; i < stateMenu.keys.length; i++) {
-      if (clearData.some(el => el.key === stateMenu.keys[i].key)) {
-        const index = clearData.findIndex(
-          el => el.key === stateMenu.keys[i].key
-        )
+    const data = { ...stateMenu, keys: stateMenu.keys.filter(el => el.key) }
+    for (let i = 0; i < data.keys.length; i++) {
+      if (clearData.some(el => el.key === data.keys[i].key)) {
+        const index = clearData.findIndex(el => el.key === data.keys[i].key)
         clearData.splice(index, 1)
-        clearData.push(stateMenu.keys[i])
+        clearData.push(data.keys[i])
         continue
       }
-      clearData.push(stateMenu.keys[i])
+      clearData.push(data.keys[i])
     }
 
     putUpdateIVRMenu(
