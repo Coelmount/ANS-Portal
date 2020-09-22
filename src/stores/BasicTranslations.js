@@ -170,11 +170,7 @@ export class BasicTranslations {
               ),
             destinationCountry:
               item.destination_number &&
-              getCountryNameFromNumber(
-                item.destination_number[0] === '+'
-                  ? item.destination_number
-                  : `+${item.destination_number}`
-              ),
+              getCountryNameFromNumber(item.destination_number),
             destinationCountryTwoLetterCode:
               item.destination_number &&
               getCountryTwoLetterCodeFromNumber(
