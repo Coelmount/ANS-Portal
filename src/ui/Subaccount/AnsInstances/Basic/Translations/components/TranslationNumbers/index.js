@@ -378,13 +378,20 @@ const TranslationNumbers = observer(({ t }) => {
         label: 'access_number',
         getCellData: row => (
           <Box>
-            <Link
-              onClick={() => updateSelectedInstance(row)}
-              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.access_number}`}
-              className={classes.link}
-            >
-              {row.access_number}
-            </Link>
+            {/* Temporary soluon: TODO update in onward routing feature */}
+            {row.access_number && row.access_number.startsWith('+999') ? (
+              <Typography className={classes.destinationNumberText}>
+                {row.access_number}
+              </Typography>
+            ) : (
+              <Link
+                onClick={() => updateSelectedInstance(row)}
+                to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic/${row.access_number}`}
+                className={classes.link}
+              >
+                {row.access_number}
+              </Link>
+            )}
             <Typography>{row.accessCountry}</Typography>
           </Box>
         ),
