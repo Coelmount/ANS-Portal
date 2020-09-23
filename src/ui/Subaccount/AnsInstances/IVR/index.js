@@ -97,6 +97,15 @@ const IVR = props => {
       getCellData: row => (row.type === 'Basic' ? 'Single level' : 'Multilevel')
     },
     {
+      id: 'phoneNumber',
+      numeric: false,
+      label: t('main_number'),
+      extraProps: {
+        scope: 'row'
+      },
+      getCellData: row => row.phoneNumber
+    },
+    {
       id: 'delete',
       extraProps: {
         className: classes.deleteCell,
