@@ -107,7 +107,9 @@ const EditMainNumberModal = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText helperText='update_main_number_tbr' />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText helperText='update_main_number_tbr' />
+        </div>
         {isUpdatingMainNumber ? (
           <Loading />
         ) : (

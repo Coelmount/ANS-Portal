@@ -280,7 +280,9 @@ const AddModal = props => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
-            <ModalHelperText helperText='add_access_number_ivr_page' />
+            <div className={classes.addSecondaryNumbersHelperTextWrap}>
+              <ModalHelperText helperText='add_access_number_ivr_page' />
+            </div>
             <Typography className={classes.setEntitlementsTitle}>
               {t('select_access_ph_num')}
             </Typography>

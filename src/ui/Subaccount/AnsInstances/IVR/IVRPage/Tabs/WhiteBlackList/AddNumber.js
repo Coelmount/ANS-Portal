@@ -30,6 +30,8 @@ const AddIVR = props => {
   const { postAddNumberToCallBlocking, isAddingNumbers } = IVRStore
   const [arrayOfInputs, setArrayOfInputs] = useState([''])
 
+  const helperText = `add_phone_number_to_ivr_page_${mode}`
+
   const handleAddNumbers = () => {
     if (arrayOfInputs.length === 1 && !arrayOfInputs[0]) {
       handleClose()
@@ -62,7 +64,9 @@ const AddIVR = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText helperText='add_phone_number_to_ivr_page' />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText helperText={helperText} />
+        </div>
         {isAddingNumbers ? (
           <Loading />
         ) : (

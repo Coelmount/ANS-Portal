@@ -106,7 +106,9 @@ const AddDestination = ({ t, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.addDestinationModalContent}>
-        <ModalHelperText helperText='add_destination_tbr_time_schedule' />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText helperText='add_destination_tbr_time_schedule' />
+        </div>
         <Box className={classes.freeNumberStep}>{`${t('step')} 1/2`}</Box>
         {isLoading ? (
           <Loading />

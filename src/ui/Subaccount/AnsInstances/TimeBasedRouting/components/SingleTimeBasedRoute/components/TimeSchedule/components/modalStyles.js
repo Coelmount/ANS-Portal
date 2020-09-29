@@ -48,8 +48,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 39
   },
   addDestinationModalContent: {
-    paddingTop: 25,
-    paddingLeft: 39,
+    padding: '8px 44px',
     display: 'flex',
     flexDirection: 'column'
   },
@@ -183,6 +182,9 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500,
     fontSize: 16,
     color: theme.palette.grey40,
+    marginBottom: 15
+  },
+  helperTextWrap: {
     marginBottom: 15
   }
 }))

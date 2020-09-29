@@ -179,6 +179,9 @@ const useStyles = makeStyles(theme => ({
   },
   deleteText: {
     fontSize: 16
+  },
+  helperTextWrap: {
+    margin: '0px 20px'
   }
 }))
 

@@ -95,7 +95,9 @@ const AddIVR = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText title={t('add_ivr_instance')} />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText title={t('add_ivr_instance')} />
+        </div>
         <Box className={classes.contentWrapper}>
           <Input
             icon={<img src={NameIVRIcon} alt='NameIVRIcon' />}

@@ -87,7 +87,9 @@ const UpdateMainNumber = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText helperText='update_main_number_ivr_access_numbers' />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText helperText='update_main_number_ivr_access_numbers' />
+        </div>
         {isUpdatingMainNumber ? (
           <Loading />
         ) : (

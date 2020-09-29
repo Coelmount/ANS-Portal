@@ -103,46 +103,50 @@ const EditGreeting = props => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent className={classes.dialogContent}>
-        <ModalHelperText title={t('edit_menu_greeting')} />
-        <Box>
-          <Box>
-            <FormControlLabel
-              onChange={e => setAnnouncementSelection('Default')}
-              checked={announcementSelection === 'Default'}
-              control={
-                <Radio
-                  checkedIcon={<span className={classes.checkedRadioIcon} />}
-                  icon={<span className={classes.radioIcon} />}
-                />
-              }
-              label={t('default_greeting')}
-            />
-          </Box>
-          <Box className={classes.personalBox}>
-            <FormControlLabel
-              onChange={() => setAnnouncementSelection('Personal')}
-              checked={announcementSelection === 'Personal'}
-              control={
-                <Radio
-                  checkedIcon={<span className={classes.checkedRadioIcon} />}
-                  icon={<span className={classes.radioIcon} />}
-                />
-              }
-              label={t('personal_greeting')}
-            />
-            <Select
-              icon={<VolumeUpOutlinedIcon />}
-              selectStyles={classes.select}
-              disabled={announcementSelection !== 'Personal'}
-              options={announcements.map(el => ({
-                value: el.name,
-                label: `${el.name}.${el.mediaType}`
-              }))}
-              value={audioFile}
-              onChange={e => setAudioFile(e.target.value)}
-            />
-          </Box>
+      <DialogContent>
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText title={t('edit_menu_greeting')} />
+        </div>
+        <Box className={classes.editMenuGreetingWrap}>
+          <div>
+            <Box>
+              <FormControlLabel
+                onChange={e => setAnnouncementSelection('Default')}
+                checked={announcementSelection === 'Default'}
+                control={
+                  <Radio
+                    checkedIcon={<span className={classes.checkedRadioIcon} />}
+                    icon={<span className={classes.radioIcon} />}
+                  />
+                }
+                label={t('default_greeting')}
+              />
+            </Box>
+            <Box className={classes.personalBox}>
+              <FormControlLabel
+                onChange={() => setAnnouncementSelection('Personal')}
+                checked={announcementSelection === 'Personal'}
+                control={
+                  <Radio
+                    checkedIcon={<span className={classes.checkedRadioIcon} />}
+                    icon={<span className={classes.radioIcon} />}
+                  />
+                }
+                label={t('personal_greeting')}
+              />
+              <Select
+                icon={<VolumeUpOutlinedIcon />}
+                selectStyles={classes.select}
+                disabled={announcementSelection !== 'Personal'}
+                options={announcements.map(el => ({
+                  value: el.name,
+                  label: `${el.name}.${el.mediaType}`
+                }))}
+                value={audioFile}
+                onChange={e => setAudioFile(e.target.value)}
+              />
+            </Box>
+          </div>
         </Box>
       </DialogContent>
       <DialogActions className={classes.dialogActions}>

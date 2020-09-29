@@ -61,10 +61,11 @@ const useStyles = makeStyles(theme => ({
   nameInput: {
     marginBottom: 30
   },
-  modalContent: {
+  contentWrap: {
+    height: 450,
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   inputsWrap: {
     '& > div': {
@@ -74,6 +75,9 @@ const useStyles = makeStyles(theme => ({
     '& input': {
       width: '330px !important'
     }
+  },
+  helperTextWrap: {
+    margin: '0px 20px'
   }
 }))
 

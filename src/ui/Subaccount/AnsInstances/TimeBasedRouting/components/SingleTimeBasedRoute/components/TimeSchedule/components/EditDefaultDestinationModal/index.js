@@ -92,28 +92,32 @@ const EditDefaultDestinationModal = ({ t, open, handleClose }) => {
         </IconButton>
       </DialogTitle>
 
-      <DialogContent className={classes.modalContent}>
-        <ModalHelperText title={t('edit_default_destination')} />
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Box className={classes.inputsWrap}>
-            <Input
-              icon={<PermIdentityOutlined />}
-              label={t('name')}
-              variant='outlined'
-              value={inputStore.values.name}
-              onChange={e => inputStore.set('name', e.target.value)}
-            />
-            <PhoneInput
-              value={inputStore.values.phoneNumber}
-              onChange={value => {
-                inputStore.set('phoneNumber', `+${value}`)
-              }}
-              placeholder={t('enter_number')}
-            />
-          </Box>
-        )}
+      <DialogContent>
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText title={t('edit_default_destination')} />
+        </div>
+        <div className={classes.contentWrap}>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Box className={classes.inputsWrap}>
+              <Input
+                icon={<PermIdentityOutlined />}
+                label={t('name')}
+                variant='outlined'
+                value={inputStore.values.name}
+                onChange={e => inputStore.set('name', e.target.value)}
+              />
+              <PhoneInput
+                value={inputStore.values.phoneNumber}
+                onChange={value => {
+                  inputStore.set('phoneNumber', `+${value}`)
+                }}
+                placeholder={t('enter_number')}
+              />
+            </Box>
+          )}
+        </div>
       </DialogContent>
 
       <DialogActions className={classes.dialogActions}>

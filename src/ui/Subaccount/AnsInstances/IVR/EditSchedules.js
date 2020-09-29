@@ -103,9 +103,11 @@ const EditGreeting = props => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent className={classes.dialogContent}>
-        <ModalHelperText title={title} />
-        <Box>
+      <DialogContent>
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText title={title} />
+        </div>
+        <Box className={classes.editSchedulesWrap}>
           <Box className={classes.editSchedulesText}>
             {t('select_from_schedules_library')}
           </Box>

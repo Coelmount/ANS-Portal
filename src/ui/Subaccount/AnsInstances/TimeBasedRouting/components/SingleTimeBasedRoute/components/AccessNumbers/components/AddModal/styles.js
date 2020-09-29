@@ -110,8 +110,8 @@ const useStyles = makeStyles(theme => ({
   },
   countryInput: {
     width: 354,
-    marginTop: 22,
-    marginLeft: 44
+    marginTop: 22
+    // marginLeft: 44
     // marginBottom: 30
   },
   modalDialog: {
@@ -304,7 +304,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '24px'
   },
   entitlementsDialogContent: {
-    padding: 0
+    padding: '8px 44px'
   },
   paper: {
     width: '100%',
@@ -327,7 +327,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   setEntitlementsTitle: {
-    paddingLeft: 44,
+    // paddingLeft: 44,
     paddingTop: 37,
     fontSize: 18,
     fontWeight: 600,

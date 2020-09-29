@@ -59,6 +59,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'white',
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)',
     marginLeft: 10
+  },
+  helperTextWrap: {
+    margin: '0px 20px'
   }
 }))
 

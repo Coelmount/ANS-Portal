@@ -96,6 +96,16 @@ const useStyles = makeStyles(theme => ({
     width: 'calc(100% / 5)',
     color: '#212529',
     boxShadow: '0px 4px 8px rgba(204, 204, 204, 0.25)'
+  },
+  editSchedulesWrap: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  helperTextWrap: {
+    margin: '0px 20px'
   }
 }))
 

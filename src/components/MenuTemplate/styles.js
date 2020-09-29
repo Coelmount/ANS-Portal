@@ -194,6 +194,16 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     flexDirection: 'column'
   },
+  editMenuGreetingWrap: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  helperTextWrap: {
+    margin: '0px 20px'
+  },
   dialogActions: {
     height: '110px',
     justifyContent: 'space-between'

@@ -61,7 +61,9 @@ const AddIVR = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText helperText='add_phone_number_to_tbr_wb_list' />
+        <div className={classes.wbHelperTextWrap}>
+          <ModalHelperText helperText='add_phone_number_to_tbr_wb_list' />
+        </div>
         {isAddingNumbers ? (
           <Loading />
         ) : (

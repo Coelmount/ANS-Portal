@@ -84,6 +84,9 @@ const useStyles = makeStyles(theme => ({
       backgroundImage: 'radial-gradient(#FFCC00,#FFCC00 40%,transparent 50%)',
       content: '""'
     }
+  },
+  helperTextWrap: {
+    margin: '8px 44px'
   }
 }))
 

@@ -139,6 +139,12 @@ const useStyles = makeStyles(theme => ({
     marginTop: 40,
     display: 'flex',
     alignItems: 'center'
+  },
+  helperTextWrap: {
+    marginLeft: '0px 20px'
+  },
+  addSecondaryNumbersHelperTextWrap: {
+    margin: '8px 44px'
   }
 }))
 
