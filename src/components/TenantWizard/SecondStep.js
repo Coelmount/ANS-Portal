@@ -49,7 +49,9 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText helperText='welcome_to_ans_step_2_tenant' />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText helperText='welcome_to_ans_step_2_tenant' />
+        </div>
         <Box className={classes.mainContent}>
           <Box className={classes.stepStyles}>{`${t('step')} ${
             step + 1
