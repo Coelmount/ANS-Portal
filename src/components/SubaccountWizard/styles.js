@@ -298,6 +298,9 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     display: 'flex',
     top: 40
+  },
+  helperTextWrap: {
+    margin: '0px 40px'
   }
 }))
 
