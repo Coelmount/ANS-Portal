@@ -13,6 +13,7 @@ import SearchStore from 'stores/Search'
 import CustomContainer from 'components/CustomContainer'
 import Results from './components/Results'
 import Loading from 'components/Loading'
+import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
@@ -31,14 +32,19 @@ const Search = ({ t }) => {
   return (
     <Box className={classes.root}>
       <Paper className={classes.paper}>
-        <CustomContainer>
-          <Box className={classes.titleWrap}>
-            <SearchIcon className={classes.titleSearchIcon} />
-            <Typography className={classes.title} id='tableTitle'>
-              {t('search')}
-            </Typography>
-          </Box>
-        </CustomContainer>
+        <div className={classes.containerWrap}>
+          <CustomContainer>
+            <Box className={classes.titleWrap}>
+              <SearchIcon className={classes.titleSearchIcon} />
+              <Typography className={classes.title} id='tableTitle'>
+                {t('search')}
+              </Typography>
+            </Box>
+            <div className={classes.helperTextWrap}>
+              <ModalHelperText helperText='search' />
+            </div>
+          </CustomContainer>
+        </div>
         <Box className={classes.mainWrap}>
           <Box className={classes.searchWrap}>
             <Box className={classes.searchContent}>
