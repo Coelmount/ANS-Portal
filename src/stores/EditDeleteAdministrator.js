@@ -11,7 +11,8 @@ export class EditDeleteAdminStore {
     firstName: '',
     lastName: '',
     language: '',
-    emailAddress: ''
+    emailAddress: '',
+    password: ''
   }
   isDeletingAdmin = false
   sentAdmin = {}
@@ -31,7 +32,8 @@ export class EditDeleteAdminStore {
       firstName: '',
       lastName: '',
       language: '',
-      emailAddress: ''
+      emailAddress: '',
+      password: ''
     }
     axios
       .get(`/tenants/${id}/admins/${userId}`)

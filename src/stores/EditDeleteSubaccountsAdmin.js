@@ -11,7 +11,8 @@ export class EditDeleteSubaccountAdminStore {
     firstName: '',
     lastName: '',
     language: '',
-    emailAddress: ''
+    emailAddress: '',
+    password: ''
   }
   isDeletingSubaccountAdmin = false
   sentSubaccountAdmin = {}
@@ -21,7 +22,8 @@ export class EditDeleteSubaccountAdminStore {
       firstName: '',
       lastName: '',
       language: '',
-      emailAddress: ''
+      emailAddress: '',
+      password: ''
     }
   }
 
@@ -40,7 +42,8 @@ export class EditDeleteSubaccountAdminStore {
       firstName: '',
       lastName: '',
       language: '',
-      emailAddress: ''
+      emailAddress: '',
+      password: ''
     }
     axios
       .get(`/tenants/${id}/groups/${groupId}/admins/${userId}`)

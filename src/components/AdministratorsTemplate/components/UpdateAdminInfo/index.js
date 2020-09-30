@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useParams } from 'react-router-dom'
@@ -11,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline'
 import MailOutlinedIcon from '@material-ui/icons/MailOutlined'
 import LanguageIcon from '@material-ui/icons/Language'
@@ -40,6 +41,10 @@ const UpdateAdminInfo = ({
 }) => {
   const classes = useStyles()
   const match = useParams()
+  const [password, setPassword] = useState('')
+  const [repeatPassword, setRepeatedPassword] = useState('')
+  const [passwordError, setPasswordError] = useState(false)
+  const [isPasswordInputActive, setIsPasswordInputActive] = useState(false)
 
   const { getCustomerAdminsLanguages, languagesList } = CustomerAdministrators
 
@@ -56,6 +61,26 @@ const UpdateAdminInfo = ({
     getCustomerAdminsLanguages()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    setPasswordError(
+      password !== repeatPassword &&
+        Boolean(repeatPassword) &&
+        !isPasswordInputActive
+    )
+    if (password === repeatPassword) {
+      updateInfo('password', password)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPasswordInputActive])
+
+  const handleRepeatPasswordChange = e => {
+    setRepeatedPassword(e.target.value)
+  }
+
+  const handlePasswordChange = e => {
+    setPassword(e.target.value)
+  }
 
   return (
     <Dialog className={classes.editInfo} open={show} onClose={handleClose}>
@@ -129,6 +154,41 @@ const UpdateAdminInfo = ({
                       e.target.value[0].toUpperCase() + e.target.value.slice(1)
                     )
                   }
+                />
+              </Box>
+              <Box className={classes.inputes}>
+                <Input
+                  icon={<LockOutlinedIcon />}
+                  label={t('password')}
+                  autoComplete='new-password'
+                  variant='outlined'
+                  value={password}
+                  onChange={handlePasswordChange}
+                  onFocus={() => {
+                    setIsPasswordInputActive(true)
+                  }}
+                  onBlur={() => {
+                    setIsPasswordInputActive(false)
+                  }}
+                  type={'password'}
+                />
+              </Box>
+              <Box className={classes.inputes}>
+                <Input
+                  error={passwordError}
+                  icon={<LockOutlinedIcon />}
+                  label={t('repeat_password')}
+                  variant='outlined'
+                  value={repeatPassword}
+                  onChange={handleRepeatPasswordChange}
+                  onFocus={() => {
+                    setIsPasswordInputActive(true)
+                  }}
+                  onBlur={() => {
+                    setIsPasswordInputActive(false)
+                  }}
+                  type={'password'}
+                  helperText={passwordError ? 'Passwords is not match' : null}
                 />
               </Box>
             </Box>
