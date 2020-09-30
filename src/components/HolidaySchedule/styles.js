@@ -43,6 +43,9 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer'
       }
     }
+  },
+  helperTextWrap: {
+    marginBottom: 8
   }
 }))
 

@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
         }
       }
     }
+  },
+  helperTextWrap: {
+    marginBottom: 8
   }
 }))
 

@@ -213,6 +213,9 @@ const useStyles = makeStyles(theme => ({
   },
   helperTextContainer: {
     marginLeft: 20
+  },
+  helperTextWrap: {
+    margin: '0px 20px'
   }
 }))
 
