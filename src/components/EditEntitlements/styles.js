@@ -175,7 +175,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '24px'
   },
   entitlementsDialogContent: {
-    padding: '8px 40px'
+    padding: '8px 44px'
   },
   root: {
     width: '100%'

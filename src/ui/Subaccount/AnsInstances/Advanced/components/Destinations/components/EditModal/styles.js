@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 40px'
+    padding: '20px 44px'
   },
   closeButton: {
     position: 'absolute',
@@ -54,14 +54,11 @@ const useStyles = makeStyles(theme => ({
     width: '160px',
     marginRight: '32px'
   },
-  // modalContent: {
-  //   paddingTop: 43,
-  //   paddingLeft: 39
-  // },
   nameInput: {
     marginBottom: 30
   },
   modalContent: {
+    position: 'relative',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
@@ -74,6 +71,11 @@ const useStyles = makeStyles(theme => ({
     '& input': {
       width: '330px !important'
     }
+  },
+  helperTextWrap: {
+    position: 'absolute',
+    top: 8,
+    left: 44
   }
 }))
 

@@ -241,7 +241,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '24px'
   },
   entitlementsDialogContent: {
-    padding: 0
+    padding: '8px 44px'
   },
   paper: {
     width: '100%',
@@ -291,7 +291,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 600
   },
   toolbarWrap: {
-    paddingLeft: 44
+    paddingLeft: 0
   },
   totalInput: {
     width: 70
@@ -329,8 +329,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     height: 'inherit',
     padding: 0,
-    marginLeft: '30px',
-    marginRight: '30px',
+    margin: '0px 20px',
     '& > span': {
       marginLeft: '3px !important'
     }
@@ -362,7 +361,7 @@ const useStyles = makeStyles(theme => ({
     width: 100
   },
   entitlementHeadCell: {
-    minWidth: 250
+    minWidth: 220
   },
   thead: {
     backgroundColor: theme.palette.active.main,

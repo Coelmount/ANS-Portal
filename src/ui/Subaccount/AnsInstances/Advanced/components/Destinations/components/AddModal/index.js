@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
 import DestinationsStore from 'stores/Destionations'
 import Loading from 'components/Loading'
@@ -66,13 +66,15 @@ const AddModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
-        <ModalHelperText title='add_destination_destinations' />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText title='add_destination_destinations' />
+        </div>
         {isDestinationPosting ? (
           <Loading />
         ) : (
           <Box className={classes.inputsWrap}>
             <Input
-              icon={<PhoneOutlinedIcon />}
+              icon={<PermIdentityOutlined />}
               label={t('name')}
               variant='outlined'
               onChange={e => inputStore.set('name', e.target.value)}
