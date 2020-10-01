@@ -135,7 +135,8 @@ const SingleNumber = observer(({ t }) => {
   }
 
   const titleData = {
-    mainText: accessNumber
+    mainText: accessNumber,
+    helperText: 'basic_translations_instance'
   }
 
   return (
