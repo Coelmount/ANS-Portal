@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { observer } from 'mobx-react'
 
 import Button from '@material-ui/core/Button'
 
@@ -14,6 +15,7 @@ import StopIcon from '@material-ui/icons/Stop'
 import VolumeUpIcon from '@material-ui/icons/VolumeUp'
 
 import Input from 'components/Input'
+import Loading from 'components/Loading'
 
 import AnnouncementsStore from 'stores/Announcements'
 
@@ -149,6 +151,7 @@ const AudioRecorder = props => {
   }
 
   const handleSaveRecord = () => {
+    setIsRecording('loading')
     postAddAnnouncements(match.customerId, match.groupId, {
       name: audioName,
       content: base64.split(',')[1]
@@ -271,10 +274,11 @@ const AudioRecorder = props => {
           </div>
         </React.Fragment>
       )}
+      {isRecoding === 'loading' && <Loading />}
       <audio ref={preview} autoPlay muted></audio>
       <audio ref={recording} />
     </div>
   )
 }
 
-export default withNamespaces()(AudioRecorder)
+export default withNamespaces()(observer(AudioRecorder))
