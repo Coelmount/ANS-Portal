@@ -29,7 +29,7 @@ const EditMainNumberModal = props => {
   const { t, open, handleClose } = props
   const classes = useStyles()
   const match = useParams()
-  const { customerId, groupId } = match
+  const { customerId, groupId, tbrName } = match
 
   const {
     isUpdatingMainNumber,
@@ -70,6 +70,7 @@ const EditMainNumberModal = props => {
     putUpdateMainNumber(
       customerId,
       groupId,
+      tbrName,
       {
         cc_main_number: `+${getCC(number)}`,
         main_number: getNSN(number)

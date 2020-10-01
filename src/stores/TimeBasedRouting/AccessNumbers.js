@@ -22,7 +22,6 @@ export class AccessNumbers {
   isSecondaryNumberDeleting = false
   isUpdatingMainNumber = false
   totalPages = 0
-  currentTbrId = ''
   availableSecondaryIds = []
 
   getMainNumber = ({ customerId, groupId, tbrName }) => {
@@ -178,8 +177,15 @@ export class AccessNumbers {
       })
   }
 
-  postSecondaryNumbers = ({ customerId, groupId, closeModal, numbers }) => {
+  postSecondaryNumbers = ({
+    customerId,
+    groupId,
+    tbrId,
+    closeModal,
+    numbers
+  }) => {
     this.isSecondaryNumbersAdding = true
+
     const checkedNumbers = numbers.filter(item => item.checked === true)
 
     const numbersToAdd = checkedNumbers.map(({ country_code, nsn }, index) => {
@@ -192,7 +198,7 @@ export class AccessNumbers {
 
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentTbrId}/secondary_numbers`,
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrId}/secondary_numbers`,
         {
           secondary_numbers: numbersToAdd
         }
@@ -225,11 +231,12 @@ export class AccessNumbers {
       })
   }
 
-  putUpdateMainNumber = (customerId, groupId, data, callback) => {
+  putUpdateMainNumber = (customerId, groupId, tbrId, data, callback) => {
     this.isUpdatingMainNumber = true
+
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentTbrId}/main_number/`,
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrId}/main_number/`,
         data
       )
       .then(() => {
@@ -257,13 +264,15 @@ export class AccessNumbers {
   deleteSecondaryNumber = ({
     customerId,
     groupId,
+    tbrId,
     secondaryNumberId,
     closeModal
   }) => {
     this.isSecondaryNumberDeleting = true
+
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentTbrId}/secondary_numbers`,
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrId}/secondary_numbers`,
         {
           secondary_numbers: [
             {
