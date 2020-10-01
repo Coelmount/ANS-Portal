@@ -3,7 +3,6 @@ import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import Papa from 'papaparse'
-import classnames from 'classnames'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -44,8 +43,7 @@ const FirstStep = props => {
     postAddMultipleANSBasic,
     setMultipleCounter,
     multipleCounter,
-    setDefaultValues,
-    isAnyAvailableNumbersSelected
+    setDefaultValues
   } = BasicTranslationsStore
 
   const classes = useStyles()
