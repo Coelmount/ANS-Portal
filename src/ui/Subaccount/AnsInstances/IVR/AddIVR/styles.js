@@ -87,6 +87,9 @@ const useStyles = makeStyles(theme => ({
   },
   helperTextWrap: {
     margin: '8px 44px'
+  },
+  loadingModal: {
+    height: 340
   }
 }))
 

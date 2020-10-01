@@ -69,10 +69,45 @@ const AddIVR = props => {
     }).then(() => handleClose())
   }
 
-  if (isLoadingLicenses || isLoadingCustomer || isLoadingConfig) {
+  if (isLoadingLicenses || isLoadingCustomer || isLoadingConfig || addIVR) {
     return (
       <Dialog open={open} onClose={handleClose}>
-        <Loading />
+        <DialogTitle className={classes.title}>
+          {t('add_ivr_instance')}
+          <IconButton
+            aria-label='close'
+            onClick={handleClose}
+            className={classes.closeButton}
+            disabled={addIVR}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent className={classes.dialogContent}>
+          <div className={classes.loadingModal}>
+            <Loading />
+          </div>
+        </DialogContent>
+        <DialogActions className={classes.dialogActions}>
+          <Button
+            variant='outlined'
+            color='primary'
+            className={classes.cancelButton}
+            disabled={addIVR}
+            onClick={handleClose}
+          >
+            {t('cancel')}
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            className={classes.assignButton}
+            onClick={handleAddIVR}
+            disabled={!name || addIVR}
+          >
+            {t('add')}
+          </Button>
+        </DialogActions>
       </Dialog>
     )
   }
