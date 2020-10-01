@@ -72,7 +72,9 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText helperText='add_announcements_upload_media_file_step_2' />
+        <div className={classes.helperTextWrap}>
+          <ModalHelperText helperText='add_announcements_upload_media_file_step_2' />
+        </div>
         <Box className={classes.secondStepTitleBlock}>
           {stateAnnouncements.map((el, i) => (
             <Box key={i} className={classes.audioBoxWrapper}>

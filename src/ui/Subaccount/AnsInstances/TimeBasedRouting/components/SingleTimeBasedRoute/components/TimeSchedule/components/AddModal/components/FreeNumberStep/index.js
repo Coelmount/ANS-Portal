@@ -81,8 +81,11 @@ const FreeNumberStep = ({ t, handleClose }) => {
           </DialogTitle>
 
           <DialogContent className={classes.modalContent}>
-            <ModalHelperText helperText='add_destination_tbr_time_schedule_step_2_free_number' />
-            <Box className={classes.freeNumberStep}>{`${t('step')} 2/2`}</Box>
+            <div className={classes.topContentWrap}>
+              <ModalHelperText helperText='add_destination_tbr_time_schedule_step_2_free_number' />
+              <Box className={classes.freeNumberStep}>{`${t('step')} 2/2`}</Box>
+            </div>
+
             <Box className={classes.phoneNumberWrap}>
               <PhoneInput
                 value={inputStore.phoneNumber}

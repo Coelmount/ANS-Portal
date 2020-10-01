@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
   },
   titleWrap: {
     display: 'flex',
-    height: 91,
     alignItems: 'center'
   },
   titleSearchIcon: {
@@ -140,6 +139,9 @@ const useStyles = makeStyles(theme => ({
     '&:focus': {
       color: '#598597'
     }
+  },
+  containerWrap: {
+    padding: '15px 0px'
   }
 }))
 

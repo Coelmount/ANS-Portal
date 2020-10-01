@@ -200,6 +200,9 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: -5,
     right: 92
+  },
+  helperTextWrap: {
+    margin: '0px 40px'
   }
 }))
 

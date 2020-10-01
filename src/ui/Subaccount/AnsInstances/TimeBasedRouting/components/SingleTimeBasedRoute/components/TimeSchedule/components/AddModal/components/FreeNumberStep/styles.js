@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 40px'
+    padding: '20px 44px'
   },
   periodFormsWrap: {
     display: 'flex',
@@ -52,15 +52,18 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 30
   },
   modalContent: {
+    position: 'relative',
     display: 'flex',
     justifyContent: 'center',
-    position: 'relative',
-    paddingTop: 70
+    alignItems: 'center'
+  },
+  topContentWrap: {
+    position: 'absolute',
+    top: 8,
+    left: 44
   },
   freeNumberStep: {
-    position: 'absolute',
-    top: 20,
-    left: 44,
+    marginTop: 15,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: 16,

@@ -82,6 +82,7 @@ const AccessNumbers = observer(({ t }) => {
     const payload = {
       customerId,
       groupId,
+      tbrId: tbrName,
       secondaryNumberId: modals.data.id,
       closeModal: openedModal.close
     }

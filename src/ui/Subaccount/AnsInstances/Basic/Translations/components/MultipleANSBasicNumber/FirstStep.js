@@ -74,34 +74,32 @@ const FirstStep = props => {
   }, [])
 
   const downloadCSVFile = () => {
-    const pom = document.createElement('a')
-    const blob = new Blob(
-      [
-        'access_cc;access_number;destination_cc;destination_number\n+27;111111111;+32;111111111'
-      ],
-      { type: 'text/csv;charset=utf-8;' }
-    )
-    const url = URL.createObjectURL(blob)
-    pom.href = url
-    pom.setAttribute('download', 'template.csv')
-    pom.click()
-  }
-
-  const downloadCSVFileWithSelected = () => {
+    let blob
     const selectedNumbers = numbers.filter(number => number.checked)
-    const numbersToCSV = selectedNumbers.map(number => ({
-      access_cc: number.country_code,
-      access_number: getNsnFromNumber(number.phoneNumber),
-      destination_cc: '',
-      destination_number: ''
-    }))
+
+    // Download template with selected numbers if any selected or empty template
+    if (selectedNumbers.length) {
+      const numbersToCSV = selectedNumbers.map(number => ({
+        access_cc: number.country_code,
+        access_number: getNsnFromNumber(number.phoneNumber),
+        destination_cc: '',
+        destination_number: ''
+      }))
+      const csvContent = Papa.unparse(JSON.stringify(numbersToCSV), {
+        delimiter: ';',
+        header: true
+      })
+      blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    } else {
+      blob = new Blob(
+        [
+          'access_cc;access_number;destination_cc;destination_number\n+27;111111111;+32;111111111'
+        ],
+        { type: 'text/csv;charset=utf-8;' }
+      )
+    }
 
     const pom = document.createElement('a')
-    const csvContent = Papa.unparse(JSON.stringify(numbersToCSV), {
-      delimiter: ';',
-      header: true
-    })
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     pom.href = url
     pom.setAttribute('download', 'template.csv')
@@ -265,27 +263,6 @@ const FirstStep = props => {
             <Box className={classes.infoTextTitle}>{`${t(
               'rows'
             )}: +27;111111111;+32;111111111`}</Box>
-          </Box>
-        </Box>
-
-        <Box className={classes.uploadBoxWrapper}>
-          <Box
-            className={classnames(classes.uploadFileTitle, {
-              [classes.disabledTitle]: !isAnyAvailableNumbersSelected
-            })}
-          >
-            {t('download_selected_templete')}
-          </Box>
-          <Box>
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.uploadButton}
-              onClick={downloadCSVFileWithSelected}
-              disabled={!isAnyAvailableNumbersSelected}
-            >
-              <GetAppOutlinedIcon className={classes.downloadIcon} />
-            </Button>
           </Box>
         </Box>
 

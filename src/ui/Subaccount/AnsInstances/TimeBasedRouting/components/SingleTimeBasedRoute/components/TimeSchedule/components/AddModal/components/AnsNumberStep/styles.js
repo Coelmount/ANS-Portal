@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 40px'
+    padding: '20px 44px'
   },
   periodFormsWrap: {
     display: 'flex',
@@ -147,8 +147,10 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500,
     fontSize: 16,
     color: theme.palette.grey40,
-    marginTop: 16,
-    marginLeft: 18
+    margin: '16px 20px'
+  },
+  helperTextWrap: {
+    margin: '0px 20px'
   }
 }))
 

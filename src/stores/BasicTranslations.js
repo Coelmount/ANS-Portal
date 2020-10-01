@@ -15,7 +15,7 @@ export class BasicTranslations {
   selectedPhoneNumber = null
   selectedInstance = null
   isBasicTranslationsNumbersLoading = true
-  isAvailableNumbersForAddInstanceLoading = true
+  isAvailableNumbersForAddInstanceLoading = false
   isPostingInstance = false
   isPuttingInstance = false
   basicTranslationsNumbers = []
@@ -321,6 +321,8 @@ export class BasicTranslations {
     order,
     query
   ) => {
+    if (this.isAvailableNumbersForAddInstanceLoading) return
+
     this.isAvailableNumbersForAddInstanceLoading = true
     let orderByField
     switch (orderBy) {

@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.black
     },
     height: '90px',
-    padding: '20px 40px'
+    padding: '20px 44px'
   },
   periodFormsWrap: {
     display: 'flex',
@@ -44,10 +44,6 @@ const useStyles = makeStyles(theme => ({
     height: '110px',
     justifyContent: 'space-between'
   },
-  // modalContent: {
-  //   paddingTop: 43,
-  //   paddingLeft: 39
-  // },
   nameInput: {
     marginBottom: 30
   },
@@ -57,10 +53,19 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     position: 'relative'
   },
-  freeNumberStep: {
+  freeNumberStepModalContent: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative'
+  },
+  freeNumberContentWrap: {
     position: 'absolute',
-    top: 16,
-    left: 44,
+    top: 8,
+    left: 44
+  },
+  freeNumberStep: {
+    marginTop: 15,
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: 16,
@@ -76,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   stepStyles: {
-    margin: 16,
+    margin: '16px 20px',
     fontFamily: 'MTN',
     fontWeight: 500,
     fontSize: 16,
@@ -147,8 +152,15 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 500,
     fontSize: 16,
     color: theme.palette.grey40,
-    marginTop: 16,
-    marginLeft: 18
+    margin: '16px 20px'
+  },
+  helperTextWrap: {
+    margin: '0px 20px'
+  },
+  freeNumberStepContentWrap: {
+    position: 'absolute',
+    top: 8,
+    left: 44
   }
 }))
 

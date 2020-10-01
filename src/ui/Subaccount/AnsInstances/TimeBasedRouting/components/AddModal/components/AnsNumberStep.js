@@ -210,7 +210,9 @@ const AnsNumberStep = ({ handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
-            <ModalHelperText helperText='add_tbr_instance_tbr_step_2' />
+            <div className={classes.helperTextWrap}>
+              <ModalHelperText helperText='add_tbr_instance_tbr_step_2' />
+            </div>
             <Box className={classes.ansNumberStep}>{`${t('step')} 2/2`}</Box>
             <CountryInput
               value={selectedCountry}

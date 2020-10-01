@@ -176,6 +176,11 @@ const HolidaySchedule = observer(({ t }) => {
                 titleData={titleData}
                 handleClick={handleImportClick}
               />
+              <div className={classes.helperTextWrap}>
+                {t(
+                  'helper_text_subaccount_schedules_holiday_schedule_instance'
+                )}
+              </div>
             </CustomContainer>
             <Box className={classes.main}>
               <Calendar

@@ -211,6 +211,9 @@ const WeekSchedule = observer(({ t }) => {
                 handleClick={handleOpenAddPeriodModal}
                 handleTitleIconClick={handleEditScheduleClick}
               />
+              <div className={classes.helperTextWrap}>
+                {t('helper_text_subaccount_schedules_week_schedule_instance')}
+              </div>
             </CustomContainer>
             <Box className={classes.main}>
               <Calendar
