@@ -9,10 +9,8 @@ const getHelperText = ({
   providedUserLevel
 }) => {
   const generatedHelperText = title
-    .replace(':', '')
-    .split(' ')
-    .join('_')
-    .toLowerCase()
+    ? title.replace(':', '').split(' ').join('_').toLowerCase()
+    : ''
 
   const getUserLevel = () => {
     const urlNodesArr = pathname.split('/')
