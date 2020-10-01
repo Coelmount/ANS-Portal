@@ -33,7 +33,7 @@ class IVR {
   isLoadingIVRNumbers = false
   ivrNumbers = []
   availableNumbers = []
-  isAvailableNumbersLoading = true
+  isAvailableNumbersLoading = false
   totalPages = 0
   countries = []
   freeSecondaryIDs = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
@@ -280,12 +280,12 @@ class IVR {
     if (route === 'main') {
       this.menu = {}
     }
-    if (Object.keys(this.menu).some(el => el === route)) {
-      if (this.menu[route].name === typeMenu) {
-        this.menu = {}
-        return
-      }
-    }
+    // if (Object.keys(this.menu).some(el => el === route)) {
+    //   if (this.menu[route].name === typeMenu) {
+    //     this.menu = {}
+    //     return
+    //   }
+    // }
     this.menu = { ...this.menu, [route]: { isLoading: true } }
     axios
       .get(
@@ -311,9 +311,6 @@ class IVR {
           }
         })
       )
-      .finally(() => {
-        this.menu[route].isLoading = false
-      })
   }
 
   getSubmenus = (tenantId, groupId, ivrId) => {

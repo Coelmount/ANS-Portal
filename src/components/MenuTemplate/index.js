@@ -487,7 +487,7 @@ const MenuTemplate = props => {
     setIsEditGreeting(false)
   }
 
-  if (!stateMenu || stateMenu.isLoading) {
+  if (has(stateMenu, 'isLoading') ? stateMenu.isLoading : true) {
     return <Loading />
   }
 
