@@ -138,6 +138,7 @@ const AvailableNumbers = ({ t }) => {
   const handleAddInstanceModalClose = () => {
     setIsAddInstanceModalOpen(false)
     getRequest()
+    setSelectAll(false)
   }
 
   const handleMultipleConfigure = () => {
@@ -147,6 +148,7 @@ const AvailableNumbers = ({ t }) => {
   const handleMultipleConfigureClose = () => {
     setShowAddMultipleANSNumbers(false)
     getRequest()
+    setSelectAll(false)
   }
 
   const changeSearchParam = value => {
