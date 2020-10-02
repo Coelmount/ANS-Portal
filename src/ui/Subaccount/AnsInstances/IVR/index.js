@@ -129,6 +129,7 @@ const IVR = props => {
         history.push('#available_numbers')
         break
       case 1:
+        location.hash !== '#ivrs' && getIVRs(match.customerId, match.groupId)
         history.push('#ivrs')
         break
       default:
