@@ -14,6 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 import Input from 'components/Input'
 import ModalHelperText from 'components/ModalHelperText'
+import Loading from 'components/Loading'
 
 import CustomerStore from 'stores/Customers'
 import AssignedNumbersStore from 'stores/AssignedNumbers'
@@ -55,6 +56,8 @@ const FirstStepNFN = props => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (isLoadingAvailableNumbers) return <Loading />
 
   return (
     <React.Fragment>

@@ -49,11 +49,12 @@ export class NumbersStore {
       .finally(() => (this.isLoadingReservedNumbers = false))
   }
 
-  getAvailableNumbers = params => {
+  getAvailableNumbers = (params, changeStep) => {
     this.isLoadingAvailableNumbers = true
     this.params = params
     this.availableNumbers = []
     this.availableNumbersTable = []
+
     return axios
       .get(
         `/available_numbers?${queryString.stringify(params, {
@@ -61,20 +62,24 @@ export class NumbersStore {
         })}`
       )
       .then(res => {
+        this.isLoadingAvailableNumbers = false
         this.availableNumbers = res.data.suggestions
         this.availableNumbersTable = this.parseAvailebleNumbers(
           res.data.suggestions
         )
+        // Go to next step if numbers received
+        changeStep(2)
       })
-      .catch(e =>
+      .catch(e => {
+        this.isLoadingAvailableNumbers = false
+
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to fetch available numbers',
           options: {
             variant: 'error'
           }
         })
-      )
-      .finally(() => (this.isLoadingAvailableNumbers = false))
+      })
   }
 
   postAddedNumbersToSubaccaunt = (

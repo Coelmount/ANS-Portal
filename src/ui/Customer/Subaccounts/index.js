@@ -11,6 +11,7 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import SubaccountsStore from 'stores/Subaccounts'
 import PhoneNumbersStore from 'stores/PhoneNumbers'
+import CreateCustomerStore from 'stores/CreateCustomer'
 import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
@@ -45,6 +46,10 @@ const SubaccountsTable = observer(({ t }) => {
     isGetPhoneNumbersRequestDone
   } = PhoneNumbersStore
 
+  const {
+    setDefaultValues: setDefaultCreateCustomerValues
+  } = CreateCustomerStore
+
   const { setDefaultValues } = CreateSubaccountStore
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -61,6 +66,9 @@ const SubaccountsTable = observer(({ t }) => {
   }, [getSubaccounts, match.customerId])
 
   useEffect(() => {
+    // To clear created customer data, which we use in stepper: create customer => create subaccount for created customer
+    setDefaultCreateCustomerValues()
+
     return () => {
       getDefaultValues()
       clearPhoneNumbers()
