@@ -95,9 +95,8 @@ const CreateCustomer = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reservedNumbers.length])
 
-  const searchAvalibleNumbers = () => {
-    getAvailableNumbers(queryAvalibleNumbers).then(() => changeStep(2))
-  }
+  const searchAvalibleNumbers = () =>
+    getAvailableNumbers(queryAvalibleNumbers, changeStep)
 
   const selectNumbers = (checked, number) => {
     const newNumbers = [...numbers]
