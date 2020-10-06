@@ -59,6 +59,28 @@ const Input = props => {
   const classes = useStyles()
   const { wrapperStyles, inputStyles, ...otherProps } = props
 
+  const prettier = (prev, value) => {
+    if (/^[a-zA-Z]+$/g.test(value) || value === '') return value
+    return prev
+  }
+
+  const handleChange = e => {
+    const val = prettier
+      ? prettier(props.value, e.target.value)
+      : e.target.value
+
+    const transformedEvent = {
+      ...e,
+      target: {
+        value: val
+      }
+    }
+
+    if ('onChange' in props) {
+      props.onChange(transformedEvent)
+    }
+  }
+
   return (
     <Box
       className={`${classes.root} ${
@@ -72,6 +94,7 @@ const Input = props => {
         }`}
         variant='outlined'
         {...otherProps}
+        onChange={handleChange}
       />
     </Box>
   )
