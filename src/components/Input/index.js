@@ -59,6 +59,22 @@ const Input = props => {
   const classes = useStyles()
   const { wrapperStyles, inputStyles, ...otherProps } = props
 
+  const handleChange = e => {
+    // To disable ASCII chars
+    const val = e.target.value.replace(/[^ -~]+/g, '')
+
+    const transformedEvent = {
+      ...e,
+      target: {
+        value: val
+      }
+    }
+
+    if ('onChange' in props) {
+      props.onChange(transformedEvent)
+    }
+  }
+
   return (
     <Box
       className={`${classes.root} ${
@@ -72,6 +88,7 @@ const Input = props => {
         }`}
         variant='outlined'
         {...otherProps}
+        onChange={handleChange}
       />
     </Box>
   )
