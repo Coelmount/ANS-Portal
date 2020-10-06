@@ -59,15 +59,9 @@ const Input = props => {
   const classes = useStyles()
   const { wrapperStyles, inputStyles, ...otherProps } = props
 
-  const prettier = (prev, value) => {
-    if (/^[a-zA-Z]+$/g.test(value) || value === '') return value
-    return prev
-  }
-
   const handleChange = e => {
-    const val = prettier
-      ? prettier(props.value, e.target.value)
-      : e.target.value
+    // To disable ASCII chars
+    const val = e.target.value.replace(/[^ -~]+/g, '')
 
     const transformedEvent = {
       ...e,
