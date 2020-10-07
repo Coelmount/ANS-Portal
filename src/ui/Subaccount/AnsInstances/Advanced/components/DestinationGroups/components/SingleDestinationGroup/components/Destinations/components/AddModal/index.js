@@ -3,6 +3,7 @@ import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
 
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -10,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 import DestinationsStore from 'stores/DestinationGroups/Destinations'
 import Loading from 'components/Loading'
@@ -19,6 +21,7 @@ import ModalHelperText from 'components/ModalHelperText'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
 import transformOnCheckAll from 'utils/tableCheckbox/transformOnCheckAll'
 import transformOnHover from 'utils/tableCheckbox/transformOnHover'
+import CreateDestinationModal from 'ui/Subaccount/AnsInstances/Advanced/components/Destinations/components/AddModal'
 
 import useStyles from './styles'
 
@@ -38,17 +41,25 @@ const AddModal = ({ t, open, handleClose }) => {
   const [numbers, setNumbers] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [searchList, setSearchList] = useState([])
+  const [
+    isCreateDestinationModalOpen,
+    setIsCreateDestinationModalOpen
+  ] = useState(false)
 
   const isLoading = isDestinationPosting || isAvailableDestinationsLoading
   const isAddButtonEnabled =
     numbers.some(number => number.checked) && !isLoading
 
-  useEffect(() => {
+  const initialRequest = () => {
     const payload = {
       customerId,
       groupId
     }
     getAvailableDestinationsForPost(payload)
+  }
+
+  useEffect(() => {
+    initialRequest()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -100,6 +111,15 @@ const AddModal = ({ t, open, handleClose }) => {
       numbers
     }
     postDestinations(payload)
+  }
+
+  const handleCreateDestinationClick = () => {
+    setIsCreateDestinationModalOpen(true)
+  }
+
+  const handleCloseCreateDestinationModal = () => {
+    setIsCreateDestinationModalOpen(false)
+    initialRequest()
   }
 
   const columns = [
@@ -175,7 +195,22 @@ const AddModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.entitlementsDialogContent}>
-        <ModalHelperText title={t('add_destination')} />
+        <div className={classes.topTitleWrap}>
+          <ModalHelperText title={t('add_destination')} />
+          <div className={classes.createDestinationWrap}>
+            <IconButton
+              aria-label='add icon button'
+              component='span'
+              className={classes.addIconWrap}
+              onClick={handleCreateDestinationClick}
+            >
+              <AddOutlinedIcon />
+            </IconButton>
+            <Typography className={classes.createNewDestinationTitle}>
+              {t('create_new_destination')}
+            </Typography>
+          </div>
+        </div>
         {isLoading ? (
           <Loading />
         ) : (
@@ -213,6 +248,12 @@ const AddModal = ({ t, open, handleClose }) => {
           {t('add')}
         </Button>
       </DialogActions>
+      {isCreateDestinationModalOpen && (
+        <CreateDestinationModal
+          open={isCreateDestinationModalOpen}
+          handleClose={handleCloseCreateDestinationModal}
+        />
+      )}
     </Dialog>
   )
 }

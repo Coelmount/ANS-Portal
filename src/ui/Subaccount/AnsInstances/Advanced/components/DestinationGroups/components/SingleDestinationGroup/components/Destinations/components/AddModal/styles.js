@@ -396,6 +396,33 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'white'
       }
     }
+  },
+  topTitleWrap: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 5
+  },
+  createDestinationWrap: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  addIconWrap: {
+    background: theme.palette.primary.main,
+    width: 30,
+    height: 30,
+    padding: 0,
+    marginRight: 8,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  createNewDestinationTitle: {
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    whiteSpace: 'nowrap'
   }
 }))
 

@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
       width: '651px'
     },
     '& .MuiDialog-paperScrollPaper': {
-      minHeight: '85%'
+      minHeight: '100%'
     }
   },
   title: {

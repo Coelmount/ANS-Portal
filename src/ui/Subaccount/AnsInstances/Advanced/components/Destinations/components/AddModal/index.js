@@ -55,7 +55,7 @@ const AddModal = ({ t, open, handleClose }) => {
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
-        {t('add_destination')}
+        {t('create_new_destination')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
