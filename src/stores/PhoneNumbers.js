@@ -18,7 +18,7 @@ export class PhoneNumbers {
   uniqueCountries = []
   addedPhoneNumbers = []
   rejectedPhoneNumbers = []
-  isPhoneNumbersLoading = true
+  isPhoneNumbersLoading = false
   isGetPhoneNumbersRequestDone = null
   totalPages = 0
   filterValues = {
@@ -40,7 +40,7 @@ export class PhoneNumbers {
     this.uniqueCountries = []
     this.addedPhoneNumbers = []
     this.rejectedPhoneNumbers = []
-    this.isPhoneNumbersLoading = true
+    this.isPhoneNumbersLoading = false
     this.totalPages = 0
     this.filterValues = {
       country: '',
@@ -59,6 +59,8 @@ export class PhoneNumbers {
     order,
     numberLike
   ) => {
+    if (this.isPhoneNumbersLoading === true) return
+
     this.isPhoneNumbersLoading = true
     this.isGetPhoneNumbersRequestDone = null
     //const country = (filterValues && filterValues.country) || ''
