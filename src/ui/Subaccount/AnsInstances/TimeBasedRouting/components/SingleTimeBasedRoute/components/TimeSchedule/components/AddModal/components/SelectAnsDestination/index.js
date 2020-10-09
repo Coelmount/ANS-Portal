@@ -33,7 +33,7 @@ import useStyles from '../../searchModalsStyles'
 const SelectAnsDestination = ({ t, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
-  const { customerId, groupId } = match
+  const { customerId, groupId, tbrName } = match
 
   const {
     setStep,
@@ -74,6 +74,7 @@ const SelectAnsDestination = ({ t, handleClose }) => {
     const payload = {
       customerId,
       groupId,
+      tbrId: tbrName,
       destination: currentCheckedNumber.destination,
       isPhoneNumberChanged: true,
       closeModal: handleClose
@@ -133,52 +134,52 @@ const SelectAnsDestination = ({ t, handleClose }) => {
       {isLoading ? (
         <Loading />
       ) : (
-        <Fragment>
-          <DialogTitle className={classes.title}>
-            {t('select_ans_advanced_destination')}
-            <IconButton
-              aria-label='close'
-              onClick={handleClose}
-              className={classes.closeButton}
-            >
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent className={classes.dialogContent}>
-            <ModalHelperText title={t('select_ans_advanced_destination')} />
-            <CustomTable
-              classes={classes}
-              columns={columns}
-              firstCell={false}
-              showPagination={true}
-              rows={ansDestinations}
-              searchCriterias={['name', 'phoneNumber']}
-              noAvailableDataMessage={t('no_ans_advanced_instances_available')}
-              isModal={true}
-              tableId={'advanced_time_schedule_add_ans_destination'}
-            />
-          </DialogContent>
-          <DialogActions className={classes.dialogActions}>
-            <Button
-              variant='outlined'
-              color='primary'
-              className={classes.backButton}
-              onClick={handleBackButtonClick}
-            >
-              {t('cancel')}
-            </Button>
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.nextButton}
-              disabled={!currentCheckedNumber.destination}
-              onClick={handleAddButtonClick}
-            >
-              {isEditMode ? t('save') : t('add')}
-            </Button>
-          </DialogActions>
-        </Fragment>
-      )}
+          <Fragment>
+            <DialogTitle className={classes.title}>
+              {t('select_ans_advanced_destination')}
+              <IconButton
+                aria-label='close'
+                onClick={handleClose}
+                className={classes.closeButton}
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+            <DialogContent className={classes.dialogContent}>
+              <ModalHelperText title={t('select_ans_advanced_destination')} />
+              <CustomTable
+                classes={classes}
+                columns={columns}
+                firstCell={false}
+                showPagination={true}
+                rows={ansDestinations}
+                searchCriterias={['name', 'phoneNumber']}
+                noAvailableDataMessage={t('no_ans_advanced_instances_available')}
+                isModal={true}
+                tableId={'advanced_time_schedule_add_ans_destination'}
+              />
+            </DialogContent>
+            <DialogActions className={classes.dialogActions}>
+              <Button
+                variant='outlined'
+                color='primary'
+                className={classes.backButton}
+                onClick={handleBackButtonClick}
+              >
+                {t('cancel')}
+              </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                className={classes.nextButton}
+                disabled={!currentCheckedNumber.destination}
+                onClick={handleAddButtonClick}
+              >
+                {isEditMode ? t('save') : t('add')}
+              </Button>
+            </DialogActions>
+          </Fragment>
+        )}
     </Fragment>
   )
 }

@@ -30,7 +30,7 @@ import useStyles from '../modalStyles.js'
 
 const EditModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
-  const { customerId, groupId } = useParams()
+  const { customerId, groupId, tbrName } = useParams()
   const {
     findTimeSchedule,
     currentTimeSchedule,
@@ -94,6 +94,7 @@ const EditModal = ({ t, open, handleClose }) => {
     const payload = {
       customerId,
       groupId,
+      tbrId: tbrName,
       schedule: {
         name: formStore.name,
         destination: formStore.phoneNumber,
@@ -150,54 +151,56 @@ const EditModal = ({ t, open, handleClose }) => {
       </DialogTitle>
 
       <DialogContent className={classes.modalContent}>
-        <ModalHelperText helperText='edit_destination_tbr_time_schedule' />
+        <div className={classes.editHelperTextWrap}>
+          <ModalHelperText helperText='edit_destination_tbr_time_schedule' />
+        </div>
         {isLoading ? (
           <Loading />
         ) : (
-          <Box className={classes.formWrap}>
-            <Box className={classes.formTitleWrap}>
-              <Typography className={classes.formTitleLabel}>
-                {`${t('destination')} ${scheduleIndexToEdit}`}
-              </Typography>
-            </Box>
-            <Box className={classes.formContentWrap}>
-              <Input
-                icon={<PermIdentityOutlined />}
-                label={t('name')}
-                variant='outlined'
-                value={formStore.name}
-                onChange={e => formStore.set('name', e.target.value)}
-              />
-              {
-                <Select
-                  label={t('phone_number')}
-                  icon={<PhoneOutlinedIcon alt='phone' />}
-                  options={phoneNumberOptionsWithCurrent}
-                  value={formStore.phoneNumber}
-                  onChange={e => formStore.set('phoneNumber', e.target.value)}
+            <Box className={classes.formWrap}>
+              <Box className={classes.formTitleWrap}>
+                <Typography className={classes.formTitleLabel}>
+                  {`${t('destination')} ${scheduleIndexToEdit}`}
+                </Typography>
+              </Box>
+              <Box className={classes.formContentWrap}>
+                <Input
+                  icon={<PermIdentityOutlined />}
+                  label={t('name')}
+                  variant='outlined'
+                  value={formStore.name}
+                  onChange={e => formStore.set('name', e.target.value)}
                 />
-              }
-
-              <Select
-                label={t('schedule')}
-                icon={
-                  <ScheduleIcon
-                    style={{
-                      width: 30,
-                      height: 25,
-                      marginTop: 1,
-                      marginLeft: 1
-                    }}
-                    alt='schedule'
+                {
+                  <Select
+                    label={t('phone_number')}
+                    icon={<PhoneOutlinedIcon alt='phone' />}
+                    options={phoneNumberOptionsWithCurrent}
+                    value={formStore.phoneNumber}
+                    onChange={e => formStore.set('phoneNumber', e.target.value)}
                   />
                 }
-                options={formStore.scheduleOptions}
-                value={formStore.schedule}
-                onChange={e => formStore.set('schedule', e.target.value)}
-              />
+
+                <Select
+                  label={t('schedule')}
+                  icon={
+                    <ScheduleIcon
+                      style={{
+                        width: 30,
+                        height: 25,
+                        marginTop: 1,
+                        marginLeft: 1
+                      }}
+                      alt='schedule'
+                    />
+                  }
+                  options={formStore.scheduleOptions}
+                  value={formStore.schedule}
+                  onChange={e => formStore.set('schedule', e.target.value)}
+                />
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
       </DialogContent>
 
       <DialogActions className={classes.dialogActions}>

@@ -140,15 +140,16 @@ const ListView = ({
       {isLoading ? (
         <Loading />
       ) : (
-        <CustomTable
-          firstCell
-          rows={schedules}
-          columns={columns}
-          searchCriterias={['name', 'defaultDestination']}
-          noAvailableDataMessage={t('no_time_schedules_available')}
-          tableId='time_based_routing_schedules_list'
-        />
-      )}
+          <CustomTable
+            firstCell
+            rows={schedules}
+            columns={columns}
+            searchCriterias={['name', 'defaultDestination']}
+            noAvailableDataMessage={t('no_time_schedules_available')}
+            tableId='time_based_routing_schedules_list'
+            isLoadingData={isLoading}
+          />
+        )}
     </Fragment>
   )
 }
@@ -278,6 +279,7 @@ const TimeSchedule = ({ t }) => {
     const payload = {
       customerId,
       groupId,
+      tbrId: tbrName,
       name: deleteItem.name,
       closeModal: close
     }
@@ -308,8 +310,8 @@ const TimeSchedule = ({ t }) => {
           handleDeleteClick={handleDeleteClick}
         />
       ) : (
-        <TimeScheduleCalendar />
-      )}
+          <TimeScheduleCalendar />
+        )}
 
       {isAddModalOpen && (
         <AddModal open={isAddModalOpen} handleClose={modalStore.close} />

@@ -337,12 +337,12 @@ export class TimeSchedules {
     return this.schedules.length + 1
   }
 
-  postTimeSchedule = ({ customerId, groupId, destination, closeModal }) => {
+  postTimeSchedule = ({ customerId, groupId, tbrId, destination, closeModal }) => {
     this.isTimeScheduleAdding = true
 
     axios
       .post(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}/criteria/`,
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrId}/criteria/`,
         {
           name: this.destinationName,
           destination: destination,
@@ -374,6 +374,7 @@ export class TimeSchedules {
   putTimeSchedule = ({
     customerId,
     groupId,
+    tbrId,
     schedule,
     destination,
     isPhoneNumberChanged,
@@ -383,15 +384,15 @@ export class TimeSchedules {
     const { destinationName, destinationScheduleName } = this
     const payload = isPhoneNumberChanged
       ? {
-          name: destinationName,
-          timeSchedule: destinationScheduleName,
-          destination
-        }
+        name: destinationName,
+        timeSchedule: destinationScheduleName,
+        destination
+      }
       : schedule
 
     axios
       .put(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}/criteria/${this.scheduleNameToEdit}`,
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrId}/criteria/${this.scheduleNameToEdit}`,
         payload
       )
       .then(() => {
@@ -416,12 +417,12 @@ export class TimeSchedules {
       })
   }
 
-  deleteTimeSchedule = ({ customerId, groupId, name, closeModal }) => {
+  deleteTimeSchedule = ({ customerId, groupId, tbrId, name, closeModal }) => {
     this.isTimeScheduleDeleting = true
 
     axios
       .delete(
-        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${this.currentUserId}/criteria/${name}`
+        `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrId}/criteria/${name}`
       )
       .then(() => {
         SnackbarStore.enqueueSnackbar({

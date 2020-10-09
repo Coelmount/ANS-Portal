@@ -20,7 +20,7 @@ import useStyles from './styles'
 
 const FreeNumberStep = ({ t, handleClose }) => {
   const classes = useStyles()
-  const { customerId, groupId } = useParams()
+  const { customerId, groupId, tbrName } = useParams()
 
   const {
     isEditMode,
@@ -56,6 +56,7 @@ const FreeNumberStep = ({ t, handleClose }) => {
     const payload = {
       customerId,
       groupId,
+      tbrId: tbrName,
       destination: inputStore.phoneNumber,
       isPhoneNumberChanged: true,
       closeModal: handleClose
@@ -68,54 +69,54 @@ const FreeNumberStep = ({ t, handleClose }) => {
       {isLoading ? (
         <Loading />
       ) : (
-        <>
-          <DialogTitle className={classes.title}>
-            {t('add_tbr_instance')}
-            <IconButton
-              aria-label='close'
-              onClick={handleClose}
-              className={classes.closeButton}
-            >
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
+          <>
+            <DialogTitle className={classes.title}>
+              {t('add_tbr_instance')}
+              <IconButton
+                aria-label='close'
+                onClick={handleClose}
+                className={classes.closeButton}
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
 
-          <DialogContent className={classes.modalContent}>
-            <div className={classes.topContentWrap}>
-              <ModalHelperText helperText='add_destination_tbr_time_schedule_step_2_free_number' />
-              <Box className={classes.freeNumberStep}>{`${t('step')} 2/2`}</Box>
-            </div>
+            <DialogContent className={classes.modalContent}>
+              <div className={classes.topContentWrap}>
+                <ModalHelperText helperText='add_destination_tbr_time_schedule_step_2_free_number' />
+                <Box className={classes.freeNumberStep}>{`${t('step')} 2/2`}</Box>
+              </div>
 
-            <Box className={classes.phoneNumberWrap}>
-              <PhoneInput
-                value={inputStore.phoneNumber}
-                placeholder={t('enter_number')}
-                onChange={value => handlePhoneInputChange(value)}
-              />
-            </Box>
-          </DialogContent>
+              <Box className={classes.phoneNumberWrap}>
+                <PhoneInput
+                  value={inputStore.phoneNumber}
+                  placeholder={t('enter_number')}
+                  onChange={value => handlePhoneInputChange(value)}
+                />
+              </Box>
+            </DialogContent>
 
-          <DialogActions className={classes.dialogActions}>
-            <Button
-              variant='outlined'
-              color='primary'
-              className={classes.backButton}
-              onClick={handleBackButtonClick}
-            >
-              {t('back')}
-            </Button>
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.nextButton}
-              disabled={!inputStore.isPhoneNumberValid || isLoading}
-              onClick={handleAddButtonClick}
-            >
-              {t('add')}
-            </Button>
-          </DialogActions>
-        </>
-      )}
+            <DialogActions className={classes.dialogActions}>
+              <Button
+                variant='outlined'
+                color='primary'
+                className={classes.backButton}
+                onClick={handleBackButtonClick}
+              >
+                {t('back')}
+              </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                className={classes.nextButton}
+                disabled={!inputStore.isPhoneNumberValid || isLoading}
+                onClick={handleAddButtonClick}
+              >
+                {t('add')}
+              </Button>
+            </DialogActions>
+          </>
+        )}
     </>
   )
 }

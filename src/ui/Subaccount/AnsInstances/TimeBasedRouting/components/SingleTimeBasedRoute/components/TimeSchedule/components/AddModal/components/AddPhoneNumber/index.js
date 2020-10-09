@@ -32,11 +32,11 @@ import { toJS } from 'mobx'
 
 const AddPhoneNumber = ({ handleClose, t }) => {
   const classes = useStyles()
-  const { customerId, groupId } = useParams()
+  const { customerId, groupId, tbrName } = useParams()
 
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
-        .ans_tbr_add_phone_number_step
+      .ans_tbr_add_phone_number_step
     : null
 
   const {
@@ -161,6 +161,7 @@ const AddPhoneNumber = ({ handleClose, t }) => {
     const payload = {
       customerId,
       groupId,
+      tbrId: tbrName,
       destination: currentCheckedNumber.destination,
       isPhoneNumberChanged: true,
       closeModal: handleClose
@@ -214,67 +215,67 @@ const AddPhoneNumber = ({ handleClose, t }) => {
       {isLoading ? (
         <Loading />
       ) : (
-        <Fragment>
-          <DialogTitle className={classes.title}>
-            {t('add_access_number')}
-            <IconButton
-              aria-label='close'
-              onClick={handleClose}
-              className={classes.closeButton}
-            >
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent className={classes.entitlementsDialogContent}>
-            <ModalHelperText helperText='add_destination_tbr_time_schedule' />
-            <CountryInput
-              value={selectedCountry}
-              setValue={setSelectedCountry}
-              countries={countries}
-              className={classes.countryInput}
-            />
-            <CustomTable
-              firstCell={false}
-              classes={classes}
-              rows={phoneNumbers}
-              columns={columns}
-              page={page}
-              setPage={setPage}
-              rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
-              order={order}
-              setOrder={setOrder}
-              orderBy={orderBy}
-              setOrderBy={setOrderBy}
-              totalPages={totalPages}
-              isLoadingData={isLoading}
-              noAvailableDataMessage={t('no_phone_numbers_available')}
-              showSearchBar={false}
-              isModal={true}
-              tableId={'ans_tbr_add_phone_number_step'}
-            />
-          </DialogContent>
-          <DialogActions className={classes.dialogActionsSecond}>
-            <Button
-              variant='outlined'
-              color='primary'
-              className={classes.backButton}
-              onClick={handleBackButtonClick}
-            >
-              {t('back')}
-            </Button>
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.nextButton}
-              onClick={handleAddButtonClick}
-              disabled={!currentCheckedNumber.destination}
-            >
-              {isEditMode ? t('save') : t('add')}
-            </Button>
-          </DialogActions>
-        </Fragment>
-      )}
+          <Fragment>
+            <DialogTitle className={classes.title}>
+              {t('add_access_number')}
+              <IconButton
+                aria-label='close'
+                onClick={handleClose}
+                className={classes.closeButton}
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+            <DialogContent className={classes.entitlementsDialogContent}>
+              <ModalHelperText helperText='add_destination_tbr_time_schedule' />
+              <CountryInput
+                value={selectedCountry}
+                setValue={setSelectedCountry}
+                countries={countries}
+                className={classes.countryInput}
+              />
+              <CustomTable
+                firstCell={false}
+                classes={classes}
+                rows={phoneNumbers}
+                columns={columns}
+                page={page}
+                setPage={setPage}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                order={order}
+                setOrder={setOrder}
+                orderBy={orderBy}
+                setOrderBy={setOrderBy}
+                totalPages={totalPages}
+                isLoadingData={isLoading}
+                noAvailableDataMessage={t('no_phone_numbers_available')}
+                showSearchBar={false}
+                isModal={true}
+                tableId={'ans_tbr_add_phone_number_step'}
+              />
+            </DialogContent>
+            <DialogActions className={classes.dialogActionsSecond}>
+              <Button
+                variant='outlined'
+                color='primary'
+                className={classes.backButton}
+                onClick={handleBackButtonClick}
+              >
+                {t('back')}
+              </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                className={classes.nextButton}
+                onClick={handleAddButtonClick}
+                disabled={!currentCheckedNumber.destination}
+              >
+                {isEditMode ? t('save') : t('add')}
+              </Button>
+            </DialogActions>
+          </Fragment>
+        )}
     </Fragment>
   )
 }

@@ -44,8 +44,11 @@ const useStyles = makeStyles(theme => ({
     marginRight: '32px'
   },
   modalContent: {
-    paddingTop: 43,
+    paddingTop: 8,
     paddingLeft: 39
+  },
+  helperTextWrap: {
+    marginBottom: 30
   },
   addDestinationModalContent: {
     padding: '8px 44px',
@@ -64,7 +67,9 @@ const useStyles = makeStyles(theme => ({
     width: 500,
     height: 370,
     border: `1px solid ${theme.palette.silver}`,
-    borderRadius: 3
+    borderRadius: 3,
+    marginLeft: 35,
+    marginTop: 60
   },
   formTitleWrap: {
     display: 'flex',
@@ -184,7 +189,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.grey40,
     marginBottom: 15
   },
-  helperTextWrap: {
+  editHelperTextWrap: {
     marginBottom: 15
   }
 }))
