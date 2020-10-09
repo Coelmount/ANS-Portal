@@ -110,12 +110,18 @@ export class AuthStore {
     }
   }
 
-  getLocal = () => {
+  getLocal = newToken => {
     this.user = {}
     this.username = ''
+
+    const token = newToken ? newToken : this.jwtToken
+    if (newToken) {
+      this.jwtToken = newToken
+    }
+
     axios
       .get(`${BASE_URL}/system/users/local`, {
-        headers: { Authorization: `Bearer ${this.jwtToken}` }
+        headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {
         if (res.status === 200) {

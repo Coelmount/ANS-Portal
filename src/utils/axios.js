@@ -53,6 +53,8 @@ instance.interceptors.response.use(
             const newJwtToken = res.data.access_token
             localStorage.setItem('jwtToken', newJwtToken)
             config.headers['Authorization'] = `Bearer ${newJwtToken}`
+
+            AuthStore.getLocal(newJwtToken)
           } else {
             AuthStore.logOut()
           }
