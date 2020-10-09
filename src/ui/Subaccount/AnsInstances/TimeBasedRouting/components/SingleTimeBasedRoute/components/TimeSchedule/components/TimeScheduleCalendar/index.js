@@ -77,9 +77,9 @@ const TimeScheduleCalendar = () => {
   const eventStyleGetter = ({ color }) => ({
     style: {
       backgroundColor: color,
-      borderRadius: '0px',
+      borderRadius: 7,
       opacity: 0.8,
-      color: 'black',
+      color: 'white',
       border: '0px',
       display: 'block'
     }
@@ -90,27 +90,27 @@ const TimeScheduleCalendar = () => {
       {isSchedulesPeriodsLoading ? (
         <Loading />
       ) : (
-        <Fragment>
-          <ColorsLegend />
-          <Calendar
-            view='week'
-            onView={handleOnViewChange}
-            events={allPeriods}
-            toolbar={false}
-            formats={formats}
-            defaultDate={new Date(2020, 5, 7)}
-            localizer={globalizeLocalizer}
-            className={classes.calendarCustomStyles}
-            components={{
-              event: EventComponent
-            }}
-            tooltipAccessor={null}
-            showMultiDayTimes={null}
-            eventPropGetter={eventStyleGetter}
-            selectable
-          />
-        </Fragment>
-      )}
+          <Fragment>
+            <ColorsLegend />
+            <Calendar
+              view='week'
+              onView={handleOnViewChange}
+              events={allPeriods}
+              toolbar={false}
+              formats={formats}
+              defaultDate={new Date(2020, 5, 7)}
+              localizer={globalizeLocalizer}
+              className={classes.calendarCustomStyles}
+              components={{
+                event: EventComponent
+              }}
+              tooltipAccessor={null}
+              showMultiDayTimes={null}
+              eventPropGetter={eventStyleGetter}
+              selectable
+            />
+          </Fragment>
+        )}
     </Fragment>
   )
 }
