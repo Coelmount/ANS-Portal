@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import Loading from 'components/Loading'
 import Input from 'components/Input'
@@ -31,6 +31,7 @@ const AddIVR = props => {
   const { t, open, handleClose, number } = props
   const classes = useStyles()
   const match = useParams()
+  const history = useHistory()
   const {
     singleLvl,
     multiLvl,
@@ -54,19 +55,27 @@ const AddIVR = props => {
   }, [])
 
   const handleAddIVR = () => {
-    postAddIVR(match.customerId, match.groupId, {
-      ivrInstance: {
-        //serviceUserId: `${match.groupId}_ivr${name}@${customer.defaultDomain}`,
-        templateName: config.templates.ivr,
-        type,
-        serviceInstanceProfile: {
-          cliFirstName: 'IVR',
-          cliLastName: name,
-          name,
-          phoneNumber: number
+    postAddIVR(
+      match.customerId,
+      match.groupId,
+      {
+        ivrInstance: {
+          //serviceUserId: `${match.groupId}_ivr${name}@${customer.defaultDomain}`,
+          templateName: config.templates.ivr,
+          type,
+          serviceInstanceProfile: {
+            cliFirstName: 'IVR',
+            cliLastName: name,
+            name,
+            phoneNumber: number
+          }
         }
-      }
-    }).then(() => handleClose())
+      },
+      id =>
+        history.push(
+          `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/ivr/${id}`
+        )
+    ).then(() => handleClose())
   }
 
   if (isLoadingLicenses || isLoadingCustomer || isLoadingConfig || addIVR) {
