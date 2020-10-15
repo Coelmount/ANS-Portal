@@ -29,7 +29,7 @@ const AvailableNumbers = ({ t }) => {
 
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
-        .basic_instance_select_access_numbers
+      .basic_instance_select_access_numbers
     : null
 
   const {
@@ -40,7 +40,7 @@ const AvailableNumbers = ({ t }) => {
     searchParam,
     totalPagesAvailableNumbers,
     isAvailableNumbersLoading,
-    setNumberToConfigure
+    updateSelectedPhoneNumber
   } = TimeBaseRoutingStore
 
   const [widthOffset, setWidthOffset] = useState('153px')
@@ -123,8 +123,14 @@ const AvailableNumbers = ({ t }) => {
     updateSearchParam(value)
   }
 
-  const handleSingleConfigureClick = number => {
-    setNumberToConfigure(number)
+  const handleSingleConfigureClick = row => {
+    const { country_code, nsn } = row
+    const payload = {
+      country_code,
+      nsn
+    }
+
+    updateSelectedPhoneNumber(payload)
     modalsStore.open(addModalId)
   }
 
@@ -187,7 +193,7 @@ const AvailableNumbers = ({ t }) => {
         <Button
           variant='contained'
           color='primary'
-          onClick={() => handleSingleConfigureClick(row.phoneNumber)}
+          onClick={() => handleSingleConfigureClick(row)}
           className={classes.configureButton}
         >
           {t('configure_now')}
@@ -202,29 +208,29 @@ const AvailableNumbers = ({ t }) => {
         {isAvailableNumbersLoading && !numberLike ? (
           <Loading />
         ) : (
-          <CustomTable
-            firstCell={true}
-            classes={classes}
-            rows={availableNumbers}
-            columns={columns}
-            page={page}
-            setPage={setPage}
-            rowsPerPage={rowsPerPage}
-            setRowsPerPage={setRowsPerPage}
-            order={order}
-            setOrder={setOrder}
-            orderBy={orderBy}
-            setOrderBy={setOrderBy}
-            totalPages={totalPagesAvailableNumbers}
-            query={numberLike}
-            setQuery={setNumberLike}
-            isSearchParamsActive={isSearchParamsActive}
-            isLoadingData={isAvailableNumbersLoading}
-            noAvailableDataMessage={t('no_phone_numbers_available')}
-            tableId={'ans_basic_available_numbers'}
-            searchSelector={SearchSelector}
-          />
-        )}
+            <CustomTable
+              firstCell={true}
+              classes={classes}
+              rows={availableNumbers}
+              columns={columns}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+              order={order}
+              setOrder={setOrder}
+              orderBy={orderBy}
+              setOrderBy={setOrderBy}
+              totalPages={totalPagesAvailableNumbers}
+              query={numberLike}
+              setQuery={setNumberLike}
+              isSearchParamsActive={isSearchParamsActive}
+              isLoadingData={isAvailableNumbersLoading}
+              noAvailableDataMessage={t('no_phone_numbers_available')}
+              tableId={'ans_basic_available_numbers'}
+              searchSelector={SearchSelector}
+            />
+          )}
         {modalsStore.openedId === addModalId && (
           <AddModal
             open={modalsStore.openedId === addModalId}

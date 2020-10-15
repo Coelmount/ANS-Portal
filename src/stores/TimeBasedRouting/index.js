@@ -23,8 +23,8 @@ export class TimeBasedRouting {
   configureStep = 1
   tbrToAddName = ''
   searchParam = NUMBER_LIKE
-  numberToConfigure = ''
   currentTbrName = ''
+  selectedPhoneNumber = {}
   isLoadingTBR = true
   isLoadingSingleTBR = true
   isTimeBasedRoutePosting = false
@@ -193,9 +193,6 @@ export class TimeBasedRouting {
     this.searchParam = value
   }
 
-  setNumberToConfigure = number => {
-    this.numberToConfigure = number
-  }
 
   getTimeBasedRoutes = ({ customerId, groupId }) => {
     this.timeBasedRoutes = []
@@ -356,6 +353,10 @@ export class TimeBasedRouting {
     }
   }
 
+  updateSelectedPhoneNumber = number => {
+    this.selectedPhoneNumber = number
+  }
+
   postTimeBasedRoute = ({
     customerId,
     groupId,
@@ -364,11 +365,16 @@ export class TimeBasedRouting {
   }) => {
     this.isTimeBasedRoutePosting = true
 
+    const accessCode = this.selectedPhoneNumber.country_code
+    const accessNumber = this.selectedPhoneNumber.nsn
+
     axios
       .post(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`,
         {
           name: this.tbrToAddName,
+          cc_access_number: accessCode,
+          access_number: accessNumber,
           defaultDestination
         }
       )
@@ -457,7 +463,7 @@ decorate(TimeBasedRouting, {
   postTimeBasedRoute: action,
   getAvailableNumbers: action,
   updateSearchParam: action,
-  setNumberToConfigure: action,
+  updateSelectedPhoneNumber: action,
   handleCheckAll: action,
   deleteTimeBasedRoutes: action,
   getCurrentNameWithId: action,
