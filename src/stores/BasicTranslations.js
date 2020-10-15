@@ -5,7 +5,7 @@ import axios from 'utils/axios'
 import SnackbarStore from './Snackbar'
 import getErrorMessage from 'utils/getErrorMessage'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
-import getCountryTwoLetterCodeFromNumber from 'utils/phoneNumbers/getCountryTwoLetterCodeFromNumber'
+import getDestinationType from 'utils/phoneNumbers/getDestinationType'
 import types from 'utils/types/basicSearchParams'
 
 const { NUMBER_LIKE, COUNTRY_CODE } = types
@@ -54,29 +54,23 @@ export class BasicTranslations {
     this.selectedPhoneNumber = number
   }
 
-  postInstance = (
-    customerId,
-    groupId,
-    destinationCode,
-    destinationNsn,
-    closeModal
-  ) => {
+  postInstance = (customerId, groupId, destinationNumber, closeModal) => {
     this.isPostingInstance = true
+
     const accessCode = this.selectedPhoneNumber.country_code
     const accessNumber = this.selectedPhoneNumber.nsn
-    const destinationCodeWithPlus = `+${destinationCode}`
 
     axios
       .post(`tenants/${customerId}/groups/${groupId}/services/ans_basic`, {
         cc_access_number: accessCode,
         access_number: accessNumber,
-        cc_destination_number: destinationCodeWithPlus,
-        destination_number: destinationNsn
+
+        destination_number: destinationNumber
       })
       .then(() => {
         closeModal()
         SnackbarStore.enqueueSnackbar({
-          message: `${accessCode} ${accessNumber} => ${destinationCodeWithPlus} ${destinationNsn} ANS basic instance added successfully`,
+          message: `${accessCode} ${accessNumber} => ${destinationNumber} ANS basic instance added successfully`,
           options: {
             variant: 'success'
           }
@@ -99,21 +93,14 @@ export class BasicTranslations {
     this.selectedInstance = instance
   }
 
-  putInstance = (
-    customerId,
-    groupId,
-    ansId,
-    destinationCode,
-    destinationNsn
-  ) => {
+  putInstance = (customerId, groupId, ansId, destinationNumber) => {
     this.isPuttingInstance = true
-    const destinationCodeWithPlus = `+${destinationCode}`
+
     axios
       .put(
         `/tenants/${customerId}/groups/${groupId}/services/ans_basic/${ansId}`,
         {
-          cc_destination_number: destinationCodeWithPlus,
-          destination_number: destinationNsn
+          destination_number: destinationNumber
         }
       )
       .then(() => {
@@ -168,20 +155,7 @@ export class BasicTranslations {
                   ? item.access_number
                   : `+${item.access_number}`
               ),
-            destinationCountry:
-              item.destination_number &&
-              getCountryNameFromNumber(
-                item.destination_number[0] === '+'
-                  ? item.destination_number
-                  : `+${item.destination_number}`
-              ),
-            destinationCountryTwoLetterCode:
-              item.destination_number &&
-              getCountryTwoLetterCodeFromNumber(
-                item.destination_number[0] === '+'
-                  ? item.destination_number
-                  : `+${item.destination_number}`
-              ),
+            destinationType: getDestinationType(item.destination_number),
             ...item
           }
         })
@@ -286,7 +260,7 @@ export class BasicTranslations {
         SnackbarStore.enqueueSnackbar({
           message: `Translation${
             idArr.length > 1 ? 's' : ''
-          } deleted successfully`,
+            } deleted successfully`,
           options: {
             variant: 'success'
           }

@@ -1,7 +1,6 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import PhoneInput from 'react-phone-input-2'
+import React, { Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
-import { observer } from 'mobx-react'
+import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -12,10 +11,11 @@ import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
+import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined'
 
 import BasicTranslationsStore from 'stores/BasicTranslations'
-import ConfigStore from 'stores/Config'
-import CountryInput from 'components/CountryInput'
+import Input from 'components/Input'
 import Loading from 'components/Loading'
 import ModalHelperText from 'components/ModalHelperText'
 
@@ -27,48 +27,41 @@ const AddDestinationNumber = ({ handleClose, t }) => {
   const match = useParams()
 
   const { postInstance, isPostingInstance } = BasicTranslationsStore
-  const { getCountries, countries, isLoadingCountries } = ConfigStore
 
-  const [selectedCountry, setSelectedCountry] = useState(null)
-  const [selectedCountryNameCode, setSelectedCountryNameCode] = useState('')
-  const [destinationNumber] = useState('')
-  const [selectedNsn, setSelectedNsn] = useState('')
-  const [selectedNumberCode, setSelectedNumberCode] = useState(null)
-  const [isCountryCodeEditable, setIsCountryCodeEditable] = useState(true)
+  const localStore = useLocalStore(() => ({
+    phoneNumber: '',
+    setPhoneNumber(number) {
+      this.phoneNumber = number
+    },
+    get calculateNumberType() {
+      if (!this.phoneNumber.length) return 'None'
 
-  const isAddButtonDisabled = !selectedNsn || selectedNsn.length < 5
-
-  // get countries array for CountryInput
-  useEffect(() => {
-    getCountries()
-  }, [getCountries])
-
-  // update country code after country selection
-  useEffect(() => {
-    if (selectedCountry) {
-      setSelectedCountryNameCode(selectedCountry.code.toLowerCase())
+      if (
+        this.phoneNumber.startsWith('+999') ||
+        this.phoneNumber.startsWith('00999')
+      ) {
+        return 'Onward routing'
+      } else if (
+        this.phoneNumber.startsWith('+') ||
+        this.phoneNumber.startsWith('00')
+      ) {
+        return 'International call forwarding'
+      }
+      return 'Custom routing'
     }
-  }, [selectedCountry])
+  }))
 
-  // lock country code after country choose
-  useEffect(() => {
-    if (selectedCountryNameCode) {
-      setIsCountryCodeEditable(false)
-    }
-  }, [selectedCountryNameCode])
+  const isAddButtonDisabled =
+    localStore.phoneNumber.length < 2 || localStore.phoneNumber.length > 30
 
-  // clear nsn after request
-  useEffect(() => {
-    if (isPostingInstance) setSelectedNsn('')
-  }, [isPostingInstance])
+  const handlePhoneNumberChange = e => {
+    const value = e.target.value
+    // Starts from + or number then only numbers
+    const reg = /^[+\d]?(?:[\d-.\s()]*)$/
 
-  // phone number input onChange; nsn/code => state
-  const handlePhoneInputChange = (value, data) => {
-    if (data.dialCode) {
-      const initValue = value.slice(data.dialCode.length)
-      const formattedValue = initValue.replace(/\s/g, '')
-      setSelectedNsn(formattedValue)
-      setSelectedNumberCode(data.dialCode)
+    if (value.length > 30) return
+    if (reg.test(value) || value === '') {
+      localStore.setPhoneNumber(value)
     }
   }
 
@@ -77,15 +70,14 @@ const AddDestinationNumber = ({ handleClose, t }) => {
     postInstance(
       match.customerId,
       match.groupId,
-      selectedNumberCode,
-      selectedNsn,
+      localStore.phoneNumber,
       handleClose
     )
   }
 
   return (
     <Fragment>
-      {isLoadingCountries || isPostingInstance ? (
+      {isPostingInstance ? (
         <Loading />
       ) : (
         <Fragment>
@@ -110,23 +102,23 @@ const AddDestinationNumber = ({ handleClose, t }) => {
             </Box>
 
             <Box className={classes.inputsWrap}>
-              <CountryInput
-                value={selectedCountry}
-                setValue={setSelectedCountry}
-                countries={countries}
-                className={classes.countryInput}
-              />
               <Box className={classes.phoneInputWrap}>
-                <PhoneInput
-                  country={selectedCountryNameCode}
-                  value={destinationNumber}
+                <Input
+                  label={t('phone_number')}
+                  icon={<PhoneOutlinedIcon alt='phone' />}
+                  value={localStore.phoneNumber}
                   placeholder={t('enter_number')}
-                  disabled={!selectedCountryNameCode}
-                  onChange={(value, data) =>
-                    handlePhoneInputChange(value, data)
-                  }
-                  countryCodeEditable={isCountryCodeEditable}
-                  disableDropdown
+                  onChange={handlePhoneNumberChange}
+                />
+              </Box>
+
+              <Box className={classes.phoneInputWrap}>
+                <Input
+                  label={t('number_type')}
+                  icon={<LocationOnOutlinedIcon alt='location' />}
+                  value={localStore.calculateNumberType}
+                  placeholder={t('enter_number')}
+                  disabled
                 />
               </Box>
             </Box>
