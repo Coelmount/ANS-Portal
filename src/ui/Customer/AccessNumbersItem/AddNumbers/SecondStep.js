@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import CustomTable from 'components/CustomTable'
 import Checkbox from 'components/Checkbox'
@@ -26,7 +27,8 @@ const SecondStep = props => {
     postAddNumbersToCustomer,
     handleSelectAll,
     selectNumbers,
-    changeHover
+    changeHover,
+    maxRangeSize
   } = props
 
   const classes = useStyles()
@@ -118,15 +120,30 @@ const SecondStep = props => {
         >
           {t('cancel')}
         </Button>
-        <Button
-          variant='contained'
-          color='primary'
-          className={classes.nextButton}
-          disabled={!numbers.filter(el => el.checked).length}
-          onClick={() => postAddNumbersToCustomer()}
+        <Tooltip
+          title={
+            maxRangeSize < numbers.filter(el => el.checked).length
+              ? t('out_of_range_amount_numbers_disabled_tooltip', {
+                  maxRangeSize
+                })
+              : ''
+          }
         >
-          {`${t('add')} (${numbers.filter(el => el.checked).length})`}
-        </Button>
+          <div>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.nextButton}
+              disabled={
+                !numbers.filter(el => el.checked).length ||
+                maxRangeSize < numbers.filter(el => el.checked).length
+              }
+              onClick={() => postAddNumbersToCustomer()}
+            >
+              {`${t('add')} (${numbers.filter(el => el.checked).length})`}
+            </Button>
+          </div>
+        </Tooltip>
       </DialogActions>
     </React.Fragment>
   )

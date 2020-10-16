@@ -26,7 +26,8 @@ const EditEntitlements = props => {
   const { t } = props
   const {
     entitlements: propsEntitlements,
-    putTotalEntitlements
+    putTotalEntitlements,
+    getEntitlements
   } = entitlementsStore
   const [entitlements, setEntitlements] = useState(() =>
     toJS(propsEntitlements)
@@ -106,6 +107,7 @@ const EditEntitlements = props => {
     })
     Promise.all(promiseArray).then(() => {
       setDisabledSave(false)
+      getEntitlements(match.customerId)
       props.handleClose()
     })
   }
