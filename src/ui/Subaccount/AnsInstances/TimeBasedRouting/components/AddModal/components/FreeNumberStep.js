@@ -2,19 +2,20 @@ import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
-import PhoneInput from 'react-phone-input-2'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
+import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
 import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Loading from 'components/Loading'
 import ModalHelperText from 'components/ModalHelperText'
+import Input from 'components/Input'
 
 import useStyles from '../styles'
 
@@ -34,12 +35,19 @@ const FreeNumberStep = ({ t, handleClose }) => {
       this.phoneNumber = value
     },
     get isPhoneNumberValid() {
-      return this.phoneNumber
+      return this.phoneNumber.length > 1
     }
   }))
 
-  const handlePhoneInputChange = value => {
-    inputStore.set(`+${value}`)
+  const handlePhoneInputChange = e => {
+    const value = e.target.value
+    // Starts from + or number then only numbers
+    const reg = /^[+\d]?(?:[\d-.\s()]*)$/
+
+    if (value.length > 30) return
+    if (reg.test(value) || value === '') {
+      inputStore.set(value)
+    }
   }
 
   // Back to first step
@@ -79,11 +87,13 @@ const FreeNumberStep = ({ t, handleClose }) => {
               <ModalHelperText helperText='add_tbr_instance_tbr_step_2_free_number' />
               <Box className={classes.freeNumberStep}>{`${t('step')} 2/2`}</Box>
             </div>
-            <Box>
-              <PhoneInput
+            <Box className={classes.phoneInputWrap}>
+              <Input
+                label={`${t('default_forwarding_destination')}`}
+                icon={<PhoneOutlinedIcon alt='phone' />}
                 value={inputStore.phoneNumber}
                 placeholder={t('enter_number')}
-                onChange={value => handlePhoneInputChange(value)}
+                onChange={handlePhoneInputChange}
               />
             </Box>
           </DialogContent>

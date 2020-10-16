@@ -35,6 +35,10 @@ export class CreateCustomerStore {
 
   createdCustomerStore = {}
 
+  clearCreatedCustomerStore = () => {
+    this.createdCustomerStore = {}
+  }
+
   changeStep = step => {
     this.step = step
   }
@@ -84,7 +88,8 @@ decorate(CreateCustomerStore, {
   addUpdateCustomer: observable,
   changeStep: action,
   changeCustomer: action,
-  createSubaccountFunct: action
+  createSubaccountFunct: action,
+  clearCreatedCustomerStore: action
 })
 
 export default new CreateCustomerStore()
