@@ -530,7 +530,11 @@ const AccessNumbersItem = ({ t }) => {
     mainText: currentEntitlement && currentEntitlement.name,
     iconCapture: t('add_numbers'),
     Icon: <AddOutlinedIcon />,
-    extraBlock: extraTitleBlock
+    extraBlock: extraTitleBlock,
+    disabled:
+      currentEntitlement &&
+      currentEntitlement.entitlement === currentEntitlement.counter,
+    addButtonTooltipText: t('run_out_of_entitlements')
   }
 
   const toolbarButtonsBlock = () => {
@@ -843,6 +847,9 @@ const AccessNumbersItem = ({ t }) => {
                   setStep(1)
                 }}
                 showHelper={false}
+                showTooltip={
+                  currentEntitlement.entitlement === currentEntitlement.counter
+                }
               />
             </CustomContainer>
             <CustomTable

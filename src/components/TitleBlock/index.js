@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import getHelperText from 'utils/getHelperText'
 
@@ -19,9 +20,11 @@ const TitleBlock = ({
     Icon,
     buttonBlock,
     extraBlock,
-    disabled
+    disabled,
+    addButtonTooltipText
   },
-  showHelper
+  showHelper,
+  showTooltip
 }) => {
   const classes = useStyles()
   const { pathname } = useLocation()
@@ -44,22 +47,24 @@ const TitleBlock = ({
       </Box>
       <Box className={classes.rightBlockWrap}>
         {extraBlock}
-        {Icon && iconCapture && (
-          <Box className={classes.addCustomerWrap}>
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={handleOpen}
-              className={classes.iconButton}
-              disabled={disabled}
-            >
-              {Icon}
-            </Button>
-            <Typography className={classes.addCustomerTitle}>
-              {iconCapture}
-            </Typography>
-          </Box>
-        )}
+        <Tooltip title={showTooltip ? addButtonTooltipText : ''}>
+          {Icon && iconCapture && (
+            <Box className={classes.addCustomerWrap}>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleOpen}
+                className={classes.iconButton}
+                disabled={disabled}
+              >
+                {Icon}
+              </Button>
+              <Typography className={classes.addCustomerTitle}>
+                {iconCapture}
+              </Typography>
+            </Box>
+          )}
+        </Tooltip>
         {buttonBlock}
       </Box>
     </Box>
@@ -67,11 +72,13 @@ const TitleBlock = ({
 }
 
 TitleBlock.propTypes = {
-  showHelper: PropTypes.bool
+  showHelper: PropTypes.bool,
+  showTooltip: PropTypes.bool
 }
 
 TitleBlock.defaultProps = {
-  showHelper: true
+  showHelper: true,
+  showTooltip: false
 }
 
 export default TitleBlock
