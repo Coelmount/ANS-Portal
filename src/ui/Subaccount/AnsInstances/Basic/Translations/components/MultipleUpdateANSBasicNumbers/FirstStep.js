@@ -23,9 +23,16 @@ const FirstStep = props => {
   const classes = useStyles()
 
   const downloadCSVFile = () => {
-    const numbersToCSV = numbers
-      .filter(number => number.checked)
-      .map(number => ({
+    const checkedNumbers = numbers.filter(number => number.checked)
+    const numbersToCSV = checkedNumbers.map(number => {
+      const parsedDestinationNumber = parsePhoneNumberFromString(
+        number.destination_number
+      )
+      const destinationNumberCallingCode = parsedDestinationNumber
+        ? parsedDestinationNumber.countryCallingCode
+        : ''
+
+      return {
         access_cc: `+${
           parsePhoneNumberFromString(number.access_number).countryCallingCode
         }`,
@@ -33,16 +40,18 @@ const FirstStep = props => {
           parsePhoneNumberFromString(number.access_number).countryCallingCode
             .length + 1
         ),
-        destination_cc: `+${
-          parsePhoneNumberFromString(number.destination_number)
-            .countryCallingCode
-        }`,
-        destination_number: number.destination_number.slice(
-          parsePhoneNumberFromString(number.destination_number)
-            .countryCallingCode.length + 1
-        ),
+        destination_cc: number.destination_number.startsWith('+')
+          ? destinationNumberCallingCode
+          : '',
+        destination_number: number.destination_number.startsWith('+')
+          ? number.destination_number.slice(
+              destinationNumberCallingCode.length + 1
+            )
+          : number.destination_number,
         ans_id: number.ans_id
-      }))
+      }
+    })
+
     const pom = document.createElement('a')
     const csvContent = Papa.unparse(JSON.stringify(numbersToCSV), {
       delimiter: ';',
