@@ -20,14 +20,24 @@ import useStyles from './styles'
 const Search = ({ t }) => {
   const classes = useStyles()
   const { getSearchResult, isLoading, clearSearchResult } = SearchStore
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const [searchQuery, setSearchQuery] = useState(null)
+  useEffect(() => clearSearchResult, [clearSearchResult])
 
   const handleSearchClick = () => {
     getSearchResult(searchQuery)
   }
 
-  useEffect(() => clearSearchResult, [clearSearchResult])
+  const handleSearchInputChange = e => {
+    const value = e.target.value
+    // Starts from + or number then only numbers
+    const reg = /^[+]([\d-.\s()]*)$/
+
+    if (value.length > 30) return
+    if (reg.test(value) || value === '') {
+      setSearchQuery(value)
+    }
+  }
 
   return (
     <Box className={classes.root}>
@@ -49,9 +59,10 @@ const Search = ({ t }) => {
           <Box className={classes.searchWrap}>
             <Box className={classes.searchContent}>
               <input
-                className={classes.searchInput}
+                value={searchQuery}
+                onChange={handleSearchInputChange}
                 placeholder={t('search_input_placeholder')}
-                onChange={e => setSearchQuery(e.target.value)}
+                className={classes.searchInput}
               />
               <Box
                 className={classes.searchIconWrap}
