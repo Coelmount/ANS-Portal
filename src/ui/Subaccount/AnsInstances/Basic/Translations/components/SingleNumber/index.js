@@ -15,7 +15,7 @@ import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined'
 
-import SnackbarStore from 'stores/Snackbar'
+// import SnackbarStore from 'stores/Snackbar'
 import BasicTranslationsStore from 'stores/BasicTranslations'
 import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
@@ -23,7 +23,6 @@ import TitleBlock from 'components/TitleBlock'
 import Input from 'components/Input'
 import Loading from 'components/Loading'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
-
 
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import useStyles from './styles'
@@ -70,7 +69,7 @@ const SingleNumber = observer(({ t }) => {
 
   const accessNumber = match.instanceNumber
   const accessCountry = getCountryNameFromNumber(accessNumber)
-  const isSaveEnabled = true
+  const isSaveEnabled = localStore.phoneNumber
 
   // Initial request
   useEffect(() => {
@@ -88,17 +87,7 @@ const SingleNumber = observer(({ t }) => {
       setCurrentInstance(currentNumber)
       localStore.setPhoneNumber(currentNumber.destination_number)
     }
-    else if (!isBasicTranslationsNumbersLoading && !currentNumber) {
-      SnackbarStore.enqueueSnackbar({
-        message: t('instance_not_exist'),
-        options: {
-          variant: 'info'
-        }
-      })
-      history.push(
-        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
-      )
-    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basicTranslationsNumbers])
 
@@ -145,105 +134,100 @@ const SingleNumber = observer(({ t }) => {
       {isBasicTranslationsNumbersLoading || isPuttingInstance ? (
         <Loading />
       ) : (
-          <Box className={classes.root}>
-            <Paper>
-              <CustomContainer>
-                <CustomBreadcrumbs />
-                <TitleBlock titleData={titleData} />
-              </CustomContainer>
-              <Box className={classes.inputsWrap}>
-                <Box className={classes.leftBlock}>
-                  <div className={classes.accessNumberContainer}>
-                    <span>{`${t('access_number')}:`}</span>
-                    <Input
-                      value={accessNumber}
-                      disabled
-                    />
-                  </div>
+        <Box className={classes.root}>
+          <Paper>
+            <CustomContainer>
+              <CustomBreadcrumbs />
+              <TitleBlock titleData={titleData} />
+            </CustomContainer>
+            <Box className={classes.inputsWrap}>
+              <Box className={classes.leftBlock}>
+                <div className={classes.accessNumberContainer}>
+                  <span>{`${t('access_number')}:`}</span>
+                  <Input value={accessNumber} disabled />
+                </div>
 
-                  <div className={classes.inboundCountryContainer}>
-                    <span>{`${t('inbound_country')}:`}</span>
-                    <Input
-                      value={accessCountry}
-                      disabled
-                    />
-                  </div>
-                </Box>
+                <div className={classes.inboundCountryContainer}>
+                  <span>{`${t('inbound_country')}:`}</span>
+                  <Input value={accessCountry} disabled />
+                </div>
+              </Box>
 
-                <img
-                  src={arrowsIcon}
-                  className={classes.arrowsIcon}
-                  alt='arrows icon'
-                />
+              <img
+                src={arrowsIcon}
+                className={classes.arrowsIcon}
+                alt='arrows icon'
+              />
 
-                <Box className={classes.rightBlock}>
-                  <div className={classes.destinationNumberContainer}>
-                    <span>{`${t('destination_number')}:`}</span>
-                    <Input
-                      value={localStore.phoneNumber}
-                      onChange={handlePhoneNumberChange}
-                      placeholder={t('enter_number')}
-                      icon={<PhoneOutlinedIcon alt='phone' />}
-                    />
-                  </div>
-                  <div className={classes.numberTypeContainer}>
-                    <span>{`${t('number_type')}:`}</span>
-                    <Input
-                      value={localStore.calculateNumberType}
-                      placeholder={t('enter_number')}
-                      icon={<LocationOnOutlinedIcon alt='location' />}
-                      disabled
-                    />
-                  </div>
+              <Box className={classes.rightBlock}>
+                <div className={classes.destinationNumberContainer}>
+                  <span>{`${t('destination_number')}:`}</span>
+                  <Input
+                    value={localStore.phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder={t('enter_number')}
+                    icon={<PhoneOutlinedIcon alt='phone' />}
+                    disabled={!isSaveEnabled}
+                  />
+                </div>
+                <div className={classes.numberTypeContainer}>
+                  <span>{`${t('number_type')}:`}</span>
+                  <Input
+                    value={localStore.calculateNumberType}
+                    placeholder={t('enter_number')}
+                    icon={<LocationOnOutlinedIcon alt='location' />}
+                    disabled
+                  />
+                </div>
 
-                  <Box className={classes.buttonsWrap}>
-                    <Box className={classes.buttonBlock}>
-                      <Link
-                        to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`}
-                      >
-                        <IconButton
-                          aria-label='cancel icon button'
-                          component='span'
-                          className={classnames(
-                            classes.buttonIconWrap,
-                            classes.cancelButtonWrap
-                          )}
-                        >
-                          <CloseOutlinedIcon className={classes.cancelIcon} />
-                        </IconButton>
-                      </Link>
-                      <Typography className={classes.buttonLabel}>
-                        {t('cancel')}
-                      </Typography>
-                    </Box>
-
-                    <Box
-                      className={`${classes.buttonBlock} ${classes.doneButtonBlock}`}
+                <Box className={classes.buttonsWrap}>
+                  <Box className={classes.buttonBlock}>
+                    <Link
+                      to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`}
                     >
                       <IconButton
-                        aria-label='save icon button'
+                        aria-label='cancel icon button'
                         component='span'
                         className={classnames(
                           classes.buttonIconWrap,
-                          classes.asignButtonWrap,
-                          {
-                            [classes.disabledButton]: !isSaveEnabled
-                          }
+                          classes.cancelButtonWrap
                         )}
-                        onClick={handleSaveButtonClick}
                       >
-                        <DoneOutlinedIcon className={classes.assignIcon} />
+                        <CloseOutlinedIcon className={classes.cancelIcon} />
                       </IconButton>
-                      <Typography className={classes.buttonLabel}>
-                        {t('save')}
-                      </Typography>
-                    </Box>
+                    </Link>
+                    <Typography className={classes.buttonLabel}>
+                      {t('cancel')}
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    className={`${classes.buttonBlock} ${classes.doneButtonBlock}`}
+                  >
+                    <IconButton
+                      aria-label='save icon button'
+                      component='span'
+                      className={classnames(
+                        classes.buttonIconWrap,
+                        classes.asignButtonWrap,
+                        {
+                          [classes.disabledButton]: !isSaveEnabled
+                        }
+                      )}
+                      onClick={handleSaveButtonClick}
+                    >
+                      <DoneOutlinedIcon className={classes.assignIcon} />
+                    </IconButton>
+                    <Typography className={classes.buttonLabel}>
+                      {t('save')}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
-            </Paper>
-          </Box>
-        )}
+            </Box>
+          </Paper>
+        </Box>
+      )}
     </Fragment>
   )
 })
