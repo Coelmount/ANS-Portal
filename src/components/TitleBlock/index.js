@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
@@ -19,7 +20,8 @@ const TitleBlock = ({
     buttonBlock,
     extraBlock,
     disabled
-  }
+  },
+  showHelper
 }) => {
   const classes = useStyles()
   const { pathname } = useLocation()
@@ -37,7 +39,7 @@ const TitleBlock = ({
           {mainText}
         </Typography>
         <Typography className={classes.helperText}>
-          {formattedHelperText}
+          {showHelper ? formattedHelperText : ''}
         </Typography>
       </Box>
       <Box className={classes.rightBlockWrap}>
@@ -62,6 +64,14 @@ const TitleBlock = ({
       </Box>
     </Box>
   )
+}
+
+TitleBlock.propTypes = {
+  showHelper: PropTypes.bool
+}
+
+TitleBlock.defaultProps = {
+  showHelper: true
 }
 
 export default TitleBlock
