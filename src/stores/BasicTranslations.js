@@ -25,7 +25,6 @@ export class BasicTranslations {
   errorAdded = []
   totalPagesAvailableNumbers = 0
   availableNumbersForAddInstance = []
-  isRedirectAfterPut = false
   isDeleting = false
   amountOfBasicInstances = 0
   searchParam = NUMBER_LIKE
@@ -54,7 +53,7 @@ export class BasicTranslations {
     this.selectedPhoneNumber = number
   }
 
-  postInstance = (customerId, groupId, destinationNumber, closeModal) => {
+  postInstance = (customerId, groupId, destinationNumber, history) => {
     this.isPostingInstance = true
 
     const accessCode = this.selectedPhoneNumber.country_code
@@ -68,7 +67,10 @@ export class BasicTranslations {
         destination_number: destinationNumber
       })
       .then(() => {
-        closeModal()
+        history.push(
+          `/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic#translations`
+        )
+
         SnackbarStore.enqueueSnackbar({
           message: `${accessCode} ${accessNumber} => ${destinationNumber} ANS basic instance added successfully`,
           options: {
@@ -93,7 +95,7 @@ export class BasicTranslations {
     this.selectedInstance = instance
   }
 
-  putInstance = (customerId, groupId, ansId, destinationNumber) => {
+  putInstance = (customerId, groupId, ansId, destinationNumber, history) => {
     this.isPuttingInstance = true
 
     axios
@@ -104,7 +106,9 @@ export class BasicTranslations {
         }
       )
       .then(() => {
-        this.isRedirectAfterPut = true
+        history.push(
+          `/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic#translations`
+        )
         SnackbarStore.enqueueSnackbar({
           message: 'ANS instance edited successfully',
           options: {
@@ -123,10 +127,6 @@ export class BasicTranslations {
       .finally(() => {
         this.isPuttingInstance = false
       })
-  }
-
-  clearIsRedireactAfterPut = () => {
-    this.isRedirectAfterPut = false
   }
 
   getBasicTranslationsNumbers = (customerId, groupId) => {
@@ -258,7 +258,6 @@ export class BasicTranslations {
 
     Promise.all(promiseArr)
       .then(() => {
-        this.isRedirectAfterPut = true
         SnackbarStore.enqueueSnackbar({
           message: `Translation${
             idArr.length > 1 ? 's' : ''
@@ -388,7 +387,6 @@ decorate(BasicTranslations, {
   successAdded: observable,
   refusedAdded: observable,
   errorAdded: observable,
-  isRedirectAfterPut: observable,
   isDeleting: observable,
   amountOfBasicInstances: observable,
   searchParam: observable,

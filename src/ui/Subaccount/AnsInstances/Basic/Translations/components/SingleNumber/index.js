@@ -37,9 +37,7 @@ const SingleNumber = observer(({ t }) => {
     basicTranslationsNumbers,
     getBasicTranslationsNumbers,
     isBasicTranslationsNumbersLoading,
-    isPuttingInstance,
-    isRedirectAfterPut,
-    clearIsRedireactAfterPut
+    isPuttingInstance
   } = BasicTranslationsStore
 
   const [currentInstance, setCurrentInstance] = useState('')
@@ -91,24 +89,14 @@ const SingleNumber = observer(({ t }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basicTranslationsNumbers])
 
-  // Redirect if put request successfull
-  useEffect(() => {
-    if (isRedirectAfterPut) {
-      history.push(
-        `/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`
-      )
-    }
-    return () => clearIsRedireactAfterPut()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRedirectAfterPut])
-
   const handleSaveButtonClick = () => {
     if (isSaveEnabled) {
       putInstance(
         match.customerId,
         match.groupId,
         currentInstance.ans_id,
-        localStore.phoneNumber
+        localStore.phoneNumber,
+        history
       )
     }
   }

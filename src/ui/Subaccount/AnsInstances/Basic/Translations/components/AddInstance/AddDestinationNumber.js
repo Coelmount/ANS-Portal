@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -25,6 +25,7 @@ import './customPhoneInputStyles.css'
 const AddDestinationNumber = ({ handleClose, t }) => {
   const classes = useStyles()
   const match = useParams()
+  const history = useHistory()
 
   const { postInstance, isPostingInstance } = BasicTranslationsStore
 
@@ -71,7 +72,7 @@ const AddDestinationNumber = ({ handleClose, t }) => {
       match.customerId,
       match.groupId,
       localStore.phoneNumber,
-      handleClose
+      history
     )
   }
 
