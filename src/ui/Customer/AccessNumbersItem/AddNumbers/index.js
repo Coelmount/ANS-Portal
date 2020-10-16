@@ -32,8 +32,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const CreateCustomer = props => {
-  const { open, handleClose, step, changeStep } = props
+const AddNumbers = props => {
+  const { open, handleClose, step, changeStep, availableSlots } = props
   const {
     getAvailableNumbers,
     availableNumbers,
@@ -218,6 +218,7 @@ const CreateCustomer = props => {
           addedNumbersSub={addedNumbersSub}
           changeHover={changeHover}
           changeHoverAddedNumbers={changeHoverAddedNumbers}
+          maxRangeSize={maxRangeSize}
         />
       ) : (
         <StepsNotFoundNumbers
@@ -306,6 +307,7 @@ const Steps = props => {
           selectAll={props.selectAll}
           postAddNumbersToCustomer={props.postAddNumbersToCustomer}
           changeHover={props.changeHover}
+          maxRangeSize={props.maxRangeSize}
         />
       )
     case 3:
@@ -349,4 +351,4 @@ const Steps = props => {
   }
 }
 
-export default withNamespaces()(observer(CreateCustomer))
+export default withNamespaces()(observer(AddNumbers))
