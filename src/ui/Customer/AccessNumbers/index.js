@@ -11,6 +11,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
 import EntitlementsStore from 'stores/Entitlements'
+import CreateCustomerStore from 'stores/CreateCustomer'
 
 import TitleBlock from 'components/TitleBlock'
 import DeleteModal from 'components/DeleteModal'
@@ -42,6 +43,7 @@ const AccessNumbers = ({ t }) => {
     deleteEntitlements,
     setDefaultTableValues
   } = EntitlementsStore
+  const { clearCreatedCustomerStore } = CreateCustomerStore
 
   const [isAddEntitlementsModalOpen, setIsAddEntitlementsModalOpen] = useState(
     false
@@ -51,8 +53,9 @@ const AccessNumbers = ({ t }) => {
 
   useEffect(() => {
     getEntitlements(match.customerId)
+    clearCreatedCustomerStore()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getEntitlements])
+  }, [])
 
   useEffect(() => {
     setDefaultTableValues()
