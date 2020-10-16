@@ -41,7 +41,19 @@ const useStyles = makeStyles(theme => ({
     padding: 20
   },
   inputBox: {
-    marginTop: 20
+    marginTop: 20,
+    position: 'relative'
+  },
+  visibilityOffIcon: {
+    position: 'absolute',
+    right: 24,
+    top: 18
+  },
+  visibilityIcon: {
+    position: 'absolute',
+    right: 24,
+    color: '#ffcc00 !important',
+    top: 18
   }
 }))
 
