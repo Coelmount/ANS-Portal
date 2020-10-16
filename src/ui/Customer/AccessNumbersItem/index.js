@@ -842,6 +842,7 @@ const AccessNumbersItem = ({ t }) => {
                   setShowAddNumber(true)
                   setStep(1)
                 }}
+                showHelper={false}
               />
             </CustomContainer>
             <CustomTable
