@@ -45,8 +45,8 @@ const Results = ({ classes, t }) => {
       }
     ]
 
-    return bodyCells.map(({ link, text }) => (
-      <TableCell key={link} className={classes.bodyCell}>
+    return bodyCells.map(({ link, text }, index) => (
+      <TableCell key={`${text}${index}`} className={classes.bodyCell}>
         <Link to={link} className={classes.link}>
           {text}
         </Link>

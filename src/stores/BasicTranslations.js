@@ -14,7 +14,7 @@ export class BasicTranslations {
   step = 1
   selectedPhoneNumber = null
   selectedInstance = null
-  isBasicTranslationsNumbersLoading = true
+  isBasicTranslationsNumbersLoading = false
   isAvailableNumbersForAddInstanceLoading = false
   isPostingInstance = false
   isPuttingInstance = false
@@ -130,6 +130,8 @@ export class BasicTranslations {
   }
 
   getBasicTranslationsNumbers = (customerId, groupId) => {
+    if (this.isBasicTranslationsNumbersLoading) return
+
     this.isBasicTranslationsNumbersLoading = true
     this.amountOfBasicInstances = 0
     this.basicTranslationsNumbers = []
@@ -260,7 +262,7 @@ export class BasicTranslations {
         SnackbarStore.enqueueSnackbar({
           message: `Translation${
             idArr.length > 1 ? 's' : ''
-            } deleted successfully`,
+          } deleted successfully`,
           options: {
             variant: 'success'
           }
