@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const AddNumbers = props => {
-  const { open, handleClose, step, changeStep, availableSlots } = props
+  const { open, handleClose, step, changeStep } = props
   const {
     getAvailableNumbers,
     availableNumbers,
