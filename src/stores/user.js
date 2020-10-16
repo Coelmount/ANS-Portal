@@ -1,6 +1,5 @@
 import { decorate, observable, action } from 'mobx'
 import axios from 'utils/axios'
-import basicAxios from 'axios'
 import { BASE_URL } from 'utils/axios'
 
 import SnackbarStore from './Snackbar'
@@ -35,11 +34,9 @@ export class UserStore {
   }
   updatePasswordSuperAdmin = (data, callback) => {
     this.isUpdating = true
-    const config = {
-      headers: { Authorization: `Bearer ${localStorage.getItem('jwtToken')}` }
-    }
-    basicAxios
-      .put(`${BASE_URL}/system/users/local`, data, config)
+
+    axios
+      .put(`${BASE_URL}/system/users/local`, data)
       .then(() => {
         callback && callback()
         SnackbarStore.enqueueSnackbar({
