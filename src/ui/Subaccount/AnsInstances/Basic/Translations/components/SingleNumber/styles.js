@@ -34,6 +34,26 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center'
   },
+  accessNumberContainer: {
+    marginBottom: 30,
+    width: 300
+  },
+  destinationNumberContainer: {
+    marginBottom: 30,
+    marginTop: 2,
+    width: 300,
+    '& input': {
+      border: `2px solid ${theme.palette.primary.main}`,
+      borderRadius: 3,
+      outline: 'none',
+    }
+  },
+  numberTypeContainer: {
+    width: 300
+  },
+  inboundCountryContainer: {
+    width: 300
+  },
   editIconWrap: {
     display: 'flex',
     justifyContent: 'center',

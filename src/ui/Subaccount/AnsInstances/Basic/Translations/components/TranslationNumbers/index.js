@@ -241,23 +241,23 @@ const TranslationNumbers = observer(({ t }) => {
               onChange={e => selectNumbers(!row.checked, row.id)}
             />
           ) : (
-            <div
-              className={classes.indexHoverCheckbox}
-              onClick={() => selectNumbers(!row.checked, row.id)}
-              onMouseLeave={() => changeHover(false, row.id)}
-              onMouseEnter={() => changeHover(true, row.id)}
-            >
-              {row.hover ? (
-                <Checkbox
-                  checked={row.checked}
-                  className={classes.checkbox}
-                  onChange={() => selectNumbers(true, row.id)}
-                />
-              ) : (
-                i + 1
-              )}
-            </div>
-          ),
+              <div
+                className={classes.indexHoverCheckbox}
+                onClick={() => selectNumbers(!row.checked, row.id)}
+                onMouseLeave={() => changeHover(false, row.id)}
+                onMouseEnter={() => changeHover(true, row.id)}
+              >
+                {row.hover ? (
+                  <Checkbox
+                    checked={row.checked}
+                    className={classes.checkbox}
+                    onChange={() => selectNumbers(true, row.id)}
+                  />
+                ) : (
+                    i + 1
+                  )}
+              </div>
+            ),
         extraHeadProps: {
           className: classes.checkboxCell
         },
@@ -306,7 +306,7 @@ const TranslationNumbers = observer(({ t }) => {
             <Typography className={classes.destinationNumberText}>
               {row.destination_number}
             </Typography>
-            <Typography>{row.destinationCountry}</Typography>
+            <Typography>{row.destinationType}</Typography>
           </Box>
         )
       },
@@ -333,22 +333,22 @@ const TranslationNumbers = observer(({ t }) => {
         {isLoading ? (
           <Loading />
         ) : (
-          <CustomTable
-            firstCell={false}
-            rows={numbers}
-            columns={columns()}
-            searchCriterias={[
-              'accessCountry',
-              'destinationCountry',
-              'access_number',
-              'destination_number'
-            ]}
-            extraToolbarBlock={toolbarButtonsBlock}
-            getSearchList={setSearchList}
-            noAvailableDataMessage={t('no_translations_available')}
-            tableId={'ans_basic_translations'}
-          />
-        )}
+            <CustomTable
+              firstCell={false}
+              rows={numbers}
+              columns={columns()}
+              searchCriterias={[
+                'accessCountry',
+                'destinationCountry',
+                'access_number',
+                'destination_number'
+              ]}
+              extraToolbarBlock={toolbarButtonsBlock}
+              getSearchList={setSearchList}
+              noAvailableDataMessage={t('no_translations_available')}
+              tableId={'ans_basic_translations'}
+            />
+          )}
         {isAddInstanceModalOpen && (
           <AddInstance
             open={isAddInstanceModalOpen}
@@ -384,7 +384,7 @@ const TranslationNumbers = observer(({ t }) => {
             isDeleting={isDeleting}
             deleteSubject={`${t('translation').toLowerCase()}${
               instancesForDelete.length > 1 ? 's' : ''
-            }`}
+              }`}
             action={t('to_delete')}
             titleAction={t(`delete`)}
           />

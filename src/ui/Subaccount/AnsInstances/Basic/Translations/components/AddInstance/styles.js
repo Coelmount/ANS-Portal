@@ -356,7 +356,8 @@ const useStyles = makeStyles(theme => ({
   inputsWrap: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 15
   },
   input: {
     width: 254,
@@ -373,6 +374,9 @@ const useStyles = makeStyles(theme => ({
   helperTextWrap: {
     marginLeft: 44,
     marginTop: 8
+  },
+  phoneInputWrap: {
+    marginTop: 30
   }
 }))
 

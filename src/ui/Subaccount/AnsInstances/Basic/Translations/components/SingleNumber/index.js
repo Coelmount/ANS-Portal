@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import PhoneInput from 'react-phone-input-2'
 import classnames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useParams, useHistory } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { useLocalStore } from 'mobx-react-lite'
 
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
+import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
+import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined'
 
 import SnackbarStore from 'stores/Snackbar'
 import BasicTranslationsStore from 'stores/BasicTranslations'
@@ -21,8 +23,7 @@ import TitleBlock from 'components/TitleBlock'
 import Input from 'components/Input'
 import Loading from 'components/Loading'
 import getCountryNameFromNumber from 'utils/phoneNumbers/getCountryNameFromNumber'
-import getNsnFromNumber from 'utils/phoneNumbers/getNsnFromNumber'
-import getCountryCodeFromNumber from 'utils/phoneNumbers/getCountryCodeFromNumber'
+
 
 import arrowsIcon from 'source/images/svg/arrows.svg'
 import useStyles from './styles'
@@ -31,15 +32,6 @@ const SingleNumber = observer(({ t }) => {
   const classes = useStyles()
   const match = useParams()
   const history = useHistory()
-  const accessNumber = match.instanceNumber
-  const accessCountry = getCountryNameFromNumber(accessNumber)
-
-  const [currentInstance, setCurrentInstance] = useState(null)
-  const [destinationNumber, setDestinationNumber] = useState('')
-  const [destinationCountry, setDestinationCountry] = useState('')
-  const [codeToSend, setCodeToSend] = useState('')
-  const [nsnToSend, setNsnToSend] = useState('')
-  const isSaveEnabled = destinationNumber.length > 6
 
   const {
     putInstance,
@@ -51,41 +43,52 @@ const SingleNumber = observer(({ t }) => {
     clearIsRedireactAfterPut
   } = BasicTranslationsStore
 
-  // initial request
+  const [currentInstance, setCurrentInstance] = useState('')
+
+  const localStore = useLocalStore(() => ({
+    phoneNumber: '',
+    setPhoneNumber(number) {
+      this.phoneNumber = number
+    },
+    get calculateNumberType() {
+      if (!this.phoneNumber.length) return 'None'
+
+      if (
+        this.phoneNumber.startsWith('+999') ||
+        this.phoneNumber.startsWith('00999')
+      ) {
+        return 'Onward routing'
+      } else if (
+        this.phoneNumber.startsWith('+') ||
+        this.phoneNumber.startsWith('00')
+      ) {
+        return 'International call forwarding'
+      }
+      return 'Custom routing'
+    }
+  }))
+
+  const accessNumber = match.instanceNumber
+  const accessCountry = getCountryNameFromNumber(accessNumber)
+  const isSaveEnabled = true
+
+  // Initial request
   useEffect(() => {
     getBasicTranslationsNumbers(match.customerId, match.groupId)
-  }, [match.customerId, match.groupId, getBasicTranslationsNumbers])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  // find current object in array, set to state
+  // Find and set currentInstance after receive from request
   useEffect(() => {
     const currentNumber = basicTranslationsNumbers.find(
       item => item.access_number === accessNumber
     )
-    setCurrentInstance(currentNumber)
+
     if (currentNumber) {
-      const currentDestinationNumber = currentNumber.destination_number
-      setDestinationCountry(currentNumber.destinationCountry)
-      setDestinationNumber(currentDestinationNumber)
-
-      const nsn = getNsnFromNumber(
-        currentDestinationNumber[0] === '+'
-          ? currentDestinationNumber
-          : `+${currentDestinationNumber}`
-      )
-      setNsnToSend(nsn)
-      const code = getCountryCodeFromNumber(
-        currentDestinationNumber[0] === '+'
-          ? currentDestinationNumber
-          : `+${currentDestinationNumber}`
-      )
-      setCodeToSend(code)
+      setCurrentInstance(currentNumber)
+      localStore.setPhoneNumber(currentNumber.destination_number)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [basicTranslationsNumbers])
-
-  // if instance not exist on back
-  useEffect(() => {
-    if (!isBasicTranslationsNumbersLoading && currentInstance === undefined) {
+    else if (!isBasicTranslationsNumbersLoading && !currentNumber) {
       SnackbarStore.enqueueSnackbar({
         message: t('instance_not_exist'),
         options: {
@@ -97,9 +100,9 @@ const SingleNumber = observer(({ t }) => {
       )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBasicTranslationsNumbersLoading])
+  }, [basicTranslationsNumbers])
 
-  // redirect if put request successfull
+  // Redirect if put request successfull
   useEffect(() => {
     if (isRedirectAfterPut) {
       history.push(
@@ -110,27 +113,25 @@ const SingleNumber = observer(({ t }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRedirectAfterPut])
 
-  // onChange phone number input
-  const handlePhoneInputChange = (value, data) => {
-    if (data.dialCode) {
-      const initValue = value.slice(data.dialCode.length)
-      const formattedValue = initValue.replace(/\s/g, '')
-      setDestinationNumber(value)
-      setNsnToSend(formattedValue)
-      setDestinationCountry(data.name)
-      setCodeToSend(data.dialCode)
-    }
-  }
-
   const handleSaveButtonClick = () => {
-    if (isSaveEnabled && currentInstance) {
+    if (isSaveEnabled) {
       putInstance(
         match.customerId,
         match.groupId,
         currentInstance.ans_id,
-        codeToSend,
-        nsnToSend
+        localStore.phoneNumber
       )
+    }
+  }
+
+  const handlePhoneNumberChange = e => {
+    const value = e.target.value
+    // Starts from + or number then only numbers
+    const reg = /^[+\d]?(?:[\d-.\s()]*)$/
+
+    if (value.length > 30) return
+    if (reg.test(value) || value === '') {
+      localStore.setPhoneNumber(value)
     }
   }
 
@@ -144,98 +145,105 @@ const SingleNumber = observer(({ t }) => {
       {isBasicTranslationsNumbersLoading || isPuttingInstance ? (
         <Loading />
       ) : (
-        <Box className={classes.root}>
-          <Paper>
-            <CustomContainer>
-              <CustomBreadcrumbs />
-              <TitleBlock titleData={titleData} />
-            </CustomContainer>
-            <Box className={classes.inputsWrap}>
-              <Box className={classes.leftBlock}>
-                <Box className={classes.accessNumberWrap}>
-                  <Input
-                    value={accessNumber}
-                    className={classes.input}
-                    label={t('access_number')}
-                    disabled
-                  />
+          <Box className={classes.root}>
+            <Paper>
+              <CustomContainer>
+                <CustomBreadcrumbs />
+                <TitleBlock titleData={titleData} />
+              </CustomContainer>
+              <Box className={classes.inputsWrap}>
+                <Box className={classes.leftBlock}>
+                  <div className={classes.accessNumberContainer}>
+                    <span>{`${t('access_number')}:`}</span>
+                    <Input
+                      value={accessNumber}
+                      disabled
+                    />
+                  </div>
+
+                  <div className={classes.inboundCountryContainer}>
+                    <span>{`${t('inbound_country')}:`}</span>
+                    <Input
+                      value={accessCountry}
+                      disabled
+                    />
+                  </div>
                 </Box>
 
-                <Input
-                  value={accessCountry}
-                  className={`${classes.input} ${classes.bottomInput}`}
-                  label={t('inbound_country')}
-                  disabled
-                />
-              </Box>
-              <img
-                src={arrowsIcon}
-                className={classes.arrowsIcon}
-                alt='arrows icon'
-              />
-              <Box className={classes.rightBlock}>
-                <PhoneInput
-                  value={destinationNumber}
-                  onChange={(value, data) =>
-                    handlePhoneInputChange(value, data)
-                  }
-                  placeholder={t('enter_number')}
-                />
-                <Input
-                  value={destinationCountry}
-                  className={`${classes.input} ${classes.bottomInput}`}
-                  label={t('outbound_country')}
-                  disabled
+                <img
+                  src={arrowsIcon}
+                  className={classes.arrowsIcon}
+                  alt='arrows icon'
                 />
 
-                <Box className={classes.buttonsWrap}>
-                  <Box className={classes.buttonBlock}>
-                    <Link
-                      to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`}
+                <Box className={classes.rightBlock}>
+                  <div className={classes.destinationNumberContainer}>
+                    <span>{`${t('destination_number')}:`}</span>
+                    <Input
+                      value={localStore.phoneNumber}
+                      onChange={handlePhoneNumberChange}
+                      placeholder={t('enter_number')}
+                      icon={<PhoneOutlinedIcon alt='phone' />}
+                    />
+                  </div>
+                  <div className={classes.numberTypeContainer}>
+                    <span>{`${t('number_type')}:`}</span>
+                    <Input
+                      value={localStore.calculateNumberType}
+                      placeholder={t('enter_number')}
+                      icon={<LocationOnOutlinedIcon alt='location' />}
+                      disabled
+                    />
+                  </div>
+
+                  <Box className={classes.buttonsWrap}>
+                    <Box className={classes.buttonBlock}>
+                      <Link
+                        to={`/customers/${match.customerId}/subaccounts/${match.groupId}/ans_instances/basic`}
+                      >
+                        <IconButton
+                          aria-label='cancel icon button'
+                          component='span'
+                          className={classnames(
+                            classes.buttonIconWrap,
+                            classes.cancelButtonWrap
+                          )}
+                        >
+                          <CloseOutlinedIcon className={classes.cancelIcon} />
+                        </IconButton>
+                      </Link>
+                      <Typography className={classes.buttonLabel}>
+                        {t('cancel')}
+                      </Typography>
+                    </Box>
+
+                    <Box
+                      className={`${classes.buttonBlock} ${classes.doneButtonBlock}`}
                     >
                       <IconButton
-                        aria-label='cancel icon button'
+                        aria-label='save icon button'
                         component='span'
                         className={classnames(
                           classes.buttonIconWrap,
-                          classes.cancelButtonWrap
+                          classes.asignButtonWrap,
+                          {
+                            [classes.disabledButton]: !isSaveEnabled
+                          }
                         )}
+                        onClick={handleSaveButtonClick}
                       >
-                        <CloseOutlinedIcon className={classes.cancelIcon} />
+                        <DoneOutlinedIcon className={classes.assignIcon} />
                       </IconButton>
-                    </Link>
-                    <Typography className={classes.buttonLabel}>
-                      {t('cancel')}
-                    </Typography>
-                  </Box>
-
-                  <Box
-                    className={`${classes.buttonBlock} ${classes.doneButtonBlock}`}
-                  >
-                    <IconButton
-                      aria-label='save icon button'
-                      component='span'
-                      className={classnames(
-                        classes.buttonIconWrap,
-                        classes.asignButtonWrap,
-                        {
-                          [classes.disabledButton]: !isSaveEnabled
-                        }
-                      )}
-                      onClick={handleSaveButtonClick}
-                    >
-                      <DoneOutlinedIcon className={classes.assignIcon} />
-                    </IconButton>
-                    <Typography className={classes.buttonLabel}>
-                      {t('save')}
-                    </Typography>
+                      <Typography className={classes.buttonLabel}>
+                        {t('save')}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
-            </Box>
-          </Paper>
-        </Box>
-      )}
+            </Paper>
+          </Box>
+        )}
     </Fragment>
   )
 })
