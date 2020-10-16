@@ -12,11 +12,47 @@ import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
 
 import SearchStore from 'stores/Search'
+import getAnsInstanceLink from 'utils/getAnsInstanceLink'
 
 const columnsArr = ['customer_id', 'subaccount_id', 'ans_instance']
 
 const Results = ({ classes, t }) => {
   const { searchResult, emptyResult, ansInstance } = SearchStore
+  const { tenantId, groupId } = searchResult || {}
+  const subaccountLevelUrl = `/customers/${tenantId}/subaccounts/${groupId}/ans_instances`
+  const instanceUrl = getAnsInstanceLink(searchResult, ansInstance)
+
+  const renderHeadCells = () =>
+    columnsArr.map(column => (
+      <TableCell key={column} className={classes.headCell}>
+        {t(column)}
+      </TableCell>
+    ))
+
+  const renderBodyCells = () => {
+    const bodyCells = [
+      {
+        link: `/customers/${tenantId}/access_numbers`,
+        text: tenantId
+      },
+      {
+        link: subaccountLevelUrl,
+        text: groupId
+      },
+      {
+        link: `${subaccountLevelUrl}${instanceUrl}`,
+        text: groupId ? ansInstance : ''
+      }
+    ]
+
+    return bodyCells.map(({ link, text }) => (
+      <TableCell key={link} className={classes.bodyCell}>
+        <Link to={link} className={classes.link}>
+          {text}
+        </Link>
+      </TableCell>
+    ))
+  }
 
   return (
     <Fragment>
@@ -24,42 +60,12 @@ const Results = ({ classes, t }) => {
         <TableContainer className={classes.tableContainer}>
           <Table>
             <TableHead>
-              <TableRow>
-                {columnsArr.map(column => (
-                  <TableCell key={column} className={classes.headCell}>
-                    {t(column)}
-                  </TableCell>
-                ))}
-              </TableRow>
+              <TableRow>{renderHeadCells()}</TableRow>
             </TableHead>
+
             <TableBody>
               <TableRow className={classes.bodyRow}>
-                <TableCell className={classes.bodyCell}>
-                  <Link
-                    to={`/customers/${searchResult.tenantId}/access_numbers`}
-                    className={classes.link}
-                  >
-                    {searchResult.tenantId}
-                  </Link>
-                </TableCell>
-                <TableCell className={classes.bodyCell}>
-                  <Link
-                    to={`/customers/${searchResult.tenantId}/subaccounts/${searchResult.groupId}/ans_instances`}
-                    className={classes.link}
-                  >
-                    {searchResult.groupId}
-                  </Link>
-                </TableCell>
-                <TableCell className={classes.bodyCell}>
-                  <Link
-                    to={`/customers/${searchResult.tenantId}/subaccounts/${
-                      searchResult.groupId
-                    }/ans_instances/basic/${ansInstance.trim()}`}
-                    className={classes.link}
-                  >
-                    {ansInstance}
-                  </Link>
-                </TableCell>
+                {renderBodyCells()}
               </TableRow>
             </TableBody>
           </Table>
