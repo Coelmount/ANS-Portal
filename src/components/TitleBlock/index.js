@@ -48,7 +48,7 @@ const TitleBlock = ({
       <Box className={classes.rightBlockWrap}>
         {extraBlock}
         <Tooltip title={showTooltip ? addButtonTooltipText : ''}>
-          {Icon && iconCapture && (
+          {Icon && iconCapture ? (
             <Box className={classes.addCustomerWrap}>
               <Button
                 variant='contained'
@@ -63,6 +63,8 @@ const TitleBlock = ({
                 {iconCapture}
               </Typography>
             </Box>
+          ) : (
+            <Box></Box>
           )}
         </Tooltip>
         {buttonBlock}
