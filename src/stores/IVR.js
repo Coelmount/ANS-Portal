@@ -103,7 +103,7 @@ class IVR {
     this.addIVR = true
     return axios
       .post(`/tenants/${tenantId}/groups/${groupId}/services/ivrs/`, data)
-      .then(() => false && callback())
+      .then(res => callback && callback(res.data.id))
       .catch(e =>
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || 'Failed to create ivr',
