@@ -29,13 +29,12 @@ const AvailableNumbers = ({ t }) => {
 
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
-      .basic_instance_select_access_numbers
+        .basic_instance_select_access_numbers
     : null
 
   const {
     getAvailableNumbers,
     updateSearchParam,
-    clearConfigureStep,
     availableNumbers,
     searchParam,
     totalPagesAvailableNumbers,
@@ -68,7 +67,6 @@ const AvailableNumbers = ({ t }) => {
     close() {
       this.openedId = null
       getRequest()
-      clearConfigureStep()
     }
   }))
 
@@ -208,29 +206,29 @@ const AvailableNumbers = ({ t }) => {
         {isAvailableNumbersLoading && !numberLike ? (
           <Loading />
         ) : (
-            <CustomTable
-              firstCell={true}
-              classes={classes}
-              rows={availableNumbers}
-              columns={columns}
-              page={page}
-              setPage={setPage}
-              rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
-              order={order}
-              setOrder={setOrder}
-              orderBy={orderBy}
-              setOrderBy={setOrderBy}
-              totalPages={totalPagesAvailableNumbers}
-              query={numberLike}
-              setQuery={setNumberLike}
-              isSearchParamsActive={isSearchParamsActive}
-              isLoadingData={isAvailableNumbersLoading}
-              noAvailableDataMessage={t('no_phone_numbers_available')}
-              tableId={'ans_basic_available_numbers'}
-              searchSelector={SearchSelector}
-            />
-          )}
+          <CustomTable
+            firstCell={true}
+            classes={classes}
+            rows={availableNumbers}
+            columns={columns}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            order={order}
+            setOrder={setOrder}
+            orderBy={orderBy}
+            setOrderBy={setOrderBy}
+            totalPages={totalPagesAvailableNumbers}
+            query={numberLike}
+            setQuery={setNumberLike}
+            isSearchParamsActive={isSearchParamsActive}
+            isLoadingData={isAvailableNumbersLoading}
+            noAvailableDataMessage={t('no_phone_numbers_available')}
+            tableId={'ans_basic_available_numbers'}
+            searchSelector={SearchSelector}
+          />
+        )}
         {modalsStore.openedId === addModalId && (
           <AddModal
             open={modalsStore.openedId === addModalId}

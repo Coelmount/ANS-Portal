@@ -193,7 +193,6 @@ export class TimeBasedRouting {
     this.searchParam = value
   }
 
-
   getTimeBasedRoutes = ({ customerId, groupId }) => {
     this.timeBasedRoutes = []
     this.isLoadingTBR = true
@@ -361,7 +360,7 @@ export class TimeBasedRouting {
     customerId,
     groupId,
     defaultDestination,
-    closeModal
+    history
   }) => {
     this.isTimeBasedRoutePosting = true
 
@@ -379,7 +378,10 @@ export class TimeBasedRouting {
         }
       )
       .then(() => {
-        closeModal()
+        history.push(
+          `/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing#translations`
+        )
+
         SnackbarStore.enqueueSnackbar({
           message: `Time based routing instance successfully created`,
           options: {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -18,16 +18,24 @@ import ModalHelperText from 'components/ModalHelperText'
 import Input from 'components/Input'
 
 import useStyles from '../styles'
+import { useEffect } from 'react'
 
 const FreeNumberStep = ({ t, handleClose }) => {
   const classes = useStyles()
   const { customerId, groupId } = useParams()
+  const history = useHistory()
 
   const {
     postTimeBasedRoute,
     isTimeBasedRoutePosting,
-    setConfigureStep
+    setConfigureStep,
+    clearConfigureStep
   } = TimeBaseRoutingStore
+
+  useEffect(() => {
+    return clearConfigureStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const inputStore = useLocalStore(() => ({
     phoneNumber: '',
@@ -60,7 +68,7 @@ const FreeNumberStep = ({ t, handleClose }) => {
       customerId,
       groupId,
       defaultDestination: inputStore.phoneNumber,
-      closeModal: handleClose
+      history
     }
     postTimeBasedRoute(payload)
   }

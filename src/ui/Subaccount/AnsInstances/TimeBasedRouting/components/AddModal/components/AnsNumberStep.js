@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -27,6 +27,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
   const modalHeight = '1500px'
   const classes = useStyles({ modalHeight })
   const { customerId, groupId } = useParams()
+  const history = useHistory()
 
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
@@ -38,6 +39,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
     postTimeBasedRoute,
     setConfigureStep,
     clearAnsNumbersLoading,
+    clearConfigureStep,
     ansNumbers,
     countries,
     totalPagesAnsNumbers,
@@ -46,6 +48,11 @@ const AnsNumberStep = ({ handleClose, t }) => {
   } = TimeBasedRoutingStore
 
   const isLoading = isAnsNumbersLoading || isTimeBasedRoutePosting
+
+  useEffect(() => {
+    return clearConfigureStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const localStore = useLocalStore(() => ({
     page: 1,
@@ -148,7 +155,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
       customerId,
       groupId,
       defaultDestination: localStore.currentCheckedNumber.destination,
-      closeModal: handleClose
+      history
     }
     postTimeBasedRoute(payload)
   }
