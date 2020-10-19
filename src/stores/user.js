@@ -34,9 +34,9 @@ export class UserStore {
   }
   updatePasswordSuperAdmin = (data, callback) => {
     this.isUpdating = true
-
-    axios
-      .put(`${BASE_URL}/system/users/local`, data)
+    const url = `/system/users/local`
+    const baseURL = BASE_URL
+    axios({ method: 'put', url, baseURL, data })
       .then(() => {
         callback && callback()
         SnackbarStore.enqueueSnackbar({
