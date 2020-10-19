@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -29,6 +29,7 @@ import useStyles from './styles'
 const AddModal = ({ t, open, handleClose }) => {
   const classes = useStyles()
   const match = useParams()
+  const history = useHistory()
   const { customerId, groupId } = match
   const { postAccessNumber, isAccessNumberPosting } = AdvancedAccessNumbersStore
 
@@ -61,7 +62,7 @@ const AddModal = ({ t, open, handleClose }) => {
       customerId,
       groupId,
       addData: inputStore.values,
-      closeModal: handleClose
+      history
     }
     postAccessNumber(payload)
   }

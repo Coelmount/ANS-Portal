@@ -94,7 +94,7 @@ export class AdvancedAccessNumbers {
     this.selectedNumber = number
   }
 
-  postAccessNumber = ({ customerId, groupId, addData, closeModal }) => {
+  postAccessNumber = ({ customerId, groupId, addData, history }) => {
     this.isAccessNumberPosting = true
     const { name, policy, huntAfterNoAnswer, amountSkipRings } = addData
     const { country_code, nsn } = this.selectedNumber
@@ -116,7 +116,10 @@ export class AdvancedAccessNumbers {
         dataToSend
       )
       .then(() => {
-        closeModal()
+        history.push(
+          `/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced#destination_groups`
+        )
+
         SnackbarStore.enqueueSnackbar({
           message: 'Destination group successfully posted',
           options: {
