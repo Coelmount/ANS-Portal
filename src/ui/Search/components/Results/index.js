@@ -19,7 +19,7 @@ const columnsArr = ['customer_id', 'subaccount_id', 'ans_instance']
 const Results = ({ classes, t }) => {
   const { searchResult, emptyResult, ansInstance } = SearchStore
   const { tenantId, groupId } = searchResult || {}
-  const subaccountLevelUrl = `/customers/${tenantId}/subaccounts/${groupId}/ans_instances`
+  const subaccountLevelUrl = `/customers/${tenantId}/subaccounts/${groupId}/`
   const instanceUrl = getAnsInstanceLink(searchResult, ansInstance)
 
   const renderHeadCells = () =>

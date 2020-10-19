@@ -5,20 +5,22 @@ const getAnsInstanceLink = (numberObj, ansInstance) => {
   const formattedInstanceValue = ansInstance ? ansInstance.trim() : ''
 
   // IVR
-  if (userType === 'Auto Attendant') return `/ivr/${userId}`
+  if (userType === 'Auto Attendant') return `ans_instances/ivr/${userId}`
   // TBR
   else if (userType === 'Normal') {
-    if (userId.includes('_ut')) return `/time_based_routing/${userId}`
-    return '/time_based_routing#translations'
+    if (userId.includes('_ut'))
+      return `ans_instances/time_based_routing/${userId}`
+    return 'ans_instances/time_based_routing#translations'
   }
   // Basic or Advanced
   else if (userType === 'Hunt Group') {
-    if (userId.includes('_b')) return `/basic/${formattedInstanceValue}`
+    if (userId.includes('_b'))
+      return `ans_instances/basic/${formattedInstanceValue}`
     else if (userId.includes('_a'))
-      return `/advanced/destination_groups/${userId}`
+      return `ans_instances/advanced/destination_groups/${userId}`
   }
-  // General page
-  return ''
+  // General numbers page
+  return 'phone_numbers'
 }
 
 export default getAnsInstanceLink
