@@ -848,6 +848,7 @@ const AccessNumbersItem = ({ t }) => {
                 }}
                 showHelper={false}
                 showTooltip={
+                  currentEntitlement &&
                   currentEntitlement.entitlement === currentEntitlement.counter
                 }
               />

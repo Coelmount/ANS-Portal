@@ -134,14 +134,30 @@ export class AssignedNumbers {
 
     objectsWithRangesArr.forEach((item, index) => {
       const groupName = item.customer_account
+
       axios
         .get(
           `/tenants/${customerId}/groups?sensitiveGroupNameEquals=${groupName}`
         )
         .then(res => {
-          return res.data.groups[0].groupId
+          if (res.data.groups.length && res.data.groups[0].groupId) {
+            return res.data.groups[0].groupId
+          }
         })
         .then(groupId => {
+          if (!groupId) {
+            SnackbarStore.enqueueSnackbar({
+              message: `Failed to deassign ${amount} ${deassignSubject}`,
+              options: {
+                variant: 'error'
+              }
+            })
+
+            this.isNumbersDeassigned = true
+            this.isDeassigningNumber = false
+            this.numbersToDeassign = []
+            return
+          }
           axios
             .delete(`/tenants/${customerId}/groups/${groupId}/numbers`, {
               data: {
