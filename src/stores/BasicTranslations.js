@@ -66,10 +66,17 @@ export class BasicTranslations {
 
         destination_number: destinationNumber
       })
-      .then(() => {
-        history.push(
-          `/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic#translations`
-        )
+      .then(res => {
+        const createdBasicId = res.data.access_number
+        if (createdBasicId) {
+          history.push(
+            `/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic/${createdBasicId}`
+          )
+        } else {
+          history.push(
+            `/customers/${customerId}/subaccounts/${groupId}/ans_instances/basic#translations`
+          )
+        }
 
         SnackbarStore.enqueueSnackbar({
           message: `${accessCode} ${accessNumber} => ${destinationNumber} ANS basic instance added successfully`,

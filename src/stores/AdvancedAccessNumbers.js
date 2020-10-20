@@ -115,10 +115,17 @@ export class AdvancedAccessNumbers {
         `/tenants/${customerId}/groups/${groupId}/services/ans_advanced`,
         dataToSend
       )
-      .then(() => {
-        history.push(
-          `/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced#destination_groups`
-        )
+      .then(res => {
+        if (res.data.ans_id && res.data.ans_id.includes('@')) {
+          const createdAdvancedId = res.data.ans_id.split('@')[0]
+          history.push(
+            `/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced/destination_groups/${createdAdvancedId}`
+          )
+        } else {
+          history.push(
+            `/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced#destination_groups`
+          )
+        }
 
         SnackbarStore.enqueueSnackbar({
           message: 'Destination group successfully posted',

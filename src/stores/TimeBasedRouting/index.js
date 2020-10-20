@@ -377,10 +377,21 @@ export class TimeBasedRouting {
           defaultDestination
         }
       )
-      .then(() => {
-        history.push(
-          `/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing#translations`
-        )
+      .then(res => {
+        if (
+          res.data.apio &&
+          res.data.apio.body.userId &&
+          res.data.apio.body.userId.includes('@')
+        ) {
+          const createdTbrId = res.data.apio.body.userId.split('@')[0]
+          history.push(
+            `/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing/${createdTbrId}`
+          )
+        } else {
+          history.push(
+            `/customers/${customerId}/subaccounts/${groupId}/ans_instances/time_based_routing#translations`
+          )
+        }
 
         SnackbarStore.enqueueSnackbar({
           message: `Time based routing instance successfully created`,
