@@ -41,7 +41,7 @@ const Results = ({ classes, t }) => {
       },
       {
         link: `${subaccountLevelUrl}${instanceUrl}`,
-        text: groupId ? ansInstance : ''
+        text: groupId && searchResult.userId ? ansInstance : ''
       }
     ]
 
