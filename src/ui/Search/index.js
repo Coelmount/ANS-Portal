@@ -6,6 +6,7 @@ import { observer } from 'mobx-react'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import SearchIcon from '@material-ui/icons/Search'
 
@@ -18,25 +19,28 @@ import ModalHelperText from 'components/ModalHelperText'
 import useStyles from './styles'
 
 const Search = ({ t }) => {
-  const classes = useStyles()
   const { getSearchResult, isLoading, clearSearchResult } = SearchStore
   const [searchQuery, setSearchQuery] = useState('')
+  const isSearchClickEnabled =
+    searchQuery.startsWith('+') && searchQuery.length > 2
+  const classes = useStyles({ isSearchClickEnabled })
 
   useEffect(() => clearSearchResult, [clearSearchResult])
 
   const handleSearchClick = () => {
-    getSearchResult(searchQuery)
+    if (isSearchClickEnabled) getSearchResult(searchQuery)
   }
 
   const handleSearchInputChange = e => {
     const value = e.target.value
     // Starts from + or number then only numbers
-    const reg = /^[+]([\d-.\s()]*)$/
+    // const reg = /^[+]([\d-.\s()]*)$/
 
     if (value.length > 30) return
-    if (reg.test(value) || value === '') {
-      setSearchQuery(value)
-    }
+    // if (reg.test(value) || value === '') {
+    //   setSearchQuery(value)
+    // }
+    setSearchQuery(value)
   }
 
   return (
@@ -64,12 +68,16 @@ const Search = ({ t }) => {
                 placeholder={t('search_input_placeholder')}
                 className={classes.searchInput}
               />
-              <Box
-                className={classes.searchIconWrap}
-                onClick={handleSearchClick}
+              <Tooltip
+                title={isSearchClickEnabled ? '' : t('disabled_general_search')}
               >
-                <SearchIcon className={classes.searchIcon} />
-              </Box>
+                <Box
+                  className={classes.searchIconWrap}
+                  onClick={handleSearchClick}
+                >
+                  <SearchIcon className={classes.searchIcon} />
+                </Box>
+              </Tooltip>
             </Box>
           </Box>
           <Typography className={classes.alertMessage}>

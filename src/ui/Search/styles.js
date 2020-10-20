@@ -70,7 +70,10 @@ const useStyles = makeStyles(theme => ({
     marginTop: 1,
     width: 74,
     height: 48,
-    background: theme.palette.primary.main,
+    background: ({ isSearchClickEnabled }) =>
+      isSearchClickEnabled
+        ? theme.palette.primary.main
+        : theme.palette.lightGrey,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
@@ -78,7 +81,8 @@ const useStyles = makeStyles(theme => ({
   searchIcon: {
     width: 25,
     height: 25,
-    color: theme.palette.black
+    color: theme.palette.black,
+    opacity: ({ isSearchClickEnabled }) => (isSearchClickEnabled ? 1 : 0.5)
   },
   alertMessage: {
     color: theme.palette.grey40,
