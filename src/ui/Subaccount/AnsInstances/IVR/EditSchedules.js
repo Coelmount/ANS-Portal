@@ -59,11 +59,13 @@ const EditGreeting = props => {
     let data = {}
     if (menuType === 'businessHours') {
       data = {
-        businessHours: { name: schedulerSelection }
+        businessHours:
+          schedulerSelection === 'Any time' ? {} : { name: schedulerSelection }
       }
     } else {
       data = {
-        holidaySchedule: { name: schedulerSelection }
+        holidaySchedule:
+          schedulerSelection === 'Any time' ? {} : { name: schedulerSelection }
       }
     }
     putUpdateIVR(
@@ -116,11 +118,20 @@ const EditGreeting = props => {
             value={schedulerSelection}
             options={
               menuType === 'businessHours'
-                ? weekSchedules.map(el => ({ label: el.name, value: el.name }))
-                : holidaySchedules.map(el => ({
-                    label: el.name,
-                    value: el.name
-                  }))
+                ? [
+                    { label: `No schedule`, value: 'Any time' },
+                    ...weekSchedules.map(el => ({
+                      label: el.name,
+                      value: el.name
+                    }))
+                  ]
+                : [
+                    { label: `No schedule`, value: 'Any time' },
+                    ...holidaySchedules.map(el => ({
+                      label: el.name,
+                      value: el.name
+                    }))
+                  ]
             }
             onChange={e => setSchedulerSelection(e.target.value)}
           />
