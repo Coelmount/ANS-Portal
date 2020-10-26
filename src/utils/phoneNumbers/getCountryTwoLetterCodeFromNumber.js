@@ -1,7 +1,7 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { getCountry } from 'countries-and-timezones'
 
-export default phoneNumber => {
+const getCountryTwoLetterCodeFromNumber = phoneNumber => {
   if (phoneNumber) {
     const countryObj = parsePhoneNumberFromString(phoneNumber)
     const country = countryObj.country
@@ -13,3 +13,5 @@ export default phoneNumber => {
     }
   }
 }
+
+export default getCountryTwoLetterCodeFromNumber

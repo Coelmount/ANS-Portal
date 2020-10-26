@@ -1,5 +1,7 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
-export default phoneNumber => {
+const getCountryCodeFromNumber = phoneNumber => {
   return parsePhoneNumberFromString(phoneNumber).countryCallingCode
 }
+
+export default getCountryCodeFromNumber
