@@ -24,6 +24,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import AnnouncementsStore from 'stores/Announcements'
 
 import useStyles from './styles'
+import Loading from 'components/Loading'
 
 let announcementsForPost = []
 
@@ -144,51 +145,57 @@ const SelectMediaFile = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Box className={classes.helperTextWrap}>
-          <ModalHelperText helperText='add_announcements_from_library' />
-        </Box>
-        <MaterialTable
-          localization={localization}
-          icons={tableIcons}
-          columns={columns}
-          data={data}
-          options={options}
-          isLoading={isLoadingDefaultAnnouncements}
-          style={{
-            backgroundColor: '#F9F9F9',
-            boxShadow: 'none'
-          }}
-          onSelectionChange={rows => {
-            announcementsForPost = rows
-            // return rows
-          }}
-          components={{
-            Toolbar: props => (
-              <div
-                style={{
-                  paddingLeft: 0
-                }}
-              >
-                <MTableToolbar
-                  {...props}
-                  classes={{
-                    root: classes.rootToolbar
-                  }}
-                />
-              </div>
-            ),
-            Pagination: props => (
-              <TablePagination
-                {...props}
-                classes={{
-                  root: classes.rootPagination
-                }}
-                labelRowsPerPage=''
-                labelDisplayedRows={() => {}}
-              />
-            )
-          }}
-        />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <React.Fragment>
+            <Box className={classes.helperTextWrap}>
+              <ModalHelperText helperText='add_announcements_from_library' />
+            </Box>
+            <MaterialTable
+              localization={localization}
+              icons={tableIcons}
+              columns={columns}
+              data={data}
+              options={options}
+              isLoading={isLoadingDefaultAnnouncements}
+              style={{
+                backgroundColor: '#F9F9F9',
+                boxShadow: 'none'
+              }}
+              onSelectionChange={rows => {
+                announcementsForPost = rows
+                // return rows
+              }}
+              components={{
+                Toolbar: props => (
+                  <div
+                    style={{
+                      paddingLeft: 0
+                    }}
+                  >
+                    <MTableToolbar
+                      {...props}
+                      classes={{
+                        root: classes.rootToolbar
+                      }}
+                    />
+                  </div>
+                ),
+                Pagination: props => (
+                  <TablePagination
+                    {...props}
+                    classes={{
+                      root: classes.rootPagination
+                    }}
+                    labelRowsPerPage=''
+                    labelDisplayedRows={() => {}}
+                  />
+                )
+              }}
+            />
+          </React.Fragment>
+        )}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button

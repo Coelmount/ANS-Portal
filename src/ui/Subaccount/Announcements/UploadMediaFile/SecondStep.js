@@ -20,6 +20,7 @@ import Input from 'components/Input'
 import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
+import Loading from 'components/Loading'
 
 const SecondStep = props => {
   const match = useParams()
@@ -72,34 +73,44 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <div className={classes.helperTextWrap}>
-          <ModalHelperText helperText='add_announcements_upload_media_file_step_2' />
-        </div>
-        <Box className={classes.secondStepTitleBlock}>
-          {stateAnnouncements.map((el, i) => (
-            <Box key={i} className={classes.audioBoxWrapper}>
-              <Box className={classes.indexBox}>{i + 1}</Box>
-              <Box className={classes.inputAudio}>
-                <Input
-                  icon={<VolumeUpIcon />}
-                  value={el.name}
-                  label={t('audio_name')}
-                  className={classes.inputName}
-                  onChange={e => changeName(e.target.value, i)}
-                />
-                <Box className={classes.fakeInput}>
-                  <Box className={classes.fakeInputLabel}>
-                    {t('audio_content')}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <React.Fragment>
+            <div className={classes.helperTextWrap}>
+              <ModalHelperText helperText='add_announcements_upload_media_file_step_2' />
+            </div>
+            <Box className={classes.secondStepTitleBlock}>
+              {stateAnnouncements.map((el, i) => (
+                <Box key={i} className={classes.audioBoxWrapper}>
+                  <Box className={classes.indexBox}>{i + 1}</Box>
+                  <Box className={classes.inputAudio}>
+                    <Input
+                      icon={<VolumeUpIcon />}
+                      value={el.name}
+                      label={t('audio_name')}
+                      className={classes.inputName}
+                      onChange={e => changeName(e.target.value, i)}
+                    />
+                    <Box className={classes.fakeInput}>
+                      <Box className={classes.fakeInputLabel}>
+                        {t('audio_content')}
+                      </Box>
+                      <AudioPlayer
+                        url={el.url}
+                        width={'100%'}
+                        timerAlign='right'
+                      />
+                    </Box>
                   </Box>
-                  <AudioPlayer url={el.url} width={'100%'} timerAlign='right' />
+                  <Box className={classes.sizeBox}>
+                    {(el.size / 1024 / 1024).toFixed(2) + ' MB'}
+                  </Box>
                 </Box>
-              </Box>
-              <Box className={classes.sizeBox}>
-                {(el.size / 1024 / 1024).toFixed(2) + ' MB'}
-              </Box>
+              ))}
             </Box>
-          ))}
-        </Box>
+          </React.Fragment>
+        )}
       </DialogContent>
       <DialogActions className={classes.dialogActionsSecond}>
         <Button

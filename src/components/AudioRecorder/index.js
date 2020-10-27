@@ -40,7 +40,7 @@ const AudioRecorder = props => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [audioName, setAudioName] = useState('')
   const [base64, setBase64] = useState('')
-  const { postAddAnnouncements } = AnnouncementsStore
+  const { postAddAnnouncements, addingAnnouncement } = AnnouncementsStore
 
   useEffect(() => {
     recording.current.onended = () => {
@@ -218,39 +218,45 @@ const AudioRecorder = props => {
       )}
       {isRecoding === 'recorded' && (
         <React.Fragment>
-          <div className={classes.audioNameWrapper}>
-            <Input
-              onChange={e => setAudioName(e.target.value)}
-              label={t('audio_name')}
-              icon={<VolumeUpIcon />}
-            ></Input>
-          </div>
-          <div className={classes.playerBox}>
-            <Slider
-              max={recordedTime.toFixed()}
-              min={0}
-              value={playingTime.toFixed()}
-              step={1}
-              onChange={(e, newValue) => {
-                let time = newValue
-                seekTime(parseFloat(time))
-              }}
-              color={'secondary'}
-              className={classes.slider}
-            />
-            <div className={classes.playingTime}>
-              <div>{`00:${
-                playingTime.toFixed() < 10
-                  ? '0' + playingTime.toFixed()
-                  : playingTime.toFixed()
-              }`}</div>
-              <div>{`00:${
-                recordedTime.toFixed() < 10
-                  ? '0' + recordedTime.toFixed()
-                  : recordedTime.toFixed()
-              }`}</div>
-            </div>
-          </div>
+          {addingAnnouncement ? (
+            <Loading />
+          ) : (
+            <React.Fragment>
+              <div className={classes.audioNameWrapper}>
+                <Input
+                  onChange={e => setAudioName(e.target.value)}
+                  label={t('audio_name')}
+                  icon={<VolumeUpIcon />}
+                ></Input>
+              </div>
+              <div className={classes.playerBox}>
+                <Slider
+                  max={recordedTime.toFixed()}
+                  min={0}
+                  value={playingTime.toFixed()}
+                  step={1}
+                  onChange={(e, newValue) => {
+                    let time = newValue
+                    seekTime(parseFloat(time))
+                  }}
+                  color={'secondary'}
+                  className={classes.slider}
+                />
+                <div className={classes.playingTime}>
+                  <div>{`00:${
+                    playingTime.toFixed() < 10
+                      ? '0' + playingTime.toFixed()
+                      : playingTime.toFixed()
+                  }`}</div>
+                  <div>{`00:${
+                    recordedTime.toFixed() < 10
+                      ? '0' + recordedTime.toFixed()
+                      : recordedTime.toFixed()
+                  }`}</div>
+                </div>
+              </div>
+            </React.Fragment>
+          )}
           <div className={classes.playerControls}>
             <Button
               className={classes.playPauseButton}
@@ -259,6 +265,7 @@ const AudioRecorder = props => {
               }}
               variant='contained'
               color='primary'
+              disabled={addingAnnouncement}
             >
               {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
             </Button>
@@ -266,7 +273,7 @@ const AudioRecorder = props => {
               variant='contained'
               color='primary'
               className={classes.saveButton}
-              disabled={!(audioName && base64)}
+              disabled={!(audioName && base64) || addingAnnouncement}
               onClick={handleSaveRecord}
             >
               {t('save')}

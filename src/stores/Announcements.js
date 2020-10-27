@@ -11,6 +11,7 @@ export class AnnouncementsStore {
   isLoadingAnnouncements = false
   isLoadingDefaultAnnouncements = false
   isDeleting = false
+  addingAnnouncement = false
 
   getAnnouncements = (tenantId, groupId) => {
     this.isLoadingAnnouncements = true
@@ -77,6 +78,7 @@ export class AnnouncementsStore {
   }
 
   postAddAnnouncements = (tenantId, groupId, data) => {
+    this.addingAnnouncement = true
     return axios
       .post(`/tenants/${tenantId}/groups/${groupId}/announcements/`, data)
       .then(res =>
@@ -95,6 +97,7 @@ export class AnnouncementsStore {
           }
         })
       )
+      .finally(() => (this.addingAnnouncement = false))
   }
 
   deleteAnnouncement = (tenantId, groupId, name) => {
@@ -192,6 +195,7 @@ decorate(AnnouncementsStore, {
   isLoadingAnnouncements: observable,
   isLoadingDefaultAnnouncements: observable,
   isDeleting: observable,
+  addingAnnouncement: observable,
   getAnnouncements: action,
   getAnnouncementContent: action,
   postAddAnnouncements: action,
