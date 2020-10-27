@@ -1,21 +1,14 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import PhoneInput from 'react-phone-input-2'
 
-import { makeStyles } from '@material-ui/core/styles'
-import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
-import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
 import Loading from 'components/Loading'
@@ -67,6 +60,7 @@ const SelectAnsDestination = ({ t, handleClose }) => {
       groupId
     }
     getAdvancedDestinations(payload)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Trigger store POST request
@@ -134,52 +128,52 @@ const SelectAnsDestination = ({ t, handleClose }) => {
       {isLoading ? (
         <Loading />
       ) : (
-          <Fragment>
-            <DialogTitle className={classes.title}>
-              {t('select_ans_advanced_destination')}
-              <IconButton
-                aria-label='close'
-                onClick={handleClose}
-                className={classes.closeButton}
-              >
-                <CloseIcon />
-              </IconButton>
-            </DialogTitle>
-            <DialogContent className={classes.dialogContent}>
-              <ModalHelperText title={t('select_ans_advanced_destination')} />
-              <CustomTable
-                classes={classes}
-                columns={columns}
-                firstCell={false}
-                showPagination={true}
-                rows={ansDestinations}
-                searchCriterias={['name', 'phoneNumber']}
-                noAvailableDataMessage={t('no_ans_advanced_instances_available')}
-                isModal={true}
-                tableId={'advanced_time_schedule_add_ans_destination'}
-              />
-            </DialogContent>
-            <DialogActions className={classes.dialogActions}>
-              <Button
-                variant='outlined'
-                color='primary'
-                className={classes.backButton}
-                onClick={handleBackButtonClick}
-              >
-                {t('cancel')}
-              </Button>
-              <Button
-                variant='contained'
-                color='primary'
-                className={classes.nextButton}
-                disabled={!currentCheckedNumber.destination}
-                onClick={handleAddButtonClick}
-              >
-                {isEditMode ? t('save') : t('add')}
-              </Button>
-            </DialogActions>
-          </Fragment>
-        )}
+        <Fragment>
+          <DialogTitle className={classes.title}>
+            {t('select_ans_advanced_destination')}
+            <IconButton
+              aria-label='close'
+              onClick={handleClose}
+              className={classes.closeButton}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent className={classes.dialogContent}>
+            <ModalHelperText title={t('select_ans_advanced_destination')} />
+            <CustomTable
+              classes={classes}
+              columns={columns}
+              firstCell={false}
+              showPagination={true}
+              rows={ansDestinations}
+              searchCriterias={['name', 'phoneNumber']}
+              noAvailableDataMessage={t('no_ans_advanced_instances_available')}
+              isModal={true}
+              tableId={'advanced_time_schedule_add_ans_destination'}
+            />
+          </DialogContent>
+          <DialogActions className={classes.dialogActions}>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.backButton}
+              onClick={handleBackButtonClick}
+            >
+              {t('cancel')}
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.nextButton}
+              disabled={!currentCheckedNumber.destination}
+              onClick={handleAddButtonClick}
+            >
+              {isEditMode ? t('save') : t('add')}
+            </Button>
+          </DialogActions>
+        </Fragment>
+      )}
     </Fragment>
   )
 }

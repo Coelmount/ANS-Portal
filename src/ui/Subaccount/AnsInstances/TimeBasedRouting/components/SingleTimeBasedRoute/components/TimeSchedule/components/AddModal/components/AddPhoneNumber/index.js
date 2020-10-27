@@ -1,17 +1,14 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react'
 import { useParams } from 'react-router-dom'
 
-import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 
 import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
 import CustomTable, {
@@ -28,7 +25,6 @@ import {
 } from 'utils/types/addDestinationModalStepsId'
 
 import useStyles from '../../../modalStyles'
-import { toJS } from 'mobx'
 
 const AddPhoneNumber = ({ handleClose, t }) => {
   const classes = useStyles()
@@ -36,7 +32,7 @@ const AddPhoneNumber = ({ handleClose, t }) => {
 
   const storageRowsPerPage = localStorage.rowsPerPageScheme
     ? JSON.parse(localStorage.getItem('rowsPerPageScheme'))
-      .ans_tbr_add_phone_number_step
+        .ans_tbr_add_phone_number_step
     : null
 
   const {
@@ -100,15 +96,12 @@ const AddPhoneNumber = ({ handleClose, t }) => {
     currentCheckedNumber,
     order,
     orderBy,
-    countryCode,
     selectedCountry,
-    setField,
     setPage,
     setRowsPerPage,
     setCurrentCheckedNumber,
     setOrder,
     setOrderBy,
-    setCountryCode,
     setSelectedCountry
   } = localStore
 
@@ -130,6 +123,7 @@ const AddPhoneNumber = ({ handleClose, t }) => {
     getRequest()
 
     return () => clearLoading()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // On update search/sorting
@@ -138,6 +132,7 @@ const AddPhoneNumber = ({ handleClose, t }) => {
     if (!isLoading) {
       getRequest()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderBy, order])
 
   // On update pagination
@@ -154,6 +149,7 @@ const AddPhoneNumber = ({ handleClose, t }) => {
       }
       getRequest(payload)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage, selectedCountry])
 
   // Trigger store POST request
@@ -215,67 +211,67 @@ const AddPhoneNumber = ({ handleClose, t }) => {
       {isLoading ? (
         <Loading />
       ) : (
-          <Fragment>
-            <DialogTitle className={classes.title}>
-              {t('add_access_number')}
-              <IconButton
-                aria-label='close'
-                onClick={handleClose}
-                className={classes.closeButton}
-              >
-                <CloseIcon />
-              </IconButton>
-            </DialogTitle>
-            <DialogContent className={classes.entitlementsDialogContent}>
-              <ModalHelperText helperText='add_destination_tbr_time_schedule' />
-              <CountryInput
-                value={selectedCountry}
-                setValue={setSelectedCountry}
-                countries={countries}
-                className={classes.countryInput}
-              />
-              <CustomTable
-                firstCell={false}
-                classes={classes}
-                rows={phoneNumbers}
-                columns={columns}
-                page={page}
-                setPage={setPage}
-                rowsPerPage={rowsPerPage}
-                setRowsPerPage={setRowsPerPage}
-                order={order}
-                setOrder={setOrder}
-                orderBy={orderBy}
-                setOrderBy={setOrderBy}
-                totalPages={totalPages}
-                isLoadingData={isLoading}
-                noAvailableDataMessage={t('no_phone_numbers_available')}
-                showSearchBar={false}
-                isModal={true}
-                tableId={'ans_tbr_add_phone_number_step'}
-              />
-            </DialogContent>
-            <DialogActions className={classes.dialogActionsSecond}>
-              <Button
-                variant='outlined'
-                color='primary'
-                className={classes.backButton}
-                onClick={handleBackButtonClick}
-              >
-                {t('back')}
-              </Button>
-              <Button
-                variant='contained'
-                color='primary'
-                className={classes.nextButton}
-                onClick={handleAddButtonClick}
-                disabled={!currentCheckedNumber.destination}
-              >
-                {isEditMode ? t('save') : t('add')}
-              </Button>
-            </DialogActions>
-          </Fragment>
-        )}
+        <Fragment>
+          <DialogTitle className={classes.title}>
+            {t('add_access_number')}
+            <IconButton
+              aria-label='close'
+              onClick={handleClose}
+              className={classes.closeButton}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent className={classes.entitlementsDialogContent}>
+            <ModalHelperText helperText='add_destination_tbr_time_schedule' />
+            <CountryInput
+              value={selectedCountry}
+              setValue={setSelectedCountry}
+              countries={countries}
+              className={classes.countryInput}
+            />
+            <CustomTable
+              firstCell={false}
+              classes={classes}
+              rows={phoneNumbers}
+              columns={columns}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+              order={order}
+              setOrder={setOrder}
+              orderBy={orderBy}
+              setOrderBy={setOrderBy}
+              totalPages={totalPages}
+              isLoadingData={isLoading}
+              noAvailableDataMessage={t('no_phone_numbers_available')}
+              showSearchBar={false}
+              isModal={true}
+              tableId={'ans_tbr_add_phone_number_step'}
+            />
+          </DialogContent>
+          <DialogActions className={classes.dialogActionsSecond}>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.backButton}
+              onClick={handleBackButtonClick}
+            >
+              {t('back')}
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              className={classes.nextButton}
+              onClick={handleAddButtonClick}
+              disabled={!currentCheckedNumber.destination}
+            >
+              {isEditMode ? t('save') : t('add')}
+            </Button>
+          </DialogActions>
+        </Fragment>
+      )}
     </Fragment>
   )
 }

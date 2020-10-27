@@ -20,7 +20,6 @@ import CustomTable, {
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import ModalHelperText from 'components/ModalHelperText'
-import usePreviousValue from 'utils/hooks/usePreviousValue'
 
 import useStyles from './styles'
 
@@ -33,7 +32,6 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   const match = useParams()
 
   const {
-    step,
     changeStep,
     updateSelectedPhoneNumber,
     getAvailableNumbersForAddInstance,
@@ -51,11 +49,8 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('id')
   const [numberLike, setNumberLike] = useState('')
-  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
-  const debouncedNumberLike = useDebounce(numberLike, 1000)[0]
 
-  const prevDebouncedNumberLike = usePreviousValue(debouncedNumberLike)
-  // Search params ? TRUE : FALSE
+  const debouncedNumberLike = useDebounce(numberLike, 1000)[0] // Search params ? TRUE : FALSE
   const isSearchParamsActive = !!debouncedNumberLike || false
 
   // set numbers in local state from store
@@ -75,6 +70,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
       order,
       debouncedNumberLike
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedNumberLike, orderBy, order])
 
   // onUpdate pagination
@@ -89,6 +85,7 @@ const SelectAccessPhoneNumber = ({ handleClose, t }) => {
       debouncedNumberLike,
       getAvailableNumbersForAddInstance
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, rowsPerPage])
 
   // set/remove checked in state
