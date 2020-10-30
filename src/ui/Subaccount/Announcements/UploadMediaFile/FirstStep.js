@@ -74,7 +74,7 @@ const FirstStep = props => {
               className={classes.uploadInput}
               id='contained-button-file'
               type='file'
-              accept='audio/mpeg, audio/vnd.wav, video/x-ms-wma'
+              accept='audio/mpeg, audio/vnd.wav, video/x-ms-wma, audio/wav'
               onChange={importFile}
               multiple
             />

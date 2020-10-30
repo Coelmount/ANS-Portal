@@ -49,7 +49,7 @@ const SecondStep = props => {
       promiseArr.push(
         postAddAnnouncements(match.customerId, match.groupId, {
           name: el.name,
-          content: el.url
+          content: el.url.split(',')[1]
         })
       )
     )
