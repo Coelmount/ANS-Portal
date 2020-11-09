@@ -103,23 +103,19 @@ const AudioRecorder = props => {
       .then(stream => {
         setIsMediaAvailable(true)
         preview.current.srcObject = stream
-        preview.current.captureStream =
-          preview.current.captureStream || preview.current.mozCaptureStream
+        return startRecording(stream, recordingTimeMS)
       })
-      .then(() =>
-        startRecording(preview.current.captureStream(), recordingTimeMS)
-      )
       .then(recordedChunks => {
-        let recordedBlob = new Blob(recordedChunks, { type: 'audio/vnd.wav' })
+        let recordedBlob = new Blob(recordedChunks, { type: 'audio/wav' })
         let reader = new FileReader()
         reader.readAsDataURL(recordedBlob)
         reader.onloadend = () => {
-          let base64data = reader.result
+          let base64data = reader.result.split(',')[1]
           setBase64(base64data)
         }
         recording.current.src = URL.createObjectURL(recordedBlob)
       })
-      .catch(e => {
+      .catch(() => {
         setIsMediaAvailable(false)
       })
   }
