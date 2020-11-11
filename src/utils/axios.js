@@ -2,8 +2,8 @@ import axios from 'axios'
 import get from 'lodash/get'
 import AuthStore from 'stores/Auth'
 
-export const BASE_URL = 'https://yaoh1.bxl.netaxis.be/api/v01'
-export const PROXY_P6 = '/p6'
+export const BASE_URL = 'https://apiocore-lab.uc.mtn.com/api/v01'
+export const PROXY_P6 = '/p1'
 
 const tokenExpMsg = 'Invalid authorization token'
 
@@ -28,7 +28,7 @@ instance.interceptors.response.use(
     return response
   },
 
-  async function (error) {
+  async function(error) {
     const status = get(error, 'response.status', null)
     const errorMessage = get(error, 'response.statusText', '')
     const config = get(error, 'config', {})

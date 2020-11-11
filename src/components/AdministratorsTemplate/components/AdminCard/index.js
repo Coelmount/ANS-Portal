@@ -15,6 +15,7 @@ import LanguageIcon from '@material-ui/icons/Language'
 
 import CustomerAdministrators from 'stores/CustomerAdministrators'
 import SubaccountAdministrators from 'stores/SubaccountAdmins'
+import AuthStore from 'stores/Auth'
 // import EditDeleteAdminStore from 'stores/EditDeleteAdministrator'
 
 import DeleteModal from 'components/DeleteModal'
@@ -56,6 +57,7 @@ const AdminCard = ({
 
   const { getSubaccountAdmins } = SubaccountAdministrators
   const { getCustomerAdmins } = CustomerAdministrators
+  const { username } = AuthStore
 
   const getAdministrators = () => {
     match.groupId
@@ -101,15 +103,17 @@ const AdminCard = ({
             <Box className={classes.buttonIconsWrapper}>
               <EditIcon className={classes.icon} />
             </Box>
-            <Box className={classes.closeButtonIconWrapper}>
-              <CloseIcon
-                className={classes.icon}
-                onClick={() => {
-                  handleOpenDeleteModal()
-                  setAdminId(admin.userId)
-                }}
-              />
-            </Box>
+            {username !== admin.userId ? (
+              <Box className={classes.closeButtonIconWrapper}>
+                <CloseIcon
+                  className={classes.icon}
+                  onClick={() => {
+                    handleOpenDeleteModal()
+                    setAdminId(admin.userId)
+                  }}
+                />
+              </Box>
+            ) : null}
           </Box>
         </Box>
         {(admin.firstName || admin.lastName) && (
