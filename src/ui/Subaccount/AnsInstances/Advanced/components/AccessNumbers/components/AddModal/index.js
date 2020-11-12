@@ -67,6 +67,16 @@ const AddModal = ({ t, open, handleClose }) => {
     postAccessNumber(payload)
   }
 
+  const handleChangePolicy = e => {
+    if (e.target.value === 'simultaneous') {
+      inputStore.set('policy', e.target.value)
+      inputStore.set('huntAfterNoAnswer', false)
+      inputStore.set('noAnswerNumberOfRings', '')
+    } else {
+      inputStore.set('policy', e.target.value)
+    }
+  }
+
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       {isAccessNumberPosting ? (
@@ -100,20 +110,22 @@ const AddModal = ({ t, open, handleClose }) => {
                 options={POLICY_OPTIONS}
                 label={t('policy')}
                 value={inputStore.values.policy}
-                onChange={e => inputStore.set('policy', e.target.value)}
+                onChange={handleChangePolicy}
               />
-              <Box className={classes.noAnswerWrap}>
-                <Checkbox
-                  checked={inputStore.values.huntAfterNoAnswer}
-                  onChange={e => {
-                    inputStore.set('huntAfterNoAnswer', e.target.checked)
-                    inputStore.set('amountSkipRings', '')
-                  }}
-                />
-                <Typography className={classes.noAnswerTitle}>
-                  {t('destination_groups_add_checkbox_title')}
-                </Typography>
-              </Box>
+              {inputStore.values.policy !== 'simultaneous' && (
+                <Box className={classes.noAnswerWrap}>
+                  <Checkbox
+                    checked={inputStore.values.huntAfterNoAnswer}
+                    onChange={e => {
+                      inputStore.set('huntAfterNoAnswer', e.target.checked)
+                      inputStore.set('amountSkipRings', '')
+                    }}
+                  />
+                  <Typography className={classes.noAnswerTitle}>
+                    {t('destination_groups_add_checkbox_title')}
+                  </Typography>
+                </Box>
+              )}
               {inputStore.values.huntAfterNoAnswer && (
                 <Box className={classes.amountSkipRingsWrap}>
                   <span className={classes.amountSkipRingsLeftTitle}>

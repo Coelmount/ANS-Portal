@@ -74,6 +74,16 @@ const AddModal = ({ t, open, handleClose }) => {
     postDestinationGroup(payload)
   }
 
+  const handleChangePolicy = e => {
+    if (e.target.value === 'simultaneous') {
+      inputStore.set('policy', e.target.value)
+      inputStore.set('huntAfterNoAnswer', false)
+      inputStore.set('noAnswerNumberOfRings', '')
+    } else {
+      inputStore.set('policy', e.target.value)
+    }
+  }
+
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
@@ -86,7 +96,6 @@ const AddModal = ({ t, open, handleClose }) => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-
       <DialogContent className={classes.modalContent}>
         <ModalHelperText helperText='add_group_destination_destination_groups' />
         {isDestinationGroupPosting ? (
@@ -103,20 +112,21 @@ const AddModal = ({ t, open, handleClose }) => {
               icon={<PolicyIcon />}
               options={POLICY_OPTIONS}
               label={t('policy')}
-              onChange={e => inputStore.set('policy', e.target.value)}
+              onChange={handleChangePolicy}
             />
-            <Box className={classes.noAnswerWrap}>
-              <Checkbox
-                value={inputStore.values.noAnswerNumberOfRings}
-                onChange={e => {
-                  inputStore.set('huntAfterNoAnswer', e.target.checked)
-                }}
-              />
-              <Typography className={classes.noAnswerTitle}>
-                {t('destination_groups_add_checkbox_title')}
-              </Typography>
-            </Box>
-
+            {inputStore.values.policy !== 'simultaneous' && (
+              <Box className={classes.noAnswerWrap}>
+                <Checkbox
+                  value={inputStore.values.noAnswerNumberOfRings}
+                  onChange={e => {
+                    inputStore.set('huntAfterNoAnswer', e.target.checked)
+                  }}
+                />
+                <Typography className={classes.noAnswerTitle}>
+                  {t('destination_groups_add_checkbox_title')}
+                </Typography>
+              </Box>
+            )}
             {inputStore.values.huntAfterNoAnswer && (
               <Input
                 icon={<PermIdentityOutlined />}
@@ -130,7 +140,6 @@ const AddModal = ({ t, open, handleClose }) => {
           </Box>
         )}
       </DialogContent>
-
       <DialogActions className={classes.dialogActions}>
         <Button
           variant='outlined'
