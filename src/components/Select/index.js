@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import has from 'lodash/has'
 
@@ -100,7 +101,9 @@ const CustomSelect = props => {
                 .filter(el => !el.show)
                 .map(opt => (
                   <MenuItem key={opt.value} value={opt.value}>
-                    {opt.label}
+                    <Tooltip title={opt.tooltip ? opt.tooltip : ''}>
+                      <div>{opt.label}</div>
+                    </Tooltip>
                   </MenuItem>
                 ))
             : []}
