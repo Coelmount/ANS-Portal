@@ -109,6 +109,16 @@ const Settings = ({ t }) => {
   }
   // -----------
 
+  const handleChangePolicy = e => {
+    if (e.target.value === 'simultaneous') {
+      inputStore.set('policy', e.target.value)
+      inputStore.set('huntAfterNoAnswer', false)
+      inputStore.set('noAnswerNumberOfRings', '')
+    } else {
+      inputStore.set('policy', e.target.value)
+    }
+  }
+
   return (
     <Box className={classes.wrap}>
       {isLoading ? (
@@ -139,25 +149,27 @@ const Settings = ({ t }) => {
             options={POLICY_OPTIONS}
             label={t('policy')}
             value={inputStore.values.policy}
-            onChange={e => inputStore.set('policy', e.target.value)}
+            onChange={handleChangePolicy}
             disabled={!inputStore.values.isEditMode}
           />
-          <Box
-            className={classnames(classes.noAnswerWrap, {
-              [classes.disabledBlock]: !inputStore.values.isEditMode
-            })}
-          >
-            <Checkbox
-              checked={inputStore.values.huntAfterNoAnswer}
-              onChange={e => {
-                inputStore.set('huntAfterNoAnswer', e.target.checked)
-              }}
-              disabled={!inputStore.values.isEditMode}
-            />
-            <Typography className={classes.noAnswerTitle}>
-              {t('destination_groups_add_checkbox_title')}
-            </Typography>
-          </Box>
+          {inputStore.values.policy !== 'simultaneous' && (
+            <Box
+              className={classnames(classes.noAnswerWrap, {
+                [classes.disabledBlock]: !inputStore.values.isEditMode
+              })}
+            >
+              <Checkbox
+                checked={inputStore.values.huntAfterNoAnswer}
+                onChange={e => {
+                  inputStore.set('huntAfterNoAnswer', e.target.checked)
+                }}
+                disabled={!inputStore.values.isEditMode}
+              />
+              <Typography className={classes.noAnswerTitle}>
+                {t('destination_groups_add_checkbox_title')}
+              </Typography>
+            </Box>
+          )}
           {inputStore.values.huntAfterNoAnswer && (
             <Box className={classes.amountSkipRingsWrap}>
               <span
