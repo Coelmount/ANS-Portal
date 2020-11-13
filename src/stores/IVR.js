@@ -570,6 +570,7 @@ class IVR {
     order,
     countryCode
   }) => {
+    if (this.isAvailableNumbersLoading) return
     this.availableNumbers = []
     this.isAvailableNumbersLoading = true
 
@@ -588,9 +589,8 @@ class IVR {
       }
     }
     const orderField = order || 'asc'
-    const countryCodeField = countryCode.length
-      ? countryCode.replace('+', '%2B')
-      : ''
+    const countryCodeField =
+      countryCode && countryCode.length ? countryCode.replace('+', '%2B') : ''
 
     axios
       .get(

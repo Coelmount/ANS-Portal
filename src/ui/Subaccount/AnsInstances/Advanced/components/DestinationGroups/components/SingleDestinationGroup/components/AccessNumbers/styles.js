@@ -46,6 +46,13 @@ const useStyles = makeStyles(theme => ({
     },
     color: theme.palette.black
   },
+  disabledButton: {
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
+  },
   activeIcon: {
     background: theme.palette.primary.main
   },
@@ -63,13 +70,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: 8,
     '&:hover': {
       backgroundColor: theme.palette.primary.main
-    }
-  },
-  disabledButton: {
-    backgroundColor: theme.palette.lightGrey,
-    '&:hover': {
-      backgroundColor: theme.palette.lightGrey,
-      cursor: 'auto'
     }
   },
   disabledText: {
