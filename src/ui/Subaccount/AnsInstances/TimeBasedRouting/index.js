@@ -12,6 +12,7 @@ import CustomContainer from 'components/CustomContainer'
 import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import TranslationNumbers from './components/TranslationNumbers'
 import AvailableNumbers from './components/AvailableNumbers'
+import ConfiguredNumbers from './components/ConfiguredNumbers'
 
 import useStyles from './styles'
 
@@ -38,6 +39,9 @@ const Translations = props => {
       case 1:
         history.push('#translations')
         break
+      case 2:
+        history.push('#configured_numbers')
+        break
       default:
         break
     }
@@ -49,6 +53,8 @@ const Translations = props => {
         return 0
       case '#translations':
         return 1
+      case '#configured_numbers':
+        return 2
       default:
         return 0
     }
@@ -79,10 +85,18 @@ const Translations = props => {
         scrollButtons='auto'
       >
         <Tab value={0} label={t('available_numbers')} className={classes.tab} />
+        <Tab
+          value={2}
+          label={t('configured_numbers')}
+          className={classes.tab}
+        />
         <Tab value={1} label={t('translations')} className={classes.tab} />
       </Tabs>
       <TabPanel value={returnActiveTab()} index={0}>
         <AvailableNumbers />
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={2}>
+        <ConfiguredNumbers />
       </TabPanel>
       <TabPanel value={returnActiveTab()} index={1}>
         <TranslationNumbers />

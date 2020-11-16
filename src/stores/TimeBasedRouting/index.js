@@ -31,6 +31,9 @@ export class TimeBasedRouting {
   isAvailableNumbersLoading = false
   isAnsNumbersLoading = true
   isDeleting = false
+  isConfiguredNumbersLoading = false
+  configuredNumbers = []
+  totalPagesConfiguredNumbers = 0
 
   setConfigureStep = value => {
     this.configureStep = value
@@ -112,6 +115,76 @@ export class TimeBasedRouting {
         })
       )
       .finally(() => (this.isAvailableNumbersLoading = false))
+  }
+
+  getConfiguredNumbers = (
+    customerId,
+    groupId,
+    page,
+    perPage,
+    orderBy,
+    order,
+    query
+  ) => {
+    if (this.isConfiguredNumbersLoading) return
+
+    this.isConfiguredNumbersLoading = true
+
+    let orderByField
+    switch (orderBy) {
+      case 'phoneNumber': {
+        orderByField = 'nsn'
+        break
+      }
+      case 'type': {
+        orderByField = 'type'
+        break
+      }
+      default: {
+        orderByField = 'id'
+      }
+    }
+    const orderField = order || 'asc'
+    const queryField = query || ''
+    const searchValue =
+      this.searchParam === COUNTRY_CODE && queryField.length > 1
+        ? queryField.replace('+', '%2B')
+        : queryField
+
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=tbr&in_use=true&${this.searchParam}=${searchValue} `
+      )
+      .then(res => {
+        const pagination = res.data.pagination
+        const requestResult = res.data.numbers
+
+        const transformedNumbers = requestResult.map(item => {
+          return {
+            ...item,
+            phoneNumber: `${item.country_code}${item.nsn}`,
+            country: getCountryNameFromNumber(
+              `${item.country_code}${item.nsn}`
+            ),
+            status: 'used',
+            service_capabilities: 'tbr',
+            checked: false,
+            hover: false
+          }
+        })
+
+        this.configuredNumbers = transformedNumbers
+        this.totalPagesConfiguredNumbers = pagination[2]
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch phone numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => (this.isConfiguredNumbersLoading = false))
   }
 
   getAnsNumbers = ({
@@ -483,6 +556,7 @@ decorate(TimeBasedRouting, {
   setDefaultIsLoadingTBR: action,
   getAnsNumbers: action,
   clearAnsNumbersLoading: action,
+  getConfiguredNumbers: action,
   timeBasedRoutes: observable,
   timeBasedRoute: observable,
   searchParam: observable,
@@ -498,7 +572,10 @@ decorate(TimeBasedRouting, {
   isTimeBasedRoutePosting: observable,
   isAvailableNumbersLoading: observable,
   isAnsNumbersLoading: observable,
-  isDeleting: observable
+  isDeleting: observable,
+  isConfiguredNumbersLoading: observable,
+  configuredNumbers: observable,
+  totalPagesConfiguredNumbers: observable
 })
 
 export default new TimeBasedRouting()
