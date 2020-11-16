@@ -183,7 +183,7 @@ const IVR = props => {
         <Tab
           value={2}
           label={t('configured_numbers')}
-          className={classes.lastTab}
+          className={classes.tab}
         />
         <Tab value={1} label={t('IVRs')} className={classes.lastTab} />
       </Tabs>
