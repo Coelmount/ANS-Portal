@@ -10,8 +10,8 @@ import {
   BUSY_TBR_URL
 } from 'utils/types/serviceCapabilities'
 
-const getFormattedInstanceId = (id) => {
-  if (id.endsWith('_main')) {
+const getFormattedInstanceId = id => {
+  if (id && id.endsWith('_main')) {
     const arr = id.split('_main')
     console.log(arr[0], 'arr[0]')
     return arr[0]
