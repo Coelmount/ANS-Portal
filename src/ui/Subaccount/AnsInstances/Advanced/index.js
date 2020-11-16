@@ -13,6 +13,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import AccessNumbers from './components/AccessNumbers'
 import DestinationGroups from './components/DestinationGroups'
 import Destinations from './components/Destinations'
+import ConfiguredNumbers from './components/ConfiguredNumbers'
 
 import useStyles from './styles'
 
@@ -21,6 +22,11 @@ const tabPanelItems = [
     index: 0,
     component: <AccessNumbers />,
     label: 'available_numbers'
+  },
+  {
+    index: 3,
+    component: <ConfiguredNumbers />,
+    label: 'configured_numbers'
   },
   {
     index: 1,
@@ -61,6 +67,9 @@ const Advanced = props => {
       case 2:
         history.push('#destinations')
         break
+      case 3:
+        history.push('#configured_numbers')
+        break
       default:
         break
     }
@@ -74,6 +83,8 @@ const Advanced = props => {
         return 1
       case '#destinations':
         return 2
+      case '#configured_numbers':
+        return 3
       default:
         return 0
     }
