@@ -13,7 +13,6 @@ import {
 const getFormattedInstanceId = id => {
   if (id && id.endsWith('_main')) {
     const arr = id.split('_main')
-    console.log(arr[0], 'arr[0]')
     return arr[0]
   }
   return id
