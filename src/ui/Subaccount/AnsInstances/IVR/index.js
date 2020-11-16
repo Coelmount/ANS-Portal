@@ -16,6 +16,7 @@ import CustomBreadcrumbs from 'components/CustomBreadcrumbs'
 import CustomTable from 'components/CustomTable'
 import DeleteModal from 'components/DeleteModal'
 import AvailableNumbers from './AvailableNumbers'
+import ConfiguredNumbers from './ConfiguredNumbers'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 
@@ -132,6 +133,9 @@ const IVR = props => {
         location.hash !== '#ivrs' && getIVRs(match.customerId, match.groupId)
         history.push('#ivrs')
         break
+      case 2:
+        history.push('#configured_numbers')
+        break
       default:
         break
     }
@@ -143,6 +147,8 @@ const IVR = props => {
         return 0
       case '#ivrs':
         return 1
+      case '#configured_numbers':
+        return 2
       default:
         return 0
     }
@@ -174,11 +180,19 @@ const IVR = props => {
         scrollButtons='auto'
       >
         <Tab value={0} label={t('available_numbers')} className={classes.tab} />
+        <Tab
+          value={2}
+          label={t('configured_numbers')}
+          className={classes.lastTab}
+        />
         <Tab value={1} label={t('IVRs')} className={classes.lastTab} />
       </Tabs>
 
       <TabPanel value={returnActiveTab()} index={0}>
         <AvailableNumbers />
+      </TabPanel>
+      <TabPanel value={returnActiveTab()} index={2}>
+        <ConfiguredNumbers />
       </TabPanel>
       <TabPanel value={returnActiveTab()} index={1}>
         <CustomTable

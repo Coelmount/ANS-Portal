@@ -16,6 +16,79 @@ export class AdvancedAccessNumbers {
   searchParam = NUMBER_LIKE
   selectedNumber = null
   isAccessNumberPosting = false
+  isConfiguredNumbersLoading = false
+  configuredNumbers = []
+  totalPagesConfiguredNumbers = 0
+
+  getConfiguredNumbersForAddInstance = (
+    customerId,
+    groupId,
+    page,
+    perPage,
+    orderBy,
+    order,
+    query
+  ) => {
+    if (this.isConfiguredNumbersLoading) return
+    this.isConfiguredNumbersLoading = true
+
+    console.log(12312312)
+    let orderByField
+    switch (orderBy) {
+      case 'phoneNumber': {
+        orderByField = NSN
+        break
+      }
+      case TYPE: {
+        orderByField = TYPE
+        break
+      }
+      default: {
+        orderByField = ID
+      }
+    }
+    const orderField = order || 'asc'
+    const queryField = query || ''
+    const searchValue =
+      this.searchParam === COUNTRY_CODE && queryField.length > 1
+        ? queryField.replace('+', '%2B')
+        : queryField
+
+    axios
+      .get(
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=ivr&in_use=true&${this.searchParam}=${searchValue} `
+      )
+      .then(res => {
+        const pagination = res.data.pagination
+        const requestResult = res.data.numbers
+
+        const transformedNumbers = requestResult.map(item => {
+          return {
+            ...item,
+            phoneNumber: `${item.country_code}${item.nsn}`,
+            country: getCountryNameFromNumber(
+              `${item.country_code}${item.nsn}`
+            ),
+            status: 'used',
+            service_capabilities: 'ivr',
+            checked: false,
+            hover: false
+          }
+        })
+
+        this.configuredNumbers = transformedNumbers
+        this.totalPagesConfiguredNumbers = pagination[2]
+      })
+      .catch(e =>
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to fetch configured numbers',
+          options: {
+            variant: 'error'
+          }
+        })
+      )
+      .finally(() => (this.isConfiguredNumbersLoading = false))
+  }
 
   getAvailableNumbersForAddInstance = (
     customerId,
@@ -144,11 +217,15 @@ decorate(AdvancedAccessNumbers, {
   updateSearchParam: action,
   updateSelectedNumber: action,
   postAccessNumber: action,
+  getConfiguredNumbersForAddInstance: action,
   accessNumbers: observable,
   totalPagesAccessNumbers: observable,
   isAccessNumbersLoading: observable,
   searchParam: observable,
-  isAccessNumberPosting: observable
+  isAccessNumberPosting: observable,
+  isConfiguredNumbersLoading: observable,
+  configuredNumbers: observable,
+  totalPagesConfiguredNumbers: observable
 })
 
 export default new AdvancedAccessNumbers()
