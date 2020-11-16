@@ -21,7 +21,6 @@ export class TimeBasedRouting {
   totalPagesAvailableNumbers = 0
   totalPagesAnsNumbers = 0
   configureStep = 1
-  tbrToAddName = ''
   searchParam = NUMBER_LIKE
   currentTbrName = ''
   selectedPhoneNumber = {}
@@ -41,10 +40,6 @@ export class TimeBasedRouting {
 
   clearConfigureStep = () => {
     this.configureStep = 1
-  }
-
-  setTbrToAddName = value => {
-    this.tbrToAddName = value
   }
 
   getAvailableNumbers = (
@@ -429,12 +424,7 @@ export class TimeBasedRouting {
     this.selectedPhoneNumber = number
   }
 
-  postTimeBasedRoute = ({
-    customerId,
-    groupId,
-    defaultDestination,
-    history
-  }) => {
+  postTimeBasedRoute = ({ customerId, groupId, history, name }) => {
     this.isTimeBasedRoutePosting = true
 
     const accessCode = this.selectedPhoneNumber.country_code
@@ -444,10 +434,9 @@ export class TimeBasedRouting {
       .post(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing`,
         {
-          name: this.tbrToAddName,
+          name,
           cc_access_number: accessCode,
-          access_number: accessNumber,
-          defaultDestination
+          access_number: accessNumber
         }
       )
       .then(res => {
@@ -542,7 +531,6 @@ decorate(TimeBasedRouting, {
   deleteString: computed,
   setConfigureStep: action,
   clearConfigureStep: action,
-  setTbrToAddName: action,
   getTimeBasedRoutes: action,
   getTimeBasedRoute: action,
   putTimeBasedRoute: action,

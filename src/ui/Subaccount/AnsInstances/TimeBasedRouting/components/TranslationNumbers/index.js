@@ -159,8 +159,8 @@ const TimeBasedRouting = ({ t }) => {
       )
     },
     {
-      id: 'defaultDestination',
-      label: t('default_destination')
+      id: 'mainNumber',
+      label: t('main_number')
     },
     {
       id: 'delete',

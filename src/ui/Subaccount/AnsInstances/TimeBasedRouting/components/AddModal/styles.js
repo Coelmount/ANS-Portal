@@ -76,6 +76,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 30,
     '& > div': {
       marginBottom: 30
     }

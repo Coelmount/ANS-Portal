@@ -1,6 +1,7 @@
 import React from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer, useLocalStore } from 'mobx-react-lite'
+import { useParams, useHistory } from 'react-router-dom'
 
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -9,21 +10,21 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 import PermIdentityOutlined from '@material-ui/icons/PermIdentityOutlined'
 
 import TimeBaseRoutingStore from 'stores/TimeBasedRouting'
 import Input from 'components/Input'
-import Select from 'components/Select'
 import ModalHelperText from 'components/ModalHelperText'
-import { FREE_ENTRY_NUMBER_ID, ANS_NUMBER_ID } from 'utils/types/numberTypes'
+import Loading from 'components/Loading'
 
 import useStyles from '../styles'
 
 const FirstStep = ({ t, handleClose }) => {
   const classes = useStyles()
+  const { customerId, groupId } = useParams()
+  const history = useHistory()
 
-  const { setConfigureStep, setTbrToAddName } = TimeBaseRoutingStore
+  const { postTimeBasedRoute, isTimeBasedRoutePosting } = TimeBaseRoutingStore
 
   const inputStore = useLocalStore(() => ({
     name: '',
@@ -32,26 +33,21 @@ const FirstStep = ({ t, handleClose }) => {
       this[field] = value
     },
     get isFieldsValid() {
-      return this.name && this.numberType
+      return this.name
     }
   }))
 
   const handleNextButtonClick = () => {
-    setConfigureStep(inputStore.numberType)
-    setTbrToAddName(inputStore.name)
+    const payload = {
+      customerId,
+      groupId,
+      history,
+      name: inputStore.name
+    }
+    postTimeBasedRoute(payload)
   }
 
-  const phoneNumberTypeOptions = [
-    {
-      label: t('free_entry'),
-      value: FREE_ENTRY_NUMBER_ID
-    },
-    {
-      label: t('ans_number'),
-      value: ANS_NUMBER_ID
-    }
-  ]
-
+  if (isTimeBasedRoutePosting) return <Loading />
   return (
     <>
       <DialogTitle className={classes.title}>
@@ -69,20 +65,12 @@ const FirstStep = ({ t, handleClose }) => {
         <div className={classes.helperTextWrap}>
           <ModalHelperText helperText='add_tbr_instance_tbr_step_1' />
         </div>
-        <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.inputsWrap}>
           <Input
             icon={<PermIdentityOutlined />}
             label={t('name')}
             variant='outlined'
             onChange={e => inputStore.set('name', e.target.value)}
-          />
-          <Select
-            label={t('phone_number_type')}
-            icon={<PhoneOutlinedIcon alt='phone' />}
-            options={phoneNumberTypeOptions}
-            value={inputStore.numberType}
-            onChange={e => inputStore.set('numberType', e.target.value)}
           />
         </Box>
       </DialogContent>
@@ -103,7 +91,7 @@ const FirstStep = ({ t, handleClose }) => {
           disabled={!inputStore.isFieldsValid}
           onClick={handleNextButtonClick}
         >
-          {t('next')}
+          {t('Add')}
         </Button>
       </DialogActions>
     </>

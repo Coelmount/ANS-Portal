@@ -4,7 +4,8 @@ import pick from 'lodash/pick'
 const DEFAULT_VALUES = {
   userId: '',
   name: '',
-  defaultDestination: ''
+  defaultDestination: '',
+  mainNumber: ''
 }
 
 class TimeBasedRoute {

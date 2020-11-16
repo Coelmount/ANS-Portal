@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { observer, useLocalStore, useObserver } from 'mobx-react-lite'
+import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import classnames from 'classnames'
@@ -18,7 +18,7 @@ import DeleteModal from 'components/DeleteModal'
 import AddModal from './components/AddModal'
 import EditDefaultDestinationModal from './components/EditDefaultDestinationModal'
 import TimeScheduleCalendar from './components/TimeScheduleCalendar'
-import Input from 'components/Input'
+// import Input from 'components/Input'
 import { EDIT_DESTINATION_ID } from 'utils/types/addDestinationModalStepsId'
 
 import editIcon from 'source/images/svg/edit-blue.svg'
@@ -130,7 +130,7 @@ const ListView = ({
 
   return (
     <Fragment>
-      <DefaultDestination t={t} classes={classes} open={open} />
+      {/* <DefaultDestination t={t} classes={classes} open={open} /> */}
       <Toolbar
         t={t}
         classes={classes}
@@ -140,46 +140,46 @@ const ListView = ({
       {isLoading ? (
         <Loading />
       ) : (
-          <CustomTable
-            firstCell
-            rows={schedules}
-            columns={columns}
-            searchCriterias={['name', 'defaultDestination']}
-            noAvailableDataMessage={t('no_time_schedules_available')}
-            tableId='time_based_routing_schedules_list'
-            isLoadingData={isLoading}
-          />
-        )}
+        <CustomTable
+          firstCell
+          rows={schedules}
+          columns={columns}
+          searchCriterias={['name', 'defaultDestination']}
+          noAvailableDataMessage={t('no_time_schedules_available')}
+          tableId='time_based_routing_schedules_list'
+          isLoadingData={isLoading}
+        />
+      )}
     </Fragment>
   )
 }
 
-const DefaultDestination = ({ t, classes, open }) => {
-  const { defaultDestination } = TimeSchedulesStore
+// const DefaultDestination = ({ t, classes, open }) => {
+//   const { defaultDestination } = TimeSchedulesStore
 
-  const handleEditIconClick = () => {
-    open(editDefaultDestinationModalId)
-  }
+//   const handleEditIconClick = () => {
+//     open(editDefaultDestinationModalId)
+//   }
 
-  return useObserver(() => (
-    <Box className={classes.defaultDestinationWrap}>
-      <Typography className={classes.blockLabel}>
-        {t('default_destination')}
-      </Typography>
-      <Box className={classes.inputWrap}>
-        <Input
-          value={defaultDestination}
-          label={t('forward_to')}
-          variant='outlined'
-          disabled
-        />
-      </Box>
-      <Box onClick={handleEditIconClick} className={classes.editButtonWrap}>
-        <img src={editIcon} alt='edit' />
-      </Box>
-    </Box>
-  ))
-}
+//   return useObserver(() => (
+//     <Box className={classes.defaultDestinationWrap}>
+//       <Typography className={classes.blockLabel}>
+//         {t('default_destination')}
+//       </Typography>
+//       <Box className={classes.inputWrap}>
+//         <Input
+//           value={defaultDestination}
+//           label={t('forward_to')}
+//           variant='outlined'
+//           disabled
+//         />
+//       </Box>
+//       <Box onClick={handleEditIconClick} className={classes.editButtonWrap}>
+//         <img src={editIcon} alt='edit' />
+//       </Box>
+//     </Box>
+//   ))
+// }
 
 const Toolbar = ({ t, classes, isLoading, handleAddClick }) => {
   return (
@@ -310,8 +310,8 @@ const TimeSchedule = ({ t }) => {
           handleDeleteClick={handleDeleteClick}
         />
       ) : (
-          <TimeScheduleCalendar />
-        )}
+        <TimeScheduleCalendar />
+      )}
 
       {isAddModalOpen && (
         <AddModal open={isAddModalOpen} handleClose={modalStore.close} />
