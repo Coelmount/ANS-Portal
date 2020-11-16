@@ -129,9 +129,8 @@ export class AccessNumbers {
       }
     }
     const orderField = order || 'asc'
-    const countryCodeField = countryCode.length
-      ? countryCode.replace('+', '%2B')
-      : ''
+    const countryCodeField =
+      countryCode && countryCode.length ? countryCode.replace('+', '%2B') : ''
 
     axios
       .get(

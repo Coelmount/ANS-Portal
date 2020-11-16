@@ -2,10 +2,12 @@ import React, { useEffect, Fragment } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import classnames from 'classnames'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
@@ -32,15 +34,22 @@ const AccessNumbers = observer(({ t }) => {
   const {
     getMainNumber,
     getSecondaryNumbers,
+    getAvailableNumbers,
     deleteSecondaryNumber,
     mainNumber,
     secondaryNumbers,
+    availableNumbers,
     isMainNumberLoading,
     isSecondaryNumbersLoading,
+    isAvailableNumbersLoading,
     isSecondaryNumberDeleting
   } = AccessNumbersStore
 
-  const isLoading = isMainNumberLoading || isSecondaryNumbersLoading
+  const isLoading =
+    isMainNumberLoading ||
+    isSecondaryNumbersLoading ||
+    isAvailableNumbersLoading
+  const isAvailableNumbersExist = availableNumbers.length
 
   const initialRequest = () => {
     const payload = {
@@ -48,8 +57,17 @@ const AccessNumbers = observer(({ t }) => {
       groupId,
       destinationGroupName
     }
+    const availableNumbersPayload = {
+      customerId,
+      groupId,
+      page: 1,
+      rowsPerPage: 1
+    }
+
     getMainNumber(payload)
     getSecondaryNumbers(payload)
+    // Disable Add button if there are no available numbers
+    getAvailableNumbers(availableNumbersPayload)
   }
 
   const openedModal = useLocalStore(() => ({
@@ -90,7 +108,7 @@ const AccessNumbers = observer(({ t }) => {
 
   // Modal open click handlers -----
   const handleAddIconClick = () => {
-    openedModal.open(addModal)
+    if (isAvailableNumbersExist) openedModal.open(addModal)
   }
 
   const handleEditIconClick = () => {
@@ -192,9 +210,20 @@ const AccessNumbers = observer(({ t }) => {
               noAvailableDataMessage={t('no_secondary_numbers_available')}
             />
             <Box className={classes.addWrap}>
-              <Box className={classes.addIconWrap} onClick={handleAddIconClick}>
-                <AddOutlinedIcon />
-              </Box>
+              <Tooltip
+                title={
+                  isAvailableNumbersExist ? '' : t('no_phone_numbers_available')
+                }
+              >
+                <Box
+                  className={classnames(classes.addIconWrap, {
+                    [classes.disabledButton]: !isAvailableNumbersExist
+                  })}
+                  onClick={handleAddIconClick}
+                >
+                  <AddOutlinedIcon />
+                </Box>
+              </Tooltip>
               <Typography className={classes.addTitle}>
                 {t(`${t('add')} (max 10)`)}
               </Typography>

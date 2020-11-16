@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import CustomTable from 'components/CustomTable'
 import Loading from 'components/Loading'
@@ -32,19 +33,30 @@ const AccessNumbers = props => {
 
   const {
     getMainNumber,
+    getAvailableNumbers,
+    availableNumbers,
     isLoadingMainNumber,
     mainNumber,
     isLoadingSecondaryNumbers,
     secondaryNumbers,
     getSecondaryNumber,
-    clearLoadingStates,
     isAddingSecondaryNumbers,
     putAddSecondaryNumbers
   } = IVRStore
 
+  const isAvailableNumbersExist = availableNumbers.length
+
   useEffect(() => {
+    const payload = {
+      customerId: match.customerId,
+      groupId: match.groupId,
+      page: 1,
+      rowsPerPage: 1
+    }
     getMainNumber(match.customerId, match.groupId, match.ivrId)
     getSecondaryNumber(match.customerId, match.groupId, match.ivrId)
+    // Disable Add button if there are no available numbers
+    getAvailableNumbers(payload)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -221,20 +233,27 @@ const AccessNumbers = props => {
           handleClose={() => {
             setShowAddSecondaryNumbers(false)
             getSecondaryNumber(match.customerId, match.groupId, match.ivrId)
-            clearLoadingStates()
           }}
         />
       )}
       <Box className={classes.addButtonBox}>
-        <Button
-          variant={'contained'}
-          color={'primary'}
-          className={classes.roundButton}
-          onClick={() => setShowAddSecondaryNumbers(true)}
-          disabled={secondaryNumbers.length >= 10}
+        <Tooltip
+          title={isAvailableNumbersExist ? '' : t('no_phone_numbers_available')}
         >
-          <AddIcon />
-        </Button>
+          <div>
+            <Button
+              variant={'contained'}
+              color={'primary'}
+              className={classes.roundButton}
+              onClick={() => setShowAddSecondaryNumbers(true)}
+              disabled={
+                secondaryNumbers.length >= 10 || !isAvailableNumbersExist
+              }
+            >
+              <AddIcon />
+            </Button>
+          </div>
+        </Tooltip>
         <Box>{`${t('add')} (max 10)`}</Box>
       </Box>
       {showDeleteNumber && (
