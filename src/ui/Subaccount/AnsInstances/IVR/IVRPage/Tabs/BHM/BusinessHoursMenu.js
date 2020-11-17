@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import has from 'lodash/has'
 
 import Box from '@material-ui/core/Box'
@@ -13,11 +13,13 @@ import EditIcon from 'source/images/svg/edit-blue.svg'
 import MenuTemplate from 'components/MenuTemplate'
 import Loading from 'components/Loading'
 import EditSchedules from '../../../EditSchedules'
+import AddScheduleModal from '../../../../../Schedules/components/AddScheduleModal'
 
 import IVRStore from 'stores/IVR'
 import AnnouncementsStore from 'stores/Announcements'
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import ConfigStore from 'stores/Config'
+import WeekScheduleStore from 'stores/WeekSchedules'
 
 import useStyles from './styles'
 
@@ -41,11 +43,12 @@ const BusinessHoursMenu = props => {
     isPhoneNumbersLoading,
     getPhoneNumbers
   } = PhoneNumbersStore
+  const { postSchedule, getSchedules } = WeekScheduleStore
   const { getConfig, isLoadingConfig, config } = ConfigStore
   const classes = useStyles()
   const match = useParams()
-  const history = useHistory()
   const [showEditSchedules, setShowEditSchedules] = useState(false)
+  const [showAddSchedules, setShowAddSchedules] = useState(false)
 
   useEffect(() => {
     getAnnouncements(match.customerId, match.groupId)
@@ -65,6 +68,8 @@ const BusinessHoursMenu = props => {
   ) {
     return <Loading />
   }
+
+  console.log(showAddSchedules)
 
   return (
     <React.Fragment>
@@ -87,8 +92,9 @@ const BusinessHoursMenu = props => {
           className={classes.roundButton}
           disabled={!has(ivr, 'businessHours.name')}
           onClick={() =>
-            history.push(
-              `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/week_schedules/${ivr.businessHours.name}`
+            window.open(
+              `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/week_schedules/${ivr.businessHours.name}`,
+              '_blank'
             )
           }
         >
@@ -111,11 +117,24 @@ const BusinessHoursMenu = props => {
               setShowEditSchedules(false)
               getIVR(match.customerId, match.groupId, match.ivrId)
             }}
+            addNewSchedule={() => setShowAddSchedules(true)}
             menuLvl={'menus'}
             menuType={'businessHours'}
             defaultSchedule={
               has(ivr, 'businessHours.name') ? ivr.businessHours.name : ''
             }
+          />
+        )}
+        {showAddSchedules && (
+          <AddScheduleModal
+            open={showAddSchedules}
+            postSchedule={postSchedule}
+            closeModal={() => {
+              setShowAddSchedules(false)
+              getSchedules(match.customerId, match.groupId)
+            }}
+            title={t('add_week_schedule')}
+            handleClose={() => setShowAddSchedules(false)}
           />
         )}
       </Box>

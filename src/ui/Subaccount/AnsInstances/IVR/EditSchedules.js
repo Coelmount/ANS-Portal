@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 
 import Loading from 'components/Loading'
 import Select from 'components/Select'
+import ModalHelperText from 'components/ModalHelperText'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -19,17 +20,24 @@ import CloseIcon from '@material-ui/icons/Close'
 import IVRStore from 'stores/IVR'
 import WeekScheduleStore from 'stores/WeekSchedules'
 import HolidayScheduleStore from 'stores/HolidaySchedules'
-import ModalHelperText from 'components/ModalHelperText'
 
 import useStyles from './styles'
 
 const EditGreeting = props => {
-  const { t, open, handleClose, menuType, defaultSchedule } = props
+  const {
+    t,
+    open,
+    handleClose,
+    menuType,
+    defaultSchedule,
+    addNewSchedule
+  } = props
   const classes = useStyles()
   const match = useParams()
   const [schedulerSelection, setSchedulerSelection] = useState(defaultSchedule)
 
   const { putUpdateIVR } = IVRStore
+
   const {
     getSchedules: getWeekSchedules,
     schedules: weekSchedules,
@@ -120,6 +128,7 @@ const EditGreeting = props => {
               menuType === 'businessHours'
                 ? [
                     { label: `No schedule`, value: 'Any time' },
+                    { label: 'Add new', value: 'Add new' },
                     ...weekSchedules.map(el => ({
                       label: el.name,
                       value: el.name
@@ -127,13 +136,20 @@ const EditGreeting = props => {
                   ]
                 : [
                     { label: `No schedule`, value: 'Any time' },
+                    { label: 'Add new', value: 'Add new' },
                     ...holidaySchedules.map(el => ({
                       label: el.name,
                       value: el.name
                     }))
                   ]
             }
-            onChange={e => setSchedulerSelection(e.target.value)}
+            onChange={e => {
+              if (e.target.value === 'Add new') {
+                addNewSchedule()
+              } else {
+                setSchedulerSelection(e.target.value)
+              }
+            }}
           />
         </Box>
       </DialogContent>
