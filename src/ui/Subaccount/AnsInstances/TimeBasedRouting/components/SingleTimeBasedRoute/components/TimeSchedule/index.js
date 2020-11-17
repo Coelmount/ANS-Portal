@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import classnames from 'classnames'
 
 import AddIcon from '@material-ui/icons/Add'
@@ -76,7 +76,9 @@ const ListView = ({
   isLoading,
   handleAddClick,
   handleEditIconClick,
-  handleDeleteClick
+  handleDeleteClick,
+  customerId,
+  groupId
 }) => {
   const classes = useStyles()
   const { schedules } = TimeSchedulesStore
@@ -106,7 +108,16 @@ const ListView = ({
     {
       id: 'timeSchedule',
       label: 'schedule',
-      isSortAvailable: false
+      isSortAvailable: false,
+      getCellData: row => (
+        <Link
+          to={`/customers/${customerId}/subaccounts/${groupId}/schedules/week_schedules/${row.timeSchedule}`}
+          className={classes.link}
+          target='_blank'
+        >
+          {row.timeSchedule}
+        </Link>
+      )
     },
     {
       id: 'delete',
@@ -308,6 +319,8 @@ const TimeSchedule = ({ t }) => {
           handleAddClick={handleAddClick}
           handleEditIconClick={handleEditIconClick}
           handleDeleteClick={handleDeleteClick}
+          customerId={customerId}
+          groupId={groupId}
         />
       ) : (
         <TimeScheduleCalendar />

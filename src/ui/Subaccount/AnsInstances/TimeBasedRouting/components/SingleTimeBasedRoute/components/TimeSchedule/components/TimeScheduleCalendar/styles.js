@@ -32,7 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
   colorsLegendItemLabel: {
     marginLeft: 20,
-    fontSize: 14
+    fontSize: 14,
+    textDecoration: 'none',
+    color: theme.palette.active.blue
   },
   calendarCustomStyles: {
     margin: '0px 33px 33px 68px !important',

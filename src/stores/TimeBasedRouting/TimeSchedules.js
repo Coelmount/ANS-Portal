@@ -127,6 +127,7 @@ export class TimeSchedules {
             this.timeSchedulesWithPeriods.push({
               destinationName: name,
               color: color,
+              timeSchedule: res.data.name,
               periods: periods.map(period => {
                 return { ...period, color: color }
               })
@@ -337,7 +338,13 @@ export class TimeSchedules {
     return this.schedules.length + 1
   }
 
-  postTimeSchedule = ({ customerId, groupId, tbrId, destination, closeModal }) => {
+  postTimeSchedule = ({
+    customerId,
+    groupId,
+    tbrId,
+    destination,
+    closeModal
+  }) => {
     this.isTimeScheduleAdding = true
 
     axios
@@ -384,10 +391,10 @@ export class TimeSchedules {
     const { destinationName, destinationScheduleName } = this
     const payload = isPhoneNumberChanged
       ? {
-        name: destinationName,
-        timeSchedule: destinationScheduleName,
-        destination
-      }
+          name: destinationName,
+          timeSchedule: destinationScheduleName,
+          destination
+        }
       : schedule
 
     axios
