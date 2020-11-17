@@ -80,7 +80,7 @@ const BusinessHoursMenu = props => {
           className={classes.scheduleIcon}
         />
         <div className={classes.schedulerTitle}>
-          {t('business_hours')}:
+          {t('business_hours')}
           {has(ivr, 'businessHours.name') ? (
             <Link
               to={`/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/week_schedules/${ivr.businessHours.name}`}

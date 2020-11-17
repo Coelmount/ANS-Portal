@@ -78,7 +78,7 @@ const HolidayMenu = props => {
           className={classes.scheduleIcon}
         />
         <div className={classes.schedulerTitle}>
-          {t('holiday_hours')}:
+          {t('holiday_hours')}
           {has(ivr, 'holidaySchedule.name') ? (
             <Link
               to={`/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/holiday_schedules/${ivr.holidaySchedule.name}`}
