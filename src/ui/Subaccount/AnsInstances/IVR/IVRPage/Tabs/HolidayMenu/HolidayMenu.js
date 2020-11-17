@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import has from 'lodash/has'
 
 import Box from '@material-ui/core/Box'
@@ -13,11 +13,13 @@ import EditIcon from 'source/images/svg/edit-blue.svg'
 import MenuTemplate from 'components/MenuTemplate'
 import Loading from 'components/Loading'
 import EditSchedules from '../../../EditSchedules'
+import AddScheduleModal from '../../../../../Schedules/components/AddScheduleModal'
 
 import IVRStore from 'stores/IVR'
 import AnnouncementsStore from 'stores/Announcements'
 import PhoneNumbersStore from 'stores/PhoneNumbers'
 import ConfigStore from 'stores/Config'
+import HolidayScheduleStore from 'stores/HolidaySchedules'
 
 import useStyles from './styles'
 
@@ -41,11 +43,12 @@ const HolidayMenu = props => {
     isPhoneNumbersLoading,
     getPhoneNumbers
   } = PhoneNumbersStore
+  const { postSchedule, getSchedules } = HolidayScheduleStore
   const { getConfig, isLoadingConfig, config } = ConfigStore
   const classes = useStyles()
   const match = useParams()
-  const history = useHistory()
   const [showEditSchedules, setShowEditSchedules] = useState(false)
+  const [showAddSchedules, setShowAddSchedules] = useState(false)
 
   useEffect(() => {
     getAnnouncements(match.customerId, match.groupId)
@@ -75,11 +78,18 @@ const HolidayMenu = props => {
           className={classes.scheduleIcon}
         />
         <div className={classes.schedulerTitle}>
-          {`${t('holiday_hours')}: ${
-            has(ivr, 'holidaySchedule.name')
-              ? ivr.holidaySchedule.name
-              : t('not_connected')
-          }`}
+          {t('holiday_hours')}
+          {has(ivr, 'holidaySchedule.name') ? (
+            <Link
+              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/holiday_schedules/${ivr.holidaySchedule.name}`}
+              target='_blank'
+              className={classes.link}
+            >
+              {ivr.holidaySchedule.name}
+            </Link>
+          ) : (
+            t('not_connected')
+          )}
         </div>
         <Button
           variant={'contained'}
@@ -87,8 +97,9 @@ const HolidayMenu = props => {
           className={classes.roundButton}
           disabled={!has(ivr, 'holidaySchedule.name')}
           onClick={() =>
-            history.push(
-              `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/holiday_schedules/${ivr.holidaySchedule.name}`
+            window.open(
+              `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/holiday_schedules/${ivr.holidaySchedule.name}`,
+              '_blank'
             )
           }
         >
@@ -111,11 +122,24 @@ const HolidayMenu = props => {
               setShowEditSchedules(false)
               getIVR(match.customerId, match.groupId, match.ivrId)
             }}
+            addNewSchedule={() => setShowAddSchedules(true)}
             menuLvl={'menus'}
             menuType={'holiday'}
             defaultSchedule={
               has(ivr, 'holidaySchedule.name') ? ivr.holidaySchedule.name : ''
             }
+          />
+        )}
+        {showAddSchedules && (
+          <AddScheduleModal
+            open={showAddSchedules}
+            postSchedule={postSchedule}
+            closeModal={() => {
+              setShowAddSchedules(false)
+              getSchedules(match.customerId, match.groupId)
+            }}
+            title={t('add_holiday_schedule')}
+            handleClose={() => setShowAddSchedules(false)}
           />
         )}
       </Box>
