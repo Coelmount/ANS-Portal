@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import has from 'lodash/has'
 
 import Box from '@material-ui/core/Box'
@@ -80,11 +80,18 @@ const BusinessHoursMenu = props => {
           className={classes.scheduleIcon}
         />
         <div className={classes.schedulerTitle}>
-          {`${t('business_hours')}: ${
-            has(ivr, 'businessHours.name')
-              ? ivr.businessHours.name
-              : t('not_connected')
-          }`}
+          {t('business_hours')}:
+          {has(ivr, 'businessHours.name') ? (
+            <Link
+              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/week_schedules/${ivr.businessHours.name}`}
+              target='_blank'
+              className={classes.link}
+            >
+              {ivr.businessHours.name}
+            </Link>
+          ) : (
+            t('not_connected')
+          )}
         </div>
         <Button
           variant={'contained'}

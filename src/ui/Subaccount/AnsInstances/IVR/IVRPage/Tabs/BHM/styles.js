@@ -32,6 +32,9 @@ const useStyles = makeStyles(theme => ({
     marginTop: 30,
     height: 40,
     paddingBottom: 20
+  },
+  link: {
+    marginLeft: 5
   }
 }))
 

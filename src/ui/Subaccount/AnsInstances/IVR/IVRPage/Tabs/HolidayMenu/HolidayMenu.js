@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { withNamespaces } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import has from 'lodash/has'
 
 import Box from '@material-ui/core/Box'
@@ -78,11 +78,18 @@ const HolidayMenu = props => {
           className={classes.scheduleIcon}
         />
         <div className={classes.schedulerTitle}>
-          {`${t('holiday_hours')}: ${
-            has(ivr, 'holidaySchedule.name')
-              ? ivr.holidaySchedule.name
-              : t('not_connected')
-          }`}
+          {t('holiday_hours')}:
+          {has(ivr, 'holidaySchedule.name') ? (
+            <Link
+              to={`/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/holiday_schedules/${ivr.holidaySchedule.name}`}
+              target='_blank'
+              className={classes.link}
+            >
+              {ivr.holidaySchedule.name}
+            </Link>
+          ) : (
+            t('not_connected')
+          )}
         </div>
         <Button
           variant={'contained'}
@@ -91,7 +98,7 @@ const HolidayMenu = props => {
           disabled={!has(ivr, 'holidaySchedule.name')}
           onClick={() =>
             window.open(
-              `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/week_schedules/${ivr.holidaySchedule.name}`,
+              `/customers/${match.customerId}/subaccounts/${match.groupId}/schedules/holiday_schedules/${ivr.holidaySchedule.name}`,
               '_blank'
             )
           }

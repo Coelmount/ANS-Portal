@@ -32,7 +32,6 @@ export class AdvancedAccessNumbers {
     if (this.isConfiguredNumbersLoading) return
     this.isConfiguredNumbersLoading = true
 
-    console.log(12312312)
     let orderByField
     switch (orderBy) {
       case 'phoneNumber': {
