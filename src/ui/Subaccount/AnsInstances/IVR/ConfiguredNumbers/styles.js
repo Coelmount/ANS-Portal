@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '52px !important'
   },
   availableTitle: {
-    color: theme.palette.lightGreen,
+    color: theme.palette.secondary.main,
     fontSize: 14
   },
   toolbarButtonsBlockWrap: {
