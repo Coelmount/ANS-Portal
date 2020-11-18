@@ -170,35 +170,36 @@ const Settings = ({ t }) => {
               </Typography>
             </Box>
           )}
-          {inputStore.values.huntAfterNoAnswer && (
-            <Box className={classes.amountSkipRingsWrap}>
-              <span
-                className={classnames(classes.amountSkipRingsLeftTitle, {
-                  [classes.disabledBlock]: !inputStore.values.isEditMode
-                })}
-              >
-                {t('skip_after')}
-              </span>
-              <Input
-                icon={<PhoneForwardedIcon />}
-                type='number'
-                label={t('X')}
-                variant='outlined'
-                value={inputStore.values.amountSkipRings}
-                onChange={e =>
-                  inputStore.set('amountSkipRings', e.target.value)
-                }
-                disabled={!inputStore.values.isEditMode}
-              />
-              <span
-                className={classnames(classes.amountSkipRingsRightTitle, {
-                  [classes.disabledBlock]: !inputStore.values.isEditMode
-                })}
-              >
-                {t('rings')}
-              </span>
-            </Box>
-          )}
+          {inputStore.values.huntAfterNoAnswer &&
+            inputStore.values.policy !== 'simultaneous' && (
+              <Box className={classes.amountSkipRingsWrap}>
+                <span
+                  className={classnames(classes.amountSkipRingsLeftTitle, {
+                    [classes.disabledBlock]: !inputStore.values.isEditMode
+                  })}
+                >
+                  {t('skip_after')}
+                </span>
+                <Input
+                  icon={<PhoneForwardedIcon />}
+                  type='number'
+                  label={t('X')}
+                  variant='outlined'
+                  value={inputStore.values.amountSkipRings}
+                  onChange={e =>
+                    inputStore.set('amountSkipRings', e.target.value)
+                  }
+                  disabled={!inputStore.values.isEditMode}
+                />
+                <span
+                  className={classnames(classes.amountSkipRingsRightTitle, {
+                    [classes.disabledBlock]: !inputStore.values.isEditMode
+                  })}
+                >
+                  {t('rings')}
+                </span>
+              </Box>
+            )}
 
           {inputStore.values.isEditMode && (
             <Box className={classes.buttonsWrap}>
