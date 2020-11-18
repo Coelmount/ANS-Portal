@@ -7,7 +7,8 @@ const DEFAULT_VALUES = {
   country: '',
   country_code: '',
   nsn: '',
-  type: ''
+  type: '',
+  service_capabilities: ''
 }
 
 class PhoneNumber {
