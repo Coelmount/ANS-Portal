@@ -140,6 +140,104 @@ const useStyles = makeStyles(theme => ({
     '& > div': {
       marginRight: 10
     }
+  },
+  ////////////////
+  subaccountHeadCell: {
+    width: 200,
+    padding: 0,
+    '& span': {
+      fontSize: 16,
+      fontWeight: 600,
+      whiteSpace: 'nowrap',
+      minWidth: 140
+    }
+  },
+  deassignIcon: {
+    width: 30,
+    height: 20,
+    marginRight: 2,
+    cursor: 'pointer'
+  },
+  customSubaccountHeadIconWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
+    height: 30,
+    marginLeft: 11,
+    borderRadius: 100,
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    cursor: 'pointer'
+  },
+  headCellInsideWrap: {
+    display: 'flex'
+  },
+  subaccountCell: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  subaccountTitle: {
+    // marginRight: 25,
+    fontSize: 14,
+    minWidth: 140
+  },
+  tableIconWrap: {
+    padding: 0,
+    width: 30,
+    height: 30,
+    //marginLeft: 11,
+    opacity: 0.3
+  },
+  tableIconHeaderWrap: {
+    padding: 0,
+    width: 30,
+    height: 30,
+    minWidth: 30
+  },
+  btnBack: {
+    background: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  enabledColumnButton: {
+    opacity: 1
+  },
+  buttonContainer: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  deassignWrap: {
+    marginLeft: 30
+  },
+  mainIconWrap: {
+    background: theme.palette.primary.main,
+    width: 30,
+    height: 30,
+    padding: 0,
+    marginRight: 8,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  iconTitle: {
+    whiteSpace: 'nowrap',
+    fontSize: 14,
+    fontFamily: 'MTN',
+    fontStyle: 'normal',
+    fontWeight: 500
+  },
+  disabledButton: {
+    backgroundColor: theme.palette.lightGrey,
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey,
+      cursor: 'auto'
+    }
+  },
+  deleteLoading: {
+    width: '20px !important',
+    height: '20px !important',
+    marginLeft: 6
   }
 }))
 

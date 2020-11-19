@@ -124,6 +124,58 @@ export class AssignedNumbers {
       })
   }
 
+  deassignNumbersSubLvl = ({
+    customerId,
+    groupId,
+    numbers,
+    closeModal,
+    callback
+  }) => {
+    this.isDeassigningNumber = true
+    closeModal && closeModal()
+
+    const amount = this.numbersToDeassign.length
+    const deassignSubject = amount > 1 ? 'numbers' : 'number'
+
+    numbers.forEach((item, index) => {
+      axios
+        .delete(`/tenants/${customerId}/groups/${groupId}/numbers`, {
+          data: {
+            range: item.phoneNumbers
+              ? [Number(item.rangeStart), Number(item.rangeEnd)]
+              : [Number(item.nsn), Number(item.nsn)],
+            country_code: item.country_code
+          }
+        })
+        .then(() => {
+          if (index === numbers.length - 1) {
+            SnackbarStore.enqueueSnackbar({
+              message: `${amount} phone ${deassignSubject} deassigned successfully`,
+              options: {
+                variant: 'success'
+              }
+            })
+          }
+          callback && callback()
+        })
+        .catch(e => {
+          SnackbarStore.enqueueSnackbar({
+            message:
+              getErrorMessage(e) ||
+              `Failed to deassign ${amount} ${deassignSubject}`,
+            options: {
+              variant: 'error'
+            }
+          })
+        })
+        .finally(() => {
+          this.isNumbersDeassigned = true
+          this.isDeassigningNumber = false
+          this.numbersToDeassign = []
+        })
+    })
+  }
+
   deassignNumbers = ({ customerId, callback }) => {
     this.isDeassigningNumber = true
     callback()
