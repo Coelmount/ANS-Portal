@@ -335,6 +335,61 @@ const useStyles = makeStyles(theme => ({
   },
   deleteText: {
     fontSize: 16
+  },
+  buttonsWrap: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  },
+  buttonBlock: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  doneButtonBlock: {
+    marginLeft: 22
+  },
+  doneIcon: {
+    marginLeft: 2
+  },
+  buttonLabel: {
+    fontSize: 14,
+    fontFamily: 'MTN'
+  },
+  buttonIconWrap: {
+    width: 30,
+    height: 30,
+    padding: 0,
+    marginRight: 8
+  },
+  asignButtonWrap: {
+    background: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  cancelButtonWrap: {
+    background: theme.palette.black,
+    '&:hover': {
+      backgroundColor: theme.palette.black
+    }
+  },
+  assignIcon: {
+    width: 19,
+    height: 19,
+    marginLeft: 2
+  },
+  cancelIcon: {
+    width: 19,
+    height: 19,
+    color: 'white'
+  },
+  disabledBlock: {
+    opacity: 0.5
+  },
+  toolbarContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0px 50px'
   }
 }))
 

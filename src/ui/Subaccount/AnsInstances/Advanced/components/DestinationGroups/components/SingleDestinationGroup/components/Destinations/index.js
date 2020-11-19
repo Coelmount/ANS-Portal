@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState, Fragment, useCallback } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -11,9 +11,10 @@ import IconButton from '@material-ui/core/IconButton'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
 import AddModal from './components/AddModal'
-import CustomTable from 'components/CustomTable'
+import CustomTableDnd from 'components/CustomTableDnd'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
@@ -39,13 +40,18 @@ const Destinations = observer(({ t }) => {
     deleteDestinations,
     destinations,
     isDestinationsLoading,
-    isDestinationDeleting
+    isDestinationDeleting,
+    isDestinationsUpdating,
+    putDestinations,
+    cancelOrderUpdate
   } = DestinationsStore
 
-  const [numbers, setNumbers] = useState([])
+  const [numbers, setNumbers] = useState([...destinations])
   const [selectAll, setSelectAll] = useState(false)
-  const [searchList, setSearchList] = useState([])
   const [isSingleDeleteMode, setIsSingleDeleteMode] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const isLoading = isDestinationsLoading || isDestinationsUpdating
   const isAnyNumberChecked = numbers.some(number => number.checked)
 
   const initialRequest = () => {
@@ -55,6 +61,7 @@ const Destinations = observer(({ t }) => {
       destinationGroupName
     }
     getDestinations(payload)
+    setIsSaving(false)
   }
 
   const openedModal = useLocalStore(() => ({
@@ -87,8 +94,8 @@ const Destinations = observer(({ t }) => {
   }, [destinations])
 
   useEffect(() => {
-    handleCheckedStates(searchList)
-  }, [searchList])
+    handleCheckedStates(numbers)
+  }, [numbers])
 
   const selectNumbers = (checked, id) => {
     const newSelected = transformOnChange(numbers, checked, id)
@@ -96,7 +103,7 @@ const Destinations = observer(({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const newSelected = transformOnCheckAll(searchList, numbers, selectAll)
+    const newSelected = transformOnCheckAll(numbers, numbers, selectAll)
     handleCheckedStates(newSelected)
     setNumbers(newSelected)
     setSelectAll(!selectAll)
@@ -153,6 +160,40 @@ const Destinations = observer(({ t }) => {
   }
   // ------------
 
+  const catchCallback = state => setNumbers([...state])
+
+  const moveCard = useCallback(
+    (dragIndex, hoverIndex) => {
+      const newArr = [...numbers]
+      ;[newArr[dragIndex], newArr[hoverIndex]] = [
+        newArr[hoverIndex],
+        newArr[dragIndex]
+      ]
+      setNumbers(newArr)
+      setIsSaving(true)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [numbers]
+  )
+
+  const handleSaveButtonClick = () => {
+    if (isSaving)
+      putDestinations({
+        customerId,
+        groupId,
+        destinationGroupName,
+        numbers,
+        callback: initialRequest
+      })
+  }
+
+  const handleCancelButtonClick = () => {
+    if (isSaving) {
+      cancelOrderUpdate(catchCallback)
+      setIsSaving(false)
+    }
+  }
+
   const extraDeleteBlock = (
     <span className={classes.deleteName}>{` ${
       modals.data.length ? modals.data[0].name : ''
@@ -173,8 +214,50 @@ const Destinations = observer(({ t }) => {
     )
   }
 
-  const toolbarButtonBlock = () => {
-    return (
+  const toolbarButtonsBlock = () => (
+    <Box className={classes.toolbarContainer}>
+      <Box
+        className={classnames(classes.buttonsWrap, {
+          [classes.disabledBlock]: !isSaving
+        })}
+      >
+        <Box className={classes.buttonBlock}>
+          <IconButton
+            aria-label='cancel icon button'
+            component='span'
+            className={classnames(
+              classes.buttonIconWrap,
+              classes.cancelButtonWrap,
+              {
+                [classes.disabledButton]: !isSaving
+              }
+            )}
+            onClick={handleCancelButtonClick}
+          >
+            <CloseOutlinedIcon className={classes.cancelIcon} />
+          </IconButton>
+          <Typography className={classes.buttonLabel}>{t('cancel')}</Typography>
+        </Box>
+
+        <Box className={`${classes.buttonBlock} ${classes.doneButtonBlock}`}>
+          <IconButton
+            aria-label='save icon button'
+            component='span'
+            className={classnames(
+              classes.buttonIconWrap,
+              classes.asignButtonWrap,
+              {
+                [classes.disabledButton]: !isSaving
+              }
+            )}
+            onClick={handleSaveButtonClick}
+          >
+            <DoneOutlinedIcon className={classes.assignIcon} />
+          </IconButton>
+          <Typography className={classes.buttonLabel}>{t('save')}</Typography>
+        </Box>
+      </Box>
+
       <Box className={classes.toolbarButtonsBlockWrap}>
         <Box className={`${classes.buttonContainer} ${classes.deassignWrap}`}>
           <IconButton
@@ -200,8 +283,8 @@ const Destinations = observer(({ t }) => {
           </Typography>
         </Box>
       </Box>
-    )
-  }
+    </Box>
+  )
 
   const columns = [
     {
@@ -276,20 +359,20 @@ const Destinations = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {isDestinationsLoading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <Fragment>
-            <CustomTable
+            <CustomTableDnd
               firstCell={false}
               rows={numbers}
               columns={columns}
+              extraToolbarBlock={toolbarButtonsBlock}
               searchCriterias={['name', 'phoneNumber']}
-              getSearchList={setSearchList}
-              extraToolbarBlock={toolbarButtonBlock}
-              classes={classes}
               noAvailableDataMessage={t('no_secondary_numbers_available')}
               tableId={'advanced_destinations_list'}
+              moveCard={moveCard}
+              isSaving={isSaving}
             />
             <Box className={classes.addWrap}>
               <Box className={classes.addIconWrap} onClick={handleAddIconClick}>
