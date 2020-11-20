@@ -122,7 +122,7 @@ const AddCustomerAdministrator = ({
       return true
     }
   }
-  console.log(`add_${subject}`, 'add subj')
+
   return (
     <Dialog
       className={classes.createAdminModal}
