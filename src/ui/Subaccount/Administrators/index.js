@@ -54,7 +54,7 @@ const SubaccountAdministrators = props => {
   }, [getSubaccountAdmins, match.customerId, match.groupId])
 
   const titleData = {
-    mainText: t('administrators'),
+    mainText: 'administrators',
     iconCapture: t('add'),
     Icon: <PersonAddOutlinedIcon />
   }

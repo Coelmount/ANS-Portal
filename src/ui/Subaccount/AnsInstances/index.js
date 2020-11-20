@@ -97,7 +97,7 @@ const AnsInstances = observer(({ t }) => {
   ]
 
   const titleData = {
-    mainText: t('ans_instances')
+    mainText: 'ans_instances'
   }
 
   return (

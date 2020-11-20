@@ -74,7 +74,7 @@ const HolidaySchedules = observer(({ t }) => {
   }
 
   const titleData = {
-    mainText: `${t('schedules')}: ${t('holiday_schedules')}`,
+    mainText: `schedules_holiday_schedules`,
     iconCapture: t('add_schedule'),
     Icon: <AddOutlinedIcon />
   }

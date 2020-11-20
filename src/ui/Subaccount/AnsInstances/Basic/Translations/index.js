@@ -25,8 +25,8 @@ const Translations = props => {
   const anchorRef = useRef(null)
 
   const titleData = {
-    mainText: `${t('basic')}: ${
-      location.hash ? t(location.hash.slice(1)) : t('available_numbers')
+    mainText: `basic_${
+      location.hash ? location.hash.slice(1) : 'available_numbers'
     }`
   }
 

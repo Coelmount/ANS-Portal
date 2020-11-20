@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { withNamespaces } from 'react-i18next'
 
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
@@ -24,7 +25,8 @@ const TitleBlock = ({
     addButtonTooltipText
   },
   showHelper,
-  showTooltip
+  showTooltip,
+  t
 }) => {
   const classes = useStyles()
   const { pathname } = useLocation()
@@ -39,7 +41,7 @@ const TitleBlock = ({
     <Box className={classes.titleWrap}>
       <Box className={classes.leftTextWrap}>
         <Typography className={classes.title} id='tableTitle'>
-          {mainText}
+          {t(mainText)}
         </Typography>
         <Typography className={classes.helperText}>
           {showHelper ? formattedHelperText : ''}
@@ -83,4 +85,4 @@ TitleBlock.defaultProps = {
   showTooltip: false
 }
 
-export default TitleBlock
+export default withNamespaces()(TitleBlock)

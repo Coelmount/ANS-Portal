@@ -62,8 +62,8 @@ const IVR = props => {
   }
 
   const titleData = {
-    mainText: `${t('IVR')}: ${
-      location.hash ? t(location.hash.slice(1)) : t('available_numbers')
+    mainText: `IVR_${
+      location.hash ? location.hash.slice(1) : 'available_numbers'
     }`
   }
 

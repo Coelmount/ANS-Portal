@@ -84,7 +84,7 @@ const AccessNumbers = ({ t }) => {
   }
 
   const titleData = {
-    mainText: t('access_numbers'),
+    mainText: 'access_numbers',
     iconCapture: validateAccessLvl(localStorage.getItem('ids'), adminAccessLvl)
       ? t('add_entitlements')
       : null,
