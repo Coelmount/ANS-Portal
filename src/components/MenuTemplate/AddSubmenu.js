@@ -75,7 +75,7 @@ const EditGreeting = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText title={t('add_ivr_submenu')} />
+        <ModalHelperText title='add_ivr_submenu' />
         {isAddingSubmenu ? (
           <Loading />
         ) : (

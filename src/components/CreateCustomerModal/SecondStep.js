@@ -45,10 +45,10 @@ const SecondStep = props => {
 
   const createdCustomerStore = CreateCustomerStore
   const title =
-    (isCreateSubaccount && t('add_subaccount')) ||
-    (isEditCustomer && t('edit_customer')) ||
-    (isEditSubaccount && t('edit_subaccount')) ||
-    t('add_customer')
+    (isCreateSubaccount && 'add_subaccount') ||
+    (isEditCustomer && 'edit_customer') ||
+    (isEditSubaccount && 'edit_subaccount') ||
+    'add_customer'
 
   const classes = useStyles()
   const match = useParams()

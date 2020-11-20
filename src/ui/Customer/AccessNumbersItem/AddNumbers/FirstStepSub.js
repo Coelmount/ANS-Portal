@@ -118,7 +118,7 @@ const SecondStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <ModalHelperText title={t('select_numbers_inv')} />
+        <ModalHelperText title='select_numbers_inv' />
         <Box className={classes.secondParagraphBox}>
           <div>{t('select_subaccount')}</div>
           <Box>

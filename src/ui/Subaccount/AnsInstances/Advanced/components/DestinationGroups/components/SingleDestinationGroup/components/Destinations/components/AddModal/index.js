@@ -196,7 +196,7 @@ const AddModal = ({ t, open, handleClose }) => {
 
       <DialogContent className={classes.entitlementsDialogContent}>
         <div className={classes.topTitleWrap}>
-          <ModalHelperText title={t('add_destination')} />
+          <ModalHelperText title='add_destination' />
           <div className={classes.createDestinationWrap}>
             <IconButton
               aria-label='add icon button'

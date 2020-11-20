@@ -134,7 +134,7 @@ const SubaccountAdministrators = props => {
                 isDeleting={isDeletingSubaccountAdmin}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
-                subject={t('subaccount_administrator')}
+                subject='subaccount_administrator'
               />
             ) : (
               <NoAvailableDataBlock
@@ -150,7 +150,7 @@ const SubaccountAdministrators = props => {
             user={subaccountAdmin}
             setUserInfo={setSubaccountAdminInfo}
             addAdmin={addAdmin}
-            subject={t('subaccount_administrator')}
+            subject='subaccount_administrator'
             getUserInfo={getSubaccount}
             isLoadingUserInfo={isLoadingSubaccount}
           />

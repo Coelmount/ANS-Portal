@@ -218,7 +218,7 @@ const SecondStep = props => {
       </DialogTitle>
       <DialogContent>
         <Box className={classes.helperTextWrap}>
-          <ModalHelperText title={t('update_ans_basic_instances')} />
+          <ModalHelperText title='update_ans_basic_instances' />
         </Box>
         <Box className={classes.stepStyles}>{`${t('step')} 2/2`}</Box>
         <Box className={classes.uploadBoxWrapper}>

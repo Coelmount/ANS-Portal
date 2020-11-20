@@ -158,7 +158,7 @@ const SetEntitlements = props => {
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
         <ModalHelperText
-          title={t('add_entitlements_select_step')}
+          title='add_entitlements_select_step'
           userLevel='customer'
         />
         <Box className={classes.subtitle}>

@@ -140,7 +140,7 @@ const AddIVR = props => {
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
         <div className={classes.helperTextWrap}>
-          <ModalHelperText title={t('add_ivr_instance')} />
+          <ModalHelperText title='add_ivr_instance' />
         </div>
         <Box className={classes.contentWrapper}>
           <Input

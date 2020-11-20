@@ -105,7 +105,7 @@ const EditGreeting = props => {
       </DialogTitle>
       <DialogContent>
         <div className={classes.helperTextWrap}>
-          <ModalHelperText title={t('edit_menu_greeting')} />
+          <ModalHelperText title='edit_menu_greeting' />
         </div>
         <Box className={classes.editMenuGreetingWrap}>
           <div>

@@ -98,7 +98,7 @@ const UpdateAdminInfo = ({
             />
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
-            <ModalHelperText title={` ${t(`edit`)} ${editSubject}`} />
+            <ModalHelperText title={`edit_${editSubject}`} />
             <Box className={classes.loginTitleWrapper}>
               <Typography className={classes.loginTitle}>
                 {t('login_details')}

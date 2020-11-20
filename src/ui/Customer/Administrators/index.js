@@ -125,7 +125,7 @@ const Administrators = ({ t }) => {
                 isDeleting={isDeletingAdmin}
                 handleDelete={handleDelete}
                 handleUpdate={handleUpdate}
-                subject={t('customer_administrator')}
+                subject='customer_administrator'
               />
             ) : (
               <NoAvailableDataBlock
@@ -141,7 +141,7 @@ const Administrators = ({ t }) => {
             user={admin}
             setUserInfo={setAdminInfo}
             addAdmin={addAdmin}
-            subject={t('customer_administrator')}
+            subject='customer_administrator'
             getUserInfo={getCustomer}
             isLoadingUserInfo={isLoadingCustomer}
           />

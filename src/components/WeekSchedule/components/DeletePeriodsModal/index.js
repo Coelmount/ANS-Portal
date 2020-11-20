@@ -146,7 +146,7 @@ const DeletePeriodsModal = ({
           </DialogTitle>
 
           <DialogContent className={classes.dialogContentWrap}>
-            <ModalHelperText title={t('delete_recurring_period')} />
+            <ModalHelperText title='delete_recurring_period' />
             <RadioGroup
               aria-label='content'
               name='modal-content'

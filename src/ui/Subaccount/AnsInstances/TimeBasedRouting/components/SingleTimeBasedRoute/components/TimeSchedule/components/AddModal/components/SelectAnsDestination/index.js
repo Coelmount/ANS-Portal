@@ -140,7 +140,7 @@ const SelectAnsDestination = ({ t, handleClose }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
-            <ModalHelperText title={t('select_ans_advanced_destination')} />
+            <ModalHelperText title='select_ans_advanced_destination' />
             <CustomTable
               classes={classes}
               columns={columns}

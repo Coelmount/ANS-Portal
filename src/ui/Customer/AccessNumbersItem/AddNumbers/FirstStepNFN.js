@@ -72,7 +72,7 @@ const FirstStepNFN = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText title={t('add_numbers_inv')} />
+        <ModalHelperText title='add_numbers_inv' />
         <Box className={classes.stepStyles}>{t('search_parameters')}</Box>
         <Box className={classes.searchParametersBox}>
           <Box className={classes.rangeBox}>

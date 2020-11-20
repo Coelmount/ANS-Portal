@@ -80,7 +80,7 @@ const FiltersModal = ({ open, t, handleClose, setPage }) => {
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
         <div className={classes.helperTextWrap}>
-          <ModalHelperText title={t('filters')} />
+          <ModalHelperText title='filters' />
         </div>
         {isLoadingCountries ? (
           <Loading />

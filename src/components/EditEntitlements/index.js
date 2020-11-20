@@ -129,7 +129,7 @@ const EditEntitlements = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.entitlementsDialogContent}>
-        <ModalHelperText title={t('edit_entitlements')} />
+        <ModalHelperText title='edit_entitlements' />
         <CustomTable
           showSearchBar={false}
           classes={classes}

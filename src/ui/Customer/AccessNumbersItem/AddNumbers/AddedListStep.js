@@ -261,7 +261,7 @@ const AddedListStep = ({ handleClose, t }) => {
       </DialogTitle>
       <DialogContent className={classes.addedListStepDialogContent}>
         <Box className={classes.helperTextWrap}>
-          <ModalHelperText title={t('added_phone_numbers_list')} />
+          <ModalHelperText title='added_phone_numbers_list' />
         </Box>
         <AppBar className={classes.appBar} position='static'>
           <Tabs

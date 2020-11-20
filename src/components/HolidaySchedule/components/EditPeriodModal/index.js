@@ -43,7 +43,7 @@ const EditPeriodModal = ({ t, open, handleClose }) => {
           </DialogTitle>
 
           <DialogContent>
-            <ModalHelperText title={t('edit_period')} />
+            <ModalHelperText title='edit_period' />
             <Box className={classes.periodFormsWrap}>
               <PeriodForm isNameEditable={false} />
             </Box>

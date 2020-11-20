@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
+import { withNamespaces } from 'react-i18next'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
@@ -15,7 +16,8 @@ const useStyles = makeStyles(theme => ({
 const ModalHelperText = ({
   title,
   helperText: providedHelperText,
-  userLevel: providedUserLevel
+  userLevel: providedUserLevel,
+  t
 }) => {
   const classes = useStyles()
   const { pathname } = useLocation()
@@ -29,9 +31,9 @@ const ModalHelperText = ({
 
   return (
     <Typography className={classes.helperText}>
-      {formattedHelperText}
+      {t(formattedHelperText)}
     </Typography>
   )
 }
 
-export default ModalHelperText
+export default withNamespaces()(ModalHelperText)

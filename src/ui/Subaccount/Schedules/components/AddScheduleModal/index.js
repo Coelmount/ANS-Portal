@@ -45,7 +45,7 @@ const AddScheduleModal = ({
   return (
     <Dialog open={open} onClose={handleClose} className={classes.root}>
       <DialogTitle className={classes.title}>
-        {title}
+        {t(title)}
         <IconButton
           aria-label='close'
           onClick={handleClose}
