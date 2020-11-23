@@ -12,7 +12,6 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 
 import Input from 'components/Input'
 import CustomTable from 'components/CustomTable'
@@ -41,18 +40,6 @@ const EditEntitlements = props => {
       id: 'name',
       label: 'entitlement',
       isSortAvailable: false
-    },
-    {
-      id: 'assigned',
-      label: 'assigned',
-      getCellData: row => <Typography>{''}</Typography>,
-      isSortAvailable: false,
-      extraProps: {
-        className: classes.textCenter
-      },
-      extraHeadProps: {
-        className: classes.totalHeader
-      }
     },
     {
       id: 'total',
