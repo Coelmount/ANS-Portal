@@ -343,6 +343,8 @@ export class TimeSchedules {
     groupId,
     tbrId,
     destination,
+    destinationName,
+    destinationScheduleName,
     closeModal
   }) => {
     this.isTimeScheduleAdding = true
@@ -351,12 +353,16 @@ export class TimeSchedules {
       .post(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrId}/criteria/`,
         {
-          name: this.destinationName,
-          destination: destination,
-          timeSchedule: this.destinationScheduleName
+          name: destinationName || this.destinationName,
+          timeSchedule: destinationScheduleName || this.destinationScheduleName,
+          destination
         }
       )
       .then(() => {
+        runInAction(() => {
+          this.isTimeScheduleAdding = false
+        })
+        closeModal()
         SnackbarStore.enqueueSnackbar({
           message: `Destination added successfully`,
           options: {
@@ -365,16 +371,15 @@ export class TimeSchedules {
         })
       })
       .catch(e => {
+        runInAction(() => {
+          this.isTimeScheduleAdding = false
+        })
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || `Failed to add destination`,
           options: {
             variant: 'error'
           }
         })
-      })
-      .finally(() => {
-        this.isTimeScheduleAdding = false
-        closeModal()
       })
   }
 
