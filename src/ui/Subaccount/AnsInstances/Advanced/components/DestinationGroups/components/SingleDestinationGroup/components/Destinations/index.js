@@ -8,12 +8,12 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
-
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
 import AddModal from './components/AddModal'
+import EditWeightsModal from './components/EditWeightsModal'
 import CustomTableDnd from 'components/CustomTableDnd'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
@@ -24,10 +24,12 @@ import DeleteModal from 'components/DeleteModal'
 
 import DestinationsStore from 'stores/DestinationGroups/Destinations'
 
-import useStyles from './styles'
 import disconnectIcon from 'source/images/svg/delete-icon.svg'
+import editSvg from 'source/images/svg/edit-blue.svg'
+import useStyles from './styles'
 
 const addModal = 1
+const editModal = 2
 const deleteModal = 3
 
 const Destinations = observer(({ t }) => {
@@ -159,6 +161,10 @@ const Destinations = observer(({ t }) => {
     }
   }
   // ------------
+
+  const handleEditIconClick = () => {
+    openedModal.open(editModal)
+  }
 
   const catchCallback = state => setNumbers([...state])
 
@@ -334,10 +340,16 @@ const Destinations = observer(({ t }) => {
       id: 'phoneNumber',
       label: 'phone_number'
     },
-    // {
-    //   id: 'loadbalance',
-    //   label: 'loadbalance'
-    // },
+    {
+      id: 'weight',
+      label: 'weight',
+      headIcon: <img src={editSvg} alt='edit weight' />,
+      onIconClick: () => handleEditIconClick(),
+      extraProps: {
+        className: classes.textCenter
+      },
+      headCellInsideWrapStyles: classes.headCellInsideWrap
+    },
     {
       id: 'delete',
       extraProps: {
@@ -368,11 +380,12 @@ const Destinations = observer(({ t }) => {
               rows={numbers}
               columns={columns}
               extraToolbarBlock={toolbarButtonsBlock}
-              searchCriterias={['name', 'phoneNumber']}
+              searchCriterias={['name', 'phoneNumber', 'weight']}
               noAvailableDataMessage={t('no_secondary_numbers_available')}
               tableId={'advanced_destinations_list'}
               moveCard={moveCard}
               isSaving={isSaving}
+              classes={classes}
             />
             <Box className={classes.addWrap}>
               <Box className={classes.addIconWrap} onClick={handleAddIconClick}>
@@ -405,6 +418,12 @@ const Destinations = observer(({ t }) => {
             }
             action={t('to_delete')}
             titleAction={t(`delete`)}
+          />
+        )}
+        {openedModal.id === editModal && (
+          <EditWeightsModal
+            handleClose={openedModal.close}
+            open={openedModal.id === editModal}
           />
         )}
       </Paper>

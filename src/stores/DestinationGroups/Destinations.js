@@ -15,6 +15,7 @@ export class Destinations {
   isDestinationPosting = false
   isDestinationDeleting = false
   isDestinationsUpdating = false
+  isDestinationsWeightUpdating = false
 
   getDestinations = ({ customerId, groupId, destinationGroupName }) => {
     runInAction(() => {
@@ -242,6 +243,54 @@ export class Destinations {
   cancelOrderUpdate = callback => {
     callback(this.destinations)
   }
+
+  putDestinationsWeight = ({
+    customerId,
+    groupId,
+    destinationGroupName,
+    stateDestinations,
+    callback
+  }) => {
+    runInAction(() => {
+      this.isDestinationsWeightUpdating = true
+    })
+
+    const destinations = {
+      destinations: stateDestinations.map(({ userId, weight }) => ({
+        userId,
+        weight
+      }))
+    }
+
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationGroupName}/weights/`,
+        destinations
+      )
+      .then(() => {
+        if (callback) callback()
+        runInAction(() => {
+          this.isDestinationsWeightUpdating = false
+        })
+        SnackbarStore.enqueueSnackbar({
+          message: 'Destinations weight successfully updated',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        runInAction(() => {
+          this.isDestinationsWeightUpdating = false
+        })
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update destinations weight',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+  }
 }
 
 decorate(Destinations, {
@@ -251,6 +300,7 @@ decorate(Destinations, {
   deleteDestinations: action,
   putDestinations: action,
   cancelOrderUpdate: action,
+  putDestinationsWeight: action,
 
   availableDestinationsForPost: observable,
   destinations: observable,
@@ -258,7 +308,8 @@ decorate(Destinations, {
   isAvailableDestinationsLoading: observable,
   isDestinationPosting: observable,
   isDestinationDeleting: observable,
-  isDestinationsUpdating: observable
+  isDestinationsUpdating: observable,
+  isDestinationsWeightUpdating: observable
 })
 
 export default new Destinations()

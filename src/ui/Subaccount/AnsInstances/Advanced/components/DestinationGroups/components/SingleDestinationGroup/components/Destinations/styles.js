@@ -390,6 +390,25 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     width: '100%',
     padding: '0px 50px'
+  },
+  headCellInsideWrap: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  textCenter: {
+    textAlign: 'center'
+  },
+  customHeadIconWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
+    height: 30,
+    marginLeft: 11,
+    background: 'white',
+    borderRadius: 100,
+    boxShadow: '0px 4px 4px rgba(204, 204, 204, 0.25)',
+    cursor: 'pointer'
   }
 }))
 
