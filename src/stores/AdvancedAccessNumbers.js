@@ -124,7 +124,7 @@ export class AdvancedAccessNumbers {
 
     axios
       .get(
-        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=advanced&in_use=true&${this.searchParam}=${searchValue} `
+        `/tenants/${customerId}/groups/${groupId}/numbers?paging={"page_number":${page},"page_size":${perPage}}&cols=["country_code","nsn","type","connected_to"]&sorting=[{"field": "${orderByField}", "direction": "${orderField}"}]&service_capabilities=advanced&in_use=true&${this.searchParam}=${searchValue} `
       )
       .then(res => {
         const pagination = res.data.pagination

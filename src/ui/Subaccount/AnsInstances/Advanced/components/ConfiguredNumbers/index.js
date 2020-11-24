@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { withNamespaces } from 'react-i18next'
 import { observer } from 'mobx-react'
 import { useDebounce } from 'use-debounce'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Typography from '@material-ui/core/Typography'
@@ -33,6 +33,7 @@ const ConfiguredNumbers = ({ t }) => {
   const calcInput = useRef(null)
   const classes = useStyles({ widthOffset })
   const { customerId, groupId } = useParams()
+  const history = useHistory()
 
   const {
     getConfiguredNumbersForAddInstance,
@@ -152,7 +153,18 @@ const ConfiguredNumbers = ({ t }) => {
         className: classes.statusCell
       },
       getCellData: row => (
-        <Typography className={classes.availableTitle}>
+        <Typography
+          className={classes.availableTitle}
+          onClick={() =>
+            history.push(
+              `/customers/${customerId}/subaccounts/${groupId}/ans_instances/advanced/destination_groups/${
+                row.connected_to.includes('main')
+                  ? row.connected_to.slice(0, -5)
+                  : row.connected_to
+              }`
+            )
+          }
+        >
           {t(row.status)}
         </Typography>
       )

@@ -48,7 +48,8 @@ const useStyles = makeStyles(theme => ({
   },
   availableTitle: {
     color: theme.palette.secondary.main,
-    fontSize: 14
+    fontSize: 14,
+    cursor: 'pointer'
   },
   toolbarButtonsBlockWrap: {
     display: 'flex',
