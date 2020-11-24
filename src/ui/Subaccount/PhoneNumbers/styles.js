@@ -184,8 +184,9 @@ const useStyles = makeStyles(theme => ({
   tableIconWrap: {
     padding: 0,
     width: 30,
-    height: 30,
-    //marginLeft: 11,
+    height: 30
+  },
+  disabledTableIconWrap: {
     opacity: 0.3
   },
   tableIconHeaderWrap: {

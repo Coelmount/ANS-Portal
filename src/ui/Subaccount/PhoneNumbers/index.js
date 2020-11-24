@@ -402,10 +402,10 @@ const PhoneNumbers = observer(({ t }) => {
             className={classnames(classes.tableIconHeaderWrap, {
               [classes.btnBack]: numbers
                 .filter(el => el.status !== 'used')
-                .every(el => el.checked).length,
-              [classes.enabledColumnButton]: numbers.every(
-                el => el.status !== 'used'
-              )
+                .every(el => el.checked),
+              [classes.enabledColumnButton]: numbers
+                .filter(el => el.status !== 'used')
+                .some(el => el.checked)
             })}
           >
             <img
@@ -435,7 +435,8 @@ const PhoneNumbers = observer(({ t }) => {
                   component='span'
                   className={classnames(classes.tableIconWrap, {
                     [classes.btnBack]: row.checked,
-                    [classes.enabledColumnButton]: row.checked
+                    [classes.enabledColumnButton]: row.checked,
+                    [classes.disabledTableIconWrap]: row.status === 'used'
                   })}
                   onClick={
                     row.status === 'used'
