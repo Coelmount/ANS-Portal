@@ -94,7 +94,7 @@ const EditDefaultDestinationModal = ({ t, open, handleClose }) => {
 
       <DialogContent>
         <div className={classes.helperTextWrap}>
-          <ModalHelperText title={t('edit_default_destination')} />
+          <ModalHelperText title='edit_default_destination' />
         </div>
         <div className={classes.contentWrap}>
           {isLoading ? (

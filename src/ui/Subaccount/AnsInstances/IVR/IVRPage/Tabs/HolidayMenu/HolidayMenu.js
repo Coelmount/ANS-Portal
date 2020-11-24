@@ -138,7 +138,7 @@ const HolidayMenu = props => {
               setShowAddSchedules(false)
               getSchedules(match.customerId, match.groupId)
             }}
-            title={t('add_holiday_schedule')}
+            title='add_holiday_schedule'
             handleClose={() => setShowAddSchedules(false)}
           />
         )}

@@ -245,7 +245,7 @@ const FirstStep = props => {
       </DialogTitle>
       <DialogContent>
         <div className={classes.helperTextWrap}>
-          <ModalHelperText title={t('add_multiple_ans_basic_instances')} />
+          <ModalHelperText title='add_multiple_ans_basic_instances' />
         </div>
         <Box className={classes.stepStyles}>{`${t('step')} 1/2`}</Box>
         <Box className={classes.infoBoxWrapper}>

@@ -266,7 +266,7 @@ const PhoneNumbers = observer(({ t }) => {
   }
 
   const titleData = {
-    mainText: t('phone_numbers')
+    mainText: 'phone_numbers'
   }
 
   const toolbarButtonsBlock = () => {

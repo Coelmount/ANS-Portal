@@ -94,7 +94,7 @@ const AddDestinationNumber = ({ handleClose, t }) => {
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
             <Box className={classes.helperTextWrap}>
-              <ModalHelperText title={t('add_ans_basic_instance')} />
+              <ModalHelperText title='add_ans_basic_instance' />
             </Box>
             <Box className={classes.subtitle}>
               <Typography className={classes.setEntitlementsTitle}>

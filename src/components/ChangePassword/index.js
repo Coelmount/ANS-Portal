@@ -78,7 +78,7 @@ const ChangePassword = props => {
             </IconButton>
           </DialogTitle>
           <DialogContent>
-            <ModalHelperText title={t('change_password')} />
+            <ModalHelperText title='change_password' />
             <Box className={classes.contentBox}>
               {localStorage.getItem('ids') && (
                 <Box className={classes.inputBox}>

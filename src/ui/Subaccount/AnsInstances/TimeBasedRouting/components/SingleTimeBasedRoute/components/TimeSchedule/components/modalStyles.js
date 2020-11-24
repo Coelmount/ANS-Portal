@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
   // },
   formWrap: {
     width: 500,
-    height: 370,
+    // height: 370,
     border: `1px solid ${theme.palette.silver}`,
     borderRadius: 3,
     marginLeft: 35,
@@ -191,6 +191,12 @@ const useStyles = makeStyles(theme => ({
   },
   editHelperTextWrap: {
     marginBottom: 15
+  },
+  radioWrap: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    width: 392,
+    padding: '0px 5px'
   }
 }))
 

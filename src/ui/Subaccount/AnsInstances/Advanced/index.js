@@ -51,8 +51,8 @@ const Advanced = props => {
   const anchorRef = useRef(null)
 
   const titleData = {
-    mainText: `${t('advanced')}: ${
-      location.hash ? t(location.hash.slice(1)) : t('available_numbers')
+    mainText: `advanced_${
+      location.hash ? location.hash.slice(1) : 'available_numbers'
     }`
   }
 

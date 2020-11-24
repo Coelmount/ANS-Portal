@@ -74,7 +74,7 @@ const HolidaySchedules = observer(({ t }) => {
   }
 
   const titleData = {
-    mainText: `${t('schedules')}: ${t('holiday_schedules')}`,
+    mainText: `schedules_holiday_schedules`,
     iconCapture: t('add_schedule'),
     Icon: <AddOutlinedIcon />
   }
@@ -135,7 +135,7 @@ const HolidaySchedules = observer(({ t }) => {
               <AddScheduleModal
                 open={isAddScheduleModalOpen}
                 handleClose={handleCloseAddScheduleModal}
-                title={t('add_holiday_schedule')}
+                title='add_holiday_schedule'
                 postSchedule={postSchedule}
                 isSchedulePosting={isSchedulePosting}
                 closeModal={handleCloseAddScheduleModal}

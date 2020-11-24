@@ -135,7 +135,7 @@ const AddCustomerAdministrator = ({
         <Fragment>
           <DialogTitle className={classes.addAdminHeader}>
             <Typography className={classes.addAdminTitle}>
-              {`${t(`add`)} ${subject}`}
+              {`${t('add')} ${t(subject)}`}
             </Typography>
 
             <CloseOutlinedIcon
@@ -144,7 +144,7 @@ const AddCustomerAdministrator = ({
             />
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
-            <ModalHelperText title={`${t(`add`)} ${subject}`} />
+            <ModalHelperText title={`add_${subject}`} />
             <Box className={classes.loginTitleWrapper}>
               <Typography className={classes.loginTitle}>
                 {t('login_details')}

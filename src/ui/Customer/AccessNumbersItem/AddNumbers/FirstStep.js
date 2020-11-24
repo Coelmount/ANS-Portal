@@ -50,7 +50,7 @@ const FirstStep = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ModalHelperText title={t('add_numbers_inv')} />
+        <ModalHelperText title='add_numbers_inv' />
         <Box className={classes.paragraphBox}>
           <CallOutlined />
           <div className={classes.boldText}>{numbers.length}</div>

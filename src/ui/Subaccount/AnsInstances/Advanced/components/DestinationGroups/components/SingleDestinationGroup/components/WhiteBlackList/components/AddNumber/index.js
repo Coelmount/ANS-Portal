@@ -62,7 +62,7 @@ const AddIVR = props => {
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
         <div className={classes.helperTextWrap}>
-          <ModalHelperText title={t(`advanced_add_phone_number_to_${mode}`)} />
+          <ModalHelperText title={`advanced_add_phone_number_to_${mode}`} />
         </div>
         {isAddingNumbers ? (
           <Loading />

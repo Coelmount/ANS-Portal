@@ -50,9 +50,7 @@ const EditGreeting = props => {
   } = HolidayScheduleStore
 
   const title =
-    menuType === 'businessHours'
-      ? t('edit_business_hours')
-      : t('edit_holiday_hours')
+    menuType === 'businessHours' ? 'edit_business_hours' : 'edit_holiday_hours'
 
   useEffect(() => {
     if (menuType === 'businessHours') {

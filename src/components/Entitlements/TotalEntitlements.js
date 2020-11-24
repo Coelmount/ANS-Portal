@@ -119,7 +119,7 @@ const TotalEntitlements = ({ handleClose, t }) => {
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
             <ModalHelperText
-              title={t('add_entitlements_set_limits_step')}
+              title='add_entitlements_set_limits_step'
               userLevel='customer'
             />
             <Box className={classes.subtitle}>

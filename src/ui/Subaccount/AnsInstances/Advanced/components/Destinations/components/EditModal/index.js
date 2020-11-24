@@ -94,7 +94,7 @@ const EditModal = ({ t, open, handleClose, destinationId }) => {
 
       <DialogContent className={classes.modalContent}>
         <div className={classes.helperTextWrap}>
-          <ModalHelperText title={t('edit_destination')} />
+          <ModalHelperText title='edit_destination' />
         </div>
         {isLoading ? (
           <Loading />

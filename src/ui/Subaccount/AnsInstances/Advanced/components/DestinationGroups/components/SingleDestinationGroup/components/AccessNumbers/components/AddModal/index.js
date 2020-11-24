@@ -237,7 +237,7 @@ const AddModal = ({ open, handleClose, t }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.entitlementsDialogContent}>
-            <ModalHelperText title={t('add_access_number')} />
+            <ModalHelperText title='add_access_number' />
             <Typography className={classes.setEntitlementsTitle}>
               {t('select_access_number')}
             </Typography>

@@ -92,7 +92,7 @@ const ImportHolidaysModal = ({ t, open, handleClose }) => {
           </DialogTitle>
 
           <DialogContent className={classes.contentWrap}>
-            <ModalHelperText title={t('import_public_holidays')} />
+            <ModalHelperText title='import_public_holidays' />
             <CountryInput
               value={country}
               setValue={handleCountryChange}

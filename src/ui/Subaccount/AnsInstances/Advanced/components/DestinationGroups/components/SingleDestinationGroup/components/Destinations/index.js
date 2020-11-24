@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState, Fragment, useCallback } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import { withNamespaces } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -8,12 +8,13 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
-
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined'
 
 import AddModal from './components/AddModal'
-import CustomTable from 'components/CustomTable'
+import EditWeightsModal from './components/EditWeightsModal'
+import CustomTableDnd from 'components/CustomTableDnd'
 import Checkbox from 'components/Checkbox'
 import Loading from 'components/Loading'
 import transformOnChange from 'utils/tableCheckbox/transformOnChange'
@@ -23,10 +24,12 @@ import DeleteModal from 'components/DeleteModal'
 
 import DestinationsStore from 'stores/DestinationGroups/Destinations'
 
-import useStyles from './styles'
 import disconnectIcon from 'source/images/svg/delete-icon.svg'
+import editSvg from 'source/images/svg/edit-blue.svg'
+import useStyles from './styles'
 
 const addModal = 1
+const editModal = 2
 const deleteModal = 3
 
 const Destinations = observer(({ t }) => {
@@ -39,13 +42,18 @@ const Destinations = observer(({ t }) => {
     deleteDestinations,
     destinations,
     isDestinationsLoading,
-    isDestinationDeleting
+    isDestinationDeleting,
+    isDestinationsUpdating,
+    putDestinations,
+    cancelOrderUpdate
   } = DestinationsStore
 
-  const [numbers, setNumbers] = useState([])
+  const [numbers, setNumbers] = useState([...destinations])
   const [selectAll, setSelectAll] = useState(false)
-  const [searchList, setSearchList] = useState([])
   const [isSingleDeleteMode, setIsSingleDeleteMode] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const isLoading = isDestinationsLoading || isDestinationsUpdating
   const isAnyNumberChecked = numbers.some(number => number.checked)
 
   const initialRequest = () => {
@@ -55,6 +63,7 @@ const Destinations = observer(({ t }) => {
       destinationGroupName
     }
     getDestinations(payload)
+    setIsSaving(false)
   }
 
   const openedModal = useLocalStore(() => ({
@@ -87,8 +96,8 @@ const Destinations = observer(({ t }) => {
   }, [destinations])
 
   useEffect(() => {
-    handleCheckedStates(searchList)
-  }, [searchList])
+    handleCheckedStates(numbers)
+  }, [numbers])
 
   const selectNumbers = (checked, id) => {
     const newSelected = transformOnChange(numbers, checked, id)
@@ -96,7 +105,7 @@ const Destinations = observer(({ t }) => {
   }
 
   const handleSelectAll = () => {
-    const newSelected = transformOnCheckAll(searchList, numbers, selectAll)
+    const newSelected = transformOnCheckAll(numbers, numbers, selectAll)
     handleCheckedStates(newSelected)
     setNumbers(newSelected)
     setSelectAll(!selectAll)
@@ -153,6 +162,44 @@ const Destinations = observer(({ t }) => {
   }
   // ------------
 
+  const handleEditIconClick = () => {
+    openedModal.open(editModal)
+  }
+
+  const catchCallback = state => setNumbers([...state])
+
+  const moveCard = useCallback(
+    (dragIndex, hoverIndex) => {
+      const newArr = [...numbers]
+      ;[newArr[dragIndex], newArr[hoverIndex]] = [
+        newArr[hoverIndex],
+        newArr[dragIndex]
+      ]
+      setNumbers(newArr)
+      setIsSaving(true)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [numbers]
+  )
+
+  const handleSaveButtonClick = () => {
+    if (isSaving)
+      putDestinations({
+        customerId,
+        groupId,
+        destinationGroupName,
+        numbers,
+        callback: initialRequest
+      })
+  }
+
+  const handleCancelButtonClick = () => {
+    if (isSaving) {
+      cancelOrderUpdate(catchCallback)
+      setIsSaving(false)
+    }
+  }
+
   const extraDeleteBlock = (
     <span className={classes.deleteName}>{` ${
       modals.data.length ? modals.data[0].name : ''
@@ -173,8 +220,50 @@ const Destinations = observer(({ t }) => {
     )
   }
 
-  const toolbarButtonBlock = () => {
-    return (
+  const toolbarButtonsBlock = () => (
+    <Box className={classes.toolbarContainer}>
+      <Box
+        className={classnames(classes.buttonsWrap, {
+          [classes.disabledBlock]: !isSaving
+        })}
+      >
+        <Box className={classes.buttonBlock}>
+          <IconButton
+            aria-label='cancel icon button'
+            component='span'
+            className={classnames(
+              classes.buttonIconWrap,
+              classes.cancelButtonWrap,
+              {
+                [classes.disabledButton]: !isSaving
+              }
+            )}
+            onClick={handleCancelButtonClick}
+          >
+            <CloseOutlinedIcon className={classes.cancelIcon} />
+          </IconButton>
+          <Typography className={classes.buttonLabel}>{t('cancel')}</Typography>
+        </Box>
+
+        <Box className={`${classes.buttonBlock} ${classes.doneButtonBlock}`}>
+          <IconButton
+            aria-label='save icon button'
+            component='span'
+            className={classnames(
+              classes.buttonIconWrap,
+              classes.asignButtonWrap,
+              {
+                [classes.disabledButton]: !isSaving
+              }
+            )}
+            onClick={handleSaveButtonClick}
+          >
+            <DoneOutlinedIcon className={classes.assignIcon} />
+          </IconButton>
+          <Typography className={classes.buttonLabel}>{t('save')}</Typography>
+        </Box>
+      </Box>
+
       <Box className={classes.toolbarButtonsBlockWrap}>
         <Box className={`${classes.buttonContainer} ${classes.deassignWrap}`}>
           <IconButton
@@ -200,8 +289,8 @@ const Destinations = observer(({ t }) => {
           </Typography>
         </Box>
       </Box>
-    )
-  }
+    </Box>
+  )
 
   const columns = [
     {
@@ -251,10 +340,16 @@ const Destinations = observer(({ t }) => {
       id: 'phoneNumber',
       label: 'phone_number'
     },
-    // {
-    //   id: 'loadbalance',
-    //   label: 'loadbalance'
-    // },
+    {
+      id: 'weight',
+      label: 'weight',
+      headIcon: <img src={editSvg} alt='edit weight' />,
+      onIconClick: () => handleEditIconClick(),
+      extraProps: {
+        className: classes.textCenter
+      },
+      headCellInsideWrapStyles: classes.headCellInsideWrap
+    },
     {
       id: 'delete',
       extraProps: {
@@ -276,20 +371,21 @@ const Destinations = observer(({ t }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {isDestinationsLoading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <Fragment>
-            <CustomTable
+            <CustomTableDnd
               firstCell={false}
               rows={numbers}
               columns={columns}
-              searchCriterias={['name', 'phoneNumber']}
-              getSearchList={setSearchList}
-              extraToolbarBlock={toolbarButtonBlock}
-              classes={classes}
+              extraToolbarBlock={toolbarButtonsBlock}
+              searchCriterias={['name', 'phoneNumber', 'weight']}
               noAvailableDataMessage={t('no_secondary_numbers_available')}
               tableId={'advanced_destinations_list'}
+              moveCard={moveCard}
+              isSaving={isSaving}
+              classes={classes}
             />
             <Box className={classes.addWrap}>
               <Box className={classes.addIconWrap} onClick={handleAddIconClick}>
@@ -322,6 +418,12 @@ const Destinations = observer(({ t }) => {
             }
             action={t('to_delete')}
             titleAction={t(`delete`)}
+          />
+        )}
+        {openedModal.id === editModal && (
+          <EditWeightsModal
+            handleClose={openedModal.close}
+            open={openedModal.id === editModal}
           />
         )}
       </Paper>

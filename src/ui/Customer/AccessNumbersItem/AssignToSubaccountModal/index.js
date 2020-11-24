@@ -134,7 +134,7 @@ const AssignToSubaccountModal = ({ open, t, handleClose }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <ModalHelperText title={t('assign_numbers_subaccount')} />
+        <ModalHelperText title='assign_numbers_subaccount' />
         {isPostAssignNumbers ? (
           <Loading />
         ) : (

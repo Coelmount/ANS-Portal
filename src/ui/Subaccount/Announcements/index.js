@@ -76,7 +76,7 @@ const AnnouncementsPage = props => {
   ]
 
   const titleData = {
-    mainText: t('announcements'),
+    mainText: 'announcements',
     buttonBlock: (
       <Box className={classes.addCustomerWrap}>
         <Button

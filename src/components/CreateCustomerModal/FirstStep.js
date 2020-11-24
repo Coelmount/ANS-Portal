@@ -74,18 +74,18 @@ const FirstStep = props => {
 
   const getTitle = () => {
     if (isEditCustomer) {
-      return t('edit_customer')
+      return 'edit_customer'
     } else if (isEditSubaccount) {
-      return t('edit_subaccount')
+      return 'edit_subaccount'
     } else if (isCreateSubaccount) {
-      return t('add_subaccount')
-    } else return t('add_customer')
+      return 'add_subaccount'
+    } else return 'add_customer'
   }
 
   const getUserLevel = () => {
-    if (getTitle() === t('add_customer')) {
+    if (getTitle() === 'add_customer') {
       return 'system'
-    } else if (getTitle() === t('edit_subaccount')) {
+    } else if (getTitle() === 'edit_subaccount') {
       return 'subaccount'
     } else return 'customer'
   }
@@ -100,7 +100,7 @@ const FirstStep = props => {
   return (
     <React.Fragment>
       <DialogTitle className={classes.title}>
-        {getTitle()}
+        {t(getTitle())}
 
         <IconButton
           aria-label='close'

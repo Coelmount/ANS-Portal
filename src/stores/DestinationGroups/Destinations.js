@@ -1,4 +1,4 @@
-import { decorate, action, observable } from 'mobx'
+import { decorate, action, observable, runInAction } from 'mobx'
 
 import SnackbarStore from '../Snackbar'
 import differenceBy from 'lodash/differenceBy'
@@ -10,14 +10,18 @@ export class Destinations {
   currentGroupId = ''
   availableDestinationsForPost = []
   destinations = []
-  isDestinationsLoading = true
+  isDestinationsLoading = false
   isAvailableDestinationsLoading = true
   isDestinationPosting = false
   isDestinationDeleting = false
+  isDestinationsUpdating = false
+  isDestinationsWeightUpdating = false
 
   getDestinations = ({ customerId, groupId, destinationGroupName }) => {
-    this.destinations = []
-    this.isDestinationsLoading = true
+    runInAction(() => {
+      this.destinations = []
+      this.isDestinationsLoading = true
+    })
 
     axios
       .get(`/tenants/${customerId}/groups/${groupId}/services/ans_advanced`)
@@ -33,6 +37,9 @@ export class Destinations {
             `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${currentGroup.ans_id}/destinations`
           )
           .then(res => {
+            runInAction(() => {
+              this.isDestinationsLoading = false
+            })
             this.destinations = res.data.destinations.map(
               (destination, index) => {
                 return {
@@ -44,7 +51,10 @@ export class Destinations {
               }
             )
           })
-          .catch(e =>
+          .catch(e => {
+            runInAction(() => {
+              this.isDestinationsLoading = false
+            })
             SnackbarStore.enqueueSnackbar({
               message:
                 getErrorMessage(e) || 'Failed to fetch destinations list',
@@ -52,9 +62,6 @@ export class Destinations {
                 variant: 'error'
               }
             })
-          )
-          .finally(() => {
-            this.isDestinationsLoading = false
           })
       })
   }
@@ -187,6 +194,103 @@ export class Destinations {
         this.isDestinationDeleting = false
       })
   }
+
+  putDestinations = ({
+    customerId,
+    groupId,
+    destinationGroupName,
+    numbers,
+    callback
+  }) => {
+    runInAction(() => {
+      this.isDestinationsUpdating = true
+    })
+
+    const reorderedDestinationGroups = {
+      destinations: numbers.map(number => number.userId)
+    }
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationGroupName}`,
+        reorderedDestinationGroups
+      )
+      .then(() => {
+        if (callback) callback()
+        runInAction(() => {
+          this.isDestinationsUpdating = false
+        })
+        SnackbarStore.enqueueSnackbar({
+          message: 'Destinations successfully updated',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        if (callback) callback()
+        runInAction(() => {
+          this.isDestinationsUpdating = false
+        })
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update destinations',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+  }
+
+  cancelOrderUpdate = callback => {
+    callback(this.destinations)
+  }
+
+  putDestinationsWeight = ({
+    customerId,
+    groupId,
+    destinationGroupName,
+    stateDestinations,
+    callback
+  }) => {
+    runInAction(() => {
+      this.isDestinationsWeightUpdating = true
+    })
+
+    const destinations = {
+      destinations: stateDestinations.map(({ userId, weight }) => ({
+        userId,
+        weight
+      }))
+    }
+
+    axios
+      .put(
+        `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/${destinationGroupName}/weights/`,
+        destinations
+      )
+      .then(() => {
+        if (callback) callback()
+        runInAction(() => {
+          this.isDestinationsWeightUpdating = false
+        })
+        SnackbarStore.enqueueSnackbar({
+          message: 'Destinations weight successfully updated',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        runInAction(() => {
+          this.isDestinationsWeightUpdating = false
+        })
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to update destinations weight',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+  }
 }
 
 decorate(Destinations, {
@@ -194,12 +298,18 @@ decorate(Destinations, {
   getAvailableDestinationsForPost: action,
   postDestinations: action,
   deleteDestinations: action,
+  putDestinations: action,
+  cancelOrderUpdate: action,
+  putDestinationsWeight: action,
+
   availableDestinationsForPost: observable,
   destinations: observable,
   isDestinationsLoading: observable,
   isAvailableDestinationsLoading: observable,
   isDestinationPosting: observable,
-  isDestinationDeleting: observable
+  isDestinationDeleting: observable,
+  isDestinationsUpdating: observable,
+  isDestinationsWeightUpdating: observable
 })
 
 export default new Destinations()

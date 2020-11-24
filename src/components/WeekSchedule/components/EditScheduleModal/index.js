@@ -53,7 +53,7 @@ const EditScheduleModal = ({
 
       <DialogContent className={classes.modalContent}>
         <Box className={classes.helperTextWrap}>
-          <ModalHelperText title={t('edit_week_schedule')} />
+          <ModalHelperText title='edit_week_schedule' />
         </Box>
         {isScheduleEditing ? (
           <Loading />

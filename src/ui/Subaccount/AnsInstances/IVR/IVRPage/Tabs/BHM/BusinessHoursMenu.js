@@ -140,7 +140,7 @@ const BusinessHoursMenu = props => {
               setShowAddSchedules(false)
               getSchedules(match.customerId, match.groupId)
             }}
-            title={t('add_week_schedule')}
+            title='add_week_schedule'
             handleClose={() => setShowAddSchedules(false)}
           />
         )}
