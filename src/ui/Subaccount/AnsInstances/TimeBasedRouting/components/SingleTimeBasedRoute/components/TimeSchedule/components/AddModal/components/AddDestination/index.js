@@ -37,17 +37,17 @@ const AddDestination = ({ t, handleClose }) => {
   const {
     scheduleIndexToAdd,
     isEditMode,
+    currentTimeSchedule,
+    isTimeScheduleAdding,
+    isTimeScheduleEditing,
     setStep,
     setDestinationData,
     putTimeSchedule,
-    postTimeSchedule
+    postTimeSchedule,
+    findTimeSchedule
   } = TimeSchedulesStore
-  const {
-    getSchedules,
-    schedules,
-    isSchedulesLoading,
-    isTimeScheduleAdding
-  } = WeekSchedulesStore
+
+  const { getSchedules, schedules, isSchedulesLoading } = WeekSchedulesStore
 
   const formStore = useLocalStore(() => ({
     name: '',
@@ -64,17 +64,19 @@ const AddDestination = ({ t, handleClose }) => {
       return (
         name &&
         schedule &&
-        (phoneNumber.length > 2 || phoneType === ANS_NUMBER_ID)
+        ((phoneNumber && phoneNumber.length > 2) || phoneType === ANS_NUMBER_ID)
       )
     }
   }))
 
-  const isLoading = isSchedulesLoading || isTimeScheduleAdding
+  const isLoading =
+    isSchedulesLoading || isTimeScheduleAdding || isTimeScheduleEditing
   const isFreeNumberType = formStore.phoneType === FREE_ENTRY_NUMBER_ID
 
   // Initial request
   useEffect(() => {
     getSchedules(customerId, groupId)
+    if (isEditMode) findTimeSchedule()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -87,11 +89,22 @@ const AddDestination = ({ t, handleClose }) => {
       }))
       // Set schedule options to store
       formStore.set('scheduleOptions', options)
-      // Set first option as default to store
-      formStore.set('schedule', options[0].value)
+      // Set first option as default to store for add feature
+      if (!isEditMode) {
+        formStore.set('schedule', options[0].value)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schedules])
+
+  useEffect(() => {
+    if (currentTimeSchedule && Object.keys(currentTimeSchedule)) {
+      formStore.set('name', currentTimeSchedule.name)
+      formStore.set('phoneNumber', currentTimeSchedule.forwardToPhoneNumber)
+      formStore.set('schedule', currentTimeSchedule.timeSchedule)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTimeSchedule])
 
   const handleAddClick = () => {
     const payload = {
@@ -107,7 +120,7 @@ const AddDestination = ({ t, handleClose }) => {
         destination: formStore.phoneNumber,
         destinationName: formStore.name,
         destinationScheduleName: formStore.schedule,
-        isPhoneNumberChanged: true,
+        isFreeNumber: true,
         closeModal: handleClose
       }
       isEditMode ? putTimeSchedule(payload) : postTimeSchedule(payload)
@@ -129,9 +142,18 @@ const AddDestination = ({ t, handleClose }) => {
     }
   }
 
+  const getButtonTitle = () => {
+    if (!isFreeNumberType) return t('next')
+    else {
+      if (isEditMode) return t('save')
+      else return t('add')
+    }
+  }
+  const buttonTitle = getButtonTitle()
+
   const phoneOptions = [
     {
-      label: t('select_free_enter_number'),
+      label: `${t('select_free_enter_number')}:`,
       value: FREE_ENTRY_NUMBER_ID
     },
     {
@@ -143,7 +165,7 @@ const AddDestination = ({ t, handleClose }) => {
   return (
     <Fragment>
       <DialogTitle className={classes.title}>
-        {t('add_destination')}
+        {isEditMode ? t('edit_destination') : t('add_destination')}
         <IconButton
           aria-label='close'
           onClick={handleClose}
@@ -157,7 +179,7 @@ const AddDestination = ({ t, handleClose }) => {
         <div className={classes.helperTextWrap}>
           <ModalHelperText helperText='add_destination_tbr_time_schedule' />
         </div>
-        {/* <Box className={classes.freeNumberStep}>{`${t('step')} 1/2`}</Box> */}
+
         {isLoading ? (
           <Loading />
         ) : (
@@ -169,6 +191,7 @@ const AddDestination = ({ t, handleClose }) => {
             </Box>
             <Box className={classes.formContentWrap}>
               <Input
+                value={formStore.name}
                 icon={<PermIdentityOutlined />}
                 label={t('name')}
                 variant='outlined'
@@ -177,35 +200,36 @@ const AddDestination = ({ t, handleClose }) => {
               <Box className={classes.radioWrap}>
                 <RadioGroup>
                   {phoneOptions.map(item => (
-                    <FormControlLabel
-                      checked={formStore.phoneType === item.value}
-                      onChange={e => formStore.set('phoneType', item.value)}
-                      label={item.label}
-                      control={
-                        <Radio
-                          classes={{
-                            root: classes.radioButton,
-                            checked: classes.checked
-                          }}
-                        />
-                      }
-                      key={item.value}
-                    />
+                    <div className={classes.freeNumberRow}>
+                      <FormControlLabel
+                        checked={formStore.phoneType === item.value}
+                        onChange={e => formStore.set('phoneType', item.value)}
+                        label={item.label}
+                        control={
+                          <Radio
+                            classes={{
+                              root: classes.radioButton,
+                              checked: classes.checked
+                            }}
+                          />
+                        }
+                        key={item.value}
+                      />
+                      {item.value === FREE_ENTRY_NUMBER_ID && isFreeNumberType && (
+                        <Box className={classes.phoneInputWrap}>
+                          <Input
+                            label={t('phone_number')}
+                            icon={<PhoneOutlinedIcon alt='phone' />}
+                            value={formStore.phoneNumber}
+                            placeholder={t('enter_number')}
+                            onChange={handlePhoneNumberChange}
+                          />
+                        </Box>
+                      )}
+                    </div>
                   ))}
                 </RadioGroup>
               </Box>
-
-              {isFreeNumberType && (
-                <Box className={classes.phoneInputWrap}>
-                  <Input
-                    label={t('phone_number')}
-                    icon={<PhoneOutlinedIcon alt='phone' />}
-                    value={formStore.phoneNumber}
-                    placeholder={t('enter_number')}
-                    onChange={handlePhoneNumberChange}
-                  />
-                </Box>
-              )}
 
               <Select
                 label={t('schedule')}
@@ -245,7 +269,7 @@ const AddDestination = ({ t, handleClose }) => {
           disabled={!formStore.isFormValid || isLoading}
           onClick={handleAddClick}
         >
-          {isFreeNumberType ? t('add') : t('next')}
+          {buttonTitle}
         </Button>
       </DialogActions>
     </Fragment>

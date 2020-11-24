@@ -197,6 +197,13 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
     width: 392,
     padding: '0px 5px'
+  },
+  freeNumberRow: {
+    display: 'flex',
+    marginBottom: 15
+  },
+  phoneInputWrap: {
+    width: 250
   }
 }))
 

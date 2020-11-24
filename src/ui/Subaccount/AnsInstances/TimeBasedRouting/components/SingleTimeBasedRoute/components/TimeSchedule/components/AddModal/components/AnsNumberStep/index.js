@@ -163,7 +163,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
       groupId,
       tbrId: tbrName,
       destination: currentCheckedNumber.destination,
-      isPhoneNumberChanged: true,
+      isFreeNumber: false,
       closeModal: handleClose
     }
     isEditMode ? putTimeSchedule(payload) : postTimeSchedule(payload)
@@ -222,7 +222,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
       ) : (
         <Fragment>
           <DialogTitle className={classes.title}>
-            {t('add_tbr_instance')}
+            {isEditMode ? t('edit_tbr_instance') : t('add_tbr_instance')}
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -279,7 +279,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
               onClick={handleAddButtonClick}
               disabled={!currentCheckedNumber.destination}
             >
-              {t('add')}
+              {isEditMode ? t('save') : t('add')}
             </Button>
           </DialogActions>
         </Fragment>

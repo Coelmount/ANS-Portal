@@ -228,7 +228,8 @@ const TimeSchedule = ({ t }) => {
     getSchedules,
     deleteTimeSchedule,
     setStep,
-    setIsEditMode
+    setIsEditMode,
+    clearCurrentTimeSchedule
   } = TimeSchedulesStore
 
   const [viewType, setViewType] = useState(LIST_VIEW_ID)
@@ -241,7 +242,7 @@ const TimeSchedule = ({ t }) => {
     close() {
       this.openedId = null
       this.deleteItem = {}
-      getRequest()
+      initRequest()
       setStep(1)
       setIsEditMode(false)
     }
@@ -252,17 +253,18 @@ const TimeSchedule = ({ t }) => {
   const isEditDefaultDestinationModal =
     modalStore.openedId === editDefaultDestinationModalId
 
-  const getRequest = () => {
+  const initRequest = () => {
     const payload = {
       customerId,
       groupId,
       tbrName
     }
     getSchedules(payload)
+    clearCurrentTimeSchedule()
   }
 
   useEffect(() => {
-    getRequest()
+    initRequest()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

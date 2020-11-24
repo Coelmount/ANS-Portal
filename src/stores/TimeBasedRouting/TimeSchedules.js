@@ -176,6 +176,10 @@ export class TimeSchedules {
     )
   }
 
+  clearCurrentTimeSchedule = () => {
+    this.currentTimeSchedule = {}
+  }
+
   getPhoneNumbers = ({
     customerId,
     groupId,
@@ -387,20 +391,21 @@ export class TimeSchedules {
     customerId,
     groupId,
     tbrId,
-    schedule,
     destination,
-    isPhoneNumberChanged,
+    destinationName,
+    destinationScheduleName,
+    isFreeNumber,
     closeModal
   }) => {
     this.isTimeScheduleEditing = true
-    const { destinationName, destinationScheduleName } = this
-    const payload = isPhoneNumberChanged
-      ? {
-          name: destinationName,
-          timeSchedule: destinationScheduleName,
-          destination
-        }
-      : schedule
+
+    const payload = {
+      name: isFreeNumber ? destinationName : this.destinationName,
+      timeSchedule: isFreeNumber
+        ? destinationScheduleName
+        : this.destinationScheduleName,
+      destination
+    }
 
     axios
       .put(
@@ -408,6 +413,10 @@ export class TimeSchedules {
         payload
       )
       .then(() => {
+        runInAction(() => {
+          this.isTimeScheduleEditing = false
+        })
+        closeModal()
         SnackbarStore.enqueueSnackbar({
           message: `Destination updated successfully`,
           options: {
@@ -416,16 +425,15 @@ export class TimeSchedules {
         })
       })
       .catch(e => {
+        runInAction(() => {
+          this.isTimeScheduleEditing = false
+        })
         SnackbarStore.enqueueSnackbar({
           message: getErrorMessage(e) || `Failed to update destination`,
           options: {
             variant: 'error'
           }
         })
-      })
-      .finally(() => {
-        this.isTimeScheduleEditing = false
-        closeModal()
       })
   }
 
@@ -501,7 +509,8 @@ decorate(TimeSchedules, {
   putTimeSchedule: action,
   deleteTimeSchedule: action,
   getSchedulesPeriods: action,
-  clearSchedulesPeriods: action
+  clearSchedulesPeriods: action,
+  clearCurrentTimeSchedule: action
 })
 
 export default new TimeSchedules()

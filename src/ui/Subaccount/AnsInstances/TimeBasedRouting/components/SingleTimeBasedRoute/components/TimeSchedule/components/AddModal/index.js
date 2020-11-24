@@ -7,7 +7,7 @@ import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
 import AddDestination from './components/AddDestination'
 import FreeNumberStep from './components/FreeNumberStep'
 import AnsNumberStep from './components/AnsNumberStep'
-import EditDestination from '../EditDestinationListModal'
+// import EditDestination from '../EditDestinationListModal'
 import {
   ADD_DESTINATION_DEFAULT_ID,
   FREE_ENTRY_NUMBER_ID,
@@ -26,7 +26,7 @@ const Steps = ({ step, handleClose }) => {
     case ANS_NUMBER_ID:
       return <AnsNumberStep handleClose={handleClose} />
     case EDIT_DESTINATION_ID:
-      return <EditDestination handleClose={handleClose} />
+      return <AddDestination handleClose={handleClose} />
     default:
       return <AddDestination handleClose={handleClose} />
   }
