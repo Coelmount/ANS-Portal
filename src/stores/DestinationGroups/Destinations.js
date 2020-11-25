@@ -8,6 +8,7 @@ import getErrorMessage from 'utils/getErrorMessage'
 
 export class Destinations {
   currentGroupId = ''
+  currentGroupPolicy = ''
   availableDestinationsForPost = []
   destinations = []
   isDestinationsLoading = false
@@ -31,6 +32,7 @@ export class Destinations {
           destinationGroup => destinationGroup.ans_id === destinationGroupName
         )
         this.currentGroupId = currentGroup.ans_id
+        this.currentGroupPolicy = currentGroup.routing_policy
 
         axios
           .get(
@@ -309,7 +311,8 @@ decorate(Destinations, {
   isDestinationPosting: observable,
   isDestinationDeleting: observable,
   isDestinationsUpdating: observable,
-  isDestinationsWeightUpdating: observable
+  isDestinationsWeightUpdating: observable,
+  currentGroupPolicy: observable
 })
 
 export default new Destinations()

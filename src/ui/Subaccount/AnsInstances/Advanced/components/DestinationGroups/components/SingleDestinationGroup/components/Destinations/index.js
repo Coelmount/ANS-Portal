@@ -41,6 +41,7 @@ const Destinations = observer(({ t }) => {
     getDestinations,
     deleteDestinations,
     destinations,
+    currentGroupPolicy,
     isDestinationsLoading,
     isDestinationDeleting,
     isDestinationsUpdating,
@@ -341,16 +342,6 @@ const Destinations = observer(({ t }) => {
       label: 'phone_number'
     },
     {
-      id: 'weight',
-      label: 'weight',
-      headIcon: <img src={editSvg} alt='edit weight' />,
-      onIconClick: () => handleEditIconClick(),
-      extraProps: {
-        className: classes.textCenter
-      },
-      headCellInsideWrapStyles: classes.headCellInsideWrap
-    },
-    {
       id: 'delete',
       extraProps: {
         className: classes.deleteCell,
@@ -367,6 +358,21 @@ const Destinations = observer(({ t }) => {
       }
     }
   ]
+
+  // Show "weight" column only for groups with "Weighted" policy
+  if (currentGroupPolicy === 'Weighted') {
+    const weightColumn = {
+      id: 'weight',
+      label: 'weight',
+      headIcon: <img src={editSvg} alt='edit weight' />,
+      onIconClick: () => handleEditIconClick(),
+      extraProps: {
+        className: classes.textCenter
+      },
+      headCellInsideWrapStyles: classes.headCellInsideWrap
+    }
+    columns.splice(3, 0, weightColumn)
+  }
 
   return (
     <div className={classes.root}>
