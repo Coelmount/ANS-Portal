@@ -1,3 +1,4 @@
+export const SELECT_SCHEDULE = 0
 export const ADD_DESTINATION_DEFAULT_ID = 1
 export const PHONE_NUMBER_ID = 2
 export const ANS_INSTANCE_ID = 3

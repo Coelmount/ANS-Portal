@@ -14,7 +14,7 @@ import AnsDestination from './substores/AnsDestination'
 import IvrInstance from './substores/IvrInstance'
 
 export class TimeSchedules {
-  step = 1
+  step = 0
   totalPages = 0
   defaultDestination = ''
   destinationScheduleName = ''
@@ -31,6 +31,11 @@ export class TimeSchedules {
   timeScheduleNames = []
   timeSchedulesWithPeriods = []
   allPeriods = []
+  destinationData = {
+    name: '',
+    timeSchedule: '',
+    destination: ''
+  }
   isEditMode = false
   isSchedulesLoading = true
   isPhoneNumbersLoading = true
@@ -40,8 +45,13 @@ export class TimeSchedules {
   isTimeScheduleAdding = false
   isTimeScheduleEditing = false
   isSchedulesPeriodsLoading = true
+  isSchedulePosting = false
 
   setStep = value => (this.step = value)
+
+  setField = (field, value) => {
+    this.destinationData[field] = value
+  }
 
   setIsEditMode = flag => (this.isEditMode = flag)
 
@@ -357,8 +367,9 @@ export class TimeSchedules {
       .post(
         `/tenants/${customerId}/groups/${groupId}/services/time_based_routing/${tbrId}/criteria/`,
         {
-          name: destinationName || this.destinationName,
-          timeSchedule: destinationScheduleName || this.destinationScheduleName,
+          name: destinationName || this.destinationData.name,
+          timeSchedule:
+            destinationScheduleName || this.destinationData.timeSchedule,
           destination
         }
       )
@@ -393,17 +404,16 @@ export class TimeSchedules {
     tbrId,
     destination,
     destinationName,
-    destinationScheduleName,
     isFreeNumber,
     closeModal
   }) => {
-    this.isTimeScheduleEditing = true
+    runInAction(() => {
+      this.isTimeScheduleEditing = true
+    })
 
     const payload = {
-      name: isFreeNumber ? destinationName : this.destinationName,
-      timeSchedule: isFreeNumber
-        ? destinationScheduleName
-        : this.destinationScheduleName,
+      name: isFreeNumber ? destinationName : this.destinationData.name,
+      timeSchedule: this.destinationData.timeSchedule,
       destination
     }
 
@@ -466,6 +476,42 @@ export class TimeSchedules {
         closeModal()
       })
   }
+
+  postScheduleTbr = ({ customerId, groupId, callback, name }) => {
+    runInAction(() => {
+      this.isSchedulePosting = true
+    })
+
+    axios
+      .post(`/tenants/${customerId}/groups/${groupId}/time_schedules1/`, {
+        name
+      })
+      .then(res => {
+        runInAction(() => {
+          this.isSchedulePosting = false
+          this.setField('timeSchedule', name)
+        })
+        if (callback) callback()
+
+        SnackbarStore.enqueueSnackbar({
+          message: 'Schedule successfully created',
+          options: {
+            variant: 'success'
+          }
+        })
+      })
+      .catch(e => {
+        runInAction(() => {
+          this.isSchedulePosting = false
+        })
+        SnackbarStore.enqueueSnackbar({
+          message: getErrorMessage(e) || 'Failed to create schedule',
+          options: {
+            variant: 'error'
+          }
+        })
+      })
+  }
 }
 
 decorate(TimeSchedules, {
@@ -493,6 +539,8 @@ decorate(TimeSchedules, {
   isSchedulesPeriodsLoading: observable,
   timeSchedulesWithPeriods: observable,
   allPeriods: observable,
+  destinationData: observable,
+  isSchedulePosting: observable,
   setStep: action,
   clearLoading: action,
   setIsEditMode: action,
@@ -510,7 +558,9 @@ decorate(TimeSchedules, {
   deleteTimeSchedule: action,
   getSchedulesPeriods: action,
   clearSchedulesPeriods: action,
-  clearCurrentTimeSchedule: action
+  clearCurrentTimeSchedule: action,
+  setField: action,
+  postScheduleTbr: action
 })
 
 export default new TimeSchedules()

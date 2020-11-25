@@ -196,14 +196,21 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-start',
     width: 392,
-    padding: '0px 5px'
+    paddingLeft: 5
   },
   freeNumberRow: {
     display: 'flex',
     marginBottom: 15
   },
   phoneInputWrap: {
-    width: 250
+    width: 258
+  },
+  ansNumberStep: {
+    fontFamily: 'MTN',
+    fontWeight: 500,
+    fontSize: 16,
+    color: theme.palette.grey40,
+    margin: '16px 20px'
   }
 }))
 

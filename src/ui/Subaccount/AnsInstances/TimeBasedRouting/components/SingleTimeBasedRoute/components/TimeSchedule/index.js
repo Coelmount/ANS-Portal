@@ -18,8 +18,6 @@ import DeleteModal from 'components/DeleteModal'
 import AddModal from './components/AddModal'
 import EditDefaultDestinationModal from './components/EditDefaultDestinationModal'
 import TimeScheduleCalendar from './components/TimeScheduleCalendar'
-// import Input from 'components/Input'
-import { EDIT_DESTINATION_ID } from 'utils/types/addDestinationModalStepsId'
 
 import editIcon from 'source/images/svg/edit-blue.svg'
 import listTableIcon from 'source/images/svg/list-table.svg'
@@ -141,7 +139,6 @@ const ListView = ({
 
   return (
     <Fragment>
-      {/* <DefaultDestination t={t} classes={classes} open={open} /> */}
       <Toolbar
         t={t}
         classes={classes}
@@ -164,33 +161,6 @@ const ListView = ({
     </Fragment>
   )
 }
-
-// const DefaultDestination = ({ t, classes, open }) => {
-//   const { defaultDestination } = TimeSchedulesStore
-
-//   const handleEditIconClick = () => {
-//     open(editDefaultDestinationModalId)
-//   }
-
-//   return useObserver(() => (
-//     <Box className={classes.defaultDestinationWrap}>
-//       <Typography className={classes.blockLabel}>
-//         {t('default_destination')}
-//       </Typography>
-//       <Box className={classes.inputWrap}>
-//         <Input
-//           value={defaultDestination}
-//           label={t('forward_to')}
-//           variant='outlined'
-//           disabled
-//         />
-//       </Box>
-//       <Box onClick={handleEditIconClick} className={classes.editButtonWrap}>
-//         <img src={editIcon} alt='edit' />
-//       </Box>
-//     </Box>
-//   ))
-// }
 
 const Toolbar = ({ t, classes, isLoading, handleAddClick }) => {
   return (
@@ -243,7 +213,7 @@ const TimeSchedule = ({ t }) => {
       this.openedId = null
       this.deleteItem = {}
       initRequest()
-      setStep(1)
+      setStep(0)
       setIsEditMode(false)
     }
   }))
@@ -280,7 +250,6 @@ const TimeSchedule = ({ t }) => {
 
   const handleEditIconClick = row => {
     setScheduleToEdit(row)
-    setStep(EDIT_DESTINATION_ID)
     setIsEditMode(true)
     modalStore.open(addModalId)
   }

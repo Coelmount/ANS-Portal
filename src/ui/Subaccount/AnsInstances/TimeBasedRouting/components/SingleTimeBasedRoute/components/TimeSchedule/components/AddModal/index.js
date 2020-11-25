@@ -7,8 +7,9 @@ import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
 import AddDestination from './components/AddDestination'
 import FreeNumberStep from './components/FreeNumberStep'
 import AnsNumberStep from './components/AnsNumberStep'
-// import EditDestination from '../EditDestinationListModal'
+import SelectSchedule from './components/SelectSchedule'
 import {
+  SELECT_SCHEDULE,
   ADD_DESTINATION_DEFAULT_ID,
   FREE_ENTRY_NUMBER_ID,
   ANS_NUMBER_ID,
@@ -19,6 +20,8 @@ import useStyles from '../modalStyles'
 
 const Steps = ({ step, handleClose }) => {
   switch (step) {
+    case SELECT_SCHEDULE:
+      return <SelectSchedule handleClose={handleClose} />
     case ADD_DESTINATION_DEFAULT_ID:
       return <AddDestination handleClose={handleClose} />
     case FREE_ENTRY_NUMBER_ID:
@@ -28,7 +31,7 @@ const Steps = ({ step, handleClose }) => {
     case EDIT_DESTINATION_ID:
       return <AddDestination handleClose={handleClose} />
     default:
-      return <AddDestination handleClose={handleClose} />
+      return <SelectSchedule handleClose={handleClose} />
   }
 }
 

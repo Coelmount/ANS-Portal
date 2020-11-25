@@ -18,17 +18,14 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import TimeSchedulesStore from 'stores/TimeBasedRouting/TimeSchedules'
-import WeekSchedulesStore from 'stores/WeekSchedules'
 import Loading from 'components/Loading'
 import Input from 'components/Input'
-import Select from 'components/Select'
 import ModalHelperText from 'components/ModalHelperText'
 import {
   FREE_ENTRY_NUMBER_ID,
   ANS_NUMBER_ID
 } from 'utils/types/addDestinationModalStepsId'
 
-import ScheduleIcon from 'source/images/components/ScheduleIcon'
 import useStyles from '../../../modalStyles'
 
 const AddDestination = ({ t, handleClose }) => {
@@ -41,76 +38,48 @@ const AddDestination = ({ t, handleClose }) => {
     isTimeScheduleAdding,
     isTimeScheduleEditing,
     setStep,
-    setDestinationData,
+    setField,
     putTimeSchedule,
     postTimeSchedule,
     findTimeSchedule
   } = TimeSchedulesStore
 
-  const { getSchedules, schedules, isSchedulesLoading } = WeekSchedulesStore
-
   const formStore = useLocalStore(() => ({
     name: '',
     phoneType: FREE_ENTRY_NUMBER_ID,
     phoneNumber: '',
-    schedule: '',
     scheduleOptions: [],
 
     set(field, value) {
       this[field] = value
     },
     get isFormValid() {
-      const { name, phoneNumber, phoneType, schedule } = this
+      const { name, phoneNumber, phoneType } = this
       return (
         name &&
-        schedule &&
         ((phoneNumber && phoneNumber.length > 2) || phoneType === ANS_NUMBER_ID)
       )
     }
   }))
 
-  const isLoading =
-    isSchedulesLoading || isTimeScheduleAdding || isTimeScheduleEditing
+  const isLoading = isTimeScheduleAdding || isTimeScheduleEditing
   const isFreeNumberType = formStore.phoneType === FREE_ENTRY_NUMBER_ID
 
   // Initial request
   useEffect(() => {
-    getSchedules(customerId, groupId)
     if (isEditMode) findTimeSchedule()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // On receive schedules from store
-  useEffect(() => {
-    if (schedules.length) {
-      const options = schedules.map(({ name }) => ({
-        label: name,
-        value: name
-      }))
-      // Set schedule options to store
-      formStore.set('scheduleOptions', options)
-      // Set first option as default to store for add feature
-      if (!isEditMode) {
-        formStore.set('schedule', options[0].value)
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [schedules])
 
   useEffect(() => {
     if (currentTimeSchedule && Object.keys(currentTimeSchedule)) {
       formStore.set('name', currentTimeSchedule.name)
       formStore.set('phoneNumber', currentTimeSchedule.forwardToPhoneNumber)
-      formStore.set('schedule', currentTimeSchedule.timeSchedule)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTimeSchedule])
 
   const handleAddClick = () => {
-    const payload = {
-      destinationName: formStore.name,
-      scheduleName: formStore.schedule
-    }
     // Trigger post request with free number
     if (isFreeNumberType) {
       const payload = {
@@ -119,15 +88,14 @@ const AddDestination = ({ t, handleClose }) => {
         tbrId: tbrName,
         destination: formStore.phoneNumber,
         destinationName: formStore.name,
-        destinationScheduleName: formStore.schedule,
         isFreeNumber: true,
         closeModal: handleClose
       }
       isEditMode ? putTimeSchedule(payload) : postTimeSchedule(payload)
     } else {
-      // Go next step to choose ANS number
+      // Set name and destination values to store and go next step to choose ANS number
       setStep(ANS_NUMBER_ID)
-      setDestinationData(payload)
+      setField('name', formStore.name)
     }
   }
 
@@ -180,6 +148,10 @@ const AddDestination = ({ t, handleClose }) => {
           <ModalHelperText helperText='add_destination_tbr_time_schedule' />
         </div>
 
+        <div className={classes.ansNumberStep}>
+          {`${t('select_name_and_phonenumber')}:`}
+        </div>
+
         {isLoading ? (
           <Loading />
         ) : (
@@ -230,24 +202,6 @@ const AddDestination = ({ t, handleClose }) => {
                   ))}
                 </RadioGroup>
               </Box>
-
-              <Select
-                label={t('schedule')}
-                icon={
-                  <ScheduleIcon
-                    style={{
-                      width: 30,
-                      height: 25,
-                      marginTop: 1,
-                      marginLeft: 1
-                    }}
-                    alt='schedule'
-                  />
-                }
-                options={formStore.scheduleOptions}
-                value={formStore.schedule}
-                onChange={e => formStore.set('schedule', e.target.value)}
-              />
             </Box>
           </Box>
         )}

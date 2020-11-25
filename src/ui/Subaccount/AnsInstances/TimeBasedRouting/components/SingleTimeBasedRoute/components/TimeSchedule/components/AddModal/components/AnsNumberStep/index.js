@@ -222,7 +222,7 @@ const AnsNumberStep = ({ handleClose, t }) => {
       ) : (
         <Fragment>
           <DialogTitle className={classes.title}>
-            {isEditMode ? t('edit_tbr_instance') : t('add_tbr_instance')}
+            {isEditMode ? t('edit_destination') : t('add_destination')}
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -235,7 +235,9 @@ const AnsNumberStep = ({ handleClose, t }) => {
             <div className={classes.helperTextWrap}>
               <ModalHelperText helperText='add_destination_tbr_time_schedule_step_2_ans_number' />
             </div>
-            <Box className={classes.ansNumberStep}>{`${t('step')} 2/2`}</Box>
+            <Box className={classes.ansNumberStep}>
+              {t('choose_ans_number')}
+            </Box>
             <CountryInput
               value={selectedCountry}
               setValue={setSelectedCountry}
