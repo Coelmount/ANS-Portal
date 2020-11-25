@@ -6,7 +6,15 @@ const ItemTypes = {
   CARD: 'card'
 }
 
-const DragableCard = ({ id, index, moveCard, isSaving, children }) => {
+const DragableCard = ({
+  id,
+  index,
+  moveCard,
+  isSaving,
+  children,
+  classes,
+  defaultClasses
+}) => {
   const ref = useRef(null)
   const [, drop] = useDrop({
     accept: ItemTypes.CARD,
@@ -45,7 +53,11 @@ const DragableCard = ({ id, index, moveCard, isSaving, children }) => {
     drag(drop(ref))
   }
   return (
-    <TableRow ref={ref} style={{ opacity }}>
+    <TableRow
+      className={`${defaultClasses.tableRow} ${classes.tableRow}`}
+      ref={ref}
+      style={{ opacity }}
+    >
       {children}
     </TableRow>
   )

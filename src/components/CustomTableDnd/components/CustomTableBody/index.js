@@ -39,6 +39,7 @@ const CustomTableBody = ({
     rows.push(
       <DragableCard
         classes={classes}
+        defaultClasses={defaultClasses}
         key={row.id}
         index={i}
         id={row.id}
