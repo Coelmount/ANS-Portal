@@ -16,7 +16,9 @@ import EntitlementsStore from 'stores/Entitlements'
 
 import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
-import DeleteModal from 'components/DeleteModal'
+// import DeleteModal from 'components/DeleteModal'
+import DeleteConfirmModal from 'components/DeleteConfirmModal'
+
 import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
@@ -169,7 +171,7 @@ const CustomersTable = observer(({ t }) => {
     iconCapture: t('add_customer'),
     Icon: <PersonAddOutlinedIcon />
   }
-
+  console.log(customerToDelete, 'customerToDelete')
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -191,16 +193,25 @@ const CustomersTable = observer(({ t }) => {
           />
         )}
         {isDeleteModalOpen && (
-          <DeleteModal
-            classes={classes}
+          // <DeleteModal
+          //   classes={classes}
+          //   open={isDeleteModalOpen}
+          //   handleClose={handleCloseDeleteModal}
+          //   handleDelete={handleDelete}
+          //   deleteInfo={customerToDelete}
+          //   isDeleting={isDeletingCustomer}
+          //   deleteSubject={t('customer')}
+          //   action={t('to_delete')}
+          //   titleAction={t(`delete`)}
+          // />
+          <DeleteConfirmModal
             open={isDeleteModalOpen}
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
-            deleteInfo={customerToDelete}
-            isDeleting={isDeletingCustomer}
+            isLoading={isDeletingCustomer}
+            title={t('delete_customer')}
             deleteSubject={t('customer')}
-            action={t('to_delete')}
-            titleAction={t(`delete`)}
+            deleteObject={`${customerToDelete.name}: ${customerToDelete.id}`}
           />
         )}
         {isOpenCreateCustomer && (
