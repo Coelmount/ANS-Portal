@@ -31,7 +31,7 @@ const DeleteConfirmModal = ({
 
   const [inputValue, setInputValue] = useState('')
 
-  const isDeletePossible = inputValue === 'DELETE'
+  const isDeletePossible = inputValue === 'DELETE' && !isLoading
 
   const handleInputChange = e => {
     setInputValue(e.target.value)
@@ -48,88 +48,84 @@ const DeleteConfirmModal = ({
       disableAutoFocus={true}
       className={classes.root}
     >
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <DialogTitle>
-            <div className={classes.titleContainer}>
-              <div>
-                <img
-                  className={classes.deleteIcon}
-                  src={deleteIcon}
-                  alt='delete icon'
-                />
-                <span className={classes.title}>{t(title)}</span>
-              </div>
-
-              <CloseOutlinedIcon
-                onClick={handleClose}
-                className={classes.closeIcon}
+      <>
+        <DialogTitle>
+          <div className={classes.titleContainer}>
+            <div>
+              <img
+                className={classes.deleteIcon}
+                src={deleteIcon}
+                alt='delete icon'
               />
+              <span className={classes.title}>{t(title)}</span>
             </div>
-          </DialogTitle>
 
-          <DialogContent>
-            <div className={classes.mainContainer}>
-              <div className={classes.contentContainer}>
-                <div className={classes.textContainer}>
-                  <span>Are you sure you want to delete</span>
-                  <div>
-                    <span
-                      className={classes.firstdeleteText}
-                    >{`${deleteSubject}: ${deleteObject}? `}</span>
-                    <span>You can't undo this action</span>
+            <CloseOutlinedIcon
+              onClick={handleClose}
+              className={classes.closeIcon}
+            />
+          </div>
+        </DialogTitle>
+
+        <DialogContent>
+          <div className={classes.mainContainer}>
+            <div className={classes.contentContainer}>
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  <div className={classes.textContainer}>
+                    <span>{t('are_you_sure_delete')}</span>
+                    <div>
+                      <span
+                        className={classes.firstdeleteText}
+                      >{`${deleteSubject} -  ${deleteObject}? `}</span>
+                    </div>
+                    <span>{t('you_cant_undo')}</span>
                   </div>
-                  <span>once deleted</span>
-                </div>
 
-                <div className={classes.confirmContainer}>
-                  <span>Please type</span>
-                  <span className={classes.secondConfirmText}>DELETE</span>
-                  <Input
-                    onChange={handleInputChange}
-                    className={classes.deleteInput}
-                    InputLabelProps={{ shrink: false }}
-                  />
-                </div>
+                  <div className={classes.confirmContainer}>
+                    <span>{t('please_type')}</span>
+                    <span className={classes.secondConfirmText}>DELETE</span>
+                    <Input
+                      onChange={handleInputChange}
+                      className={classes.deleteInput}
+                      InputLabelProps={{ shrink: false }}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className={classes.actionButtonsContainer}>
+              <div
+                onClick={handleClose}
+                className={classnames(
+                  classes.actionButton,
+                  classes.cancelButton
+                )}
+              >
+                <Typography className={classes.buttonTitle}>
+                  {t(leftButtonText)}
+                </Typography>
               </div>
 
-              <div className={classes.actionButtonsContainer}>
-                <div
-                  onClick={handleClose}
-                  className={classnames(
-                    classes.actionButton,
-                    classes.cancelButton
-                  )}
-                >
-                  <Typography className={classes.buttonTitle}>
-                    {t(leftButtonText)}
-                  </Typography>
-                </div>
-
-                <div
-                  onClick={handleDeleteClick}
-                  className={classnames(
-                    classes.actionButton,
-                    classes.deleteButton,
-                    { [classes.disabledDeleteButton]: !isDeletePossible }
-                  )}
-                  // style={{
-                  //   background: isDeletePossible
-                  //     ? '#FFCC00'
-                  //     : 'rgba(0, 0, 0, 0.12)'
-                  // }}
-                >
-                  <Typography className={classes.actionButtonTitle}>
-                    {t(rightButtonText)}
-                  </Typography>
-                </div>
+              <div
+                onClick={handleDeleteClick}
+                className={classnames(
+                  classes.actionButton,
+                  classes.deleteButton,
+                  { [classes.disabledDeleteButton]: !isDeletePossible }
+                )}
+              >
+                <Typography className={classes.actionButtonTitle}>
+                  {t(rightButtonText)}
+                </Typography>
               </div>
             </div>
-          </DialogContent>
-        </>
-      )}
+          </div>
+        </DialogContent>
+      </>
     </Dialog>
   )
 }

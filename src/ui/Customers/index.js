@@ -16,7 +16,6 @@ import EntitlementsStore from 'stores/Entitlements'
 
 import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
-// import DeleteModal from 'components/DeleteModal'
 import DeleteConfirmModal from 'components/DeleteConfirmModal'
 
 import CustomTable from 'components/CustomTable'
@@ -81,9 +80,9 @@ const CustomersTable = observer(({ t }) => {
     setCreationType('subaccount')
   }
 
-  const handleDelete = id => {
+  const handleDelete = () => {
     const payload = {
-      id,
+      id: customerToDelete.id,
       callback: setIsDeleteModalOpen
     }
     deleteCustomer(payload)
@@ -193,17 +192,6 @@ const CustomersTable = observer(({ t }) => {
           />
         )}
         {isDeleteModalOpen && (
-          // <DeleteModal
-          //   classes={classes}
-          //   open={isDeleteModalOpen}
-          //   handleClose={handleCloseDeleteModal}
-          //   handleDelete={handleDelete}
-          //   deleteInfo={customerToDelete}
-          //   isDeleting={isDeletingCustomer}
-          //   deleteSubject={t('customer')}
-          //   action={t('to_delete')}
-          //   titleAction={t(`delete`)}
-          // />
           <DeleteConfirmModal
             open={isDeleteModalOpen}
             handleClose={handleCloseDeleteModal}
@@ -211,7 +199,7 @@ const CustomersTable = observer(({ t }) => {
             isLoading={isDeletingCustomer}
             title={t('delete_customer')}
             deleteSubject={t('customer')}
-            deleteObject={`${customerToDelete.name}: ${customerToDelete.id}`}
+            deleteObject={`${customerToDelete.name} (id: ${customerToDelete.id})`}
           />
         )}
         {isOpenCreateCustomer && (

@@ -14,7 +14,7 @@ import PhoneNumbersStore from 'stores/PhoneNumbers'
 import CreateCustomerStore from 'stores/CreateCustomer'
 import CreateSubaccountStore from 'stores/CreateSubaccount'
 import TitleBlock from 'components/TitleBlock'
-import DeleteModal from 'components/DeleteModal'
+import DeleteConfirmModal from 'components/DeleteConfirmModal'
 import CustomTable from 'components/CustomTable'
 import CreateCustomer from 'components/CreateCustomerModal'
 import CustomContainer from 'components/CustomContainer'
@@ -163,10 +163,10 @@ const SubaccountsTable = observer(({ t }) => {
     getSubaccounts(match.customerId)
   }
 
-  const handleDelete = groupId => {
+  const handleDelete = () => {
     const payload = {
       tenantId: match.customerId,
-      groupId,
+      groupId: subaccountToDelete.id,
       callback: setIsDeleteModalOpen
     }
     deleteSubaccount(payload)
@@ -205,16 +205,14 @@ const SubaccountsTable = observer(({ t }) => {
           />
         )}
         {isDeleteModalOpen && (
-          <DeleteModal
-            classes={classes}
+          <DeleteConfirmModal
             open={isDeleteModalOpen}
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
-            deleteInfo={subaccountToDelete}
-            isDeleting={isDeletingSubaccount}
+            isLoading={isDeletingSubaccount}
+            title={t('delete_subaccount')}
             deleteSubject={t('subaccount')}
-            action={t('to_delete')}
-            titleAction={t(`delete`)}
+            deleteObject={`${subaccountToDelete.name} (id: ${subaccountToDelete.id})`}
           />
         )}
         {isOpenCreateSubaccount && (
