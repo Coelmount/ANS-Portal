@@ -170,7 +170,7 @@ const CustomersTable = observer(({ t }) => {
     iconCapture: t('add_customer'),
     Icon: <PersonAddOutlinedIcon />
   }
-  console.log(customerToDelete, 'customerToDelete')
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
