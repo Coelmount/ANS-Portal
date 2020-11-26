@@ -197,7 +197,7 @@ const CustomersTable = observer(({ t }) => {
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
             isLoading={isDeletingCustomer}
-            title={t('delete_customer')}
+            title='delete_customer'
             deleteSubject={t('customer')}
             deleteObject={`${customerToDelete.name} (id: ${customerToDelete.id})`}
           />

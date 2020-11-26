@@ -210,7 +210,7 @@ const SubaccountsTable = observer(({ t }) => {
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}
             isLoading={isDeletingSubaccount}
-            title={t('delete_subaccount')}
+            title='delete_subaccount'
             deleteSubject={t('subaccount')}
             deleteObject={`${subaccountToDelete.name} (id: ${subaccountToDelete.id})`}
           />
