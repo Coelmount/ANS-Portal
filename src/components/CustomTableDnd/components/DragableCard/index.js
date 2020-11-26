@@ -1,6 +1,8 @@
 import React, { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
+
 import TableRow from '@material-ui/core/TableRow'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const ItemTypes = {
   CARD: 'card'
@@ -13,7 +15,8 @@ const DragableCard = ({
   isSaving,
   children,
   classes,
-  defaultClasses
+  defaultClasses,
+  t
 }) => {
   const ref = useRef(null)
   const [, drop] = useDrop({
@@ -53,13 +56,15 @@ const DragableCard = ({
     drag(drop(ref))
   }
   return (
-    <TableRow
-      className={`${defaultClasses.tableRow} ${classes.tableRow}`}
-      ref={ref}
-      style={{ opacity }}
-    >
-      {children}
-    </TableRow>
+    <Tooltip title={t('drag_tooltip')} placement='center'>
+      <TableRow
+        className={`${defaultClasses.tableRow} ${classes.tableRow}`}
+        ref={ref}
+        style={{ opacity }}
+      >
+        {children}
+      </TableRow>
+    </Tooltip>
   )
 }
 

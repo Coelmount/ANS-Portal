@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
-import Tooltip from '@material-ui/core/Tooltip'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -45,6 +44,7 @@ const CustomTableBody = ({
         id={row.id}
         moveCard={moveCard}
         isSaving={isSaving}
+        t={t}
       >
         {firstCell && <IdCell cellValue={i} idColStyles={idColStyles} />}
         {columns.map(column => {
@@ -67,11 +67,9 @@ const CustomTableBody = ({
   }
   return (
     <DndProvider backend={HTML5Backend}>
-      <Tooltip title={t('drag_tooltip')}>
-        <TableBody className={`${defaultClasses.tbody} ${classes.tbody}`}>
-          {rows}
-        </TableBody>
-      </Tooltip>
+      <TableBody className={`${defaultClasses.tbody} ${classes.tbody}`}>
+        {rows}
+      </TableBody>
     </DndProvider>
   )
 }
