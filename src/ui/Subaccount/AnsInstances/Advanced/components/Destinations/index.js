@@ -165,6 +165,7 @@ const Destinations = observer(({ t }) => {
     const payload = {
       customerId,
       groupId,
+      destinations: numbers.filter(el => el.checked),
       closeModal: openedModal.close
     }
     deleteDestinations(payload)
@@ -358,6 +359,7 @@ const Destinations = observer(({ t }) => {
             isDeleting={isDestinationDeleting}
             deleteSubject={`${t('destinations').toLowerCase()}`}
             action={t('to_delete')}
+            deleteInfo={numbers.map(el => el.name)}
             titleAction={t(`delete`)}
           />
         )}

@@ -153,13 +153,11 @@ export class Destinations {
     return this.destinations.filter(destination => destination.checked)
   }
 
-  deleteDestinations = ({ customerId, groupId, closeModal }) => {
+  deleteDestinations = ({ customerId, groupId, destinations, closeModal }) => {
     this.isDestinationDeleting = true
     let promiseArr = []
-    const numbersToDelete = this.destinations.filter(
-      destination => destination.checked
-    )
-    numbersToDelete.forEach(({ userId }) => {
+
+    destinations.forEach(({ userId }) => {
       promiseArr.push(
         axios.delete(
           `/tenants/${customerId}/groups/${groupId}/services/ans_advanced/destinations/${userId}`
