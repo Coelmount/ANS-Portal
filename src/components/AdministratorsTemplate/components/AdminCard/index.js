@@ -103,7 +103,8 @@ const AdminCard = ({
             <Box className={classes.buttonIconsWrapper}>
               <EditIcon className={classes.icon} />
             </Box>
-            {username !== admin.userId ? (
+            {username !== admin.userId &&
+            username.split('@')[0] !== admin.userId ? (
               <Box className={classes.closeButtonIconWrapper}>
                 <CloseIcon
                   className={classes.icon}
